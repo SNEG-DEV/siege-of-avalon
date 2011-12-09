@@ -1,0 +1,578 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01lahren,01lahren2,01lahren3,01pellhappy,04maskgiven,04spelltale,05astralquest,05pellgiven,06pellarb01,shadow
+Checked=01Lahren,01Lahren2,01Lahren3,01LahrenHappy,01Pell,01Pell2,01Pell3,01pellhapp,01PellHappy,04chapter4,04maskgiven,04staffquest,05astralquest,05chapter5,05magisknowpc,05ringdone,06chapter6,06magisknowpc,06pellarb01,Charge,Flame,Frost,Heal,Hold,KnowsPlayer
+Removed=
+
+[Quest]
+Added=ch1-14,ch1-15,ch1-16,ch1-19,ch1-40,ch1-41,ch1-42,ch4-502,ch4-531,ch4-533,ch5-503,ch5-504,ch5-534,ch5-535,ch5-536,ch5-537,ch5-538,ch5-539,ch6-531
+Removed=ch1-15,ch1-19,ch5-504
+
+[Items]
+Given=
+Taken=
+Checked=queentoken
+Added=magicalmask
+
+[SyntaxCheck]
+tucker(2/7/01)=Passed
+tucker(2/15/01)=Passed
+tucker(3/27/01)=Passed
+tucker(4/10/01)=Passed
+tucker(7/19/01)=Passed
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=14
+Else=
+Default=None
+say1=all(ttl(06chapter6));
+goto1=pellsix
+say2=all(ttl(05chapter5));
+goto2=pellfive
+say3=all(ttl(04chapter4));
+goto3=pellfour
+Say4=All(ttl(01PellHappy));
+Goto4=EndQuest
+Say5=All(ttl(!KnowsPlayer,!01Pell));
+goto5=Intro
+Say6=All(ttl(KnowsPlayer,!01Pell));
+Goto6=MoveAlong
+Say7=All(ttl(01Pell,!01Lahren));
+goto7=Tale
+Say8=All(ttl(!01Pell2,01Lahren));
+goto8=NoLahren
+Say9=All(ttl(01Pell2,!01Lahren2));
+Goto9=Gift
+Say10=All(ttl(01Lahren2,!01Pell3));
+goto10=NoLahren
+say11=all(ttl(01Pell3,01LahrenHappy,!01Lahren3));
+goto11=EarlyGoodNews
+Say12=all(ttl(01Pell3,!01Lahren3));
+Goto12=Spell
+Say13=All(ttl(01Lahren3,!01LahrenHappy));
+goto13=NoLahren2
+Say14=All(ttl(01LahrenHappy,!01PellHappy));
+Goto14=GoodNews
+
+
+[Intro]
+Say=Go away and leave me to my business.
+RspDflt=None
+RspTxt1=I'm sorry, my lady.  I didn't mean to intrude.
+NxtLn1=Intro1
+
+[Intro1]
+Say=I apologize -- I've been a bit snappish lately.  Nevertheless, I do not want company right now.  Well, yours, anyway.
+script=addtitle(KnowsPlayer);
+RspDflt=I understand.  Good day to you then, lady.
+
+[MoveAlong]
+Say=I meant what I said before.  I do not want your company.
+RspDflt=Of course, lady.  Goodbye.
+
+[Tale]
+Say=I don't particularly feel like talking with anyone right now.
+RspDflt=none
+RspTxt1=I understand, lady, but Olon sent me over.  He seems to think that I can help with some problem of yours?
+nxtLn1=Tale1
+
+[Tale1]
+Say=Olon!  Finally.  My name is Pellandrian, but please call me Pell.  Well, you look capable enough, anyway, even if you are a bit young.
+RspDflt=none
+RspTxt1=If you think my age -- or lack of it, rather -- would disqualify me from helping-
+nxtLn1=Tale2
+
+[Tale2]
+Say=No, no!  I'm sorry, I did not mean it that way.
+RspDflt=none
+RspTxt1=Then perhaps you would be so kind as to inform me of the nature of the problem, so that I might decide if in fact I can be of assistance to you?
+nxtLn1=Tale3
+
+[Tale3]
+Say=Yes... You're nothing like he is, you know.  I can almost feel the force radiating from you, even without magic.  But him?  If I don't pay attention, it's like he's not there.  Insubstantial, like the ghost of a man.  But when I did pay attention....
+RspDflt=none
+RspTxt1=I'm afraid, lady, that I really don't understand what you're saying.
+nxtLn1=Tale4
+
+[Tale4]
+Say=No, I suppose not.  His name is Lahren, and he's the man I will wed.
+RspDflt=none
+RspTxt1=Does he know this?
+nxtLn1=Tale5
+
+[Tale5]
+Say=All in good time.  He's a scholar, you see.  A linguist, actually.  Language is his passion, but stories set to music are his life.  The tales he could tell...  But for a long time now his tongue has been silent.  His harp and flute are gone, and with them, I think, his soul.  I wish you could have seen him as I first knew him.  He was a quiet man, insignificant even, until you heard the music from his fingers and the words from his throat.  And then, only then, could you see that his eyes and heart were far from empty.  They were alive and vital and I... I...  Spirits help me, I-
+RspDflt=none
+RspTxt1=Fell in love.
+nxtLn1=Tale6
+
+[Tale6]
+Say=Yes.  Sometimes I can hardly think of a worse fate.
+RspDflt=none
+RspTxt1=You jest, lady.
+nxtLn1=Tale7
+
+[Tale7]
+Say=You are young, aren't you?  I do not.  I never learned exactly what befell him, but for as long as I've known him he has been deathly afraid of magic.
+RspDflt=none
+RspTxt1=I do not understand.  What has this to do-
+nxtLn1=Tale8
+
+[Tale8]
+Say=With me?  Everything.  I, sir, am Fornaxan, and magic is in our blood.  I am magical to my very core, and nothing can change that, not even love.  I told him nothing, of course.  Not a word of it.  I just became his friend.  We came to Avalon because he wanted to study the language and culture of the Sha'ahoul.  The siege, then, was not yet as total as it is today, but the journey through Oriam was still dangerous, as you'd expect.  His heart was set, however, and I couldn't refuse.  You see, as I had longed for many months, he had begun falling in love with me and I was not going to abandon him then.  Do not ask how I knew -- Fornaxans have ways.  And if worst came to worst, I thought, I could defend us well enough.
+RspDflt=none
+RspTxt1=And it did, did it not, lady?
+nxtLn1=Tale9
+
+[Tale9]
+Say=Yes.  Perhaps Olon chose well in sending you to me.  They came on us in the night, and Lahren was gravely wounded in the first assault, his harp splintered and flute crushed.  As soon as I awoke, without thinking I burned down the Ahoul where they stood.  It was those dozen savages that cost me everything, sir.  When the killing was done, I turned to him.  The horror in his eyes was sickening but I just thought it was from the attack.  Then as I stepped towards him, he tried crawling away from me.  Away from ME.  With a shattered arm and blood leaking from chest and belly, he tried crawling away.  I had to cast Hold on him to get him to keep still so I could Heal him.  My love was suddenly afraid of me, sir.  I can hardly imagine a worse fate...
+RspDflt=none
+RspTxt1=I see now.  I am sorry.
+nxtLn1=Tale10
+
+[Tale10]
+Say=A patrol from Avalon found us -- the amount of magic I had to unleash drew the attention of the wizards here.  He recovered, but he would not talk to me.  He would not even look at me.  It has been months now since I have looked into his eyes.
+RspDflt=none
+RspTxt1=I sympathize, my lady.  What can I do to help?
+nxtLn1=Tale11
+
+[Tale11]
+Say=I have been watching him, of course.  How could I do otherwise?  And he has been changing.  Or his feelings have been.  I cannot tell exactly how or why, though.  And I cannot approach him directly.  I would only... scare him further, most like.  But you....
+RspDflt=none
+RspTxt1=You want me to talk to him, to sound out his thoughts and feelings about you.
+nxtLn1=Tale12
+
+[Tale12]
+Say=Basically, yes.  Subtlety will be required -- he is far from stupid, and though he has a gentle nature, it does not preclude suspicion.
+RspDflt=none
+RspTxt1=I will do my best, lady.
+nxtLn1=Tale13
+
+[Tale13]
+Say=Thank you.  You should be able to find him near the merchants' wagons just over there.  Olon often keeps an eye on him for me.
+Adventure=ch1-40;
+AddQuest=ch1-14;
+script=player.addtitle(01Lahren)
+RspDflt=I will return when I have news.
+
+[NoLahren]
+Say=Well, what did he say?
+RspDflt=Nothing as yet, lady.  I regret to say that I am still trying to decide how to approach him.  When I know more, however, I will be sure to return.
+
+[Gift]
+Say=You have spoken with him.  I spied you doing so by the merchants' tents.  Tell me, what did he say?
+RspDflt=none
+RspTxt1=He loves you, lady.  No question.
+nxtLn1=Gift1
+
+[Gift1]
+Say=Thank the spirits.  Perhaps I've not ruined everything after all.
+RspDflt=none
+RspTxt1=He is also in pain, much like you -- if you'll forgive me saying so, lady.
+nxtLn1=Gift2
+
+[Gift2]
+Say=Yes, perhaps that is what I've been sensing.
+RspDflt=none
+RspTxt1=I cannot, of course, speak to that.  However, I can say that his feelings for you have at least tempered his aversion to magic.  Did you know that he was once a mage?
+nxtLn1=Gift3
+
+[Gift3]
+Say=Yes, though not directly from him.  Did he by chance tell you...?
+RspDflt=none
+RspTxt1=Why he abandoned the art?  No.
+nxtLn1=Gift4
+
+[Gift4]
+Say=That, I think, is something I would dearly like to know.  But that would be a matter for another time, I suppose.  So, tell me, if he loves me, why did you not bring him with you?
+RspDflt=none
+RspTxt1=He is afraid, lady.  Of rejection, or perhaps that you would not forgive him his foolish actions.
+nxtLn1=Gift5
+
+[Gift5]
+Say=He was always too willing to shoulder blame exclusively, damn him.  Does he not know that I kept my heritage deliberately secret from him?  The fault lies as much with me as it does him.  Think you that I could approach without provoking a poor reaction?
+RspDflt=none
+RspTxt1=No, lady. I believe that would be a bad idea.  Love has made him a coward before the thought of you and I imagine were he to see you approach, he would again flee.  It is a sad irony that in this instance he would be running from the pain of love, rather than from any fear of you, but he would flee nonetheless.
+nxtLn1=Gift6
+
+[Gift6]
+Say=And what, then, would you suggest?
+RspDflt=none
+RspTxt1=Truth be told, lady, I know not.  It is a quandary -- if you cannot approach him, then he must approach you, but he insists vehemently that he cannot.  He purports to seek an answer, but in his heart I think he believes he already knows it, and it is that you hate him.
+nxtLn1=Gift7
+
+[Gift7]
+Say=You are saying, then, that even were you to tell him that I love him still, he would not believe you?
+RspDflt=none
+RspTxt1=I'm afraid so, lady, yes.  He has no confidence in anything anymore, least of all himself.
+nxtLn1=Gift8
+
+[Gift8]
+Say=Then I am lost.
+RspDflt=none
+RspTxt1=No, lady.  I will not surrender just yet.  Even if he would not accept a report of your love, he would accept a report of your anger easily enough.  And if he will not approach you to proclaim his love, perhaps I can guide him into approaching to beg your forgiveness.
+nxtLn1=Gift9
+
+[Gift9]
+Say=Know you already how to do this?
+RspDflt=none
+RspTxt1=I regret not -- it is something that I shall have to consider carefully.
+nxtLn1=Gift10
+
+[Gift10]
+Say=Tread softly, friend.  Our future rests in your hands.
+RemoveQuest=ch1-15;
+AddQuest=ch1-16;
+script=player.addtitle(01Lahren2);
+RspDflt=Have faith, lady.  I will not fail.
+
+[EarlyGoodNews]
+Say=How did he accept your words?
+RspDflt=none
+RspTxt1=Very well indeed, my lady.  I convinced him a gift would ameliorate your supposed ill will, and then sought a gift for him in the village.  He accepted it, and will be on his way to present it to you shortly.
+nxtLn1=EarlyGoodNews2
+
+[EarlyGoodNews2]
+Say=In the village?  That must have been extraordinarily dangerous!
+RspDflt=none
+RspTxt1=It was somewhat, I must confess.  It is night time, however, so I was able to sneak about in relative safety.
+nxtLn1=EarlyGoodNews3
+
+[EarlyGoodNews3]
+Say=I never expected that you would need to imperil your life for my sake and Lahren's, even indirectly.  My debt to you grows, sir.  Know you any magic?
+Adventure=ch1-41;
+RspDflt=none
+rspCnd1=one(ttl(Heal,Flame,Frost,Charge,Hold));
+RspTxt1=Yes, some.
+nxtLn1=EarlyGoodNews4
+rspCnd2=all(ttl(!Heal,!Flame,!Frost,!Charge,!Hold));
+RspTxt2=No, none.
+nxtLn2=EarlyGoodNews4None
+
+[EarlyGoodNews4]
+Say=Then accept this gift, a spell to help keep you safe should you adventure again in the village.  It is called Shadow, and will prevent the Ahoul from easily spotting you.  It draws the shadows about you; the stronger you are in the art, the more difficult it will be for the Ahoul to penetrate them and spot you.
+RspDflt=none
+script=ifnottitle(shadow);player.addtitle(Shadow);endif;showmessage(You have learned the Shadow spell.,200);
+RspTxt1=I thank you, lady.  As I said, he should be here presently.  The rest, I'm afraid, is upon your own shoulders.
+nxtLn1=GoodNews1
+
+[EarlyGoodNews4None]
+Say=Magic can be a useful tool.  This simple spell should prove to be an aid out in the village, should you adventure there again.  Cast it, and it will help you avoid detection by cloaking you in shadows.
+RspDflt=none
+script=player.addtitle(Shadow);player.addtitle(01PellHappy);
+RspTxt1=I thank you, lady.  As I said, he should be here presently.  The rest, I'm afraid, is upon your own shoulders.
+nxtLn1=GoodNews1
+
+[Spell]
+Say=How did he accept your words?
+RspDflt=none
+RspTxt1=Not as well as I had hoped.  I have managed to somewhat convince him that a gift to you might soften your heart, but we lack a suitable gift.  I am now somewhat at a loss.
+nxtLn1=Spell1
+
+[Spell1]
+Say=Oh, Lahren...  He must know that I would accept anything from him.
+RspDflt=none
+RspTxt1=Perhaps, lady, but he would not present just anything to you.  There is little enough of worth inside the keep that I fear I must look outside.
+nxtLn1=Spell2
+
+[Spell2]
+Say=You mean in the village?  That would be extraordinarily dangerous, would it not?
+RspDflt=none
+RspTxt1=Most likely, yes.  It is night time, however, and so I should be at least somewhat safe.  I need to venture outside to look for my brother, anyway, and I will keep watch for anything suitable.
+nxtLn1=Spell3
+
+[Spell3]
+Say=I never expected that you would need to imperil your life for my sake and Lahren's, even indirectly.  My debt to you grows, sir.  Know you any magic?
+Adventure=ch1-41;
+RspDflt=none
+rspCnd1=one(ttl(Heal,Flame,Frost,Charge,Hold));
+RspTxt1=Yes, some.
+nxtLn1=Spell4
+rspCnd2=all(ttl(!Heal,!Flame,!Frost,!Charge,!Hold));
+RspTxt2=No, none.
+nxtLn2=Spell4None
+
+[Spell4]
+Say=Then accept this gift, a spell to help keep you safe.  It is called Shadow, and will prevent the Ahoul from easily spotting you.  It draws the shadows about you; the stronger you are in the art, the more difficult it will be for the Ahoul to penetrate them and spot you.
+RspDflt=none
+script=player.addtitle(Shadow);
+RspTxt1=I thank you, lady.
+nxtLn1=Spell5
+
+[Spell4None]
+Say=Magic can be a useful tool.  This simple spell should prove to be an aid out in the village.  Cast it, and it will help you avoid detection by cloaking you in shadows.
+RspDflt=none
+script=player.addtitle(Shadow);
+RspTxt1=I thank you, lady.
+nxtLn1=Spell5
+
+[Spell5]
+Say=Perhaps Olon will have some advice for you, if you have not yet told him of your intentions.  Remain safe, my friend.
+script=player.addtitle(01Lahren3)
+RspDflt=I will return soon, my lady.
+
+[NoLahren2]
+Say=Have you found a gift yet?
+RspDflt=Not yet, lady.  I will return when I have.
+
+[GoodNews]
+Say=Well?  Is he coming?
+RspDflt=none
+RspTxt1=Yes, lady.  He should be along presently.  The rest, I'm afraid, is upon your own shoulders.
+nxtLn1=GoodNews1
+
+[GoodNews1]
+Say=I wish only that I could have done this all myself.  This entire situation, as dear to my heart as it is, must have seemed like so much silliness to you.  I hope that one day you will better understand what it is like to be in our places.  There is no worse fate than to be in love, sir...  And yet there is no better fate.  In the meantime, I owe you a debt I will never be able to fully repay.  But should you ever need something, I stand ready to assist you, my friend.
+Adventure=ch1-42;
+RemoveQuest=ch1-19;
+script=player.addtitle(01PellHappy);Siege200008140046910160.setpos(PathCorner200009070076277610);Siege200008140046910160.setprop(idleduty=stand);Siege200008140046910160.moveto(PathCorner200009070076178740);
+RspDflt=It was my pleasure.  And someday, I, too, hope that I will be in love and thus be able to share your joy -- and commiserate with your sadness.  Until later, then, I bid you farewell.
+
+[EndQuest]
+Say=Ah, you have returned!  Once again you have my thanks for your deeds.  Now tell me, how can I help you, then?
+RspDflt=There's no need, lady.  I am equipped well enough to handle the tasks before me.  I stopped by only to learn if you were enjoying your reunion.  You are, I see, and so I shall again be on my way.  Farewell, my lady.
+
+[pellfour]
+Say=Greetings!  It is good to see you again.
+RspDflt=Pardon me, Pell, I was just passing through.
+rspcnd1=all(ttl(!04maskgiven,!01pellhappy));
+RspTxt1=Good day, m'lady.  How goes it?
+nxtln1=pellfour2
+rspcnd2=all(ttl(!04maskgiven,01pellhappy))
+RspTxt2=Good to see you as well, my friend.  How goes it?
+nxtln2=pellfour9
+
+[pellfour2]
+Say=I've been busy, recently, so I've been in a good mood.  You could say it's going well.
+RspDflt=none
+RspTxt1=What have you been busy with, if you don't mind my asking?
+nxtln1=pellfour3
+
+[pellfour3]
+Say=Oh, of course not!  I'm adding an enchantment to a magical item of Olon's.  He wants his mask to be able to speak the Sha'ahoul tongue, so with Lahren's aid, I was able to invent a sort of translation spell that I have attached to the mask.  It's really not as simple as it sounds, but that's why we're trying it out on the mask, first.  Olon wishes to have another item made to replace it...
+RspDflt=none
+adventure=ch4-502;
+script=player.addtitle(04spelltale);
+rspcnd1=all(ttl(!04staffquest));
+RspTxt1=I wouldn't imagine that it would be easy.  I've not enchanted many items, myself.
+nxtln1=pellfour4
+rspcnd2=all(ttl(04staffquest));
+RspTxt2=I've heard of this mask, and it is quite fortunate you've added this ability to it, my lady.
+nxtln2=pellfour5
+
+[pellfour4]
+Say=Well, it's almost done.  Olon might tell you a little about it...  Then again, he may not.  [smirks]  Be sure to see if he's changed any.
+RspDflt=[laugh]  I shall.  Farewell, Pell.
+
+[pellfour5]
+Say=Oh?  How so?
+RspDflt=none
+RspTxt1=I have an ... arrangement with Olon.  I need the mask to complete some assignments I've been given.  The fact that it will translate speech now makes my job a great deal easier.  He wishes me to steal a dreamwalker's wand in payment for the use of the mask.
+nxtln1=pellfour6
+
+[pellfour6]
+Say=That certainly sounds like Olon...  I've finished the mask, so you may take it now.  I was just waiting for Olon to come and pick it up.  You may also wish to note that the illusion of the half-breed is different for each Sha'ahoul, its aim being to make the wearer absolutely unremarkable...  Not to mention hard to find, unless pointed out.
+RspDflt=none
+adventure=ch4-531;
+script=player.additem(MagicalMask);addtitle(04maskgiven);
+rspcnd1=all(stt(perception>19));
+RspTxt1=Begging your pardon, my lady, but how are you sure I'm telling the truth?
+nxtln1=pellfour7
+RspTxt2=I hope he paid you well!
+nxtln2=pellfour8
+
+[pellfour7]
+Say=Olon has told me of his plans.  He's actually been hoping that he could find a way that you'd owe him something.  Good luck on your endeavors, and be sure to pay your debts.  Olon takes such things very seriously.
+adventure=ch4-533;
+RspDflt=Thank you for the advice, m'lady.  Farewell.
+
+[pellfour8]
+Say=Oh, he didn't pay me.  He will find a favor to perform for me eventually.  Although some may call him "shady," he has... a sense of honor.  Good luck on your endeavors, and be sure to pay your debts.  Olon takes such things very seriously.
+adventure=ch4-533;
+RspDflt=Thank you for the advice, m'lady.  Farewell.
+
+[pellfour9]
+Say=It goes very well, but you knew that already!  [smiles]  Oh, I've also been busy on a project, so that's also elevated my mood a bit, as well.
+RspDflt=none
+RspTxt1=What have you been busy with, if you don't mind my asking?
+nxtln1=pellfour3
+
+[pellfive]
+Say=Good afternoon to you, %playername%...
+RspDflt=Good afternoon, Pell.  Please excuse me, I've work to complete.
+rspcnd1=all(ttl(!05ringdone));
+RspTxt1=To you also, Pell.  How have you been faring as of late?
+nxtln1=pellfive2
+rspcnd2=all(ttl(05ringdone,!05astralquest));
+RspTxt2=I have been told by Elarath that you request my presence.  How may I assist you?
+nxtln2=dreamquest
+rspcnd3=all(obj(queentoken));
+RspTxt3=Good afternoon, Pell.  I need your assistance with an enchanted -- or cursed -- item I have found.
+nxtln3=tokenfive
+
+[pellfive2]
+Say=I've been a tad apprehensive today, but I cannot put my finger on it.  I've been puzzling over it all day.  I think I may have had some troubling dreams, but I usually remember them...
+adventure=ch5-534;
+RspDflt=none
+RspTxt1=Perhaps you should see a healer, Pell.  None of us have eaten particularly well during our stay.
+nxtln1=pellfive3
+RspTxt2=What do you believe your discomfiture is caused by?
+nxtln2=pellfive4
+
+[pellfive3]
+Say=I don't believe it was the food, or the lack of food.  I think this malaise is caused by something magical, something mystical; I just haven't been able to set my eyes on it.  Oh, do not worry for my sake, I will reason it out eventually.
+RspDflt=As you wish, Pell.  I hope you feel well soon.
+rspback=pellfive2
+
+[pellfive4]
+Say=I don't really think it was the dreams I think I may have had, but I get a strange feeling about the Sha'ahoul.  Perhaps they have something to do with it, but how?  I sense a strange magical taint on my person.  I feel rather separated...
+RspDflt=none
+RspTxt1=I must confess that I do not know what ails you, Pell, and as I cannot help you, I...
+nxtln1=pellfive5
+rspback=pellfive2
+
+[pellfive5]
+Say=Oh, do not fret for me, %playername%.  [smiles warmly]  I will see what it causing this in due time.  I think I shall question some of the other inhabitants of the keep about it; some of them have complained about troubling dreams, and it may be the same thing.  Perhaps Elarath knows something about this.  Oh, I am sorry to bother you with such mental wanderings.
+adventure=ch5-535;
+RspDflt=As you wish, Pell.  Farewell.
+
+[dreamquest]
+Say=Through the aid of some particularly powerful divination spells, I have discovered what has been ailing myself and some of the others.  I... have seen into the Astral plane, and...  I have seen Sha'men speaking to our comrades.  I couldn't tell who, as the faces were hazy, but their garb was as ours, and they stood there on the Astral Plane, listening to the Sha'men speaking to them.  They must have the power to summon a portion of a person's mind to that Astral Plane, I suppose because of its properties; little is known about the Astral Plane as of yet.  There's no telling what they're planning, or how long they've been doing this, but it must be stopped.
+adventure=ch5-536;
+removequest=ch5-504;
+RspDflt=none
+RspTxt1=What is the Astral Plane?
+nxtln1=dreamquest2
+RspTxt2=Please continue, Pell.  How can we stop this?
+nxtln2=dreamquest5
+
+[dreamquest2]
+Say=Some planes are other worlds just like our own, some are what theologians would argue are the "ever-after" worlds of happiness and torment, some are inhospitable plains of ice and fire that would respectively freeze or bake a human being.  The Sha'men are at the Astral Nexus, which shares some of the properties of each of the worlds it connects to.  The property the Nexus shares with ours is what is enabling the Sha'men to gain access to our allies' minds.
+adventure=ch5-537;
+RspDflt=none
+RspTxt1=How comes it that the Sha'men are traveling this Astral Nexus?
+nxtln1=dreamquest3
+RspTxt2=Please continue, Pell.  How can we stop this?
+nxtln2=dreamquest5
+
+[dreamquest3]
+Say=They must be projecting themselves there with their magic, for with the aid of magic, I saw the silver cord that connects all astral travelers to their mortal bodies fading into the distance behind each Sha'man.
+RspDflt=none
+RspTxt1=Are these Sha'men the "Dreamwalkers" I've heard tell of?
+nxtln1=dreamquest4
+RspTxt2=Please continue, Pell.  How can we stop this?
+nxtln2=dreamquest5
+
+[dreamquest4]
+Say=I suppose they are!  I imagine they must look just like they're asleep when they're projecting their spirits.  A somewhat appropriate name, considering what they do.  That, and everyone who has been manipulated by them has complained of bad dreams that they cannot remember.
+adventure=ch5-538;
+RspDflt=none
+RspTxt1=Please continue, Pell.  How can we stop this?
+nxtln1=dreamquest5
+
+[dreamquest5]
+Say=I wish I could tell you.  What little I could see faded to a haze in the distance.  The information on astral projection is as sketchy as the information on the Astral Plane itself; besides, a half-dozen Sha'men would notice you there and see your cord.  If they sever your cord, you would die, so you must be there physically.
+RspDflt=none
+rspcnd1=all(stt(perception>34));
+RspTxt1=The portal?
+nxtln1=dreamquest6
+rspcnd2=all(stt(perception<35));
+RspTxt2=And how will I accomplish that?
+nxtln2=dreamquest7
+
+[dreamquest6]
+Say=Exactly.  If Elarath has managed to activate it, he may be able to send you to the Astral Nexus.  Elazar has surmised that the Nexus was the portal's original destination.  If that is the case, its destination shouldn't need to be altered at all.  Beyond that, I'm afraid I can offer you no further advice on what you must do to stop this Sha'man plot.
+adventure=ch5-539;
+AddQuest=ch5-503;
+script=player.addtitle(05astralquest);
+RspDflt=none
+rspcnd1=all(stt(charm<30));
+RspTxt1=Very well, I shall meet with Elarath presently and discover a plan.
+nxtln1=dqnocare
+rspcnd2=all(stt(charm>29));
+RspTxt2=Very well, I shall meet with Elarath presently and discover a plan, but... Pell?  How are you feeling?  You're not sympathizing with the Sha'ahoul yet, are you?
+nxtln2=dqcare
+
+[dreamquest7]
+Say=The best hope you have is Elarath's portal...  If he has managed to get it running by now, he may be able to send you to the Astral Nexus.  That is, after all, where we believe it was intended to go.  I'm afraid I do not know what you must do to stop this Sha'man plot.
+adventure=ch5-539;
+AddQuest=ch5-503;
+script=player.addtitle(05astralquest);
+RspDflt=none
+RspTxt1=Very well, I shall meet with Elarath presently and discover a plan.
+nxtln1=dqnocare
+rspcnd2=all(stt(charm>29));
+RspTxt2=Very well, I shall meet with Elarath presently and discover a plan, but Pell?  How are you feeling?  You're not sympathizing with the Sha'ahoul yet, are you?
+nxtln2=dqcare
+
+[dqnocare]
+Say=Splendid.  We shall all sleep better once you have returned, doubly so when you succeed.
+Script=journalentry(chpt5-03);showmessage(Your journal has been updated.,200);
+RspDflt=I will not fail, milady.  Farewell.
+
+[dqcare]
+Say=Thank you for your concern, but I've a stronger will than those Sha'men think.  The more quickly you finish, the more quickly your worry will abate.
+Script=journalentry(chpt5-03);showmessage(Your journal has been updated.,200);
+RspDflt=I will not fail, milady.  Farewell.
+
+[tokenfive]
+Say=You have my full attention.  Please continue.
+RspDflt=none
+RspTxt1=I freed the Astral Guardian, who ordinarily governs actions on the Astral Plane but was imprisoned by the Sha'men and the Naga so that they could do as they wished.  From her description, the Sha'men were attempting to imprison...  Queen Nanesi's soul in this item so that they could continue their brainwashing on the Prime Material Plane.  They were appearing to her as protectors...  I do not know how this may have addled her mind.  She likely does not even realize it.
+nxtln1=tokenfive2
+
+[tokenfive2]
+Say=To put it into perspective, then, this is almost like a lich stone, only in this case we certainly don't want to destroy it.  If you wish to give the item in question to me, I will perform some divining magics, as they are a specialty of mine...  [voice trails off momentarily, and she clears her throat]  Then I shall take the item to Elarath, as enchantments are a favorite puzzle of his.
+RspDflt=none
+RspTxt1=Do you think you'll be able to save the Queen?
+nxtln1=tokenfive3
+
+[tokenfive3]
+Say=I cannot say what will happen should we succeed or fail.  Also, if you have not spoken to Her Highness yet, I would not recommend it.  After all .. [she pauses, and smirks wryly] .. ironically enough, you have just destroyed her protectors...  Well, what she knew as her protectors.  Even if it was in her "dreams."  We shall see what Elarath and I can do.
+RspDflt=none
+RspTxt1=Thank you, Pell.  I shall talk with him later to see how you two have progressed.
+script1=takeitem(queentoken,player);player.addtitle(05pellgiven);
+nxtln1=tokenfive4
+
+[tokenfive4]
+Say=As it should be.  Farewell, %playername%, may your journey be swift and the road well-paved.
+RspDflt=Thank you, Pell.  Farewell.
+
+[pellsix]
+Say=Oh, how are you doing, %playername%?
+RspDflt=Great, Pell.  Please excuse me, I've work to do.
+rspcnd1=all(ttl(05magisknowpc,!06pellarb01));
+RspTxt1=Good day, Pell.  How goes it?
+nxtln1=mainscreenturnon
+script1=player.addtitle(06pellarb01);
+rspcnd2=all(ttl(06magisknowpc,!06pellarb01));
+RspTxt2=Say, Pell, I met a man who claims to be one of the Magistrates of the Council of Fornax, and he said...
+script2=player.addtitle(06pellarb01);
+nxtln2=whatyousay
+
+[mainscreenturnon]
+Say=It goes well; I have spoken with Khaele, and, incredibly, that man has... "gone out on a limb" for me, you might say.  While it would have been appropriate for him to simply return to Fornax with me, he saw it as more appropriate that I stay here, realizing that he and I would both be of greater use defending Avalon.  Amazing.  Oh, and by the by, he mentioned your involvement, so do not worry.  Go on and be about your business and do not worry about me, %playername%.  Although your concern is touching, I know you've much to do, especially now...  [She cocks her ear to the wind and looks pensive.]
+adventure=ch6-531;
+RspDflt=As you wish, Pell.  Please be careful.
+
+[whatyousay]
+Say=Yes, he most certainly is, and I'm sure he said he has come to take me away to Fornax.  That, also, is the truth.  However, he has the presence of mind to realize that he and I both would be of far more use defending Avalon.  Justice, such as it is... [she trails off and laughs lightly] ...can wait.  Your concern is heartwarming, %playername%, but do not worry about me.  I know you've much to do, especially now...  [She cocks her ear to the wind and looks pensive.]
+adventure=ch6-531;
+RspDflt=As you wish, Pell.  Please be careful.
+

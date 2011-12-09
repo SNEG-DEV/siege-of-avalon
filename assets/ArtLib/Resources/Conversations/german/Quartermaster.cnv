@@ -1,0 +1,104 @@
+[root]
+Count=3
+Else=noletter
+Default=Danke.
+Say1=All(ttl(squire):obj(comletter));
+goto1=squire
+Say2=All(ttl(hunter):obj(comletter));
+goto2=hunter
+Say3=All(ttl(apprentice):obj(comletter));
+goto3=apprentice
+
+;If player has the title "Squire"
+[squire]
+Say=Wie kann ich Euch dienen, junger Herr?
+RemoveQuest=ch1-00;
+rspdflt=none
+script=Siege20000600060052238420.takeitem(comletter,player);
+rsptxt1=Seid gegrüßt.  Ich bin neu hier und habe gerade mein Offizierspatent bekommen.  Man hat mir gesagt, dass Ihr mich mit dem Nötigen ausrüsten könnt.
+nxtln1=squire1
+
+[squire1]
+say=Im Moment habe ich keine Kettenpanzer, also muss ein robuster Lederanzug genügen.  Als Waffe kann ich Euch ein gewöhnliches Langschwert geben; uns sind die Offiziersschwerter vor vier Wochen ausgegangen.
+rspdflt=none
+script=Siege20000600060052238420.giveitem(StuddedLeatherTunic,player);Siege20000600060052238420.giveitem(swordbasic,player);showmessage(Sie haben Ausrüstung erhalten.,200);
+;give the player studded leather armor and long sword.
+rsptxt1=Ich danke Euch, aber ich muss sagen, diese Ausrüstung scheint mir von minderer Qualität zu sein.  Habt Ihr nichts besseres?
+nxtln1=noletter
+
+[squire2]
+say=Uns sind die Offiziersschwerter vor vier Wochen ausgegangen, aber ich kann Euch ein gewöhnliches Langschwert geben.
+;give the player basic sword
+script=Siege20000600060052238420.giveitem(swordbasic,player);showmessage(Sie haben einen Gegenstand erhalten.,200);
+rspcnd1=all(obj(!StuddedLeatherTunic))
+rsptxt1=Ich brauche eine Rüstung.
+nxtln1=squire1
+
+
+
+;If the player has the title "Hunter"
+[hunter]
+Say=Kann ich Euch irgendwie dienen, Herr?
+RemoveQuest=ch1-00;
+rspdflt=none
+script=Siege20000600060052238420.takeitem(comletter,player);
+rsptxt1=Seid gegrüßt.  Ich bin neu hier und habe gerade mein Offizierspatent bekommen.  Man hat mir gesagt, dass Ihr mich mit dem Nötigen ausrüsten könnt.
+nxtln1=hunter1
+
+[hunter1]
+say=Tja, ich hätte da ein schönes Lederwams, um Euch vor dem Frost am frühen Morgen und den gelegentlichen Pfeil zu schützen, und für die Jagd außerhalb von Avalons Mauern habe ich genau das Richtige.
+rspdflt=none
+script=Siege20000600060052238420.giveitem(LeatherArmor,player);Siege20000600060052238420.giveitem(QuiverBelt,player);Siege20000600060052238420.giveitem(HuntingBow,player);showmessage(Sie haben Ausrüstung erhalten.,200);
+;give player leather armor, bow and quiver.
+rsptxt1=Ich danke Euch, aber ich muss sagen, diese Ausrüstung scheint mir von minderer Qualität zu sein.  Habt Ihr nichts besseres?
+nxtln1=noletter
+
+[hunter2]
+say=Für die Jagd außerhalb von Avalons Mauern habe ich genau das Richtige.
+script=Siege20000600060052238420.giveitem(QuiverBelt,player);Siege20000600060052238420.giveitem(HuntingBow,player);showmessage(Sie haben einen Gegenstand erhalten.,200);
+;give the player a quiver belt and hunting bow
+rspcnd1=all(obj(!LeatherArmor))
+rsptxt1=Ich brauche eine Rüstung.
+nxtln1=hunter1
+
+
+;If the player has the title "apprentice" -- Quartermaster obviously doesn't like mages...
+
+[apprentice]
+say=Was wollt Ihr?
+RemoveQuest=ch1-00;
+rspdflt=none
+script=Siege20000600060052238420.takeitem(comletter,player);
+rsptxt1=Seid gegrüßt.  Ich bin neu hier und habe gerade mein Offizierspatent bekommen.  Man hat mir gesagt, dass Ihr mich mit dem Nötigen ausrüsten könnt.
+nxtln1=apprentice1
+
+
+[apprentice1]
+Say=Dieser alter Schweinespieß ist alles, was ich Euch geben kann.  Wenn Ihr was Besseres wollt, müßt Ihr es wo anders suchen.
+rspdflt=none
+script=Siege20000600060052238420.giveitem(dagger,player);showmessage(Sie haben einen Gegenstand erhalten.,200);
+rspTxt1=Ein Dolch?  Ist das alles, was Ihr für mich habt?
+nxtLn1=noletter
+
+
+;if the player does not have a commission letter.
+[noletter]
+Say=Tut mir leid, mein Junge.  General Roth hat Befehl gegeben, keine guten Waffen mehr zu verteilen, damit wir uns auf einen Angriff vorbereiten können.  Ihr glaubt doch nicht, dass es mir Spaß macht, zusehen zu müssen wie jemand-- selbst ein neuer Rekrut wie Ihr-- so schlecht ausgerüstet herumlaufen muss, oder? Es liegt eben an diesem Mangel an gutem Stahl.
+rspDflt=Ich verstehe.  Dann Ade.
+rspTxt1=Also, wo finde ich denn eine bessere Ausrüstung?
+nxtLn1=Steel
+rspCnd2=all(ttl(01StolenRations));
+rspTxt2=Ich habe gehört, dass Lebensmittelvorräte gestohlen werden.  Wisst ihr was davon?
+nxtLn2=Stolen
+
+[Stolen]
+Say=Eigentlich nicht.  Anora-- das ist die Chefköchin-- hat nur erwähnt, dass Vorräte aus dem Küchenkeller verlorengehen.
+Adventure=ch1-07;
+rspDflt=Verstehe.  Danke für Eure Mühe.
+rspTxt1=Habt Ihr eine Ahnung, wo ich eine bessere Ausrüstung bekomme?
+nxtLn1=Steel
+
+[Steel]
+Say=Heutzutage weiß ich es wirklich nicht, aber vielleicht kann Euch Lucan helfen.  Den findet Ihr in der Waffenkammer am Südtor auf der anderen Seite vom Außenhof.  Aber darauf zählen würde ich nicht.  Außerdem habe ich gehört, dass es im Außenhof ein paar Händler gibt, aber wenn die Armee schon keine gute Ausrüstung hat, wüßte ich nicht, woher ein Bürgerlicher eine haben soll.
+Adventure=ch1-06;
+rspDflt=Dann werde ich es wohl bei Lucan versuchen.  Ich danke Euch für Eure Mühe.

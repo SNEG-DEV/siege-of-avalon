@@ -1,0 +1,49 @@
+[root]
+Count=2
+Else=
+Default=Danke, Arno.
+Say1=All(ttl(!01recovered));
+goto1=Lang
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Lang]
+say=Hallo.  Seid Ihr zufällig mit Leutnant Corvus verwandt?
+rspDflt=None
+rspTxt1=Ich bin sein Bruder.  Wie seid Ihr darauf gekommen?
+NxtLn1=Lang1
+
+[Lang1]
+say=Er war früher mein Kommandant, bis er mit Ovoron davonging.  Ihr habt die gleichen hungrigen Augen.
+rspDflt=None
+rspTxt1=Wie läuft alles hier?
+NxtLn1=Lang2
+
+[Lang2]
+say=Seit Wochen habe ich keine Nacht durchgeschlafen. Ich glaube, im Keller  lebt außer den Hunden noch etwas.  Die ganze Nacht hindurch hören wir ein schabendes Geräusch, oder vielleicht ist es das Wühlen einer riesigen... Ratte, oder so etwas!
+Adventure=ch1-62;
+rspDflt=Hoffentlich kommt bald jemand, der euch von eurem Dienst ablöst .
+rspCnd1=all(ttl(01Bugs));
+rspTxt1=Jetzt, wo Ihr es sagt, heute hat es im Keller unter der Küche vor Riesenkäfer gewimmelt.  Nachdem sie sich durch die Wände gekaut hatten, machten sie sich an die Lebensmittelvorräte.  Inzwischen sind sie Gott sei Dank tot, aber vielleicht gibt es hier unten auch welche.
+nxtLn1=Bugs
+
+;After recovery of Chalice
+[Chalice]
+say=Corvus' Bruder!  Ich habe schon gehört, dass Ihr draußen sehr erfolgreich wart!
+rspDflt=None
+rspTxt1=Könnte man sagen. Ich hatte schon ein paar Siege im Dorf.
+NxtLn1=Chalice1
+
+[Chalice1]
+say=Ehe Ihr Euch's verseht, werdet Ihr Leutnant sein, wie Euer Bruder!
+rspDflt=Danke für die netten Worte.  Ade.
+
+[Bugs]
+Say=An die Vorräte? Das ist nicht gut.  Ich bin froh, dass sie erledigt sind.  Wenn ich Euch richtig verstehe, könnte es hier im Keller also auch solche Riesenkäfer geben?
+script=player.addtitle(01Bugs2);
+rspDflt=Möglich wär's.  Wenn ich die Gelegenheit bekomme, werde ich der Sache bestimmt nachgehen.  Bis dahin, ade!
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed
+

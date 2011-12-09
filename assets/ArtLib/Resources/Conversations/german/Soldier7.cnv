@@ -1,0 +1,47 @@
+;Hello there, how can I help you?
+;May I be of assistance to you Sir?
+;What can I do for you?
+;How can I help you, Sir?
+;What is it you want?
+;Hello Sir, How may I help you?
+
+[root]
+Count=2
+Else=
+Default=Ade.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Soldier]
+say=Was braucht Ihr?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Soldier1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Soldier2
+
+[Soldier1]
+say=Meine Heimat ist Cathea.  War es zumindest. Ich habe dort Vieh gezüchtet, bis ich hierher eingezogen wurde. Lacht nicht. Viehzüchter ist kein besonders eindrucksvoller Beruf, aber selbst wahnsinnige Rinder sind nicht annähernd so bösartig wie die Ahoul-Plünderer.  
+rspBack=soldier
+
+[Soldier2]
+say=Ich habe gehört, König Vortigerm von Taberland sei mit allen waffenfähigen Männern seines Reiches auf dem Weg hierher. Die Soldaten von Taberland haben sich schon oft im Kampf bewiesen. Ihre Ankunft wird unsere Rettung sein. Ich hoffe, sie bringen Lebensmittel mit.
+rspBack=soldier
+
+;After Recovery of Chalice
+[Chalice]
+say=Wie kann ich Euch dienen, Herr?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Chalice1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Chalice2
+
+[Chalice1]
+say=Ich kam auf der Hochebene von Cathea zur Welt. Ich habe dort Vieh gezüchtet, aber dann wurde ich hierher eingezogen. Wenn jemand mir ein Pferd gäbe, würde ich besser reiten als jeder wilde Ahoul!
+rspBack=chalice
+
+[Chalice2]
+say=Ich habe gehört, dass die Elythrianer einen neuen Offizier haben, der die Wende in diesem Krieg herbeiführen wird. Man sagt, er sei von den Göttern berührt!
+rspBack=chalice

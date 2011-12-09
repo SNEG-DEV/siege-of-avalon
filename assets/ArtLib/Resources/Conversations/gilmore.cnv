@@ -1,0 +1,151 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01Lahren,01recovered,01village,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(5/23/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Hail!
+say1=one(ttl(06chapter6,05chapter5));
+goto1=chapter6
+say2=all(ttl(03chapter3,04chapter4));
+goto2=three
+Say3=All(ttl(!01recovered,!01village));
+goto3=Gilmore1
+Say4=All(ttl(!01recovered,01village));
+goto4=village1
+Say5=All(ttl(01recovered,01village));
+goto5=chalice1
+
+[Gilmore1]
+Say=Hello.  I am Gilmore.  I am sorry to hear about your loss.
+RspDflt=None
+RspTxt1=Where are you from?
+Nxtln1=Gilmore3
+RspTxt2=Thank you.
+Nxtln2=Gilmore2
+
+[Gilmore2]
+Say=If you need anything, don't hesitate to ask.
+RspDflt=Thanks again.
+rspBack=Gilmore1
+
+[Gilmore3]
+Say=I am Fornaxan.  I am a member of the Council of Fornax and was sent here as an advisor.
+RspDflt=None
+RspTxt1=Will this siege last much longer?
+NxtLn1=Gilmore4
+rspCnd2=all(ttl(01Lahren));
+RspTxt2=So you would know of Pellandrian, then?
+nxtLn2=Pell1
+
+[Gilmore4]
+Say=I hope not!  I hope to see the end of this conflict quickly, so I may go home.
+RspDflt=I pray you are right.
+rspBack=Gilmore1
+
+[village1]
+Say=Back so soon?  Have you already had enough of that wasteland out there?
+RspDflt=None
+RspTxt1=Not yet, sir.  I've only come to hear the latest from Avalon.
+NxtLn1=village2
+
+[village2]
+Say=There is nothing new here.  Only the misery and starvation in the Peasants' Bailey.
+RspDflt=I'm sorry to hear of that.
+
+[Chalice1]
+Say=So, it's you I have to thank for bringing us closer to victory.
+RspDflt=None
+RspTxt1=I was only doing my duty as a soldier and brother.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Well, many thanks to you.
+RspDflt=Good day, sir.
+
+[Pell1]
+Say=Of course.  She should not be here, and it be best if she were to return home immediately.
+RspDflt=none
+RspTxt1=Why do you say that, sir?
+NxtLn1=Pell2
+
+[Pell2]
+Say=I'm afraid that is an internal matter to the Fornaxan people.  Good day to you.
+RspDflt=And to you, sir.
+
+[three]
+Say=Hello again.  Something I can do for you?
+RspDflt=No, esteemed advisor.  Pardon me.
+RspTxt1=How goes the advising, advisor?
+nxtln1=three2
+
+[three2]
+Say=Do not laugh at my frustration.
+RspDflt=none
+RspTxt1=Your frustration?  What are you frustrated about?
+nxtln1=three3
+
+[three3]
+Say=There's no "advising," as you put it, for me to do.  All this idleness is frustrating.  I've turned to alternate means to amuse myself.
+RspDflt=none
+RspTxt1=You will have your chance, Gilmore.
+nxtln1=three4
+
+[three4]
+Say=I certainly hope you're right.  I was just hoping for some action.  That's why I came from Fornax, you know.
+RspDflt=none
+RspTxt1=Take heart, Gilmore.  Nothing is won by such protracted periods of inactivity.
+nxtln1=three5
+RspTxt2=Perhaps you can teach a few of the soldiers to play chess?
+nxtln2=three6
+
+[three5]
+Say=Yes, well...  Thank you.
+RspDflt=Glad to help, Gilmore.  Stay safe.
+rspback=three4
+
+[three6]
+Say=Heh...  That's funny.  I think you just made my day.  Perhaps I shall do that, after all.  Thank you for the suggestion, however farcical it may seem to me.
+RspDflt=Good to hear you laugh, Gilmore.  Stay safe.
+
+[chapter6]
+Say=I wish those green freaks outside would just come right in and see if they could take me.  I'd show them just how much magic I could muster.
+RspDflt=none
+RspTxt1=I doubt you mean that.
+nxtln1=chapter6b
+
+[chapter6b]
+Say=True enough.  But I sometimes wonder if it would be better if we had charged them sooner with full cavalry.  By now they've certainly mapped out the land and thanks to Ovoron they know everything about us.  What do we really know about the Sha'ahoul?
+RspDflt=They want us all dead.  That's all I need to know.
+

@@ -1,0 +1,78 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Adios.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=All(ttl(!01recovered));
+goto2=Soldier
+Say3=All(ttl(01recovered));
+goto3=Chalice
+
+[Soldier]
+Say=Eh, tío...
+RspTxt1=Dime, soldado, ¿de dónde vienes?
+NxtLn1=Soldier1
+RspTxt2=¿Supongo que no has oído ningún rumor últimamente?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Nací en Elythria, pero no creo que tenga la oportunidad de ser enterrado allí, tío... Estas paredes serán mi tumba.  Los Ahoul se vuelven más sangrientos cada día, si ello es posible, y... y...
+rspBack=soldier
+
+[Soldier2]
+Say=No escucho esas porquerías.  Los rumores embotan la mente de un soldado, tío, y necesitamos a la vez una inteligencia y una espada afilada...  pero ¿para qué todo esto, tío?
+rspBack=soldier
+
+[Chalice]
+Say=¿Qué hay de nuevo, tío?
+RspTxt1=¿De dónde eres, uh, "tío"?
+NxtLn1=Chalice1
+RspTxt2=¿Algún rumor interesante?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=soy de Elythria, señor.  ¡No puedo esperar más a volver allí, tío!  Al principio pensé que nunca volvería a ver Elythria, pero ahora que tenemos el Cáliz...  Tío, no puedo esperar más para volver a ver a mi hermanito...
+rspBack=chalice
+
+[Chalice2]
+Say=He oído por los barracones que los cobardes Taberlandeses van a volver al fin a Avalon.  ¡Puede que esta vez incluso luchen!  Ja! Ja!  No les necesitamos.  ¡Tenemos el Cáliz!  Ya sabes, es mágico, ¿verdad tío?  ¡Lo debes haber notado al tocarlo!  ¡Ahora no podemos perder!
+rspBack=chalice
+
+[chapter6]
+Say=Ah, saludos, tío, esto, quiero decir, %playername%.  Espero que todo vaya bien.  Excepto lo que es obvio que va mal, claro.
+RspDflt=Pronto lo sabré.  Hasta luego, soldado.
+

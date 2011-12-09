@@ -1,0 +1,185 @@
+[Notes]
+titlesChecked=01recovered,01village,01permission,01Olon
+titlesSet=01recovered
+
+[root]
+Count=6
+Else=Brother
+Default=
+say1=All(ttl(01FoundBrother,!01HealBrother));
+goto1=Brother
+Say2=All(ttl(!01recovered,!01Olon));
+goto2=Massus
+Say3=All(ttl(!01recovered,01Olon,!01ToldChalice));
+goto3=Olon
+Say4=All(ttl(!01recovered):Obj(!Chalice));
+goto4=Village
+Say5=All(ttl(!01recovered):Obj(Chalice));
+goto5=Chalice
+Say6=All(ttl(01recovered));
+goto6=recovered
+
+[Brother]
+Say=Den Geistern sei Lob und Preis! Corvus! Ihr solltet ihn sofort zu Bruder Crosby bringen!
+rspdflt=Mache ich.
+
+[Massus]
+say=Willkommen in der Kapelle, mein Sohn.  Seid Ihr gekommen, um zu beten?
+rspdflt=None
+rsptxt1=Nein, Bruder.  Ich sehe mich nur um.
+NxtLn1=Massus1
+rsptxt2=Ehrlich gesagt, ich bin hier neu und wollte mich den anderen Bewohnern vorstellen.  Woher kommt Ihr?
+NxtLn2=Massus2
+rsptxt3=Nein, Bruder.  Ich höre mich nur nach Neuigkeiten um.  Was gibt es hier?
+NxtLn3=Massus3
+
+[Massus1]
+say=Lasst Euch Zeit.  Die Kapelle steht jedem offen, der zwischen den Kämpfen  Trost sucht.
+rspdflt=Danke, Bruder.
+rspBack=Massus
+
+[Massus2]
+say=Ich kam vor vielen Jahren mit den Taberlandern hierher.  Ich entschied mich jedoch, nicht in deren Bürgerkrieg hineinziehen zu lassen.  Ich hatte das Gefühl, dass ich hier gebraucht werde, für spirituelle Führung und für die Heiler, die der Kapelle dienen.
+rspdflt=Ich bin sicher, die Soldaten freuen sich, dass sie hier sind.
+rspBack=Massus
+
+
+[Massus3]
+say=Alle die spirituelle Erfüllung suchen kommen hierher.  Die anderen Mönche und ich bieten Trost und Heilung.
+rspdflt=None
+rsptxt1=Heilung?
+NxtLn1=Massus4
+
+[Massus4]
+say=Ja.  Wir sind alle in den heilenden Künsten ausgebildet.  Bruder Crosby ist ein außergewöhnlicher Heiler.  Wenn ich Heilung bräuchte, würde ich zu ihm hingehen.
+Adventure=ch1-15;
+rspdflt=Danke, Bruder.  Ade.
+rspBack=Massus
+
+
+;Before player is sent by Olon
+
+[Brother1]
+say=Er war schon oft hier, um von uns geheilt zu werden.  Er scheint beim Kampf immer mittendrin zu stehen, und er trägt immer die schwersten Wunden davon.  Aber er hat Glück. Er ist kein besonders frommer Mann, nicht wahr?
+Adventure=ch1-16;
+rspDflt=none
+rsptxt1=Nein, nicht besonders, Bruder.
+nxtLn1=Brother2
+
+[Brother2]
+say=Kann ich etwas für Euch tun?
+rspdflt=Nein, danke.
+rsptxt1=Habt Ihr irgendwelche Gerüchte gehört?
+NxtLn1=Brother3
+
+[Brother3]
+say=Hier versuchen wir, die Ohren gegen Klatsch und Tratsch zu verschließen. Unsere Anliegen sind nicht von dieser Welt, es sei denn, es geht um die Bekämpfung des Übels in jeder Form.
+rspdflt=Danke trotzdem, Bruder.
+
+;First approach after Olon
+
+[Olon]
+say=Ich grüße Euch.  Ich habe die Nachricht über Euren Bruder gehört.  Seid versichert, wir beten für ihn.
+rspDflt=none
+rsptxt1=Danke, Bruder.  Ich habe gehört, dass Ihr im Dorf  vor Avalon gelebt habt.
+nxtLn1=Olon1
+
+[Olon1]
+say=In der Tat.  Ich habe drei kurze Jahre dort gelebt, bis die Ahoul kamen und uns aus der Kirche vertrieben.
+rspDflt=none
+rsptxt1=Ich mache bald einen Erkundungsausflug dorthin.  Olon der "Händler" meinte, Ihr könntet mir eventuell einige nützliche Informationen über das Dorf geben.
+nxtLn1=Olon2
+
+[Olon2]
+say=Olon hat Euch das erzählt?  Er irrt sich.  Ich habe mich meistens in der Kirche aufgehalten, und von dem, was ich von hier aus gesehen habe, ist von dem Dorf, so wie ich es kannte, nur wenig übriggeblieben .
+rspDflt=none
+rsptxt1=Ihr könnt mir gar nichts sagen über das Dorf?
+nxtLn1=Olon4
+
+[Olon3]
+say=Es tut mir leid, dass ich Euch nicht weiterhelfen kann.
+rspdflt=Ade.
+rspBack=Olon2
+
+[Olon4]
+say=Ich kann Euch vielleicht nicht weiterhelfen, aber ihr seid doch in der Lage, mir einen Gefallen zu tun. 
+rspDflt=none
+rsptxt1=Wie kann ich Euch helfen?
+nxtLn1=Olon5
+
+[Olon5]
+say=Bei der Flucht aus dem Dorf wurde ein Artefakt vergessen.  Bis vor kurzem war das keine Sache von allgemeinem Interesse.  Die Kirche steht noch, und ich bin sicher, es ist noch sicher in seinem Versteck im Keller.  In letzter Zeit haben jedoch einige der frommen und abergläubischen Bauersleute angefangen zu glauben, der Verlust dieses "Kelchs des Lebens" sei ein Omen unserer  bevorstehenden Niederlage.
+AddQuest=ch1-25;
+rspDflt=none
+rsptxt1=Ich werde alles in meinr Macht stehende tun, um ihn zurückzubringen, Bruder.
+nxtLn1=Olon7
+rspCnd2=all(obj(Chalice));
+rsptxt2=Ist dies vielleicht der Kelch, den Ihr meint?
+nxtln2=Chalice1
+
+
+[Olon7]
+say=Es ist unmöglich zu sagen, welche Wesen inzwischen in der alten Kirche weilen.  Es wird gefährlich sein, aber wenn Ihr den Versuch wagen wollt, werden wir für Euren Erfolg und Eure Sicherheit beten.
+Adventure=ch1-17;
+script=journalentry(massus);addtitle(01ToldChalice);showmessage(Ihr Tagebuch wurde aktualisiert.,200);
+rspdflt=Ich werde mein Bestes tun, Bruder.
+
+
+
+;After entry into village but before recovery of Chalice
+
+[Village]
+say=Willkommen zurück, mein Sohn.  Wie ist es Euch ergangen?
+rspDflt=none
+rsptxt1=Tja, Bruder, leider habe ich den Kelch noch nicht finden können.
+nxtLn1=village1
+
+[Village1]
+say=Wir weisen Euch keine Schuld zu.  Wir sind schon seit einiger Zeit ohne den Kelch ausgekommen, und wir werden weiterhin ohne ihn auskommen.
+rspDflt=none
+rsptxt1=Ich habe gehoftt, dass Ihr Verständnis habt.  Im Dorf ist es anstrengender, als ich mir vorgestellt habe.
+nxtLn1=village2
+rsptxt2=Ich werde aber weiter nach ihm suchen, Friar.  Ich gebe nicht auf.
+nxtLn2=village3
+
+[Village2]
+say=In der Tat.  Viele gute Soldaten haben dort ihr Leben gelassen.
+rspdflt=Ade, Bruder.
+
+
+[Village3]
+say=Und wir werden weiterhin für Euch beten.
+rspdflt=Danke.
+
+
+;First approach after recovery of Chalice
+[Chalice]
+say=Ihr seid heil zurückgekehrt!  Die guten Geister lächeln auf uns herab!
+rspDflt=none
+rsptxt1=Da tun sie, Bruder.  Ich habe den Kelch des Lebens gefunden!
+nxtLn1=Chalice1
+
+[Chalice1]
+say=Gepriesen seist du, mein Sohn! Das ist ein großer Sieg für die Allianz!  Der Kelch des Lebens...  Jetzt werden alle Mut fassen!
+RemoveQuest=ch1-25;
+script=player.addtitle(01recovered);takeitem(chalice,player);player.setprop(trainingpoints=10);showmessage(Sie haben Trainingspunkte bekommen.,300);
+rspDflt=none
+rsptxt1=Ich lebe, um zu dienen, Bruder.  Ich freue mich, dass ich helfen konnte.
+nxtLn1=Chalice2
+
+[Chalice2]
+say=Denkt daran, mein Sohn-- hier seid Ihr immer willkommen.
+rspdflt=Danke, Friar.
+
+;Remainder of playtime after recovery of Chalice
+
+[Recovered]
+say=Kann ich irgendetwas für Euch tun?
+rspDflt=none
+rsptxt1=Ich wollte mich nur umsehen, mich nach dem Neuesten erkundigen.
+NxtLn1=Recovered1
+
+[Recovered1]
+say=Nun, wie Ihr Euch vorstellen könnt, hat der Kelch die erwartete Wirkung gehabt.  Alle Soldaten die hierher kommen, verlassen uns guten Mutes. Wir heilen immer mehr Verwundete, die früher gestorben wären.  Euer Fund hat wirklich sehr viel Positives bewirkt!
+rspdflt=Das ist eine ausgezeichnet Nachricht!
+

@@ -1,0 +1,129 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=6
+Else=noletter
+Default=Thank you.
+say1=all(ttl(06chapter6,06posttrial));
+goto1=qmpt
+say2=all(ttl(06chapter6));
+goto2=qmsix
+say3=one(ttl(03chapter3,04chapter4,05chapter5));
+goto3=qmthreetofive
+Say4=All(ttl(squire):obj(comletter));
+goto4=squire
+Say5=All(ttl(hunter):obj(comletter));
+goto5=hunter
+Say6=All(ttl(apprentice):obj(comletter));
+goto6=apprentice
+
+[squire]
+Say=What can I do for you, young squire?
+RemoveQuest=ch1-00;
+RspDflt=none
+script=Siege20000600060052238420.takeitem(comletter,player);
+RspTxt1=Greetings.  I am new here, and just received my commission.  I was told that you would be able to provide me with equipment?
+nxtln1=squire1
+
+[squire1]
+Say=I'm short on chain mail at the moment, so a sturdy suit of leather armor will have to do.  For a weapon I can let you have a common long sword; we ran out of Officer's Swords over a month ago.
+RspDflt=none
+Script=Siege20000600060052238420.giveitem(StuddedLeatherTunic,player);Siege20000600060052238420.giveitem(swordbasic,player);showmessage(You have received some equipment.,200);
+RspTxt1=I thank you, but I must say that this equipment does seem to be of poor quality.  Is there not anything better?
+nxtln1=noletter
+
+[hunter]
+Say=Is there anything I can help you with, sir?
+RspDflt=none
+RemoveQuest=ch1-00;
+script=Siege20000600060052238420.takeitem(comletter,player);
+RspTxt1=Greetings.  I am new here, and just received my commission.  I was told that you would be able to provide me with equipment?
+nxtln1=hunter1
+
+[hunter1]
+Say=Well, I have a fine leather jerkin to protect you from the early morning chill along with the odd arrow, and for hunting beyond Avalon's walls, I have just the thing.
+RspDflt=none
+Script=Siege20000600060052238420.giveitem(LeatherArmor,player);Siege20000600060052238420.giveitem(QuiverBelt,player);Siege20000600060052238420.giveitem(HuntingBow,player);showmessage(You have received some equipment.,200);
+RspTxt1=I thank you, but I must say that this equipment does seem to be of poor quality.  Is there not anything better?
+nxtln1=noletter
+
+[apprentice]
+Say=What do you want?
+RspDflt=none
+RemoveQuest=ch1-00;
+script=Siege20000600060052238420.takeitem(comletter,player);
+RspTxt1=Greetings.  I am new here, and just received my commission.  I was told that you would be able to provide me with equipment?
+nxtln1=apprentice1
+
+[apprentice1]
+Say=An old pig sticker is all I can give you.  If you want something better, you'll have to find it elsewhere.
+RspDflt=none
+Script=Siege20000600060052238420.giveitem(dagger,player);showmessage(You have received an item.,200);
+RspTxt1=A dagger?  Is that all that you have for me?
+nxtLn1=noletter
+
+[noletter]
+Say=Sorry, lad.  General Roth has ordered me to hold most of the arms distributions so we can prepare for an assault.  You don't think I like seeing anyone -- even new recruits -- go so poorly armed, do you?  It's this damned shortage of good steel.
+RspDflt=I understand.  Good day.
+RspTxt1=So where can I find better equipment, then?
+nxtLn1=Steel
+rspCnd2=all(ttl(01StolenRations));
+RspTxt2=I heard something about rations being stolen.  Do you know anything about that?
+nxtLn2=Stolen
+
+[Stolen]
+Say=Not really.  Anora -- she's the head cook -- just mentioned that food in the kitchen's basement was going missing.
+Adventure=ch1-07;
+RspDflt=I see.  Thanks for your time.
+RspTxt1=Do you have any idea where can I find better equipment, then?
+nxtLn1=Steel
+
+[Steel]
+Say=These days, I don't really know, but maybe Lucan can help you out.  He's out in the Armory by the South Gate, past the Outer Bailey.  I wouldn't count on it, though, lad.  I also hear there are a few merchants in the Outer Bailey, but if the military doesn't have proper equipment, I don't see how commoners could.
+Adventure=ch1-06;
+RspDflt=I guess I shall try asking Lucan, then.  I thank you for your time.
+
+[qmthreetofive]
+Say=Good day, lad.  Judging by your equipment, I'd say you don't need any of my meager wares.
+RspDflt=Err, I suppose not, quartermaster.  Please pardon my intrusion.
+
+[qmsix]
+Say=There's a stillness in the air, lad.  I can't say as I like it.  Everyone feels it now, and I believe we're sitting in the eye of the storm.  To be sure, I have been busy maintaining even the meager stores I have.  The blade that is not sharp cannot cleave a Sha'ahoul head from its shoulders.
+RspDflt=Well said, quartermaster.  If you'll pardon me, I must be about my duties...
+
+[qmpt]
+Say=Go get them, %playername%!  Lop off their heads and dance on the fallen!
+RspDflt=I wouldn't go that far, quartermaster, although your enthusiasm is appreciated.  Pardon me.
+

@@ -1,0 +1,60 @@
+[Notes]
+titlesChecked=01recovered,01village
+
+[root]
+Count=3
+Else=
+Default=Danke, Jean.
+Say1=All(ttl(!01village,!01Recovered));
+goto1=Jean1
+Say2=All(ttl(01village,!01Recovered));
+goto2=Jean4
+Say3=All(ttl(01village,01Recovered));
+goto3=Jean6
+
+[Jean1]
+say=Seid gegrüßt.  Ihr habt den gleichen Körperbau wie Corvus, also seid Ihr bestimmt der Bruder, von dem ich gehört habe. Als ich von seinem Verschwinden erfuhr, wollte ich persönlich nach ihm suchen gehen, aber ich habe hier zu viel Verantwortung.
+rspDflt=None
+rsptxt1=Danke.  Es freut mich, dass er solch treue Freunde hat.
+nxtln1=jean2
+rsptxt2=Woher kommt Ihr, Herr?
+nxtln2=jean3
+
+[Jean2]
+say=Ich hoffe weiterhin, dass er heil zurückkehrt.
+rspdflt=Ich auch.  Gehabt Euch wohl.
+rspBack=Jean1
+
+[Jean3]
+say=Ich stamme aus Cathea.  Meinem Vater gehörte dort eine große Viehzucht, aber ich wollte nie Viehzüchter sein.  Ich bin der geborene Kämpfer und ich bin hierher gekommen als ich hörte, dass es ein Krieg geben würde.  Ich habe auch einige Männer und Pferde mitgebracht; vermutlich hat man mich deshalb zum Offizier ernannt.  Ich bin der Einzige hier, auf den diese rauhbeinigen Catheaner hören!
+rspdflt=Dann bin ich froh, dass Ihr hier seid.
+rspBack=Jean1
+
+
+;After entry into village but before recovery of Chalice 
+
+[Jean4]
+say=Da seid Ihr ja!  Es sieht so aus, als ob Euch das Dorf zu einem echten Kämpfer macht!
+rspDflt=None
+rsptxt1=Stimmt!  Es gibt so vieles dort, mit dem man sich messen kann.
+nxtln1=Jean5
+
+[jean5]
+say=Ach, wie gerne würde ich mit Euch gehen.  Leider ruft mich die Pflicht.
+rspdflt=Ich verstehe.  Gehabt Euch wohl.
+;After recovery of Chalice
+
+[jean6]
+say=So, das Dorf hat Euch schließlich doch zum Helden gemacht!  Es ist schön, Euch zu sehen, Freund!
+rspdflt=Euch auch, Jean.
+rsptxt1=Was gibt's hier für Neuigkeiten?
+nxtln1=jean7
+
+[jean7]
+say=Die Moral ist besser geworden, seit Ihr diesen Kelch zurückgebracht habt!  Vielleicht werden jetzt einige von diesen Schafen, die sich Soldat nennen, tatsächlich anfangen zu kämpfen!
+rspdflt=Das will ich hoffen!
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed
+
+

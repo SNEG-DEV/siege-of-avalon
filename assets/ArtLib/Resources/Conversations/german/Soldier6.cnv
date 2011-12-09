@@ -1,0 +1,47 @@
+;Hello there, how can I help you?
+;May I be of assistance to you Herr?
+;What can I do for you?
+;How can I help you, Herr?
+;What is it you want?
+;Hello Sir, How may I help you?
+
+[root]
+Count=2
+Else=
+Default=Ade.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Soldier]
+say=Ja?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Soldier1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Soldier2
+
+[Soldier1]
+say=Ich komme aus Fornax und hoffe, dass ich bald dorthin zurückkehren kann. Ich glaube nicht, dass sich die Lage hier bessern wird. Diese Festung braucht mehr waffenfähige Zauberer ... Und mehr Frauen, wenn Ihr wisst, was ich meine.
+rspBack=soldier
+
+[Soldier2]
+say=Fornaxier tratschen nicht, Herr.
+rspBack=soldier
+
+;After Recovery of Chalice
+[Chalice]
+say=Ja?
+rspTxt1=Ich mache eine Umfrage. Wo kommt Ihr her?
+NxtLn1=Chalice1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Chalice2
+
+[Chalice1]
+say=Ich komme aus Fornax, Herr. Zuerst habe ich nicht geglaubt, dass wir es schaffen könnten, aber jetzt wächst unsere Zuversicht jeden Tag, und wir haben Euch dafür zu danken.
+rspBack=chalice
+
+[Chalice2]
+say=Da Fornaxier nicht tratschen, ist dies kein Tratsch. Verstanden? Gut. Ich habe gehört, dass ein Schiff mit neuen Vorräten im Lauf der nächsten Woche ankommen soll. Endlich werden wir wieder anständig essen können!
+rspBack=chalice

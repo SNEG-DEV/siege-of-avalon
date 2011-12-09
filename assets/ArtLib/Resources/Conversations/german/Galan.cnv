@@ -1,0 +1,45 @@
+[root]
+Count=2
+Else=
+Default=Danke, Galan.
+Say1=All(ttl(!01recovered));
+goto1=Galan
+Say2=All(ttl(01recovered));
+goto2=chalice
+
+;Before recovery of Chalice
+[Galan]
+say=He da!  Was gibt's Neues in Avalon?
+rspDflt=None
+rspTxt1=Nichts.  Üben und Warten.
+NxtLn1=Galan1
+
+[Galan1]
+say=Ja, bloß das mit dem Warten findet hauptsächlich hier statt.  Langsam geht's mir auf die Nerven.  Mir gefällt nicht, wie einige von den Kameraden am Südtor aussehen.  Beinahe ist mir, als führten sie nichts Gutes im Schilde.  Aber wahrscheinlich macht mich bloß diese ganze Warterei so mißtraurisch.
+rspDflt=None
+rspTxt1=Untätigkeit kann diese Wirkung haben.
+NxtLn1=Galan2
+
+[Galan2]
+say=Ja, stimmt.  Einen schönen Tag noch.
+rspDflt=Euch auch.
+
+;After recovery of Chalice
+[Chalice]
+say=Hallo nochmal.  Wie geht's so?
+rspDflt=None
+rspTxt1=So gut wie man erwarten kann, nehme ich an.  Und Euch?
+NxtLn1=Chalice1
+
+[Chalice1]
+say=Hier am Südtor ist es stinklangweilig, wie immer.  Alle reden allerdings über Euren Fund.  Kaum zu fassen, dass der Kelch des Lebens wieder da ist!
+rspDflt=None
+rspTxt1=Kaum zu fassen, dass ich ihn gefunden habe!
+NxtLn1=Chalice2
+
+[Chalice2]
+say=Hervorragende Arbeit, Herr.
+rspDflt=Danke.  Ade.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

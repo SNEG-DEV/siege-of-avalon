@@ -1,0 +1,60 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=03chapter3,04chapter4,05chapter5
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=madoc
+Default=Thank you, Sir Madoc.
+Say1=one(ttl(03chapter3,04chapter4,05chapter5));
+goto1=three
+
+[Madoc]
+Say=Do you belong up here?
+RspDflt=None
+RspTxt1=No, sir.  I'm on business of my own.
+NxtLn1=Madoc1
+
+[Madoc1]
+Say=Well, I'm sure your business isn't up here.  Move on.
+RspDflt=Very well, sir.  Good day.
+
+[three]
+Say=[frowning]  Hello.  Can you make this quick?
+RspDflt=Certainly.  Farewell.
+RspTxt1=So what do you do here?
+nxtln1=three2
+
+[three2]
+Say=Don't waste my time with such nonsense!  Begone!
+RspDflt=Gladly.
+

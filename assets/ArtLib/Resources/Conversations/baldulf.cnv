@@ -1,0 +1,88 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=03chapter3
+Removed=
+
+[Quest]
+Added=ch1-86
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/12/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Thank you, Baldulf.
+say1=all(ttl(03chapter3));
+goto1=three
+Say2=all(ttl(!03chapter3));
+goto2=Balduf1
+
+[Balduf1]
+Say=Hello there, boy!  My name is Baldulf, the ferocious and terrible.
+RspDflt=None
+RspTxt1=Hello.  Did you know my brother?
+NxtLn1=Balduf2
+
+[Balduf2]
+Say=Know him?  He and I were bunkmates when we were new recruits!  That's why I insisted I go along on the search for him.
+RspDflt=None
+RspTxt1=Did you have any luck?
+NxtLn1=Balduf3
+
+[Balduf3]
+Say=Sorry to say, but we had none.  We saw neither hide nor hair of your brother.  That's good news, though.  The Ahoul don't take prisoners, so if he'd run into them, the only thing we'd have found is his body.  That's how we know the Ahoul didn't find him.
+RspDflt=None
+RspTxt1=Do you think he's still alive, then?
+NxtLn1=Balduf4
+
+[Balduf4]
+Say=Maybe he is, maybe he isn't.  There are other things out there besides Ahoul, you know.  We saw signs of a great beast around the Library.  We didn't venture inside, though.  Could've been anything.  I wouldn't go in there unless I had a whole fist of warriors with me.
+Adventure=Ch1-86;
+RspDflt=None
+RspTxt1=Thank you for trying, Baldulf.
+NxtLn1=Balduf5
+
+[Balduf5]
+Say=You're welcome.  May your brother come back to us healthy and ready to slay a thousand Ahoul!
+RspDflt=May he indeed.  Good day to you.
+
+[three]
+Say=Anything I can do for you, sir?
+RspDflt=No, Baldulf, I'm just passing through.  Good day.
+RspTxt1=How are you feeling, Baldulf?
+nxtln1=three2
+
+[three2]
+Say=I'm feeling just fine, sir...
+RspDflt=none
+RspTxt1=Not a little less "ferocious and terrible" than normal?
+nxtln1=three3
+
+[three3]
+Say=I guess just a little, sir.
+RspDflt=Nurse it, Baldulf.  We'll need that ferocity if we're to defeat the Ahoul!  Farewell for now, warrior.
+

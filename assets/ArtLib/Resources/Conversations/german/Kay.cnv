@@ -1,0 +1,62 @@
+[root]
+Count=2
+Else=
+Default=Danke, Kay.
+Say1=All(ttl(!01recovered));
+goto1=Kay
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Kay]
+say=Ihr seht nicht verwundet aus.  Was können wir für Euch tun?
+rspDflt=None
+rspTxt1=Ich bin neu hier und habe mich nur umgesehen.
+NxtLn1=Kay1
+rspTxt2=Woher kommt Ihr?
+NxtLn2=Kay2
+rspTxt3=Habt Ihr irgendwelche Gerüchte gehört?
+NxtLn3=Kay3
+
+[Kay1]
+say=Dann willkommen in der Kapelle.  Unsere Aufgabe hier ist es, Seelen und Leben zu retten.  Falls Ihr jemals unsere Dienste nötig habt, helfen wir Euch gerne.
+rspDflt=Das ist gut zu wissen.  Danke.
+rspBack=Kay
+
+[Kay2]
+say=Ich bin Nisosaner.  Ich wurde bei den Kämpfen vor der Zitadelle verwundet, kurz bevor die Belagerung begann.  Es hieß, man würde mich mit dem nächsten Schiff zurückschicken, da ich hier zu nichts mehr nütze sei.  Stattdessen habe ich mich hier mit Bruder Massus zusammengetan, und hier drinnen kann ich doch noch etwas bewirken.  Bei dieser Belagerung denke ich allerdings manchmal, dass es keine so gute Idee war, hier zu bleiben.  Vielleicht hätte ich doch nach Hause gehen sollen!
+rspDflt=Ich bin froh, dass Ihr hier geblieben seid.  Wir können alles an Hilfe gebrauchen, was wir bekommen.
+rspBack=Kay
+
+[Kay3]
+say=Einer der Verwundeten hat im Schlaf etwas von Deserteuren gemurmelt. Ihr wisst nicht zufällig etwas davon, oder?
+rspDflt=None
+rspTxt1=Das höre ich zum ersten Mal.
+NxtLn1=Kay4
+
+[Kay4]
+say=Tja, davon sollte ich wohl Sir Roth in Kenntnis setzen.
+rspDflt=Ade.
+rspBack=Kay
+
+;After recovery of Chalice
+[Chalice]
+say=Seid gegrüßt!  Ihr seht ja noch hartgesottener aus, als das letzte Mal, als ich Euch gesehen habe.  Ich hoffe, es geht Euch gut?
+rspDflt=None
+rspTxt1=Ich kann nicht klagen, Kay.
+NxtLn1=Chalice1
+rspTxt2=Was gibt es Neues?
+NxtLn2=Chalice2
+
+[Chalice1]
+say=Ich verstehe, Herr.  Gehabt Euch wohl.
+rspDflt=Mögen Euch die guten Geister beschützen.
+rspBack=Chalice
+
+[Chalice2]
+say=Seit Eurem letzten Besuch hier, hat sich vieles zum Besseren verändert.  Wie ich höre, verlieren die Ahoul den Mut.  Vielleicht dauert es nicht mehr so lange, bis diese furchtbare Belagerung aufgehoben wird.
+rspDflt=Wir wollen es hoffen.
+rspBack=Chalice
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

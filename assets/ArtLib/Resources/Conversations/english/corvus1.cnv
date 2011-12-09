@@ -1,0 +1,81 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=ch1-00
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/12/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=
+Say1=
+goto1=Corvus
+
+[Corvus]
+Say=Little brother, I wish I could say that I am glad you are here, but a besieged keep is something that no one should have to endure.  However, it is good to see you again.  How are Mother and Father?
+RspDflt=none
+RspTxt1=That is why I have come to find you, brother.  Father passed away six weeks ago.
+NxtLn1=Corvus1
+RspTxt2=They are doing well.  Mother sends her love.
+Nxtln2=Corvus1b
+
+[Corvus1]
+Say=Oh, spirits...  I feared I would never see him again, little brother, but I thought it would be me waiting on the other side for him.  We must drink to Father's memory when I return.
+Script=journalentry(corvus2);showmessage(Your journal has been updated.,200);
+RspDflt=none
+RspTxt1=Your return?  Where are you going?
+Nxtln1=Corvus3
+
+[Corvus1b]
+Say=You will have to tell me about everything that's happened back home -- especially the real reason you've made such a foolish journey.  But it will have to wait for my return in the morning.
+Script=journalentry(corvus2b);showmessage(Your journal has been updated.,200);
+RspDflt=none
+RspTxt1=Your return?  Where are you going?
+Nxtln1=Corvus3
+
+[Corvus3]
+Say=I have to ride out immediately on a raid with General Ovoron.  We were waiting to see if the supply fleet could make it through the blockade before we took the risk, but since the Lady Aele was the only one to make it through, it seems that we must indeed resort to more drastic measures.
+RspDflt=none
+RspTxt1=Do you have room for another sword?
+nxtln1=corvus4
+
+[Corvus4]
+Say=Slow down, little brother.  Horses are in short supply and we need to move fast tonight.  I've pulled some strings and obtained a commission for you, but that's all our family name will get you here.  You will have to prove yourself to General Roth and Captain Calvaric on your own before it will be anything more than a piece of paper.
+RspDflt=none
+RspTxt1=So I am forced to wait here uselessly until your return, then?
+nxtln1=corvus6
+
+[Corvus6]
+Say=Not likely.  If I know General Roth, he has already asked the commander of lists to give you an evaluation.  Just remember that the monks can do wonders for minor injuries; unless your skills have increased drastically since last we met, you will become very familiar with their faces!  And before I forget, show your commission to the Outer Keep Quartermaster for some gear before you report for duty.  He is located off the corridor just north of here.
+Adventure=ch1-00;
+AddQuest=ch1-00;
+RspDflt=I will, brother.  Ride well, and we will talk more when you get back.
+

@@ -1,0 +1,116 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01bugs2
+Checked=01Bugs,01Bugs2,01FoundTraitors,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(7/16/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Thank you, Lang.
+say1=all(ttl(06chapter6,01Bugs2));
+goto1=chapter6
+say2=one(ttl(03chapter3,04chapter4,05chapter5));
+goto2=three
+Say3=All(ttl(!01Bugs2));
+goto3=Arno
+Say4=All(ttl(01Bugs2,!01FoundTraitors));
+goto4=NoInfo
+Say5=all(ttl(01foundTraitors));
+goto5=Traitors
+
+[Arno]
+Say=Hello.  What can we do for you?
+RspDflt=None
+RspTxt1=Nothing at all.  How are things here?
+NxtLn1=Arno1
+
+[Arno1]
+Say=More active than ever.  No one's gotten decent sleep in ages.  As if being on constant alert wasn't bad enough, something's been scratching away in the basement all night long!
+RspDflt=None
+rspCnd1=all(ttl(01Bugs));
+RspTxt1=Really?  There was an infestation of giant bugs in the kitchen earlier today.  They had dug though the basement walls and had started eating the food.  That's been taken care of, thank the spirits, but perhaps they're digging below here as well.
+nxtLn1=Bugs
+rspCnd2=all(ttl(!01Bugs));
+RspTxt2=It's probably just rats or somesuch.  Take heart, I'm certain this siege will be lifted soon.
+nxtLn2=Rats
+
+[Bugs]
+Say=That could be, though it's still rather worrisome.  Bugs from below, and Ahoul from without.  Dangerous times here in Avalon.
+script=player.addtitle(01Bugs2);
+RspDflt=They are at that.  Since your duty keeps you here, when I get a chance I'll be certain to look into the situation.  For now, though, farewell.
+
+[Rats]
+Say=Must be giant rats to make the scratching that's been going on!
+script=player.addtitle(01Bugs2);
+RspDflt=Whatever it is, when I get a chance I'll look into the situation.  For now, though, farewell.
+
+[NoInfo]
+Say=Hey there, lad!  Any word on what's going on down below?
+RspDflt=I'm sorry, but I've been unable to gain access to the basement.  I'm still trying, though, so soon you'll know what's going on.  Until then, however, farewell.
+
+[Traitors]
+Say=Lad!  I saw you skip down into the basement.  What news have you?
+RspDflt=none
+RspTxt1=Terrible things were going on in the basement.  Guards down there attacked me, and I was forced to defend myself.  The noises you heard -- they were the sounds of a tunnel being built.
+nxtLn1=Traitors1
+
+[Traitors1]
+Say=A tunnel?  Lad, I don't understand.
+RspDflt=I can't really talk now, but the tunnel was headed out into the village.  There are traitors afoot -- they meant to give the Ahoul access to the keep.  I have no time to talk now, but watch yourself.  Not everyone here is an ally.
+
+[three]
+Say=Good day, sir.
+RspDflt=none
+RspTxt1=What's the word here, Lang?
+nxtln1=three2
+
+[three2]
+Say=I'd choose "despair," sir.  Living just this side of oblivion is hard toil on a man's mind.
+RspDflt=none
+RspTxt1=That it is, soldier, but if we succumb to such despair, the Sha'ahoul won't have to defeat us, because we will have defeated ourselves already.
+nxtln1=three3
+
+[three3]
+Say=Of course.  I don't know what I was thinking.
+RspDflt=We will win if we believe it.  Be careful.
+
+[chapter6]
+Say=I vanquished a group of those crispy critters in the basement earlier. I think the bug problem is getting worse. These were insects which did not fear man.
+RspDflt=The plainsmen and all the plagues they have brought upon us will pay the price of oppression!
+RspTxt1=Where were they? Are there any left?
+nxtln1=chapter6b
+
+[chapter6b]
+Say=I told you that I had killed them all.  I also collapsed the hole several feet in, thus blocking the bugs from returning.  The job is done, sir.
+RspDflt=Well done, soldier. Carry on.
+

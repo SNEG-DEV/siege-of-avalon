@@ -1,0 +1,806 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01lahrenhappy,01ogre),01pell2,01pell3,05lfmc,06renarb01
+Checked=01FoundAhoul,01FoundTraitors,01Lahren,01Lahren2,01LahrenHappy,01Pell2,01Pell3,01PellHappy,04chapter4,04spelltale,04staffdone,04staffquest,05astralques,05chapter5,05LFM,05LFMandPellC,05LFMC,05libriu,05LLC,05LPworkC,05LPworry,05LTT,05magisknowp,05magisknowpc,05metM,05talkedtoL,06chapter6,06magisknowpc,06renarb01,Charge,Direct,Flame,Frost,Heal,Hold
+Removed=
+
+[Quest]
+Added=ch1-14,ch1-15,ch1-16,ch1-17,ch1-18,ch1-19,ch1-43,ch1-44,ch1-45,ch1-46,ch1-47,ch1-48,ch1-49,ch1-50,ch1-58,ch1-89,ch4-513,ch5-010,ch5-011,ch5-012,ch6-532
+Removed=ch1-14,ch1-16,ch1-17,ch1-18
+
+[Items]
+Given=
+Taken=
+Checked=AmethystRing,Diamond Ring,Diamond Ring,!AmethystRing,!Emerald Ring,!Gold Ring,!RubyRing,!SapphireRing,Diamond Ring,!AmethystRing,!Emerald Ring,!Gold Ring,!RubyRing,!SapphireRing,!DriedRose,Diamond Ring,AmethystRing,Emerald Ring,Gold Ring,RubyRing,SapphireRing,DriedRose,Emerald Ring,Gold Ring,JournalA,JournalA,!JournalB,!JournalC,!JournalD,JournalA,JournalB,JournalC,JournalD,JournalB,JournalC,JournalD,RubyRing,SapphireRing
+Added=
+
+[SyntaxCheck]
+tucker(2/7/01)=Passed
+tucker(2/15/01)=Passed
+tucker(4/10/01)=Passed
+tucker(7/16/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[Notes]
+
+[root]
+Count=11
+Else=
+Default=none
+say1=all(ttl(06chapter6));
+goto1=rensix
+say2=all(ttl(05talkedtoL));
+goto2=return
+Say3=All(ttl(05chapter5));
+goto3=Ch5intro
+say4=all(ttl(04chapter4));
+goto4=lahrenfour
+Say5=all(ttl(01LahrenHappy,01PellHappy));
+Goto5=EndQuest
+Say6=All(ttl(!01Lahren));
+goto6=Intro
+Say7=All(ttl(01Lahren,!01Pell2));
+goto7=Tale
+Say8=All(ttl(01Pell2,!01Lahren2));
+goto8=NoPell
+Say9=All(ttl(01Lahren2,!01Pell3));
+goto9=Gift
+Say10=all(ttl(01Pell3,!01LahrenHappy));
+Goto10=CheckGift
+Say11=all(ttl(01LahrenHappy,!01PellHappy));
+Goto11=PellNotHappy
+
+[Intro]
+Say=No deseo hablar ni contigo ni con nadie ahora mismo.  Ni vendo ni compro nada.  Sólo vete.
+RspDflt=Naturalmente.  Lamento haberte molestado.
+
+[Tale]
+Say=Por favor, sólo quiero que me dejen en paz.
+RspDflt=none
+RspTxt1=Perdóname por decir esto, pero no pareces un hombre que desee estar solo.  De hecho, pareces estar pensando desesperadamente en cómo estar con alguien.
+nxtLn1=Subtle1
+RspTxt2=Obviamente, estás pensando en alguien.  ¿Quién es?
+nxtLn2=Direct1
+
+[Subtle1]
+Say=Ay, lo estoy.  ¿Y tú qué sabes de eso, chico?
+Adventure=ch1-44;
+RspDflt=none
+RspTxt1=Admito ser joven, pero desde luego no diré que me falta experiencia.
+nxtLn1=Subtle2
+
+[Subtle2]
+Say=Tienes razón, supongo.  No obstante...
+RspDflt=none
+RspTxt1=¿No obstante?  Pareces estar en la más pura miseria.  ¿Cómo puede el compartir tus sentimientos con otra persona empeorar tu sino?
+nxtLn1=Subtle3
+
+[Subtle3]
+Say=Empeorar mi sino...  Conocía a alguien que usaba una expresión parecida.  "No hay peor sino," decía ella.  Nunca lo comprendí hasta muy recientemente.
+RspDflt=none
+RspTxt1=Estás pensando en "No hay peor sino que el amar a alguien", ¿no es así?
+nxtLn1=Subtle4
+
+[Subtle4]
+Say=Sí.  No hay peor sino.
+RspDflt=none
+RspTxt1=¿Acaso se ha reunido ella con los espíritus?
+nxtLn1=Subtle5
+
+[Subtle5]
+Say=No, no es así, aunque eso lo haría todo mucho más fácil--Podría intentar olvidarla y seguir adelante.  Lamento decir que ella está aquí en Avalon, probablemente a menos de diez minutos andando.
+RspDflt=none
+RspTxt1=Me temo que no lo comprendo.  ¿Por qué no vas y simplemente hablas con ella?
+nxtLn1=Subtle6
+RspTxt2=Entonces creo que eres un rematado idiota por quedarte aquí.  Ve y habla con ella, por el amor de los espíritus!
+nxtLn2=Direct7
+
+[Subtle6]
+Say=Ya la he rechazado, ¿no te das cuenta?  No puedo simplemente ir y hablar con ella.  Probablemente me odie, y crea que yo la odio.
+RspDflt=none
+RspTxt1=Por el amor del Espíritu, ¿por qué la rechazaste?
+nxtLn1=Subtle7
+
+[Subtle7]
+Say=La conocía desde hace meses, y éramos grandes amigos.  Excepto que a mí... me disgusta la magia.  Intensamente.  Y entonces descubrí que ella era maga.  No lo supe superar.
+RspDflt=none
+RspTxt1=¿Qué hay de desagradable en la magia?  Simplemente es una herramienta que todos podemos usar, como un martillo, o--
+nxtLn1=Subtle8
+
+[Subtle8]
+Say=¿Has estado hablando con Olon?  Él intenta meterme eso en la cabeza.  Y yo sé que es cierto.  Es sólo que una vez...  Realmente no quiero hablar de ello.
+RspDflt=none
+rspCnd1=one(ttl(Heal,Flame,Frost,Charge,Hold));
+RspTxt1=Sé un poco de magia.  Oh, no soy un hechicero, pero es algo que resulta útil en ocasiones.  Podría mostrarte--
+nxtLn1=Subtle9
+RspTxt2=Lo siento, no quería entrometerme.
+nxtLn2=Subtle10
+
+[Subtle9]
+Say=No!  No, yo ya sé magia.  Sé demasiada magia.
+RspDflt=none
+RspTxt1=Lo siento.  No me hice cargo.
+nxtLn1=Subtle10
+
+[Subtle10]
+Say=No hay nada que perdonar.  ¿Cómo podrías saberlo?  De mi época de mago, sé que la magia no es más ni menos que una herramienta--al menos en mi cabeza.  Pero esa noche, fue mi corazón quien gobernó mis actos.  Incluso ahora me duele realmente pensar en la magia, pero mi cabeza está empezando a vencer a mi corazón, al menos en éste tema.  En realidad, eso se debe en gran parte a ella.  Fue sólo tras descubrir que el estar lejos de ella me dolía tanto que algo se me ocurrió.  Quizá--seguramente sin saberlo!--pero quizá había empezado a considerarla como algo más que una amiga desde hacía tiempo.  Quizá el amor por ella estaba empezando a llenar lentamente mi corazón y a expulsar cualquier otra cosa fuera de él.
+Adventure=ch1-45;
+RspDflt=none
+RspTxt1=Ve y cuéntaselo.
+nxtLn1=Subtle11
+
+[Subtle11]
+Say=No puedo, maldita sea!  No puedo!
+RspDflt=none
+rspCnd1=all(ttl(!Direct));
+RspTxt1=Y así tu miedo te mantiene aquí, miserable y solo.  ¿Es tan difícil pedir perdón?
+nxtLn1=Subtle12
+rspCnd2=all(ttl(Direct));
+RspTxt2=Y así tu miedo te mantiene aquí, miserable y solo.  ¿Es tan difícil pedir perdón?
+nxtLn2=Subtle12a
+
+[Subtle12]
+Say=Sí...
+RspDflt=none
+RspTxt1=¿Cual es su nombre?
+nxtLn1=Subtle13
+
+[Subtle12a]
+Say=Sí...
+RspDflt=none
+RspTxt1=Entonces iré a verla.
+nxtLn1=Subtle13a
+
+[Subtle13]
+Say=¿Qué?
+RspDflt=none
+RspTxt1=He dicho que "¿cual es su nombre?".
+nxtLn1=Subtle14
+
+[Subtle13a]
+Say=¿Qué?
+RspDflt=none
+RspTxt1=Considéralo una buena obra.  Considéralo un favor.  Considéralo como un pago por actos de mala fe que he cometido anteriormente.  Considéralo como quieras, pero quiero ir a hablar con esta mujer tuya, y a descubrir qué piensa del asunto.
+nxtLn1=Subtle15
+
+[Subtle14]
+Say=¿Por qué quieres saber eso?
+RspDflt=none
+RspTxt1=Considéralo una buena obra.  Considéralo un favor.  Considéralo como un pago por actos de mala fe que he cometido anteriormente.  Considéralo como quieras, pero quiero ir a hablar con esta mujer tuya, y a descubrir qué piensa del asunto.
+nxtLn1=Subtle15
+
+[Subtle15]
+Say=Estás loco?  No puedes ir y preguntarle--
+RspDflt=none
+RspTxt1=¿Crees que soy un bruto?  Crees que no tengo sentido de la sutileza?  Puedo iniciar con ella una conversación inocente, te lo aseguro.  Y puedo sacar el tema del amor con gran delicadeza.  Es un tema del que la mayoría de las mujeres habla, de todas formas, y todo lo que me costaría es un poco de mi historia personal, a cambio de un poco de la suya.  Y entonces tendrías tu respuesta.
+nxtLn1=Subtle16
+
+[Subtle16]
+Say=Mi respuesta...  Ay, mi respuesta.  Sería mejor tener finalmente una respuesta, sea la que sea.  Pellandrian es su nombre completo, aunque ella es un poco reluctante a admitirlo.  Demasiado pretencioso, dice ella, pero si la buscas, quizá necesites usarlo.  Pell es como yo la llamo.  Querida Pell...
+RemoveQuest=ch1-14;
+AddQuest=ch1-15;
+script=player.addtitle(01Pell2);
+RspDflt=Pell.  Por mi honor, la buscaré para ti y llegaremos al corazón de este asunto.  Hasta entonces, amigo mío.  Sé paciente un poco más.
+
+[Direct1]
+Say=¿Quién es--?  Señor, no me gusta su tono!
+Adventure=ch1-43;
+script=addtitle(Direct);
+RspDflt=none
+RspTxt1=Me disculparía por él, señor, pero no es mi naturaleza quedarme mirando mientras los demás sufren.  Y las líneas marcadas en vuestra frente, francamente, sólo pueden tener una causa--una mujer.
+nxtLn1=Direct2
+
+[Direct2]
+Say=No tengo nada que deciros, señor!  ¡Dejadme!
+RspDflt=none
+RspTxt1=No lo haré, señor.  Negar los deseos de vuestro corazón es una actitud muy peligrosa.  ¡Decidme!  ¿Quién es vuestra amada?
+nxtLn1=Direct4
+
+[Direct4]
+Say=Amada!  Yo amo--  Quiero decir...  Yo no--
+RspDflt=none
+RspTxt1=Lo hacéis, señor.  Decidme.  Por favor.
+nxtLn1=Direct5
+
+[Direct5]
+Say=La amo.  Claro que la amo.  Oh, Pell...
+RspDflt=none
+RspTxt1=¿Pell?  ¿Es ese su nombre?
+nxtLn1=Direct6
+
+[Direct6]
+Say=Sí.  Amo a Pell...
+RspDflt=none
+RspTxt1=Entonces ¿por qué no vais y se lo decís?
+nxtLn1=Direct7
+
+[Direct7]
+Say=¿Decírselo?  ¡No!  No, no podría hacer eso.  Imposible.  No puede ser.
+RspDflt=none
+RspTxt1=¿Y por qué es imposible?
+nxtLn1=Direct8
+
+[Direct8]
+Say=Porque ella salvó mi vida y yo la rechacé, maldita sea!  Porque yo odiaba todas las cosas mágicas y ella es maga, maldita sea.  Porque yo era un idiota...
+RspDflt=none
+RspTxt1=Bueno, eso es innegable, la verdad.  La magia sólo es una herramienta--lo mismo podríais odiar a un martillo.
+nxtLn1=Direct9
+RspTxt2=¿Quién dijo que las emociones fuesen racionales?  Pero la magia es sólo una herramienta--
+nxtLn2=Subtle8
+
+[Direct9]
+Say=Lo sé!  Yo era mago antes--  Olvídalo.  Pero ¿realmente crees que es fácil para la cabeza gobernar al corazón?  Y esa noche....  Lo perdí todo esa noche, pero no ha sido hasta muy recientemente que no he comprendido la verdadera naturaleza de esa pérdida.  Y cuando lo hice, cuando descubrí que el amor me había robado el corazón, entonces su naturaleza mágica empezó a ser menos y menos importante.
+Adventure=ch1-45;
+RspDflt=none
+RspTxt1=¿Y sois tan cobarde que no podéis simplemente decirle que os equivocasteis?
+nxtLn1=Direct10
+
+[Direct10]
+Say=Lamento que digas la verdad, sí...
+RspDflt=none
+RspTxt1=Entonces, señor, os prestaré mi coraje.  Buscaré a la tal Pell y, cuando la encuentre, descubriré si todavía estáis en el interior de su corazón.
+nxtLn1=Direct11
+
+[Direct11]
+Say=¿Buscar--?  ¿Habéis perdido la razón?
+RspDflt=none
+RspTxt1=Si os ama, no le será ningún problema el decírmelo.  Y si no es así, no le será problema el decirme por qué.  Entonces, amigo, tendréis una respuesta.
+nxtLn1=Subtle16
+
+[NoPell]
+Say=Bien, ¿qué ha dicho?
+RspDflt=Lamento deciros que hallarla está resultando más difícil de lo que había pensado.  De todas formas, no te preocupes la encontraré pronto y volveré aquí inmediatamente después de hablar con ella.
+
+[Gift]
+Say=¿Os habéis encontrado con ella?  ¿Qué ha dicho?
+RspDflt=none
+RspTxt1=Os recuerda, señor, pero no con amor.  Os recuerda con ira.
+nxtLn1=Gift1
+RspTxt2=Os ama, señor.  De eso no hay duda posible.
+nxtLn2=Love1
+
+[Gift1]
+Say=Ira...  Lo sabía.  Todo el tiempo, lo sabía.  Todo ha terminado, pues.  Oh, Pell...
+RspDflt=none
+RspTxt1=Bueno, por favor, tened presente que eso es sólo lo que ella me ha dicho.  Pese a ello, mientras hablábamos, en realidad no noté ira.  No, noté algo distinto...
+nxtLn1=Gift2
+
+[Gift2]
+Say=¿Distinto?  ¿Qué puede importar algo distinto?
+RspDflt=none
+RspTxt1=Creo que en su interior, está más herida que airada, y que lo que en realidad quiere es que vayáis y pidáis, quizá incluso supliquéis, su perdón.  Creo que eso derribaría las murallas que ha edificado alrededor de su corazón.  En su interior os ama, y si disipáis su ira y dolor, no tendrá otra opción que reconocer sus verdaderos sentimientos.
+nxtLn1=Gift3
+
+[Gift3]
+Say=¿Realmente creéis eso?  Yo creo que no conocéis demasiado bien a Pell.
+RspDflt=none
+RspTxt1=Así pues ¿creéis que la mujer que amáis no estaría dispuesta a oír una disculpa de vuestros labios?
+nxtLn1=Gift4
+
+[Gift4]
+Say=Ya no lo sé.  Todo lo que sé es que no puedo enfrentarme a ella.
+RspDflt=none
+RspTxt1=Bien, pues, ¿quizá si yo le presentase una muestra de vuestra contrición?
+nxtLn1=Gift5
+
+[Gift5]
+Say=¿Una muestra?  No tengo nada.
+RspDflt=none
+RspTxt1=¿Nada?
+nxtLn1=Gift6
+
+[Gift6]
+Say=Los Ahoul destruyeron lo poco que traía conmigo a Avalon, y todas mis demás posesiones no están siquiera en este país.  Además, dudo que Pell fuese tan superficial como para aceptar una bagatela como soborno para perdonarme.
+RspDflt=none
+RemoveQuest=ch1-16;
+AddQuest=ch1-17;
+script=player.addtitle(01Pell3);
+RspTxt1=Me malinterpretáis.  Un regalo es un tributo, una simple expresión de vuestros sentimientos.  No es un soborno, sino una muestra de que os importa algo su benevolencia.
+nxtLn1=Gift7
+
+[Gift7]
+Say=Quizá.  Pero aun así, no tengo nada.
+RspDflt=none
+rspCnd1=all(obj(!Diamond Ring,!AmethystRing,!Emerald Ring,!Gold Ring,!RubyRing,!SapphireRing,!DriedRose));
+RspTxt1=Ni yo.  No obstante, si he llegado hasta aquí, no me detendré ahora.  Buscaré un regalo digno de vos, y volveré cuando lo encuentre.
+nxtLn1=Gift8None
+rspCnd2=all(obj(DriedRose));
+RspTxt2=Sólo tengo esta rosa seca.  Es un regalo tradicional, y difícil de hallar entre los muros de una fortaleza asediada.
+nxtLn2=Gift8Rose
+rspCnd3=One(obj(Diamond Ring,AmethystRing,Emerald Ring,Gold Ring,RubyRing,SapphireRing));
+RspTxt3=Resulta que, o así lo creo, tengo un regalo apropiado para Pell.
+nxtLn3=HasGift
+
+[Gift8None]
+Say=No os preocupéis.  Probablemente sea inútil.  Pese a ello, os agradezco vuestros esfuerzos.
+RspDflt=Ciertamente no es inútil!  Os rendís demasiado fácilmente, amigo.  Os aseguro que volveré con un regalo.  Por ahora, adiós.
+
+[Gift8Rose]
+Say=A Pell le desagrada el color rojo, y además, odia las rosas.  "No soy una maldita rosa!", dirá.  Supongo que el color de su cabello le hizo ganarse el apodo de "Rosa" cuando era joven, aunque en realidad no lo sé.  El azul es su color, el azul combina con sus ojos.  Apostaría a que todavía viste de ese color, de arriba a abajo.  Tengo razón?  No, no importa.  Os agradezco vuestros esfuerzos, pero creo que es inútil.
+Adventure=ch1-46;
+RspDflt=Ciertamente no es inútil!  Os rendís demasiado fácilmente, amigo.  Os aseguro que volveré con un regalo.  Por ahora, adiós.
+
+[Love1]
+Say=¿Qué...?  No puedo creer que haya oído--
+RspDflt=none
+RspTxt1=Os ama, señor.
+nxtLn1=Love2
+
+[Love2]
+Say=No.  No, eso no es posible.  Mentís!  ¿Por qué mentís?  ¿Acaso no la habéis encontrado?  ¿No hablasteis con ella?  No puede amarme.  Sé lo que hice.  Sé....
+RspDflt=none
+RspTxt1=Os equivocáis.  La he encontrado, y ella simplemente dijo--
+nxtLn1=Love3
+
+[Love3]
+Say=Marcháos.  Seguís mintiendo!  No sois mi amigo.  Idos y dejadme en paz!
+RspDflt=none
+RspTxt1=Perdonadme, señor.  Yo... yo creí que esto sería distinto.  Ella... la encontré, y vos tenéis razón acerca de sus sentimientos.  Yo esperaba inspiraros para hablar con ella, pues aunque siente ira por vos, en su corazón--
+nxtLn1=Love4
+
+[Love4]
+Say=Ira.  Yo tenía razón, y aun así, maldito sea por ello.  Oh, Pell....
+RspDflt=none
+RspTxt1=No, señor.  Por todos los espíritus, eso no lo creo.  Como os decía, pese a que ella siente ira contra vos, en su corazón aún no os ha olvidado.  Había esperado inspiraros para que os acercaseis a ella con la intención de pedirle perdón.
+nxtLn1=Love5
+
+[Love5]
+Say=¿Perdón?
+RspDflt=none
+RspTxt1=No soy un monje, pero creo que en su corazón está más herida que airada y que lo que en realidad desea es que vayáis y le pidáis, quizá incluso supliquéis, su perdón.  Creo que eso resquebrajaría la coraza que ha construido alrededor de su corazón.  En su interior os ama, y si disipáis su ira y dolor, no le quedará más remedio que reconocer sus verdaderos sentimientos.
+nxtLn1=Gift3
+
+[CheckGift]
+Say=No esperaba que retornaseis.
+RspDflt=none
+rspCnd1=all(obj(!Diamond Ring,!AmethystRing,!Emerald Ring,!Gold Ring,!RubyRing,!SapphireRing));
+RspTxt1=Sólo venía a deciros que continúo la búsqueda y que probablemente pronto tendré buenas noticias para vos.
+nxtLn1=NoGift
+rspCnd2=One(obj(Diamond Ring,AmethystRing,Emerald Ring,Gold Ring,RubyRing,SapphireRing));
+RspTxt2=Os he traído algo para darle a Pell.
+nxtLn2=HasGift
+
+[NoGift]
+Say=Como digáis.
+RspDflt=Sed paciente, y hasta pronto.
+
+[HasGift]
+Say=¿De veras?  Yo...  yo os lo agradezco.  ¿Qué habéis traído?
+RspDflt=Pensándolo bien, quizá lo que tengo no sea apropiado.  Volveré con algo mejor.  Hasta entonces...
+rspCnd1=all(obj(AmethystRing));
+RspTxt1=¿Quizá querría este anillo de amatista?
+NxtLn1=Amethyst
+rspCnd2=all(obj(Diamond Ring));
+RspTxt2=¿Quizá querría este anillo de diamante?
+NxtLn2=Diamond
+rspCnd3=all(obj(Emerald Ring));
+RspTxt3=¿Quizá querría este anillo de esmeralda?
+NxtLn3=Emerald
+rspCnd4=all(obj(Gold Ring));
+RspTxt4=¿Quizá querría este anillo de oro?
+NxtLn4=Gold
+rspCnd5=all(obj(RubyRing));
+RspTxt5=¿Quizá querría este anillo de rubí?
+NxtLn5=Ruby
+rspCnd6=all(obj(SapphireRing));
+RspTxt6=¿Quizá querría este anillo de zafiro?
+NxtLn6=Sapphire
+
+[Amethyst]
+Say=Sí, quizá eso sea suficiente.  ¿Creéis que realmente le gustará?
+RspDflt=none
+RspTxt1=Sí, estoy seguro de que así será.
+nxtLn1=Amethyst2
+RspTxt2=Quizá no.
+nxtLn2=HasGift
+
+[Amethyst2]
+Say=Gracias.  Dejadme reunir mi coraje, e iré a entregárselo.
+RspDflt=none
+script=takeitem(AmethystRing,Player);
+RspTxt1=Aquí está el anillo.
+nxtLn1=GoodGem
+
+[Diamond]
+Say=Sí, quizá eso sea suficiente.  ¿Creéis que realmente le gustará?
+RspDflt=none
+RspTxt1=Sí, estoy seguro de que así será.
+nxtLn1=Diamond2
+RspTxt2=Quizá no.
+nxtLn2=HasGift
+
+[Diamond2]
+Say=Gracias.  Dejadme reunir mi coraje, e iré a entregárselo.
+RspDflt=none
+script=takeitem(Diamond Ring,Player);
+RspTxt1=Aquí está el anillo.
+nxtLn1=GoodGem
+
+[Emerald]
+Say=Sí, quizá eso sea suficiente.  ¿Creéis que realmente le gustará?
+RspDflt=none
+RspTxt1=Sí, estoy seguro de que así será.
+nxtLn1=Emerald2
+RspTxt2=Quizá no.
+nxtLn2=HasGift
+
+[Emerald2]
+Say=Gracias.  Dejadme reunir mi coraje, e iré a entregárselo.
+RspDflt=none
+script=takeitem(Emerald Ring,Player);
+RspTxt1=Aquí está el anillo.
+nxtLn1=GoodGem
+
+[Gold]
+Say=Sí, quizá eso sea suficiente.  ¿Creéis que realmente le gustará?
+RspDflt=none
+RspTxt1=Sí, estoy seguro de que así será.
+nxtLn1=Gold2
+RspTxt2=Quizá no.
+nxtLn2=HasGift
+
+[Gold2]
+Say=Gracias.  Dejadme reunir mi coraje, e iré a entregárselo.
+RspDflt=none
+script=takeitem(Gold Ring,Player);
+RspTxt1=Aquí está el anillo.
+nxtLn1=GoodGem
+
+[Ruby]
+Say=¿Un rubí rojo?  Me temo que lo rechazaría nada mas verlo, pese a lo bonito que es, debido solamente a su color.
+RspDflt=none
+RspTxt1=Lo comprendo.  ¿Quizá alguna otra cosa?
+nxtLn1=HasGift
+
+[Sapphire]
+Say=¿Un zafiro?  ¡Sí, naturalmente!  Le encanta el azul--es su color favorito.  ¡Aceptará esto, lo sé!
+RspDflt=none
+RspTxt1=Si lo entregáis con amor, sí, estoy seguro de que lo aceptará.
+nxtLn1=Sapphire2
+
+[Sapphire2]
+Say=Muchas gracias.  Dejadme reunir mi coraje, e iré a entregárselo.
+RemoveQuest=ch1-17;ch1-18;
+AddQuest=ch1-19;
+Script=takeitem(SapphireRing,Player);player.addtitle(01LahrenHappy);player.setprop(trainingpoints=2);showmessage(You have received some training points.,300);
+RspDflt=Aquí está el anillo.  Le diré que iréis a verla.  Que tengáis la mejor de las suertes.
+
+[GoodGem]
+Say=Habéis sido muy amable conmigo hasta ahora.  Quizá tengáis razón en esto.  No puedo hacer otra cosa que intentarlo.
+Script=player.addtitle(01LahrenHappy);player.setprop(trainingpoints=2);showmessage(You have received some training points.,300);
+RemoveQuest=ch1-17;ch1-18;
+AddQuest=ch1-19;
+RspDflt=Tened coraje, amigo.  Si se lo presentáis con amor, estoy seguro de que lo aceptará.  La avisaré de vuestra visita.  Que tengáis la mejor de las suertes.
+
+[PellNotHappy]
+Say=Todavía no he ido a ver a Pell.  Reunir mi coraje es algo asombrosamente difícil, pero os aseguro que iré a hablar con ella.
+RspDflt=Os creo.  Buena suerte.
+
+[EndQuest]
+Say=Ah, bienvenido!  Gracias de nuevo por reunirnos.
+RspDflt=Ha sido un placer.  Buena suerte a los dos.
+rspCnd1=all(ttl(!larb081401));one(obj(JournalA,JournalB,JournalC,JournalD));
+RspTxt1=He hallado estos escritos en el pueblo--¿podríais decirme de qué hablan?
+nxtLn1=Journal
+rspcnd2=all(ttl(!larb081401));
+RspTxt2=He oído a Pell que sois un erudito y un lingüista.  Decidme, ¿sabéis algo de los Ahoul?
+script2=addtitle(!larb081401));
+nxtLn2=Ahoul1
+
+[Journal]
+Say=Dejadme ver qué tenéis ahí...
+Adventure=ch1-58;
+RspDflt=none
+rspCnd1=all(obj(JournalA));
+RspTxt1=Éste es un pergamino con escritura desconocida.
+nxtLn1=Unknown
+rspCnd2=all(obj(JournalB));
+RspTxt2=Éste es un pergamino con escritura extraña.
+nxtLn2=Strange
+rspCnd3=all(obj(JournalC));
+RspTxt3=Éste es un pergamino con escritura rara.
+nxtLn3=Odd
+rspCnd4=all(obj(JournalD));
+RspTxt4=Éste es un pergamino con escritura poco usual.
+nxtLn4=Unusual
+rspCnd5=all(obj(!JournalA,!JournalB,!JournalC,!JournalD));
+RspTxt5=Creí que tenía otro, pero supongo que me equivocaba.  Volveré si encuentro otro.  ¡Te doy las gracias por tu ayuda!
+nxtLn5=EndJournal
+
+[EndJournal]
+Say=Esta vez, ha sido un placer para mí.  Te deseo lo mejor en tus viajes.
+RspDflt=Gracias.  Hasta luego...
+
+[Unknown]
+Say=No, no desconocida.  Ésta es ciertamente escritura Sha'ahoul.  No hay muchos que la reconozcan debido a que hace muy poco que les conocemos, pero mientras he estado por aquí, he sacado partido a mi soledad estudiando lo que podía encontrar.
+script=takeitem(JournalA,Player);
+RspDflt=none
+RspTxt1=Entonces, ¿puedes ayudarme?
+nxtLn1=Unknown1
+
+[Unknown1]
+Say=Haré lo que pueda con mis conocimientos limitados.  Veamos...  Empieza con-- Uh, creo que es un nombre.  Quizá algo relacionado con la velocidad.  No importa, sigue con--  Oh, ya veo, es un listado de órdenes.  Algo sobre... un 'hombre sucio' huyendo por el pueblo, y la necesidad de hallarlo inmediatamente.  Oh, esto es cruel: ordenan una muerte lenta, si es capturado, pues dice que dicho 'hombre sucio' es responsable de la muerte de media docena de Ahoul en su huida.  Al final dice "Esto es ordenado por tal-y-tal, Sha'man."  Supongo que es el oficial de mando local, pero no puedo leer el nombre.
+Adventure=ch1-47;
+RspDflt=none
+RspTxt1=¿Un 'hombre sucio' huyendo por el pueblo?  Ése podría ser mi hermano!  Dime, ¿dice algo más?
+nxtLn1=Unknown2
+
+[Unknown2]
+Say=No, me temo que no.  Se trata de un conjunto sencillo de escritura--No creo que me haya dejado nada.  Lo siento.
+RspDflt=none
+RspTxt1=No hay nada de qué disculparse.  Es más de lo que esperaba de todas formas.
+nxtLn1=Another
+
+[Strange]
+Say=Ésta es escritura Sha'ahoul.  Veamos...  Es un conjunto de instrucciones que ordenan a los hombres--bueno, a todos los Ahoul, y a los mezclados--que vayan al pueblo por la noche.  Su proyecto está casi terminado y no debe haber problemas.  Uh... el altar?  No, la Iglesia.  Mantened a todos los 'hombres sucios' alejados de la Iglesia.  Los soldados serán recompensados por todos los-- uh, algo que no comprendo, pero que seguramente es alguna parte del cuerpo-- entregados a los Sha'men.
+Adventure=ch1-48;
+script=takeitem(JournalB,Player);
+RspDflt=none
+RspTxt1=¿La Iglesia?  Ha habido informes de sucesos extraños en la Iglesia.  Esto es la prueba de que los Ahoul están implicados--como si necesitásemos alguna.  Ya había pensado que había demasiados Ahoul merodeando por el pueblo...  Supongo que ahora ya sé por qué.  Gracias.
+nxtLn1=Another
+
+[Odd]
+Say=Este pergamino fue escrito por los Sha'ahoul.  Parece una especie diario, o de lista de cosas por hacer.  El proyecto estará completado en un día, y entonces la operación puede comenzar.  Se necesitan suministros extra.  El 'hombre sucio' que había huido ha sido localizado--
+script=takeitem(JournalC,Player);
+Adventure=ch1-49;
+RspDflt=none
+RspTxt1=Localizado!  ¿Mi hermano ha sido localizado?  ¿Dónde?
+nxtLn1=Odd1
+
+[Odd1]
+Say=Dame un momento...  No ha sido capturado, no lo creo, al menos no por los Ahoul.  Algunos Ahoul murieron en... ¿el lugar de las escrituras?  ¿El lugar de los libros?  Quizá sea la Librería.  De todos modos, los mató esa criatura--aquí hay un adjetivo: ¿grande?  No estoy seguro.  La criatura se retiró al subterráneo del lugar de los libros, y los Ahoul lograron bloquearlo con una piedra.  Más bien una losa.  Hay una nota extraña aquí.  No sé qué significa.  De todas formas, los rastreadores Ahoul están bastante seguros de que el 'hombre sucio' huido, también se había refugiado en el subterráneo del lugar de los libros y que quizá él y la criatura se maten el uno al otro.
+script=player.addtitle(01Ogre));
+RspDflt=none
+RspTxt1=¡Oh! Corvus...
+nxtLn1=Odd2
+
+[Odd2]
+Say=La nota dice que los Sha'men deberían ir y matar a la criatura con su magia, pues los soldados temen acercarse a ella.  Hay algo acerca de que quizá la criatura sea capaz de mover la losa si se la deja sola el tiempo suficiente, así pues los Sha'men deberían ir pronto.
+RspDflt=none
+RspTxt1=El Sha'man ha muerto.  Al menos, eso no sucederá.
+nxtLn1=Odd3
+
+[Odd3]
+Say=Ya, uh... Ya veo.  En fin, eso es todo lo que hay en el pergamino.
+RspDflt=none
+RspTxt1=Gracias.  Creo que ahora sé dónde está mi hermano.  Eso, al menos, se lo debo al Sha'man.
+nxtLn1=Another
+
+[Unusual]
+Say=Este pergamino es de papel, no de cuero.  ¿Venía de Avalon?  No, no puede ser--hay escritura Sha'ahoul en él.  Por mi vida, esto es muy raro.
+Adventure=ch1-50;
+script=takeitem(JournalD,Player);
+RspDflt=none
+RspTxt1=¿Puedes leer la escritura?
+nxtLn1=Unusual1
+
+[Unusual1]
+Say=Los iconos son... irregulares, como si lo hubiera escrito un niño.  Es muy difícil de comprender...  El proyecto...  ¿va bien?  Conflicto murallas interiores--¿conflicto dentro de las murallas?  ¿Crees que podrían ser las de Avalon?  No estoy seguro.  Medicinas robadas, muerte por enfermedad.  Un agujero en la pared, dejando que las criaturas--¿insectos?--vayan a la comida.  Encontrarse durante la batalla.  No, batalla está modificado.  ¿Falsa?  ¿Falsa batalla?  Esto no tiene ningún sentido.
+RspDflt=none
+rspCnd1=all(ttl(!01FoundAhoul,!01FoundTraitors));
+RspTxt1=No, lo que tiene es demasiado sentido.  Hay traidores entre nosotros, Lahren--Lo sé!
+nxtLn1=Another
+rspCnd2=one(ttl(01FoundAhoul,01FoundTraitors));
+RspTxt2=No, lo que tiene es demasiado sentido.  Hay traidores entre nosotros, Lahren--Lo sé!  Debo informar de esto a Mudam, y pronto.
+nxtLn2=Another
+
+[Another]
+Say=¿Tienes algún otro pergamino para que lea?
+RspDflt=No, no tengo más.  Gracias por tu tiempo, pero debo irme.  Adiós!
+rspCnd1=one(obj(JournalA,JournalB,JournalC,JournalD));
+RspTxt1=Sí, creo que sí.  Déjame mirar....
+nxtLn1=Journal
+
+[Ahoul]
+say=
+RspDflt=none
+rspTxt1=
+nxtLn1=Ahoul
+
+[Ahoul1]
+Say=Sha'ahoul es su nombre apropiado, si te refieres a ellos como gente o cultura.  Los Ahoul--los más embrutecidos entre ellos, parecen primos de los orcos--no son más que una parte de su sociedad.  Sí, podría decir que sé algunas cosas sobre ellos.  Por eso viajé hasta Avalon.  No he pasado todos mis días autocompadeciéndome, amigo mío.  He hecho muchas cosas durante mi estancia aquí, e incluso he descubierto algunas cosas por mí mismo.
+RspDflt=none
+RspTxt1=Ya veo.  ¿Qué puedes decirme de ellos?
+nxtLn1=Ahoul2
+
+[Ahoul2]
+Say=No estoy muy seguro de cuanta información te interesaría, y lo que sabemos de ello es todavía bastante limitado.
+RspDflt=none
+RspTxt1=Siento curiosidad por saber a qué me enfrento.  Lo más básico, supongo, será suficiente.
+nxtLn1=Ahoul3
+
+[Ahoul3]
+Say=¿Lo básico?  Bien, veamos....  Los Sha'ahoul están principalmente compuestos de Ahoul, esas criaturas parecidas a los orcos que he mencionado, y Sha'men, una raza de humanos ordinarios.  Esta alianza, si quieres, existe desde hace un tiempo indeterminado, pero al menos deben haber sido varios siglos debido al desarrollo de una raza híbrida entre humanos y Ahoul.  Todavía no estamos muy seguros de cómo es eso posible, pero algunos han especulado que es similar a los cruces entre distintas razas caninas, pero ése no es mi campo, así que no puedo asegurarlo.
+RspDflt=none
+RspTxt1=Ya... veo.
+nxtLn1=Ahoul4
+
+[Ahoul4]
+Say=Continuando, los Sha'ahoul están divididos en varias... castas, supongo.  Los Sha'men son los líderes.  Son humanos y son magos capacitados, para nuestra desgracia.  Son individuos muy peligrosos, y sé que son responsables de muchas de nuestras pérdidas en esta guerra.  Tu, no obstante, probablemente te enfrentarás a los de la casta guerrera, que está compuesta de Ahoul, híbridos y humanos no mágicos.  Hay otros, aparentemente--una casta de cazadores, quizá, y posiblemente una casta de trabajadores o esclavos--pero sabemos poco de ellos.
+Adventure=Ch1-89;
+RspDflt=none
+RspTxt1=Te agradezco tu tiempo, amigo.  Espero poder utilizar correctamente este conocimiento.
+nxtLn1=Ahoul5
+
+[Ahoul5]
+Say=De nada.  Si en tus aventuras encuentras algo interesante sobre los Sha'ahoul, me encantaría aprender de ello.
+RspDflt=Lo tendré en cuenta.  Adiós.
+rspcnd1=one(obj(JournalA,JournalB,JournalC,JournalD));
+RspTxt1=En realidad, me pregunto si podríais descifrar escritura de los Sha'ahoul...
+nxtln1=journal
+
+[lahrenfour]
+Say=Buenos días.
+RspDflt=Por favor, discúlpame, Lahren.  No quería molestarte.
+rspcnd1=all(ttl(01lahrenhappy,!04staffdone));
+RspTxt1=Buenos días a ti también, amigo mío!  ¿Qué tal te van las cosas?
+nxtln1=lahrenfour2
+rspcnd2=all(ttl(!01lahrenhappy,!04staffdone));
+RspTxt2=Buenos días a ti también.  ¿Cómo estás en éste bonito día?
+nxtln2=lahrenfour7
+
+[lahrenfour2]
+Say=Mejor desde que tu llegaste a Avalon, eso seguro.  Pell y yo hemos estado trabajando en un proyecto conjunto, una especie de colaboración de nuestras distintas especialidades.  Ha sido muy agradable.
+RspDflt=none
+rspcnd1=all(ttl(04spelltale,04staffquest));
+RspTxt1=Sí, Pell me lo ha contado hace un rato.  La máscara que ha estado encantando con el hechizo que ayudaste a crear la tengo en préstamo, para poder desplazarme por los territorios ocupados por los Sha'ahoul mientras hago unos encargos que tengo ahora.
+nxtln1=lahrenfour3
+RspTxt2=¿Oh?  Y qué es ese proyecto, ¿si no te molesta que pregunte?
+nxtln2=lahrenfour6
+
+[lahrenfour3]
+Say=Por un precio, sin duda!
+RspDflt=none
+RspTxt1=Naturalmente, estamos hablando de Olon!  Debo robar una de las varitas de los ensoñadores Sha'man.  No es un paseo que me encante.
+nxtln1=lahrenfour4
+
+[lahrenfour4]
+Say=No sé de nadie a quien lo hiciera!  Infiltrarse en un campamento Sha'ahoul ya es una cosa difícil...  ¿Pero robar algo a un Sha'man?  Discúlpame, no quería hacer que sonase como algo imposible.  Tienes mis mejores deseos.  Asegúrate de volver de una pieza.
+RspDflt=none
+RspTxt1=Suena imposible realmente, Lahren, pero cuando vuelva - de una pieza, espero -- tendré muchas historias que contar.  Que deba o no contarlas, es otra cuestión.
+nxtln1=lahrenfour5
+
+[lahrenfour5]
+Say=Ah, sí, el secretismo militar.  No hay que atemorizar a los ciudadanos o provocarles preocupaciones innecesarias.  Confío en tu juicio.  Buena suerte.
+RspDflt=Gracias, Lahren, y hasta luego.
+
+[lahrenfour6]
+Say=Muy bien.  Sé que a Olon no le gustaría irlo diciendo por ahí, así que por favor no se lo digas a quien no debas.  Olon tiene una máscara que le hará parecer un Sha'ahoul.  Es su "póliza de seguros".  No me mires así, es su frase.  Nos pidió a Pell y a mí que trabajásemos en un encantamiento que le diese al portador la habilidad de hablar y comprender la lengua Sha'ahoul.  No estamos muy seguros de su efectividad, pero Mudam insistió.  Además, ahora nos debe un favor, y él siempre paga sus deudas.
+adventure=ch4-513;
+RspDflt=Recordaré eso, Lahren.  Gracias por la información, y hasta luego.
+
+[lahrenfour7]
+Say=Mi amada y yo hemos estado trabajando en un proyecto conjunto desde que nos hemos reunido.  Debería estar terminado muy pronto.  Estoy seguro de que oirás hablar de él; Pell tiende a estar muy orgullosa de su trabajo.
+RspDflt=none
+RspTxt1=¿Has estado trabajando con ella en algo mágico?
+nxtln1=lahrenfour8
+
+[lahrenfour8]
+Say=Sí.  Aparte de nuestra relación, claro.  [sonríe distraídamente]  Ah, sí, me hizo investigar sobre un hechizo.
+RspDflt=none
+RspTxt1=Ah.  Bueno, como dices, seguro que ella me lo explicará con más detalle.
+nxtln1=lahrenfour9
+
+[lahrenfour9]
+Say=Sí, naturalmente...  Te deseo suerte con tus encargos.  Tráenos la cabeza de Mithras!  Ja!
+RspDflt=A su debido tiempo, Lahren.  Hasta luego.
+
+[ch5intro]
+Say=Saludos, %playername%.  Es reconfortante ver que los Sha'ahoul no te han reducido por ahora.  ¿Cómo te ha ido últimamente?
+script1=addtitle(05talkedtoL);
+RspDflt=Lo siento, Lahren, pero no tengo tiempo de hablar contigo.  Hasta luego.
+RspTxt1=Muy bien.  Quizá pudieras explicarme algunas cosas.
+NxtLn1=Queries
+
+[return]
+Say=Es bueno verte de nuevo, %playername%.  ¿Puedo hacer algo por ti?
+RspDflt=Lo siento, Lahren, pero no tengo tiempo de hablar contigo.  Hasta luego.
+RspTxt1=Quizá tú puedas ayudarme.  Estoy buscando respuestas a varias preguntas.
+NxtLn1=Queries
+
+[Queries]
+Say=Considérame a tu servicio, %playername%.  ¿Cómo puedo ayudarte?
+RspDflt=Pensándolo bien, debo irme ahora.  Hasta luego, Lahren.
+RspCnd1=All(ttl(!05LPworkC,05astralquest))
+RspTxt1=¿Qué piensas de la colaboración entre Pell y Elarath?
+NxtLn1=Pellwork
+RspCnd2=All(ttl(!05LPworryC))
+RspTxt2=Confío en que las cosas siguen bien entre Pell y tu, ¿verdad?
+NxtLn2=Pellworry
+RspCnd3=All(ttl(!05LFMC,05magisknowpc))
+RspTxt3=Acabo de encontrar al Magistrado de Fornax.
+NxtLn3=Fmage
+RspCnd4=All(ttl(!05LFMandPellC,05LFMC))
+RspTxt4=¿Te preocupa que el Magistrado de Fornax esté buscando a Pell?
+NxtLn4=FMandPell
+RspCnd5=All(ttl(!05LLC,05librius))
+RspTxt5=¿Sabías que Elazar tiene un libro que habla?
+NxtLn5=Talkingbook
+RspCnd6=All(ttl(05metM,!05LTTC))
+RspTxt6=Mi viaje a través de los planos, me ha concedido recientemente la oportunidad de encontrar al ser más increíble -- un espíritu, conocido como Muir, que es el guardián de una cantidad cuasi-infinita de tomos de conocimiento.
+NxtLn6=Muir
+
+[Pellwork]
+Say=Su trabajo de adivinación sobre los sueños que atormentan a los Avalonianos, significa mucho para ella.  Me encanta verla enfrascada en un proyecto tan importante -- ciertamente ha contribuido a que olvide sus propios problemas.  También es bueno verla haciéndose un lugar a sí misma en Avalon, puesto que hemos sido incapaces de establecernos en ningún lugar desde hace tiempo.  Con suerte, mis estudios se revelarán también valiosos para Avalon, y podré conseguir mi aceptación en el lugar.
+script1=addtitle(05LPworkC);
+RspDflt=Gracias, Lahren.  Ahora debo irme.  Hasta luego, y que los buenos espíritus te protejan.
+RspTxt1=Gracias, Lahren.  Me estaba preguntando si te importaría responderme a un par de preguntas más.
+NxtLn1=Queries
+
+[Pellworry]
+Say=He intentado no molestarla con mis preocupaciones, pero sus recientes problemas para dormir, me tienen muy preocupado.  Más de una vez la he observado mientras duerme, sólo para presenciar cómo se retorcía terriblemente -- como si estuviese sufriendo un dolor y miedo terribles.  Aunque parece estar bien, puedo ver en sus ojos que cada vez está más cansada.  Este enemigo invisible es, en muchos aspectos, el más difícil que hemos enfrentado jamás los dos.  Además, algunos individuos de Fornax siguen buscando a Pell.
+script1=addtitle(05LPworryC);
+adventure=ch5-010
+RspDflt=Eso suena terrible, Lahren.  Ahora debo irme.  Hasta luego, y que los buenos espíritus te protejan.
+RspTxt1=Gracias, Lahren.  Me estaba preguntando si te importaría responderme a un par de preguntas más.
+NxtLn1=Queries
+
+[Talkingbook]
+Say=Para alguien de mis inclinaciones sería magnífico encontrarse con tal maravilla!  Debo confesar que jamás había oído hablar de algo así.  Quizá algún día -- y naturalmente, con el permiso de Elazar -- pueda ver eso con mis propios ojos.
+script1=addtitle(05LLC);
+RspDflt=Gracias, Lahren.  Ahora debo irme.  Hasta luego, y que los buenos espíritus te protejan.
+RspTxt1=Gracias, buen amigo.  Me estaba preguntando si te importaría responderme a un par de preguntas más.
+NxtLn1=Queries
+
+[Fmage]
+Say=De hecho, iba a preguntarte sobre él.  Ha llegado recientemente; hace mucho que sospechaba que agentes de Fornax nos seguían y nos encontrarían eventualmente.  Aunque, honestamente, creo que si no nos ha venido a buscar, puede que no planee hacerlo.  He hecho arreglos para escondernos de él, por si acaso.  Me preocupa, pero he hecho todo lo que podía por ahora.
+script=player.addtitle(05LFMC);
+adventure=ch5-011
+RspDflt=Gracias, Lahren.  Debo irme ahora.  Hasta luego, y que los buenos espíritus te protejan.
+RspCnd1=All(ttl(!05LFMandPellC,05LFMC))
+RspTxt1=¿Te preocupa que el Magistrado de Fornax pueda estar buscando a Pell?
+NxtLn1=FMandPell
+RspTxt2=Gracias, amigo Lahren.  Me estaba preguntando si te importaría responderme a un par de preguntas más.
+NxtLn2=Queries
+
+[FMandPell]
+Say=Obviamente, eso me preocupa, pero hay poco que pueda hacerse por ahora.  El Magistrado de Fornax no ha hecho nada contra nosotros todavía, así que no es una amenaza inmediata.  Todavía no le he dicho a Pell nada sobre él; aunque tiene derecho a saberlo, creo que no necesita ninguna preocupación más en estos momentos.  Por favor, %playername%, no hables con ella de esto.
+script1=addtitle(05LFMandPellC);
+adventure=ch5-012
+RspDflt=Acataré tus deseos, Lahren.  Hasta luego, y que los buenos espíritus te protejan.
+RspTxt1=Gracias, Lahren.  Me estaba preguntando si te importaría responderme a un par de preguntas más.
+NxtLn1=Queries
+
+[Muir]
+Say=Ese ser es el sueño de un erudito!  Oh, las cosas que podría aprender de él!  Si no estuviese tan preocupado por Pell, me encantaría viajar contigo para encontrarme con tal maravilla.
+script1=addtitle(05LTTC);
+RspDflt=Es verdaderamente una maravilla --así como una ayuda muy valiosa en mis viajes.  Hasta luego, amigo Lahren.
+RspTxt1=Gracias, buen Lahren.  Me estaba preguntando si te importaría responderme a un par de preguntas más.
+NxtLn1=Queries
+
+[rensix]
+Say=Buenos días, %playername%.
+RspDflt=Buenos días a ti también, Lahren.  Perdóname, me necesitan urgentemente en otro lugar.
+rspcnd1=all(ttl(05magisknowpc,!06renarb01));
+RspTxt1=Buenos días, Lahren.  Pell no habrá...
+script1=player.addtitle(06renarb01);
+nxtln1=mainscreenturnon
+rspcnd2=all(ttl(06magisknowpc,!06renarb01));
+RspTxt2=Hoy he encontrado a un hombre llamado Khaele, que dice ser uno de los Magistrados del Consejo de Fornax...
+script2=player.addtitle(06renarb01);
+nxtln2=whatyousay
+
+[mainscreenturnon]
+Say=¿Hablado con Khaele?  Sí, y...  Increíblemente, la situación se ha solucionado.  No conozco los detalles, y no me importan realmente...  Puedes preguntarle a Pell, si quieres.  Es cosa de ella, y con ella debes conversar si quieres oír algo más que habladurías.
+adventure=ch6-532;
+RspDflt=Como quieras, Lahren; gracias por tu franqueza.  Hasta luego.
+
+[whatyousay]
+Say=Eso es lo que es, e indudablemente, te estarás preguntando sobre algo que te habrá contado sobre Pell, ¿verdad?  El consejo quiere que ella vuelva, aparentemente quieren acusarla de algo.  Es cosa de ella, y con ella debes conversar si quieres oír algo más que habladurías.
+adventure=ch6-532;
+RspDflt=Como quieras, Lahren; gracias por tu franqueza.  Hasta luego.
+

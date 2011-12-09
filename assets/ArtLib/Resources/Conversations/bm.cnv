@@ -1,0 +1,134 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01FoundAhoul,01FoundTraitors,06chapter6,ShownWares
+Removed=
+
+[Quest]
+Added=ch1-63,ch1-64
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Thank you, Holt.
+say1=all(ttl(06chapter6));
+goto1=holtsix
+Say2=all(ttl(!06chapter6));
+goto2=Holt
+
+[Holt]
+Say='ello there, sir!  What can Holt be doin' for you, then?
+RspDflt=Nothing at all.  Goodbye.
+rspCnd1=all(ttl(!ShownWares));
+RspTxt1=Nothing, friend.  I've just come to have a look around.
+NxtLn1=Holt1
+rspCnd2=all(ttl(ShownWares));
+RspTxt2=I've come to take another look at your wares.
+nxtLn2=Wares
+rspCnd3=all(ttl(!bm081501,!01foundtraitors));
+RspTxt3=You've seen those two men who've been over by the stairs recently?  You wouldn't happen to know what they're doing, would you?
+script3=addtitle(bm081501);
+nxtLn3=Traitors
+
+[Holt1]
+Say=Look 'round all you want.  You won't find anythin' amiss here, sir.  No, sir, not a thing.  Err, do y'like what you see?
+RspDflt=None
+RspTxt1=No, of course not.  The weaponry and armor out there is as poor as my own.
+NxtLn1=Holt2
+
+[Holt2]
+Say=Yes, sir, truly a fine selection o' tin blades and paper armor, is it not?  It may look adequate, but a body's likely to get himself dead if he ever tries using it in real combat...
+RspDflt=None
+RspTxt1=I've heard that there's a shortage of fine steel...
+NxtLn1=Holt3
+
+[Holt3]
+Say=Yes, sir, a cripplin' shortage.  And with General Ovoron takin' with him all the fine equipment, well there's just nothin' good left.  But if you'd step over here a moment, good sir, perhaps I may have a bit of somethin' you'd be interested in...?
+RspDflt=None
+RspTxt1=As you wish, but why are you suddenly whispering?
+NxtLn1=Holt4
+RspTxt2=I can assure you that I have no desire to do so.  Good day.
+nxtLn2=Holt8
+
+[Holt4]
+Say=I've managed to squirrel away a shiny piece or two that you might be liking.  A shady business, perhaps, but back in Taberland I learned the ones with the good swords lived -- from wherever they obtained their blades.  And the ones without good swords...  Well, I'm sure you'll be taking my meanin'.  These pretties here will help keep your insides inside -- for a price, o' course.
+Adventure=ch1-63;
+RspDflt=None
+RspTxt1=If your prices are reasonable, I might be interested.  Show me what you've ferreted away.
+Script1=addtitle(ShownWares);merchant
+RspTxt2=Eh, I'll not pay you any blood money.  Perhaps I'll check back with you later, but I rather doubt it.
+NxtLn2=Holt7
+RspTxt3=Give me a good reason why I shouldn't turn you in!
+NxtLn3=Holt5
+
+[Holt5]
+Say=If you say anythin', boy, I'll simply deny it.  No one would be believing you anyway -- what d'you think friends are for?  D'you think I'd dare such a thing without doing a bit o' plannin' before hand?
+RspDflt=None
+RspTxt1=Calm down, little man.  I'm not about to turn you in when we can both benefit from doing business together.  I just needed to know if you'd rattle.  You don't.  Good.  Show me your wares.
+Script1=addtitle(ShownWares);merchant
+RspTxt2=Perhaps not.  Still, I've no interest in your wares right now.
+NxtLn2=Holt7
+
+[Holt7]
+Say=Very well, but you'll be rememberin' to keep your mouth shut, if y'know what's good for you.
+RspDflt=As you say.  Goodbye.
+
+[Holt8]
+Say=No, no!  Wait, please.  Hear me out, sir.  It's not what you're thinking!
+RspDflt=None
+RspTxt1=Speak your piece.
+NxtLn1=Holt4
+
+[Wares]
+Say=Have you now?  Well, if you would kindly -- and quietly -- step over here...
+RspDflt=none
+RspTxt1=Of course.
+script1=merchant
+
+[Traitors]
+Say=They're a couple o' General Ovoron's boys.  Rude buggers.  Most I've been able to get out of 'em -- besides angry glares, I mean -- is that they're lookin' into the noises coming from the down below.  Dunno how they can be investigating standing silent at the top o' the stairs, but there you have it.  Maybe more of 'em are downstairs on a bug hunt, and they're just making sure nothin' gets up the stairs.  Whatever the reason, they're sure keepin' mum about it, though -- and keepin' everyone else away.  At any rate, not one body is gettin' downstairs while they're still around and I think it'd take an order from the General to get 'em to move.  Except, of course, the General is now gone.
+Adventure=ch1-64;
+RspDflt=none
+RspTxt1=I see.  Thanks for the information.
+nxtln1=Traitors2
+
+[Traitors2]
+Say=Anytime, friend.  If you really need to be lookin' downstairs, I'd be checkin' back later.  They have to sleep sometime, right?  Now, is there somethin' else I can be doing for you?
+RspDflt=No. A good day to you.
+rspCnd1=all(ttl(!ShownWares));
+RspTxt1=Nothing, really.  I'm just looking around.
+NxtLn1=Holt1
+rspCnd2=all(ttl(ShownWares));
+RspTxt2=I've also come to take another look at your wares.
+nxtLn2=Wares
+
+[holtsix]
+Say=Good day, %playername%.  Have y' come to look at m' wares?  My sales have been up recently, so get 'em while they last!
+RspDflt=No, Holt.  I must be on my way.
+RspTxt1=Yes, I had hoped to purchase something special for Vortigerm's arrival...
+script1=merchant
+

@@ -1,0 +1,205 @@
+[FileID]
+Author=garth
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=Johfrit
+GUID=
+
+[Titles]
+Set=04metjohfrit,04rescuequest
+Checked=04Chapter4,04edgarddea,04edgarddead,04edgardsafe,04metEdgard,04metJohfrit,04rescueques,06chapter6
+Removed=
+
+[Quest]
+Added=ch4-001
+Removed=ch4-001
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(2/9/01)=Passed
+tucker(2/15/01)=Passed
+tucker(7/16/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=7
+Else=
+Default=Thank you, Johfrit.
+say1=all(ttl(06chapter6));
+goto1=fritsix
+Say2=All(Ttl(!04Chapter4));
+goto2=Johfrit
+Say3=All(Ttl(04edgarddead,!04metJohfrit));
+goto3=earlydeath
+Say4=All(Ttl(04edgardsafe,!04metJohfrit));
+goto4=earlyrescue
+Say5=All(Ttl(04Edgardsafe));
+goto5=rescueNoEinparty
+Say6=All(Ttl(04metjohfrit));
+goto6=report
+Say7=All(Ttl(04chapter4));
+goto7=Chapter4
+
+[Johfrit]
+Say=What's that?  Did you ask me something?
+RspDflt=None
+RspTxt1=Not yet.  How have things been up here?
+NxtLn1=Johfrit1
+
+[Johfrit1]
+Say=Fine!  Don't they look fine?  Everything up here is normal, completely normal!
+RspDflt=None
+RspTxt1=Of course.  Are you all right?
+NxtLn1=Johfrit2
+
+[Johfrit2]
+Say=Absolutely!  Never better.  Don't I look like I'm all right?
+RspDflt=I suppose you do.  Sorry to trouble you.
+
+[Chapter4]
+Say=[not seeming to notice you]  How will I tell her?  Oh, how she dotes on the lad.  I told her this was a dangerous assignment, but "the boy needs experience," she said.  She will never forgive me... her only son... the poor boy...
+RspTxt1=I don't mean to intrude, but I couldn't help overhearing your lament. What seems to be the trouble, good sir?
+nxtln1=ch4a
+RspDflt=Forgive me for disturbing you, sir.
+
+[ch4a]
+Say=[finally noticing you]  Oh, I'm so sorry -- please forgive my rudeness.  Don't worry yourself over me, young soldier.  I've troubles, that's true enough, but I doubt that there's anything you can do about it.  It's a rather dark situation I'm facing, and it would take a miracle to resolve it.
+RspDflt=none
+RspTxt1=At the very least I can offer you a sympathetic ear, sir.
+nxtln1=ch4a1
+RspTxt2=I think you would be surprised by the "dark situations" I've faced lately.
+nxtln2=ch4a1
+
+[ch4a1]
+Say=Very well, I shall share my plight with you.  I am -- in case you weren't aware -- Ambassador Johfrit of Aratoy.  I and my entourage are only recently come to Avalon, and we suffered a Sha'ahoul ambush shortly before we arrived.  Several of my men were slain, and my assistant Edgard was taken.  I do not know if he lives, but I cling to my hopes even in the face of the Sha'ahoul's known cruelty.
+Script=Player.AddTitle(04metjohfrit);
+adventure=ch4-001
+RspDflt=none
+RspTxt1=Why would the Sha'ahoul take him captive?
+nxtln1=ch4b1
+RspTxt2=Have you made any attempt to rescue Edgard?
+nxtln2=ch4b2
+
+[ch4b1]
+Say=Why they took him?  Well, you see, he was my assistant and, well, he was important because, you see, he was, actually... er, he carried important, ah, tactical information -- about Avalon, I mean.  He's a brave young lad, not much younger than yourself.  You actually remind me a bit of him, so confident and earnest.  Say, I thought I recognized you from somewhere -- aren't you Sir Roth's shining protege?  Perhaps you can help me after all.
+RspDflt=none
+RspTxt1=Perhaps I can do something to help you.
+nxtln1=ch4b5
+RspTxt2=Have your people made any attempt to rescue Edgard?
+nxtln2=ch4b3
+
+[ch4b2]
+Say=Sir Evadam is the only skilled warrior in our entourage to have survived the ambush, and his wounds have kept him abed until just recently.  By the time he makes an adequate recovery, I fear Edgard will most likely be lost.  I can't bear to imagine the horrors they must be inflicting on him even now, and yet I feel helpless to do anything for him.
+RspDflt=none
+RspTxt1=Perhaps I can do something to help you.
+nxtln1=ch4b5
+RspTxt2=Why would the Sha'ahoul take Edgard captive?
+nxtln2=ch4b4
+
+[ch4b3]
+Say=Sir Evadam is the only skilled warrior in our entourage to have survived the ambush, and his wounds have kept him abed until just recently.  By the time he makes an adequate recovery, I fear Edgard will most likely be lost.  I can't bear to imagine the horrors they must be inflicting on him even now, and yet I feel helpless to do anything for him.
+RspDflt=none
+RspTxt1=Perhaps I can do something to help you.
+nxtln1=ch4b5
+
+[ch4b4]
+Say=Why they took him?  Well, you see, he was my assistant and, well, he was important because, you see, he was, actually... er, he carried important, ah, tactical information -- about Avalon, I mean.  He's a brave young lad, not much younger than yourself.  You actually remind me a bit of him, so confident and earnest.  Say, I thought I recognized you before -- aren't you Sir Roth's shining protege?  Perhaps you can help me after all.
+RspDflt=none
+RspTxt1=In light of your lack of men, as well as the value of your assistant's knowledge to the enemy, perhaps I can help.
+nxtln1=ch4b5
+
+[ch4b5]
+Say=If you are as brave and tenacious as I've heard, then you just might be able to save him.  He is a brave lad himself, but I fear he can not hold out much longer.  I don't even know where he may be being held, other than inside the Sha'ahoul main camp.  Do you really think you could find him and bring him back?  It would mean so much to me, as well as to my people.
+RspTxt1=I will do what I can to rescue him, Ambassador.  Is there anything else you can tell me that might aid my quest?
+nxtln1=ch4b6
+RspDflt=I would love to help you, Ambassador Johfrit, but I have too many duties to help you now.  Perhaps later I can help you.
+
+[ch4b6]
+Say=He is a brave lad, but quite stubborn.  He might even be wary of your aid, especially since he's never met you.You should have some way of identifying yourself as sent by me.  Hmmm... what would serve?  I could give you a letter, explaining who you are and that I sent you.  Would that help?
+RspDflt=none
+RspTxt1=A letter might be a bit long, considering how time might be of the essence in liberating him.  Perhaps you could tell me some small bit of information that would convince him that I know you.
+nxtln1=ch4b7
+
+[ch4b7]
+Say=I suppose that would make more sense.  Something personal, you say? I know just the thing:  just tell him that the name of his favorite hound is Chuckles.  I should know, for I gave him the beast when both of them were just pups.  No one outside of our corner of Aratoy could possibly know that.  Will that suffice?
+Script=Player.AddTitle(04rescuequest);journalentry(chpt4-09);showmessage(Your journal has been updated.,200);
+AddQuest=ch4-001
+RspDflt=That will be perfect, Ambassador.  I will go now, and I will return to you as soon as I uncover anything about Edgard.
+
+[report]
+Say=Have you heard anything of young Edgard's fate?  I worry so, for the Sha'ahoul's cruelty is quite well known.
+RspDflt=none
+rspCnd1=All(ttl(!04metEdgard,!04edgardsafe,!04edgarddead))
+RspTxt1=I'm afraid I've seen no trace of him yet, sir.
+nxtln1=patch
+rspCnd2=All(ttl(04rescuequest))
+RspTxt2=I will continue my search for him, ambassador.  Do not lose hope.
+nxtln2=patch
+rspCnd3=All(ttl(04edgarddead))
+RspTxt3=I've bad news for you, Ambassador, and I know no way to tell you gently:  Edgard is fallen.
+nxtln3=ch4d1
+rspCnd4=All(ttl(04metEdgard,!04edgardsafe,!04edgarddead))
+RspTxt4=I've met with him sir, but I was unable to save him yet.  Perhaps, when I am better prepared, I can liberate him.
+nxtln4=patch
+
+[patch]
+Say=I have faith in you, %playername%, and I know you will return him to me.  Keep at it, for you are the only person who I feel can succeed in this perilous mission of liberation.
+RspDflt=I will do my best, Ambassador.
+
+[ch4d1]
+Say=Oh, the poor boy!  He was so young, so much like a son to me.  Curse those devils for killing such a fine lad!  I will find some way to avenge him, if it takes all my days.  As for Aratoy, I doubt our kingdom shall continue in this tragic conflict.  The forests will protect us as they have always, so we will return to them to grieve now.  Farewell, and thank you for at least letting us know his fate.
+removequest=ch4-001;
+RspDflt=I am sorry for your loss, Ambassador Johfrit.  I hope your grief does not cripple your heart in knowing what you must do if our lands are to remain free
+
+[earlydeath]
+Say=[totally unaware of you] Oh my poor nephew!  He was so young, so full of life!  I can know longer hope that he lives, for even if he did, there would still be nothing I can do for the lad.  Curse the Sha'ahoul!
+RspDflt=[aside] Will these sorrows ever cease?
+
+[earlyrescue]
+Say=Ah, the noble warrior who saved my nephew!  How wonderful to see you, my friend.  I shall not let Aratoy forget the service you have performed for us, however inadvertently.  You have renewed our faith in the strength of this alliance at Avalon, so much so that it may count on our support for the duration of this war.
+removequest=ch4-001;
+script=chapter4200012200063094830.removefromparty;
+RspDflt=I am glad that I could aid you, sir, and if it benefits Avalon as a whole, then so much the better.
+
+[rescueNoEinParty]
+Say=At last I can thank you!  I've seen Edgard, and he told me of your bravery.  I and my people are eternally grateful for the feat you have accomplished for us.  Now I no longer fear having to give tragic news to my dear sister.  You have made an old man very happy, brave %playername%.  If ever you are in need, call on me for anything I may do to aid you.
+removequest=ch4-001;
+RspDflt=none
+RspTxt1=I am glad to do what I can to renew anyone's fading hopes in Avalon.
+nxtln1=rescueNoEinParty2
+
+[rescueNoEinParty2]
+Say=You have certainly brought new hope to me, lad, and to the rest of Avalon, I suspect.  You are very special, %playername%, very special indeed.  I sense that your future shall one day become legend, for you truly have the stuff of legendary heroes within you.
+removequest=ch4-001;
+RspDflt=You are too kind, Ambassador Johfrit.  I hope your own future will be less traumatic than the events of late.  Until we meet again, farewell good sir.
+
+[fritsix]
+Say=Oh, %playername%!  You startled me.
+RspDflt=I apologize, Ambassador.  Please excuse me.
+RspTxt1=Are you feeling well, Ambassador?
+nxtln1=fritsix2
+RspTxt2=Don't tell me that you've taken up the belief that the end is near!
+nxtln2=fritsix3
+
+[fritsix2]
+Say=Oh, one of the soldiers told me that it was, as he said, "quiet... almost too quiet."  Perhaps I am placing too much faith in a soldier's reflexes, or my imagination is conjuring images of Sha'ahoul pouring through shattered gates.
+RspDflt=I hope so, Ambassador, but it's best to be prepared.  Farewell.
+rspback=fritsix
+
+[fritsix3]
+Say=Oh, the end will come in due time, %playername%.  I wish I knew the outcome.  I know you shall tell me that we will be victorious, but faces are more drawn and haggard with each passing day.  Including mine.
+RspDflt=Remember that without hope, we are doomed without lifting a sword, Ambassador.  Farewell.
+

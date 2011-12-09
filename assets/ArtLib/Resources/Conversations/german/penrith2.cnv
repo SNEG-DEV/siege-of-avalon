@@ -1,0 +1,139 @@
+[Notes]
+;Must get programmers to set 01AreaSafe flag once all Ahoul on Map with Steel Bar are dead.
+
+[root]
+Count=6
+Else=
+Default=Guten Tag, Sir Penrith.
+say1=all(ttl(03chapter3));
+goto1=penrith
+Say2=All(ttl(!01Informed))
+goto2=Informed
+Say3=All(ttl(01ReturnedSteel,!01MakeAreaSecure))
+goto3=Steel
+Say4=All(ttl(01ReturnedSteel,01MakeAreaSecure,!01GetSword))
+goto4=AreaSecure
+Say5=All(ttl(01Informed,!01FoundBruder))
+goto5=Informed3
+Say6=All(ttl(01Informed,01FoundBrother))
+goto6=Informed4
+
+
+;After arrival of search party
+[Informed]
+say=Einen Augenblick.  Ich weiß nicht, ob Ihr schon gehört habt, aber möglicherweise gab es Schwierigkeiten bei der Expedition, an der Euer Bruder beteiligt war.
+AddQuest=ch1-05;
+rspDflt=None
+rspTxt1=Was für Schwierigkeiten?  Was ist passiert, Herr?
+NxtLn1=Informed1
+
+[Informed1]
+say=Wie Ihr wisst, gehörte Corvus einer größeren Truppe an, die zu einem Überfall ausgeritten ist.  Die Truppe wurde angeführt von General Ovoron, Oberbefehlshaber unseres Heeres.  Sie ist überfällig, und noch haben wir kein Zeichen von ihnen gesehen.
+rspDflt=None
+rspTxt1=Geht es Corvus gut?
+NxtLn1=Informed2
+
+[Informed2]
+say=Ich weiß es nicht.  Ein Suchtrupp ist gerade zurückgekommen.  Man wird jetzt bei Sir Roth Bericht erstatten.  Ihr solltet am Südtor nachfragen.  Wenn überhaupt jemand etwas gesehen hat, dann vom Südtor aus.  Fragt nach einem Freund von mir, Calum.  Er wird Euch helfen.
+Adventure=ch1-55;
+script=player.addtitle(01informed);journalentry(penrith); showmessage(Ihr Tagebuch wurde aktualisiert.,200);
+rspDflt=Danke für Euren Rat.
+
+; AFTER THE PLAYER HAS BEEN TOLD ABOUT HIS BROTHER UNTIL HE IS RECOVERED.
+
+[Informed3]
+say=Euer Bruder gehört zu meinen engsten Freunden, und wenn es mir meine Pflichten erlauben würden, würde ich Euch bei Eurer Suche begleiten. Hier steht aber noch mehr auf dem Spiel, und die Pflicht geht vor.  Ich hoffe, Ihr habt Verständnis-- Euer Bruder würde es verstehen.
+rspDflt=Doch, ich verstehe, Herr, und ich werde Euch Bescheid geben, wenn ich etwas finde.
+
+; AFTER THE PLAYER HAS RECOVERED HIS BROTHER.
+
+[Informed4]
+say=Gut gemacht, mein Junge.  Bravo!
+
+; Steel subquest
+
+[Steel]
+say=Euer Bruder gehört zu meinen engsten Freunden, und wenn es mir meine Pflichten erlauben würden, würde ich Euch bei Eurer Suche begleiten. Hier steht aber noch mehr auf dem Spiel, und die Pflicht geht vor. Ich hoffe, Ihr habt Verständnis-- Euer Bruder würde es verstehen.
+rspDflt=None
+rspTxt1=Doch, ich verstehe, Herr, aber es gibt da noch eine Angelegenheit, die Euerer Aufmerksamkeit bedarf.  Herr, ein Lager von Stahlbarren wurde im Dorf gefunden, und--
+nxtLn1=Steel1
+
+[Steel1]
+Say=Stahl, sagt Ihr?  Es war Freeman der Schmied, der Euch diese Geschichte erzählt hat, was?
+rspDflt=None
+rspTxt1=Nun, ja, Herr.  Als ich im Dorf war habe ich einfach die Augen offengehalten und bin über den Stahl gestolpert.
+nxtLn1=Steel2
+
+[Steel2]
+Say=Über den Stahl gestolpert...  Unglaublich; ich hätte geschworen, dass der Schmied einen Vogel hat, weil er immer wieder mit dieser Geschichte anfing, aber offenbar hatte er die ganze Zeit Recht.  Gut gemacht.
+rspDflt=None
+rspTxt1=Ja, Herr.  Er bat mich, Euch zu bitten, einige Männer hinauszuschicken und die restlichen Stahlbarren zu holen. Ich kann Euch den genauen Fundort sagen.
+nxtLn1=Steel3
+
+[Steel3]
+Say=Tja, das würde zwar ich gerne machen, Stahl ist heutzutage so kostbar wie Gold, aber dieses Dorf ist in Feindeshand.  Ein einziger Mann wie Ihr kann sich vielleicht hinausschleichen, aber nicht eine ganze Gruppe.  Das Gebiet müsste gesichert sein, bevor ich noch mehr Männer riskiere.
+Adventure=ch1-56;
+RemoveQuest=ch1-08;
+AddQuest=ch1-09;
+rspDflt=None
+rspTxt1=Ich verstehe, Herr-- Das Gebiet muss gesichert sein.  Mit Eurer Erlaubnis werde ich dann jetzt ins Dorf zurückkehren, da ich meinen Bruder noch suchen muss, und wenn ich dort bin sorge ich dafür, dass das Gebiet um das Lager von Ahoul befreit ist.
+nxtLn1=Steel4
+
+[Steel4]
+Say=Ist gut.  Passt bloß auf Euch auf.
+script=player.addtitle(01MakeAreaSecure);
+rspDflt=Jawohl, Herr.  Ade.
+
+[AreaSecure]
+Say=Und, mein Junge?  Kann ich meine Männer hinausschicken, um den Stahl zurückzuholen?
+rspDflt=None
+rspCnd1=all(ttl(01AreaSafe));
+rspTxt1=Ja, Herr.  Das Gebiet ist gesichert.
+nxtLn1=AreaSecure1
+rspCnd2=all(ttl(!01AreaSafe));
+rspTxt2=Nein, Herr, noch nicht.  Ich arbeite noch daran, das Gebiet um das Lager von allen Ahoul zu befreien.  Ich glaube, es könnte noch ein oder zwei von ihnen dort geben.
+nxtLn2=NotSecure
+
+[AreaSecure1]
+Say=Ausgezeichnet.  Ich werde meine Männer sofort hinausschicken.  Die Waffen, die wir mit diesem Stahl herstellen können, werden viele Leben retten, wenn die Zeit kommt, zu kämpfen.  Gut gemacht!  Die Geister begleiten Euch tatsächlich!
+RemoveQuest=ch1-09;
+AddQuest=ch1-10;
+script=player.addtitle(01GetSword);
+rspDflt=Danke, Herr, aber ich habe nur meine Pflicht getan.
+
+[NotSecure]
+Say=Schon gut, mein Junge.  Ich weiß, dass Ihr Euch um Euren Bruder Sorgen macht.  Wenn alles gesichert ist, sagt mir Bescheid.
+rspDflt=Jawohl.  Danke, Herr.
+
+[penrith]
+say=Sieh, wen haben wir denn da?!  Ich habe mich schon gewundert, wo Ihr bleibt.  Wie geht es Eurem Bruder?
+rspdflt=Entschuldigung, Penrith.  Ich habe mich wohl verlaufen.
+rsptxt1=Ehrlich gesagt, es ist eine Weile her, seit ich ihn gesehen habe, aber er erholt sich jeden Tag etwas mehr.
+nxtln1=penrith2
+
+[penrith2]
+say=Das ist ja großartig.  Ich habe ihn vor einiger Zeit gesehen, aber ich dachte mir, dass Ihr ihn früher sehen würdet.  Es wurde aber auch Zeit, dass er sich ein wenig ausruht.  Er war immer so verbissen.  Ach, aber ihr seid bestimmt nicht hergekommen, um Euch das Gefasel eines alten Trottels anzuhören.  Kann ich Euch irgendwie helfen?
+rspdflt=none
+rspcnd1=all(ttl(03mabonquest,!03mabondone,!03reportgiven):obj(!statuspenrith));
+rsptxt1=In der Tat, das könnt Ihr.  Ihr habt bestimmt gehört, dass Sir Mabon zum Nachfolger von General Ovoron ernannt wurde...
+nxtln1=penrith3
+rsptxt2=Ja, ich dachte, Ihr könntet mir vielleicht ein paar Fragen beantworten...
+nxtln2=penrith5
+
+[penrith3]
+say=Ah, ja, Sir Mabon.  Ich glaube, er wird sich in seinem neuen Amt gut machen; er ist ein ehrgeiziger Mensch.  Oh, Entschuldigung, ich habe Euch unterbrochen...
+rspdflt=none
+rsptxt1=Das macht nichts.  Nun, Ovoron scheint sein Büro in Unordnung hinterlassen zu haben, und es fehlen einige Dokumente.  Sir Mabon schickt mich her, um den regionalen Lagebericht zu holen.
+nxtln1=penrith4
+
+[penrith4]
+say=Ah, den Truppenaufstellungbericht?  Natürlich.  Kann ich sonst noch etwas für Euch tun?
+script=player.additem(statuspenrith);addtitle(03reportgiven);
+adventure=ch3-552
+rspdflt=Im Moment nicht, Penrith.  Danke für Eure Zeit.
+rsptxt1=Ja, Ihr könntet mir ein paar Fragen beantworten...
+nxtln1=penrith5
+
+[penrith5]
+say=[Stöhn]  Nicht schon wieder, ich...
+rspdflt=Es war nur ein Scherz, Penrith.  Gehabt Euch wohl.

@@ -1,0 +1,165 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01talksoren
+Checked=01informed,01Recovered,03chapter3,03knowelves,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-69,ch3-563
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Gracias, Soren.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(03chapter3));
+goto2=three
+Say3=All(ttl(01informed,!01Recovered));
+goto3=Soren
+Say4=All(ttl(!01informed,!01Recovered));
+goto4=News
+Say5=All(ttl(01informed,01Recovered));
+goto5=Chalice
+
+[Soren]
+Say=Hola, señor.  ¿Qué os trae a la Atalaya?
+RspDflt=None
+RspTxt1=He venido a preguntaros por mi hermano.
+NxtLn1=Soren1
+
+[Soren1]
+Say=¿Vuestro hermano?  ¿Queréis decir el individuo que vimos anoche corriendo por el pueblo?
+RspDflt=None
+RspTxt1=Sí!  ¿Era mi hermano?  ¿Era el Teniente Corvus de los Elythrianos?
+NxtLn1=Soren2
+
+[Soren2]
+Say=Tan seguro como que mi nombre es Soren.  ¡Un escuadrón completo de Ahoul le estaba dando caza!  Cada dos casas o así, se giraba y luchaba con ellos.  Vuestro hermano es un gran luchador...
+RspDflt=None
+RspTxt1=¿Sigue vivo?
+NxtLn1=Soren3
+
+[Soren3]
+Say=No podría decirlo, señor.  Se metió por un callejón y es lo último que vimos de él.
+RspDflt=Gracias.
+script=player.addtitle(01TalkSoren)
+
+[News]
+Say=Hola.  ¿Qué buscáis aquí arriba?
+RspDflt=Nada.  Disculpa.
+RspTxt1=Sólo busco algún rumor.
+NxtLn1=News1
+RspTxt2=Quería hablar con vosotros.  ¿Quien eres?
+NxtLn2=News2
+
+[News1]
+Say=Abajo en el pueblo suceden cosas extrañas, señor.  ¡Muy extrañas!  Hemos visto sombras moverse alrededor de la vieja Iglesia, y oímos ruidos extraños en algún lugar cercano a la Librería.  ¡No le encontramos sentido a todo eso!
+Adventure=ch1-69;
+RspDflt=Ni yo.  Gracias por la información.
+rspBack=News
+
+[News2]
+Say=El nombre es Soren, señor, y soy de aquí, de Oriam.  Nací fuera de la frontera.  Mi casa fue una de las primeras que quemaron los malditos Ahoul.  No sé qué sucedió con mi familia, pero espero que estén escondidos en alguna parte.
+RspDflt=Espero que estén seguros.
+rspBack=News
+
+[Chalice]
+Say=Bienvenido a casa, mi señor!
+RspDflt=None
+RspTxt1=Hola, Soren.  ¿Cómo van las cosas por aquí arriba?
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Van bien, señor.  Os vimos explorando por el pueblo.
+RspDflt=None
+RspTxt1=Espero que no os pareciese demasiado atontado!
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=No, señor!  Parecía que supierais perfectamente lo que hacíais ahí abajo.
+RspDflt=Gracias, Soren.  Que los buenos espíritus te protejan.
+
+[three]
+Say=Bienvenido, señor.  ¡Apuesto a que habéis llegado más lejos en el pueblo que la última vez que os vi!
+RspDflt=none
+RspTxt1=Pues sí, pero cómo lo sabías?
+nxtln1=three2
+
+[three2]
+Say=Porque he supuesto que habíais limpiado el pueblo, y se os nota el cansancio del combate más que la última vez.  Decidme, ¿habéis estado ya en los bosques?  ¿Habéis hablado ya con algún ELFO?
+RspDflt=none
+rspcnd1=all(ttl(03knowelves));
+RspTxt1=Sí, ciertamente, he hablado con algunos de ellos.  ¿Por qué lo preguntas?
+nxtln1=three3
+rspcnd2=all(ttl(!03knowelves));
+RspTxt2=No, no he hablado con ninguno todavía.  ¿Por qué lo preguntas?
+nxtln2=three6
+
+[three3]
+Say=¿Es cierto que tienen dientes afilados y lenguas bífidas?
+RspDflt=none
+RspTxt1=Eso es lo más ridículo que he oído jamás!
+nxtln1=three4
+
+[three4]
+Say=Bueno, quizá, pero sí que tienen cuernos, ¿no es así?  Por eso sus ropas no nos sirven, eso es lo que dijo mamá.  Dijo que me mantuviese alejado del bosque, o los Elfos vendrían a robarme la vida...  o...  o PEOR.
+adventure=ch3-563
+RspDflt=none
+RspTxt1=Absurdo.  ¡Tu madres se equivocaba!  ¡Los elfos pueden ser un poco distintos, pero todo eso son... cuentos de hadas!  ¡Qué xenofobia!  Qué, aparte de la locura, puede hacer que alguien llegue a creerse esas...
+nxtln1=three5
+
+[three5]
+Say=Oh, bueno, seguramente.  Quiero decir, vos sois el experto y eso.
+RspDflt=No te preocupes.  Hasta luego, soldado.
+
+[three6]
+Say=Oh, sólo me estaba haciendo unas preguntas, señor.  Lamento molestaros.
+RspDflt=No hay problema, soldado.  Buenos días.
+
+[chapter6]
+Say=%playername%!  He estado pensando en qué haré cuando termine este asedio.  Incluso después de todo lo que nos ha sucedido, creo que algo bueno saldrá de esta terrible guerra.
+RspDflt=Deberías prestar más atención a tus obligaciones, soldado.  Nuestras vidas dependen de ti.
+RspTxt1=¿Qué cosas buenas pueden surgir de una tragedia tan terrible?
+nxtln1=chapter6a
+
+[chapter6a]
+Say=Cierto...  Piensa en ello.  Una tierra pacífica es invadida por pequeños hombrecillos verdes con poderes místicos y extrañas armas.  Los ciudadanos que quedan están atrapados en sus casas, demasiado frágiles y temerosos de contraatacar.  Entonces aparece un héroe.  ¡Qué maravilloso elenco de personajes!  El mismo rey se sorprendería ante tal muestra de heroísmo.
+RspDflt=Uau.  Hasta luego.
+RspTxt1=Suena como una gran historia.  ¿Quién supones que la escribiría?
+nxtln1=chapter6b
+RspTxt2=Mira!  ¡Los Sha'ahoul nos atacan!  ¡Luchemos por nuestras vidas!
+nxtln2=chapter6c
+
+[chapter6b]
+Say=Conozco un bardo en mi tierra.  Sólo necesitamos alguien que haga de héroe...
+RspDflt=Ya veo dónde quieres ir a parar.  Hasta luego.
+
+[chapter6c]
+Say=¿Eh? ¿Qué? [Mirando frenéticamente a su alrededor]  Ah, ya veo.  Supongo que debería prestar más atención a mis deberes, ¿eh?
+RspDflt=Lo mismo que yo.  Disculpa, soldado.
+

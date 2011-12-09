@@ -1,0 +1,92 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01foundbrother,01informed,01Recovered,01transferred,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-03
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/19/01)=Passed
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=6
+Else=
+Default=
+say1=one(ttl(04chapter4,05chapter5,06chapter6));
+goto1=chapter6
+say2=All(ttl(01foundbrother));
+goto2=rowe5
+Say3=All(ttl(!01informed,!01Recovered,!01transferred));
+goto3=Rowe1
+Say4=All(ttl(01informed,!01Recovered,!01transferred));
+goto4=Rowe2
+Say5=All(ttl(01informed,!01Recovered,01transferred));
+goto5=Rowe3
+Say6=All(ttl(01informed,01Recovered,01transferred));
+goto6=Rowe4
+
+[Rowe1]
+Say=Lo lamento, señor.  Tenemos órdenes estrictas de no dejar pasar a nadie.  Deberéis marcharos.
+Adventure=ch1-03;
+RspDflt=Ya veo.  Buenos días.
+
+[Rowe2]
+Say=Tengo órdenes de dejarle entrar.  Si yo fuese usted, lo haría rápidamente.  ¡Sir Roth se está volviendo menos tolerante con las tonterías!
+script=setpos(PathCorner20000500250046080510);Siege018.setpos(PathCorner20000500250046085120)
+RspDflt=Gracias por el consejo.
+
+[Rowe3]
+Say=Mejor que sea importante, o te haré pedazos sólo por el placer de hacerlo.
+script=setpos(PathCorner20000500250046080510);Siege018.setpos(PathCorner20000500250046085120)
+RspDflt=Te lo aseguro, seré rápido.
+
+[Rowe4]
+Say=Saludos, mi señor!  ¡Es un honor tenerle en nuestro pasillo!
+script=setpos(PathCorner20000500250046080510);Siege018.setpos(PathCorner20000500250046085120)
+RspDflt=Gracias a ti.
+
+[Rowe5]
+Say=Lo lamento, señor.  Sir Roth se ha retirado a sus habitaciones privadas durante el resto de la tarde.  Deberéis marcharos.
+RspDflt=Ya veo.  Buenos días.
+
+[chapter6]
+Say=¿Cuantos Ahoul se necesitan para encender un fuego?
+RspDflt=No tengo tiempo para tonterías.
+RspTxt1=¿Uno?
+nxtln1=chapter6b
+RspTxt2=¿Dos?
+nxtln2=chapter6b
+RspTxt3=¿Tres?
+nxtln3=chapter6b
+RspTxt4=No tengo ni idea.
+nxtln4=chapter6b
+
+[chapter6b]
+Say=Tantos como puedas tener quietos mientras les quemas! Jajaja!
+RspDflt=Cúidate, Rowe.
+

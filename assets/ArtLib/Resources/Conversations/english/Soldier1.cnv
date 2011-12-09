@@ -1,0 +1,96 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Farewell.
+say1=one(ttl(04chapter4,05chapter5,06chapter6));
+goto1=fourup
+Say2=All(ttl(!01recovered));
+goto2=Soldier
+Say3=All(ttl(01recovered));
+goto3=Chalice
+
+[Soldier]
+Say=What can I do for you?
+RspDflt=Nothing, soldier.  Pardon me.
+RspTxt1=Where are you from?
+NxtLn1=Soldier1
+RspTxt2=Heard any good rumors?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=My home country is Cathea.  It seems farther from here with every passing day.  I miss my dog.  I wasn't allowed to bring him here because of "health issues" and the shortage of food.
+RspDflt=Interesting.  Farewell.
+rspBack=soldier
+
+[Soldier2]
+Say=A good source told me that there's now some bread for soldiers.  If I were you, I'd be the first in line at the mess hall tonight!
+RspDflt=I'm glad to hear that, soldier.  Thank you.
+rspBack=soldier
+
+[Chalice]
+Say=Ah, the hero graces my small part of Avalon!  What can I do for you, sir?
+RspDflt=Nothing, soldier.  Just passing through.  Farewell.
+RspTxt1=Where are you from?
+NxtLn1=Chalice1
+RspTxt2=Heard any good rumors?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=I've come here from Cathea to fight the Ahoul.  I must admit that I didn't do it just for the battle...  A friend of mine was among the first to inhabit Avalon.  He was slain in the line of duty, and, well, I wish to pay the Ahoul back in spades.  With you among us, I know we will be victorious!
+RspDflt=Interesting.  Farewell.
+rspBack=chalice
+
+[Chalice2]
+Say=No, sir, never had much use for rumor, m'self.
+RspDflt=Agreed, soldier.  Farewell.
+rspBack=chalice
+
+[fourup]
+Say=%playername%!  I've been thinking about something, and I'd like to know what you think.  If one of the Sha'ahoul -- one of the human ones, mind you -- went traitor to their side and decided to join us, would you let him?
+RspDflt=I haven't the time for this.  Farewell.
+RspTxt1=I suppose so.  He would be watched carefully enough and likely never trusted until his people were vanquished.
+nxtln1=fourup2
+RspTxt2=Of course not!  We have enough trouble with traitors in our own midst without letting one of the enemy into our ranks and into our trust!
+nxtln2=fourup3
+
+[fourup2]
+Say=Hmm.  I'm not so trusting as you, %playername%, but thank you for your opinion.  I shall think on it.
+RspDflt=You are welcome.  Farewell, soldier.
+
+[fourup3]
+Say=I agree, %playername%, but the question remains, what are we to do with them once they are defeated? Thank you for your opinion.  I shall think on it.
+RspDflt=You are welcome.  Farewell, soldier.
+

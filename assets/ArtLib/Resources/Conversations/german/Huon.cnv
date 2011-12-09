@@ -1,0 +1,46 @@
+[root]
+Count=2
+Else=
+Default=Danke, Huon.
+Say1=All(ttl(!01recovered));
+goto1=Huon
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Huon]
+say=He da!  Könnt Ihr uns einen Gefallen tun?
+rspDflt=None
+rspTxt1=Wenn es zeitlich möglich ist, ja.
+NxtLn1=Huon1
+
+[Huon1]
+say=Aus dem Untergeschoß kommen Kratzgeräusche. Wir glauben, dass es Ratten sind.  Könnt Ihr den General bitten, ein paar Katzen hierher schicken zu lassen? Der Lärm hält uns nachts wach! 
+rspDflt=Es tut mir leid, aber ich glaube, der General hat im Augenblick Wichtigeres zu tun.
+rspCnd1=all(ttl(01Bugs2));
+rspTxt1=Da man heute im Küchenkeller riesige Käfer entdeckt hat, könnte ich mir vorstellen, dass es unter dem Südtor auch welche gibt.  Ich werde der Sache später nachgehen.
+nxtLn1=Bugs
+
+[Bugs]
+say=Käfer?  Das ist ja noch schlimmer als Ratten!  Hoffentlich erledigt Ihr sie alle, und zwar schnell!
+rspDflt=Ich werde mein Bestes tun.  Ade.
+
+;After recovery of Chalice
+[Chalice]
+say=So, ihr seid also der, der den Kelch des Lebens gefunden hat!  Vielen Dank, Freund!
+rspDflt=None
+rspTxt1=Ich habe nur meine Pflicht, als Soldat von Avalon getan.
+NxtLn1=Chalice1
+
+[Chalice1]
+say=Das war bestimmt ziemlich abenteuerlich!
+rspDflt=None
+rspTxt1=Beinahe erwies es sich als größere Abenteuer, als mir lieb war!
+NxtLn1=Chalice2
+
+[Chalice2]
+say=Das nehme ich Euch nicht ab!  Einen schönen Tag noch, Herr!
+rspDflt=Ade.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

@@ -1,0 +1,59 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Gracias, Alain.
+say1=all(ttl(06chapter6));
+goto1=chapter2
+Say2=All(ttl(!01FoundBrother));
+goto2=Alain
+say3=All(Ttl(01FoundBrother,!02Chapter2));
+goto3=SeeRoth
+say4=All(ttl(02Chapter2));
+goto4=Chapter2
+
+[Alain]
+Say=Me temo que no, señor.  No tiene usted las credenciales necesarias, por tanto no puedo permitirle el paso.
+RspDflt=Gracias de todas formas.
+
+[SeeRoth]
+Say=Buenos días, Sir Roth le está esperando en sus habitaciones. Mejor dese usted prisa.
+RspDflt=Ahí es a donde me dirijo ahora.
+
+[Chapter2]
+Say=Buenos días!
+RspDflt=Buenos días Soldado!
+

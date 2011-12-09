@@ -1,0 +1,152 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01letterknown,01letterreturned
+Checked=01LetterKnown,01LetterReturned,01recovered,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-08,ch1-13
+Removed=
+
+[Items]
+Given=
+Taken=loveletter
+Checked=LoveLetter
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=7
+Else=
+Default=Nothing, thanks.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=All(ttl(!01recovered,!01LetterKnown));
+goto2=Soldier
+Say3=All(ttl(!01recovered,01LetterKnown,!01LetterReturned):Obj(!LoveLetter));
+goto3=NoLetter
+Say4=All(ttl(!01recovered,01LetterKnown,!01LetterReturned):Obj(LoveLetter));
+goto4=FoundLetter
+Say5=All(ttl(!01recovered,01LetterReturned));
+goto5=Rumour
+Say6=All(ttl(01recovered,01LetterReturned));
+goto6=Chalice
+Say7=All(ttl(01Recovered,!01LetterReturned));
+goto7=Chalice2
+
+[Soldier]
+Say=What is it that you want?
+RspTxt1=I'd like to know where you're from.
+NxtLn1=Soldier1
+RspTxt2=I'd like to hear any good rumors you might have.
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=I make my home beneath the tree-choked forests of Aratoy.  The sight of the sun streaming through its leaves is as breathtaking as my love.  I miss them both, but my love most of all.  It was hard enough leaving her to come fight a war, but now I'm stuck inside a besieged keep, away from the trees and grass and away from her.  I know not if I'll ever leave this trap, either, to return to them.  She has sent me letters, though -- well, in truth only one has ever reached me.  It has helped.
+RspDflt=None
+RspTxt1=I see.
+nxtLn1=Letter
+
+[Letter]
+Say=There was a dried rose inside, you know, picked from her garden.  It was funny how the letter and rose just made me miss her even more but still I cherished them.  They were pieces of home, the only things I had that really reminded me of what we are fighting for.  The love she put into that letter was the only thing that made living in this stone box bearable.  And now it's gone.
+RspDflt=None
+RspTxt1=Gone?
+NxtLn1=Letter1
+RspTxt2=That's too bad.
+NxtLn2=Soldier3
+
+[Soldier2]
+Say=I hear that General Ovoron is planning to raid a supply camp.  To hold out against the Ahoul we'll need all the supplies that he can bring back.  I hope he captures some more arrows; I'm almost out, and I've never been very good at making them.  Back home, my love was the one who made all my arrows.  She made the straightest-flying arrows I've ever seen.  They were even better than her father's arrows, even if he was the town's fletcher.  I used up all of her arrows long ago though.  After that, the only things I had left from home were the letter and rose she sent to me.  And now even they're gone.
+RspDflt=None
+RspTxt1=Gone?
+NxtLn1=Letter1
+RspTxt2=I'm sorry to hear that.
+NxtLn2=Soldier3
+
+[Soldier3]
+Say=Was there anything else you wanted?
+RspTxt1=I'd like to know where you're from.
+NxtLn1=Soldier1
+RspTxt2=I'd like to hear any good rumors you might have.
+NxtLn2=Soldier2
+
+[Letter1]
+Say=Yes.  Some heartless fiend stole the letter from beneath my pillow and the rose from beneath my bed.  Who would do such a thing?  The letter is probably in a hundred pieces by now, or scattered ashes.
+Adventure=ch1-08;
+script=player.addtitle(01LetterKnown)
+RspDflt=None
+RspTxt1=The Ahoul are not the only ones who can be cruel.  Take heart: I'm sure the siege shall be lifted soon so you may return to see your home and love.
+NxtLn1=Letter2
+
+[Letter2]
+Say=With all my heart, I hope it is so.
+RspDflt=Good luck to you, and farewell.
+
+[NoLetter]
+Say=I do so miss my love and my home.
+RspDflt=As I miss my own home.  Farewell.
+
+[FoundLetter]
+Say=I do so miss my love and my home.
+RspDflt=As I miss my own home.  Farewell.
+RspTxt1=I was wondering, would this be the letter you lost?
+nxtLn1=FoundLetter2
+
+[FoundLetter2]
+Say=You've found it!  Thanks be to the spirits, and thanks be to you!  The rose, did you find the rose, too?  Keep it, please, as a token of my gratitude.  When this war is over, perhaps we'll meet in Aratoy and raise a drink together?
+Adventure=ch1-13;
+Script=player.addtitle(01LetterReturned);takeitem(LoveLetter,player);player.setprop(trainingpoints=1);showmessage(You have received some training points.,300);
+RspDflt=I look forward to it.  May the spirits -- and your love -- watch over you.  Goodbye.
+
+[Rumour]
+Say=Hello!  Thanks again for the letter.
+RspDflt=None
+RspTxt1=You are most welcome.  I do not suppose you have heard anything interesting since last we spoke?
+nxtLn1=Rumour1
+
+[Rumour1]
+Say=Sorry, I've just been reading the letter and thinking of my love.
+RspDflt=I understand, but be careful or you'll wear out the paper!  Farewell.
+
+[Chalice]
+Say=I heard that you've found the Chalice of Life.  The Chalice, my letter; it seems you're good at finding lost things.  Please keep it up!
+RspDflt=None
+RspTxt1=I shall do my best in this war.  I can do no less.
+nxtLn1=Chalice1
+
+[Chalice1]
+Say=As will I.  I never really thought I'd get to see my love again, but with the Chalice here in Avalon, I think that now we really have a chance.
+RspDflt=The road ahead is still filled with danger, but I'm sure we'll come through.  Farewell.
+
+[Chalice2]
+Say=I heard that you've found the Chalice of Life.  Well done!
+RspDflt=None
+RspTxt1=I'll do my best in this war.  I can do no less.
+nxtLn1=Chalice1
+
+[chapter6]
+Say=I'm sick of this blasted place!  I came here to fight a war, not sit idle and starve!
+RspDflt=So did I.  Farewell.
+RspTxt1=Have you received any more letters from your love?
+nxtln1=chapter6b
+
+[chapter6b]
+Say=None, save the first. I wonder if I'll have a home to go to when this siege has ended.
+RspDflt=Keep your faith, soldier.
+

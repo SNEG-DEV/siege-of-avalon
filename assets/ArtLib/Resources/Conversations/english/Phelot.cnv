@@ -1,0 +1,82 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Thank you, Sir Phelot.
+say1=all(ttl(05chapter5,06chapter6));
+goto1=phelotsix
+say2=one(ttl(03chapter3,04chapter4));
+goto2=three
+Say3=all(ttl(!03chapter3));
+goto3=phelot
+
+[Phelot]
+Say=What?!  Ahem!  What is it you want up here?
+RspDflt=None
+RspTxt1=I'm just having a look around.  Is something the matter?
+NxtLn1=Phelot1
+
+[Phelot1]
+Say=No!  Not at all!  Everything is... er, everything is well.
+RspDflt=I see.  Good day to you.
+
+[three]
+Say=Mmf?  Oh...  hello...
+RspDflt=none
+RspTxt1=Are you feeling well?
+nxtln1=three2
+
+[three2]
+Say=Sleepy.  Worry's got me...
+RspDflt=none
+RspTxt1=You should see a healer for a tonic to help you get a good night's sleep.
+nxtln1=three3
+
+[three3]
+Say=Oh, good.  I'll do that.
+RspDflt=Hmm.  Well, good luck, Sir Phelot.
+
+[phelotsix]
+Say=I saw the monks.  As worried as I've been, they managed to put me to sleep.
+RspDflt=I'm glad to hear it, Phelot.  Farewell.
+RspTxt1=Oh, so they gave you a tonic?
+nxtln1=phelotsix2
+
+[phelotsix2]
+Say=[laughing] No, %playername%, they simply began sermonizing.  Yes, they gave me a tonic.  Quite a potent one, too, I think I took too much of it...
+RspDflt=I think I've heard this one before, Phelot.  Please excuse me.
+RspTxt1=Well, you look alert enough!  Pardon me.
+

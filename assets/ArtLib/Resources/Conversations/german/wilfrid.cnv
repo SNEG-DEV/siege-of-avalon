@@ -1,0 +1,13 @@
+[root]
+Count=1
+Else=
+Default=
+Say1=
+goto1=Wilfrid
+
+[Wilfrid]
+say=Seid gegrüßt.  Ich bin Wilfrid, der Gerber.  Ich mache Lederwaren aller Art.  Möchtet Ihr Euch umsehen?
+Adventure=ch1-32;
+rspdflt=Im Moment nicht.
+rsptxt1=Ja, ich glaube, ich möchte Eure Ware sehen.
+script1=merchant

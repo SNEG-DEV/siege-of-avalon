@@ -1,0 +1,165 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01talksoren
+Checked=01informed,01Recovered,03chapter3,03knowelves,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-69,ch3-563
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Thank you, Soren.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(03chapter3));
+goto2=three
+Say3=All(ttl(01informed,!01Recovered));
+goto3=Soren
+Say4=All(ttl(!01informed,!01Recovered));
+goto4=News
+Say5=All(ttl(01informed,01Recovered));
+goto5=Chalice
+
+[Soren]
+Say=Hello, sir.  What brings you to the Lookout?
+RspDflt=None
+RspTxt1=I've come here for news of my brother.
+NxtLn1=Soren1
+
+[Soren1]
+Say=Your brother?  You mean the bloke we saw running through the village yesterday?
+RspDflt=None
+RspTxt1=Yes!  Was it my brother?  Was it Lieutenant Corvus of the Elythrians?
+NxtLn1=Soren2
+
+[Soren2]
+Say=Sure as my name's Soren.  He was being chased by a full fist of Ahoul raiders!  He kept turning and fighting them every couple of houses or so.  Quite a fighter your brother is...
+RspDflt=None
+RspTxt1=Is he alive?
+NxtLn1=Soren3
+
+[Soren3]
+Say=Couldn't say, sir.  He turned down an alley and that's the last we saw of him.
+RspDflt=Thank you.
+script=player.addtitle(01TalkSoren)
+
+[News]
+Say=Hello.  What's your business up here?
+RspDflt=None.  Excuse me.
+RspTxt1=Just looking for a rumor or two.
+NxtLn1=News1
+RspTxt2=I want to meet some of you guys.  Who are you?
+NxtLn2=News2
+
+[News1]
+Say=Strange things are afoot down in the village, sir.  Strange things, indeed!  We've seen shadows moving about the old Church, and we hear weird noises from somewhere around the Library.  Don't know what to make of all that!
+Adventure=ch1-69;
+RspDflt=Neither do I.  Thanks for the information.
+rspBack=News
+
+[News2]
+Say=The name's Soren, sir, and I'm from right here in Oriam.  I was born out on the frontiers.  My home was one of the first ones burnt by the cursed Ahoul.  I don't know what became of my family, but I expect they're hiding out somewhere.
+RspDflt=I hope they are safe.
+rspBack=News
+
+[Chalice]
+Say=Welcome back, my lord!
+RspDflt=None
+RspTxt1=Hello, Soren.  How have things been up here?
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=All right, sir.  We saw you scouting about down in the village.
+RspDflt=None
+RspTxt1=I hope I didn't look too foolish!
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=No, sir!  You looked like you knew what you were doing down there.
+RspDflt=Thank you, Soren.  May the good spirits protect you.
+
+[three]
+Say=Welcome back, sir.  I'll bet you've been out further than the village since the last time I saw you!
+RspDflt=none
+RspTxt1=You bet, but how did you know that?
+nxtln1=three2
+
+[three2]
+Say=Because I figured you cleaned out the village, and you've a battle-weary look about you that's a bit more intense than last time.  Say, have you been to the woods yet?  Spoken to an ELF yet?
+RspDflt=none
+rspcnd1=all(ttl(03knowelves));
+RspTxt1=Yes, actually, I've spoken to a few of them.  Why do you ask?
+nxtln1=three3
+rspcnd2=all(ttl(!03knowelves));
+RspTxt2=I've not spoken to one yet, no.  Why do you ask?
+nxtln2=three6
+
+[three3]
+Say=Is it true that they have pointy teeth and forked tongues?
+RspDflt=none
+RspTxt1=That's the most ridiculous thing I've ever heard!
+nxtln1=three4
+
+[three4]
+Say=Well, maybe, but they do have horns, right?  That's why their clothes won't fit, that's what momma said.  Said stay away from the forest, or the Elves will come and take your life...  Or...  Or WORSE.
+adventure=ch3-563
+RspDflt=none
+RspTxt1=Ludicrous.  Your mother was mistaken!  The elves may look a little different, but all of that is... fairy tales!  Such xenophobia!  What, outside of madness, could get a person to believe such a...
+nxtln1=three5
+
+[three5]
+Say=Oh, well, sure.  I mean, you're the expert and all.
+RspDflt=No offense.  Farewell, soldier.
+
+[three6]
+Say=Oh, I was just wondering something, sir.  Sorry to disturb you.
+RspDflt=No inconvenience, soldier.  Good day.
+
+[chapter6]
+Say=%playername%!  I've been thinking of what I am to do after this siege.  Even in face of all that has befallen us, I have hope that something good could come from this horrible war.
+RspDflt=You should pay more attention to your duties, soldier.  Our lives depend on you.
+RspTxt1=What good can come from such a terrible time of tragedy?
+nxtln1=chapter6a
+
+[chapter6a]
+Say=Right...  Think about it.  A peaceful land is invaded by little green men with mystical powers and strange weapons.  The townsfolk which remain are trapped inside their houses, too fragile and afraid to retaliate.  Then, a hero appears.  What a wonderful cast of characters!  The king himself would be amazed at such a depiction of heroism.
+RspDflt=Wow.  Farewell.
+RspTxt1=Sounds like a great story.  Who do you suppose would write it?
+nxtln1=chapter6b
+RspTxt2=Look!  The Sha'ahoul are upon us!  Fight for your lives!
+nxtln2=chapter6c
+
+[chapter6b]
+Say=I know of a bard in my homeland.  All we need is someone to play the hero...
+RspDflt=I know where this is going. Farewell.
+
+[chapter6c]
+Say=What? Huh? [looking about frantically]  Ah, I see.  I guess I should pay attention to my duties, eh?
+RspDflt=As should I.  Excuse me, soldier.
+

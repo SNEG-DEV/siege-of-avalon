@@ -1,0 +1,81 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(5/23/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Farewell.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=All(ttl(!01recovered));
+goto2=Soldier
+Say3=All(ttl(01recovered));
+goto3=Chalice
+
+[Soldier]
+Say=What can I do for you?
+RspTxt1=Where are you from?
+NxtLn1=Soldier1
+RspTxt2=Heard any good rumors?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=I have been away from Nisos for too long, sir.  It will be longer still if we don't figure out a way to break this siege.
+rspBack=soldier
+
+[Soldier2]
+Say=I heard from the Quartermaster that someone has been stealing rations in the night!  The stinking thieves!
+Adventure=ch1-07;
+script=player.addtitle(01StolenRations);
+rspBack=soldier
+
+[Chalice]
+Say=How can I help you, sir?
+RspTxt1=Where are you from?
+NxtLn1=Chalice1
+RspTxt2=Heard any good rumors?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=I sailed here from Nisos and will sail back under a banner of victory!
+rspBack=chalice
+
+[Chalice2]
+Say=Only that reinforcements are making haste towards Avalon.  Only a few more days of waiting!
+rspBack=chalice
+
+[chapter6]
+Say=I heard the chambermaid say that more people in Avalon are sick than are telling.
+RspDflt=May the good spirits protect us. Farewell.
+

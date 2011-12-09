@@ -1,0 +1,52 @@
+[root]
+Count=2
+Else=
+Default=Danke, Avery.
+Say1=All(ttl(!01recovered));
+goto1=Avery
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Avery]
+say=Hallo, junger Herr!  Ein neues Gesicht ist am Südtor immer willkommen!
+rspDflt=None
+rspTxt1=Danke.  Warum sagt Ihr das?
+NxtLn1=Avery1
+
+[Avery1]
+say=Ich bin seit Tagen hier drin eingepfercht, Herr.  Ein paar von den Jungs hier drin werden mir langsam unheimlich!
+rspDflt=None
+rspTxt1=Was meint Ihr damit?
+NxtLn1=Avery2
+
+[Avery2]
+say=Es ist wahrscheinlich nur Einbildung, Herr, aber ich könnte schwören, dass einige Kerle hier drin nicht zu unserer Seite gehören. Könnt Ihr Euch das vorstellen?
+rspDflt=None
+rspTxt1=Sehr seltsam.  Hoffentlich irrt Ihr Euch.
+NxtLn1=Avery3
+
+[Avery3]
+say=Ganz bestimmt.  Vermutlich ist es nur ein Koller, Herr.  Ihr versteht schon.  Das, und ich habe eine Doppelschicht gearbeitet.  Ich bin todmüde.
+rspDflt=Hoffentlich bekommt Ihr bald die Gelegenheit, Euch richtig auszuschlafen.  Mögen Euch die guten Geister beschützen.
+
+;After recovery of Chalice
+[Chalice]
+say=Hallo!  Was gibt's Neues in der Welt außerhalb vom Südtor?
+rspDflt=None
+rspTxt1=Meint Ihr, im Dorf? Es ist gefährlich dort, aber mir ist es ganz gut ergangen.
+
+nxtln1=Chalice1
+
+[Chalice1]
+say=Nicht nur im Dorf, sondern auch im Hof und in der Burg!  Ich komme ja gar nicht mehr hier raus!
+rspDflt=None
+rspTxt1=Stimmt, ja.  In der Burg ist alles gleich geblieben.  Die Menschen sind zwar hungrig, aber sie sind guter Dinge.
+NxtLn1=Chalice2
+
+[Chalice2]
+say=Das ist eine gute Nachricht.  Hoffentlich können wir durchhalten.
+rspDflt=Das hoffen wir alle.  Auf bald.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

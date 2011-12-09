@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Adiós.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=¿Qué puedo hacer por ti?
+RspTxt1=¿De dónde vienes?
+NxtLn1=Soldier1
+RspTxt2=¿Has oído rumores interesantes?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Nací en Elythria, pero me temo que no seré enterrado allí. El barro entre estos muros será mi tumba.
+rspBack=soldier
+
+[Soldier2]
+Say=No hay nada inusual en Avalon.  Solo las mismas condiciones desastrosas y la pésima comida...
+rspBack=soldier
+
+[Chalice]
+Say=¿En qué puedo ayudarle, señor?
+RspTxt1=¿De dónde vienes?
+NxtLn1=Chalice1
+RspTxt2=¿Has oído rumores interesantes?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Nací en Elythria, señor.
+rspBack=chalice
+
+[Chalice2]
+Say=He oído en las barracas que los cobardes Taberlandeses están volviendo a Avalon.  ¡Quizá ésta vez logren quedarse!  Ja! Ja!
+rspBack=chalice
+

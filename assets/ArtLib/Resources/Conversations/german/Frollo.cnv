@@ -1,0 +1,19 @@
+[root]
+Count=1
+Else=
+Default=Danke, Sir Frollo.
+Say1=
+goto1=Frollo
+
+[Frollo]
+say=Was soll das?!  Ich glaube nicht, dass Ihr die Erlaubnis habt, hier oben zu sein, oder?
+rspDflt=None
+rspTxt1=Erlaubnis?  Ich sehe mich hier nur um.  Niemand hat mir gesagt, dass hier Sperrzone ist.
+NxtLn1=Frollo1
+
+[Frollo1]
+say=Nun, ich sage es jetzt!  Jetzt verschwindet hier, bevor ich mich vergesse!
+rspDflt=Ja, Herr.  Es tut mir leid, Euch gestört zu haben.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

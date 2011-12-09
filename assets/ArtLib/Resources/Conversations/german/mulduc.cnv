@@ -1,0 +1,58 @@
+[root]
+Count=3
+Else=
+Default=Danke, Mulduc.
+Say1=All(ttl(!01recovered,!01trainedcombat));
+goto1=Mulduc
+Say2=All(ttl(!01recovered,01trainedcombat));
+goto2=training
+Say3=All(ttl(01recovered,01trainedcombat));
+goto3=chalice
+
+[Mulduc]
+say=Wer seid Ihr denn?  Was wollt Ihr von mir?
+rspdflt=None
+rspTxt1=Ich bin Euer neuer Sparringspartner.  Ich bin hier, um mit Euch zu trainieren.
+NxtLn1=Mulduc1
+
+[Mulduc1]
+say=Hmmm.  Ihr seht nicht besonders zäh aus.  Lauft einfach davon, wenn Ihr genug habt.  Zeit zum Spielen!
+script=Siege20000500310066675530.makeenemy(party);setprop(AIMode=IdleAI);player.addtitle(01trainedcombat);player.setprop(combatmode=true);
+rspdflt=Dann also los!
+
+[training]
+say=Immer noch kein großes Vertrauen in Eure Fähigkeiten, was? Wollen wir noch etwas trainieren?
+rspDflt=None
+rspTxt1=Nein, danke.  Habt Ihr irgendwelche Gerüchte gehört?
+NxtLn1=Training1
+rspTxt2=Ja.
+NxtLn2=Training2
+
+[Training1]
+say=Hier gibt's nicht viel von Interesse zu berichten.  Die neuen Soldaten, die sich jetzt zur Ausgebildung melden, sind nur Bauern, die den Hungersnöten im Hof der Bauersleute zu entkommen versuchen. Ich bezweifle, ob die meisten von ihnen im Kampf etwas taugen würden.  Es brechen hier in Avalon finstere Zeiten an.
+rspdflt=Beten wir, dass die Lage sich bessert.  Ade, Mulduc.
+rspback=training
+
+[Training2]
+say=Na schön!  Die Waffe erheben!  Denkt dran, einfach davonlaufen, wenn Ihr genug habt.  Ich greife Euch nicht von hinten an, versprochen!
+script=Siege20000500310066675530.makeenemy(party);setprop(AIMode=IdleAI);player.setprop(combatmode=true);
+rspdflt=Wenn Ihr bereit seid, dann los!
+rspback=training
+
+[chalice]
+say=Seid gegrüßt!  Kann ich irgendetwas für Euch tun?
+rspTxt1=Habt Ihr Lust, mit mir zu üben?
+NxtLn1=Chalice1
+rspTxt2=Habt Ihr irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Chalice2
+
+[Chalice1]
+say=Oh nein, nicht mit mir! Ich bin doch bloß Ausbilder. Auf keinen Fall kreuze ich die Klingen mit einem hartgesottenen Kriegsveteran!
+rspdflt=Wie Ihr wollt.  Mögen Euch die Geister beschützen.
+rspback=chalice 
+
+[Chalice2]
+say=Nur, dass die Feuerstellen der Ahoul jeden Tag weniger werden.  Die Nachtwache meldet, dass sie sich nachts alle davonstehlen.  Sie wissen, dass das Kriegsglück sich zu unseren Gunsten wendet. Jetzt dauert es nicht mehr lange!
+rspdflt=Das will ich hoffen.  Gehabt Euch wohl.
+rspback=chalice
+

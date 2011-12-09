@@ -1,0 +1,129 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=6
+Else=noletter
+Default=Gracias.
+say1=all(ttl(06chapter6,06posttrial));
+goto1=qmpt
+say2=all(ttl(06chapter6));
+goto2=qmsix
+say3=one(ttl(03chapter3,04chapter4,05chapter5));
+goto3=qmthreetofive
+Say4=All(ttl(squire):obj(comletter));
+goto4=squire
+Say5=All(ttl(hunter):obj(comletter));
+goto5=hunter
+Say6=All(ttl(apprentice):obj(comletter));
+goto6=apprentice
+
+[squire]
+Say=¿Qué puedo hacer por ti, joven escudero?
+RemoveQuest=ch1-00;
+RspDflt=none
+script=Siege20000600060052238420.takeitem(comletter,player);
+RspTxt1=Saludos.  Soy nuevo aquí, y acabo de recibir mi primera asignación.  Me han dicho que me podríais proveer con equipo.
+nxtln1=squire1
+
+[squire1]
+Say=En estos momentos no me quedan cotas de malla, así que una simple armadura de cuero deberá servirte.  Como arma, puedo dejarte una espada larga; las Espadas de Oficial se nos terminaron hace un mes.
+RspDflt=none
+Script=Siege20000600060052238420.giveitem(StuddedLeatherTunic,player);Siege20000600060052238420.giveitem(swordbasic,player);showmessage(You have received some equipment.,200);
+RspTxt1=Gracias, pero debo decir que este material parece ser de poca calidad.  ¿No hay nada mejor?
+nxtln1=noletter
+
+[hunter]
+Say=¿Hay algo en lo que pueda ayudarle, señor?
+RspDflt=none
+RemoveQuest=ch1-00;
+script=Siege20000600060052238420.takeitem(comletter,player);
+RspTxt1=Saludos.  Soy nuevo aquí, y acabo de recibir mi primera asignación.  Me han dicho que me podríais proveer con equipo.
+nxtln1=hunter1
+
+[hunter1]
+Say=Bueno, tengo una buena chaqueta de cuero que te protegerá del frío matinal además de protegerte de alguna flecha extraviada, y para cazar por fuera de los muros de Avalon, tengo justo lo que necesitas.
+RspDflt=none
+Script=Siege20000600060052238420.giveitem(LeatherArmor,player);Siege20000600060052238420.giveitem(QuiverBelt,player);Siege20000600060052238420.giveitem(HuntingBow,player);showmessage(You have received some equipment.,200);
+RspTxt1=Te lo agradezco pero debo decir que este equipo parece ser de pésima calidad.  ¿No hay nada mejor?
+nxtln1=noletter
+
+[apprentice]
+Say=¿Qué quieres?
+RspDflt=none
+RemoveQuest=ch1-00;
+script=Siege20000600060052238420.takeitem(comletter,player);
+RspTxt1=Saludos.  Soy nuevo aquí, y acabo de recibir mi primera asignación.  Me han dicho que me podríais proveer con equipo.
+nxtln1=apprentice1
+
+[apprentice1]
+Say=Un viejo degüella-cerdos es todo lo que puedo darte.  Si quieres algo mejor, tendrás que buscarlo en otra parte.
+RspDflt=none
+Script=Siege20000600060052238420.giveitem(dagger,player);showmessage(You have received an item.,200);
+RspTxt1=¿Una daga?  ¿Eso es todo lo que tienes para mí?
+nxtLn1=noletter
+
+[noletter]
+Say=Lo lamento, chico.  El General Roth me ha ordenado retener la distribución de armas para que podamos prepararnos para un asalto.  No creas que me gusta ver a nadie--incluso a los novatos--ir tan mal armados.  Es la maldita carencia de acero.
+RspDflt=Te comprendo.  Buenos días.
+RspTxt1=Así pues, ¿dónde puedo hallar mejor equipo?
+nxtLn1=Steel
+rspCnd2=all(ttl(01StolenRations));
+RspTxt2=He oído algo sobre raciones robadas.  ¿Qué sabes sobre ello?
+nxtLn2=Stolen
+
+[Stolen]
+Say=En realidad, nada.  Anora--la cocinera jefe--acaba de mencionar que la comida de la bodega de la cocina se está extraviando.
+Adventure=ch1-07;
+RspDflt=Ya veo, gracias por tu tiempo.
+RspTxt1=¿Tienes idea de dónde puedo encontrar equipo de mejor calidad?
+nxtLn1=Steel
+
+[Steel]
+Say=En estos días que corren, realmente no lo sé, pero quizá Lucan pueda ayudarte.  Está fuera, en la Armería, cerca de la Puerta Sur, pasado el Patio Exterior.  Pero, chico, yo no contaría con ello.  También he oído que hay algunos mercaderes en el Patio Exterior, pero si los militares no tenemos equipo adecuado, no veo cómo podrían tenerlo los civiles.
+Adventure=ch1-06;
+RspDflt=Supongo que intentaré preguntarle a Lucan, entonces.  Gracias por tu tiempo.
+
+[qmthreetofive]
+Say=Buenos días, chico.  A juzgar por tu equipo, diría que no necesitas ninguna de mis pobres cosas.
+RspDflt=Err, supongo que no, intendente.  Por favor, disculpad mi intrusión.
+
+[qmsix]
+Say=hay una quietud en el aire, chico.  No puedo decirlo como me gustaría.  Todo el mundo lo siente, y es como estar en el ojo del huracán.  Para estar seguro, me he ocupado poniendo a punto el pobre material de que dispongo.  La hoja que no está afilada, no puede separar una cabeza Sha'ahoul de su cuello.
+RspDflt=Bien dicho, intendente.  Si me disculpas, volveré a mis deberes...
+
+[qmpt]
+Say=Vé a por ellos, %playername%!  ¡Degüéllales y danza sobre sus cadáveres!
+RspDflt=Yo no iría tan lejos, intendente, pese a que agradezco vuestro entusiasmo. Si me disculpáis...
+

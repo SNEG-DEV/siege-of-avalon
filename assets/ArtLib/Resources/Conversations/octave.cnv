@@ -1,0 +1,102 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-60
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Good day to you, Octave.
+say1=one(ttl(05chapter5,06chapter6));
+goto1=chapter6
+say2=one(ttl(03chapter3,04chapter4));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Octave
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Octave]
+Say=I am sorry, sir, but I can't let you pass.  Lord Harold has ordered the Peasants' Bailey off limits.
+Adventure=ch1-60;
+RspDflt=A shame.  I'll be on my way, then.
+RspTxt1=Lord Harold, you say?  I see.  I'm new around here.  What's the news?
+NxtLn1=Octave1
+RspTxt2=Where are you from?
+NxtLn2=Octave2
+
+[Octave1]
+Say=The Ahoul have been patrolling around South Gate more.  They are definitely up to something.
+RspDflt=We will be ready for them.
+rspback=Octave
+
+[Octave2]
+Say=I was born in Oriam, sir.  My father had a trading post on the frontier that I inherited.  The Sha'ahoul burned it years ago.  That's why I fight -- there is nothing else for me to do.
+RspDflt=We are glad to have your help, soldier.
+rspback=Octave
+
+[Chalice]
+Say=There's the hero!  Is there something I can get for you?
+RspDflt=No, thank you.
+RspTxt1=Have you heard any rumors?
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Get in line at supper tonight early.  There's fresh bread tonight!
+RspDflt=Thanks for the tip.
+
+[three]
+Say=Isn't it a wonderful day?
+RspDflt=Yes, and I've much to do.  Pardon me.
+RspTxt1=What did you say?
+nxtln1=three2
+
+[three2]
+Say=I said it's a wonderful day, why, don't you agree with me?
+RspDflt=none
+RspTxt1=I don't disagree with you, it's just strange to hear someone... anyone... be so optimistic considering our situation.
+nxtln1=three3
+
+[three3]
+Say=Is that bad?  Do you think I'm going soft?  I've gone soft!  Hey, you wanna fight?
+RspDflt=none
+RspTxt1=There's no need for that.  You might get Mulduc to spar with you, if you can find him.  I haven't the time.
+nxtln1=three4
+
+[three4]
+Say=Hey, that's a good idea!
+RspDflt=Glad to help.  Farewell.
+
+[chapter6]
+Say=Say, do you want some of this candy?  I bought a whole box of it from some gypsies before I became trapped inside these walls.  I've eaten some before, and it's strange, but seems harmless.  I used to give a few pieces to the peasant children every day, but now I can't stand to look them in the eyes any more.  Maybe if I eat it all I won't have to go in there.
+RspDflt=Pull yourself together, soldier.  We are doing all we can.
+RspTxt1=I'm sorry, but I must decline your offer.  Keep faith and skill, brother.
+

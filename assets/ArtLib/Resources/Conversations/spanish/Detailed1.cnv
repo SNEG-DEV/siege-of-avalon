@@ -1,0 +1,177 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(5/23/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Gracias.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=all(ttl(!06chapter6));
+goto2=Soldier
+
+[Soldier]
+Say=Hola, ¿qué puedo hacer por tí?
+RspDflt=None
+RspTxt1=Acabo de llegar a Avalon y estaba echando un vistazo.
+NxtLn1=Soldier1
+
+[Soldier1]
+Say=Echa un vistazo, chaval!  No hay mucho más en Avalon que lo que ves!  Si estuviesemos en Aratoy, habría algo que mirar.
+RspDflt=None
+RspTxt1=¿No estás contento de estar aquí, luchando contra los Ahoul?
+NxtLn1=Soldier2
+RspTxt2=¿Eres de Aratoy?
+NxtLn2=Soldier3
+
+[Soldier2]
+Say=¿Eres nuevo, verdad?  Chico, cuando hayas patrullado la muralla tantas veces como yo, la gloria de defender los Siete Reinos se desvanecerá un poco.
+RspDflt=None
+RspTxt1=Pero si no lo hacemos nosotros, ¿quien lo hará?
+NxtLn1=Soldier4
+
+[Soldier4]
+Say=No digo que no vaya a hacer mi trabajo.  Solo estoy diciendo que preferiría estar cazando en mi patria, eso es todo.
+RspDflt=None
+RspTxt1=¿Eres un buen cazador?
+NxtLn1=Soldier5
+RspTxt2=Igual que yo, pero estoy orgulloso de estar aquí.
+NxtLn2=Soldier6
+
+[Soldier5]
+Say=Hay muy pocos que sean mejores, incluso entre los Aratoyanos!  Una vez acerté al corazón de la presa desde cuatrocientos pasos de distancia.
+RspDflt=None
+RspTxt1=Debes estar equivocado.  Nadie puede acertar desde tan lejos...
+NxtLn1=Soldier7
+
+[Soldier7]
+Say=Ponlo en duda si quieres.  Pero descubrirás que la mayoría de los Aratoyanos acertarían ese disparo.  Hay unos pocos que pueden incluso hacerlo mejor.
+RspDflt=None
+RspTxt1=Si tu lo dices...  Cúidate.
+NxtLn1=Soldier8
+
+[Soldier8]
+Say=Tú también, chico.  Odiamos ver a soldados novatos destripados en su primera semana!
+RspDflt=Buenos días.
+
+[Soldier6]
+Say=¿Orgulloso?  Debes ser noble.  Solo el hijo de un noble se sentiría orgulloso de la guerra.
+RspDflt=None
+RspTxt1=¿Por qué lo dices?
+NxtLn1=Soldier9
+
+[Soldier9]
+Say=Porque los que mueren son siempre los hijos de los campesinos.  Los nobles suelen espabilarse para evitar las heridas.
+RspDflt=None
+RspTxt1=¿Estás llamando cobardes a los nobles?
+NxtLn1=Soldier10
+
+[Soldier10]
+Say=No.  Solo digo que las flechas tienen algún sistema para fallar a los de noble cuna.  Las espadas parecen deslizarse por su armadura y sus oponentes nunca parecen ser capaces de asestar el golpe mortal.  Muy raro, ¿no te parece?
+RspDflt=None
+RspTxt1=Debes saber que mi padre fue un gran guerrero que sufrió muchas heridas.  Mi hermano, Corvus, no parece haber tenido la suerte de la que hablas.  Tiene una cicatriz en el cuello.
+NxtLn1=Soldier11
+
+[Soldier11]
+Say=¿Eres el hermano de Corvus?  Lo siento, mi señor.  No sabía que estabais emparentado con él.  Vuestro hermano es un gran guerrero, aunque un poco temerario.  Siempre parece estar en el centro de la lucha.
+RspDflt=Acepto la disculpa.  Me temo que debo partir.  Buenos días.
+
+[Soldier3]
+Say=Naturalmente!  No hay ningún otro lugar parecido en el planeta.
+RspDflt=None
+RspTxt1=Siempre me he preguntado como era Aratoy.
+NxtLn1=Soldier12
+
+[Soldier12]
+Say=Si puedes imaginar árboles que te abrazan y se preocupan por ti como lo haría tu madre...
+RspDflt=None
+RspTxt1=¿Eres de Perigwin?
+NxtLn1=Soldier13
+
+[Soldier13]
+Say=Ningún Aratoyano de verdad viviría en una ciudad.  Mi familia y yo vivíamos en el interior de los bosques del norte.  Todo lo que alguien pueda necesitar, lo proporciona el bosque.  Nunca hemos necesitado más.
+RspDflt=None
+RspTxt1=¿A quién respondéis?  ¿Hay algún tipo de gobierno?
+NxtLn1=Soldier14
+RspTxt2=Mi padre me enseñó algo sobre los bosques en Elythria.  Sospecho que soy tan adepto a los bosques como un Aratoyano.
+NxtLn2=Soldier15
+
+[Soldier14]
+Say=Respondíamos a la matriarca.  La matriarca siempre es la mujer más mayor de la familia.  Mi tía era la matriarca para nosotros.  Tenemos un rey en Aratoy y hay alguna autoridad menor por debajo de eso, pero pocos reconocerán que el rey tenga ningún poder.  Más que nada, tiene un papel diplomático.
+RspDflt=None
+RspTxt1=Entonces, ¿solo es una figura a la que pueden apelar los otros reinos?
+NxtLn1=Soldier16
+
+[Soldier16]
+Say=Parece que lo has comprendido.  Nadie está seguro de cómo accede el rey al poder, y a pocos les preocupa.  Una buena matriarca vive mejor que ningún rey en Aratoy.
+RspDflt=None
+RspTxt1=Qué vida política más rara que tiene tu país.
+NxtLn1=Soldier17
+
+[Soldier17]
+Say=Algunos piensan eso.  Pero después de vivir con allí toda mi vida, no puedo imaginarme el rendir cuentas a un rey o terrateniente.  Vosotros, los del este, sois más extraños que nosotros, los Aratoyanos.
+RspDflt=None
+RspTxt1=Quizá tengas razón.  Aunque, como dices, yo siempre he vivido así.  Me parece la forma natural de vida.
+NxtLn1=Soldier18
+RspTxt2=Esos que están más al este de nosotros, son todavía más extraños.
+NxtLn2=Soldier19
+
+[Soldier18]
+Say=Cierto.  Quizá podríamos hablar más sobre nuestros respectivos reinos frente a una bebida cuando el asedio haya terminado.
+RspDflt=Eso espero.  Que tengas un buen día.
+
+[Soldier19]
+Say=Desde luego!  Los malditos Ahoul y su religión pagana!
+RspDflt=Espero que tengamos la fuerza para destruirles.
+
+[Soldier15]
+Say=Una frase valiente!  Un Aratoyano puede deslizarse sobre ti y quitarte la ropa interior sin que te des cuenta!
+RspDflt=None
+RspTxt1=¿Es eso cierto?  Quizá deba ser más cuidadoso con mis posesiones cuando haya Aratoyanos alrededor.
+NxtLn1=Soldier20
+
+[Soldier20]
+Say=Somos sigilosos, señor.  Pero no somos ladrones.
+RspDflt=None
+RspTxt1=Solo estaba bromeando, amigo.  Cualquiera que luche contra los Ahoul es mi hermano, y le confiaría mi vida.
+NxtLn1=Soldier21
+
+[Soldier21]
+Say=Un sentimiento idealista.  Por nuestro bien, espero que tengas razón.
+RspDflt=Buena suerte.
+
+[chapter6]
+Say=Hola, señor. ¿Necesitáis mi ayuda?
+RspDflt=De momento no. Hasta luego.
+

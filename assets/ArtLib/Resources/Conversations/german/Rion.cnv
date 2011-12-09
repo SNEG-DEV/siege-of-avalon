@@ -1,0 +1,77 @@
+[Notes]
+titlesChecked=01recovered,01Village
+
+[root]
+Count=3
+Else=temp
+Default=Danke, Sir Rion.
+Say1=All(ttl(!01village,!01recovered));
+goto1=temp
+Say2=All(ttl(01village,!01recovered));
+goto2=temp
+Say3=All(ttl(01village,01recovered));
+goto3=temp
+
+[temp]
+say=Tut mir leid, aber das Dorf ist Sperrgebiet für den Rest dieser Preview.  Kauft Euch das nächste Kapitel, dann will ich sehen, was sich machen lässt.
+
+[Rion]
+say=Hallo.  Ihr seid bestimmt Corvus' Bruder.  Ihr seht euch sehr ähnlich .
+rspDflt=None
+rsptxt1=Der bin ich.  Woher kennt Ihr meinen Bruder?
+nxtLn1=Rion1
+
+[Rion1]
+say=Wir beide waren gute Freunde.  Ich möchte wetten, dass ich noch nie einen Besseren hatte.  Ich war  fertig als ich hörte, dass er verschwunden ist.  Ich glaube aber kein Wort von dem, was man erzählt. Auf keinen Fall gibt ein Soldat vom Format Eures Bruder einfach so auf.
+rspDflt=None
+rsptxt1=Danke für Euer Mitgefühl.  Corvus wird sich bestimmt freuen, wenn er von Eurem Vertrauen in ihn hört.
+nxtLn1=Rion2
+
+[Rion2]
+say=Glaubt bloß nicht alles, was Ihr von den Bonzen hört.  Sie kennen Euren Bruder nicht so wie ich.  Er ist noch am Leben.
+rspDflt=None
+rsptxt1=Das glaube ich auch.
+nxtLn1=Rion3
+
+[Rion3]
+say=Übrigens, paßt auf, wenn Ihr in der Nähe vom Südtor seid.  Ich bin schon eine ganze Weile hier postiert, und es geschehen in letzter Zeit seltsame Dinge.
+rspDflt=None
+rsptxt1=Seltsame Dinge?
+nxtLn1=Rion4
+
+[Rion4]
+say=Ja.  Die Soldaten sehen öfters über die Schulter und vertrauen einander weniger; ein schlechtes Zeichen in Kriegszeiten.  Wenn du dem Mann nicht trauen kannst, mit dem du eine Mauern verteidigst, wem dann? 
+rspdflt=Vielleicht sind es nur die Nerven.  Danke nochmal für Euer vertrauen.
+
+
+
+;Before recovery of Chalice
+[NoChalice]
+say=So trifft man sich wieder.  Wie ist es Euch ergangen?
+rspDflt=None
+rsptxt1=Gut ist es mir ergangen.  Was gibt es Neues über das Südtor?
+nxtln1=NoChalice1
+
+[NoChalice1]
+say=Immer das Gleiche. Die Soldaten werden vom Warten nervös.
+rspDflt=None
+rsptxt1=Warten ist doch besser als Sterben, nicht wahr?
+nxtln1=NoChalice2
+
+[NoChalice2]
+say=Ja, aber Kämpfen ist besser als Warten.
+rspdflt=Wie Ihr meint, Rion.  Ade.
+
+
+;After recovery of Chalice
+[Chalice]
+say=Seid gegrüßt, Soldat!  Eure Heldentaten im Dorf haben Euch großen Ruhm eingebracht!
+rspDflt=None
+rsptxt1=Ich bin nicht hier, um berühmt zu werden; ich tue nur meine Pflicht.
+nxtln1=Chalice1
+
+[Chalice1]
+say=Ich bitte Euch!  Wir sind alle der Ehre wegen hier.  Das gehört zum Beruf des Soldaten dazu.  Habt bloß keine Angst davor, das zuzugeben, Freund!
+rspDflt=None
+rsptxt1=Vielleicht.  Aber mich interessiert mehr, diesen Krieg zu gewinnen als einen Namen für mich zu machen.
+nxtln1=Chalice1

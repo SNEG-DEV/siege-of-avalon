@@ -1,0 +1,973 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01amuletknown,01happywizard,01trainedwizard,05askfelious,05endofch5,05epromotedpc,05rath2zar,05ringdone,06recipe,basic energy management,deflect,flame,forget,frost,heal,hold,mage craft,mana thief,minor meditation,portalactive,protection from magic,wizard
+Checked=01AmuletKnown,01ElarathPell,01happywizard,01Lahren,01Olon,01recovered,01trainedwizar,01trainedwizard,05askfelious,05astralquest,05chapter,05chapter5,05defenseson,05elara01,05elarb04,05elarb05));one(ttl(05metfs,05elarb1,05elarb3,05Emageonly,05endofch5,05entertower,05feliousnews,05lichdea,05lichdead,05nesijarmade,05nesisnap,05nsoulfreed,05pellgiven,05ringdone,05savedlurkers,06chapter6,06oSTUFF,06recipe,06RSTUFF,06RSTUFF0,06ttCrosb,6oSTUFF,apprentic,apprentice,Basic Energy Management,Flame,Frost,Heal,Hold,Mage Craft,Minor Meditation,wizard
+Removed=
+
+[Quest]
+Added=ch1-01,ch1-23,ch1-24,ch1-73,ch1-74,ch1-75,ch1-92,ch5-15,ch5-16,ch5-47,ch5-500,ch5-501,ch5-502,ch5-503,ch5-504,ch5-505,ch5-506,ch5-507,ch5-508,ch5-509,ch5-510,ch5-511,ch5-512,ch5-513,ch5-514,ch5-544,ch5-546,ch5-547,ch6-533,ch6-534,ch6-535,ch6-536:
+Removed=ch1-23,ch5-501
+
+[Items]
+Given=spellbook
+Taken=eamulet,spscdeflect,spscforget,spscmanathief
+Checked=Eamulet,Eamulet,!SimpleAmulet,Eamulet,SimpleAmulet,olonvia,olonvial,rayousvia,queentoken,rayousvia,ringofform,spscdeflect,spscforget,spscforget,scscdeflect,scscmanathief,spscforget,spscdeflect,spscmanathief,spscmanathief
+Added=magestaff1,recipe
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=not much of a wizard but he can teach anyone to be a wizard?
+2=Need Dialog for training the player
+3=what if the player never talks to Olon the merchant?
+4=what does the amulet look like? how will the player know he has it?
+
+[root]
+Count=8
+Else=training1
+Default=Buenos días, señor hechicero.
+say1=all(ttl(06recipe));
+goto1=extra
+say2=all(ttl(06chapter6,05chapter5));
+goto2=playedfive
+say3=all(ttl(06chapter6,!05chapter5));
+goto3=nplayfive
+say4=all(ttl(05chapter5));
+goto4=elarafive
+Say5=All(ttl(!01trainedwizard));
+goto5=Elarath1
+Say6=All(ttl(01Olon,!01AmuletKnown));
+goto6=training2
+Say7=All(ttl(01AmuletKnown,!01happywizard));
+goto7=village1
+Say8=All(ttl(01happywizard));
+goto8=Happywizard
+
+[Elarath1]
+Say=Bienvenido, soldado!  ¿Qué puede este viejo hechicero hacer por ti?
+RspDflt=none
+RspTxt1=Nada.  Lamento haber estorbado tus estudios.
+NxtLn1=Elarath2
+RspTxt2=Acabo de llegar a Avalon y estaba echando un vistazo.  ¿Quién eres?
+NxtLn2=Elarath3
+rspcnd3=All(ttl(01trainedwizard):stt(trainingpoints>1));
+RspTxt3=Me gustaría aprender algunas técnicas mágicas avanzadas.
+NxtLn3=TrainTitles
+
+[Elarath2]
+Say=No hay nada de que debas disculparte, chico.  Que los espíritus te protejan.
+RspDflt=Que tengas un buen día, hechicero.
+rspBack=Elarath1
+
+[Elarath3]
+Say=Soy Elarath, y, como puedes ver, éste es mi laboratorio, donde investigo sobre las ruinas antiguas que hay bajo el pueblo.  También hago de consejero para Sir Roth y sus caballeros, y cuando puedo, enseño a los aspirantes a mago a controlar las fuerzas a su alrededor.
+Adventure=ch1-01;
+RspTxt1=Ya veo.  Gracias por tu tiempo.
+NxtLn1=Elarath4
+rspcnd2=All(ttl(apprentice))
+RspTxt2=He estudiado las artes mágicas antes, pero me gustaría desarrollar mis habilidades un poco más.
+nxtln2=apprentice1
+rspcnd3=All(ttl(!apprentice))
+RspTxt3=Estoy interesado en aprender hechicería.  ¿Podrías enseñarme?
+NxtLn3=training
+RspDflt=None
+
+[apprentice1]
+Say=Veamos qué sabes... [Tras varias horas de instrucción]... muy bien.  Tienes talento natural para la magia. Por favor siéntete libre de utilizar los obeliscos que hay tras de mí para practicar o, si crees estar listo, puedo enseñarte algunas de las técnicas avanzadas.
+Script=Siege010.giveitem(spellBook,player);player.setprop(trainingpoints=1);player.addtitle(01trainedwizard);journalentry(elarath);showmessage(Your journal has been updated.,200);
+RspTxt1=Estaría de lo más interesado en cualquier cosa que puedas enseñarme.
+nxtln1=TrainTitles
+RspDflt=Me temo que tengo cosas más urgentes que atender ahora mismo.  ¡Pero estoy seguro de que volveré más tarde!
+
+[Elarath4]
+Say=Nunca es molestia hablar con soldados curiosos.  Ve en paz, chico.
+RspTxt1=Pensándolo bien, creo que estoy interesado en aprender hechicería.  ¿Podrías enseñarme?
+NxtLn1=training
+RspDflt=Buenos días, señor.
+
+[training]
+Say=Puedo enseñar prácticamente a cualquiera cómo ser un hechicero!  Acércate más y empezaremos... [Tras varias horas de instrucción]... muy bien.  Al menos tienes algunas aptitudes para la magia.  Por favor siéntete libre de utilizar los obeliscos que hay tras de mí para practicar o, si crees estar listo, puedo enseñarte algunas de las técnicas avanzadas.
+Script=Siege010.giveitem(spellBook,player);player.setprop(trainingpoints=1);player.addtitle(01trainedwizard);journalentry(elarath);showmessage(Your journal has been updated.,200);
+RspTxt1=Estaría de lo más interesado en cualquier cosa que puedas enseñarme.
+nxtln1=TrainTitles
+RspDflt=Me temo que tengo cosas más urgentes que atender ahora mismo.  ¡Pero estoy seguro de que volveré más tarde!
+
+[TrainTitles]
+Say=Entonces, en qué estarías interesado?
+train=true
+RspDflt=En nada, señor.  Gracias por su tiempo.
+rspCnd1=All(ttl(!Mage Craft):stt(trainingpoints>4))
+RspTxt1=Magia (+1 Percepción, +2 Misticismo, +2 Velocidad de Recarga): 5pts
+script1=player.addtitle(Mage Craft);player.setprop(trainingpoints=-5);
+nxtln1=TrainTitles
+rspCnd2=All(ttl(!Basic Energy Management):stt(trainingpoints>2))
+RspTxt2=Control Básico de Energía (+5 Mana): 3pts
+script2=player.addtitle(Basic Energy Management);player.setprop(trainingpoints=-3);
+nxtln2=TrainTitles
+rspCnd3=All(ttl(!Minor Meditation):stt(trainingpoints>2))
+RspTxt3=Meditación Menor (+1 Velocidad de Recarga): 3pts
+script3=player.addtitle(Minor Meditation);player.setprop(trainingpoints=-3);
+nxtln3=TrainTitles
+rspCnd4=All(ttl(!Flame):stt(trainingpoints>1))
+RspTxt4=Hechizo 'Bola de Fuego': 2pts
+nxtln4=Flame
+rspCnd5=All(ttl(!Frost):stt(trainingpoints>1))
+RspTxt5=Hechizo 'Escarcha': 2pts
+nxtln5=Frost
+rspCnd6=All(ttl(!Heal):stt(trainingpoints>0))
+RspTxt6=Hechizo 'Sanar': 1pt
+nxtln6=Heal
+rspCnd7=All(ttl(!Hold):stt(trainingpoints>0))
+RspTxt7=Hechizo 'Paralizar': 1pt
+nxtln7=Hold
+
+[Flame]
+Say=Ah, la Bola de Fuego--es un clásico de la profesión.  Este hechizo hace un daño moderado a tu objetivo.  Cuanto mayor sea tu misticismo, mayor daño infligirás y mayor velocidad adquirirá la bola de fuego.  ¿Te parece que esto es algo que quieres aprender?
+RspDflt=none
+RspTxt1=Sí, creo que sí.
+script1=player.addtitle(Flame);player.setprop(trainingpoints=-2);
+nxtLn1=TrainTitles
+RspTxt2=Quizá luego.  ¿Qué más puedes enseñarme?
+nxtLn2=TrainTitles
+
+[Frost]
+Say=Como la Bola de Fuego, Escarcha hace un daño moderado a un objetivo.  Pero a diferencia de aquella, que puede fallar si tu víctima tiene buenos reflejos, Escarcha busca a su blanco.  Cuanto más fuerte seas en magia, más daño harás y más fácilmente el hechizo alcanzará a su objetivo, no importa si éste se esconde o huye.  ¿Te parece algo que quieres aprender?
+RspDflt=none
+RspTxt1=Sí, creo que sí.
+script1=player.addtitle(Frost);player.setprop(trainingpoints=-2);
+nxtLn1=TrainTitles
+RspTxt2=Quizá luego.  ¿Qué más puedes enseñarme?
+nxtLn2=TrainTitles
+
+[Heal]
+Say=Si alguna vez te hieren en combate--y eso es algo que, mucho me temo, ocurre con una regularidad pasmosa--tendrás dos opciones: ponerte un vendaje alrededor de la herida y esperar que la hemorragia cese, o usar el hechizo Sanar y recuperarte inmediatamente.  No creo que tengas demasiada elección.  ¿Te parece algo que quieres aprender?
+RspDflt=none
+RspTxt1=Sí, creo que sí.
+script1=player.addtitle(Heal);player.setprop(trainingpoints=-1);
+nxtLn1=TrainTitles
+RspTxt2=Quizá luego.  ¿Qué más puedes enseñarme?
+nxtLn2=TrainTitles
+
+[Hold]
+Say=Un hechizo muy útil, Paralizar inmovilizará a un oponente durante un corto periodo de tiempo.  Cuanto más fuerte sea tu magia, más tiempo quedará paralizado el sujeto en cuestión--sin poder devolver los golpes, ya me comprendes.  ¿Te parece algo que quieres aprender?
+RspDflt=none
+RspTxt1=Sí, creo que sí.
+script1=player.addtitle(Hold);player.setprop(trainingpoints=-1);
+nxtLn1=TrainTitles
+RspTxt2=Quizá luego.  ¿Qué más puedes enseñarme?
+nxtLn2=TrainTitles
+
+[training1]
+Say=Ya vuelves a por más!  La Magia es adictiva, ¿no es cierto?  Mira cuanto quieras.
+RspDflt=Buenos días, señor hechicero.
+rspcnd1=All(ttl(01trainedwizard):stt(trainingpoints>1));
+RspTxt1=Me preguntaba si tendríais tiempo para entrenarme en alguna de esas técnicas avanzadas que mencionasteis.
+NxtLn1=TrainTitles
+RspCnd2=all(ttl(01Lahren,!01ElarathPell));
+RspTxt2=¿Conocéis, señor hechicero, a la maga Pellandrian?
+nxtLn2=Pell1
+
+[training2]
+Say=Así pues, has vuelto a visitar al viejo hechicero, ¿eh?  ¿Cómo puedo ayudarte, chico?
+RspDflt=None
+rspcnd1=all(ttl(!ela082001));
+RspTxt1=Próximamente iré en misión al pueblo.  Olon el, esto, "mercader" me ha dicho que sabías algo sobre el pueblo.
+script1=addtitle(ela082001);
+NxtLn1=permission1
+RspCnd2=All(ttl(!01trainedwizard):stt(trainingpoints>1));
+RspTxt2=Me interesa aprender hechicería.  ¿Podríais enseñarme?
+NxtLn2=training
+rspcnd3=All(ttl(01trainedwizard):stt(trainingpoints>1));
+RspTxt3=Me preguntaba si tendríais tiempo para entrenarme en alguna de esas técnicas avanzadas que mencionasteis.
+NxtLn3=TrainTitles
+RspCnd4=all(ttl(01Lahren,!01ElarathPell));
+RspTxt4=¿Conocéis, señor hechicero, a la maga Pellandrian?
+nxtLn4=Pell1
+
+[permission1]
+Say=Veamos...  El pueblo está construido sobre las ruinas de una ciudad antigua.  Cuando llegamos, cogimos de las ruinas la piedra que necesitábamos para construir Avalon.  Ahora, se han convertido en una elaborada red subterránea que está virtualmente abandonada.  No obstante, no me sorprendería descubrir que están actualmente habitadas por cientos de animales o quizá criaturas más exóticas.
+Adventure=ch1-74;
+RspDflt=None
+RspTxt1=Gracias por la información.
+NxtLn1=permission2
+RspTxt2=¿Es eso todo lo que recuerda?
+NxtLn2=permission3
+rspBack=training2
+
+[permission2]
+Say=No hay de qué, chico!  Buena suerte ahí fuera.
+RspDflt=Os veré pronto, Elarath.
+rspBack=permission1
+
+[permission3]
+Say=No, estoy casi seguro de que-- Oh, ¡espera!  Hay algo más.  He estado intentando recuperar un valioso artefacto del pueblo, sin éxito hasta ahora.  Es un amuleto necesario para la investigación que estoy llevando a cabo sobre cierto portal.  Elazar es el último que tuvo dicho amuleto, pero lo perdió al abandonar su torre.  La torre misma está sellada mágicamente, pero se supone que el amuleto se perdió cuando el carro que transportaba la mayoría de los artículos de Elazar rompió su eje y desperdigó su contenido por el suelo del pueblo.  El amuleto debería seguir en el suelo, cerca del carro estropeado.
+Adventure=ch1-73;
+AddQuest=ch1-23;
+RspDflt=None
+RspTxt1=Veré qué puedo hacer.
+NxtLn1=permission5
+
+[permission5]
+Say=Gracias por tu amabilidad, chico!  Con el amuleto, probablemente sea capaz de abrir finalmente el portal.  ¡Esperaré tu regreso!
+RspDflt=Os veré pronto, Elarath.
+script=player.addtitle(01AmuletKnown)
+
+[village1]
+Say=Bienvenido!  ¿Qué tal han ido las cosas por el pueblo?
+RspDflt=None
+RspCnd1=All(ttl(!01recovered):Obj(!Eamulet,!SimpleAmulet));
+RspTxt1=De momento no he tenido demasiado éxito.  Sólo he vuelto para oír las últimas noticias.  ¿Habéis oído algo nuevo?
+NxtLn1=villageNews1
+rspCnd2=All(ttl(!01recovered):Obj(!Eamulet,SimpleAmulet));
+RspTxt2=Creo haber recuperado el amuleto.
+nxtLn2=FalseAmulet
+RspCnd3=All(ttl(!01recovered):Obj(Eamulet));
+RspTxt3=Tras una ligera lucha, conseguí recuperar el amuleto.
+NxtLn3=villageAmulet
+RspCnd4=All(ttl(01recovered):Obj(!Eamulet,!SimpleAmulet));
+RspTxt4=Todavía no he encontrado el amuleto, pero hallé el Cáliz de la Vida.
+NxtLn4=villageChalice
+rspCnd5=All(ttl(01recovered):Obj(!Eamulet,SimpleAmulet));
+RspTxt5=Muy bien, señor.  He recuperado tanto el Cáliz de la Vida como el amuleto.
+nxtLn5=ChaliceFalseAmulet
+RspCnd6=All(ttl(01recovered):Obj(Eamulet));
+RspTxt6=Muy bien, señor.  He recuperado el amuleto de Elazar y he hallado el Cáliz de la Vida.
+NxtLn6=villageAmuletChalice
+RspCnd7=All(ttl(!01trainedwizard))
+RspTxt7=Estoy interesado en aprender hechicería.  ¿Podríais ayudarme?
+NxtLn7=training
+rspcnd8=All(ttl(01trainedwizard):stt(trainingpoints>1));
+RspTxt8=Me estaba preguntando si tendríais tiempo para entrenarme en esas técnicas avanzadas que habíais comentado.
+NxtLn8=TrainTitles
+RspCnd9=all(ttl(01Lahren,!01ElarathPell));
+RspTxt9=Bastante bien.  ¿Sabéis algo, señor, de la maga Pellandrian?
+nxtLn9=Pell1
+
+[ChaliceFalseAmulet]
+Say=Muy bien, desde luego!  ¡Con esos dos artefactos entre nosotros, el asedio se volverá a favor nuestro!  No, espera...  Éste no es el amuleto de Elazar.
+RspDflt=none
+RspTxt1=¿Qué?  ¿Estáis seguro?
+nxtLn1=FalseAmulet1
+
+[FalseAmulet]
+Say=Ah, déjame ver, déjame ver!  No... No, éste no es.  Es un bonito amuleto, pero no es el amuleto de Elazar.
+RspDflt=none
+RspTxt1=¿Estáis seguro?
+nxtLn1=FalseAmulet1
+
+[FalseAmulet1]
+Say=Sí, chico, estoy seguro.  ¿Crees que no podría recordar cómo es un poderoso amuleto mágico?  Aunque es extraño -- No conozco este diseño.  Muy poco habitual.  A ver, ¿dónde puse ese compendio de referencia...?
+RspDflt=none
+script=takeitem(SimpleAmulet,player);
+RspTxt1=Ah... ¿Elarath?
+nxtLn1=FalseAmulet2
+
+[FalseAmulet2]
+Say=¿Qué, chico?  ¿No ves que estoy ocupado?  Te agradezco este amuleto, pero debo volver a mi trabajo.  Ese compendio debe estar por aquí...
+RspDflt=none
+RspTxt1=¿Podríais, pues, decirme cómo es el amuleto de Elazar?
+nxtLn1=FalseAmulet3
+
+[FalseAmulet3]
+Say=¿El amuleto de Elazar...?  Pregúntale a él.  Después de todo, era su amuleto.  Está en el nivel superior de la Puerta Sur.  Espíritus, ¿dónde puse...?
+Adventure=ch1-75;
+AddQuest=ch1-24;
+RspDflt=none
+RspTxt1=Ya veo.  Haré lo que pueda, señor.
+nxtLn1=FalseAmulet4
+
+[FalseAmulet4]
+Say=Sí, sí.  Te agradezco tus esfuerzos, pero ahora ¡vete!
+RspDflt=Adiós.
+
+[villageNews1]
+Say=Muy poca cosa cambia en una ciudadela sitiada.  La lista de los soldados muertos y moribundos crece un poco y el hambre que gruñe desde cada estómago crece un poco más.
+RspTxt1=Esperemos que la cosa se vuelva a nuestro favor pronto.
+NxtLn1=villageNews2
+RspDflt=None
+
+[villageNews2]
+Say=Ese sería un cambio agradable.  ¿Volverás pronto al pueblo?
+RspTxt1=No.  No creo que tenga todavía las habilidades necesarias para una expedición fuera de las murallas de Avalon.
+NxtLn1=villageNews3
+RspTxt2=Muy pronto.  Seguiré buscando tu amuleto.
+NxtLn2=villageNews4
+RspDflt=None
+
+[villageNews3]
+Say=Es un lugar duro, ese de ahí fuera.  No te culpo por buscar refugio.  Buenos días.
+RspDflt=Buenos días.
+
+[villageNews4]
+Say=Gracias por tus esfuerzos, chico.  Esperaré tu retorno.
+RspDflt=Gracias, Elarath.  Que los buenos espíritus os protejan.
+
+[villageAmulet]
+Say=Esas son unas noticias buenísimas!  Empezaré a trabajar en completar el portal inmediatamente.  ¡Tengo la esperanza de que el portal pueda sernos de ayuda!
+RemoveQuest=ch1-23;
+Script=player.addtitle(01happywizard);takeitem(Eamulet,player);player.setprop(trainingpoints=5);showmessage(You received some training points,300);
+RspDflt=Espero que sea tan útil como decís que será.  Buenos días.
+
+[villageChalice]
+Say=¿El Cáliz de la Vida?  ¡Ése es un artefacto muy poderoso!  Ahora que vuelve a estar entre nosotros, ¡los soldados recuperarán su coraje!
+RspDflt=None
+RspTxt1=Eso es lo que dice Fray Massus.  Espero que tenga razón.
+NxtLn1=villageChalice1
+
+[villageChalice1]
+Say=Fray Massus sabe de qué habla.  Espera y verás.  ¿Continuarás la búsqueda del amuleto?
+RspDflt=None
+RspTxt1=No inmediatamente.  Necesito descansar un poco de tanta batalla.
+NxtLn1=villageChalice2
+RspTxt2=Sí.  No me rendiré hasta que os lo haya devuelto.
+NxtLn2=villageChalice3
+
+[villageChalice2]
+Say=Naturalmente!  Estoy seguro de que no fue fácil recuperar el Cáliz.  Ya me irás informando de tus progresos.
+RspDflt=Lo haré.  Buenos días, Elarath.
+
+[villageChalice3]
+Say=Muchas gracias.  Cuando complete el portal, tendrás libre acceso a él.
+RspDflt=Gracias.  Buenos días.
+
+[villageAmuletChalice]
+Say=Fantástico!  ¡Con estos dos artefactos entre nosotros, el asedio se volverá a nuestro favor muy pronto!
+RemoveQuest=ch1-23;
+Script=player.addtitle(01happywizard);takeitem(Eamulet,player);player.setprop(trainingpoints=5);showmessage(You received some training points,300);
+RspDflt=Esa sería algo digno de contemplar.  Buenos días, señor.
+
+[happywizard]
+Say=Bienvenido.  ¿Qué necesitas de este viejo hechicero?
+RspDflt=None
+RspTxt1=Sólo pasaba para conocer las últimas noticias.
+NxtLn1=happywizard1
+
+[happywizard1]
+Say=Bien, aunque trabajar con el amuleto que me trajiste está resultando un poco más difícil de lo que había anticipado.  Probablemente pase todavía algún tiempo antes de que consiga activar el portal.
+RspDflt=None
+RspTxt1=Espero que todo os funcione correctamente.
+NxtLn1=happywizard2
+rspcnd2=All(ttl(01trainedwizard):stt(trainingpoints>1));
+RspTxt2=Me estaba preguntando si tendríais algo de tiempo para entrenarme en esas técnicas avanzadas que habíais mencionado.
+NxtLn2=TrainTitles
+
+[happywizard2]
+Say=Gracias.  Que los buenos espíritus te protejan.
+RspDflt=Gracias.  Buenos días.
+
+[Pell]
+say=
+RspDflt=none
+rspTxt1=
+nxtLn1=Pell
+
+[Pell1]
+Say=Ah, la encantadora Pell ha llamado tu atención, ¿eh, chico?  Si yo fuese cuarenta años más joven, o quizá incluso treinta...  Pero su corazón ya está ocupado, sabes.  Uh, Arren, creo que se llama el afortunado.  No, espera... Lahren.  Sí, Lahren.
+RspDflt=none
+RspTxt1=Sí, lo sé.  Me estaba preguntando qué sabíais sobre ella.
+nxtLn1=Pell2
+
+[Pell2]
+Say=Oh, no demasiado, no demasiado.  He estado ocupando con mis investigaciones, ¿sabes?  Y ella está bastante abatida desde que su amado no le habla.  Las tribulaciones de la juventud--las recuerdo bien.  Diré que estoy sorpendido de que mis colegas Fornaxanos le permitiesen dejar el país.  ¡O quizá es que no podían mantenerla allí!
+RspDflt=none
+RspTxt1=¿Qué queréis decir, señor hechicero?
+nxtLn1=Pell3
+
+[Pell3]
+Say=Ella es poderosa, chico--eso lo admito.  Más allá de eso, no es cosa mía el hablar.  Pero es una buena persona con quien mantener la amistad.  Sólo espero que esa desgraciada circunstancia con su amado se solucione pronto, y de forma satisfactoria.
+script=addtitle(01ElarathPell);
+Adventure=ch1-92;
+RspDflt=Igual que yo, señor.  Buenos días.
+
+[elarafive]
+Say=Buenos días, %playername%.  Es bueno ver que te estás bien.
+RspDflt=Lo mismo digo, sabio señor.  Ahora, si me excusáis...
+rspcnd1=all(stt(trainingpoints>0));one(ttl(!Mage Craft,!Basic Energy Management,!Minor Meditation,!Flame,!Frost,!Heal,!Hold));
+RspTxt1=¿Tenéis tiempo para enseñarme otro hechizo o técnica?
+nxtln1=elarafive1
+rspcnd2=all(ttl(!05entertower));
+RspTxt2=Gracias, Elarath.  ¿Cómo os habéis ocupado últimamente?
+nxtln2=elarafive2
+rspcnd3=all(ttl(05entertower,!05ringdone):obj(!ringofform));
+RspTxt3=Elazar me ha encargado que encuentre para él un anillo que os permitirá activar el portal.  Dice que habéis avanzado mucho al respecto.
+nxtln3=elarafive3
+rspcnd4=all(ttl(05entertower,!05ringdone):obj(ringofform));
+RspTxt4=He conseguido un anillo que estaba en la torre de Elazar, para usarlo en el portal, pero Elazar no está.  ¿Tenéis idea de dónde puede estar?
+nxtln4=elagetring
+rspcnd5=all(ttl(05astralquest,!05elarb3));
+RspTxt5=Bien dicho, Elarath.  He hablado con Pell, y me ha dicho que...
+script5=addtitle(05elarb3);
+nxtln5=portalready
+rspcnd6=all(ttl(05pellgiven,!05askfelious));
+RspTxt6=¿Habéis visto a Pell recientemente?  Le dejé un extraño objeto encantado...
+nxtln6=tokenfive
+rspcnd7=all(ttl(05lichdead,!wizard,apprentice));
+RspTxt7=He liberado el alma del pobre Felious de su encarcelamiento en el Plano Astral.  Para conseguirlo tuve que volver a luchar con el espectro, pero ahora Felious es libre de partir al reino de los muertos en cuanto lo desee.
+nxtln7=upgrader
+rspcnd8=all(ttl(05feliousnews,!05elarb1));
+RspTxt8=Felious me ha dicho que podéis hallar la información que buscáis en un libro llamado "Morbidicon Confinimus".  Contiene detalles sobre la "jarra del corazón", que os permitirá liberar el espíritu de Nanesi.
+script8=addtitle(05elarb1);
+nxtln8=morbidicon
+rspcnd9=all(ttl(05elarb1,!05nsoulfreed));
+RspTxt9=Buenos días, Elarath.  He venido a preguntaros sobre vuestros progresos con el Morbidicon.
+script9=player.addtitle(05nsoulfreed);
+nxtln9=jaropen
+rspcnd10=one(obj(spscforget,spscdeflect,spscmanathief));
+RspTxt10=Tengo algunos pergaminos a los que me gustaría que echaseis un vistazo, Elarath.  No puedo entender nada de ellos, y esperaba que vos sí pudieseis.
+nxtln10=decoder
+rspcnd11=all(ttl(!apprentice,05nsoulfreed,!05endofch5));
+RspTxt11=¿Hay algo más que pueda hacer por vos o por Avalon, Elarath?
+script11=player.addtitle(05endofch5);player.addtitle(05nsoulfreed);
+nxtln11=endofch5
+rspcnd12=all(ttl(wizard,05nsoulfreed,!05endofch5));
+RspTxt12=¿Hay algo más que pueda hacer por vos o por Avalon, Elarath?
+script12=player.addtitle(05endofch5);player.addtitle(05nsoulfreed);
+nxtln12=endofch5
+rspcnd13=all(obj(queentoken));
+RspTxt13=He recibido un objeto mágico realmente interesante.  Parece estar enlazado con la Reina...
+nxtln13=seepell
+rspcnd14=all(ttl(!05elarb05));one(ttl(05metfs,05nesijarmade));
+RspTxt14=He visto algunas cosas extrañas en el Plano Astral, Elarath, y...
+script14=addtitle(05elarb05);
+nxtln14=ttsherard
+rspcnd15=all(ttl(05savedlurkers,!05elarb04));
+RspTxt15=He liberado a loa Merodeadores del Plano Astral.  Con el Guardián Astral libre, la influencia Sha'ahoul en el Nexo Astral ha sido totalmente erradicada.
+script15=addtitle(05elarb04);
+nxtln15=agfreed
+rspcnd16=all(ttl(!05Emageonly,apprentice,05astralquest,!05metFS));
+RspTxt16=¿Hay algo más a lo que deba prestar atención en el Plano Astral?
+script16=addtitle(05Emageonly);
+nxtln16=mageonly
+rspcnd17=all(ttl(!05Emageonly,apprentice,05astralquest,05metFS));
+RspTxt17=¿Hay algo más a lo que deba prestar atención en el Plano Astral?
+script17=addtitle(05Emageonly);
+nxtln17=mageonlyMF
+
+[mageonly]
+Say=Si tienes tiempo, me gustaría que buscases algún rastro del recientemente difunto mago Felious.  Aunque mantenía las distancias con los demás magos de Avalon, era definitivamente un miembro respetado de nuestra hermandad.  Tras su muerte, tenemos motivos para pensar que algo antinatural ha ocurrido con su espíritu.  Si por casualidad puedes descubrir qué ha sucedido, los magos de Avalon te estaremos muy agradecidos.  Si hay algún problema, resolverlo podría elevar tu situación hasta equipararte con algunos de los mejores magos del reino.
+adventure=ch5-47;
+RspDflt=Si le encuentro, haré lo que pueda para ayudar, Elarath.  Hasta luego.
+rspback=elarafive
+
+[mageonlyMF]
+Say=Si tienes tiempo, me gustaría que buscases algún rastro del recientemente difunto mago Felious.  Aunque mantenía las distancias con los demás magos de Avalon, era definitivamente un miembro respetado de nuestra hermandad.  Tras su muerte, tenemos motivos para pensar que algo antinatural ha ocurrido con su espíritu.  Si por casualidad puedes descubrir qué ha sucedido, los magos de Avalon te estaremos muy agradecidos.  Si hay algún problema, resolverlo podría elevar tu situación hasta equipararte con algunos de los mejores magos del reino.
+adventure=ch5-47;
+RspDflt=Ya le he encontrado, y estoy haciendo lo que puedo para ayudarle.  Hasta luego.
+rspback=elarafive
+
+[elarafive1]
+Say=Mis estudios ocupan la mayor parte de mi tiempo.  No obstante, mi asistente, Sherard, ha aprendido bastante desde la última vez que hablaste con él; estoy seguro de que ahora tiene la suficiente capacidad para enseñarte las técnicas y hechizos que te había ofrecido antes.  Además... le ayudaría sentirse útil al fin.  Desea ayudar con toda su alma.
+adventure=ch5-502;
+RspDflt=De acuerdo, Elarath; le preguntaré a él, pues.  Hasta luego.
+rspback=elarafive
+
+[elarafive2]
+Say=Ah, Elazar y yo colaboramos en el portal que te había mencionado antes.  ¿Has hablado con él recientemente?  Creo que tiene un encargo para ti.  Sí, ya sé que es todo menos simpático, pero es su petición, y al él corresponde hacerla.  Creo que se ha suavizado un poco desde que empezó a trabajar en el portal...  ¡Bueno!  Estoy seguro de que ahora no tienes tiempo para mi cháchara.  Ve a ver a Elazar; seguro que ya sabe cuándo irás.
+adventure=ch5-503;
+script=player.addtitle(05rath2zar);
+RspDflt=Muy bien.  Hasta luego, sabio señor; volveré.
+
+[elarafive3]
+Say=Hmm, aunque es cierto que Elazar y yo hemos estado trabajando en el portal, estoy seguro de que te ha dicho que nuestros "avances" han sido un poco menores de lo que deberían.  Creemos que el encantamiento de su anillo de Protección de Forma, que se usa generalmente como protección contra el polimorfismo, puede ser transferido al portal para proteger a cualquier cosa que lo atraviese.  Si no funciona, simplemente intentaremos alguna otra cosa.
+RspDflt=none
+RspTxt1=Comprendo, Elarath.  ¿Habíais hecho alguna "transferencia de hechizos" antes?
+nxtln1=elarafive4
+RspTxt2=Entonces volveré con el anillo tan pronto como sea posible, Elarath.
+nxtln2=elarafive6
+rspcnd3=all(ttl(05defenseson,!05elara01));
+RspTxt3=Lo que me impide llegar hasta el anillo son las defensas que Elazar juró que estarían inactivas.  ¡Hay fantasmas y cosas peores deambulando por su torre!  ¿Sabéis algo sobre sus defensas o cómo superarlas?
+script3=addtitle(05elara01);
+nxtln3=elarafive7
+
+[elarafive4]
+Say=Sí, de hecho, pero no siempre funciona como esperamos... La magia es una fuerza imaginativa, sabes, y a veces piensa en cosas que a nosotros no se nos ocurren.  Nos resulta muy divertido a posteriori, es decir, si nadie resulta herido.  Al menos, en este caso, podemos estar seguros de que no dañará a nadie antes de ser usado.
+RspDflt=none
+RspTxt1=Elazar sugirió ratas...
+nxtln1=elarafive5
+RspTxt2=No os preocupéis, sabio señor.  Os traeré el anillo muy pronto.
+nxtln2=elarafive6
+
+[elarafive5]
+Say=Demasiado correosas...  ¿Eh?  Ah, sí, para probar el portal, naturalmente.  No es una mala idea, aunque creo que hará falta convencer a los soldados de que abandonen una de sus pocas diversiones, jeje...
+RspDflt=none
+RspTxt1=Gracias por la información, Elarath.  Os vendré a visitar nuevamente en cuanto posea el anillo.
+nxtln1=elarafive6
+
+[elarafive6]
+Say=Gracias, %playername%, intentaremos que tus esfuerzos tengan mayor fruto que el simple aumento de nuestros conocimientos.  Ah, y algo que podrías encontrar interesante; uno de los Magistrados del Consejo de Fornax ha llegado recientemente.  Su nombre es Khaele, y he tenido tratos con él anteriormente.  No creo que tengas ningún problema con él, pero el hecho de que esté aquí, implica que quiere algo.  Todavía puedes encontrarle en una de las tiendas del Patio Interior.
+adventure=ch5-546;
+RspDflt=No os preocupéis, sabio señor; No tengo la menor duda de que descubriréis algo que nos ayudará.  Hasta luego.
+
+[elarafive7]
+Say=No me sorprende que sus defensas tengan algo que ver con la facción de los Creadores.  No tengo ni la menor idea de cómo ha conseguido que un hechizo de invocación o creación haya funcionado sobre un grupo de seres; debe haber tenido una epifanía.  No creo que pueda durar para siempre, si eso te consuela, y creo que puedes manejarlo tú solito.
+adventure=ch5-504;
+RspDflt=Supongo que simplemente deberé asegurarme que todos ellos han sido destruidos.  Gracias, y hasta luego, Elarath.
+
+[elagetring]
+Say=Supongo que deberás presentarte a mí a partir de ahora, %playername%, pues Sherard me informa de que Elazar ha enfermado.  Probablemente ha estado trabajando en exceso en este proyecto.  Es bueno que descanse un poco ahora; nunca se tomó el tiempo de conseguir dominar los encantamientos más complejos, y ahora me bastará con la ayuda de Sherard para terminar con lo que estoy haciendo.
+adventure=ch5-505;ch5-544;
+RspDflt=none
+rspcnd1=all(ttl(!05elara01));
+RspTxt1=Ah.  Me gustaría mencionarle que las "defensas" que pensó que no estaban activas me han acosado a mi llegada.  Dudo que los fantasmas sean naturales en esta región.
+nxtln1=elagetring2
+RspTxt2=Ya veo.  Puesto que sois el único que hará el trabajo, dejaré el anillo en vuestras manos para que hagáis con él lo que sea necesario.
+Script2=takeitem(ringofform,player);player.addtitle(05ringdone);player.setprop(trainingpoints=5);showmessage(You have received some training points.,200);
+nxtln2=elagetring3
+
+[elagetring2]
+Say=Fantasmas?  No, no son naturales en el lugar, y sí, esos seres son probablemente las "defensas" de que te habló.  Si me das el anillo, podré empezar, y me gustaría hacerlo cuanto antes.
+RspDflt=none
+RspTxt1=Naturalmente, Elarath.  Os deseo buena suerte.
+Script1=takeitem(ringofform,player);player.addtitle(05ringdone);player.setprop(trainingpoints=5);showmessage(You have received some training points.,200);
+nxtln1=elagetring3
+
+[elagetring3]
+Say=Muchas gracias, %playername%.  Antes de que me olvide, Pell quiere verte.  Parece muy preocupada.  ¿Alguna otra cosa?
+adventure=ch5-506;
+removequest=ch5-501;
+AddQuest=ch5-504;
+script=player.addtitle(05ringdone);
+RspDflt=No, Elarath.  Buscaré a Pell inmediatamente.
+
+[portalready]
+Say=Sí, pero escucha, el portal ya funciona!  ¡Mesitas de noche, vasos, ratas y humanos pueden pasar a través del portal sin efectos secundarios!
+script=player.addtitle(portalactive);
+RspDflt=none
+RspTxt1=Esa es una buena noticia, Elarath, porque tengo una petición para vos...
+nxtln1=portalready2
+RspTxt2=Maravilloso!  ¿Puedo usarlo para ir al Plano Astral?
+nxtln2=portalready3
+
+[portalready2]
+Say=Oh, ¿y cuál es?
+RspDflt=none
+RspTxt1=Pell me ha informado de que los Sha'men están invocando los espíritus de algunos de nuestros compañeros al Plano Astral.  Ella no sabe exactamente qué están haciendo los Sha'men, pero se teme lo peor.
+nxtln1=portalready4
+
+[portalready3]
+Say=¿Po...  ¿Porqué querrías tú ir al Plano Astral?
+RspDflt=none
+RspTxt1=Pell me ha informado de que los Sha'men están invocando los espíritus de algunos de nuestros compañeros al Plano Astral.  Ella no sabe exactamente qué están haciendo los Sha'men, pero se teme lo peor.
+nxtln1=portalready4
+
+[portalready4]
+Say=Ahora que lo pienso, me explicó que se sentía mal ya hace un tiempo.  No me sorprende que lo investigase como lo ha hecho; después de todo, nunca ha sido una persona enfermiza.  Así que necesitas ir al Plano Astral, ¿verdad?  Creo que el portal fue diseñado originalmente para transportar a sus usuarios al plano astral, así que si no intento orientarlo a un punto de destino concreto, hmmm, deberías llegar a algún lugar próximo a donde deseas ir.
+RspDflt=none
+RspTxt1=¿Debería?  ¿Estáis seguro de ello?
+nxtln1=portalready5
+
+[portalready5]
+Say=Oh, no te preocupes.  Sé que allí donde el portal te lleve, el lugar será habitable para los humanos, y los grabados que no todavía pueden leerse sugieren que se trata del Plano Astral.  El punto exacto de destino fue fijado cuando se construyó el portal, así que no puedo garantizarte que te dejará cerca del lugar al que necesitas ir.
+adventure=ch5-507;
+RspDflt=none
+RspTxt1=¿Hay algo que deba recordar durante mis viajes?
+nxtln1=portalready6
+
+[portalready6]
+Say=Me temo que tengo poco que ofrecer en el tema de consejos de viaje, pues se conoce muy poca cosa de los viajes astrales.  Es decepcionante saber que los Sha'ahoul han logrado descubrirlo antes.  Excepto...
+RspDflt=none
+RspTxt1=¿Sí, Elarath?  ¿Qué se os ha ocurrido?
+nxtln1=portalready7
+
+[portalready7]
+Say=Sí, esto es importante, y me alegro que se te ocurriese preguntar.  La magia debería funcionar sin problemas en los Planos Astrales, pero dudo seriamente que las armas normales puedan hacer daño a las imágenes proyectadas de los Sha'men que vas a encontrar.  Si tienes dudas respecto a tus habilidades de hechicería, deberás procurarte alguna arma encantada, si no tienes ya alguna.  Estoy seguro de que alguno de los herreros, esto, Tepest, creo, o...  ¿Lucas?  ¿Lufkin?  Alguno de ellos tendrá una espada de ese tipo.
+Script=journalentry(chpt5-04);showmessage(Your journal has been updated,200);
+adventure=ch5-508;ch5-547;
+RspDflt=none
+RspTxt1=Gracias por el consejo, Elarath.
+nxtln1=portalready8a
+
+[portalready8a]
+Say=Antes de que se me olvide, debo enseñarte un hechizo que te ayudará tremendamente en el Plano Astral.  Es un hechizo protector menor, uno que te puedo enseñar fácilmente dado tu nivel de habilidad con la magia.  Protege contra la magia en general, que será probablemente el único tipo de ataque contra el que deberás enfrentarte mientras viajes por el Nexo Astral.
+RspDflt=none
+script=player.addtitle(Protection From Magic);
+RspTxt1=Gracias, Elarath.  ¿Hay algo más que deba saber antes de embarcar?
+nxtln1=portalready8
+
+[portalready8]
+Say=No, que yo recuerde.  El portal está activado, y lo mantendré vigilado para que siga abierto para ti...  Eso, y naturalmente, asegurarme que no entre nada más desde allí.  No estoy seguro de si las proyecciones de los Sha'men podrían cruzar el umbral, pero sus hechizos, y cualquier cosa que decidan invocar, podría posiblemente hacerlo.  Buena suerte, %playername%.
+adventure=ch5-509;
+RspDflt=Gracias, Elarath.  Te veré pronto.
+
+[tokenfive]
+Say=Sí, y debo admitir que es un encantamiento interesante.  Nuevamente, descubro que la mayoría de las cosas que hacen los Sha'men resultan un poco misteriosas para nosotros.  Parecen haber llegado a dominar las mismas formas de magia, pero con medios diferentes, así que comprender sus encantamientos es parecido a trabajar en un antiguo portal.
+adventure=ch5-510;
+RspDflt=none
+RspTxt1=¿Qué destino esperaría a la Reina Nanesi si simplemente destruimos éste objeto?
+nxtln1=tokenfive2
+
+[tokenfive2]
+Say=Es posible que su espíritu quedase atrapado, o... quizá destruido, pero no intentaremos nada hasta que no hayamos podido realizar más procesos de adivinación sobre él.  Podríamos decidir no hacer nada por miedo a arriesgar su vida.  Pell me ha dicho que éste tipo de magia está muy relacionado con el de la piedra espectral, aunque es definitivamente distinto, como ya te he comentado.  Si el bueno de Felious todavía estuviese entre nosotros...
+adventure=ch5-511;
+RspDflt=none
+RspTxt1=En realidad, Elarath, puede que todavía pueda ayudarnos.
+nxtln1=tokenfive3
+
+[tokenfive3]
+Say=¿Qué dices?  ¿Cómo?
+RspDflt=none
+RspTxt1=Encontré su espíritu en el Plano Astral.  Actualmente, está atrapado allí, y su ayuda fue necesaria para poder hacer lo que debía, con el fin de limpiar el Nexo Astral de la contaminación introducida por los Sha'man.
+nxtln1=tokenfive4
+
+[tokenfive4]
+Say=Ah.  Qué apropiado que él haya sido capaz de hallar alguna forma de vida después de la muerte.  No es que me resulten divertidos sus apuros, %playername%, pero no puedo evitar ser consciente de la ironía implicada.  Estoy seguro de que una parte de Felious lo encontrará un poco divertido... aunque probablemente sólo un poco.  Deberemos pedir su consejo en este tema, puesto que estoy seguro de que conoce alguna técnica o encantamiento, que nos ayudaría.
+AddQuest=ch5-500;
+RspDflt=none
+RspTxt1=Muy bien, Elarath, volveré una vez que Felious me haya aconsejado.
+nxtln1=tokenfive5
+RspTxt2=¿Puedo preguntaros algunas cosas antes de ir a hablar con Felious?
+nxtln2=tokenfive6
+
+[tokenfive5]
+Say=Y yo esperaré haciendo guardia como antes.  Sé rápido, %playername%.
+script=player.addtitle(05askfelious);
+RspDflt=Gracias, Elarath, y hasta luego.
+
+[tokenfive6]
+Say=Ciertamente, %playername%!  ¿Qué te preocupa?
+RspDflt=none
+RspTxt1=Pell dijo que la adivinación era más o menos su "especialidad".  ¿Qué pensáis?
+nxtln1=tokenfive7
+RspTxt2=¿Qué sucederá con la Reina Nanesi si no hacemos nada?
+nxtln2=tokenfive8
+rspcnd3=all(ttl(05nesisnap));
+RspTxt3=¿Por qué la Reina no recuerda nada de lo que le ha sucedido?
+nxtln3=tokinfive9
+
+[tokenfive7]
+Say=Creo que la adivinación es uno de sus estudios principales...  [Se ríe suavemente]  Y como puedes imaginar, ¡alguien con dotes adivinatorias, sabe muchas cosas!  Quizá más de las que debería; los detalles de por qué el Consejo de Fornax solicita su presencia, o por qué ella se niega a reconocer la autoridad del Consejo, son desconocidos.
+adventure=ch5-512;
+RspDflt=none
+RspTxt1=Muy bien, Elarath, volveré una vez que Felious me haya aconsejado.
+nxtln1=tokenfive5
+rspback=tokenfive6
+
+[tokenfive8]
+Say=Me imagino que se quedaría en el mismo estado en el que se encuentra ahora, que probablemente es bastante inestable, a pesar de lo que digan las apariencias.  Que tu espíritu sea influido cuando se encuentra en ese estado...  [niega lentamente con la cabeza]  Dudo que su yo etéreo realmente necesite estar en uno de los planos materiales, así que, naturalmente, haremos lo que podamos.  Asegúrate de volver a hablar conmigo.
+RspDflt=none
+RspTxt1=Muy bien, Elarath, volveré una vez que Felious me haya aconsejado.
+nxtln1=tokenfive5
+rspback=tokenfive6
+
+[tokinfive9]
+Say=¿Has hablado con ella?  Pell me ha dicho que aparecían como sus protectores en el Plano Astral, y no creo que hablar con ella sea buena idea.  Probablemente ni siquiera sepa qué ha sucedido.  Las mentes humanas pueden hacer cosas extrañas.
+adventure=ch5-513;
+RspDflt=none
+RspTxt1=Muy bien, Elarath, volveré una vez que Felious me haya aconsejado.
+nxtln1=tokenfive5
+rspback=tokenfive6
+
+[upgrader]
+Say=Increíble.  Absolutamente increíble.  Me sorprende lo mucho que has progresado en tus habilidades mágicas desde la primera vez que te vi.  No me dejas opción...
+RspDflt=none
+RspTxt1=No hay motivo para precipitarse, Elarath, estoy seguro de que no creéis que pueda ser una amenaza...
+nxtln1=upgrader2
+
+[upgrader2]
+Say=¿Qué?  Lo que sea que tú...  [Se queda perplejo, echa su cabeza atrás y se echa a reír a carcajada limpia]  No, no, %playername%!  ¡Vas a ser ascendido!  Tu fuerza y dominio de las artes mágicas son impresionantes, y con ésta última gesta, has demostrado ser merecedor del título de Hechicero.
+script=player.addtitle(Wizard);player.addtitle(05epromotedpc);
+adventure=ch5-514;
+RspDflt=none
+RspTxt1=Me siento muy honrado, Elarath.  ¿Hay algo que deba hacer para mantener conseguir ese título?
+nxtln1=upgrader3
+
+[upgrader3]
+Say=Nada que no hayas hecho ya, %playername%.  Hace mucho que mereces tal privilegio, que te habría sido dado mucho antes si hubieras recibido años de formación mágica.  No obstante, no puedo negar que superas a muchos magos en la aplicación de tus poderes.
+RspDflt=none
+RspTxt1=Gracias, Elarath.  ¿Hay algo más que deba saber?
+nxtln1=upgrader4
+RspTxt2=¿No hay rituales, tatuajes o saludos secretos?
+nxtln2=upgrader5
+
+[upgrader4]
+Say=Sigue el mismo código de conducta que has seguido hasta ahora; te ha ido muy bien a ti y a nuestra causa.  ¡Oh!  Y antes de que me olvide, aunque no podemos ofrecerte la fiesta en la que tomarías parte en la Academia, tengo un regalo para ti en ésta ocasión.  Espero que encuentres útil éste bastón, al fin y al cabo, es una arma más apropiada para un mago que una espada oxidada.
+script=player.additem(MageStaff1);
+RspDflt=none
+rspcnd1=all(ttl(05nsoulfreed));
+RspTxt1=Gracias de nuevo, Elarath.  ¿Hay algo más que pueda hacer por ti o por Avalon?
+script1=player.addtitle(05endofch5);player.addtitle(05nsoulfreed);
+nxtln1=endofch5
+rspcnd2=all(ttl(!05nsoulfreed));
+RspTxt2=Gracias de nuevo, Elarath.  ¿Hay algo más que pueda hacer por ti o por Avalon?
+script2=player.addtitle(05nsoulfreed);
+nxtln2=finishjar
+
+[upgrader5]
+Say=Ja!  No, no hay nada, aunque si hubieses sido un estudiante de la Academia, ahora habría una fiesta para celebrar la ocasión.  Para suplir la falta de algo por el estilo, tengo un regalo para ti en ésta ocasión.  Espero que encuentres útil éste bastón, al fin y al cabo, es una arma más apropiada para un mago que una espada oxidada.
+script=player.additem(MageStaff1);
+RspDflt=none
+RspTxt1=Gracias por este honor, Elarath.  Las palabras no pueden expresar mi gratitud.
+nxtln1=upgrader6
+
+[upgrader6]
+Say=Tonterías!  Te lo mereces, %playername%, y estoy seguro que los demás miembros de la Academia estarían de acuerdo conmigo.  Que tengas buena suerte.
+RspDflt=Gracias de nuevo, Elarath, y hasta luego.
+
+[endofch5]
+Say=Creo que, nuevamente, ya lo has hecho todo, %playername%.  Te sugiero que descanses un poco.  Quizá alguno de nuestros comandantes tenga alguna misión para ti.  No lo sé, pues ya sabes que últimamente he estado muy ocupado.  Creo que yo mismo necesitaré un descanso, pronto...
+RspDflt=Creo que yo también, Elarath.  Gracias.
+
+[finishjar]
+Say=Debemos terminar este asunto de la Reina, %playername%, pero aparte de eso, diría que el día de hoy ha sido bastante provechoso, ¿no te parece?  [Sonríe mientras te mira]
+RspDflt=Desde luego que sí, sabio señor.  Me dedicaré a terminar ésta misión, y hablaré de nuevo con vos una vez que la haya terminado.  Hasta luego.
+
+[morbidicon]
+Say=Hmm, sí, desde luego...  Hasta ahora ese tomo no me había resultado particularmente útil.  [Se mueve hacia la estantería con una gracia sorprendente, y vuelve con un libro gris oscuro, que se abre con un ruido extraño y prolongado]  Creo que ya veo el capítulo en cuestión...  Sí, ya lo comprendo.  Me tomará un poco de tiempo pensar un plan, incluso con esta nueva información.
+adventure=ch5-15;
+RspDflt=none
+RspTxt1=Entonces os dejaré con vuestros estudios, sabio señor.
+nxtln1=morbidicon2
+
+[morbidicon2]
+Say=Hmm...  ¿Qué?  ¡Ah!  Sí, naturalmente, %playername%.  Discúlpame, pues tengo mucho que estudiar.  Sabía que debería haber prestado más atención a éste libro, pero tengo tantos...
+RspDflt=Lo comprendo, Elarath.  Volveré a vos más tarde.
+
+[jaropen]
+Say=Oh!  ¡Excelente, en verdad excelente!  Ha resultado ser mucho más simple que la piedra espectral.  No me ha tomado demasiado tiempo encontrar el párrafo que buscaba, y rápidamente he descubierto una solución muy simple.  Simple, comparada con el trabajo que me ha costado el portal.  Te ahorraré los detalles, pero la jarra del corazón está abierta, y el alma de la Reina ha sido liberada.
+RspDflt=none
+RspTxt1=¿Qué sucede con un alma después de ser liberada de una jarra del corazón?
+nxtln1=jaropen2
+
+[jaropen2]
+Say=Como puedes imaginar, el tener el alma fuera del propio cuerpo no es un estado natural.  El alma, siempre se queda en el interior del cuerpo que tiene la chispa de la vida.  Si es extraída, busca el camino de vuelta, por eso existen esos invisibles cordones plateados que unen la proyección astral de una persona a su cuerpo físico.
+RspDflt=none
+RspTxt1=¿Me estáis diciendo que el alma ha vuelto a su cuerpo por voluntad propia?  ¿Cómo afectará eso a la Reina?
+nxtln1=jaropen3
+
+[jaropen3]
+Say=Desde luego, lo ha hecho, y probablemente ella esté completamente perpleja.  El Rey seguramente pensará que está enferma, o quizá que la luna la está afectando.  Como siempre, yo sugeriría discreción -- la Reina necesitará tiempo para recuperarse de esta experiencia, especialmente porque no debe tener ni idea de lo que ha sucedido.
+adventure=ch5-16;
+Script=journalentry(chpt5-13);showmessage(Your journal has been updated,200);
+RspDflt=Gracias por tu sugerencia, Elarath.  Hasta luego.
+
+[decoder]
+Say=Naturalmente!  ¿Qué querrías que mirase?
+RspDflt=Nada, Elarath, discúlpame.
+rspcnd1=all(obj(spscforget));
+RspTxt1=Un pergamino con un dibujo de un hombre confuso.
+nxtln1=forget
+rspcnd2=all(obj(spscdeflect));
+RspTxt2=Un pergamino con un dibujo de un escudo.
+nxtln2=deflect
+rspcnd3=all(obj(spscmanathief));
+RspTxt3=Un pergamino con...  Bueno, no tengo ni idea de lo que es esto.
+nxtln3=manat
+
+[forget]
+Say=Hmm, sí, el hechizo de "Olvido", que causa confusión momentánea en tus enemigos, y es especialmente efectivo contra los hechiceros.  Si tienes tiempo, éste pergamino te la puede enseñar.  Me temo que el pergamino será consumido en el proceso, pero puedes aprender el hechizo de forma instantánea.
+RspDflt=none
+RspTxt1=Naturalmente que me gustaría aprender el hechizo, Elarath.
+Script1=player.addtitle(Forget);takeitem(spscforget,player);showmessage(You have learned the Forget spell,200);
+nxtln1=redirect
+RspTxt2=Bueno, creo que prefiero conservar el pergamino.  Quizá tenga algún otro uso para él.
+nxtln2=redirect
+
+[deflect]
+Say=Oh, un hechizo "Deflectar", que rechazará parcialmente los ataques -- no indica específicamente que deban ser físicos o mágicos -- que intenten dañarte.  Si tienes tiempo, éste pergamino te la puede enseñar.  Me temo que el pergamino será consumido en el proceso, pero puedes aprender el hechizo de forma instantánea.
+RspDflt=none
+RspTxt1=Naturalmente que me gustaría aprender el hechizo, Elarath.
+Script1=player.addtitle(Deflect);takeitem(spscdeflect,player);showmessage(You have learned the Deflect spell,200);
+nxtln1=redirect
+RspTxt2=Bueno, creo que prefiero conservar el pergamino.  Quizá tenga algún otro uso para él.
+nxtln2=redirect
+
+[manat]
+Say=Ah, un hechizo verdaderamente peculiar!  Éste, llamado "Robar Mana", aspirará el maná del área en que te encuentres y te dará una parte.  Si tienes tiempo, éste pergamino te la puede enseñar.  Me temo que el pergamino será consumido en el proceso, pero puedes aprender el hechizo de forma instantánea.
+RspDflt=none
+RspTxt1=Naturalmente que me gustaría aprender el hechizo, Elarath.
+Script1=player.addtitle(Mana Thief);takeitem(spscmanathief,player);showmessage(You have learned the Mana Thief spell,200);
+nxtln1=redirect
+RspTxt2=Bueno, creo que prefiero conservar el pergamino.  Quizá tenga algún otro uso para él.
+nxtln2=redirect
+
+[redirect]
+Say=¿Hay más pergaminos con los que necesites mi ayuda?
+RspDflt=No, Elarath.  Gracias por tu ayuda.
+rspcnd1=one(obj(spscforget,scscdeflect,scscmanathief));
+RspTxt1=Si no os molesta...
+nxtln1=decoder
+
+[ttsherard]
+Say=Me disculpo por interrumpirte, pero por favor, habla con Sherard sobre esas cosas.  He estado muy ocupado con el portal, y no he tenido tiempo de investigar sobre el Plano Astral.  Él, no obstante, ha tenido tiempo para hacerlo, y puede que tenga información importante que compartir contigo.
+RspDflt=Er, desde luego, Elarath, desde luego.  Hasta la vista.
+rspback=elarafive
+
+[agfreed]
+Say=Excelente!  ¡Al fin puedo dejar de custodiar este portal por miedo de que algo nocivo penetre a través de él!  Gracias, %playername%.  ¡Pronto todos podremos volver a nuestros ciclos regulares de sueño!
+RspDflt=Incluso nosotros, ¿verdad sabio señor?  Adiós, Elarath.
+rspback=elarafive
+
+[seepell]
+Say=Si tienes preguntas respecto a ese objeto, te sugiero que hables con Pell.  Ella tiene una cierta afinidad con los hechizos de adivinación, y yo he estado tan ocupado últimamente, que no sería capaz de concentrarme en esas cosas.
+RspDflt=Lo comprendo, Elarath.  Gracias, y adiós.
+rspback=elarafive
+
+[playedfive]
+Say=Buenos días, %playername%.
+RspDflt=Disculpadme, estimado mago.  Debo irme.
+RspCnd1=All(ttl(!06recipe,06ttCrosby))
+RspTxt1=He venido a consultar vuestra sabiduría respecto a la extraña enfermedad que afecta a Elazar.
+NxtLn1=badE
+RspTxt2=¿Qué habéis hecho con el portal, Elarath?  Ya no está activado.
+nxtln2=playedfive2
+
+[playedfive2]
+Say=Oh, creí que te lo había dicho.  Mantenerlo abierto, aunque ya no sea peligroso, me cansa mucho, debido a los hechizos necesarios para activarlo después de un periodo de inactividad tan largo.  Es antiguo, y necesita una especie de puesta a punto, si quieres llamarla así.  Además, tu trabajo allí ya ha terminado, %playername%, y siento que un montón de cosas se ciernen sobre nosotros, y creo que debemos estar todos a nuestro máximo nivel de rendimiento...
+adventure=ch6-533;
+RspDflt=Gracias por la información y consejo, Elarath.  Hablaré con vos más tarde.
+
+[nplayfive]
+Say=Buenos días, %playername%.
+RspDflt=Disculpadme, estimado mago.  Debo irme.
+rspcnd1=all(stt(perception>39));
+RspTxt1=Parecéis un poco cansado hoy, Elarath.  ¿Os sentís bien?
+nxtln1=nplayfive2
+RspCnd2=All(ttl(!06recipe,06ttCrosby))
+RspTxt2=He venido a consultar vuestra sabiduría respecto a la extraña enfermedad que afecta a Elazar.
+NxtLn2=badE
+
+[nplayfive2]
+Say=Estoy un poco preocupado por Sherard.  Ha salido en una misión y todavía no ha vuelto.  Quizá me preocupo demasiado.
+adventure=ch6-534;
+RspDflt=Estoy seguro de que estará bien.  Si me disculpáis, Elarath, debo atender mis obligaciones.
+RspTxt1=Dadle más tiempo antes de perder la esperanza, Elarath.  La esperanza es todo lo que tenemos.
+nxtln1=nplayfive3
+RspTxt2=Hay mucho de lo que preocuparse, Elarath, pero no os hará ningún bien.
+nxtln2=nplayfive4
+
+[nplayfive3]
+Say=Y es algo precioso y menguante, %playername%.  Apostaría a que tú tienes la mayoría de ella.  Tus esfuerzos nos han salvado hasta ahora.
+RspDflt=none
+RspTxt1=No puedo llevarme todo el mérito y toda la esperanza, Elarath.  Otros se han sacrificado y han trabajado también para nuestro éxito.
+nxtln1=nplayfive5
+RspTxt2=Gracias, Elarath.  No defraudaré a Avalon.
+nxtln2=nplayfive6
+
+[nplayfive4]
+Say=Tienes razón, naturalmente, pero es algo que no podemos evitar y que debemos enfrentar.  Me dedicaré a mantener mi esperanza viva.
+RspDflt=Me alegro de oír eso, Elarath.  Hasta luego; tengo unas cosas un poco urgentes de las que ocuparme.
+
+[nplayfive5]
+Say=El creer en esas cosas es exactamente lo que hace que te apreciemos tanto en Avalon.  Y es una buena cosa, %playername%; aunque un individuo no puede ganar la guerra, un líder y su  gente sí que pueden.
+RspDflt=Gracias por las implicaciones, Elarath.  Disculpadme mientras me dedico a mi misión actual.
+
+[nplayfive6]
+Say=No tengo dudas respecto a eso, %playername%.  Que la suerte ilumine tu camino.
+RspDflt=Gracias, Elarath.  Hasta luego.
+
+[badE]
+Say=Ah sí, hablé con el Hermano Crosby sobre ello hace un tiempo, pero los recientes eventos me han tenido demasiado ocupado como para seguir el tema.  Había oído rumores de que el estado de Elazar estaba empeorando, pero no estaba seguro de que fuesen ciertos.
+RspDflt=none
+RspCnd1=All(ttl(!05lichdead))
+RspTxt1=Desde luego, parece estar empeorando mucho, y el Hermano Crosby no cree que vaya a durar mucho más tiempo.
+NxtLn1=nkl
+RspCnd2=All(ttl(05lichdead))
+RspTxt2=Desde luego, parece estar empeorando mucho, y el Hermano Crosby no cree que vaya a durar mucho más tiempo.
+NxtLn2=kl
+
+[nkl]
+Say=Estaré encantado de ayudar a un colega mago, %playername%.  Preferiría verle personalmente, pero no me sentiría confortable si dejase mi laboratorio en estos momentos.
+RspDflt=none
+RspTxt1=Por lo que habéis oído, ¿qué mal creéis que le está aquejando?
+nxtln1=wassawrong
+
+[kl]
+Say=Tu ayuda a nuestros magos ha sido de lo más encomiable, %playername% -- liberar el espíritu de Felious fue algo particularmente impresionante.  En vista de tus esfuerzos, me avergonzaría de mí mismo si no hiciese todo lo posible por ayudar.
+RspDflt=none
+RspTxt1=Por lo que habéis oído, ¿qué mal creéis que le está aquejando?
+nxtln1=wassawrong
+
+[wassawrong]
+Say=Es difícil decirlo, especialmente sin verle, pero los acontecimientos recientes me llevan a pensar que se debe tratar de algún tipo de ataque mágico hostil.  Estas cosas son muy difíciles de determinar.  ¿Qué síntomas concretos tiene últimamente?
+RspDflt=none
+RspTxt1=De acuerdo con el Hermano Crosby, su cabeza y sus manos están frías como el hielo, mientras que su pecho está ardiendo.  Ha estado completamente desquiciado o inconsciente la mayoría del tiempo.
+nxtln1=bebop
+
+[bebop]
+Say=Esto es muy poco habitual.  Tengo un libro que podría arrojar un rayo de luz al respecto.  [Chasquea sus dedos y un libro aparece en su mano]  Déjame ver... debería estar por aquí... enfermedades místicas... ¡sí!  Esto suena exactamente como lo que has descrito...
+RspDflt=none
+RspCnd1=All(ttl(!05chapter5))
+RspTxt1=¿Qué habéis encontrado?
+NxtLn1=nchsix
+RspCnd2=All(ttl(05chapter5))
+RspTxt2=¿Qué habéis encontrado?
+NxtLn2=chsix
+
+[chsix]
+Say=Es una maldición muy antigua, al principio muy lenta y debilitante, que consumirá incluso al mago más poderoso.  A juzgar por su antigüedad y lo oscura que es -- y dado que sabemos quienes son los más probables responsables de la maldición -- diría que los Sha'ahoul la aprendieron de los Naga, o si no, lo hicieron durante su corta excursión en el Plano Astral.
+adventure=ch6-534;
+RspDflt=none
+RspTxt1=Pell fue una gran ayuda en nuestra última expedición al Plano Astral.  Quizá pueda ayudarnos con esto, o podríamos intentar contactar con el Guardián Astral.
+nxtln1=c62
+
+[c62]
+Say=Desgraciadamente, no puedo contactar con Aenea, pues he cerrado el portal para conservar mis fuerzas.  En lo que a Pell respecta, no la he visto demasiado desde que ese Magistrado de Fornax llegó a Avalon.  No, me temo que nos las tendremos que apañar solos.  Afortunadamente, creo que he encontrado lo que necesitamos.
+RspDflt=none
+RspTxt1=¿Dice el texto cómo se puede curar la maldición?
+nxtln1=curse
+
+[nchsix]
+Say=Es una maldición muy antigua, al principio muy lenta y debilitante, que consumirá incluso al mago más poderoso.  A juzgar por su antigüedad y lo oscura que es -- y dado que sabemos quienes son los más probables responsables de la maldición -- diría que los Sha'ahoul la aprendieron de los Naga, o si no, lo hicieron durante su corta excursión en el Plano Astral.
+adventure=ch6-534;
+RspDflt=none
+RspTxt1=¿Dice el texto cómo se puede curar la maldición?
+nxtln1=curse
+
+[curse]
+Say=Las instrucciones son un poco vagas en algunos puntos, pero hay un ensalmo y dos componentes implicados.  El ensalmo debe ser leído por alguien "puro de corazón, mente y cuerpo" -- Una condición bastante habitual, y que tú ciertamente cumples.  Los componentes son un poco más raros, y creo que no tengo ninguno de ellos, pero supongo que alguno de los mercaderes del castillo deben tenerlos.  Yo lo intentaría con Rayous o con Olon -- ellos nunca tiran nada.
+adventure=ch6-535;
+RspDflt=none
+RspTxt1=¿Qué componentes debo pedirles?
+nxtln1=comp
+
+[comp]
+Say=Primero necesitarás Raíz de Piedra Siniestra, la cual es muy probable que esté en posesión de Olon.  He oído que la usa para cierto tipo de elixir de amor; a juzgar por el estado de la mayoría de los soldados de la guarnición, supongo que no ha usado sus reservas.  El otro componente es una pizca de Flor de Ciénaga Ardiente.  Dado que habitualmente se usa en ciertos perfumes exóticos, es probable que Rayous tenga -- ¿Sabias que los perfumes eran su negocio principal antes de la guerra?
+adventure=ch6-536:
+RspDflt=none
+RspTxt1=Qué extraño.  ¿Y el salmo?
+nxtln1=inc
+
+[inc]
+Say=Te lo escribiré. [Lo hace, y te lo entrega]  No es largo o complejo, pero me temo que será una experiencia muy agotadora para ti.  Ten mucho cuidado cuando lo recites, y asegúrate de que Elazar se ha bebido el tónico hecho con los componentes antes de empezar.
+script=player.addtitle(06recipe);player.additem(recipe);
+RspDflt=Gracias por el aviso, Elarath.  Ahora me voy a buscar a Olon y a Rayous, pues temo que a Elazar no le quede demasiado tiempo.  Hasta luego, y gracias por vuestra ayuda.
+
+[extra]
+Say=¿Has tenido suerte con la misteriosa enfermedad de Elazar?
+RspDflt=none
+RspCnd1=All(ttl(06RSTUFF,06oSTUFF):obj(olonvial,rayousvial))
+RspTxt1=Sí, ya tengo los ingredientes necesarios.
+NxtLn1=gotoBC
+RspCnd2=All(ttl(06RSTUFF0,!6oSTUFF):obj(rayousvial))
+RspTxt2=Tengo el ingrediente de Rayous, pero todavía he de hablar con Olon.
+NxtLn2=6ncomplete
+RspCnd3=All(ttl(!06RSTUFF,06oSTUFF):obj(olonvial))
+RspTxt3=Tengo el ingrediente de Olon, pero todavía he de hablar con Rayous.
+NxtLn3=6ncomplete
+rspcnd4=all(stt(perception>39):ttl(!05chapter5));
+RspTxt4=Parecéis un poco cansado hoy, Elarath.  ¿Os sentís bien?
+nxtln4=nplayfive2
+rspcnd5=all(ttl(05chapter5));
+RspTxt5=¿Qué habéis hecho con el portal, Elarath?  Ya no está activado.
+nxtln5=playedfive2
+
+[6ncomplete]
+Say=Debes tener ambos ingredientes para completar el tratamiento, %playername%.
+RspDflt=Los conseguiré, buen mago, y entonces haré lo que pueda por el pobre Elazar.
+
+[gotoBC]
+Say=Lleva estos ingredientes al Hermano Crosby.  Con ellos y el salmo, deberías poder ayudar al pobre Elazar.
+RspDflt=Tenéis mi más sincero agradecimiento -- como siempre -- por vuestra ayuda, sabio señor.
+

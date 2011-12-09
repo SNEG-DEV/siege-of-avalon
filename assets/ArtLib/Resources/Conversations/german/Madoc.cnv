@@ -1,0 +1,16 @@
+[root]
+Count=1
+Else=
+Default=Danke, Sir Madoc.
+Say1=
+goto1=Madoc
+
+[Madoc]
+say=Gehört Ihr hier oben dazu?
+rspDflt=None
+rspTxt1=Nein, Herr.  Ich bin in eigener Angelegenheit hier.
+NxtLn1=Madoc1
+
+[Madoc1]
+say=Nun, Eure Angelegenheit wird sich hier oben nicht klären lassen.  Zieht weiter.
+rspTxt1=Sehr wohl, Sir.  Gehabt Euch wohl.

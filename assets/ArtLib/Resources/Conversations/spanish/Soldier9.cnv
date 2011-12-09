@@ -1,0 +1,152 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01letterknown,01letterreturned
+Checked=01LetterKnown,01LetterReturned,01recovered,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-08,ch1-13
+Removed=
+
+[Items]
+Given=
+Taken=loveletter
+Checked=LoveLetter
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=7
+Else=
+Default=Nada, gracias.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=All(ttl(!01recovered,!01LetterKnown));
+goto2=Soldier
+Say3=All(ttl(!01recovered,01LetterKnown,!01LetterReturned):Obj(!LoveLetter));
+goto3=NoLetter
+Say4=All(ttl(!01recovered,01LetterKnown,!01LetterReturned):Obj(LoveLetter));
+goto4=FoundLetter
+Say5=All(ttl(!01recovered,01LetterReturned));
+goto5=Rumour
+Say6=All(ttl(01recovered,01LetterReturned));
+goto6=Chalice
+Say7=All(ttl(01Recovered,!01LetterReturned));
+goto7=Chalice2
+
+[Soldier]
+Say=¿Qué quieres?
+RspTxt1=Me gustaría saber de dónde eres.
+NxtLn1=Soldier1
+RspTxt2=Me gustaría oír cualquier rumor interesante que conozcas.
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Habito en los tupidos bosques de Aratoy.  La bella visión de los rayos de sol a través de las hojas de los árboles me deja sin aliento, como sin aliento me deja la visión de mi amada.  Echo de menos ambas cosas, pero mucho más a mi amada.  Ya fue difícil dejarla para venir a luchar en una guerra, pero ahora me encuentro en una fortaleza sitiada, lejos de los árboles y la hierba, y lejos de ella.  No sé si llegaré a dejar ésa trampa, o si volveré con ella.  Ella me ha escrito cartas--bueno, en realidad sólo me ha llegado una.  Me ayuda mucho.
+RspDflt=None
+RspTxt1=Ya veo.
+nxtLn1=Letter
+
+[Letter]
+Say=Había una rosa seca dentro, sabes, sacada de su jardín.  Es curioso cómo la rosa y la carta me hicieron echarla mucho más de menos, pero aún así, las atesoré ambas.  Eran pedazos de mi hogar, las únicas cosas que tenía que realmente me recordaban por qué estamos luchando.  El amor que puso en esa carta era la única cosa que me hacía soportable el vivir en esta caja de piedra.  Y ahora ya no está.
+RspDflt=None
+RspTxt1=¿No está?
+NxtLn1=Letter1
+RspTxt2=Eso es una pena.
+NxtLn2=Soldier3
+
+[Soldier2]
+Say=He oído que el General Ovoron planea atacar un campamento de suministros.  Para mantener a los Ahoul a raya necesitaremos todas las provisiones que pueda traer consigo.  Espero que consiga traer flechas; casi se me han terminado, y nunca he sido demasiado bueno fabricándolas.  En casa, mi amada era la que fabricaba todas mis flechas.  Hacía las flechas con mayor estabilidad que he visto jamás.  Eran incluso mejores que las de su padre, aunque él fuese el flechero de pueblo.  Pero todas sus flechas se me terminaron hace tiempo.  Tras eso, las únicas cosas de ella que me quedaban eran la rosa y la carta que me había enviado.  Y ahora ya no están.
+RspDflt=None
+RspTxt1=¿No están?
+NxtLn1=Letter1
+RspTxt2=Lamento oír eso.
+NxtLn2=Soldier3
+
+[Soldier3]
+Say=¿Querías alguna otra cosa?
+RspTxt1=Quisiera saber de dónde eres.
+NxtLn1=Soldier1
+RspTxt2=Quisiera saber rumores que puedas contarme.
+NxtLn2=Soldier2
+
+[Letter1]
+Say=Sí.  Algún enemigo sin corazón robó la carta de debajo de mi almohada, y la rosa de debajo de mi cama.  ¿Quién haría algo así?  Seguro que la carta la han roto en mil pedazos, o la han convertido en ceniza.
+Adventure=ch1-08;
+script=player.addtitle(01LetterKnown)
+RspDflt=None
+RspTxt1=Los Ahoul no son los únicos que pueden ser crueles.  Ten coraje: estoy seguro de que pronto levantarán el asedio y podrás volver a tu hogar y tu amada.
+NxtLn1=Letter2
+
+[Letter2]
+Say=Deseo que sea así con todo mi corazón.
+RspDflt=Que te vaya todo bien, hasta luego.
+
+[NoLetter]
+Say=Echo tanto de menos a mi amada y mi hogar...
+RspDflt=Como yo echo de menos mi hogar.  Adiós.
+
+[FoundLetter]
+Say=Echo tanto de menos a mi amada y mi hogar...
+RspDflt=Como yo echo de menos mi hogar.  Adiós.
+RspTxt1=Me estaba preguntando, ¿no será ésta la carta que has perdido?
+nxtLn1=FoundLetter2
+
+[FoundLetter2]
+Say=La has hallado!  ¡Gracias a los espíritus, y gracias a ti!  La rosa, ¿también encontraste la rosa?  Quédatela, por favor, como muestra de mi gratitud.  ¡Cuando esta guerra termine, quizá nos encontremos en Aratoy y podamos ir juntos a tomar algo!
+Adventure=ch1-13;
+Script=player.addtitle(01LetterReturned);takeitem(LoveLetter,player);player.setprop(trainingpoints=1);showmessage(You have received some training points.,300);
+RspDflt=Desde luego.  Que los espíritus--y tu amada--te guarden.  Adiós.
+
+[Rumour]
+Say=Hola!  Gracias de nuevo por la carta.
+RspDflt=None
+RspTxt1=De nada.  ¿Supongo que no has oído nada interesante desde que hablamos por última vez?
+nxtLn1=Rumour1
+
+[Rumour1]
+Say=Lo siento, solamente me he dedicado a leer la carta y pensar en mi amada.
+RspDflt=Lo comprendo, pero ten cuidado o gastarás el papel!  Adiós.
+
+[Chalice]
+Say=He sabido que has hallado el Cáliz de la Vida.  El Cáliz, mi carta; parece que eres muy bueno hallando objetos perdidas.  ¡Sigue así!
+RspDflt=None
+RspTxt1=Haré todo lo que pueda en esta guerra.  No puedo hacer menos.
+nxtLn1=Chalice1
+
+[Chalice1]
+Say=Como yo.  Nunca pensé que volvería a ver de nuevo a mi amada, pero con en Cáliz aquí en Avalon, creo que ahora verdaderamente tendremos una oportunidad.
+RspDflt=El camino sigue lleno de peligros, pero estoy seguro de que lograremos llegar a nuestro destino.  Hasta luego.
+
+[Chalice2]
+Say=He oído que has hallado el Cáliz de la Vida.  ¡Bien hecho!
+RspDflt=None
+RspTxt1=Haré todo lo que pueda en esta guerra.  No puedo hacer menos.
+nxtLn1=Chalice1
+
+[chapter6]
+Say=Estoy harto de este maldito lugar!  ¡Vine aquí a luchar en una guerra, no a sentarme y pasar hambre!
+RspDflt=Y yo también.  Hasta luego.
+RspTxt1=¿Has recibido más cartas de tu amada?
+nxtln1=chapter6b
+
+[chapter6b]
+Say=Ninguna, excepto la primera.  Me pregunto si tendré algún lugar al que regresar cuando haya terminado este asedio.
+RspDflt=Mantén tu fe, soldado.
+

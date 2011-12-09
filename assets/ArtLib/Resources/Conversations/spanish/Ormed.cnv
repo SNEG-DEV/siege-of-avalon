@@ -1,0 +1,82 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Gracias, Ormed.
+say1=one(ttl(04chapter4,05chapter5,06chapter6));
+goto1=fourup
+Say2=All(ttl(!01recovered));
+goto2=Ormed
+Say3=All(ttl(01recovered));
+goto3=Chalice
+
+[Ormed]
+Say=¿Qué es esto?  Un novato, ¿eh?  ¿También te han asignado a ésta zona?
+RspDflt=None
+RspTxt1=No.  Tengo asuntos personales que resolver.
+NxtLn1=Ormed1
+
+[Ormed1]
+Say=Entonces, adelante.  No vemos demasiadas caras nuevas por aquí.  Siempre somos los mismos haciendo lo mismo, día sí, día también.
+RspDflt=None
+RspTxt1=Afortunadamente, la situación mejorará pronto.
+NxtLn1=Ormed2
+
+[Ormed2]
+Say=No pongo mis esperanzas en eso, señor.  Que los buenos espíritus os protejan.
+RspDflt=Gracias.  A ti también.
+
+[Chalice]
+Say=Saludos, señor!  ¿Habéis revolucionado al personal, sabéis?
+RspDflt=None
+RspTxt1=No lo pretendía.  Sólo cumplía con mi deber como soldado de Avalon.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Eso es lo que todos hacemos.  Algunos de nosotros tenemos deberes que nos engrandecen.  A otros se les ordena pasar el día sin hacer nada.
+RspDflt=None
+RspTxt1=Pero todas las ocupaciones son esenciales para nuestra victoria.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Supongo que sí, señor.  Buenos días, señor.
+RspDflt=Buenos días, soldado.
+
+[fourup]
+Say=Es bueno tenerle con nosotros, señor.  Usted y su hermano son una bendición!
+RspDflt=Gracias, soldado!  Hasta luego.
+RspTxt1=Continuaré intentando superar las expectativas, soldado.  Gracias por tus amables palabras.
+

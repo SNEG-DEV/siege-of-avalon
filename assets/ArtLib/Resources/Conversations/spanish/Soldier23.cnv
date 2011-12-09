@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Hasta luego.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=¿Qué puedo hacer por ti?
+RspTxt1=¿De dónde eres?
+NxtLn1=Soldier1
+RspTxt2=¿Hay algún cotilleo interesante?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=No tengo tiempo para cotilleos!  ¡Apártate y deja pasar a un soldado de verdad!
+rspBack=soldier
+
+[Soldier2]
+Say=No tengo tiempo para cotilleos!  ¡Apártate y deja pasar a un soldado de verdad!
+rspBack=soldier
+
+[Chalice]
+Say=¿Cómo puedo ayudarle, señor?
+RspTxt1=¿De dónde eres?
+NxtLn1=Chalice1
+RspTxt2=¿Hay algún cotilleo interesante?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Vine navegando desde Nisos.
+rspBack=chalice
+
+[Chalice2]
+Say=Mis fuentes me dicen que el asedio será roto cualquier día!  ¡Es cierto!  ¡Ayer mismo le asesté a Mithras un golpe mortal!  ¡Es cierto!
+rspBack=chalice
+

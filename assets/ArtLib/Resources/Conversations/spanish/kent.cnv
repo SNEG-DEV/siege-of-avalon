@@ -1,0 +1,162 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01whylettertaken
+Checked=01LetterReturned,01recovered,01WhyLetterTaken,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-09,ch1-10,ch1-11,ch1-12
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=LoveLetter
+Added=
+
+[SyntaxCheck]
+tucker(5/23/01)=Passed
+tucker(7/16/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Gracias.
+say1=one(ttl(06chapter6,05chapter5));
+goto1=chapter6
+Say2=All(ttl(!01recovered,!01WhyLetterTaken));
+goto2=Soldier
+Say3=All(ttl(!01recovered,01WhyLetterTaken,!01LetterReturned));
+goto3=NotReturned
+Say4=All(ttl(!01recovered,01WhyLetterTaken,01LetterReturned));
+goto4=Returned
+Say5=All(ttl(01recovered));
+goto5=Chalice
+
+[Soldier]
+Say=¿Necesitas algo?
+RspDflt=No, soldado.  Perdóname.
+RspTxt1=¿De dónde eres?
+NxtLn1=Soldier1
+RspTxt2=¿Has oído algún buen rumor?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Mi hogar está en Cathea.  Bueno, lo estaba.  Criaba ganado allí, al menos hasta que fui reclutado para luchar en esta guerra.  Criar ganado no es un trabajo demasiado impresionante, pero ni siquiera una vaca loca ataca con tanta malevolencia como un Ahoul.  Es por ello que he tenido--todos hemos tenido--que aprender a ser fuertes.
+RspDflt=Me alegro de conocer tu gran fuerza, soldado. Hasta luego.
+rspBack=soldier
+
+[Soldier2]
+Say=He oído que el Rey Vortigerm de Taberland está viniendo con cada hombre disponible de su reino.  Los soldados de Taberland han demostrado anteriormente su valía en combate.  Su llegada nos salvará, pero hasta entonces, necesitaremos a todo aquel que tengamos para mantener a ralla a los Ahoul.  Las cosas son difíciles aquí, y a duras penas logramos contenerles.  Si alguno de nosotros se derrumba, lo hará otro, y otro, hasta que seamos como una manada de ganado en estampida.  Y entonces moriremos.  Debemos ser fuertes, todos nosotros.
+Adventure=ch1-09;ch1-10;
+RspDflt=Ése es un buen consejo.  Lo tendré presente.  Buenos días.
+RspTxt1=Lo comprendo.  No era consciente de que la situación fuese tan precaria.
+nxtLn1=Soldier3
+
+[Soldier3]
+Say=Naturalmente que es precaria.  Estamos en un maldito asedio.  Francamente, creo que nuestra única esperanza es que el Rey Vortigerm llegue aquí, y a toda prisa.  Entre traiciones dentro de los muros y ataques constantes desde el exterior, los asedios históricamente, siempre van mal para los asediados.  Y eso sin mencionar la amenaza de las enfermedades y el hambre.  He estado aquí el tiempo suficiente para conocer esa parte de nuestra historia militar.  Tu, en cambio, tienes aspecto de ser un nuevo recluta.
+RspDflt=None
+RspTxt1=Admito que soy un recién llegado.  No obstante, no es que me falte experiencia.
+nxtLn1=Soldier4
+
+[Soldier4]
+Say=Esa fuerza en tu voz, es una buena cosa.  Quizá dures aquí después de todo.  La mayoría de nosotros somos lo bastante fuertes para aguantar hasta que llegue el Rey, pero hay un par de quienes no estoy tan seguro.
+RspDflt=None
+RspTxt1=¿De veras?  ¿Como quiénes?
+nxtLn1=Soldier5
+
+[Soldier5]
+Say=Madden, por ejemplo.  Cada vez que he patrullado éstas últimas semanas, le he visto murmurando sobre esa "amada" suya; sobre cómo la echa de menos y desearía estar de vuelta en casa con ella.  Es triste, claro, pero todos y cada uno de nosotros preferiría estar en otro sitio.  Pero nos quejamos de eso?  No.  Y por qué?  Porque es exactamente la clase de cosa que representa un peligro.  Si uno de nosotros duda, lo hará el siguiente, y así.  Necesitamos ser fuertes.  Madden, en cambio...  Pero al menos me he encargado de su problema.
+RspDflt=None
+RspTxt1=¿Qué quieres decir?
+nxtLn1=Soldier6
+
+[Soldier6]
+Say=Tenía esa carta de su chica.  La leía constantemente, estuviese de servicio o no.  Lo que realmente necesita es olvidarla y concentrarse en la seguridad de Avalon.  Supuse que si no tenía la maldita carta, estaría mejor.  Así que la cogí y la escondí en mi habitación.
+Adventure=ch1-11;
+script=player.addtitle(01WhyLetterTaken);
+RspDflt=None
+RspTxt1=¿Un robo?  No es la cosa más noble que podías hacer.
+nxtLn1=Disapprove
+RspTxt2=Probablemente esté mejor si puede olvidarla.
+nxtLn2=Approve
+
+[Disapprove]
+Say=¿Noble?  Despierta.  Esto es la guerra.  Todos debemos ser fuertes si queremos sobrevivir.  Y después de que el Rey Vortigerm llegue, se la devolveré.  Hasta entonces, es mejor así.
+RspDflt=Quizá, pero estoy seguro de que hay una forma mejor de hacer las cosas.  Buenos días.
+
+[Approve]
+Say=Exactamente.  Y no será para siempre--tras el retorno del Rey Vortigerm, la devolveré.
+RspDflt=Es lo mejor.  Buenos días.
+
+[NotReturned]
+Say=Hola de nuevo!  Sigue así de fuerte!
+RspDflt=Lo haré.  Buenos días.
+rspCnd1=all(obj(LoveLetter));
+RspTxt1=¿No es ésta la carta de amor de Madden?
+nxtLn1=HasLetter
+
+[HasLetter]
+Say=Sí!  ¿Dónde la has encontrado?  ¿Has registrado mi habitación?
+RspDflt=none
+RspTxt1=Como ladrón confeso, ¿quién eres para objetar?
+nxtLn1=HasLetter2
+
+[HasLetter2]
+Say=Tienes tu parte de razón.
+RspDflt=Creo que por ahora me la quedaré.  Todavía estoy decidiendo quién debería tenerla.  Buenos días.
+RspTxt1=He pensado en lo que has dicho, y he decidido que tienes bastante razón.  He aquí la carta--deberías esconderla mejor en el futuro.
+nxtLn1=HasLetter3
+
+[HasLetter3]
+Say=Me alegro de que hayas comprendido el sentido del asunto.  Como ya te he dicho, una vez que la crisis termine, me aseguraré de devolvérsela a Madden.  Hasta entonces, como todos, deberá ser fuerte.  Buenos días.
+Adventure=ch1-12;
+Script=takeitem(LoveLetter,player);player.setprop(trainingpoints=1);showmessage(You have received some training points.,300);
+RspDflt=Buenos días.
+
+[Returned]
+Say=He oído que Madden ha recuperado su carta.  Felicidades!  Si ahora se derrumba, puedes habernos matado a todos.
+RspDflt=none
+RspTxt1=La fuente de la fortaleza de Madden reside en esa carta.  Con ella, será lo suficientemente fuerte para aguantar más que nosotros aquí.
+nxtLn1=Returned1
+
+[Returned1]
+Say=Probablemente eso no sea más que un montón de excremento de vaca.  Pero me gustaría que fuese cierto--NO tengo deseos de ver caer a Avalon.
+RspDflt=Estarás bien.  Todos lo estaremos, si confiamos en la fuerza de los demás.  Buenos días.
+
+[Chalice]
+Say=El héroe!  ¿Qué puedo hacer por ti?
+RspDflt=Nada.  Discúlpame.
+RspTxt1=¿De dónde eres?
+NxtLn1=Chalice1
+RspTxt2=¿Sabes de algún rumor interesante?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Nací en los altiplanos de Cathea.  Allí criaba ganado, hasta que fui reclutado para venir a luchar aquí.  Si me diesen un caballo, cabalgaría mejor que cualquier salvaje Ahoul!  Quizá nunca llegue a ser tan fuerte como tú, pero soy lo suficientemente fuerte para eso!
+RspDflt=Interesante.  Hasta luego.
+rspBack=chalice
+
+[Chalice2]
+Say=Se oye el rumor de que un nuevo oficial Elythriano hará cambiar las tornas de ésta guerra.  Tienes la fuerza necesaria para hacerlo.  Lo sé.  Sé fuerte!
+RspDflt=Tan fuerte como mi deber lo requiera.  Adiós.
+
+[chapter6]
+Say=Sueño con el momento en que esta guerra termine y pueda volver a mi tierra.  Esta guerra me ha enojado y atemorizado durante tanto tiempo que a veces pienso que me volveré loco.  Me canso de tener que ser el hombre fuerte.  ¿De qué sirve ser fuerte si es tu cuello el que está en juego?
+RspDflt=A veces todo lo que se puede hacer es seguir adelante.  A veces tienes que dejarlo estar.  Todo depende de la persona, no de la situación.  Creo en tu habilidad, soldado.  Conserva tu fe.
+

@@ -1,0 +1,84 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=03chapter3
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=teague
+Default=Gracias, Teague.
+Say1=all(ttl(03chapter3));
+goto1=three
+
+[Teague]
+Say=¿Zi?
+RspDflt=None
+RspTxt1=No quería molestarte.  Solo quería saber como iba todo.
+NxtLn1=Teague1
+
+[Teague1]
+Say=¿No puedez verlo?  To'o ez perfectamente normal aquí.  No hay en abzoluto nada raro.
+RspDflt=Bien, gracias por la indicación.
+
+[three]
+Say=¿Hola?
+RspDflt=none
+RspTxt1=¿Qué hay de nuevo por aquí?
+nxtln1=three2
+
+[three2]
+Say=Eztoy mortalmente aburrío!
+RspDflt=Ah.  Te dejaré un rato por ahora.  Adiós.
+RspTxt1=Es un sentimiento habitual.
+nxtln1=three3
+
+[three3]
+Say=Lo propio der Creadó, ¿no?  ¡Que "noz eztamoz canzando d'eztar zentaos tor día"!  ¿Qué podemoz hazer?
+RspDflt=none
+RspTxt1=Pues a sonreír y aguantar, como dice el refrán, ¿no?
+nxtln1=three4
+
+[three4]
+Say=Demaziao aguantá y poco zonreí hace que lo hombrez ze vuervan atontaoz.
+RspDflt=none
+RspTxt1=Sí, pero...  ¿Qué podemos hacer?
+nxtln1=three5
+
+[three5]
+Say=Tiene uzté razón, zeñó!
+RspDflt=none
+RspTxt1=Sonríe y aguanta, soldado.  Lograremos superar esto si nos centramos en ello.
+nxtln1=three6
+
+[three6]
+Say=Ezo ezpero.  Que le vaya bien, zeñó.
+RspDflt=Y a ti también.
+

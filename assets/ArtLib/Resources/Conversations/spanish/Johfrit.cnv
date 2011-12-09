@@ -1,0 +1,205 @@
+[FileID]
+Author=garth
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=Johfrit
+GUID=
+
+[Titles]
+Set=04metjohfrit,04rescuequest
+Checked=04Chapter4,04edgarddea,04edgarddead,04edgardsafe,04metEdgard,04metJohfrit,04rescueques,06chapter6
+Removed=
+
+[Quest]
+Added=ch4-001
+Removed=ch4-001
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(2/9/01)=Passed
+tucker(2/15/01)=Passed
+tucker(7/16/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=7
+Else=
+Default=Gracias, Johfrit.
+say1=all(ttl(06chapter6));
+goto1=fritsix
+Say2=All(Ttl(!04Chapter4));
+goto2=Johfrit
+Say3=All(Ttl(04edgarddead,!04metJohfrit));
+goto3=earlydeath
+Say4=All(Ttl(04edgardsafe,!04metJohfrit));
+goto4=earlyrescue
+Say5=All(Ttl(04Edgardsafe));
+goto5=rescueNoEinparty
+Say6=All(Ttl(04metjohfrit));
+goto6=report
+Say7=All(Ttl(04chapter4));
+goto7=Chapter4
+
+[Johfrit]
+Say=¿Qué es eso?  ¿Me has preguntado algo?
+RspDflt=None
+RspTxt1=No, todavía no.  ¿Cómo van las cosas por aquí?
+NxtLn1=Johfrit1
+
+[Johfrit1]
+Say=Bien!  ¿No te parece que vayan bien?  ¡Aquí todo es normal, completamente normal!
+RspDflt=None
+RspTxt1=Naturalmente.  ¿Estáis bien?
+NxtLn1=Johfrit2
+
+[Johfrit2]
+Say=Absolutamente!  Nunca estuve mejor.  ¿No te parece que estoy estupendamente?
+RspDflt=Supongo que sí.  Lamento molestaros.
+
+[Chapter4]
+Say=[Pareciendo no notar tu presencia]  ¿Cómo se lo diré a ella?  Con lo que adora al chico.  Le dije que éste era un destino peligroso, pero "el chico necesita experiencia", dijo ella.  Nunca me perdonará... su único hijo... pobre chico...
+RspTxt1=No quisiera entrometerme, pero no he podido evitar oír vuestros lamentos. ¿Cuál es el problema, buen señor?
+nxtln1=ch4a
+RspDflt=Perdonad que os haya molestado, señor.
+
+[ch4a]
+Say=[Notando al fin tu presencia]  Oh, lo siento -- por favor, disculpa mi rudeza.  No te preocupes por mí, joven soldado.  Es cierto que tengo problemas, pero dudo que puedas hacer nada al respecto.  Es una situación muy difícil la que enfrento, y se requeriría un milagro para resolverla.
+RspDflt=none
+RspTxt1=Por lo menos, puedo ofreceros un oyente simpático, señor.
+nxtln1=ch4a1
+RspTxt2=Creo que os sorprenderíais por las "situaciones difíciles" que he tenido que resolver últimamente.
+nxtln2=ch4a1
+
+[ch4a1]
+Say=Muy bien, Compartiré mi carga contigo.  Soy -- por si no lo sabías -- el Embajador Johfrit de Aratoy.  Mi séquito y yo hemos llegado a Avalon recientemente, y sufrimos una emboscada de los Sha'ahoul inmediatamente antes de llegar.  Varios de mis hombres, y mi asistente Edgard fue capturado.  No sé si vive, pero me aferro a la esperanza pese a la conocida crueldad de los Sha'ahoul.
+Script=Player.AddTitle(04metjohfrit);
+adventure=ch4-001
+RspDflt=none
+RspTxt1=¿Por qué le capturarían los Sha'ahoul?
+nxtln1=ch4b1
+RspTxt2=¿Habéis intentado rescatar a Edgard?
+nxtln2=ch4b2
+
+[ch4b1]
+Say=¿Por qué le capturarían?  Bueno, veréis, él era mi asistente, y, bueno, era importante porque, veréis, él es, en realidad... esto, llevaba información, ah, importante información táctica -- sobre Avalon, quiero decir.  Es un joven muy valiente, no mucho mayor que tú.  De hecho, me recuerdas un poco a él, tan confiado y honesto.  Dime, creo que te conozco de algo -- ¿no eres el protegido de Sir Roth?  Quizá puedas ayudarme después de todo.
+RspDflt=none
+RspTxt1=Quizá pueda hacer algo por ayudaros.
+nxtln1=ch4b5
+RspTxt2=¿Habéis intentado llevar a cabo el rescate de Edgard?
+nxtln2=ch4b3
+
+[ch4b2]
+Say=Sir Evadam es el único guerrero cualificado de nuestro séquito que sobrevivió a la emboscada, y sus heridas le han tenido en cama hasta hace poco.  Para cuando esté suficientemente recuperado, me temo que será demasiado tarde para Edgard.  No puedo imaginar los horrores a que debe estar sometido ahora mismo, y aún así, me siento incapaz de poder hacer nada por él.
+RspDflt=none
+RspTxt1=Quizá pueda hacer algo por ayudaros.
+nxtln1=ch4b5
+RspTxt2=¿Por qué capturarían los Sha'ahoul a Edgard?
+nxtln2=ch4b4
+
+[ch4b3]
+Say=Sir Evadam es el único guerrero cualificado de nuestro séquito que sobrevivió a la emboscada, y sus heridas le han tenido en cama hasta hace poco.  Para cuando esté suficientemente recuperado, me temo que será demasiado tarde para Edgard.  No puedo imaginar los horrores a que debe estar sometido ahora mismo, y aún así, me siento incapaz de poder hacer nada por él.
+RspDflt=none
+RspTxt1=Quizá pueda hacer algo por ayudaros.
+nxtln1=ch4b5
+
+[ch4b4]
+Say=¿Por qué le capturarían?  Bueno, veréis, él era mi asistente, y, bueno, era importante porque, veréis, él es, en realidad... esto, llevaba información, ah, importante información táctica -- sobre Avalon, quiero decir.  Es un joven muy valiente, no mucho mayor que tú.  De hecho, me recuerdas un poco a él, tan confiado y honesto.  Dime, creo que te conozco de algo -- ¿no eres el protegido de Sir Roth?  Quizá puedas ayudarme después de todo.
+RspDflt=none
+RspTxt1=En vista de vuestra falta de hombres, así como del valor para el enemigo de los conocimientos de vuestro asistente, quizá pueda ayudaros.
+nxtln1=ch4b5
+
+[ch4b5]
+Say=Si eres tan valiente y tenaz como he oído, quizá seas capaz de salvarle.  Es un chico valiente, pero temo que no aguante mucho más tiempo.  Ni siquiera sé dónde pueden tenerlo cautivo, aparte de dentro del campamento principal de los Sha'ahoul.  ¿Realmente crees que podrías encontrarle y traerle de vuelta?  Significaría mucho para mí y para mi gente.
+RspTxt1=Haré lo que pueda para rescatarle, Embajador.  ¿Hay algo más que podáis contarme que me ayude en esta misión?
+nxtln1=ch4b6
+RspDflt=Me encantaría ayudaros, Embajador Johfrit, pero tengo demasiadas obligaciones para hacerlo ahora.  Quizá pueda más tarde.
+
+[ch4b6]
+Say=Es un chico valiente, pero muy cabezota.  Puede que desconfíe de tu ayuda, especialmente dado el hecho de que no te ha visto jamás.  Deberías hallar alguna forma de identificarte como un enviado mío.  Hmmm... ¿qué serviría?  Podría darte una carta, explicando quién eres y que yo te envío.  ¿Serviría eso?
+RspDflt=none
+RspTxt1=Una carta es algo demasiado lento de leer, especialmente teniendo en cuenta que el factor tiempo puede ser crucial en un rescate.  Quizá podríais decirme algo que le convenza de que os conozco.
+nxtln1=ch4b7
+
+[ch4b7]
+Say=Supongo que eso tendría más sentido.  ¿Algo personal, dices?  Sé exactamente el qué: dile que el nombre de su perro favorito es Risitas.  Yo lo sé, pues le regalé el animal cuando ambos eran cachorros.  Nadie fuera de nuestro rincón de Aratoy podría saber eso. ¿Servirá?
+Script=Player.AddTitle(04rescuequest);journalentry(chpt4-09);showmessage(Your journal has been updated.,200);
+AddQuest=ch4-001
+RspDflt=Será perfecto, Embajador.  Ahora me iré, y volveré tan pronto como descubra algo relativo a Edgard.
+
+[report]
+Say=¿Habéis sabido algo del destino del joven Edgard?  Me preocupo, pues la crueldad de los Sha'ahoul es muy conocida.
+RspDflt=none
+rspCnd1=All(ttl(!04metEdgard,!04edgardsafe,!04edgarddead))
+RspTxt1=Me temo que todavía no he hallado ni rastro de él, señor.
+nxtln1=patch
+rspCnd2=All(ttl(04rescuequest))
+RspTxt2=Continuaré mi búsqueda, Embajador.  No perdáis la esperanza.
+nxtln2=patch
+rspCnd3=All(ttl(04edgarddead))
+RspTxt3=Tengo malas noticias para vos, Embajador, y no sé cómo dároslas de forma suave: Edgard ha caído.
+nxtln3=ch4d1
+rspCnd4=All(ttl(04metEdgard,!04edgardsafe,!04edgarddead))
+RspTxt4=Le he encontrado, señor, pero he sido incapaz de rescatarle por ahora.  Quizá cuando esté mejor preparado pueda liberarle.
+nxtln4=patch
+
+[patch]
+Say=Confío en ti, %playername%, y sé que me lo vas a devolver sano y salvo.  Sigue con ello, pues eres el único que puede tener éxito en una misión de rescate tan peligrosa.
+RspDflt=Haré lo que pueda, Embajador.
+
+[ch4d1]
+Say=Oh, el pobre niño!  Era tan joven, y como un hijo para mí.  ¡Malditos sean esos demonios por haber matado a un chico tan prometedor! Encontraré la forma de vengarle, aunque tarde toda una vida.  Por lo que respecta a Aratoy, dudo que nuestro reino continúe participando en este trágico conflicto.  Los bosques nos protegerán, como lo han hecho siempre, así que volveremos allí a pasar nuestro duelo.  Hasta luego, y gracias por habernos dado a conocer su destino.
+removequest=ch4-001;
+RspDflt=Lamento vuestra pérdida, Embajador Johfrit.  Espero que vuestra pena no nuble vuestra visión de lo que es necesario hacer para que nuestras tierras sigan siendo libres.
+
+[earlydeath]
+Say=[Ignorándote totalmente] Oh mi pobre sobrino!  Era tan joven, ¡tan lleno de vida!  Ya no puedo tener la esperanza de volverle a ver con vida, pues aunque estuviese vivo, no habría nada que pudiese hacer por él.  ¡Malditos Sha'ahoul!
+RspDflt=[A un lado] ¿No cesarán nunca sus lamentos?
+
+[earlyrescue]
+Say=Ah, el noble guerrero que salvó a mi sobrino!  Qué bueno verte, amigo mío.  No dejaré que Aratoy olvide el servicio que le has prestado, aunque sea sin saberlo.  Has renovado mi fe en la fuerza de ésta alianza de Avalon, tanto que pueden contar con mi apoyo en tanto que dure esta guerra.
+removequest=ch4-001;
+script=chapter4200012200063094830.removefromparty;
+RspDflt=Me alegro de haber podido ayudaros, señor, y si Avalon se beneficia, pues tanto mejor.
+
+[rescueNoEinParty]
+Say=Al fin puedo agradecértelo!  He visto a Edgard, y me habló de tu valentía.  Mi gente y yo te estamos eternamente agradecidos por haber realizado esta gesta para nosotros.  Ahora ya no temeré dar malas noticias a mi querida hermana.  Has hecho muy feliz a un hombre viejo, %playername%.  Si alguna vez me necesitas, no dudes en llamarme para que haga lo que pueda por ti.
+removequest=ch4-001;
+RspDflt=none
+RspTxt1=Me alegro de hacer lo que pueda por renovar la esperanza de alguien en el sueño de Avalon.
+nxtln1=rescueNoEinParty2
+
+[rescueNoEinParty2]
+Say=Ciertamente has renovado mis esperanzas, chico, y sospecho que también las del resto de Avalon.  Eres muy especial, %playername%, definitivamente muy especial.  Siento que algún día tu futuro será leyenda, pues realmente estás hecho de la misma madera que los héroes legendarios.
+removequest=ch4-001;
+RspDflt=Sois demasiado amable, Embajador Johfrit.  Espero que vuestro propio futuro sea menos traumático que los últimos eventos.  Hasta que volvamos a encontrarnos, quedad en paz, buen señor.
+
+[fritsix]
+Say=Oh, %playername%!  Me has asustado.
+RspDflt=Mis disculpas, Embajador.
+RspTxt1=¿Os sentís bien, Embajador?
+nxtln1=fritsix2
+RspTxt2=No me digáis que habéis adoptado la creencia de que el fin está cerca!
+nxtln2=fritsix3
+
+[fritsix2]
+Say=Oh, uno de los soldados me dijo que todo esta, literalmente, "tranquilo, demasiado tranquili".  Quizá estoy fiándome demasiado de los instintos de un soldado, o mi imaginación está conjurando imágenes de los Sha'ahoul esparciéndose a través de nuestras destrozadas puertas.
+RspDflt=Eso espero, Embajador, pero es mejor estar preparado.  Hasta luego.
+rspback=fritsix
+
+[fritsix3]
+Say=Oh, el fin llegará en su momento, %playername%.  Me gustaría conocer el desenlace.  Sé que me dirás que saldremos victoriosos, pero las caras están más demacradas y deprimidas, cada día que pasa.  Incluso la mía.
+RspDflt=Recordad que, sin esperanza, estamos condenados aun sin empuñar la espada, Embajador.  Hasta luego.
+

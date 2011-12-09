@@ -1,0 +1,73 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=03aldred,03aldredhappy,03knowelves,04chapter4,05chapter5,06chapter
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=aldred
+Default=Gracias, flechero.
+say1=one(ttl(03aldredhappy,!03knowelves));
+goto1=aldred
+say2=all(ttl(03knowelves));
+goto2=arrows
+say3=one(ttl(04chapter4,05chapter5,06chapter6))
+goto3=aldred
+
+[Aldred]
+Say=Pareces necesitar algunos de mis productos.  Ven y echa un vistazo--Te prometo que no hallarás mejores precios en todo Avalon!
+RspDflt=No gracias.
+RspTxt1=Gracias.  Déjeme ver qué tiene...
+script1=merchant
+
+[arrows]
+Say=Pareces necesitar algunos de mis productos.  Ven y echa un vistazo--Te prometo que no hallarás mejores precios en todo Avalon!
+RspDflt=none
+rspcnd1=all(ttl(!03aldred));
+RspTxt1=Gracias.  Déjeme ver qué tiene...
+script1=addtitle(03aldred);
+nxtln1=arrows2
+rspcnd2=all(ttl(03aldred));
+RspTxt2=Gracias.  Déjeme ver qué tiene...
+script2=merchant
+
+[arrows2]
+Say=Hey, espera un segundo!  Yo te recuerdo!  ¿Es cierto que has ido al bosque?
+RspDflt=none
+RspTxt1=Sí, lo es, pero verdaderamente quisiera comprar algo.
+nxtln1=arrows3
+
+[arrows3]
+Say=Cierto.  Si vuelves por ahí, intenta encontrar flechas élficas.  He oído que son las mejores.  Buena suerte!
+RspDflt=none
+RspTxt1=Seguro.  ¿Sus mercancías?
+script1=merchant
+

@@ -1,0 +1,91 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Gracias, Mikel.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=one(ttl(03chapter3,04chapter4,05chapter5));
+goto2=threeup
+Say3=All(ttl(!01recovered));
+goto3=Mikel
+Say4=All(ttl(01recovered));
+goto4=chalice
+
+[Mikel]
+Say=Eh tú!  No te quedes ahí parado!  Hay soldados de servicio por aquí y no deberías estar en medio!
+RspDflt=Lo siento.
+RspTxt1=¿De dónde eres?
+NxtLn1=Mikel1
+RspTxt2=¿Cuáles son las últimas noticias del lugar?
+NxtLn2=Mikel2
+
+[Mikel1]
+Say=Soy de Cathea.  No siempre fui un simple guardia!  Yo era un jinete Catheano hasta que me echaron!
+RspDflt=Quizás vuelvas a recuperar tu posición.
+rspBack=Mikel
+
+[Mikel2]
+Say=No tengo tiempo para cotillear contigo!  No me importa quién es tu hermano, tengo que atender mis deberes!
+RspDflt=Lamento molestarte.
+rspBack=Mikel
+
+[chalice]
+Say=¿Crees que cuando has visto algún combate ya puedes ir importunando a los soldados con verdaderas obligaciones que hay por aquí?
+RspDflt=none
+RspTxt1=Perdóname.
+NxtLn1=chalice1
+RspTxt2=¿Qué noticias tienes?
+NxtLn2=chalice2
+
+[chalice1]
+Say=Quizá he sido demasiado brusco.  Me disculpo por ello.  Que tengáis un buen día, señor.
+RspDflt=Buen día.
+rspBack=chalice
+
+[chalice2]
+Say=Sólo que los Ahoul han empezado a huir.  Puede parecer que no son menos.  Pero déjame asegurarte que ahora están atemorizados!
+RspDflt=Eso espero.  Hasta luego.
+rspBack=chalice
+
+[chapter6]
+Say=Buenos días, %playername%.  Mira, reconozco que he sido un poco brusco contigo.  Por favor, acepta mi apoyo cuando nos enfrentemos en batalla a los Sha'ahoul.
+RspDflt=Es un honor, Mikel, y lo mismo digo.  Mantén tu fe y tus habilidades, compañero.
+
+[threeup]
+Say=Me gustaría estar de vuelta en Cathea.  Estos fríos muros están helándome el corazón.  Echo de menos a mi caballo.
+RspDflt=Te dejaré tranquilo, soldado.
+

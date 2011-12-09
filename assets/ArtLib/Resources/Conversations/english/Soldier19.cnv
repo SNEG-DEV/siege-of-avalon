@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Farewell.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=Hello there, how can I help you?
+RspTxt1=Where are you from?
+NxtLn1=Soldier1
+RspTxt2=Heard any good rumors?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=My country of origin is Cathea.  It seems more distant from my heart with every passing day.
+rspBack=soldier
+
+[Soldier2]
+Say=A good source informed me that they will bake bread for the soldiers tonight.  Don't be late for supper!
+rspBack=soldier
+
+[Chalice]
+Say=May I be of assistance to you, sir?
+RspTxt1=Where are you from?
+NxtLn1=Chalice1
+RspTxt2=Heard any good rumors?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=I've come from Cathea to fight the Ahoul.  With you among us, victory will surely be ours!
+rspBack=chalice
+
+[Chalice2]
+Say=No, sir, only that Mithras and his horde are more afraid than ever!
+rspBack=chalice
+

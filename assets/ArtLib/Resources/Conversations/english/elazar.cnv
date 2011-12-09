@@ -1,0 +1,497 @@
+[FileID]
+author=tuck
+coding=
+approved=
+version=1
+
+[CharacterID]
+name=elazar
+guid=
+
+[Titles]
+Set=01gotamulet,04elaram,05entertower,playerknown
+Checked=01AmuletKnown,01ElazarPell,01FoundBrother,01GotAmulet,01informed,01Lahren,03chapter3,03haroldhappy,03haroldquest,03hartleyhappy,03hartleyquest,04chapter4,04elaknow,04elaram,04ramdestroyed,05chapter5,05entertower,05rath2zar,05starter,PlayerKnown
+Removed=
+
+[Quest]
+Added=ch1-24,ch1-70,ch1-71,ch1-90,ch1-91,ch3-527,ch4-505,ch4-518,ch4-519,ch4-520,ch4-526,ch5-17,ch5-18,ch5-501,ch5-502,ch5-519,ch5-520,ch5-521,ch5-522,ch5-545
+Removed=ch1-24,ch4-505,ch5-502
+
+[Items]
+Given=
+Taken=
+Checked=ktring
+Added=eamulet
+
+[SyntaxCheck]
+tucker(2/9/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=7
+Else=lastchance
+Default=Thank you, Elazar.
+say1=all(ttl(05chapter5));
+goto1=elazarfive
+say2=all(ttl(04chapter4));
+goto2=elazarfour
+say3=all(ttl(03chapter3));
+goto3=elazarthree
+Say4=All(ttl(01AmuletKnown,!01GotAmulet));
+goto4=Amulet
+Say5=All(ttl(01informed,!01FoundBrother,!PlayerKnown));
+goto5=Elazar
+Say6=All(ttl(01informed,!01FoundBrother,PlayerKnown));
+goto6=nothing
+Say7=All(ttl(01FoundBrother));
+goto7=Chalice
+
+[Elazar]
+Say=I've been expecting you.  You'll be wanting news of your brother, correct?
+RspDflt=none
+RspTxt1=Yes.  Anything you could tell me would be helpful.
+nxtln1=Elazar1
+rspCnd2=all(ttl(01Lahren,!01ElazarPell));
+RspTxt2=Yes.  Also, know you of the Fornaxan Pellandrian?
+script2=addtitle(01ElazarPell);
+nxtln2=pell1
+
+[Elazar1]
+Say=I won't tell you anything you can find out from the fools outside this room, but I will say that I can sense your brother's life force.  He is weak, but he lives.  Unfortunately, I believe that something is trying to hide him from me.  When I try to pinpoint your brother, he simply slips out of my grasp.
+RspDflt=none
+RspTxt1=But you are certain he's alive?
+nxtln1=Elazar2
+
+[Elazar2]
+Say=I said so, didn't I?  Now I expect you'll be wanting to go after him.
+RspDflt=none
+RspTxt1=Absolutely!  I'll not leave my brother out there to die!
+nxtln1=Elazar3
+
+[Elazar3]
+Say=A noble sentiment.  I wish you luck in your endeavor, my boy.
+RspDflt=none
+RspTxt1=Thank you.  And you have my thanks for telling me he's alive.
+nxtln1=Elazar4
+
+[Elazar4]
+Say=I didn't say it to please you, boy.  I said it because it's the truth and there's a chance you may be able to help him.  A slim chance to be sure, but better than nothing.
+RspDflt=none
+RspTxt1=I will not fail.
+nxtln1=Elazar5
+
+[Elazar5]
+Say=For his sake, I hope you prove to be right.  Be careful out there, boy.  Strange and foul things are about.
+Adventure=ch1-70;
+Script=journalentry(elazar);showmessage(Your journal has been updated.,200);addtitle(playerknown);
+RspDflt=I will, sir wizard.  Good day to you.
+
+[Amulet]
+Say=I see an amulet, for which you are searching.  You have looked for it... next to a broken cart?  Ha!  Ha!
+RspDflt=none
+RspTxt1=Yes...  I was also told that you might have information that could help me.
+nxtln1=Amulet1
+rspCnd2=all(ttl(01Lahren,!01ElazarPell));
+RspTxt2=Yes, how amusing.  Tell me, Elazar, know you of the Fornaxan Pellandrian?
+script2=addtitle(01ElazarPell);
+nxtln2=pell1
+
+[Amulet1]
+Say=Ha! Ha! That senile old...  You mean this amulet, don't you?  That old man is touched in the head!  Take the little trinket, and remind Elarath that the monks have herbs to help with one's memory!
+RspDflt=none
+Adventure=ch1-71;
+RemoveQuest=ch1-24;
+Script=journalentry(amulet);showmessage(Your journal has been updated.,200);player.additem(EAmulet);addtitle(01GotAmulet);
+RspTxt1=Is there anything else you think I should know?  Anything that can help me?
+nxtln1=Amulet2
+
+[Amulet2]
+Say=I suppose Elarath's already told you about the underground city.  I will tell you to be wary of it.  In fact, stay away from it entirely!  It is more dangerous than you can possibly fathom.
+RspTxt1=Dangerous?
+nxtln1=Amulet3
+RspDflt=none
+
+[Amulet3]
+Say=Yes!  And I'm not speaking of voreworms and giant spiders, boy!  I mean it is seriously and utterly deadly -- for all of us.
+Adventure=ch1-71;
+RspTxt1=I will heed your warnings, sir wizard.
+nxtln1=Amulet4
+RspDflt=none
+
+[Amulet4]
+Say=Don't try to lie to me, boy.  I know you will explore them no matter what I tell you.  I'm just warning so that perhaps you will watch over yourself a little more carefully.
+RspDflt=I will.  Thank you for your counsel.
+rspCnd1=all(ttl(01Lahren,!01ElazarPell));
+RspTxt1=I appreciate it.  Tell me, Elazar, know you of the Fornaxan Pellandrian?
+script1=addtitle(01ElazarPell);
+nxtln1=pell1
+
+[Chalice]
+Say=Come back to thank me?  No need, boy.  I'm just glad I was right about your brother.
+RspTxt1=So am I, Elazar.  Without your help, he may have died.
+Nxtln1=Chalice1
+RspDflt=None
+
+[Chalice1]
+Say=I'm pleased I could be of service to you.  In truth, I wasn't sure if it was your brother I sensed.  I only sensed something out there that wasn't laced with hostility and deduced it was your brother.
+RspTxt1=Well, however you managed it, my brother is now safe, and some of the thanks is owed to you.
+Nxtln1=Chalice2
+RspDflt=None
+
+[Chalice2]
+Say=You are welcome, soldier.  Come back and visit me when you have the time.
+RspDflt=I will.  May the good spirits protect you.
+
+[lastchance]
+Say=Leave me alone.  There are important matters afoot that don't involve you.  I don't have time to waste my concentration on you.
+RspDflt=Sorry to bother you, sir.
+
+[nothing]
+Say=I'm sorry, but there is nothing else I can offer you at this time.
+RspDflt=I understand.  May the good spirits protect you.
+rspCnd1=all(ttl(01Lahren,!01ElazarPell));
+RspTxt1=Perhaps there is.  Know you of the Fornaxan Pellandrian?
+script1=player.addtitle(01elazarpell);
+nxtLn1=Pell1
+
+[Pell1]
+Say=Don't be stupid; of course I know of her.  She is dangerous, that one.  Do not let her looks fool you, boy.  I was with the party that investigated the explosion of magic the night of her arrival at Avalon.  From the intensity we had expected to be facing a half-dozen or more Sha'men, but all we found was a woman in a blue dress kneeling on the ground with an unconscious man in her lap.
+script=addtitle(01ElazarPell);
+RspDflt=none
+RspTxt1=Lahren.  Her love.
+nxtLn1=Pell2
+
+[Pell2]
+Say=Yes.  But we also found the corpses, boy.  She claims a dozen attacked them, but I counted the bodies myself and there was easily twice that.  Possibly even three times the number, but some spots were so completely consumed that I could not be certain if anything there had ever lived.  In the dark, surprised and alone, even I would be hard pressed to defend myself against a score of men, but thirty?
+RspDflt=none
+RspTxt1=That would be... impressive.  Frightening, really.  But she was desperate...
+nxtLn1=Pell3
+
+[Pell3]
+Say=Oh, aye.  Desperate and terrified and half-sick with love.  She must have been...  magnificent.
+RspDflt=none
+RspTxt1=Magnificent?
+nxtLn1=Pell4
+
+[Pell4]
+Say=And what word would you use, boy?  A situation like that is the true test of a mage's mettle.  Mark my words: in another twenty years she will be one of the great ones.  And perhaps even sooner.  But tell me, why this interest?
+Adventure=ch1-90;
+RspDflt=none
+RspTxt1=I have agreed to help the lady reunite with her love.  I learned she was a mage and thought you might provide some insight into her character.
+nxtLn1=Pell5a
+RspTxt2=I met her and was merely curious to know more about the lady.
+nxtLn2=Pell5b
+
+[Pell5b]
+Say=You're lying, boy.  That's not a very good habit to develop.  Nevertheless, we all have our little secrets.  A word of advice for you: in the end, most of them do not really matter.  Now if you will excuse me, I must be getting back to work.
+RspDflt=Of course.  Good day to you.
+
+[Pell5a]
+Say=I wish you luck, boy.  In truth, we could use her help in Avalon, and she's mostly useless pining away as she is.  And that man of hers, Lahren...  I've heard the other historians and scholars say he can be quite perceptive into the Sha'ahoul culture and writings, if only he could consistently focus on the task at hand.  I've never met him myself, however.  He seems to have taken to avoiding me for some reason.
+Adventure=ch1-91;
+RspDflt=I see.  Well, I thank you for this little chat, sir wizard.  I wish you the best in your studies.
+RspTxt1=The lady Pell informed me that Lahren dislikes magic... and mages.
+nxtLn1=Pell6
+
+[Pell6]
+Say=Really?  How odd.  Well, then, if I was merely being polite when before I wished you luck, now I truly mean it.  A good day to you, boy.
+RspDflt=And to you, sir wizard.  You have my thanks.
+
+[elazarthree]
+Say=Hello again.  What do you need?
+RspDflt=Nothing.  I must have the wrong mage.
+RspTxt1=Why do you assume I need something?
+nxtln1=elazarthree1
+rspcnd2=all(ttl(03haroldquest,!03hartleyquest,!03haroldhappy,!03hartleyhappy):obj(!ktring));
+RspTxt2=I've been given an assignment to find King Tortain's signet ring, and I heard that you have some relevant information.
+nxtln2=elazarthree2
+rspcnd3=all(ttl(03hartleyquest,!03haroldquest,!03haroldhappy,!03hartleyhappy):obj(!ktring));
+RspTxt3=I've been given an assignment to find King Tortain's signet ring, and I heard that you have some relevant information.
+nxtln3=elazarthree2
+rspcnd4=all(ttl(03hartleyquest,03haroldquest,!03hartleyhappy,!03haroldhappy):obj(!ktring));
+RspTxt4=I've been given an assignment to find King Tortain's signet ring, and I heard that you have some relevant information.
+nxtln4=elazarthree2
+
+[elazarthree1]
+Say=No one comes to visit me unless they do.  Speak.
+RspDflt=I don't need anything, wizard.  Farewell.
+rspcnd2=all(ttl(03haroldquest,!03haroldhappy,!03hartleyhappy):obj(!ktring));
+RspTxt2=Very well.  I've been given an assignment to find King Tortain's signet ring, and I heard that you have some relevant information.
+nxtln2=elazarthree2
+
+[elazarthree2]
+Say=So you've spoken to either Lord Harold or Sir Roth, eh?  Ordinarily, I would care not about his insignificant "quest," except that I was under the influence of a particularly potent meditative trance...  My mind left my body and drifted over the ruined village, where I saw a Sha'ahoul warrior standing imperiously among fists of active kinsmen.
+RspDflt=none
+Script=journalentry(chpt3-10);showmessage(Your journal has been updated.,200);
+RspTxt1=Was it Mithras?
+nxtln1=elazarthree3
+RspTxt2=What were the Sha'ahoul doing?
+nxtln2=elazarthree3
+
+[elazarthree3]
+Say=How should I know?  Mist, foggy yet moving, spread in all directions about this man --  whose face was remarkably unremarkable -- and his kinsmen, or minions, faded to invisibility less than five paces from where he stood.  He was wearing armor, which is what caught my eye; a glint of light revealed sigils I know I've seen before.  He was wearing King Tortain's armor.  Another glint of metal drew my eyes to his hand...
+RspDflt=none
+RspTxt1=...He was wearing King Tortain's signet!
+nxtln1=elazarthree4
+
+[elazarthree4]
+Say=[glaring at you irritably]  Yes, he was.  I do not know why or how, but for a moment I fancied I could actually divine his intent.  Perhaps it was the look on his face, his plain features twisted into a smirk, or perhaps it was... something else... but I feel that this man has been sent to occupy the village.
+adventure=ch3-527
+RspDflt=none
+RspTxt1=Thank you for the information, Elazar.  I have matters to attend to now, else I would chat with you longer.
+nxtln1=elazarthree5
+
+[elazarthree5]
+Say=[He displays a vulpine smile.]  You're still a bad liar.  Good luck.
+RspDflt=Ehh...  Farewell.
+
+[elazarfour]
+Say=Oh, you again.
+RspDflt=I knew I should have taken a left...  Pardon me.
+rspcnd1=all(ttl(!04elaram));
+RspTxt1=You've always been such a gracious host...  Aren't you happy to see me?
+nxtln1=elazarfour1
+rspcnd2=all(ttl(04elaram,04ramdestroyed,!04elaknow));
+RspTxt2=Yes, and I bring good news.
+nxtln2=elazarfour11
+rspcnd3=all(ttl(04elaknow));
+RspTxt3=What say you, Seer?
+nxtln3=elazarfour12
+
+[elazarfour1]
+Say=Before you speak, know that I have been awaiting your arrival, and I have some information you will surely be interested in.  A vision came upon me last night while I slept, one that has me nearly convinced that you are an integral part of Avalon's salvation.
+RspDflt=none
+RspTxt1=How are you sure it wasn't a dream?
+nxtln1=elazarfour2
+RspTxt2=Don't you usually have to meditate to See?
+nxtln2=elazarfour3
+
+[elazarfour2]
+Say=I haven't had a dream in years, much less one that woke me feeling so chilled.  It was too colorful, too... detailed.
+RspDflt=none
+RspTxt1=Please continue, Elazar.
+nxtln1=elazarfour4
+rspback=elazarfour1
+
+[elazarfour3]
+Say=Yes, now you understand!  This was a powerful vision, indeed!
+RspDflt=none
+RspTxt1=Hmm.  Please continue, Seer.
+nxtln1=elazarfour4
+rspback=elazarfour1
+
+[elazarfour4]
+Say=In my vision, Avalon had fallen...  Through the rubble that remained and past the falling battlements rolled an immense Sha'ahoul battering ram.  It was hewn of rough logs, but great attention to detail was paid the carvings.  It was at once primitive and intricate, but bestial to be sure, with the head of a bird...  The way our enemies cajoled about it left no doubt in my mind that it was instrumental in their conquer of Avalon.  At the same time, however, I saw a figure who filled me with great hope; It was the statue of a hero, I think, and this hero, whoever he is, can... and must... save Avalon.
+adventure=ch4-518;ch4-519;
+script=player.addtitle(04elaram);journalentry(chpt4-06);
+RspDflt=none
+rspcnd1=all(ttl(!04ramdestroyed));
+RspTxt1=You seem quite disturbed by this, Elazar...  So you want me to find and destroy this thing, right?
+nxtln1=elazarfour5
+rspcnd2=all(ttl(04ramdestroyed));
+RspTxt2=A battering ram, you say?  I have heard about some of the special weaponry used in sieges, and I surmised that was our enemy's intent...
+nxtln2=elazarfour8
+
+[elazarfour5]
+Say=You don't understand!  I saw myself in Avalon...  And I wasn't exactly moving about, if you understand my meaning.  I've never Seen myself before...  Much less dead!
+RspDflt=none
+RspTxt1=That would certainly give anyone a reason to wake up in a cold sweat.  [ahem]  What should I do about this?
+nxtln1=elazarfour6
+
+[elazarfour6]
+Say=Find and destroy this thing!  I've heard rumors of Sha'ahoul activity in the village; I believe they must be readying this ram to be used on us!  Its destruction should...  Well, it will surely hold off their attack.
+RspDflt=none
+RspTxt1=How would you have me destroy this thing?
+nxtln1=elazarfour7
+
+[elazarfour7]
+Say=I do not have the answer to that question.  You must discover it on your own.  I will expect you when you are finished.
+AddQuest=ch4-505
+RspDflt=Very well.  I will doubtless be ordered to do it eventually.  I will keep you informed.  Farewell for now.
+
+[elazarfour8]
+Say=What?  The intent of what?
+removequest=ch4-505;
+RspDflt=none
+RspTxt1=I have destroyed what I believe to be the battering ram you just mentioned.  It was not quite assembled, but it fits your description.  At least, its parts did.  It should be no more than smoldering ashes by now.  Does that help any?
+nxtln1=elazarfour9
+
+[elazarfour9]
+Say=Certainly, you have put my mind at ease.  [sighs wearily]  So... you should... must be the savior in my vision...  Go now, I must rest.
+script=addtitle(04elaknow);
+adventure=ch4-526;
+RspDflt=Of course.  Sleep soundly, Seer.
+RspTxt1=Of course, but first...  You're welcome, Elazar.
+nxtln1=elazarfour10
+
+[elazarfour10]
+Say=Oh, very well.  If it will please you, yes, you have my gratitude, although we both know you're not just doing me a favor.
+RspDflt=Sleep soundly, Seer.
+
+[elazarfour11]
+Say=You have destroyed the ram.
+removequest=ch4-505;
+RspDflt=none
+RspTxt1=Yes.  It should be no more than smoldering ashes by now.  Does this news -- dare I say -- brighten your mood any?  I know how shaken that vision left you...
+nxtln1=elazarfour9
+
+[elazarfour12]
+Say=I say that if you do not bring me any news, I wish you to leave me be.
+RspDflt=Not at the moment, Elazar.  Farewell, then.
+rspcnd1=all(stt(perception>24));
+RspTxt1=You still seem rather upset, Elazar.  What are you so tense about?
+nxtln1=elazarfour13
+
+[elazarfour13]
+Say=[frowns]  If you must know, I can feel Mithras' presence growing stronger.  It is disturbing.  He intrudes on my visions and my thoughts.  It is irritating.  He is surely more than a mere warrior.
+adventure=ch4-520;
+RspDflt=none
+RspTxt1=It is merely a matter of time before the Sha'ahoul are crushed, Elazar.
+nxtln1=elazarfour14
+
+[elazarfour14]
+Say=And some of us cannot afford to pay the price that such ignorant optimism represents.
+RspDflt=Very well, Elazar.  I will leave you now.
+rspcnd1=all(stt(perception>35):ttl(knight));
+RspTxt1=If you were not optimistic at all, you would not have been so relieved by my news of the ram's destruction.  Hope is one thing we all have.  Nothing else matters if we lose the fortress!
+nxtln1=elazarfour15
+rspcnd2=one(stt(perception<36):ttl(!knight));
+RspTxt2=The price we'd pay by surrendering would be far worse.  I believe we will succeed because we must.
+nxtln2=elazarfour16
+
+[elazarfour15]
+Say=A perceptive view, but remember that persons such as yourself, who need not concern themselves with all that I've Seen and all that I know, will always have more hope.  Hope is a burden..
+RspDflt=Very well, Elazar.  If you will excuse me...
+RspTxt1=That's not true, Elazar.  You're not a completely hopeless case yet.
+nxtln1=elazarfour16
+
+[elazarfour16]
+Say=How amusing.  Begone, %playername%, your banter makes me weary.
+RspDflt=As you wish.
+
+[elazarfive]
+Say=Yes, %playername%?  What have you for me?
+RspDflt=Nothing, Elazar.  I must be on my way.
+rspcnd1=all(ttl(05starter,!05entertower));
+RspTxt1=I would not have bothered you, but Entrowe has sent me this way.  He says you are in need of assistance.
+nxtln1=elaringquest
+rspcnd2=all(ttl(05rath2zar,!05entertower));
+RspTxt2=I would not have bothered you, but Elarath has sent me this way.  He says you are in need of assistance.
+nxtln2=elaringquestb
+
+[elaringquest]
+Say=Yes, well...  Do you remember hearing of the portal that Elarath has been working on?  He's been trying to turn that into an escape route, but attempts have failed, and since the portal is so ancient, we don't know where it originally led.
+script=player.addtitle(05entertower);
+RspDflt=none
+RspTxt1=Yes, I remember hearing about the portal you mentioned, but I had no idea of its intended use.  Has there been any progress?
+nxtln1=elaringquesta
+
+[elaringquestb]
+Say=Yes, well...  I suppose he's told you about the portal he's been working on?  He's been trying to turn it into an escape route, but attempts have failed, and since the portal is so ancient, we don't even know where it originally led.
+RspDflt=none
+RspTxt1=Yes, I remember hearing about the portal you mentioned, but I had no idea of its intended use.  Has there been any progress?
+nxtln1=elaringquesta
+
+[elaringquesta]
+Say=Through multiple enchantments, Elarath has managed to be able to place the area the portal will teleport to.  It is a recent breakthrough that we are able to put anything through it at all.  For quite some time, we thought the portal was merely eating everything we tried to pass through it, but I think it more likely that the portal transported everything we sent to where it originally led ages ago.
+script=player.addtitle(05entertower);
+adventure=ch5-17;ch5-18;
+AddQuest=ch5-501;
+removequest=ch5-502;
+RspDflt=none
+rspcnd1=all(stt(perception<50));
+RspTxt1=So what's the problem?  If the portal works, what more do you need?
+nxtln1=elaringquest2
+rspcnd2=all(stt(perception>49));
+RspTxt2=But you said Elarath hasn't been able to turn it into an escape route...
+nxtln2=elaringquest3
+
+[elaringquest2]
+Say=The portal does not work as it should!  Everything it transports ends up terribly mangled, and we cannot possibly put a living creature through such a thing.  However, I remember possessing a ring that protects against polymorphing...  If Elarath can transfer the enchantment from the ring to the portal -- it's been done before, after all -- then the portal should function correctly.
+adventure=ch5-520;
+RspDflt=none
+RspTxt1=Should?  That's not much of an endorsement.
+nxtln1=elaringquest4
+RspTxt2=I see, Elazar.  What is it you wish for me to do?
+nxtln2=elaringquest5
+rspcnd3=all(stt(perception>54));
+RspTxt3=And you've left this ring somewhere in your tower, haven't you?
+nxtln3=elaringquest6
+
+[elaringquest3]
+Say=[nods sagely]  The portal destroys everything sent through it.  We can pinpoint the location of a pile of rubble that used to be a vase, but that isn't of much use.  I do remember that I had a ring..  It must have been called the Ring of Preservation of Form, or something of the sort.  I'm sure, since you're so perceptive, that you can imagine that once Elarath transfers the enchantment to the portal, it should function as we wish it to.
+adventure=ch5-520;
+RspDflt=none
+RspTxt1=Should?  That's not much of an endorsement.
+nxtln1=elaringquest4
+RspTxt2=I see, Elazar.  What is it you wish for me to do?
+nxtln2=elaringquest5
+rspcnd3=all(stt(perception>54));
+RspTxt3=And you've left this ring somewhere in your tower, haven't you?
+nxtln3=elaringquest6
+
+[elaringquest4]
+Say=We shall test it, of course, but I am making no guarantees!  We shall pass a few more pieces of furniture through the portal.  Once we are satisfied that the ring's enchantment has taken hold and is affecting the portal, we shall send some rats -- they shouldn't be hard to find -- through it as well.  It will be safe, or it will not be used.
+RspDflt=none
+rspcnd1=all(stt(perception>54));
+RspTxt1=You've left this ring somewhere in your tower, haven't you?
+nxtln1=elaringquest6
+rspcnd2=all(Stt(perception<55));
+RspTxt2=And what is it you wish for me to do?
+nxtln2=elaringquest5
+RspTxt3=Please continue, Seer.
+nxtln3=elaringquest5
+
+[elaringquest5]
+Say=I need you to go back to my tower and retrieve the ring from a chest in my chambers on the third floor.  You need not worry about any defense mechanisms; although I have a few, they have not been triggered.  Additionally, their nature is specific and almost intelligent, meaning that you cannot set them off.  I cannot stress enough the importance of this item should Avalon fall; think of all the lives lost if we do not.
+adventure=ch5-521;
+RspDflt=none
+rspcnd1=all(stt(perception>34));
+RspTxt1=You do not need to stress its importance, Seer, I understand.
+nxtln1=elaringquest7
+rspcnd2=all(stt(perception<35));
+RspTxt2=Why think of those to die?  Think instead of the lives saved if the portal works when we should need it.
+nxtln2=elaringquest9
+
+[elaringquest6]
+Say=Smart aleck!  You...  [cough]  Yes.  I need you to go back to my tower and retrieve the ring from a chest in my chambers on the third floor.  You need not worry about any defense mechanisms; although I have a few, they have not been triggered, else I would know.  Additionally, their nature is specific and almost intelligent, meaning that you cannot set them off.  I cannot stress enough the importance of this item should Avalon fall; think of all the lives lost if we do not.
+adventure=ch5-521;
+RspDflt=none
+rspcnd1=all(stt(perception>34));
+RspTxt1=You do not need to stress its importance, Seer, I understand.
+nxtln1=elaringquest7
+rspcnd2=all(stt(perception<35));
+RspTxt2=Why think of those to die?  Think instead of the lives saved if the portal works when we should need it.
+nxtln2=elaringquest9
+
+[elaringquest7]
+Say=Then I shall see you after you are finished.  Oh, and say "hello" to my big book when you arrive -- you'll know the one -- and tell it to reference entries 491 and 673 of my log for you.  Farewell; I shall see you after you finish.  May the good spirits protect you.
+adventure=ch5-522;
+RspDflt=none
+RspTxt1=I am confident in my abilities and shall succeed, Elazar.  You shall have your opportunity to complete the portal.
+nxtln1=elaringquest8
+
+[elaringquest8]
+Say=I am confident in your abilities as well, it is merely customary to wish someone good luck.  I was attempting to be courteous.
+adventure=ch5-519;
+RspDflt=none
+RspTxt1=In that case, I apologize, Seer, but there is one more question I must ask before I can continue.
+nxtln1=suppinfo5-1
+
+[suppinfo5-1]
+Say=Of course!  I forgot to tell you how you are supposed to get into my tower, since it has been sealed!  There is a tree immediately outside my tower with a magical spell set to trigger when someone touches a branch on it.  It is difficult to identify, but I've no doubt you will manage to find it.
+adventure=ch5-545;
+RspDflt=Thank you, Elazar.  I will return shortly with your ring.
+
+[elaringquest9]
+Say=That is certainly a more invigorating thought, %playername%.  Yes, an unusually wise comment.  Say "hello" to my big book when you arrive at my tower -- you'll know the one -- and tell it to reference entries 491 and 673 of my log for you.  Farewell; I shall see you after you finish.  May the good spirits protect you.
+adventure=ch5-522;
+RspDflt=none
+RspTxt1=I am confident in my abilities and shall succeed, Elazar.  You shall have your opportunity to complete the portal.
+nxtln1=elaringquest8
+

@@ -1,0 +1,296 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=05intros,basic energy management,flame,frost,heal,hold,mage craft,minor meditation
+Checked=01recovered,03chapter3,04chapter4,05chapter5,05fireworld,05forna,05geticekey,05iceworld,05introS,05lichdea,05Nagaworld,05ringdon,05SFC,05sfw,05SIW,05snw,06chapter6,Basic Energy Management,defenseson,flame,frost,heal,hold,Mage Craft,Minor Meditation
+Removed=
+
+[Quest]
+Added=ch3-572,ch5-013,ch5-050
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+garth(3/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=6
+Else=
+Default=
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(05introS));
+goto2=return
+Say3=All(ttl(05chapter5));
+goto3=ch5intro
+say4=one(ttl(03chapter3,04chapter4));
+goto4=three
+Say5=All(ttl(!01recovered));
+goto5=Sherard1
+Say6=All(ttl(01recovered));
+goto6=Chalice1
+
+[Sherard1]
+Say=Hello.  I am Sherard.
+RspDflt=None
+RspTxt1=What do you do?
+nxtLn1=Sherard2
+RspTxt2=What's the latest news you've heard?
+NxtLn2=Sherard3
+
+[Sherard2]
+Say=I'm Elarath's assistant.  I have been his aide for many years now, since before the war.  We came here from Fornax together.
+RspDflt=None
+RspTxt1=Do you like working for a wizard?
+nxtLn1=Sherard4
+
+[Sherard3]
+Say=I hear that morale outside the Keep has been terrible lately, especially with the failure of the latest relief mission.  I wouldn't worry if I were you.  There are many brilliant minds working on this problem.  We are in safe hands.
+RspDflt=That's good to know.  Thank you.
+rspBack=sherard1
+
+[Sherard4]
+Say=I like working with him well enough, truth be told.  It's even a bit endearing having him never remember my name -- he's getting a bit forgetful, you know.  Nevertheless, if those Ahoul monsters try coming over the walls, he'll sling spells at them like few others can.  Magic is graven so deeply into his soul he could never forget it.  And with luck and courage, I'll be at his side -- though hopefully by then I'll have fully memorized Flame!
+RspDflt=A wizard would always be welcome by my side.  I'm glad to know you!
+
+[chalice1]
+Say=Hello again.
+RspDflt=None
+RspTxt1=Heard any rumors lately?
+NxtLn1=chalice2
+
+[chalice2]
+Say=Everyone's been talking about your feats outside Avalon.  Sometimes I wish I were a warrior and not a wizard-trainee.  Congratulations!  You will truly be an asset to the struggle here.
+RspDflt=Thank you for the kind words.
+
+[three]
+Say=Welcome back.  Are you in need of more magical training?
+RspDflt=none
+RspTxt1=I might, but I didn't know you could actually teach magic already...
+nxtln1=three2
+RspTxt2=Pardon me.  I will come back when the wizard, and not the apprentice, offers me magical training.
+nxtln2=three5
+
+[three2]
+Say=I'm not allowed to, so I don't, but I could if I wanted to.  I was just practicing for when I become a famous magic-user.  You wait and see, it'll happen!
+adventure=ch3-572
+RspDflt=none
+RspTxt1=I'm sure it will, Sherard, I'm sure it will.  Excuse me.
+nxtln1=three3
+
+[three3]
+Say=You don't believe me, do you?  You wait and see!
+RspDflt=none
+RspTxt1=I shall.  I just need to, ah, do my own practicing, so if you will excuse me...
+nxtln1=three4
+
+[three4]
+Say=Oh!  Certainly.  Practice makes perfect!
+RspDflt=That it does.  Farewell.
+
+[three5]
+Say=Wait!  I wasn't offering training, I... was just preparing for the day when I, too, will be a powerful magic-user!  You wait and see, it'll happen!
+adventure=ch3-572
+RspDflt=none
+RspTxt1=We shall see, Sherard.  Pardon me, I have-
+nxtln1=three3
+
+[ch5intro]
+Say=Hail and well met, %playername%!  It's been quite some time since last I saw you -- how have you fared against the Sha'ahoul?
+RspDflt=Well enough, I suppose, but I've no time to chat.  Farewell.
+RspTxt1=Quite well, Sherard.  How have you fared in the advancement of your studies?
+nxtln1=ch5I2
+
+[ch5I2]
+Say=You may find it hard to believe, but I've actually advanced rather far recently.  Though he can be forgetful, Elarath is nonetheless a fine teacher.  Perhaps I could even teach you a thing or two.
+script=player.addtitle(05introS);
+adventure=ch5-013
+RspDflt=Unlikely, impish apprentice.  Farewell.
+RspCnd1=one(ttl(!flame,!frost,!heal,!hold,!Minor Meditation,!Mage Craft,!Basic Energy Management));
+RspTxt1=I hate to admit it, but I never completed my training with Elarath.  Could you help me remedy this?
+nxtln1=TrainTitles
+RspTxt2=I doubt it; however, you may be able to answer a question or two for me.
+nxtln2=askquestions
+RspTxt3=Have you heard any interesting rumors, Sherard?
+nxtln3=fornax
+
+[fornax]
+Say=As a matter of fact, I personally saw something quite interesting just the other day, while wandering about the inner bailey.  Two mages -- a master and an apprentice, I'd wager -- had just arrived from Fornax.  Their mysterious appearence caused quite a stir, but most folks won't pry into the affairs of mages, especially Fornaxan ones.  I had wanted to speak with them myself, but Elarath summoned me back here before I got the chance.  My curiosity will likely draw me back soon, though; they are, after all, the first new mages to come to Avalon in some time.
+adventure=ch5-050
+script=addtitle(05fornax);
+RspDflt=Thank you, Sherard.  I would enjoy speaking with you further, but I must go now.  Farewell.
+RspTxt1=Could you perhaps answer another question for me, Sherard?
+nxtln1=askquestions
+
+[return]
+Say=Have you returned to tap the font of wisdom that is Sherard?
+RspDflt=Not now, but perhaps later you can teach me the secret of your humility.  Farewell.
+RspTxt1=Wisdom can come from the most unlikely places; though I sincerely doubt it, you may be able to answer a question or two of mine.
+nxtln1=askquestions
+RspCnd2=one(ttl(!flame,!frost,!heal,!hold,!Minor Meditation,!Mage Craft,!Basic Energy Management));
+RspTxt2=I hate to admit it, but I still haven't completed my training with Elarath.  Could you help me remedy this?
+nxtln2=TrainTitles
+Rspcnd3=All(ttl(!05fornax))
+RspTxt3=Have you heard any interesting rumors, Sherard?
+nxtln3=fornax
+
+[TrainTitles]
+train=true
+Say=Don't be embarrassed -- I'll never tell a soul that an apprentice trained you.  So, what would you like instruction in?
+RspDflt=On second thought, this can wait.  Farewell.
+rspCnd1=All(ttl(!Mage Craft):stt(trainingpoints>4))
+RspTxt1=Mage Craft(+1 Perception, +2 Mysticism, +2 Recharge Rate): 5pts
+script1=player.addtitle(Mage Craft);player.setprop(trainingpoints=-5);
+nxtln1=TrainTitles
+rspCnd2=All(ttl(!Basic Energy Management):stt(trainingpoints>2))
+RspTxt2=Basic Energy Management(+5 Mana): 3pts
+script2=player.addtitle(Basic Energy Management);player.setprop(trainingpoints=-3);
+nxtln2=TrainTitles
+rspCnd3=All(ttl(!Minor Meditation):stt(trainingpoints>2))
+RspTxt3=Minor Meditation(+1 Recharge Rate): 3pts
+script3=player.addtitle(Minor Meditation);player.setprop(trainingpoints=-3);
+nxtln3=TrainTitles
+rspCnd4=All(ttl(!Flame):stt(trainingpoints>1))
+RspTxt4=Flame Spell: 2pts
+nxtln4=Flame
+rspCnd5=All(ttl(!Frost):stt(trainingpoints>1))
+RspTxt5=Frost Spell: 2pts
+nxtln5=Frost
+rspCnd6=All(ttl(!Heal):stt(trainingpoints>0))
+RspTxt6=Heal Spell: 1pt
+nxtln6=Heal
+rspCnd7=All(ttl(!Hold):stt(trainingpoints>0))
+RspTxt7=Hold Spell: 1pt
+nxtln7=Hold
+
+[Flame]
+Say=Ah, the Flame spell -- it's a classic in this profession.  This spell does a moderate amount of damage to your target.  The stronger you are in mysticism, the more damage the spell inflicts and the faster the ball of flame will travel.  Does this sound like something you would like to know how to cast?
+RspDflt=none
+RspTxt1=Yes, I think it does.
+script1=player.addtitle(Flame);player.setprop(trainingpoints=-2);
+nxtLn1=TrainTitles
+RspTxt2=Perhaps later.  What else can you teach me?
+nxtLn2=TrainTitles
+
+[Frost]
+Say=Like Flame, Frost does a moderate amount of damage to a target.  Unlike Flame, which can miss if your victim has sharp enough reflexes, Frost seeks out its target.  The stronger you are in magic, the more damage you can cause and the more likely Frost will be able to accurately be able to find its target, no matter how they might flee or where they might hide.  Does this sound like something you would like to know how to cast?
+RspDflt=none
+RspTxt1=Yes, I think it does.
+script1=player.addtitle(Frost);player.setprop(trainingpoints=-2);
+nxtLn1=TrainTitles
+RspTxt2=Perhaps later.  What else can you teach me?
+nxtLn2=TrainTitles
+
+[Heal]
+Say=If you ever get wounded in combat -- and it's a depressingly regular occurrence, I'm afraid -- you will have two choices: wrap a dirty bandage around the wound and hope the bleeding ceases or use the Heal spell and be instantly whole.  Not much of a choice, I should think.  Does this sound like something you would like to know how to cast?
+RspDflt=none
+RspTxt1=Yes, I think it does.
+script1=player.addtitle(Heal);player.setprop(trainingpoints=-1);
+nxtLn1=TrainTitles
+RspTxt2=Perhaps later.  What else can you teach me?
+nxtLn2=TrainTitles
+
+[Hold]
+Say=A fairly useful spell, Hold will immobilize an opponent for a short length of time.  The stronger you are in the art, the longer your opponent will not be able to move -- or fight back, if you catch my meaning.  Does this sound like something you would like to know how to cast?
+RspDflt=none
+RspTxt1=Yes, I think it does.
+script1=player.addtitle(Hold);player.setprop(trainingpoints=-1);
+nxtLn1=TrainTitles
+RspTxt2=Perhaps later.  What else can you teach me?
+nxtLn2=TrainTitles
+
+[askquestions]
+Say=Ask what you will, %playername% -- Even I'm amazed by what I now know.
+RspDflt=Never mind, Sherard -- I must be on my way now.  Farewell.
+RspCnd1=All(ttl(05geticekey,!05SFC,!05lichdead))
+RspTxt1=I have encountered the spirit of Felious the Necromancer in the Astral Plane.  Have you ever heard of spirits becoming trapped there?
+NxtLn1=FeliousSpirit
+RspCnd2=All(ttl(defenseson,!05ringdone))
+RspTxt2=Your master hasn't mentioned anything about the defenses of Elazar's tower, has he?
+NxtLn2=defenseson
+RspCnd3=All(ttl(05iceworld,!05SIWC))
+RspTxt3=In my recent travels through the Astral Plane, I have journeyed through a portal to Frosthelm.  Do you know of it?
+NxtLn3=iceworld
+RspCnd4=All(ttl(05fireworld,!05sfwc))
+RspTxt4=Do you know anything about the  land of Infernus?
+NxtLn4=fireworld
+RspCnd5=All(ttl(05Nagaworld,!05snwc))
+RspTxt5=Do you know of the world of the Naga?
+NxtLn5=Nagaworld
+Rspcnd6=All(ttl(!05fornax))
+RspTxt6=Have you heard any interesting rumors, Sherard?
+nxtln6=fornax
+
+[FeliousSpirit]
+Say=Poor Felious!  I must admit, I have no idea how he could possibly be helped.  I'm afraid that the laws governing the Astral Plane are somewhat beyond the scope of my current studies.  I've barely begun my work on the plane's basic geography, to tell the truth.
+script1=addtitle(05SFC);
+RspDflt=Thank you, Sherard.  I would enjoy speaking with you further, but I must go now.  Farewell.
+RspTxt1=Could you perhaps answer another question for me, Sherard?
+nxtln1=askquestions
+
+[defenseson]
+Say=I heard he filled it with some rather nasty beasties, though I don't know exactly what kind.  Also, you should know that wards weren't exactly Elazar's specialty.  Whatever he used, it is unlikely to include the more-elaborate and precise controls that other mages generally employ.  Likely, once they are activated, there will be no way to easily disable them.
+RspDflt=Thank you, Sherard.  I would enjoy speaking with you further, but I must go now.  Farewell.
+RspTxt1=Could you answer another question for me, Sherard?
+nxtln1=askquestions
+
+[iceworld]
+Say=It is a land where no warmth has ever existed, according to one rather fanciful tome.
+script1=addtitle(05SIWC);
+RspDflt=Thank you, Sherard.  I would enjoy speaking with you further, but I must go now.  Farewell.
+RspTxt1=Could you answer another question for me, Sherard?
+nxtln1=askquestions
+
+[fireworld]
+Say=Infernus is known among mages as a place of great power, but also as one that destroys most who would seek to possess that power.  By most accounts, it is home to some of the fiercest monsters ever spawned.  I would avoid it, if I were you.
+script1=addtitle(05SIWC);
+RspDflt=Thank you, Sherard.  I would enjoy speaking with you further, but I must go now.  Farewell.
+RspTxt1=Could you answer another question for me, Sherard?
+nxtln1=askquestions
+
+[Nagaworld]
+Say=What do I look like, a Tome of Infinite Knowledge?  Other than the fact that they are about half snake and half man, I know nothing about the Naga.
+script1=addtitle(05SnwC);
+RspDflt=Thank you, Sherard.  I would enjoy speaking with you further, but I must go now.  Farewell.
+RspTxt1=Could you answer another question for me, Sherard?
+nxtln1=askquestions
+
+[chapter6]
+Say=Welcome back, %playername%...  Did you need something?
+RspDflt=Nothing.  Sorry to have bothered you.
+RspTxt1=Is something wrong?
+nxtln1=chapter6a
+RspTxt2=I've come to teach you some of the spells I've learned!
+nxtln2=chapter6a
+
+[chapter6a]
+Say=Actually, I can't seem to learn anything new.  My lesson today was about defining the path when there is no path.  It seems that my initial quest for knowledge was based on my greed for power.  I never fully realized that the only use for new power is to counter the power of an opposing force.
+RspDflt=Interesting.  Farewell.
+RspTxt1=You're saying that the only reason I should improve myself is because of Mithras?
+nxtln1=chapter6b
+RspTxt2=But I want the power to protect all of Avalon!
+nxtln2=chapter6b
+
+[chapter6b]
+Say=I'm only saying to be careful.  Power corrupts.  Absolute power corrupts absolutely.  One does not know the extent of himself until he is given the power to explore it.  Certain ones involved in the founding of our dear city have already fallen and betrayed it.
+RspDflt=Thanks for the advice.  I shall think upon this.  Farewell.
+

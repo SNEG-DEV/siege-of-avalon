@@ -1,0 +1,113 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01olon,01thieftrained
+Checked=01permission,01recovered,01thieftrained,01village,recovered
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Buenos días, Olon.
+Say1=All(ttl(!01thieftrained));
+goto1=Olon
+Say2=All(ttl(01thieftrained,!01permission,!recovered,!01village));
+goto2=NoPermission
+Say3=All(ttl(01thieftrained,01permission,!01recovered,!01village));
+goto3=Permission
+Say4=All(ttl(01thieftrained,01permission,!01recovered,01village));
+goto4=NoChalice
+Say5=All(ttl(01thieftrained,01permission,01recovered,01village));
+goto5=Chalice
+
+[Olon]
+Say=Saludos, soldier!
+RspDflt=Buenos días.
+RspTxt1=Hola.  Soy nuevo aquí, y espero conocer a los habitantes locales.  ¿Quién eres y de dónde vienes?
+NxtLn1=Olon1
+
+[Olon1]
+Say=Vine de Nisos, dónde me conocían como Olon el Rápido.  Allí tenía una gran reputación como ladrón y maestro prestidigitador.
+RspDflt=Encantado de conocerte, Olon.
+RspTxt1=¿Sabes algún truco que puedas enseñarme?
+NxtLn1=Tricks
+
+[Tricks]
+Say=Bueno, si tu comandante no tiene nada que objetar, estaré encantado de enseñarte un par de cosas.
+RspDflt=Gracias.
+script=player.addtitle(01thieftrained)
+
+[NoPermission]
+Say=Hola otra vez.  ¿Qué hay de nuevo?
+RspDflt=Nada.  Buenos días.
+RspTxt1=¿Tienes algún truco nuevo?
+NxtLn1=NoPermission1
+
+[NoPermission1]
+Say=Ja!  No tengo nada más que enseñarte.  Lo que necesitas es practicar.
+RspDflt=De acuerdo.  Gracias de todas formas.
+
+[Permission]
+Say=Bienvenido, chico!  ¿Qué tal te va todo?
+RspDflt=Perdóname, Olon, debo seguir mi camino.
+RspTxt1=Las cosas van bien, Olon.  Tengo permiso para buscar a mi hermano fuera de la ciudadela  Mudam dice que sabes algo sobre el área.
+NxtLn1=Permission1
+
+[Permission1]
+Say=¿Así que saldrás fuera?  Sólo un loco arriesgaría su cuello ahí fuera.  Pero supongo que si insistes en ir, deberé contarte lo que oí el otro día.  Supuestamente, hay túneles que atraviesan el pueblo por el subsuelo.  He oído que hay algún tipo de tesoro en esos túneles.  Si lo encuentras, tráemelo a mí primero.  Te daré lo máximo que se pueda pagar por él!
+RspDflt=Gracias por el consejo.
+RspTxt1=¿Recuerdas algo más?
+NxtLn1=Permission2
+
+[Permission2]
+Say=No, nada más.  Si quieres saber más, deberías preguntar a Fray Massus o a Elarath el Hechicero.  Ambos han estado por ahí desde antes del asedio.  Probablemente saben más que yo.
+script=player.addtitle(01Olon);
+RspDflt=Gracias, Olon.
+
+[NoChalice]
+Say=Así que salir al pueblo no ha terminado contigo!  ¿Qué puedo hacer por ti?
+RspDflt=Nada.  Perdóname por molestarte.
+RspTxt1=Sólo intento cazar rumores.
+nxtLn1=NoChalice1
+
+[NoChalice1]
+Say=Bueno, las cosas no parecen mejorar aquí dentro.  La comida sigue siendo escasa y los soldados están muy verdes para el combate.  Espero que podamos aguantar.
+RspDflt=Yo también lo espero.
+
+[Chalice]
+Say=El héroe!  Es bueno verte de nuevo!
+RspDflt=También es bueno verte a ti, Olon.  Que los buenos espíritus te protejan.
+RspTxt2=Qué cálida acogida!  ¿Qué hay de nuevo por el Patio?
+NxtLn2=Chalice1
+
+[Chalice1]
+Say=El entrechocar de las espadas de entrenamiento ha aumentado bastante desde que llegaron noticias de tus éxitos!  Eres un talismán de la suerte, eso está claro.
+RspDflt=Gracias.  Buenos días.
+

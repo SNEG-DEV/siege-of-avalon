@@ -1,0 +1,169 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01bonniehappy,01bonnietale,06tbonnie
+Checked=01Basement,01BonnieHapp,01BonnieTale,01Bug,01Bugs,01Recovered,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-24,ch1-26,ch6-007
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+garth(5/24/01)=Passed
+tucker(7/12/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=7
+Else=
+Default=My thanks, lady.
+Say1=All(ttl(06chapter6));
+goto1=ch6
+Say2=All(ttl(!01BonnieTale));
+goto2=Bonnie
+Say3=All(ttl(01BonnieTale,!01Basement,!01Bugs))
+goto3=CellarPermission
+Say4=All(ttl(01BonnieTale,01Basement,!01Bugs))
+goto4=GoingDown
+Say5=All(ttl(01Bugs,!01BonnieHappy))
+goto5=BugsGone
+Say6=All(ttl(!01Recovered));
+goto6=News1
+Say7=All(ttl(01Recovered));
+goto7=Chalice
+
+[Bonnie]
+Say=If you've come for a snack, you can turn right around.  You know we haven't enough food for that!
+RspDflt=None
+RspTxt1=While I must admit that I could use a bite to eat, I am aware of the food situation here in the citadel.  I've come because I arrived here but recently, and was merely wishing to make your acquaintance.
+NxtLn1=Bonnie1
+
+[Bonnie1]
+Say=Well, you may call me Bonnie, then.  I'm one of Anora's assistants.  As you can see, however, even if we've not much to cook, we've still quite a bit to attend to.
+RspDflt=none
+RspTxt1=Apologies, my lady.  I'm very sorry to have been in your way.  I'll take my leave, then.
+nxtLn1=Bonnie2
+
+[Bonnie2]
+Say=Oh, now, it's not as bad as all that.  Stay a moment, and relieve the boredom.  It's just that having Anora catch me lazing about with some soldier would earn me yet another scolding.  However, wiping down tables already licked bare by hungry soldiers scrambling after every scrap is as tedious as you'd expect.  This is the fourth time today that I've wiped down these tables -- and we've only had one meal!
+RspDflt=none
+RspTxt1=I understand.  Perhaps I will stay a moment then.  As said, I am new to these halls and am trying to meet everyone I can.  What's the news been in the kitchens recently?
+nxtLn1=Bugs
+
+[Bugs]
+Say=Well, I'm not much for the spreading of rumors, but this morning when I was down in the cellar getting a sack of flour, it was like a black shadow leapt out of the corner and swept across the floor! "A Shade," was what I thought and I dropped that sack and ran for the stairs fast as my legs would move beneath this skirt o' mine.  A Shade can kill with just a look, you know, and I could almost feel the coldness of its eyes on the back of my neck.  Funny thing is -- and mind you, I can't be sure, what with my heart pounding in my ears even louder than my shoes on the floor -- but I thought I heard something like chittering as I went up those stairs.
+RspDflt=none
+RspTxt1=I'm glad, then, that you escaped with your life.
+nxtLn1=Bugs2
+
+[Bugs2]
+Say=Anora didn't believe me when I told her -- she just scolded me.  And Davet, that so-called warrior standing over there, he just laughed at me when I told him about it, and said he was too busy defending the keep to go poking about a basement because of a woman's silly imagination.  You, though -- why aren't you laughing?
+RspDflt=none
+RspTxt1=I believe that you were seriously frightened this morning.  I also believe you deserve to have your fears dispelled.
+nxtLn1=Bugs3
+
+[Bugs3]
+Say=You believe...?  I don't --  I don't know what to say.  Umm.  Th- thank you, then.  But still, I'd still stay away from the basement if I were you.
+RspDflt=none
+RspTxt1=No, lady.  For you I will personally investigate.
+nxtLn1=Bugs4
+
+[Bugs4]
+Say=I thank you.  Maybe it is just a woman's silly fears, but...  Talk to Anora first, anyway.  It's her kitchen and you'll need her permission before you head down.  Just be careful!
+Adventure=ch1-24;
+script=player.addtitle(01BonnieTale)
+RspDflt=Of course, my lady.  I shall return soon with news.
+
+[CellarPermission]
+Say=Have you spoken yet with Anora?
+RspDflt=No, lady.  I needed to prepare a bit before heading to the basement.  However, I shall go speak with her in a moment.
+
+[GoingDown]
+Say=And?  What's the news?
+RspDflt=I think you were right to suspect that something unfriendly dwells in the basement.  On my honor, however, it shall not remain so for long.
+
+[BugsGone]
+Say=You look like you've been through a scrape.  I was right, wasn't I?
+RspDflt=none
+RspTxt1=Yes, my lady.  The chittering you heard was, in fact, made by giant beetle-like creatures.  They swept out from the corners as you said.  It was good you didn't hesitate to determine the exact menace -- I myself barely survived them.
+nxtLn1=BugsGone2
+
+[BugsGone2]
+Say=I was right then -- there was something down there!  Thank you, my lord.  Oh, thank you!
+RspDflt=none
+RspTxt1=While it was duty that I destroy the creatures, it was also my pleasure to assist you.
+nxtLn1=BugsGone3
+
+[BugsGone3]
+Say=Flatterer!  Be off with you then!  But don't stay away long...
+Adventure=ch1-26;
+script=player.addtitle(01BonnieHappy)
+RspDflt=As you wish, my lady.  Fare thee well...
+
+[News1]
+Say=Little enough is different here, though it's good to again see your face.  But do you want me to let you in on a little secret?  Stay away from the stew tonight.  The meat in it isn't exactly fresh.  It won't hurt anyone, but it may upset you if you have a delicate stomach.
+RspDflt=I thank you for your concern, but it's better, I think, for my stomach to be a bit upset than completely empty.  Until later, then, my lady...
+
+[Chalice]
+Say=My lord!  You should have warned me first!  I don't want you to see me looking as I do!
+RspDflt=None
+RspTxt1=Oh, lady... You look fine to me.  Fine, indeed.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Perhaps, but I think I could always look better for a hero.  Now, if you'll tell me what it is you want, perhaps I can help you before this blush reddens my face further...
+RspDflt=None
+RspTxt1=Oh, nothing more than to see y-  I mean, hear your latest news.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Some of the quicker will be in luck tonight; there's real beef in tonight's supper.  Would you like a portion set aside for you?
+Adventure=ch1-26;
+RspDflt=No, I should take my meal with the other soldiers.  I do, however, thank you for your offer, and shall remember it with gratitude.  Fare thee well, lady.
+
+[ch6]
+Say=Oh, %playername%, how good to see you!  It's been some time since I've seen you -- I feared that perhaps the Sha'ahoul had taken another hero from our people.
+RspDflt=none
+RspCnd1=All(ttl(01bugs))
+RspTxt1=Though I've been through many trials,  the good spirits have guided and carried me safely through them all.
+NxtLn1=db
+RspCnd2=All(ttl(!01bugs))
+RspTxt2=Though I've been through many trials,  the good spirits have guided and carried me safely through them all.
+NxtLn2=nodb
+
+[db]
+Say=Well, watch out for yourself -- your actions have meant a great deal to many people, and I personally would take the loss of you very sorrowfully.  You were the only one who listened to me, back when those wretched beetles were infesting the basement, and I shall never forget the kindness you showed me then.
+script1=player.addtitle(06Tbonnie);
+RspDflt=none
+RspTxt1=I consider it my duty, as well as my pleasure, to do all I can for someone as kind and beautiful as yourself.
+nxtln1=goingtoSG
+
+[goingtoSG]
+Say=You can be quite the flatterer, %playername%.  I wish I could stay and chat, but I'm off to deliver supplies to the soldiers of South Gate soon.  Take care of yourself, handsome hero.
+adventure=ch6-007;
+RspDflt=May the good spirits draw us together again soon, sweet Bonnie.  Farewell.
+
+[nodb]
+Say=I hope they continue to do so -- Avalon cannot afford to lose men like you.  I would love to spend more time with you, %playername%, but I must scour the cellar for supplies now.
+RspDflt=You are too kind, ma'am.  Farewell.
+

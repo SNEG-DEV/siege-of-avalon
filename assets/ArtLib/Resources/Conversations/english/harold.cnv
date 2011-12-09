@@ -1,0 +1,234 @@
+[FileID]
+author=tuck
+coding=
+approved=
+version=1
+
+[CharacterID]
+name=Lord Harold
+guid=
+
+[Titles]
+Set=03crownreturned,03haroldhappy,03haroldquest,03signetreturned
+Checked=01recovered,03chapter3,03haroldhappy,03haroldquest,03hartleyhappy,03hartleyquest,03knowelves,03mabondone,03mabonquest,03reportgiven,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-04,ch3-503,ch3-504,ch3-505,ch3-528,ch3-529,ch3-530,ch3-531,ch3-580,ch3-582
+Removed=ch3-503,ch3-504,ch3-505
+
+[Items]
+Given=
+Taken=ktring
+Checked=KTCrown,KTRing,statusharold
+Added=statusharold
+
+[SyntaxCheck]
+tucker(4/10/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+count=7
+else=
+Default=Thank you, Lord Harold.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(!03haroldquest,03chapter3));
+goto2=haroldthree
+say3=all(ttl(03haroldquest,!03haroldhappy));
+goto3=incomplete
+say4=all(ttl(03haroldhappy):obj(!KTCrown));
+goto4=complete
+say5=all(ttl(03haroldhappy):obj(KTCrown));
+goto5=completewith
+Say6=All(ttl(!01recovered));
+goto6=Harold1
+Say7=All(ttl(01recovered));
+goto7=Harold2
+
+[Harold1]
+Say=Can't you see I'm busy, boy?  Move along.
+Adventure=ch1-04;
+RspDflt=Sorry to bother you, sir.
+
+[Harold2]
+Say=You may be some new hero around here, but I still don't have time for your nonsense.  Out of my way!
+RspDflt=Pardon me, sir.
+
+[haroldthree]
+Say=Yes?  Something I can help you with?
+RspDflt=Excuse me, I was looking for someone else.
+RspTxt1=Actually, I was about to ask you the same thing.
+nxtln1=haroldthree2
+rspcnd2=all(ttl(03mabonquest,!03mabondone):obj(!statusharold));
+RspTxt2=Yes, as a matter of fact.  Sir Mabon has taken over General Ovoron's position, and has found the documentation in his new office to be lacking in several respects.  Consequently, he has sent me to retrieve your latest status report.
+nxtln2=statusreport
+
+[haroldthree2]
+Say=Well, yes, actually.  I'm very glad you asked!  I am Lord Harold, and being one of the only Taberlanders left in the keep when our king called for our assistance to help quell the revolt, I've had occasion to think of a few things.  One of the things I've thought about is King Tortain's signet ring.  It must be recovered, and Elazar has information that will make this aim much easier to attain.  A vision, or something.
+adventure=ch3-580
+RspDflt=none
+rspcnd1=all(ttl(!03hartleyquest,!03hartleyhappy));
+RspTxt1=I think you'd have more luck finding the proverbial needle in the haystack, friend.
+nxtln1=haroldthree3
+rspcnd2=all(ttl(!03hartleyquest,!03hartleyhappy));
+RspTxt2=Why is it so important to find a ring, even if it is the fallen King's?
+nxtln2=haroldthree6
+rspcnd3=all(ttl(03hartleyquest,!03hartleyhappy):obj(!KTRing));
+RspTxt3=Ah, yes.  I have already spoken to Baron Hartley regarding this signet ring.
+nxtln3=haroldthree7
+rspcnd4=all(ttl(03hartleyquest,03hartleyhappy):obj(!KTRing));
+RspTxt4=Ah, yes.  I have already spoken to Baron Hartley regarding this signet ring.
+nxtln4=haroldthree9
+
+[haroldthree3]
+Say=Indeed, and such luck I have had the entire time I've been searching for a clue, but one has recently presented itself to me.  Knowing of my intent to retrieve the ring, Sir Roth has apprised me that Elazar has had a vision of both Tortain's armor and his signet ring, which is both good and bad news.  Regardless, the ring must be recovered.
+RspDflt=none
+RspTxt1=And you'd like me to recover this ring?
+nxtln1=haroldthree4
+rspback=haroldthree2
+
+[haroldthree4]
+Say=Yes.  You asked how you could help me, and passing this task on to you will free me from having to worry about it.  You probably don't remember me, but I believe we've met.  Regardless, stories of your accomplishments are circulating about the keep with increasing regularity.  I believe that you are the charitable type, and in addition to that, quite competent.  You will accept this assignment, won't you?
+RspDflt=none
+RspTxt1=Of course, Lord Harold.  What benefits Taberland benefits Avalon as well.
+nxtln1=haroldthree5
+rspcnd4=all(obj(KTRing));
+RspTxt4=You're in luck, Lord Harold.  I have retrieved the ring already and it is in my possession.  Of course you may keep it until Vortigerm arrives.
+nxtln4=incomplete1
+
+[haroldthree5]
+Say=Splendid!  I was right about you after all.  Ah, yes, also missing is the king's armor, which should also be returned if possible, yes...  You may wish to speak to Elazar concerning his vision, else you probably won't have the faintest idea where to look.  Return to me when you've something to report.  I thank you in advance for your contribution to our cause.
+AddQuest=ch3-503
+adventure=ch3-528
+script=player.addtitle(03haroldquest);
+RspDflt=That I shall, Lord Harold.  Farewell.
+
+[haroldthree6]
+Say=It is more than merely an heirloom.  A signet ring is like a signature.  Any document can be made to appear as though it has come from the King himself if it is sealed with this signet.
+RspDflt=none
+RspTxt1=And you'd like me to recover this ring so that you can hold it for King Vortigerm?
+nxtln1=haroldthree4
+
+[haroldthree7]
+Say=Oh?  What has he said?
+AddQuest=ch3-505
+removequest=ch3-503;ch3-504
+adventure=ch3-529
+RspDflt=none
+RspTxt1=[fills Lord Harold in on the details]  I am currently working on this assignment.
+script1=player.addtitle(03haroldquest);
+nxtln1=haroldthree8
+
+[haroldthree8]
+Say=Ah.  Well, when you find the ring, for find the ring you shall, return it to whichever of us is more convenient for you.
+RspDflt=As you wish, Lord Harold.  Farewell.
+
+[haroldthree9]
+Say=You have?  What has he told you?
+RspDflt=none
+RspTxt1=[fills Lord Harold in on the details]  I have already returned the ring to Baron Hartley.
+nxtln1=haroldthree10
+
+[haroldthree10]
+Say=Splendid!  At last, I can stop worrying about it.  You are truly as competent and charitable as I thought.  Baron Hartley has likely already thanked you, but I would like to do so again.  You have my earnest gratitude.
+adventure=ch3-530
+removequest=ch3-503;ch3-504;ch3-505
+script=player.addtitle(03haroldhappy);player.addtitle(03signetreturned);
+RspDflt=You're welcome, Lord Harold.  Farewell.
+
+[incomplete]
+Say=Welcome back.  Have you found the signet?
+RspDflt=Not yet, Lord Harold.  I will return when I have.
+rspcnd1=all(obj(KTRing));
+RspTxt1=Indeed, Lord Harold, I have.
+nxtln1=incomplete1
+rspcnd2=all(ttl(03hartleyquest,!03hartleyhappy));
+RspTxt2=Not yet, but I have learned that one of your countrymen, Baron Hartley by name, has been sent on a quest to retrieve the same signet ring you seek.
+nxtln2=incomplete2
+rspcnd3=all(ttl(03hartleyquest,03hartleyhappy));
+RspTxt3=Ah, yes.  I have already spoken to Baron Hartley regarding this signet ring, and have returned it to him.
+nxtln3=incomplete3
+rspcnd4=all(ttl(03mabonquest,!03mabondone):obj(!statusharold));
+RspTxt4=No, Lord Harold, I have not yet, but I need something from you.  Sir Mabon has taken over General Ovoron's position, and has found the documentation in his new office to be lacking in several respects.  Consequently, he has sent me to retrieve your latest status report.
+nxtln4=statusreport
+
+[incomplete1]
+Say=Splendid!  At last I can stop worrying about this.  You've done me a great boon, friend; you have my earnest gratitude, and doubtless you shall also have the gratitude of His Highness when he arrives.  [He smiles.]  I don't have to tell you which one is worth more, but I shall remember your contribution.
+adventure=ch3-531
+removequest=ch3-503;ch3-504;ch3-505
+Script=player.addtitle(03haroldhappy);takeitem(KTRing,player);player.addtitle(03signetreturned);player.setprop(trainingpoints=5);showmessage(You have received some training points.,300);
+RspDflt=I appreciate your gratitude, Lord Harold.  If you'll excuse me, I have other matters to attend to.
+rspcnd1=all(ttl(03mabonquest,!03mabondone):obj(!statusharold));
+RspTxt1=In return, Lord Harold, I need something from you.  Sir Mabon has taken over General Ovoron's position, and has found the documentation in his new office to be lacking in several respects.  Consequently, he has sent me to retrieve your latest status report.
+nxtln1=statusreport
+
+[incomplete2]
+Say=Ah.  Well, when you find the ring, give it to whomever of the two of us is more convenient for me.  If you end up giving it to Baron Hartley, please remember to let me know about it, okay?  Is there anything else you need?
+adventure=ch3-529
+AddQuest=ch3-505
+removequest=ch3-503;ch3-504
+RspDflt=Not at the moment, Lord Harold.  I will speak to you when I have recovered the ring.
+rspcnd1=all(ttl(03mabonquest,!03mabondone):obj(!statusharold));
+RspTxt1=Yes, as a matter of fact.  Sir Mabon has taken over General Ovoron's position, and has found the documentation in his new office to be lacking in several respects.  Consequently, he has sent me to retrieve your latest status report.
+nxtln1=statusreport
+
+[incomplete3]
+Say=Splendid!  At last I can stop worrying about this.  I'm sure Baron Hartley has already thanked you, but I'd like to do so again.  You have my earnest gratitude.
+removequest=ch3-503;ch3-504;ch3-505
+adventure=ch3-530
+script=player.addtitle(03haroldhappy);player.addtitle(03signetreturned);
+RspDflt=Just doing my part, Lord Harold.  You're welcome.
+rspcnd1=all(ttl(03mabonquest,!03mabondone):obj(!statusharold));
+RspTxt1=In return, Lord Harold, I need something from you.  Sir Mabon has taken over General Ovoron's position, and has found the documentation in his new office to be lacking in several respects.  Consequently, he has sent me to retrieve your latest status report.
+nxtln1=statusreport
+
+[complete]
+Say=Hello.  What news have you?
+RspDflt=Nothing new, Lord Harold.  Farewell.
+rspcnd1=all(ttl(03mabonquest,!03mabondone):obj(!statusharold));
+RspTxt1=I need your assistance, Lord Harold.  Sir Mabon has taken over General Ovoron's position, and has found the documentation in his new office to be lacking in several respects.  Consequently, he has sent me to retrieve your latest status report.
+nxtln1=statusreport
+rspcnd2=all(ttl(03knowelves));
+RspTxt2=What can you tell me of the elves?
+nxtln2=elves
+
+[statusreport]
+Say=Oh, of course!  I had almost forgotten about that.  Here you are.
+script=player.additem(statusharold);addtitle(03crownreturned);
+adventure=ch3-582
+RspDflt=Thank you, Lord Harold.  If you don't mind, I must be on my way.
+
+[elves]
+Say=I hear they make fine arrows.  Indeed, arrows the likes of which merchants truly covet!
+RspDflt=I see.  Thank you for your time.
+
+[completewith]
+Say=Hello.  What news have you?
+RspDflt=Nothing new, Lord Harold.  Farewell.
+rspcnd1=all(ttl(03mabonquest,!03mabondone,!03reportgiven):obj(!statusharold));
+RspTxt1=I need your assistance, Lord Harold.  Sir Mabon has taken over General Ovoron's position, and has found the documentation in his new office to be lacking in several respects.  Consequently, he has sent me to retrieve your latest status report.
+nxtln1=statusreport
+rspcnd2=all(ttl(03knowelves));
+RspTxt2=What can you tell me of the elves?
+nxtln2=elves
+rspcnd3=all(obj(KTCrown));
+RspTxt3=In fact, I came here expressly to bring you the Crown of Taberland.
+script3=takeitem(KTCrown,player);player.addtitle(03crownreturned);
+nxtln3=completewith2
+
+[completewith2]
+Say=King Vortigerm will be VERY pleased to get this back.  In light of that, you may make use of King Tortain's armor until His Highness says otherwise.  Is there something else you needed?
+RspDflt=No, Lord Harold.  Farewell.
+RspTxt1=Yes, Lord Harold, there is.
+nxtln1=completewith
+
+[chapter6]
+Say=Ah, %playername%. Is there something I can do for you?
+RspDflt=No, thank you. I must be getting back to my duties. Farewell, Lord Harold.
+

@@ -1,0 +1,246 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01getsteel,01gotsword,01returnedsteel
+Checked=01GetSteel,01GetSword,01GotSword,01ReturnedSteel,01returnedsteel));one(ttl(03chapter3,01SteelShortage,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-06,ch1-07,ch1-08,ch1-10,ch1-51,ch1-52
+Removed=ch1-06,ch1-07,ch1-10
+
+[Items]
+Given=
+Taken=
+Checked=FineSteel
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+count=8
+else=
+default=
+say1=all(ttl(06chapter6));
+goto1=freesix
+say2=all(ttl(01returnedsteel));one(ttl(03chapter3,04chapter4,05chapter5));
+goto2=threefive
+say3=all(ttl(!01getsteel));
+goto3=freeman
+say4=all(ttl(01gotsword));
+goto4=gotsword
+say5=all(ttl(01getsword,!01gotsword));
+goto5=getsword
+say6=all(ttl(01getsteel,!01returnedsteel):obj(finesteel));
+goto6=makesword
+say7=all(ttl(01getsteel,!01returnedsteel):obj(!finesteel));
+goto7=looking
+say8=all(ttl(01returnedsteel,!01getsword));
+goto8=penrith
+
+[Freeman]
+Say=Hola.  ¿Qué puedo hacer por ti?
+RspDflt=None
+RspTxt1=Oh, sólo estoy mirando tu herrería.
+nxtLn1=Freeman1
+rspCnd2=all(ttl(01SteelShortage));
+RspTxt2=Hablé con Lucan en la Armería de la Puerta Sur.  Me sugirió que te preguntase si habías recibido acero últimamente.
+nxtLn2=Steel
+
+[Freeman1]
+Say=Me temo que no hay mucho que pueda mostrarte.  Martillo, yunque--no hay nada especial.
+RspDflt=None
+RspTxt1=Entonces, ¿no vendes nada?
+nxtLn1=Freeman2
+
+[Freeman2]
+Say=No tengo ni siquiera metal suficiente para suministrar al ejército, aún menos para admitir encargos o vender objetos.  Me temo que nos hallamos en medio de un asedio.  Si eres parte del ejército, pregunta en las Armerías, sea en la Puerta Sur o en la Torre Exterior.
+RspDflt=Lo comprendo.  Siento haberte molestado.
+RspTxt1=Así que no has recibido ningún envío de acero últimamente, ¿es así?
+nxtLn1=Steel1a
+
+[Steel1a]
+Say=¿Te ha dicho Lucan que vengas a molestarme?  Siempre me está incordiando con lo que le estoy enviando estos días, pero sabe tan bien como yo que no hay nada que pueda hacer al respecto!  Tengo un hierro colado para trabajar--eso es todo!  Puedo ser uno de los mejores herreros de Elythria, pero ninguna cantidad de habilidad va a transformar el hierro colado en corazas y espadas.  Ahora bien, si quieres herraduras, o un buen conjunto de ollas y cacerolas... eso puedo hacerlo.  Aunque dentro de un par de semanas, no necesitarás las herraduras, porque los caballos irán DENTRO de las ollas.
+RspDflt=none
+RspTxt1=Estoy seguro de que no llegaremos a eso.  ¿Cuánto tiempo ha pasado desde el último envío de acero?
+nxtLn1=Steel2
+
+[Steel]
+Say=Lo sabía!  Siempre me está incordiando con lo que le estoy enviando estos días, pero sabe tan bien como yo que no hay nada que pueda hacer al respecto!  Tengo un hierro colado para trabajar--eso es todo!  Puedo ser uno de los mejores herreros de Elythria, pero ninguna cantidad de habilidad va a transformar el hierro colado en corazas y espadas.  Ahora bien, si quieres herraduras, o un buen conjunto de ollas y cacerolas... eso puedo hacerlo.  Aunque dentro de un par de semanas, no necesitarás las herraduras, porque los caballos irán DENTRO de las ollas.
+RemoveQuest=ch1-06;
+RspDflt=none
+RspTxt1=Estoy seguro de que no llegaremos a eso.  ¿Cuánto tiempo ha pasado desde el último envío de acero?
+nxtLn1=Steel2
+
+[Steel2]
+Say=Demasiado tiempo, maldita sea!
+Adventure=ch1-51;
+RspDflt=none
+RspTxt1=¿Y no hay nada disponible por aquí?  ¿Nada de nada?
+nxtLn1=Steel3
+
+[Steel3]
+Say=Seguro, hay--te sientes con ánimos para asaltar un campamento Ahoul tu solo?
+RspDflt=none
+RspTxt1=No sin una hoja de fino acero, de esas que fabricas tu!
+nxtLn1=Steel4
+
+[Steel4]
+Say=Ja!  Muy buena.  Diez puntos, chico!  Escucha.  Hay algo de acero en el pueblo, en las afueras de la Puerta Sur.  Sé que está ahí!  He intentado que Mudam enviase algunos de sus exploradores para mirar un poco por ahí, pero dice que tiene muy pocos chicos para perderlos en una caza del tesoro a un suspiro del campamento Ahoul.  Tiene su parte de razón, pero SÉ que el acero está ahí.
+RspDflt=none
+RspTxt1=Sigue.
+nxtLn1=Steel5
+
+[Steel5]
+Say=Piénsalo de esta forma.  Estás atrapado en el interior de una fortaleza, un ejército enemigo acampado fuera.  ¿Qué es lo más valioso que tienes?
+RspDflt=none
+RspTxt1=Comida, supongo.  Y armas.
+nxtLn1=Steel6
+
+[Steel6]
+Say=Muy bien, chico.  Armas.  Y el oro en tu monedero -- ¿cómo te van a ayudar a sobrevivir?
+RspDflt=none
+RspTxt1=No es que mi monedero rebose dinero, pero...
+nxtLn1=Steel7
+
+[Steel7]
+Say=No te van a ayudar.  Tienes que estar vivo para gastar el oro, y cuando tu vida está en peligro, las cosas que te pueden ayudar a mantenerte vivo son más importantes que el oro.  ¿Me sigues, chico?  La comida vale más que el oro, ahora mismo.  Y lo mismo el acero.
+RspDflt=none
+RspTxt1=Te sigo.
+nxtLn1=Steel8
+
+[Steel8]
+Say=Había un individuo en el pueblo, que tenía un montón de moneditas tintineando en el bolsillo.  También tenía algo de cerebro dentro de la cabeza.  Sabía que vivía en una zona de guerra, pero que las guerras podían hacer rico a alguien.  Así pues, vivir fuera de Avalon le mantendría relativamente seguro.  Si los Ahoul volvían alguna vez, se refugiaría dentro de las murallas con los demás.  Pero si eso sucedía, ¿de qué le serviría su dinero?
+RspDflt=none
+RspTxt1=De nada, supongo.
+nxtLn1=Steel9
+
+[Steel9]
+Say=Bien, chico--al menos asientes en los momentos adecuados.  De cualquier manera, la comida se pudre.  El acero no.  Así que se gastó mucho de su dinero en barras de acero, suponiendo que podría usarlas para conseguir lo que quisiese.  Gastarlas como si fuesen de oro, en caso de necesidad.  Por supuesto no supuso que el ejército confiscaría el acero al regresar los Ahoul.  Pero no todo.  Juraría que escondió una parte en una de las casas del pueblo.  Era listo, como digo--el ejército no pudo llevárselo todo.  Y la cuestión es, que nunca llegó a entrar a la fortaleza.  Nunca dejó el pueblo.  Supongo que intentó estúpidamente llegar a su acero antes de venir aquí dentro, y murió ahí fuera.  La avaricia venció a su inteligencia en el peor momento.
+RspDflt=none
+RspTxt1=Y aquí es donde entra a caza del tesoro.
+nxtLn1=Steel10
+
+[Steel10]
+Say=Si quieres una buena espada, te daré una buena espada... SI me consigues ese acero.  O simplemente me traes una barra del mismo, y la ubicación del resto.  Con una muestra, los militares estarían de acuerdo en ir a buscar el resto.  Tienen suficiente inteligencia para saber que necesitamos todo lo que podamos conseguir.
+RspDflt=none
+rspcnd1=all(obj(!finesteel));
+RspTxt1=He oído que el pueblo no es el lugar más seguro donde estar.  ¿Supongo que no podrías dibujarme un mapa?
+nxtLn1=Steel11
+rspcnd2=all(obj(finesteel));
+RspTxt2=En ese caso, Freeman, estamos ambos de suerte.  Creo que he encontrado acero de suficiente buena calidad para que puedas trabajarlo para los soldados...  [Mostrar a Freeman el Acero de buena calidad.]
+script2=player.addtitle(01getsteel);
+nxtln2=makesword1
+
+[Steel11]
+Say=No conseguirás mapas del tesoro de mí, niño.  Él tenía unas cuantas casas--las alquilaba.  Y no podría siquiera indicártelas, con el pueblo en el estado en que se encuentra--o más descriptivamente, que no se encuentra.  Pero tu puedes hacerlo.  Siempre has imaginado ser un héroe, ¿no es cierto?
+RspDflt=none
+RspTxt1=Pocas veces.  Todo lo que puedo prometer es esto: si llego al pueblo, mantendré mis sentidos alerta.  Principalmente respecto a los Ahoul, lo admito, pero también para este acero tuyo.
+nxtLn1=Steel12
+
+[Steel12]
+Say=Buen chico!
+RspDflt=none
+RspTxt1=NO SOY un niño!  Deja de llamarme 'chico'.  Y 'niño'!
+nxtLn1=Steel13
+
+[Steel13]
+Say=Muy bien... soldado.  Que los espíritus de acompañen.
+AddQuest=ch1-07;
+Adventure=ch1-52;
+Script=journalentry(freeman2);showmessage(Your journal has been updated.,200);player.addtitle(01GetSteel);
+RspDflt=Y a tí.
+
+[Looking]
+Say=Sigue buscando.  Estoy seguro de que el acero está ahí en algún lugar.
+removequest=ch1-06;
+RspDflt=No me rindo.  Todavía quiero esa espada.
+
+[MakeSword]
+Say=¿Bien, soldado?  ¿Has tenido suerte?
+RspDflt=none
+RspTxt1=Eso depende.  ¿Es esto lo que estás buscando?
+nxtLn1=MakeSword1
+
+[MakeSword1]
+Say=Lo sabía!  Maldita sea, lo SABÍA!  ¿Fue muy difícil de encontrar?  No te preocupes, no me importa.  ¿Cuánto más había?
+script=takeitem(finesteel,player);player.addtitle(01ReturnedSteel);
+RspDflt=none
+RspTxt1=No pasé demasiado tiempo removiendo los alrededores, pero diría que unas treinta.  Quizá cuarenta.
+nxtLn1=MakeSword2
+
+[MakeSword2]
+Say=¿Cuarenta?  Esperaba más...  Aunque todavía podemos usarlo--cada pedacito podemos usarlo!  Ahora voy a preparar la forja, y empezar la--
+RspDflt=none
+RspTxt1=¿Freeman?  ¿Mi espada?
+nxtLn1=MakeSword3
+
+[MakeSword3]
+Say=¿Qué?  ¿Tu espada?  ¿De qué hablas?  Ahora tengo cosas que hacer--lárgate...
+RspDflt=none
+RspTxt1=Me prometiste una espada--una buena espada.
+nxtLn1=MakeSword4
+
+[MakeSword4]
+Say=Una buena espada... cierto.  Mira lo que haremos.  Está por aquí en alguna parte.  Ve a hablar con Penrith--está ahí fuera, en el Patio Exterior, en algún lugar, deslumbrante y noble en su armadura limpia.  Dile dónde hallaste el acero, y consigue que empiece a enviar a algunos hombres para traerlo todo aquí.  Para cuando termines, habré encontrado tu espada.
+RspDflt=none
+RspTxt1=Pero--
+nxtLn1=MakeSword5
+
+[MakeSword5]
+Say=La parte difícil ya está hecha, soldado.  ¿Realmente vas a discutir por cinco minutos más de trabajo?
+RemoveQuest=ch1-07;
+AddQuest=ch1-08;
+RspDflt=Supongo que no.  Volveré pronto.  MUY pronto...
+
+[Penrith]
+Say=Está el acero ya en camino?
+RspDflt=No, todavía no.  Pero debería estarlo pronto.
+removequest=ch1-06;
+
+[GetSword]
+Say=¿Bien, soldado?  ¿Qué dijo Penrith?
+RspDflt=none
+RspTxt1=Se sorprendió de que el acero realmente existiese.  Y agradecido.  Sus hombres deberían empezar a traer las barras muy pronto.
+removequest=ch1-06;
+nxtLn1=GetSword1
+
+[GetSword1]
+Say=Bien, soldado.  Muy bien, de hecho.  Y ahora, creo que esto te pertenece.  Estoy seguro de que estarás de acuerdo en que es una buena espada para que la ciñas con orgullo.  Un buen trato por el precio que pagas, ¿no crees?
+RemoveQuest=ch1-10;ch1-06;ch1-07;ch1-08;ch1-09
+script=giveitem(officerSword,player);player.addtitle(01GotSword);
+RspDflt=Podría haberla usado ANTES de ir a buscar el acero, herrero... pero me alegro de tenerla ahora.  La trataré bien.  Te estoy agradecido.  Adiós.
+
+[GotSword]
+Say=Así pues, soldado, ¿qué tal te va la nueva espada?
+RspDflt=Muy bien, la verdad.  Gracias de nuevo!
+
+[freesix]
+Say=Bienvenido, %playername%!  Ha habido un bajón de trabajo últimamente, ¿hay algo que pueda hacer por ti?
+RspDflt=No, buen herrero.  Discúlpame.
+rspcnd1=all(ttl(01returnedsteel));
+RspTxt1=¿Cómo utilizaste el resto del acero que te traje?
+nxtln1=sixfine
+
+[sixfine]
+Say=Espadas de Oficial y armaduras, básicamente.  Creo que Tempest está trabajando en algo en este momento.
+RspDflt=Gracias, Freeman.  Quizá deba preguntarle a él.
+
+[threefive]
+Say=Buenos días, %playername%.  He estado muy ocupado desde que me trajiste aquel acero, pero si necesitas algo...  [Te mira con aire expectante.]
+RspDflt=No, Freeman.  Lamento haberte molestado.  Buenos días.
+

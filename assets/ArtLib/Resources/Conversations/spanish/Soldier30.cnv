@@ -1,0 +1,191 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Hasta luego.
+say1=all(ttl(06posttrial));
+goto1=6posttrial
+Say2=all(ttl(06chapter6));
+Goto2=chapter6
+Say3=All(ttl(!01recovered));
+Goto3=Soldier
+Say4=All(ttl(01recovered));
+Goto4=Chalice
+
+[Soldier]
+Say=¿Qué quieres?
+RspTxt1=¿De dónde eres?
+NxtLn1=Soldier1
+RspTxt2=¿Has oído algo interesante por aquí?
+NxtLn2=Soldier1
+
+[Soldier1]
+Say=Perdóneme, señor.  No puedo retrasar mis deberes para conversar.
+script=Siege20000600030016439030.setprop(AIMode=IdleAI);
+RspDflt=Lo comprendo.
+
+[Chalice]
+Say=Hola, señor, ¿cómo puedo ayudarle?
+RspTxt1=¿De dónde eres?
+NxtLn1=Chalice1
+RspTxt2=¿Has oído algún rumor interesante?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Soy de Fornax.  Allí era el criado de un hechicero muy importante.
+rspBack=chalice
+
+[Chalice2]
+Say=Corre el rumor de que tan pronto lleguen los suministros, habrá un festín para todos...
+rspBack=chalice
+
+[6posttrial]
+Say=esos sucios y apestosos Sha'ahoulies no pasarán mientras yo esté aquí, señor! ¡Les cortaré las piernas! ¡Dejádmelos a mí!
+RspDflt=Mantén el fuerte, Alain. Seguro que venceremos. ¡Hasta luego!
+Rspcnd1=all(ttl(!6galain));
+RspTxt1=Antes me dijiste que eras de Fornax, ¿es correcto?
+Nxtln1=chapter6b
+Rspcnd2=all(ttl(6anthamas, apprentice, !6silentspirits));
+RspTxt2=Creo que alguna vez me has dicho que venías de Fornax.  Estoy aquí para informarte de que tu maestro, Anthamas Shadomar, ha llegado a Avalon.  Está en la Torre Interior, en el laboratorio del segundo piso, y trabajando mucho para incrementar nuestras defensas mágicas.
+Nxtln2=anthamas
+Rspcnd3=all(ttl(6fenton, hunter, !6silentspirits));
+RspTxt3=Creo que alguna vez me has dicho que venías de Fornax.  Estoy aquí para informarte de que tu maestro, Anthamas Shadomar, ha llegado a Avalon.  Está en la Torre Interior, en el laboratorio del segundo piso, y trabajando mucho para incrementar nuestras defensas mágicas.  Trabaja junto a los sabios, que también están en la Torre Interior.
+Nxtln3=anthamas
+
+[chapter6]
+Say=¿Puedo ayudaros en algo, señor?
+RspDflt=Eso no será necesario.  Gracias.
+Rspcnd1=all(ttl(!6galain));
+RspTxt1=Antes me dijiste que eras de Fornax, ¿es correcto?
+Nxtln1=chapter6b
+Rspcnd2=all(ttl(6anthamas, apprentice, !6silentspirits));
+RspTxt2=Creo que alguna vez me has dicho que venías de Fornax.  Estoy aquí para informarte de que tu maestro, Anthamas Shadomar, ha llegado a Avalon.  Está en la Torre Interior, en el laboratorio del segundo piso, y trabajando mucho para incrementar nuestras defensas mágicas.
+Nxtln2=anthamas
+Rspcnd3=all(ttl(6fenton, hunter, !6silentspirits));
+RspTxt3=Creo que alguna vez me has dicho que venías de Fornax.  Estoy aquí para informarte de que tu maestro, Anthamas Shadomar, ha llegado a Avalon.  Está en la Torre Interior, en el laboratorio del segundo piso, y trabajando mucho para incrementar nuestras defensas mágicas.  Trabaja junto a los sabios, que también están en la Torre Interior.
+Nxtln3=anthamas
+
+[anthamas]
+Say=Sí, ciertamente, señor.  Habéis pronunciado el nombre de mi señor y maestro, y por lo que decís, está hasta el cuello investigando pergaminos otra vez.
+RspDflt=none
+RspTxt1=Cierto, Alain, eso hace; vengo a petición suya.  Tal como me lo ha contado, tú fuiste uno de los primeros criados a los que envió a Avalon.
+Nxtln1=anthamas2
+
+[anthamas2]
+Say=Eso es correcto.  Cuando estaba partiendo hacia Avalon, me pidieron que trajese algunas cosas aquí para mi maestro.  Sólo eran objetos sin importancia.  Nunca comprendí por qué me pidió que los trajese conmigo, y siempre los tengo cerca mío.
+RspDflt=none
+RspTxt1=¿Hablas de la cartera llena de cosas que te dio?
+Nxtln1=anthamas3
+
+[anthamas3]
+Say=Sí, señor.  Llena de un montón de trastos inútiles, si me preguntáis.  Básicamente son baratijas.  Hay...
+RspDflt=none
+RspTxt1=Disculpa mi interrupción, pero ¿hay un frasquito de cristal en la cartera, con un cordel de oro muy fino atado alrededor de su tapón?
+Nxtln1=anthamas4
+
+[anthamas4]
+Say=Hay un frasquito aquí, señor, pero no puedo ver ningún cordel en su tapa.  Dejadme mirar con detalle.  [Lo saca, lo examina, y al cabo de un momento, asiente.]  Sí, señor.  Hay un cordel de oro atado alrededor del tapón.  ¡Por los espíritus, es tan fino como un cabello!  O mis ojos están fallando, o me estoy haciendo viejo.
+RspDflt=none
+Rspcnd1=all(ttl(apprentice));
+RspTxt1=Dudo que ninguna de las dos cosas sea cierta, Alain.  Anthamas ha pedido urgentemente éste frasquito, y ¡debo llevárselo rápidamente!  En realidad es un elixir, llamado 'Espíritus Silenciosos', o algo así, que captura el movimiento silencioso de los muertos.
+Nxtln1=anthamas5
+Rspcnd2=all(ttl(hunter));
+RspTxt2= Dudo que ninguna de las dos cosas sea cierta, Alain.  El sabio Fenton, que está trabajando junto a tu amo, ha solicitado urgentemente éste frasco.
+Nxtln2=fenton
+
+[fenton]
+Say=¿Qué dices?
+RspDflt=none
+AddQuest=ch6-318;
+RspTxt1=Anthamas le ha dado a Fenton un texto describiendo una forma de hacer que nuestras tropas se muevan en silencio, y Fenton ha sido encargado de hacer realidad el proyecto.  El frasquito es en realidad un elixir, llamado 'Espíritus Silenciosos', o algo así, que me han dicho que captura el movimiento silencioso de los muertos.  ¡Debo llevárselo inmediatamente!
+Nxtln1=anthamas6
+
+[anthamas5]
+Say=Uauu!  ¡He estado llevando algo ASÍ!  No me extraña que me hayan dado todos esos escalofríos y el sentimiento de que me espera una maldición.  ¡Han sido especialmente vívidos últimamente, como si una sábana de terror me envolviese y presagiase mi muerte inminente!
+RspDflt=none
+AddQuest=ch6-319;
+RspTxt1=No creo que tenga el poder de hacer eso, Alain.  Probablemente sólo estás nervioso, debido a todo el estado de ansiedad que hay en el castillo. Se está cebando en todos, y supongo que tú no eres una excepción.
+Nxtln1=anthamas6
+RspTxt2=Quizá, Alain.  Se trata de un objeto funesto.  No quiero llevarlo más tiempo del necesario, pues podría tener el mismo efecto sobre mí.
+Nxtln2=anthamas6
+
+[anthamas6]
+Say=Quizá, señor.  En cualquier caso, si mi maestro lo reclama, y aparentemente os envía a buscarlo, os lo cedo a vos.  [Te da el frasquito.]
+script=player.additem(silentspirits);player.addtitle(6silentspirits);player.setprop(trainingpoints=+10);
+removequest=ch6-301;ch6-317;
+RspDflt=Muchas gracias, Alain.  Este frasquito será utilizado apropiadamente.
+
+[Chapter6b]
+Say=Sí, señor.  Como le dije, era sirviente de un hechicero allí.
+RspDflt=Eso es lo que pensaba que habías dicho.  Sólo me aseguraba.  Hasta luego.
+RspTxt1=¿Qué te trajo a Avalon?
+Nxtln1=chapter6c
+
+[chapter6c]
+Say=La guerra, señor!  Los siete reinos fueron requeridos para enviar un número determinado de sirvientes a la ciudadela.  Mi señor, un hechicero, me eligió para ser el primero de sus sirvientes en venir aquí.  Curiosamente, me pidió que trajese conmigo algunos pequeños objetos.  Supongo que planeaba venir aquí.
+RspDflt=Quizá, pero no importa.  Hasta luego.
+Rspcnd1=all(ttl(!6galain));
+RspTxt1=De esas cosas no estoy seguro, Alain, pero he oído rumores de que un puñado de magos Fornaxanos han llegado recientemente a Avalon.  ¿Quizá tu maestro sea uno de ellos?
+Nxtln1=chapter6d
+
+[chapter6d]
+Say=Es posible, pero mis obligaciones aquí me impiden descubrirlo.  No estoy seguro de que si mi maestro llega, irá directamente a algún lugar dónde pueda trabajar en paz, y a la vez, tener contacto directo con otros como él.
+RspDflt=none
+RspTxt1=Por curiosidad, ¿cómo se llama tu maestro?
+Nxtln1=master
+
+[master]
+Say=Su nombre es Anthamas Shadomar, de la Casa Shadomar, Noveno Círculo del Consejo de Hechicería en Fornax.  La mayoría de gente que no es de Fornax, se refiere a él simplemente como Anthamas.
+RspDflt=none
+RspTxt1= ¿Noveno Círculo del Consejo de Hechicería en Fornax?  Uau, eso suena muy impresionante. ¿Qué significa?
+Nxtln1=master2
+
+[master2]
+Say=Que no tiene que transportar sus cacharros cuando se traslada.  [Se ríe.]  Aunque en serio, señor, no lo sé.  Soy sólo un simple criado bastante cuidadoso.  Creo que por eso mi maestro me hizo transportar esta cartera con objetos frágiles pero aparentemente inútiles, cuando llegué aquí.
+RspDflt=Ya veo, Alain.  Bueno, sigue pues con tus deberes.
+RspTxt1=¿Podrías decirme qué clase de cosas son?
+Nxtln1=master3
+
+[master3]
+Say=Lo siento, señor.  No creo que eso sea demasiado apropiado en éste momento.  Estoy a cargo de conservarlas, y dejar que alguien las mire o sepa qué son no sería lo más apropiado.
+RspDflt=none
+RspTxt1=Lo comprendo, Alain.  Son las cosas de tu maestro, bajo tu protección. No marca ninguna diferencia el que tú creas que sean o no importantes.
+Nxtln1=master4
+
+[master4]
+Say=Gracias por comprenderlo, señor.
+Script=player.addtitle(6galain);
+RspDflt=No hay problema, Alain.  Yo haría lo mismo si estuviese en tu lugar.
+

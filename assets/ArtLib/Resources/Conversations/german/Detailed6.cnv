@@ -1,0 +1,83 @@
+;detailed dialogue
+
+;soldier 6
+[root]
+Count=1
+Else=
+Default=Danke.
+Say1=
+goto1=Soldier
+
+[Soldier]
+say=Was sucht Ihr hier? 
+rspDflt=None
+rsptxt1=Ich habe mich nur umgesehen. Ich bin gerade in Avalon eingetroffen.
+NxtLn1=Soldier1
+
+[Soldier1]
+say=Gut. Wir brauchen jede Hilfe, die wir bekommen können.
+rspDflt=None
+rsptxt1=Woher kommt Ihr?
+NxtLn1=Soldier2
+rsptxt2=Haben wir zu wenig Männer?
+NxtLn2=Soldier3
+
+;If 1,
+[Soldier2]
+say=Ich bin aus Fornax.
+rspDflt=None
+rsptxt1=Warum tut Ihr Fornaxier alle so geheimnisvoll?
+NxtLn1=Soldier4
+
+[Soldier4]
+say=Unserer Erfahrung nach verstehen wenige Bürger der Sieben Königreiche die Zauberei, insbesondere ein ganz bestimmtes Reich, dessen Wohl am meisten davon abhängig ist. Wir behalten unser Wissen einfach lieber für uns, anstatt uns mit Vorurteilen herumzuschlagen oder andauernd alles mögliche über unsere Gesellschaftsordnung erklären zu müssen. Darum fragen uns wenige über unser Land aus. Sie nehmen an, dass wir darüber nicht sprechen wollen.
+rspDflt=None
+rsptxt1=Und stimmt das? Falls jemand Euch nach Eurem Land fragen sollte, würdet Ihr darüber sprechen? 
+NxtLn1=Soldier5
+
+[Soldier5]
+say=Wahrscheinlich nicht. Es sei denn, dieser jemand wäre bereit, nach Fornax umzusiedeln. Mit der Zauberei zu leben - ob man sie nun ausübt oder nicht - verlangt Disziplin und Freimut. Ich würde mir nicht die Mühe machen, jemandem etwas zu erklären, wenn er nicht bereit wäre, unsere Sitten anzunehmen.
+rspDflt=None
+rsptxt1=Sind jemals Menschen in Euer Land gekommen, um Bürger zu werden?
+nxtln1=Soldier6
+rsptxt2=Also wurde Euch die Schweigepflicht von anderen auferlegt, zugleich aber auch freiwillig von Euch aufrecht erhalten. 
+NxtLn2=Soldier7
+
+;If 1,
+[Soldier6]
+say=Äußerst selten, aber hin und wieder ist es geschehen. Gewöhnlich behandeln wir Reisende mit Höflichkeit, schicken sie aber weg. 
+rspDflt=None
+rsptxt1=Wenn ich so etwas sagen darf, scheint mir Euer Land eher unfreundlich zu sein. 
+NxtLn1=Soldier8
+
+[Soldier8]
+say=Wir sind nicht unfreundlich. Wir mögen einfach müßige Neugier nicht.
+rspdflt=Hmmm. Wenn Ihr meint. Einen schönen Tag noch.
+
+;If 2,
+[Soldier7]
+say=Das kann man wohl sagen. Wahrscheinlich werdet Ihr unterschiedliche Meinungen von anderen Fornaxiern hören, und ich nehme an, die Wahrheit liegt irgendwo dazwischen. 
+rspDflt=None
+rsptxt1=Danke für Eure Äußerungen über Fornax.  Vielleicht möchte ich in Zukunft mehr über Euer Heimatland erfahren.
+NxtLn1=Soldier9
+
+[Soldier9]
+say=In dem Fall muss ich Euch warnen, nicht mit anderen Fornaxiern zu spaßen. Einige sind von Natur aus höchst unfreundlich. 
+rspDflt=Danke für den Rat.  Ade.
+
+;If 2,
+[Soldier3]
+say=Wir müssen damit rechnen, dass bald große Lücken in unserer Bemannung klaffen werden. Feldgeneral Ovoron führt eine große Streitmacht ins Feld. 
+rspDflt=None
+rsptxt1=Mein Bruder hat so etwas erwähnt. Was habt Ihr gehört? 
+NxtLn1=Soldier10
+
+[Soldier10]
+say=Das, was ich gehört habe, sollte ich nicht weitergeben.
+rspDflt=Ich verstehe. Danke trotzdem.
+rsptxt1=Ihr könnt mir bestimmt vertrauen. Mein Bruder ist Leutnant bei den Elythrianern. 
+NxtLn1=Soldier11
+
+[Soldier11]
+say=Darauf gebe ich nichts. Meine Vorgesetzten haben mir strikte Befehle über Geheimhaltung erteilt. 
+rspDflt=Ich verstehe. Einen schönen Tag noch.

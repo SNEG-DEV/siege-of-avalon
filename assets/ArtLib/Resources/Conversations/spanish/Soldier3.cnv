@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Hasta luego.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=¿Qué necesitas?
+RspTxt1=¿Y de dónde eres, soldado?
+NxtLn1=Soldier1
+RspTxt2=Me encantaría oír algún rumor interesante.
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=He venido desde Aratoy, y echo terriblemente de menos los bosques.  Ésta fortaleza es muy fría comparada a la vida salvaje allí en casa.  Por eso tengo unas plantas cerca de mi camastro en las barracas.  Este lugar te consume la vida.  No veo la hora de marcharme de aquí.
+rspBack=soldier
+
+[Soldier2]
+Say=No, señor.  Nada interesante.  Además, es dudoso que los rumores sean de alguna utilidad.  Aunque... a veces... ayudan a mantener la moral.
+rspBack=soldier
+
+[Chalice]
+Say=Hola señor, ¿en qué puedo ayudarle?
+RspTxt1=¿De dónde eres, soldado?
+NxtLn1=Chalice1
+RspTxt2=Supongo que un tipo tan avispado como tú debe oír un montón de rumores...
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Vengo de Aratoy, la verdadera joya de Eurale.  Una vez que hayamos aplastado a los Ahoul, volveré a los bosques.  Ya es bastante malo que no pueda aventurarme por ahí para evitar ser atravesado por una flecha Ahoul.
+rspBack=chalice
+
+[Chalice2]
+Say=Sólo que los arqueros de Aratoy están listos para luchar!  ¡Estamos ávidos de terminar con el asedio, con la guerra, y con los Ahoul de una vez por todas!
+rspBack=chalice
+

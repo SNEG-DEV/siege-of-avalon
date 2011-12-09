@@ -1,0 +1,49 @@
+[root]
+Count=2
+Else=
+Default=Guten Tag, Offe.
+Say1=All(ttl(!01recovered));
+goto1=Offe
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Offe]
+say=Seid gegrüßt, Herr.
+rspTxt1=Guten Tag.
+NxtLn1=Offe1
+rspTxt2=Wo kommt Ihr her?
+NxtLn2=Offe2
+rspTxt3=Was gibt's Neues?
+NxtLn3=Offe3
+
+[Offe1]
+say=Ihr seid wohl Corvus' Bruder.  Vor einem Jahr haben wir uns am Südtor gegenseitig das Leben gerettet.  Sagt ihm, Offe lässt grüßen.
+rspDflt=Mache ich.  Ade.
+
+[Offe2]
+say=Ich bin überall aufgewachsen.  Vor ein paar Jahren habe ich mich hier in der Gegend niedergelassen, bin aber immer zwischen hier und Elythria gependelt.  Ich war Viehtreiber.  Wenn ich die Chance bekomme, wäre ich gern Reiter.
+rspDflt=Hoffen wir, dass Euer Wunsch erfüllt wird.
+
+[Offe3]
+say=Unsere Situation wird immer verzweifelter.  Inzwischen soll es im Küchenkeller irgendein Tier geben, das uns die Vorräte wegfrißt!
+rspDflt=Immerhin, was das betrifft, könnt Ihr beruhigt sein.  Macht's gut.
+
+;After recovery of Chalice
+[Chalice]
+say=Es sieht so aus, als ob Euch das Dorf zum Mann gemacht hat.
+rspdflt=None
+rspTxt1=Hat es.  Ich wurde zum ersten Mal im Kampf verwundet.
+NxtLn1=Chalice1
+rspTxt2=Kennt ihr irgendwelche neuen Gerüchte?
+NxtLn2=Chalice2
+
+[Chalice1]
+say=Einen Soldaten ohne Narben gibt es nicht.  Viel Glück Euch.
+rspDflt=Euch auch.
+rspback=chalice
+
+[Chalice2]
+say=Wie ich gehört habe, sucht der Koch angeblich nach Rezepten für Käfereintopf.  Das stimmt doch nicht etwa, oder?
+rspDflt=Ich... glaube nicht.
+rspback=chalice

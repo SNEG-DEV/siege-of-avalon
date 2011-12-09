@@ -1,0 +1,69 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Gracias, Sir Frollo.
+Say1=one(ttl(03chapter3,04chapter4,05chapter5,06chapter6));
+goto1=three
+say2=
+goto2=frollo
+
+[Frollo]
+Say=¡¿Qué es esto?!  Creo que no tienes permiso para estar aquí arriba, ¿no es cierto?
+RspDflt=None
+RspTxt1=¿Permiso?  Solo estoy mirando.  Nadie me dijo que este sitio estaba prohibido.
+NxtLn1=Frollo1
+
+[Frollo1]
+Say=Bien, pues te lo estoy diciendo ahora!  Vete de aquí antes de que te destripe!
+RspDflt=Sí, señor.  Lamento haberle molestado.
+
+[three]
+Say=Quizás creas ser un pez gordo, pero eso no te da permiso para ir merodeando por aquí!
+RspDflt=none
+RspTxt1=¿Qué ganaría yo merodeando por aquí?  ¿Tenéis algo que esconder?
+nxtln1=three2
+
+[three2]
+Say=¿Me estás acusando de algo?
+RspDflt=Ciertamente no, Sir Frollo.  Ahora mismo me voy.
+RspTxt1=No, no lo hago.  ¿Por qué os ponéis a la defensiva?
+nxtln1=three3
+
+[three3]
+Say=No tengo por qué darte explicaciones a ti.  Te pido amablemente que te marches.
+RspDflt=Me iré y os dejaré con vuestra ira contenida, Sir Frollo.  Adiós.
+

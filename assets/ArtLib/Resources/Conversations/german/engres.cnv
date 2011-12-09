@@ -1,0 +1,32 @@
+[root]
+Count=1
+Else=
+Default=Danke, Engres.
+Say1=
+goto1=Engres1
+
+[Engres1]
+say=Mein Name ist Engres.
+rspDflt=None
+rspTxt1=Wart Ihr mit meinem Bruder befreundet?
+nxtLn1=Engres2
+
+[Engres2]
+say=Das nicht gerade.  Ich habe mich nur gemeldet, um aus der Zitadelle zu kommen.
+rspDflt=None
+rsptxt1=Verstehe.  Habt Ihr da draußen irgendetwas gesehen?
+NxtLn1=Engres3
+
+[Engres3]
+say=Einen Haufen Werwürmer und ziemlich viele Spuren vor der alten Kirche.  Ich schätze, die Werwürmer haben die Toten gefressen.
+Adventure=Ch1-88;
+rspDflt=None
+rspTxt1=Was für Spuren?
+NxtLn1=Engres4
+
+[Engres4]
+say=Wer weiß?  Vielleicht Menschen, vielleicht Ahoul.  Ich weiß nur, dass in der alten Kirche etwas vor sich geht.  An eurer Stelle würde ich mich von dort fernhalten.
+rspDflt=Danke für den Rat.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

@@ -1,0 +1,99 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(5/23/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Thank you, Kay.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=All(ttl(!01recovered));
+goto2=Kay
+Say3=All(ttl(01recovered));
+goto3=Chalice
+
+[Kay]
+Say=You don't look injured.  What can we do for you?
+RspDflt=None
+RspTxt1=I'm new here and was just looking around.
+NxtLn1=Kay1
+RspTxt2=Where are you from?
+NxtLn2=Kay2
+RspTxt3=Have you heard any rumors?
+NxtLn3=Kay3
+
+[Kay1]
+Say=Well, welcome to the chapel.  We're in the business of saving lives and souls here.  If you're ever in need of either service, we'd be happy to help.
+RspDflt=That's good to know.  Thank you.
+rspBack=Kay
+
+[Kay2]
+Say=I'm Nisosan.  I was injured in the fighting outside the citadel just before the siege began.  They said they might send me back on the next ship, since they thought I was now useless.  Instead, I joined up with Friar Massus, and in here I can still do some good.  With the siege, though, I think that maybe it wasn't such a good idea to stay.  Perhaps I should have gone home!
+RspDflt=I'm glad you stayed.  We can use all the help we can get.
+rspBack=Kay
+
+[Kay3]
+Say=One of the wounded was muttering in his sleep about deserters.  You wouldn't know anything about this, would you?
+RspDflt=None
+RspTxt1=This is the first I've heard of it.
+NxtLn1=Kay4
+
+[Kay4]
+Say=Well, I suppose I'll have to make sure Sir Roth finds out.
+RspDflt=Good day.
+rspBack=Kay
+
+[Chalice]
+Say=Hail!  You look more battle-hardened than the last time we met.  I trust all is well?
+RspDflt=None
+RspTxt1=Well enough, Kay.
+NxtLn1=Chalice1
+RspTxt2=What's new?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=I understand entirely, sir.  Good day.
+RspDflt=Good spirits protect you.
+rspBack=Chalice
+
+[Chalice2]
+Say=Since last you were here, things have been improving.  I understand that the Ahoul are losing heart.  Perhaps it won't be long until we break this awful siege.
+RspDflt=Let us hope so.
+rspBack=Chalice
+
+[chapter6]
+Say=Oh, hello %playername%.  I'm sorry I can't speak with you now, I have business to attend to.
+RspDflt=Understood.  Farewell, good monk.
+

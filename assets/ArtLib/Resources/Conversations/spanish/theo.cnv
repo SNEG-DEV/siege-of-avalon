@@ -1,0 +1,102 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,06chaper6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Gracias, Theo.
+say1=all(ttl(03chapter3));
+goto1=three
+Say2=All(ttl(!01recovered));
+goto2=Theo
+Say3=All(ttl(01recovered));
+goto3=chalice
+say4=all(ttl(06chaper6,01recovered));
+goto4=chapter6
+
+[Theo]
+Say=Cuidado, soldado.  La Puerta Sur es un lugar peligroso la mayor parte del tiempo.  Los Ahoul siempre amenazan las puertas.
+RspDflt=Gracias por el aviso.
+RspTxt1=¿De dónde eres?
+NxtLn1=Theo1
+RspTxt2=¿Has oído algún rumor últimamente?
+NxtLn2=Rumors1
+
+[Theo1]
+Say=Soy de Elythria.  Tu hermano y yo estábamos en la misma cohorte a las órdenes de Penrith.  Aunque Corvus fue promocionado por encima de mí, sigue siendo un buen amigo mío.
+RspDflt=Es bueno saber que mi hermano tiene muchos amigos.
+rspBack=Theo
+
+[Rumors1]
+Say=Creo que la Puerta Sur está encantada.  Oigo ruidos extraños allí cada noche.  Obsérvalo tu mismo.
+RspDflt=Gracias por el aviso.
+rspBack=Theo
+
+[chalice]
+Say=Por el destino, es bueno verte de nuevo!
+RspDflt=None
+RspTxt1=Y a ti también, Theo.
+NxtLn1=chalice1
+RspTxt2=¿Cuáles son las últimas noticias?
+NxtLn2=news1
+
+[chalice1]
+Say=Que los espíritus te protejan.
+RspDflt=gracias.  Hasta luego.
+rspBack=Chalice
+
+[news1]
+Say=Hemos oído que hay provisiones en camino.  Nadie sabe cuando llegarán, probablemente para prevenir los tumultos que se formarían si no logran llegar, pero ¡la moral está alta de todas formas!
+RspDflt=Esas son muy buenas noticias!
+rspBack=Chalice
+
+[three]
+Say=Sabes, desde que estás aquí, he dejado de ver fantasmas.
+RspDflt=none
+RspTxt1=¿Cómo sabes que no soy un fantasma?
+nxtln1=three2
+RspTxt2=¿Veías fantasmas?
+nxtln2=three3
+
+[three2]
+Say=Ja...  Eso...  no es gracioso.  Vete, por favor.
+RspDflt=Como desees.
+
+[three3]
+Say=Sí, la Puerta Sur solía estar encantada.
+RspDflt=Me alegro de que no... veas más cosas, soldado.  Excúsame...
+
+[chapter6]
+Say=Hola, %playername%! ¿Qué necesitas?
+RspDflt=En realidad, nada.  Sólo pasaba por aquí.  Hasta luego.
+

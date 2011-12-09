@@ -1,0 +1,50 @@
+[notes]
+TitlesChecked=01informed,01Recovered,01transferred
+
+[root]
+Count=5
+Else=
+Default=
+Say1=All(ttl(01FoundBrother));
+goto1=york5
+Say2=All(ttl(!01informed,!01Recovered,!01transferred));
+goto2=York1
+Say3=All(ttl(01informed,!01Recovered,!01transferred));
+goto3=York2
+Say4=All(ttl(01informed,!01Recovered,01transferred));
+goto4=York3
+Say5=All(ttl(01informed,01Recovered,01transferred));
+goto5=York4
+
+
+[York1]
+say=Tut mir leid, Herr.  Wir haben strikten Befehl, niemanden passieren zu lassen.  Ihr müßt den Weg freimachen.
+Adventure=ch1-03;
+rspDflt=Verstehe.  Dann ade.
+
+;After arrival of search party
+
+[York2]
+say=Da seid Ihr ja.  Sir Roth hat Euren Besuch erwartet.  Geht sofort hinein.
+script=setpos(PathCorner20000500250046085120);Siege017.setpos(PathCorner20000500250046080510)
+rspdflt=Danke.
+
+[York3]
+say=Wieder ein Anliegen für Sir Roth?  Beeilt Euch, Sir Roth ist ein vielbeschäftigter Mann.
+script=setpos(PathCorner20000500250046085120);Siege017.setpos(PathCorner20000500250046080510)
+rspdflt=Danke.
+
+;After recovery of Chalice of Life (PLAYER DOES HAVE THE TITLE OF RECOVERED)
+
+[York4]
+say=Seid gegrüßt, Herr!  Sir Roth ist gleich da drinnen!
+script=setpos(PathCorner20000500250046085120);Siege017.setpos(PathCorner20000500250046080510)
+rspdflt=Danke.
+
+[York5]
+say=Tut mir leid, Herr. Wenn Ihr Sir Roth sprechen wollt, müßt Ihr in die Burg hinein. 
+rspDflt=Danke.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed
+

@@ -1,0 +1,25 @@
+[root]
+Count=1
+Else=
+Default=Danke, Derian.
+Say1=
+goto1=Derian
+
+[Derian]
+say=He!  Nicht da runtergehen!
+rspDflt=None
+rspTxt1=Warum nicht?
+NxtLn1=Derian1
+
+[Derian1]
+say=Ähm...  weil es...  ähm, nichts da unten gibt.  Überhaupt nichts gibt es da unten.
+rspDflt=None
+rspTxt1=Warum sollte es Euch denn interessieren, ob ich nach dort unten gehe oder nicht?
+NxtLn1=Derian2
+
+[Derian2]
+say=Ich dachte nur... vielleicht habt Ihr noch wichtigere Dinge zu erledigen.
+rspDflt=Danke für den Rat, aber ich kann mich selbst um meine Angelegenheiten kümmern.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

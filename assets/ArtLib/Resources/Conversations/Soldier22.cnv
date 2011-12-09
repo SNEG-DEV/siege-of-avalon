@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Farewell.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=Hello there, how can I help you?
+RspTxt1=Where are you from?
+NxtLn1=Soldier1
+RspTxt2=Heard any good rumors?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=My home is Oriam.  At least it was Oriam, before the Ahoul burned it and murdered my wife and children.
+rspBack=soldier
+
+[Soldier2]
+Say=Our captain said for us to be mindful of an attack tonight.  I trust him very much, so be careful tonight!
+rspBack=soldier
+
+[Chalice]
+Say=May I be of assistance to you, sir?
+RspTxt1=Where are you from?
+NxtLn1=Chalice1
+RspTxt2=Heard any good rumors?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=I am from Oriam, sir.
+rspBack=chalice
+
+[Chalice2]
+Say=I heard the Catheans have sent for their reserves.  They are brave fighters and their help should turn the tide of this siege.
+rspBack=chalice
+

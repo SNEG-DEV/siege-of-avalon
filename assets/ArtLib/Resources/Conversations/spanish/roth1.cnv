@@ -1,0 +1,86 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01transferred
+Checked=
+Removed=
+
+[Quest]
+Added=ch1-11,ch1-76
+Removed=
+
+[Items]
+Given=transferletter
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+allen(02/12/2001)=Passed
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=Gracias, Sir Roth.
+Say1=
+goto1=Corvus1
+
+[Corvus1]
+Say=Así pues, tú eres el hermano de Corvus.  Lamento tu pérdida.  ¿Qué puedo hacer por ti?
+script=player.setprop(frozen=false);
+RspDflt=None
+RspTxt1=He recibido noticias de Calum en la Puerta Sur, señor.  Mi hermano ha sido visto huyendo del pueblo, a las afueras de Avalon.
+NxtLn1=Corvus2
+
+[Corvus2]
+Say=Lo sé.  Estos tres caballeros formaban parte de un grupo de búsqueda que salió a buscarle.  Justo acaban de volver con su informe.
+RspDflt=None
+RspTxt1=Entonces, ¿cuáles son las novedades, señor?
+NxtLn1=Corvus3
+
+[Corvus3]
+Say=Fueron al pueblo y se movieron  por allí.  Hallaron signos de una batalla, pero no había ni rastro de tu hermano por ningún lado.  Como sabes, los Ahoul no se caracterizan por tomar prisioneros.  Si tu hermano estuviese muerto, su cuerpo estaría en algún lugar del pueblo.  Por lo tanto, sospechamos que sigue vivo.
+RspDflt=None
+RspTxt1=Señor, ¿seguís buscándole?
+NxtLn1=Corvus4
+
+[Corvus4]
+Say=La desaparición de la tropa del General Ovoron ha dejado la guarnición sin efectivos y los Sha'ahoul están mostrando signos de gran actividad.  En estos momentos no podemos permitirnos perder más hombres, especialmente si el objetivo es recuperar a un solo soldado.  Lo lamento, hijo, pero no podemos arriesgar más gente en la búsqueda.  Ten coraje--es un superviviente.  Si alguien puede volver a Avalon con vida, ese es Corvus.
+RspDflt=None
+RspTxt1=Me gustaría obtener vuestro permiso para buscar a mi hermano, señor.
+NxtLn1=Corvus6
+
+[Corvus6]
+Say=Ya veo.  Confidencialmente, esperaba que me pidieses algo por el estilo.  Creo que podremos arreglarlo.  Te transferiré a las órdenes de Mudam.  Es el Maestro de Exploradores, y él te puede asignar alguna misión de búsqueda fuera de Avalon.  De todas formas, ¿estás seguro de que quieres hacerlo?  Es muy peligroso salir de Avalon.  Los Ahoul han incrementado sus patrullas desde que se marcharon las tropas de Ovoron.
+Adventure=ch1-76;
+RspDflt=None
+RspTxt1=Sí, señor.  No descansaré hasta que conozca el destino de mi hermano.
+NxtLn1=Corvus8
+
+[Corvus8]
+Say=Muy bien.  Lleva esta carta a Mudam y consigue su aprobación.  Espero que te hayas tomado en serio tu entrenamiento--porque realmente lo vas a necesitar.
+AddQuest=ch1-11;
+Script=player.addtitle(01transferred);giveitem(transferLetter,player);journalentry(roth);showmessage(Your journal has been updated.,300);
+RspDflt=None
+RspTxt1=Gracias, Sir Roth!  No os fallaré.
+NxtLn1=Corvus9
+
+[Corvus9]
+Say=Ningún miembro de tu familia lo ha hecho nunca, hijo.  Que tengas suerte.
+RspDflt=Que todos tengamos suerte, señor.  Hasta luego.
+

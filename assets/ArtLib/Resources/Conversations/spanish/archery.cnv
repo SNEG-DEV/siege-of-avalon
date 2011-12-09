@@ -1,0 +1,49 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=Gracias.
+Say1=
+goto1=Soldier
+
+[Soldier]
+Say=Aquí hay un arco, id a dispararle a algo.
+RspTxt1=Necesitáis un diálogo mejor!
+nxtLn1=Soldier1
+
+[Soldier1]
+Say=Ya lo sé, pero ¿qué puedo hacer sino recitar el guión?
+RspDflt=Sabéis, a veces pienso que a cierta gente de por aquí deberíamos usarla de diana!
+

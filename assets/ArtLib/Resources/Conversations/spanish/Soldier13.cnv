@@ -1,0 +1,84 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Gracias.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=All(ttl(!01recovered));
+goto2=Soldier
+Say3=All(ttl(01recovered));
+goto3=Chalice
+
+[Soldier]
+Say=Hola, ¿puedo ayudarte?
+RspTxt1=¿De dónde eres?
+NxtLn1=Soldier1
+RspTxt2=¿Sabes de algún rumor jugoso?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Solía entrenar caballos en Cathea.  Ahora solo soy otro guerrero más entre los muros.
+rspBack=soldier
+
+[Soldier2]
+Say=He oído que una nueva flota de aprovisionamiento llegará pronto.  Espero que lleguen hasta aquí; no he podido enjabonarme la cara desde hace bastante tiempo.  Yo no quería dejarme barba.
+rspBack=soldier
+
+[Chalice]
+Say=¿Puedo ayudarle, señor?
+RspTxt1=¿De dónde eres?
+NxtLn1=Chalice1
+RspTxt2=¿Algún rumor interesante?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Soy Catheano, señor.  ¡Los más duros del mundo!
+rspBack=chalice
+
+[Chalice2]
+Say=Solo que la horda Ahoul empieza a resquebrajarse.  ¡Se dice que algunas de las tribus volverán al lugar del que vinieron!
+rspBack=chalice
+
+[chapter6]
+Say=He oído que has visitado el pueblo anteriormente.  ¿Está tan mal como dicen?
+RspDflt=Sí.  Hasta luego.
+RspTxt1=Ni un edificio se mantiene en pie, todo está destruido.
+nxtln1=chapter6b
+
+[chapter6b]
+Say=Dita!  Si los espíritus así lo desean, ¡espero que salvemos estos muros de tal destino!
+RspDflt=Ojalá.  Hasta luego, soldado.
+

@@ -1,0 +1,212 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01steelshortage,01trainedfighter,armor fitting,combat breathing,field first aid,weapon balance
+Checked=01GetSteel,01GotSword,01ReturnedSteel,01TrainedFighter,05chapter5,05genarb01,06chapter6,Armor Fitting,Combat Breathing,Field First Aid,portalactive,Weapon Balance
+Removed=
+
+[Quest]
+Added=ch1-06,ch1-66,ch1-67
+Removed=
+
+[Items]
+Given=kshieldavalon
+Taken=
+Checked=
+Added=magicblade
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Good bye.
+say1=all(ttl(01TrainedFighter,06chapter6));
+goto1=chapter6
+Say2=all(ttl(01TrainedFighter,05chapter5));
+goto2=chapter5
+Say3=All(ttl(!01TrainedFighter));
+goto3=Lucan
+Say4=All(ttl(01TrainedFighter,!06chapter6));
+goto4=Info
+
+[Lucan]
+Say=Good day to you, sir. How can I be of service?
+RspDflt=None
+RspTxt1=I'm just looking around.
+NxtLn1=Lucan1
+RspTxt2=What do you do in here?
+NxtLn2=Lucan2
+
+[Lucan1]
+Say=Very well, sir. If you need anything from me, just ask.
+RspDflt=Thanks, I will.
+rspback=Lucan
+
+[Lucan2]
+Say=I'm in charge of the South Gate's Armory.  It's my job to keep the fortification's defenders well supplied and trained in the proper use of the equipment.
+Adventure=ch1-66;
+RspDflt=None
+RspTxt1=I could do with some equipment, then.
+nxtln1=Shield
+RspTxt2=What training do you offer?
+nxtln2=TrainTitles
+rspcnd3=all(ttl(05chapter5,portalactive,!05genarb01));
+RspTxt3=Indeed?  I have heard that you possess an enchanted blade.  I need to borrow it for the good of Avalon.
+script3=addtitle(05genarb01);
+nxtln3=giveblade
+
+[shield]
+Say=I was afraid you would say that, sir.  I'm sorry, but for weapons and armor you will have to see the Quartermaster in the Outer Keep.  Everything I have is already assigned.  However, I can provide you with a proper shield.
+Script=Siege20000600030075742200.giveitem(KShieldAvalon,player);showmessage(You have received an item.,200);player.addtitle(01TrainedFighter);
+RspDflt=None
+RspTxt1=My thanks.  Do you have any idea why supplies of weaponry are so low?
+nxtLn1=Steel
+
+[Steel]
+Say=It's the blacksmith, sir.  There seems to be very little coming out of his forge that's of high quality these days.  Oh, it's not his fault, sir -- there's been a critical shortage of fine steel.  Also, General Ovoron requisitioned most of the quality weaponry we did have for his raid.  What you see out there is what I've got left, sir, and even that's spoken for, shoddy as it is.
+Adventure=ch1-67;
+RspDflt=I see.  Thanks for your time.
+RspTxt1=Avalon is out of fine steel?  When was the last shipment?
+nxtLn1=Steel2
+
+[Steel2]
+Say=I don't rightly remember, sir.  I do know there was supposed to be a shipment of steel with the supply fleet, but I don't know if any actually arrived, what with the disaster and all.
+RspDflt=none
+rspCnd1=all(ttl(!01GetSteel));
+RspTxt1=One ship survived -- and I was on it.  I know there was food in the cargo hold, but I didn't hear of any steel.  I'll admit I wasn't too curious -- the Ahoul trying to sink us had my full attention.
+nxtLn1=Steel3
+rspCnd2=all(ttl(01GetSteel));
+RspTxt2=One ship survived -- and I was on it.  I know there was food in the cargo hold, but I didn't hear of any steel.  I'll admit I wasn't too curious -- the Ahoul trying to sink us had my full attention.
+nxtLn2=Steel4
+
+[Steel3]
+Say=You could check with the blacksmith himself, sir, to see if he's received any fine steel.  About the only way you'll get a decent sword is if he has.  Freeman's his name, and his smithy's in the Outer Bailey.  Come to think of it, though, if you happen to run across any Ahoul who aren't using their weapons, sir, I suppose you could always ask to borrow them, if you catch my meaning...?
+AddQuest=ch1-06;
+script=player.addtitle(01SteelShortage);
+RspDflt=I follow, but I think that I'll first check with the blacksmith -- just in case.  Thanks for your time.
+
+[Steel4]
+Say=You could check with the blacksmith himself, sir, to see if he's received any fine steel.  About the only way you'll get a decent sword is if he has.  Freeman's his name, and his smithy's in the Outer Bailey.  Come to think of it, though, if you happen to run across any Ahoul who aren't using their weapons, sir, I suppose you could always ask to borrow them, if you catch my meaning...?
+RspDflt=I follow but, in truth, I have already checked with the blacksmith.  He says he has nothing, though he did insist there was a cache of fine steel bars in the village somewhere.  I will have to see if anything comes of it.  Thanks for your time.
+
+[TrainTitles]
+Say=Well, sir, I can provide instruction in:
+train=true
+RspDflt=(Exit)
+rspCnd1=All(ttl(!Combat Breathing):stt(trainingpoints>2))
+RspTxt1=Combat Breathing(+5 Hit Points, +1 Healing Rate): 3pts
+script1=player.addtitle(Combat Breathing);player.setprop(trainingpoints=-3);
+nxtln1=TrainTitles
+rspCnd2=All(ttl(!Weapon Balance):stt(trainingpoints>2))
+RspTxt2=Weapon Balance(+2 Coordination): 3pts
+script2=player.addtitle(Weapon Balance);player.setprop(trainingpoints=-3);
+nxtln2=TrainTitles
+rspCnd3=All(ttl(!Armor Fitting):stt(trainingpoints>2))
+RspTxt3=Armor Fitting(-2 Restriction): 3pts
+script3=player.addtitle(Armor Fitting);player.setprop(trainingpoints=-3);
+nxtln3=TrainTitles
+rspCnd4=All(ttl(!Field First Aid):stt(trainingpoints>1))
+RspTxt4=Field First-Aid(+2 Hit Points, +1 Healing Rate): 2pts
+script4=player.addtitle(Field First Aid);player.setprop(trainingpoints=-2);
+nxtln4=TrainTitles
+rspCnd5=All(ttl(!01TrainedFighter));
+RspTxt5=I could also do with some equipment.
+nxtLn5=Shield
+
+[Info]
+Say=How can I be of service?
+RspDflt=None
+RspTxt1=I was wondering what training you offered?
+nxtln1=TrainTitles
+rspCnd2=all(ttl(!01GetSteel));
+RspTxt2=Do you have any idea why supplies of weaponry are so low?
+NxtLn2=Steel
+rspCnd3=all(ttl(01ReturnedSteel,!01GotSword));
+RspTxt3=I just wanted to let you know that following the blacksmith's advice, I managed to locate a small cache of fine steel hidden in the village.  Pretty soon you'll have at least some fine weaponry to assign.
+nxtLn3=NewSteel
+rspCnd4=all(ttl(01GotSword));
+RspTxt4=The smith gave to me this Officer's Blade in return for finding the fine steel.  What do you think?
+nxtLn4=Sword
+
+[NewSteel]
+Say=That's excellent news, sir!  I look forward to the new goods.  And when they arrive, I'll set a sword aside for you!
+RspDflt=That's all right.  The smith has already promised me one.  Until later, then...
+
+[Sword]
+Say=A truly exceptional blade, sir!  It should serve you well.
+RspDflt=I certainly hope so.  Farewell!
+
+[chapter5]
+Say=Back for more training, aye?
+RspDflt=No, Lucan.  Pardon me.
+rspcnd1=one(ttl(!Combat Breathing,!Weapon Balance,!Armor Fitting,!Field First Aid,!01trainedfighter));
+RspTxt1=Yes, sir!
+NxtLn1=TrainTitles
+rspCnd2=All(ttl(Combat Breathing,Weapon Balance,Armor Fitting,Field First Aid,01TrainedFighter));
+RspTxt2=Actually, I was just checking up on you.
+NxtLn2=chapter5b
+rspcnd3=all(ttl(portalactive,!05genarb01));
+RspTxt3=I have heard that you possess an enchanted blade.  I need to borrow it for the good of Avalon.
+script3=addtitle(05genarb01);
+nxtln3=giveblade
+
+[chapter5b]
+Say=Don't tell anyone, but the Sha'ahoul frighten me. The wind carries their chantings into my window at night, and wakes me with a chill. I just know any morning now I'll awaken to an Ahoul sword at my throat.
+RspDflt=One morning's light will bring us freedom, good Lucan. Don't give up hope, we need you.
+
+[giveblade]
+Say=Yes, I do have an enchanted blade, but it is one of my favorite pieces.  Why should I part with it?
+RspDflt=none
+RspTxt1=Because I am currently on an assignment that will benefit all of Avalon, and to complete it, I need an enchanted weapon.
+nxtln1=lame
+RspTxt2=You certainly know of all that I have done for Avalon so far.  I need the enchanted weapon because I am going to a place where normal blades can do no damage.
+nxtln2=better
+RspTxt3=Have you been sleeping well as of late, Lucan?
+nxtln3=appealing
+
+[lame]
+Say=All of our assignments benefit Avalon.  You're going to have to do better than that!
+RspDflt=none
+RspTxt1=You certainly know of all that I have done for Avalon so far.  I need the enchanted weapon because I am going to a place where normal blades can do no damage.
+nxtln1=better
+RspTxt2=Have you been sleeping well as of late, Lucan?
+nxtln2=appealing
+
+[better]
+Say=That's nice, but what's in the deal for me?  How does old Lucan benefit, eh?
+RspDflt=none
+RspTxt1=Have you been sleeping well as of late, Lucan?
+nxtln1=appealing
+RspTxt2=Because I am currently on an assignment that will benefit all of Avalon, and to complete it, I need an enchanted weapon.
+nxtln2=lame
+
+[appealing]
+Say=Wh...  [blinks, obviously surprised]  Why, no, but I fail to see how that...
+RspDflt=none
+RspTxt1=Very simple, good Lucan.  Many of our fellows have been sleeping poorly as of late.  I know why.  It's the Sha'men, and they... they're attacking us from a protected place.  If I go there without a magical weapon, I will be cut to ribbons, and you and everyone else will lose more sleep until...
+nxtln1=appealing2
+
+[appealing2]
+Say=[swallows audibly]  Er...  And you will defeat these Sha'men with this sword?  I...  [sighs deeply]  Oh, very well, %playername%, you may have it, but treat it well.
+script=player.additem(magicblade);
+RspDflt=Thank you, Lucan, on behalf of all of Avalon.
+
+[chapter6]
+Say=%playername%! Look, I cannot help you any more. I'm looking out for myself, and I cannot spare the time to talk now.
+RspDflt=I understand. Take care, good Lucan.
+

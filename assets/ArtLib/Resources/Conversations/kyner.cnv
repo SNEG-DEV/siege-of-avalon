@@ -1,0 +1,71 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=03joined
+Checked=03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-87
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Thank you, Kyner.
+say1=one(ttl(03chapter3,04chapter4,05chapter5,06chapter6));
+goto1=three
+Say2=all(ttl(!03chapter3));
+goto2=Kyner1
+
+[Kyner1]
+Say=Hello there, lad.  My name is Kyner.  I was a good friend of your brother.
+RspDflt=None
+RspTxt1=I am pleased to meet you.  Were you with the search party?
+NxtLn1=Kyner2
+
+[Kyner2]
+Say=Yes, I was.  We searched the village and found nothing but voreworms.  We ended up killing quite a few of them before we left.
+RspDflt=None
+RspTxt1=There was no sign of him?
+NxtLn1=Kyner3
+
+[Kyner3]
+Say=I'm sorry, but we saw no trace of him.  A battle had been fought recently just south of the old Wizard's Tower, but there's no telling who or what did the fighting.  Could have been anything.
+Adventure=Ch1-87;
+RspDflt=None
+RspTxt1=Thank you for looking.
+NxtLn1=Kyner4
+
+[Kyner4]
+Say=It's the least I could do.  Your brother saved me from losing my leg once and I've yet to repay the favor.
+RspDflt=I am certain that you shall still have your chance.  Good day to you.
+
+[three]
+Say=Would you like me to accompany you on your mission?  I'd appreciate the opportunity to stretch my legs and my sword-arm, and perhaps bring back a few Ahoul scalps and some fresh battle tales as well!
+RspDflt=Perhaps later, Sir Kyner.
+RspTxt1=Good idea, Sir Kyner.  We'll be on our way shortly.
+script1=addtoparty;addtitle(03joined);
+

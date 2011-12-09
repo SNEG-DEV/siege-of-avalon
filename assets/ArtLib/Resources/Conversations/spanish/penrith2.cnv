@@ -1,0 +1,203 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01getsword,01informed,01makeareasecure,03reportgiven
+Checked=01AreaSafe,01FoundBrothe,01FoundBrother,01GetSwor,01GetSword,01Informe,01Informed,01MakeAreaSecur,01MakeAreaSecure,01ReturnedSteel,03chapter3,03mabondone,03mabonquest,03reportgiven,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-05,ch1-08,ch1-09,ch1-10,ch1-55,ch1-56,ch3-552
+Removed=ch1-08,ch1-09
+
+[Items]
+Given=
+Taken=
+Checked=statuspenrith
+Added=statuspenrith
+
+[SyntaxCheck]
+tucker(4/10/01)=Passed
+tucker(5/23/01)=Passed
+tucker(7/19/01)=Passed
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=9
+Else=
+Default=Buenos días, Sir Penrith.
+say1=all(ttl(06chapter6,01Informed,01ReturnedSteel,01MakeAreaSecure,01GetSword,01FoundBrother));
+goto1=chapter6
+say2=all(ttl(05chapter5,01Informed,01ReturnedSteel,01MakeAreaSecure,01GetSword,01FoundBrother));
+goto2=chapter5
+say3=all(ttl(03chapter3));
+goto3=penrith
+say4=all(ttl(01getsword));
+goto4=getasword
+Say5=All(ttl(!01Informed))
+goto5=Informed
+Say6=All(ttl(01ReturnedSteel,!01MakeAreaSecure))
+goto6=Steel
+Say7=All(ttl(01ReturnedSteel,01MakeAreaSecure,!01GetSword))
+goto7=AreaSecure
+Say8=All(ttl(01Informed,!01FoundBrother))
+goto8=Informed3
+Say9=All(ttl(01Informed,01FoundBrother))
+goto9=Informed4
+
+[Informed]
+Say=Espera, chico.  No sé si lo has oído ya, pero puede que haya habido un problema con la expedición en que iba tu hermano.
+AddQuest=ch1-05;
+RspDflt=None
+RspTxt1=¿Qué problema?  ¿Qué ha sucedido, señor?
+NxtLn1=Informed1
+
+[Informed1]
+Say=Como sabes, Corvus formaba parte de un gran contingente de tropas que salió en un ataque relámpago.  La tropa estaba dirigida por el General Ovoron, comandante de nuestras fuerzas de campo.  Ya deberían estar aquí, y no hemos visto ni rastro de ellos.
+RspDflt=None
+RspTxt1=¿Está Corvus bien?
+NxtLn1=Informed2
+
+[Informed2]
+Say=No lo sé.  Un grupo de búsqueda acaba de volver.  Ahora estarán presentando su informe a Sir Roth.  Deberías ir a preguntar a la Puerta Sur.  Si alguien ha visto algo, será desde la Puerta Sur.  Pregunta por mi amigo, Calum.  Él te ayudará.
+Adventure=ch1-55;
+Script=player.addtitle(01informed);setprop(onActivate=converse(penrith2));journalentry(penrith); showmessage(Your journal has been updated.,200);
+RspDflt=Aprecio su consejo.
+
+[Informed3]
+Say=Tu hermano es uno de mis mejores amigos, e insistiría en acompañarte en su busca si mis deberes me lo permitiesen, pero hay mucho en juego aquí y el deber es lo primero.  Espero que lo comprendas--sé que tu hermano lo haría.
+RspDflt=Lo comprendo, señor, y le informaré si descubro algo.
+
+[Informed4]
+Say=Buen trabajo, chico.  Malditamente bien hecho!
+RspDflt=Gracias, Penrith.
+
+[Steel]
+Say=Cuento a tu hermano entre mis mejores amigos, e insistiría en acompañarte en su busca si mis deberes me lo permitiesen, pero hay mucho en juego y el deber es lo primero.  Espero que lo comprendas--sé que tu hermano lo haría.
+RspDflt=None
+RspTxt1=Lo comprendo, señor, pero hay otro asunto que requiere su atención.  Vereis, un escondrijo con acero ha sido localizado en el pueblo y--
+nxtLn1=Steel1
+
+[Steel1]
+Say=¿Acero, dices?  ¿No habrá sido Freeman el Herrero quien ha llenado tus oídos con ese cuento, verdad?
+RspDflt=None
+RspTxt1=Bueno, sí, señor.  Cuando estuve en el pueblo, simplemente tuve mis ojos bien abiertos, y casi tropecé con el acero.
+nxtLn1=Steel2
+
+[Steel2]
+Say=Tropezaste...  Increíble.  Hubiese jurado que el herrero estaba un poco loco y por eso largaba la historia a todo el mundo.  Bien hecho.
+RspDflt=None
+RspTxt1=Sí, señor.  Me dijo que os pidiese que enviaseis algunos hombres a buscar el resto del acero.  Puedo deciros exactamente dónde está.
+nxtLn1=Steel3
+
+[Steel3]
+Say=Bueno, chico, me encantaría.  El acero es más precioso que el oro en estos días, pero el pueblo no es un lugar amistoso.  Un hombre solo, como tú, puede ser capaz de moverse libremente pero no un grupo.  El área debería ser segura antes de arriesgar a algunos de mis hombres.
+Adventure=ch1-56;
+RemoveQuest=ch1-08;
+AddQuest=ch1-09;
+RspDflt=None
+rspcnd1=all(ttl(!01areasafe));
+RspTxt1=Lo comprendo, señor--el área debe ser segura.  Entonces, con vuestro permiso, dado que debo salir igualmente a buscar a mi hermano, cuando vuelva al pueblo me aseguraré de que el área alrededor del escondite esté limpia de Ahoul.
+nxtLn1=Steel4
+rspcnd2=all(ttl(01areasafe));
+RspTxt2=Lo comprendo, señor.  No obstante, ya he eliminado a todos los Sha'ahoul en esa área.
+nxtln2=areasecure1
+
+[Steel4]
+Say=Perfecto, chico.  Pero ten cuidado.
+script=player.addtitle(01MakeAreaSecure);
+RspDflt=Naturalmente, señor.  Adiós.
+
+[AreaSecure]
+Say=¿Y bien, chico?  ¿Puedo enviar a mis hombres para recuperar ese acero?
+RspDflt=None
+rspCnd1=all(ttl(01AreaSafe));
+RspTxt1=Sí, señor.  El área es segura.
+nxtLn1=AreaSecure1
+rspCnd2=all(ttl(!01AreaSafe));
+RspTxt2=No, señor, aún no.  Todavía estoy trabajando en limpiar el área alrededor del escondite de acero de Ahoul.  Creo que todavía quedan un par por ahí.
+nxtLn2=NotSecure
+
+[AreaSecure1]
+Say=Excelente.  Empezaré a enviar a mis hombres inmediatamente.  El armamento que podemos fabricar con ese acero salvará muchas vidas cuando llegue el momento de la lucha.  Bien hecho, chico!  los espíritus verdaderamente están contigo!
+RemoveQuest=ch1-09;
+AddQuest=ch1-10;
+script=player.addtitle(01GetSword);
+RspDflt=Gracias, señor, pero sólo era parte de mi deber.
+
+[NotSecure]
+Say=Está bien, chico.  Sé que tu hermano te tiene preocupado.  Cuando sea seguro, dímelo.
+RspDflt=Sí, señor.  Gracias, señor.
+
+[penrith]
+Say=Mira quién está aquí!  Me preguntaba dónde te habías metido.  ¿Cómo está tu hermano?
+RspDflt=Mis disculpas, Penrith.  Debo haberme perdido.
+RspTxt1=De hecho, hace mucho que no le veo, pero se va recuperando día a día.
+nxtln1=penrith2
+
+[penrith2]
+Say=Eso es genial.  Le vi hace un poco, pero supuse que tu le habrías visto más recientemente.  Creo que ya va siendo hora de que se tome unas vacaciones.  Siempre ha sido muy dedicado.  Ah, pero no has venido a escuchar los desvaríos de un viejo tonto.  Puedo ayudarte en algo?
+RspDflt=none
+rspcnd1=all(ttl(03mabonquest,!03mabondone,!03reportgiven):obj(!statuspenrith));
+RspTxt1=De hecho, sí, puede.  Debe haber oído que Sir Mabon ha sido nombrado para ocupar el lugar de Ovoron...
+nxtln1=penrith3
+RspTxt2=Sí, me preguntaba si me podríais responder a unas pocas preguntas...
+nxtln2=penrith5
+
+[penrith3]
+Say=Ah, sí, Sir Mabon.  Creo que lo hará bien en su nuevo trabajo; es una persona ambiciosa.  Oh, lo siento, te he interrumpido.
+RspDflt=none
+RspTxt1=Está bien.  Parece ser que Ovoron ha dejado su oficina hecha un caos total, y faltan algunos documentos.  Sir Mabon me ha enviado a pediros vuestro informe de estado de la región.
+nxtln1=penrith4
+
+[penrith4]
+Say=Oh, ¿el informe de Ubicación y Estado de Tropas?  Naturalmente.  ¿Hay algo más que pueda hacer por tí?
+script=player.additem(statuspenrith);addtitle(03reportgiven);
+adventure=ch3-552
+RspDflt=De momento no, Penrith.  Gracias por tu tiempo.
+RspTxt1=Sí, puedes contestarme a unas preguntas...
+nxtln1=penrith5
+
+[penrith5]
+Say=[quejido]  Otra vez no, yo...
+RspDflt=Sólo estaba bromeando, Penrith.  Cúidate.
+
+[chapter5]
+Say=%playername%! veo que estás en todas partes, como siempre.
+RspDflt=Lo siento, debo irme.
+RspTxt1=¿Has oído alguna novedad?
+nxtln1=chapter5b
+RspTxt2=¿Te sientes capaz de contestarme a algunas preguntas?
+nxtln2=penrith5
+
+[chapter5b]
+Say=Nada excepto los constantes quejidos y gritos desde el Patio de los Campesinos. Confío en nuestros monjes, pero, si el asedio no termina pronto, me temo que nos quedaremos sin ciudadanos que defender.
+RspDflt=Igual que yo. Que los espíritus nos protejan a todos.
+
+[chapter6]
+Say=El Patio de los Campesinos está inusualmente tranquilo hoy.  Los pedigüeños suelen amontonarse alrededor de la puerta al mediodía, pero hoy no he visto a ninguno.
+RspDflt=Lo siento, debo irme.
+RspTxt1=¿Habéis oído algo nuevo?
+nxtln1=chapter6b
+
+[chapter6b]
+Say=Dicen que hay un grupo de guerreras que han venido a defender Avalon. No las he visto, pero los soldados de la Puerta Este dicen que son preciosas! Me encantan las mujeres que son fuertes y guapas a la vez.
+RspDflt=Estoy de acuerdo.  Hasta la vista, enamoradizo amigo mío.
+
+[getasword]
+Say=Buen trabajo, %playername%!  Al fin tenemos todo el acero, y gracias a ti, nuestros herreros habrán vuelto pronto al trabajo!
+RspDflt=No ha sido nada, Penrith.  Hasta la vista.
+

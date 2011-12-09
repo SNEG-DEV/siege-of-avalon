@@ -1,0 +1,42 @@
+[root]
+Count=1
+Else=
+Default=Danke, Deman.
+Say1=
+goto1=Deman1
+
+[Deman1]
+say=Pardon, Herr.  Mein Name ist Deman und ich habe Befehle für Euch.  Ihr sollt Euch sobald wie möglich im Außenhof bei Hauptmann Avarous zur Ausbildung melden.
+AddQuest=ch1-01;
+script=Siege20000500190047682240.say();player.setprop(frozen=false);
+rspDflt=None
+RspTxt1=Danke, aber ich glaube, ich sehe mich vorher ein wenig um.
+NxtLn1=Deman2
+RspTxt2=Wo geht's zum Außenhof?
+NxtLn2=Deman3
+RspTxt3=Was ist der Außenhof?
+NxtLn3=Deman4
+
+
+[Deman2]
+Say=Wie Ihr wollt, Herr, aber ich würde Hauptmann Avarous nicht zu lange warten lassen.
+RspDflt=Ist gut.  Danke, Deman.
+RspTxt1=Wo geht's zum Außenhof?
+NxtLn1=Deman3
+RspTxt2=Was ist der Außenhof?
+NxtLn2=Deman4
+
+
+[Deman3]
+say=Ihr geht die Treppe am Ende des Flurs hinunter in das Erdgeschoss. Dann geht es aus dem Haupttor zu Eurer Linken in den Außenhof.
+RspDflt=Danke, Deman.
+RspTxt1=Und was ist das, genau?
+NxtLn1=Deman4
+
+
+[Deman4]
+say=Der Außenhof ist der Platz zwischen dem Südtor und der Burg.  Er wird hauptsächlich als Übungsplatz genutzt, aber einige Händler und Handwerker haben dort auch ihre Läden aufgemacht.
+RspDflt=Danke.  Ade.
+RspTxt1=Und wo befindet er sich ?
+NxtLn1=Deman3
+

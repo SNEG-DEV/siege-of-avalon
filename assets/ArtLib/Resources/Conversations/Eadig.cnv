@@ -1,0 +1,129 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Thank you, Eadig.
+say1=one(ttl(05chapter5,06chapter6));
+goto1=fivesix
+say2=one(ttl(03chapter3,04chapter4));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Eadig
+Say4=All(ttl(01recovered));
+goto4=chalice
+
+[Eadig]
+Say=Hey!  You want to take my place here for a few hours?
+RspDflt=None
+RspTxt1=I don't think that kind of personnel switch would be allowed.
+NxtLn1=Eadig1
+
+[Eadig1]
+Say=Oh, come on!  Give me a few hours off to go give one of the kitchen wenches a good... er, talking to!
+RspDflt=None
+RspTxt1=I'm sorry, but I'm on business of my own.
+NxtLn1=Eadig2
+
+[Eadig2]
+Say=Fine, then.  Leave me to this monotonous job, then.  See if I ever do a favor for you!
+RspDflt=I'm sorry.  Perhaps the next soldier to come along will relieve you.
+
+[Chalice]
+Say=Hey there!  About last time, I'm sorry.  I was just bored out of my skull.  I didn't mean to make you feel obligated to me.
+RspDflt=None
+RspTxt1=Think nothing of it.  I understand completely.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Thank you, sir.  Good day to you!
+RspDflt=Good day.
+
+[three]
+Say=My sword hasn't been used in a long time.  At least, not for what it was made for.  I still take care of it.  It's sharp enough for me to shave with it.  The other soldiers give me strange looks.  I also use it to cut cheese.
+RspDflt=I'll go talk to them about it.  Goodbye.
+RspTxt1=That's fascinating.  So, tell me, what do you do to keep busy and interested when you're on the job?
+nxtln1=three2
+
+[three2]
+Say=I'm glad you asked!  Fighting roaches!  If you put some earwax on their feelers, they can't see quite right, or somethin', and they'll bite at anything that moves!
+RspDflt=none
+RspTxt1=Uh, sure, just let me get some earwax and we can let the games begin.
+nxtln1=three3
+RspTxt2=Are you taking wagers?
+nxtln2=three4
+
+[three3]
+Say=Oh, you won't need to, look, I've got plenty-
+RspDflt=Oh my, what time is it?  I've got, ah, a meeting with General Roth.  Perhaps later.
+
+[three4]
+Say=Hey, I never thought of that, that's a good idea!  Pick me up some extra coins on the off hours!  Hey, you got a hat I can borrow?
+RspDflt=none
+RspTxt1=What would you need a hat for?
+nxtln1=three5
+
+[three5]
+Say=Well, I figure I have to catch a few for the wagers tonight, and-
+RspDflt=You're a sick man, Eadig.  Goodbye.
+RspTxt1=Oh, no you don't!
+nxtln1=three6
+
+[three6]
+Say=Oh, fine.  I guess I'll just use my purse.
+RspDflt=You do that, Eadig.  Good day.
+
+[fivesix]
+Say=Have you come to place your bets, %playername%?
+RspDflt=Err, no, soldier, I haven't.  Please excuse me...
+RspTxt1=Bets?
+nxtln1=fivesix2
+
+[fivesix2]
+Say=On the roaches!  They're in short supply, so the bets have gone up.  Personally, I'd place my bet on the black one.  They're born fighters.
+RspDflt=none
+RspTxt1=They're both black!
+nxtln1=fivesix3
+RspTxt2=Are all bets made so informed?
+nxtln2=fivesix4
+
+[fivesix3]
+Say=[He looks at his loathesome prizefighters with an expression of epiphany.]  So you're right!  I may have to change the board on this one!
+RspDflt=Good luck with that, soldier; I've things to attend to...
+
+[fivesix4]
+Say=No, no!  Special for you, %playername%, I reveal the secrets of gambling!
+RspDflt=I've little use for more money, soldier.  Farewell.
+

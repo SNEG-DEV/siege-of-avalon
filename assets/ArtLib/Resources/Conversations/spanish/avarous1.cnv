@@ -1,0 +1,69 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(7/12/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=
+Say1=
+goto1=Avarous
+
+[Avarous]
+Say=Ah!  Carne fresca para el picador!  Tienes la mirada de Corvus.  ¿Eres pariente suyo?
+RemoveQuest=ch1-01;
+RspDflt=None
+RspTxt1=Sí, lo soy, señor.  Es mi hermano mayor.
+nxtLn1=Avarous1
+
+[Avarous1]
+Say=Y un fantástico soldado, eso también lo que es!  Le entrené yo mismo, sabes.  ¿Y tu?  ¿Estás listo para las lecciones básicas para un soldado?
+RspDflt=None
+rspcnd1=All(ttl(!hunter));
+RspTxt1=Naturalmente, señor.
+nxtLn1=Avarous2
+rspcnd2=All(ttl(hunter));
+RspTxt2=Naturalmente, señor.
+nxtLn2=Avarous3
+
+[Avarous2]
+Say=Perfecto, entonces.  Mulduc será tu compañero de entrenamiento; te pondrá en forma rápidamente.  Vuelve aquí cuando creas que has tenido bastante.
+script=addtitle(01metavarous);gsOnTrigger20000600020057169140.setprop(triggerenabled=true);
+RspDflt=Sí, señor.  De inmediato, señor.
+
+[Avarous3]
+Say=Perfecto, entonces.  Encontrarás algunas dianas para arco al fondo.  Vuelve aquí cuando creas que has tenido bastante.
+script=addtitle(01metavarous);gsOnTrigger20000600020057169140.setprop(triggerenabled=true);
+RspDflt=Sí, señor.  De inmediato, señor.
+

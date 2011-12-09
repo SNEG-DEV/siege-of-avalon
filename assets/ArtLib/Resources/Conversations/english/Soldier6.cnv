@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Farewell.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=Yes?
+RspTxt1=Where are you from?
+NxtLn1=Soldier1
+RspTxt2=Heard any good rumors?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=I am from Fornax and I hope I can return soon.  I don't think the situation here will improve.  This fortress needs more able-bodied spellcasters...  And more women, if you know what I mean.
+rspBack=soldier
+
+[Soldier2]
+Say=Fornaxans do not gossip, sir.
+rspBack=soldier
+
+[Chalice]
+Say=Yeah?
+RspTxt1=I'm doing a survey. Where are you from?
+NxtLn1=Chalice1
+RspTxt2=Heard any good rumors?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=I came from Fornax, sir.  At first, I didn't think we'd make it, but everyone's hopes rise higher every day, and we have you to thank.
+rspBack=chalice
+
+[Chalice2]
+Say=Since Fornaxans do not gossip, this is not gossip.  Understand?  Okay.  I hear that a new supply ship will arrive within the next week.  Finally, we'll be able to eat properly!
+rspBack=chalice
+

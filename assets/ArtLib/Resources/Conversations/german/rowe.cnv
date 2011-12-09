@@ -1,0 +1,51 @@
+[Notes]
+TitlesChecked=01informed,01recovered,01transferred
+
+[root]
+Count=5
+Else=
+Default=
+say1=All(ttl(01foundbrother));
+goto1=rowe5
+Say2=All(ttl(!01informed,!01Recovered,!01transferred));
+goto2=Rowe1
+Say3=All(ttl(01informed,!01Recovered,!01transferred));
+goto3=Rowe2
+Say4=All(ttl(01informed,!01Recovered,01transferred));
+goto4=Rowe3
+Say5=All(ttl(01informed,01Recovered,01transferred));
+goto5=Rowe4
+
+
+[Rowe1]
+say=Tut mir leid, Herr.  Wir haben strikten Befehl, niemanden passieren zu  lassen.  Ihr müßt weitergehen.
+Adventure=ch1-03;
+rspDflt=Ich verstehe.  Dann ade.
+
+;After arrival of search party
+
+[Rowe2]
+say=Ich habe Befehl, Euch passieren zu lassen.  An Eurer Stelle würde ich mich beeilen-- Sir Roth kann Torheiten immer weniger vertragen!
+script=setpos(PathCorner20000500250046080510);Siege018.setpos(PathCorner20000500250046085120)
+rspdflt=Danke für den Hinweis.
+
+[Rowe3]
+say=Beeilt Euch-- sonst verprügele ich Euch nur so aus Jux und Tollerei.
+script=setpos(PathCorner20000500250046080510);Siege018.setpos(PathCorner20000500250046085120)
+rspdflt=Ich beeile mich, das versichere ich Euch.
+
+;After recovery of Chalice of Life (PLAYER DOES HAVE THE TITLE OF RECOVERED)
+
+[Rowe4]
+say=Seid gegrüßt, Mylord!  Es ist mir eine Ehre, Euch zu begrüßen!
+script=setpos(PathCorner20000500250046080510);Siege018.setpos(PathCorner20000500250046085120)
+rspdflt=Ich danke Euch.
+
+[Rowe5]
+say=Es tut mir leid, Herr.  Sir Roth hat sich in seine Privatgemächer zurückgezogen.  Ihr müßt weiterziehen .
+rspDflt=Ich verstehe.  Dann ade.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed
+
+

@@ -1,0 +1,71 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Gracias, Engres.
+say1=all(ttl(03chapter3));
+goto1=three
+Say2=all(ttl(!03chapter3));
+goto2=Engres1
+
+[Engres1]
+Say=Me llamo Engres.
+RspDflt=None
+RspTxt1=¿Eras amigo de mi hermano?
+nxtLn1=Engres2
+
+[Engres2]
+Say=No puedo decir que lo fuese.  Simplemente me presenté voluntario para salir de la ciudadela.
+RspDflt=None
+RspTxt1=Comprendo.  ¿Viste algo ahí fuera?
+NxtLn1=Engres3
+
+[Engres3]
+Say=Un montón de gusanos gigantes y algunos rastros por fuera de la vieja Iglesia.  Creo que los gusanos se han estado alimentando de los muertos.
+Adventure=Ch1-88;
+RspDflt=None
+RspTxt1=¿Qué clase de rastros?
+NxtLn1=Engres4
+
+[Engres4]
+Say=¿Quien sabe?  Podrían ser humanos, podrían ser Ahoul.  Todo lo que sé es que algo ha estado sucediendo en la vieja Iglesia.  En tu lugar, yo me mantendría alejado de allí.
+RspDflt=Gracias por el consejo.
+
+[three]
+Say=Vaya, hola otra vez.  Me sorprende verte volver de una sola pieza!  Si me dejas unirme a ti, me aseguraré de que vivas para disfrutar un nuevo día.
+RspDflt=Quizá en otro momento, Sir Engres.
+RspTxt1=Tu confianza te honra, Sir Engres.  Vámonos ahora mismo.
+script1=addtoparty;addtitle(03joined);
+

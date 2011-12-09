@@ -1,0 +1,84 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Farewell.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=All(ttl(!01recovered));
+goto2=Soldier
+Say3=All(ttl(01recovered));
+goto3=Chalice
+
+[Soldier]
+Say=What can I do for you?
+RspTxt1=Where are you from?
+NxtLn1=Soldier1
+RspTxt2=Heard any good rumors?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=I am a child of Elythria.  I never thought I would be homesick for my little farm.
+rspBack=soldier
+
+[Soldier2]
+Say=I hear that the Ahoul almost scaled the southern wall last night.  Sleep lightly tonight.
+rspBack=soldier
+
+[Chalice]
+Say=How can I help you, sir?
+RspTxt1=Where are you from?
+NxtLn1=Chalice1
+RspTxt2=Heard any good rumors?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Every bit of me is Elythrian, sir.
+rspBack=chalice
+
+[Chalice2]
+Say=A friend of mine from Aratoy says that Captain Calvaric put an arrow into Mithras!  With luck, the wound will be fatal!
+rspBack=chalice
+
+[chapter6]
+Say=They say the Sha'ahoul are grumpy because they are so ugly.  I believe it.
+RspDflt=Most likely.
+RspTxt1=Who tells you these things?
+nxtln1=chapter6b
+
+[chapter6b]
+Say=Oh, lots of people.
+RspDflt=Take care of yourself, soldier.
+

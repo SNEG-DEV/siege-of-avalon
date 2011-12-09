@@ -1,0 +1,250 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01getsteel,01gotsword,01returnedsteel
+Checked=01GetSteel,01GetSword,01GotSword,01ReturnedSteel,01returnedsteel));one(ttl(03chapter3,01SteelShortage,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-06,ch1-07,ch1-08,ch1-10,ch1-51,ch1-52
+Removed=ch1-06,ch1-07,ch1-10
+
+[Items]
+Given=
+Taken=
+Checked=FineSteel
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+count=8
+else=
+default=
+say1=all(ttl(06chapter6));
+goto1=freesix
+say2=all(ttl(01returnedsteel));one(ttl(03chapter3,04chapter4,05chapter5));
+goto2=threefive
+say3=all(ttl(!01getsteel));
+goto3=freeman
+say4=all(ttl(01gotsword));
+goto4=gotsword
+say5=all(ttl(01getsword,!01gotsword));
+goto5=getsword
+say6=all(ttl(01getsteel,!01returnedsteel):obj(finesteel));
+goto6=makesword
+say7=all(ttl(01getsteel,!01returnedsteel):obj(!finesteel));
+goto7=looking
+say8=all(ttl(01returnedsteel,!01getsword));
+goto8=penrith
+
+
+
+[Freeman]
+Say=Hello.  What can I do for you?
+RspDflt=None
+RspTxt1=Oh, I'm just looking around your smithy.
+nxtLn1=Freeman1
+rspCnd2=all(ttl(01SteelShortage));
+RspTxt2=I spoke with Lucan in the South Gate Armory.  He suggested that I ask you if you'd received any fine steel recently.
+nxtLn2=Steel
+
+[Freeman1]
+Say=I'm afraid there isn't much for me to show you.  Hammer, anvil -- there's nothing special.
+RspDflt=None
+RspTxt1=You offer nothing for sale then?
+nxtLn1=Freeman2
+
+[Freeman2]
+Say=I have little enough metal for the army's use, let alone being able to take commissions or offer items for sale.  I'm afraid that we are in the middle of a siege, after all.  If you're part of the army, then check with the Armories, either in South Gate or the Outer Keep.
+RspDflt=I understand.  Sorry to have bothered you.
+RspTxt1=So you haven't received any steel shipments recently, then?
+nxtLn1=Steel1a
+
+
+[Steel1a]
+Say=Did Lucan tell you to come annoy me?  He's always bothering me about what I'm shipping off to him these days, but he knows as well as I do that there's not a damn thing I can do about it!  I've got pig iron to work with -- that's it!  I may be one of the best swordsmiths to come out of Elythria, but no amount of training is going to turn pig iron into breastplates and blades.  Now if you want horseshoes, or maybe a nice set of cookware... that I can do.  In a couple more weeks, though, you won't need the horseshoes since the horses will be going INTO the cookware.
+RspDflt=none
+RspTxt1=I'm sure that it won't come to that.  How long has it been since your last shipment of steel?
+nxtLn1=Steel2
+
+[Steel]
+Say=Did he now?  He's always bothering me about what I'm shipping off to him these days, but he knows as well as I do that there's not a damn thing I can do about it!  I've got pig iron to work with -- that's it!  I may be one of the best swordsmiths to come out of Elythria, but no amount of training is going to turn pig iron into breastplates and blades.  Now if you want horseshoes, or maybe a nice set of cookware... that I can do.  In a couple more weeks, though, you won't need the horseshoes since the horses will be going INTO the cookware.
+RemoveQuest=ch1-06;
+RspDflt=none
+RspTxt1=I'm sure that it won't come to that.  How long has it been since your last shipment of steel?
+nxtLn1=Steel2
+
+[Steel2]
+Say=By the spirits, too long!
+Adventure=ch1-51;
+RspDflt=none
+RspTxt1=And there's nothing available around here?  Nothing at all?
+nxtLn1=Steel3
+
+[Steel3]
+Say=Sure there is -- feel like raiding an Ahoul camp all by your lonesome?
+RspDflt=none
+RspTxt1=Not without a fine steel blade like those crafted by you!
+nxtLn1=Steel4
+
+[Steel4]
+Say=Heh!  Good one.  Point to you, kid!  Okay, listen up, then.  There's some in the village outside the South Gate.  I know there is!  I've been trying to get Mudam to send some of his scouts to do a bit of looking for me but he says he's got too few boys to get them killed on a damn treasure hunt barely a sneeze away from an Ahoul army.  He's got a point, but I KNOW the steel is there.
+RspDflt=none
+RspTxt1=Go on.
+nxtLn1=Steel5
+
+[Steel5]
+Say=Think about it like this.  You're stuck inside a fortress, an enemy army camped outside.  What becomes the most important thing you've got?
+RspDflt=none
+RspTxt1=Food, I guess.  And weapons.
+nxtLn1=Steel6
+
+[Steel6]
+Say=Very good, kid.  Weapons.  And that gold in your purse -- how's it gonna help you survive?
+RspDflt=none
+RspTxt1=It's not like my purse is overly full, but...
+nxtLn1=Steel7
+
+[Steel7]
+Say=It's not.  You've gotta be alive to spend gold, and so when your life's in danger, the things that can keep you alive become more valuable than gold.  Follow me, kid?  Food is more valuable than gold right now.  And so is fine steel.
+RspDflt=none
+RspTxt1=I follow.
+nxtLn1=Steel8
+
+[Steel8]
+Say=In the village there was this fellow, and he had more than a few pretty pennies jingling in his pocket.  He also had more than a few brains in his skull, too.  He knew he was living in a warzone, but then wars can make a fellow rich.  Living outside Avalon, though, would keep him fairly safe.  If the Ahoul ever came back, he'd just get inside the walls with everyone else.  But if that happened, well, what good would his money be?
+RspDflt=none
+RspTxt1=None, I guess.
+nxtLn1=Steel9
+
+[Steel9]
+Say=Good, kid -- at least you're nodding at the right places.  Anyway, food spoils.  Steel doesn't.  So he put a lot of his money into steel bars, figuring he could use them to get whatever he needed.  Spend 'em just like gold if necessary.  'Course he didn't figure on the army confiscating most of 'em when the Ahoul re-appeared.  But not all.  I'd swear he hid some in one of the houses in the village.  He was smart, like I said -- the army couldn't have taken 'em all.  And the thing is, he never made it behind the walls.  He never left the village.  I figure he made some stupid attempt to get that hidden steel before he came inside, and got himself dead for his trouble.  Greed won out over brains at exactly the wrong time.
+RspDflt=none
+RspTxt1=And that's where the treasure hunt comes in.
+nxtLn1=Steel10
+
+[Steel10]
+Say=You want a good sword, I'll get you a good sword... IF you get me that steel.  Or just get me a bar of it, and the location of the rest.  With proof, the military types should agree to go sneak the rest out.  They've brains enough to know that we need everything we can get our hands on.
+RspDflt=none
+rspcnd1=all(obj(!finesteel));
+RspTxt1=I hear the village isn't the safest place to be.  I don't suppose you could draw me a map?
+nxtLn1=Steel11
+rspcnd2=all(obj(finesteel));
+rsptxt2=In that case, Freeman, we're both in luck.  I believe I've found steel of a fine enough quality for you to outfit soldiers...  [Show Freeman the Fine Steel.]
+script2=player.addtitle(01getsteel);
+nxtln2=makesword1
+
+
+[Steel11]
+Say=You'll get no treasure maps from me, kid.  He had a few houses -- rented 'em out.  And I couldn't even lead you to 'em, with the village the way it stands -- or rather it doesn't, which is the point.  You can do it, though.  You always fancied yourself the hero type, right?
+RspDflt=none
+RspTxt1=Hardly.  All I can promise is this: if I ever make it into the village, I'll keep my eyes open.  Mostly for Ahoul, I'll admit, but also for this steel of yours.
+nxtLn1=Steel12
+
+[Steel12]
+Say=Good boy!
+RspDflt=none
+RspTxt1=I am NOT a child!  Stop calling me "boy."  And "kid!"
+nxtLn1=Steel13
+
+[Steel13]
+Say=All right... soldier.  Spirits be with you.
+AddQuest=ch1-07;
+Adventure=ch1-52;
+Script=journalentry(freeman2);showmessage(Your journal has been updated.,200);player.addtitle(01GetSteel);
+RspDflt=And you.
+
+[Looking]
+Say=Keep looking.  I'm sure that steel is out there somewhere.
+removequest=ch1-06;
+RspDflt=I'm not giving up.  I still want that sword.
+
+[MakeSword]
+Say=Well, soldier?  Any luck?
+RspDflt=none
+RspTxt1=That depends.  Would this be what you're looking for?
+nxtLn1=MakeSword1
+
+[MakeSword1]
+Say=I knew it!  I bloody well KNEW it!  Was it hard to find?  Never mind, I don't care.  How much was there?
+script=takeitem(finesteel,player);player.addtitle(01ReturnedSteel);
+RspDflt=none
+RspTxt1=I didn't spend long pawing through the rubble, but I'd think thirty.  Perhaps forty.
+nxtLn1=MakeSword2
+
+[MakeSword2]
+Say=Forty?  I was hoping for more...  We can still use it though -- every scrap we can use!  Now I've gotta ready the forge, and start the-
+RspDflt=none
+RspTxt1=Freeman?  My sword?
+nxtLn1=MakeSword3
+
+[MakeSword3]
+Say=What?  Your sword?  What are you babbling about?  I've got things to do now -- run along...
+RspDflt=none
+RspTxt1=You promised me a sword -- and a fine one, too.
+nxtLn1=MakeSword4
+
+[MakeSword4]
+Say=A fine sword... right.  Tell you what.  It's around here somewhere.  Go talk to Penrith -- he's out in the Outer Bailey somewhere looking all dashing and noble in his shiny armor.  Tell him where you found the steel, and then get him to start sending out a few people to bring it all back here.  By the time you're done, I should have found your sword.
+RspDflt=Very well, Freeman.  I shall return shortly.
+RspTxt1=But-
+nxtLn1=MakeSword5
+
+[MakeSword5]
+Say=The hard part's done, soldier.  Are you really going to quibble about five minutes more work?
+RemoveQuest=ch1-07;
+AddQuest=ch1-08;
+RspDflt=I suppose not.  I'll return shortly.  VERY shortly...
+
+[Penrith]
+Say=So is steel on its way yet?
+RspDflt=No, not quite yet.  But it should be soon.
+removequest=ch1-06;
+
+[GetSword]
+Say=Well, soldier?  What did Penrith say?
+RspDflt=none
+RspTxt1=He was surprised that the steel actually exists.  And grateful.  His men should start bringing in the bars shortly.
+removequest=ch1-06;
+nxtLn1=GetSword1
+
+[GetSword1]
+Say=Good, soldier.  Very good, in fact.  And now I think this belongs to you. I'm sure you'll agree that it's a fine enough sword for you to wield with pride.  A great deal for the price, don't you think?
+RemoveQuest=ch1-10;ch1-06;ch1-07;ch1-08;ch1-09
+script=giveitem(officerSword,player);player.addtitle(01GotSword);
+RspDflt=I could've used this BEFORE I went to find your steel, blacksmith... but I'm glad I've got it now.  I'll treat it well.  My thanks to you, and farewell.
+
+[GotSword]
+Say=So, soldier, how well does your new sword serve you?
+RspDflt=Very well, in truth.  Thank you again!
+
+[freesix]
+Say=Welcome, %playername%!  There's been a lull in work lately, so is there anything I can do for you?
+RspDflt=No, good blacksmith.  Pardon me.
+rspcnd1=all(ttl(01returnedsteel));
+RspTxt1=How did you use the rest of the Fine Steel I brought you?
+nxtln1=sixfine
+
+[sixfine]
+Say=Officer's swords and armor, mostly.  I think Tempest is working on something at the moment.
+RspDflt=Thank you, Freeman.  Perhaps I shall check with him.
+
+[threefive]
+Say=Good day, %playername%.  I've been rather busy since you returned that steel to me, but if you're in need of something...  [He looks up at you expectantly.]
+RspDflt=No, Freeman.  I am sorry to have bothered you.  Good day.
+

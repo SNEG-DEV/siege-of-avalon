@@ -1,0 +1,78 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Farewell.
+say1=all(ttl(06chapter6));
+goto1=six
+Say2=All(ttl(!01recovered));
+goto2=Soldier
+Say3=All(ttl(01recovered));
+goto3=Chalice
+
+[Soldier]
+Say=Huh?
+RspTxt1=Where are you from?
+NxtLn1=Soldier1
+RspTxt2=Heard any good rumors?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=I've no time for such idle chatter.  Please leave.
+rspBack=soldier
+
+[Soldier2]
+Say=I've no time for such idle chatter.  Please leave.
+rspBack=soldier
+
+[Chalice]
+Say=Hello there!
+RspTxt1=So now you'll talk to me, eh?  Where are you from?
+NxtLn1=Chalice1
+RspTxt2=Heard any news lately?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=I sailed here from Nisos and I have been here longer than anyone else!  Why, my own two hands laid the last bricks of Avalon!  One thing's for sure; she'll not fall on MY watch!
+rspBack=chalice
+
+[Chalice2]
+Say=My sources tell me that the siege will be broken any day!  It's true!  I heard from Mithras himself.  We go way back.  He's afraid of me!  It's true!
+rspBack=chalice
+
+[six]
+Say=I think the wait will be over soon.  For better or worse...  Everyone agrees with me; it's true!
+RspDflt=I shall take that under consideration, soldier.  Farewell.
+

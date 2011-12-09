@@ -1,0 +1,113 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01olon,01thieftrained
+Checked=01permission,01recovered,01thieftrained,01village,recovered
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Good day to you, Olon.
+Say1=All(ttl(!01thieftrained));
+goto1=Olon
+Say2=All(ttl(01thieftrained,!01permission,!recovered,!01village));
+goto2=NoPermission
+Say3=All(ttl(01thieftrained,01permission,!01recovered,!01village));
+goto3=Permission
+Say4=All(ttl(01thieftrained,01permission,!01recovered,01village));
+goto4=NoChalice
+Say5=All(ttl(01thieftrained,01permission,01recovered,01village));
+goto5=Chalice
+
+[Olon]
+Say=Greetings, soldier!
+RspDflt=Good day to you.
+RspTxt1=Hello.  I am new here, and I wish to meet the locals.  Who are you and where are you from?
+NxtLn1=Olon1
+
+[Olon1]
+Say=I came from Nisos, where I'm known as Olon the Quick.  I had a bit of a reputation there as a thief and a master of sleight-of-hand.
+RspDflt=Well met, Olon.
+RspTxt1=Do you have any tricks you could show me?
+NxtLn1=Tricks
+
+[Tricks]
+Say=Well, if your commanders don't have too much of a problem with it, I'd be happy to show you a thing or two.
+RspDflt=Thank you.
+script=player.addtitle(01thieftrained)
+
+[NoPermission]
+Say=Hello again.  What's new?
+RspDflt=Nothing.  Good day.
+RspTxt1=Do you have any more tricks?
+NxtLn1=NoPermission1
+
+[NoPermission1]
+Say=Ha!  I have nothing more to show you.  What you need is practice.
+RspDflt=Okay.  Thanks anyway.
+
+[Permission]
+Say=Welcome, lad!  How go things with you?
+RspDflt=Pardon me, Olon, I must be on my way.
+RspTxt1=Things are well, Olon.  I have gotten permission to search outside the citadel for my brother.  Mudam said you know a little about the terrain out there.
+NxtLn1=Permission1
+
+[Permission1]
+Say=Going outside, are you?  Only a fool would risk his neck out there.  But I suppose if you insist upon going, I must tell you what I heard the other day.  Allegedly, there are tunnels running throughout the village underground.  I heard there is some kind of treasure down in those tunnels.  If you come across it, bring it here first.  I will give you top dollar for it!
+RspDflt=Thanks for the tip.
+RspTxt1=Do you remember anything else?
+NxtLn1=Permission2
+
+[Permission2]
+Say=No, I don't.  If you want to know more, you should ask Friar Massus or Elarath the Wizard.  Both of them have been around since before the siege.  They'd probably know more than me.
+script=player.addtitle(01Olon);
+RspDflt=Thank you, Olon.
+
+[NoChalice]
+Say=So, the village hasn't killed you!  What can I do for you?
+RspDflt=Nothing.  I apologize for disturbing you.
+RspTxt1=Just sniffing out rumors.
+nxtLn1=NoChalice1
+
+[NoChalice1]
+Say=Well, things aren't looking better for us on the inside.  Food is still scarce and the soldiers are greener than ever before.  I hope we can hold out.
+RspDflt=I hope so, too.
+
+[Chalice]
+Say=It's the hero!  It is good to see you again!
+RspDflt=And you as well, Olon.  Good spirits protect you.
+RspTxt2=What a warm reception!  What's new around the Bailey?
+NxtLn2=Chalice1
+
+[Chalice1]
+Say=The clack of training swords has been getting louder ever since word of your exploits came here!  You're a lucky charm, that's for sure.
+RspDflt=Thank you.  Good day.
+

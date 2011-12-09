@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Hasta luego.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=¿Qué queréis?
+RspTxt1=¿De donde sois?
+NxtLn1=Soldier1
+RspTxt2=¿Habéis oído algún rumor interesante?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Perdóneme señor, pero debo seguir mi camino
+rspBack=soldier
+
+[Soldier2]
+Say=Perdóneme señor, pero debo seguir mi camino
+rspBack=soldier
+
+[Chalice]
+Say=¿Cómo puedo ayudaros, señor?
+RspTxt1=¿De donde sois?
+NxtLn1=Chalice1
+RspTxt2=¿Algún rumor nuevo?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Soy de Fornax.  Era un sirviente de uno de los hechiceros de allí.
+rspBack=chalice
+
+[Chalice2]
+Say=Se dice que habrá una fiesta!
+rspBack=chalice
+

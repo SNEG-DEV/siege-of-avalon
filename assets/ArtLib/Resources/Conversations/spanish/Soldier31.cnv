@@ -1,0 +1,131 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=davet
+GUID=
+
+[Titles]
+Set=01bugholefixed
+Checked=01Basement,01BonnieTale,01BugHoleFixed,01Bugs,01Recovered,01WallHole,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-03,ch1-04,ch1-27,ch1-28
+Removed=ch1-03
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=6
+Else=
+Default=
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(!01BonnieTale,!01Basement,!01Bugs));
+goto2=NoBugs
+say3=all(ttl(!01WallHole));
+goto3=MidQuest
+say4=all(ttl(01WallHole,!01BugHoleFixed));
+goto4=FixWall
+say5=all(ttl(!01Recovered,01BugHoleFixed));
+goto5=Gloating
+Say6=All(ttl(01recovered));
+goto6=Chalice
+
+[NoBugs]
+Say=Hola, ¿en qué puedo ayudarte?
+RspTxt1=¿De dónde eres?
+NxtLn1=Soldier1
+RspTxt2=¿Has oído algún rumor interesante?
+NxtLn2=Soldier2
+RspDflt=Buenos días, señor.
+
+[Soldier1]
+Say=Era tratante de caballos en Cathea.  Ahora no soy más que otra boca hambrienta tras estos horribles muros.
+RspDflt=none
+RspTxt1=Como todos.  Dime, ¿has oído algo interesante últimamente?
+nxtLn1=Soldier2
+
+[Soldier2]
+Say=He oído a Bonnie hablar de una Sombra en el subterráneo de la cocina.  Puede que tenga una bonita cara, pero esas ideas extrañas que le entran en la cabeza, contrarrestan el efecto.  Yo me mantendría alejado de ella.
+Adventure=ch1-27;
+RspDflt=¿Una Sombra, dices?  Interesante.  Te agradezco tu tiempo y te deseo un buen día.
+
+[MidQuest]
+Say=¿Hay algo en lo que pueda ayudarte?
+RspDflt=none
+RspCnd1=all(ttl(!01Bugs));
+RspTxt1=Parece que hay algo inusual reside en el subterráneo de la cocina.  ¿Me preguntaba si te importaría echarme una mano con eso?
+nxtLn1=MidQuest2
+rspCnd2=all(ttl(01Bugs));
+RspTxt2=Sólo quería informarte de que me he encargado de la plaga en el subterráneo y que tu asistencia no era necesaria.  Creo que le debes una disculpa a la señorita Bonnie, ¿no te parece?
+nxtLn2=Apology
+
+[MidQuest2]
+Say=¿Es que Bonnie te ha llenado la cabeza con visiones de gloria?  ¡No seas tonto, hombre!  Tengo demasiadas cosas que hacer, no puedo perder tiempo cazando 'sombras' que solo existen en la imaginación de una simple.
+RspDflt=Como quieras, pero pronto descubriré la verdad.
+
+[Apology]
+Say=No quiero incentivar sus historias.  No le daré el gusto.
+RspDflt=Un soldado sin sentido del honor no es soldado ni es nada.  Buenos días.
+
+[FixWall]
+Say=¿Y ahora qué?
+RspDflt=none
+RspTxt1=Aunque ya me he encargado de las criaturas del subterráneo, han dejado tras de sí un agujero en la pared que debe ser reparado para evitar que entren más criaturas.
+nxtLn1=FixWall1
+
+[FixWall1]
+Say=¿Y qué esperas que haga yo?  Mis deberes--
+RspDflt=none
+RspTxt1=Parecen consistir en haraganear en los alrededores del comedor!  Anora me ha dicho que os comunique a ti y a tu amigo que si no arregláis el agujero, no vais a cenar esta noche.
+nxtLn1=FixWall2
+
+[FixWall2]
+Say=Pero...
+RemoveQuest=ch1-03;
+AddQuest=ch1-04;
+Adventure=ch1-28;
+script=player.addtitle(01BugHoleFixed);
+RspDflt=Soldado, es tu elección.  Repara la pared o pasa más hambre de la que tengas en estos momentos.  También creo que le debes una disculpa a la señorita Bonnie.  ¿Supongo que se la darás, verdad?  Sé que tomarás la decisión correcta.  Buenos días.
+
+[Gloating]
+Say=¿Sí?
+RspDflt=Sólo estaba comprobando que habías empezado a reparar la pared, pero ya veo que no es así.  ¿No te empieza a doler la tripa, soldado?  Mejor que te des prisa...
+
+[Chalice]
+Say=¿Sí, señor?  ¿Qué puedo hacer por vos, señor?
+RspDflt=Nada, soldado.  Por favor, discúlpame...
+RspTxt1=Para empezar, puedes asegurarte que la pared de la bodega sea adecuadamente reparada.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Naturalmente, señor!  ¡Ahora mismo, señor!
+RspDflt=Buen chico.  Sigue así
+
+[chapter6]
+Say=¿Has visto a Bonnie?  Lleva cuatro horas fuera.
+RspDflt=No, no la he visto.  Hasta luego.
+RspTxt1=¿A dónde fue?
+nxtln1=chapter6b
+
+[chapter6b]
+Say=No lo sé, pregunta a alguna de las doncellas de la cocina.
+RspDflt=Muy bien.
+

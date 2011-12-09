@@ -1,0 +1,206 @@
+[Notes]
+titlesChecked=01Bugs,01recovered,01Basement,01HappyCook
+titlesSet=01Basement,01HappyCook
+	Quest titles used:
+;BonnieTale: Talked to Bonnie, knows about quest
+;Basement: Talked to Anora, knows about quest
+;Bugs: Bugs all dead
+;HappyCook: Reported victory to Anora
+;HappyBonnie: Reported victory to Bonnie
+;WallHole: Reported hole in wall to Anora
+;BugHoleFixed: Soldier will fix hole
+;	Intro situations:
+;a) Hasn't talked to anyone so has no idea about about bug quest (nothing set)
+;b) Has talked to Bonnie first (BonnieTale set, but neither Basement nor Bugs)
+;c) Talked to Bonnie and killed bugs without talking with Anora (BonnieTale and Bugs set)
+;d) Killed bugs without talking to anyone (only Bugs is set)
+;	Comments
+;'a' and 'b' should merge into a single thread a page or two into the conversation.
+;'c' and 'd' don't matter, just go to victory report but watch dialog for conflicts.  Try to keep ;it somewhat generic.  If that's not possible, make another option.
+
+
+[root]
+Count=7
+Else=Anora
+Default=
+Say1=All(ttl(!01BonnieTale,!01Bugs,!01Basement));
+goto1=AnoraIntro
+Say2=All(ttl(01BonnieTale,!01Bugs,!01Basement));
+Goto2=FromBonnie
+Say3=All(ttl(!01Bugs,01Basement));
+goto3=NotDeadYet
+Say4=All(ttl(01Bugs,!01WallHole));
+goto4=Orkin
+Say5=All(ttl(01WallHole,!01HappyCook));
+Goto5=Davet
+Say6=All(ttl(!01recovered));
+goto6=NoChalice
+Say7=All(ttl(01recovered));
+goto7=Chalice
+
+;Anora's Intro
+[AnoraIntro]
+say=Wenn Ihr auf der Suche nach einem Happen zu essen hier seid, verschwendet Ihr Eure Zeit!  In diesen harten Zeiten habe ich nichts übrig.
+rspDflt=Gehabt Euch wohl.
+rsptxt1=Eigentlich bin ich gekommen, um euch zu besuchen.  Ich bin neu hier, und ich wollte mich ein bisschen in der Burg umsehen.
+NxtLn1=Anora1
+rsptxt2=Ich bin nur hier, um euch alle kennen zu lernen.  Woher kommt Ihr?
+NxtLn2=Anora2
+rsptxt3=Verstehe.  Wenn schon kein Essen, habt Ihr vielleicht ein neues Gerücht für mich? 
+NxtLn3=Anora4
+rsptxt4=Verstehe.  Kann ich Euch irgendwie helfen?
+NxtLn4=Bugs
+
+[Anora1]
+say=Na, dann seht zu, dass es ein kurzer Besuch wird.  Wie Ihr seht, haben wir genug damit zu tun, die spärlichen Lebensmittel zuzubereiten, die es noch gibt.
+rspDflt=Dann entschuldigt, dass ich Euch die Zeit gestohlen habe.  Auf Wiedersehen.
+
+
+[Anora2]
+say=Ich stamme aus Oriam.  Mein Mann und ich hatten früher ein Wirtshaus hier in der Nähe.  Als die verfluchten Ahoul eingefallen sind, haben die unser Wirtshaus abgebrannt und meinen Mann umgebracht.  Statt mich hinzulegen und aufzugeben, versuche ich jetzt auf die einzige Art die ich kenne, beim Kampf gegen Mithras mitzuhelfen, nämlich hungrige Soldaten zu füttern!
+Adventure=ch1-29;
+rspdflt=None
+rsptxt1=Eine wichtige Aufgabe!  Ich bin sicher, Euer Essen ist genauso schmackhaft wie alle behaupten.
+nxtLn1=Anora3
+
+
+[Anora3]
+say=Das reicht aber jetzt!  Ich habe zu tun, und Ihr als Soldat habt bestimmt auch Pflichten zu erfüllen!  Wiedersehen.
+rspdflt=Ade, gnädige Frau.
+
+[Anora4]
+say=Ein Gerücht?  Ich bin doch keine gemeine Köchin, mein Junge!  Ich bin die Chefköchin dieser Küche!  Wenn Ihr Gerüchte hören wollt, geht doch jemanden fragen, der nichts zu tun hat!
+rspdflt=Entschuldigt die Störung, gnädige Frau.  Ich gehe dann jetzt.
+
+
+[FromBonnie]
+Say= Wenn Ihr auf der Suche nach einem Happen zu essen hier seid, verschwendet Ihr Eure Zeit!  In diesen harten Zeiten habe ich nichts übrig.
+Adventure=ch1-29;
+rspDflt=none
+rspTxt1=Nein, gnädige Frau, bin ich nicht.  Ich habe vor kurzem mit Bonnie gesprochen und sie sagte mir, dass im Küchenkeller etwas Ungewöhnliches wäre.  Ich wollte fragen, ob ich vielleicht irgend etwas tun kann, um zu helfen?
+nxtLn1=Bugs
+
+[Bugs]
+say=Na ja, Ihr seht schon aus, als könntet Ihr ein Soldat sein.  Vielleicht könnt Ihr doch etwas machen.  Diese Viecher--
+rspdflt=None
+rsptxt1=Viecher?  Was für Viecher könnten das sein?
+nxtLn1=Bugs1
+
+[Bugs1]
+say=Ratten vielleicht, aber ich bin mir nicht sicher.  Ich weiß nur, dass unsere wertvollen Getreidevorräte unten im Keller aufgefressen werden, und zwar nicht von uns.  Dieses alberne Mädchen Bonnie mag es vielleicht für ein Gespenst halten oder sowas, aber was soll ein Gespenst mit Mehl anfangen? Was immer es ist, wenn es nicht bald aufhört, habe ich kein Essen mehr, für niemanden. Nicht mal für General Roth persönlich...
+Adventure=ch1-30;
+rspdflt=None
+rspCnd1=all(ttl(!01BonnieTale));
+rsptxt1=Das ist ja eine missliche Lage.  Hoffentlich ist das Problem bald beseitigt.
+nxtLn1=Bugs2
+rsptxt2=Erlaubt mir, diese Viecher für Euch zu erledigen, gnädige Frau.
+nxtLn2=Bugs3
+
+[Bugs2]
+say=Dann seid Ihr doch kein Soldat, was?  Ha!  Mir sind schon mutigere Feldmäuser begegnet!
+rspDflt=Ich muss leider sagen, dass ich nur ein neuer Rekrut bin.  Ade, gnädige Frau.
+rsptxt1=Verzeihung, gnädige Frau, aber Ihr habt mich mißverstanden.  Ich meinte nur, dass ich das Problem so bald wie möglich beseitigen werde.
+nxtLn1=Bugs3
+
+[Bugs3]
+say=Endlich jemand mit dem Mut, die Lage zu erkunden!  Seid vorsichtig, mein Junge.
+AddQuest=ch1-02;
+script=player.addtitle(01Basement)
+rspdflt=Ich komme bald wieder, aber erst wenn jeder einzelne Dieb erledigt ist.
+
+;After entering basement, but hasn't killed beatles
+[NotDeadYet]
+say=Das ging aber schnell! Ihr seht nicht so aus, als hättet Ihr einen sehr schweren Kampf da unten gehabt.
+rspDflt=None
+rsptxt1=Um die Wahrheit zu sagen, ich muss zugeben, dass die Kreaturen noch am Leben sind.
+nxtLn1=basement1
+
+[Basement1]
+say=Zu kräftig für Euch, was?
+rspDflt=None
+rsptxt1=Leider, ja, gnädige Frau.  Ich werde wiederkommen, sobald ich meine Fähigkeiten verbessert habe.
+nxtLn1=Basement2
+rsptxt2=Ganz und gar nicht, gnädige Frau.  Ich muss mich nur einen Moment ausruhen, dann fahre ich mit dem Kampf fort.
+nxtLn2=Basement3
+
+[Basement2]
+say=Lasst Euch nicht zu viel Zeit, sonst fressen die uns die Haare vom Kopf.
+rspdflt=Ich werde so schnell wie möglich meine Ausbildung absolvieren.
+
+[Basement3]
+say=Gut!  Komm nicht wieder hierher, ehe jeder einzelne tot ist! 
+rspdflt=Ist gut, gnädige Frau.
+
+
+;After destroying beetles
+[Orkin]
+say=Was gibt's Neues?
+rspDflt=None
+rsptxt1=Ich komme gerade aus dem Keller, gnädige Frau; dort unten hat eine Plage von Riesenkäfern das Mehl gefressen.  Ich habe sie jedoch alle getötet, und unsere Lebensmittelvorräte sind wieder gesichert.
+nxtln1=Orkin1
+
+[Orkin1]
+say=Riesenkäfer--?  Ich habe gedacht, es wären Ratten da unten oder... sowas.  Aber Riesenkäfer... Ihr seid unversehrt?
+RemoveQuest=ch1-02;
+rspDflt=none
+rspTxt1=Mir geht es gut, gnädige Frau. Ich muss Euch allerdings berichten, dass die Käfer durch ein Loch in der Kellerwand hereingekommen sind.  Um weiteren Befall zu vermeiden, sollte das Loch sofort zugemacht werden.
+nxtLn1=Orkin2
+
+[Orkin2]
+say=Ja, natürlich. In der Kantine müsstet Ihr Davet finden.  Er ist ein jämmerlicher Soldat, aber mit seinem Kumpan wird er wohl eine einfache Arbeit hinbekommen.  Geht hin und sagt ihm, wenn er meine Kochkünsten je wieder genießen will, muss er das Loch noch heute zu meiner Zufriedenheit reparieren.  Wenn Ihr mit ihm gesprochen habt, kommt wieder her und sagt mir bescheid.
+AddQuest=ch1-03;
+script=player.addtitle(01WallHole);journalentry(anora);showmessage(Ihr Tagebuch wurde aktualisiert.,200);
+rspDflt=Jawohl, gnädige Frau.
+
+[Davet]
+Say=Habt Ihr schon mit Davet gesprochen?  Wird die Wand repariert?
+rspDflt=none
+RspCnd1=All(ttl(01BugHoleFixed));
+RspTxt1=Ja, gnädige Frau.  Er will sie gleich reparieren.
+nxtLn1=Davet2
+RspCnd2=All(ttl(!01BugHoleFixed));
+RspTxt2=Verzeihung, gnädige Frau.  Ich habe ihn noch nicht dazu überreden können, die Arbeit zu machen.
+nxtLn2=NoDavet
+
+[Davet2]
+Say=Ausgezeichnet!  Ich danke Euch für Eure Mühe, Soldat. Sobald wir wieder neue Vorräte bekommen, backe ich Euch als Lohn den schönsten Kuchen. Darauf habt Ihr mein Wort!
+RemoveQuest=ch1-04;
+script=player.addtitle(01happycook);player.setprop(trainingpoints=4);
+rspdflt=Obwohl es nur meine Pflicht war, Euch zu helfen, so freue ich mich trotzdem sehr auf Eure Backkünste!  Bis bald, und gehabt Euch wohl!
+
+[NoDavet]
+Say=Sagt ihm einfach, wenn er je wieder etwas zu essen bekommen will, dann muss er diese Wand heil machen.  Das müsste ihm Beine machen!
+rspDflt=Ja, gnädige Frau.  Ich sage es ihm sofort.
+
+[NoChalice]
+say=Kommt Ihr schon, um Euren Kuchen zu holen? Ihr wißt doch genauso gut wie ich, dass wir noch keine neuen Vorräte bekommen haben.
+rspDflt=None
+rsptxt1=Nein, nein, gnädige Frau.  Ich bin nur auf der Durchreise, auf der Suche nach Gerüchten.
+nxtLn1=NoChalice1
+
+[NoChalice1]
+say=Unter uns gesagt, die Lebensmittelvorräte reichen uns nicht bis Weihnachten, geschweige denn über die ganzen Wintermonate.  Ich glaube, wir brauchen ein Wunder, um diese Belagerung zu überstehen.
+rspDflt=None
+rsptxt1=Vielleicht brauchen wir kein Wunder, sondern nur ein wenig Vertrauen und Glück.
+nxtLn1=NoChalice2
+
+[NoChalice2]
+say=Hoffentlich habt Ihr recht.  Mögen Euch die guten Geister beschützen, heute und für alle Tage.
+rspdflt=Und Euch auch, gnädige Frau.
+
+;After recovery of Chalice.
+[Chalice]
+say=Ich habe seltsame Dinge über Euch gehört.  Es heißt, Ihr wäret eine Art wiedergeborener Held der Antike.  Stimmt das?
+rspDflt=None
+rsptxt1=Ich glaube nicht, gnädige Frau.  Ich habe nur einen Kelch gefunden, und darüber sind alle ganz aufgeregt .
+nxtln1=Chalice1
+
+[Chalice1]
+say=Tja, Eure Anwesenheit hier hat jedenfalls eine erhebende Wirkung!  Ich freue mich, dass Ihr jetzt zu uns gehört!
+rspDflt=None
+rsptxt1=Und ich freue mich, dass ich hier beim Kampf gegen Mithras und die Ahoul dabei bin.
+nxtLn1=Chalice2
+
+[Chalice2]
+say=Passt auf Euch auf, junger Herr.
+rspDflt=Ihr auf Euch auch, gnädige Frau.

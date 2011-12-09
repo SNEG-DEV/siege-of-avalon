@@ -1,0 +1,128 @@
+[Titles]
+Checked=
+Set=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Checked=
+Taken=
+Given=
+Added=
+
+[root]
+Count=1
+Else=
+Default=Danke.
+Say1=
+goto1=Soldier
+
+[Soldier]
+say=Habt Ihr Euch verlaufen, Junge? Das hier ist die Offizierskaserne.
+rspDflt=None
+rsptxt1= Ich habe mich nicht verlaufen, ich bin neu hier. Ich wollte mich umsehen, um die Festung kennen zu lernen.
+NxtLn1=Soldier1
+
+[Soldier1]
+say=Nun, beeilt Euch nicht allzusehr. Es gibt hier wenig Abwechslung und Ihr werdet Gelegenheit haben, die Festung eingehend zu studieren.
+rspDflt=None
+rsptxt1= Vielleicht. Allerdings weht ein neuer Wind in Avalon.
+NxtLn1=Soldier2
+rsptxt2=Ich bin lediglich begierig, alles über Avalon zu lernen.
+NxtLn2=Soldier3
+
+[Soldier2]
+say=Bekommt Ihr eine Vision? Seid Ihr Foraxaner?
+rspDflt=None
+rsptxt1=Nein. Ich bekomme keine Vision und ich stamme aus Elythria. Es ist nur eine Vorahnung. Seit wir in Avalon eingesegelt sind, habe ich ein unangenehmes Gefühl im Magen.
+NxtLn1=Soldier4
+
+[Soldier4]
+say=Das war nur die Seekrankheit, Junge. Nur Nisosianer sind wirklich seefest.
+rspDflt=None
+rsptxt1= Dann seid Ihr aus Nisos?
+NxtLn1=Soldier5
+rsptxt2=Ich bin vielleicht kein Nisosianer, aber ich verliere nicht den Inhalt meines Magens an Bord eines Schiffes.
+NxtLn2=Soldier6
+
+[Soldier5]
+say=Natürlich! Ausländer sprechen über Nisosianer, als seien sie Flegel und Diebe. Und damit haben sie nicht ganz unrecht!
+rspDflt=None
+rsptxt1=Sollte ich Nisosianern also misstrauen?
+NxtLn1=Soldier7
+
+[Soldier7]
+say=Nicht auf den Mauern von Avalon. Aber während eines Würfelspiels! Wir rauben Euch vielleicht die Taschen aus, aber wir kämpfen alle zusammen gegen die Ahoul.
+rspDflt=None
+rsptxt1=Das ist vermutlich ein Trost. Sagt, kennt Ihr Kapitän Nicophorus?
+NxtLn1=Soldier8
+rsptxt2=So etwas Ähnliches habe ich schon öfter über Eure Landsleute gehört.
+NxtLn2=Soldier9
+
+[Soldier8]
+say=Ich habe den Namen hin und wieder gehört. Warum fragt Ihr?
+rspDflt=None
+rsptxt1=Ich bin in seinem Schiff hierher gesegelt. Er ist ein guter Kapitän.
+NxtLn1=Soldier10
+
+[Soldier10]
+say=Vielleicht sogar der beste von ganz Nisos. Ich habe gehört, sein Schiff wurde Leck geschlagen.
+rspDflt=None
+rsptxt1=Ja, aber wir hatten Glück. Kein anderes Schiff hat die Fahrt flussaufwärts überstanden.
+NxtLn1=Soldier11
+
+[Soldier11]
+say=Auch das habe ich gehört. Ein schlechtes Omen, Junge. Ein sehr schlechtes Omen.
+rspDflt=None
+rsptxt1=Ja. Ich muss jetzt üben. Viel Glück Euch.
+
+[Soldier9]
+say=HA! HA! Unser Ruf eilt uns voraus. Zumindest erzählen sie keine Lügengeschichten über uns. Von wegen ehrliche Händler und so.
+rsptxt1= Eure Landsleute sind nicht ehrlich?
+NxtLn1=Soldier12
+
+[Soldier12]
+say=Natürlich nicht! Wir verdienen unser Lebensunterhalt mit Überfällen auf Handelsschiffe und Betrügereien an betrunkenen Matrosen in Hafenkneipen! Aber das ist vermutlich ein wenig übertrieben. Nicht alle Nisosianer sind Seeräuber. Es gibt bei uns auch Handwerker und ehrliche Händler.
+rspDflt=None
+rsptxt1=Natürlich. Ebensowenig sind alle Catheaner Pferdezüchter.
+NxtLn1=Soldier13
+
+[Soldier13]
+say=Genau. Jedoch gebe ich Euch einen Rat. Hütet Euch in der Nähe von Nisosianern, sonst könnte Euch das eine oder andere Besitztum verloren gehen.
+rspDflt=Danke für die Anregung. Ich werde daran denken. Ade.
+
+[Soldier6]
+say=Nicht Seekrank zu werden und wirklich seefest zu sein sind zwei verschiedene Paar Stiefel, Junge.
+rspDflt=None
+rsptxt1=Das bezweifele ich nicht. Aber ich denke, ich habe mich an Bord des Schiffes gut gehalten.
+NxtLn1=Soldier14
+
+[Soldier14]
+say=Vielleicht.  Ihr habt einen festen Blick. In der Tat erinnert Ihr mich an einen Offizier, an dessen Seite ich gekämpft habe.
+rspDflt=None
+rsptxt1=Wahrscheinlich mein Bruder, Corvus.
+NxtLn1=Soldier15
+
+[Soldier15]
+say=Das ist es! Ihr seid von gleicher Erscheinung und Größe. Wenn Ihr vom selben Blut seid, werdet Ihr euch hier in Avalon zweifellos gut schlagen.
+RspDflt=Danke. Ade.
+
+[Soldier3]
+say=Begierig, Hm? Das wird Euch vergehen, wenn Ihr zum ersten Mal eine richtige Belagerungsmaschine gesehen habt.
+rspDflt=None
+rsptxt1=Ich habe schon allerlei Belagerungsgerät gesehen ... in Büchern und auf Wandbehängen.
+NxtLn1=Soldier16
+
+[Soldier16]
+say=Da gibt es allerdings kleine Unterschiede. Ein Buch reicht nicht über die Mauer, um Euch mit einem Speer zu erstechen. Ein Wandbehang grinst nicht, während er die Arme Eures Kameraden abreißt.
+rspDflt=None
+rsptxt1=Oh, ich verstehe schon. Ich sage lediglich, dass ich nicht ganz so grün bin, wie Ihr vielleicht denkt.
+NxtLn1=Soldier17
+
+[Soldier17]
+say=Doch, das seid Ihr. Wenn Ihr noch ein wenig länger lebt, werdet Ihr Eure Entscheidung, nach Avalon zu kommen, bitter bereuen. Doch vielleicht seid Ihr sogar einer der Glücklichen, die schnell sterben. Seid Ihr aber einer der Unglücklichen, werdet Ihr Dutzende Eurer Freunde sterben sehen, bevor die Ahoul Euch nehmen. Ihr seid hier nicht im Märchenland, Junge.
+rspDflt=Ich weiss. Ich werde niemanden enttäuschen.
+

@@ -1,0 +1,93 @@
+[Notes]
+titlesChecked=01thieftrained,01permission,01recovered,01village
+titlesSet=01thieftrained
+
+[Needed]
+Better response for NoPermission1
+Conditions to get to 'Before recovery of Chalice' Section
+
+[root]
+Count=5
+Else=
+Default=Guten Tag, Olon.
+Say1=All(ttl(!01thieftrained));
+goto1=Olon
+Say2=All(ttl(01thieftrained,!01permission,!recovered,!01village));
+goto2=NoPermission
+Say3=All(ttl(01thieftrained,01permission,!01recovered,!01village));
+goto3=Permission
+Say4=All(ttl(01thieftrained,01permission,!01recovered,01village));
+goto4=NoChalice
+Say5=All(ttl(01thieftrained,01permission,01recovered,01village));
+goto5=Chalice
+
+;First approach
+[Olon]
+say=Seid gegrüßt, Soldat!
+rspdflt=Guten Tag.
+rspTxt1=Hallo!  Ich bin neu hier und unterwegs, um alle kennenzulernen. Wer seid Ihr, und wo kommt Ihr her?
+NxtLn1=Olon1
+
+[Olon1]
+say=Ich stamme aus Nisos, wo man mich Olon, der Flinke nennt.  Ich stand dort in dem Ruf, Dieb und Meister der Fingerfertigkeit zu sein.
+rspDflt=Gut geantwortet, Olon.
+rspTxt1=Kennt Ihr irgendwelche Tricks, die Ihr mir zeigen könnt?
+NxtLn1=Tricks
+
+[Tricks]
+say=Na ja, wenn Euer Kommandant nichts dagegen hat, kann ich Euch gerne ein paar Sachen zeigen. 
+rspDflt=Danke.
+script=player.addtitle(01thieftrained)
+
+;THIEVING TRAINING DIALOGUE
+
+;Before player has permission to leave citadel
+[NoPermission]
+say=Hallo nochmal.  Was gibt's Neues?
+rspDflt=Nichts.  Ade.
+rspTxt1=Kennt Ihr noch irgendwelche Tricks?
+NxtLn1=NoPermission1
+
+[NoPermission1]
+say=Ha!  Ich habe Euch nichts mehr zu zeigen.  Was Ihr braucht, ist Übung.
+rspDflt=Okay.  Danke trotzdem.
+
+;First approach after player has permission to leave
+[Permission]
+say=Willkommen, Freund!  Wie geht es Euch?
+rspTxt1=Gut geht es, Olon.  Ich habe die Erlaubnis bekommen,  außerhalb der Zitadelle nach meinem Bruder zu suchen.  Mudam sagte, Ihr würdet das Terrain da draußen ein wenig kennen.
+NxtLn1=Permission1
+
+[Permission1]
+say=Ihr wollt nach draußen gehen?  Nur ein Narr würde dort seinen Hals riskieren, aber wenn Ihr darauf besteht, muss ich Euch wenigstens erzählen, was ich neulich gehört habe.  Angeblich verlaufen Tunnels unter dem ganzen Dorf.  Wie ich höre, soll irgendein Schatz da unten in den Tunnels versteckt sein.  Wenn Ihr ihn findet, bringt ihn zuerst hierher. Ich gebe Euch einen guten Preis dafür!
+rspDflt=Danke für den Tipp.
+rspTxt1=Erinnert Ihr Euch an sonst noch etwas?
+NxtLn1=Permission2
+
+[Permission2]
+say=Nein, leider nicht.  Wenn Ihr mehr wissen wollt, solltet Ihr Bruder Massus oder Elarath, den Zauberer aufsuchen.  Sie waren beide schon da, bevor es die Belagerung gab.  Vermutlich wissen sie mehr als ich.
+script=player.addtitle(01Olon);
+rspDflt=Danke, Olon.
+
+;Before recovery of Chalice
+
+[NoChalice]
+say=Soso, ihr seid nicht im Dorf gestorben!  Was kann ich für Euch tun?
+rspDflt=Nichts.  Es tut mir leid, dass ich Euch gestört habe.
+rsptxt1=Ich gehe nur Gerüchten nach.
+nxtLn1=NoChalice1
+
+[NoChalice1]
+say=Tja, in der Burg wird alles nicht gerade besser.  Lebensmittel sind noch knapp und die Soldaten sind unerfahrener als je zuvor.  Hoffentlich können wir durchhalten.
+rspdflt=Das hoffe ich auch.
+
+;After recovery of Chalice
+[Chalice]
+say=Das ist ja der Held!  Schön, Euch wiederzusehen!
+rspDflt=Euch auch, Olon.  Mögen Euch die guten Geister beschützen.
+rspTxt2=Was für ein herzlicher Empfang!  Was gibt's Neues im Hof?
+NxtLn2=Chalice1
+
+[Chalice1]
+say=Das Klappern der Übungsschwerter nimmt zu, seitdem sich Eure Taten hier drinnen herumgesprochen haben!  Ihr seid ein Glücksbringer, das steht fest.
+rspDflt=Danke.  Gehabt Euch wohl.

@@ -1,0 +1,128 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Thank you, Grimbold.
+say1=one(ttl(06chapter6,05chapter5));
+goto1=chapter6
+say2=one(ttl(03chapter3,04chapter4));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Grimbold
+Say4=All(ttl(01recovered));
+goto4=chalice
+
+[Grimbold]
+Say=Greetings.  What are you about?
+RspDflt=None
+RspTxt1=I'm looking for news of my brother.
+NxtLn1=Grimbold1
+
+[Grimbold1]
+Say=What, the chap they saw running through the village yesterday?
+RspDflt=None
+RspTxt1=That's him, yes.
+NxtLn1=Grimbold2
+
+[Grimbold2]
+Say=That was the most exciting thing to happen around here in days!  When they came down with news of the chase, everyone ran up to the top, but it was too late.  He'd already disappeared out of sight.
+RspDflt=None
+RspTxt1=I hope he's all right.
+NxtLn1=Grimbold3
+
+[Grimbold3]
+Say=So do we all.  May the good spirits protect him.
+RspDflt=Thank you.
+
+[Chalice]
+Say=Say, you're the lad that found the cup, right?
+RspDflt=None
+RspTxt1=That's correct.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=A fine piece of work, that.  Congratulations!
+RspDflt=Thank you.
+
+[three]
+Say=Lo, Cupfinder!  How goes it?
+RspDflt=Well.  Excuse me, soldier.
+RspTxt1="Cupfinder?"  Is that how I am known among the soldiers?
+nxtln1=three2
+
+[three2]
+Say=Among other things, like Lich Destroyer and Traitor Trasher...
+RspDflt=none
+RspTxt1=[groan]  You can't be serious.
+nxtln1=three3
+
+[three3]
+Say=Nah, I'm not.  Those are just my names for you.
+RspDflt=Thank the good spirits.  Stay safe, soldier.
+
+[chapter6]
+Say=Hail %playername%, who hath lain slain scores of Sha'ahoul and lifted the life from the lich!
+RspDflt=none
+RspTxt1=Please excuse me; I have business to attend to.
+nxtln1=chapter6a
+RspTxt2=It's all in the wrist, you see...
+nxtln2=chapter6b
+
+[chapter6a]
+Say=You really need to loosen up a bit. These very well may be our last few days alive. We can't be so serious that we lose our wits!
+RspDflt=Excuse me, for I am in a terrible hurry.
+RspTxt1=Sorry, friend.  I've been chopping up Sha'ahoul like firewood and I guess I just need a bit of rest.
+nxtln1=chapter6c
+
+[chapter6b]
+Say=[drawing his sword]  Look at me!  I'm a big green slimy plainsman and I'm here to take your land! Rawrrr!  [He motions for you to play along.]
+RspDflt=none
+RspTxt1=I really don't have time for this.
+nxtln1=chapter6a
+RspTxt2=[Draw your weapon and play along.]
+nxtln2=chapter6d
+
+[chapter6c]
+Say=Haha! That's more like it, friend! We will defeat these cretins soon enough!
+RspDflt=Take care, Grimbold.
+
+[chapter6d]
+Say=[a few minutes later...]  Haha! That was bad acting, but brilliant fighting, my friend.  I bet the plainsman scouts tremble in the bushes when you pass.
+Script=player.setprop(trainingpoints=4);#showmessage.trainingpoints#;
+RspDflt=Whew!  I need to go.  I have things to attend to.
+RspTxt1=I hope they are foolish enough to make themselves known.  More bald bushmen in the open means less mud on my boots.
+nxtln1=chapter6c
+

@@ -1,0 +1,52 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(7/16/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=Gracias, Holt.
+Say1=
+goto1=Holt
+
+[Holt]
+Say=Hola, señor.  ¿Qué puede Holt hacer por usted?
+RspDflt=None
+RspTxt1=Nada, amigo.  Sólo he venido a mirar por aquí.
+NxtLn1=Holt1
+
+[Holt1]
+Say=Mire cuanto quiera.  No echará nada de menos aquí, señor.  Todo está bien, como nos gusta decir aquí arriba!  Todo está bien!
+RspDflt=Obviamente.  Gracias por tu tiempo.
+

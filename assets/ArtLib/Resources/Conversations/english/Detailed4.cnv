@@ -1,0 +1,135 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/13/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=Thank you.
+Say1=
+goto1=Soldier
+
+[Soldier]
+Say=Is there a problem, lad?
+RspDflt=None
+RspTxt1=No problem.  I'm new so I wanted to meet some of the officers.
+NxtLn1=Soldier1
+
+[Soldier1]
+Say=A good many of them are leaving with Ovoron shortly.
+RspDflt=None
+RspTxt1=I know.  My brother is among them.
+NxtLn1=Soldier2
+RspTxt2=Yes, I'd heard about the raid.  Do you think they will be successful?
+NxtLn2=Soldier3
+
+[Soldier2]
+Say=Who is your brother?
+RspDflt=None
+RspTxt1=His name is Corvus and he is with the Elythrians.
+NxtLn1=Soldier4
+
+[Soldier4]
+Say=I know the name, but I've never actually met him.  It's said that General Roth asks Corvus' advice now and again.
+RspDflt=None
+RspTxt1=Why would a man like General Roth listen to my brother?
+NxtLn1=Soldier5
+
+[Soldier5]
+Say=It's probably been a while since you last saw him, but your brother is quite a soldier.  Few know the area surrounding Avalon as well as he.  He is a brave and excellent scout, as well as expert swordsman.
+RspDflt=None
+RspTxt1=You're right.  It has been a long time since I last saw my brother.  He looked harder.
+NxtLn1=Soldier6
+RspTxt2=I always knew Corvus would be a great warrior.  I hope I can follow in his footsteps.
+NxtLn2=Soldier7
+
+[Soldier6]
+Say=I would expect so.  He's a veteran of this siege and a leader by example.  If he orders his men into a fight, its because he's already there.
+RspDflt=Then he's a good leader too.  I must see to my training.  Good day.
+
+[Soldier7]
+Say=They are large one's to follow in.  Your brother has many friends here and quite a reputation.
+RspDflt=None
+RspTxt1=I don't want to be my brother.  I just want make my family proud and honor my father's name.
+NxtLn1=Soldier8
+
+[Soldier8]
+Say=A good sentiment.  Let me warn you though.  There is very little happening here that has honor.  I have done few things here which I am proud of.  Your brother probably feels the same.
+RspDflt=None
+RspTxt1=Surely you are proud to defend the Seven Kingdoms.
+NxtLn1=Soldier9
+
+[Soldier9]
+Say=Yes.  I have also done things here that I will not speak of.  Mark my word:  Regret is a constant companion to a soldier.
+RspDflt=I understand.  Good luck to you.
+
+[Soldier3]
+Say=Success?  That would be new.  So far all of our offensives have been met with defeat and slaughter.
+RspDflt=None
+RspTxt1=Holding out for his long surely can be marked as a success.
+NxtLn1=Soldier10
+
+[Soldier10]
+Say=Perhaps, unless you consider it the dragging out of our own deaths.
+RspDflt=None
+RspTxt1=Are all of your countrymen so glum?
+NxtLn1=Soldier11
+
+[Soldier11]
+Say=Of course.  Were you from Oriam, you would be glum as well.
+RspDflt=None
+RspTxt1=No I wouldn't.  I would take heart in that so many have come to my aid.
+NxtLn1=Soldier12
+RspTxt2=Perhaps, but I would also try to salvage as much as I can.
+NxtLn2=Soldier13
+
+[Soldier12]
+Say=Take heart?  Our country is a warzone.  If we lose, everything is lost, even our lives.  If we win, we are left with no home, lost family and a devastated countryside.  Why should I take heart in that a few hundred outlanders have come to die here with me?
+RspDflt=None
+RspTxt1=I'm sorry.  I had never thought of it like that.
+NxtLn1=Soldier14
+
+[Soldier14]
+Say=Obviously not.  I don't blame you.
+RspDflt=Thank you for your pardon.  I will take my leave now.
+
+[Soldier13]
+Say=Everything worth salvaging has been claimed by the alliance in the fight against the Ahoul.  That's all I have left.  When the fighting is over, then what?
+RspDflt=None
+RspTxt1=Then you rebuild and make your country stronger.
+NxtLn1=Soldier15
+
+[Soldier15]
+Say=A nice sentiment, but an unrealistic one.  Perhaps you are needed elsewhere.
+RspDflt=I think, in fact, that I am.  Good day.
+

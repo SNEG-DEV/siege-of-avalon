@@ -1,0 +1,83 @@
+[Notes]
+TitlesChecked=01Informed,01Recovered,01village
+
+[root]
+Count=3
+Else=
+Default=Danke, Palben.
+Say1=All(ttl(01informed,!01Recovered));
+goto1=Palben
+Say2=All(ttl(!01informed,!01Recovered));
+goto2=News
+Say3=All(ttl(01informed,01Recovered));
+goto3=Chalice
+
+;First approach after Penrith
+[Palben]
+say=Was können wir hier oben für Euch tun, Herr?
+rspDflt=None
+rspTxt1=Penrith sagte mir, dass Ihr von hier oben eventuell etwas von meinem Bruder Corvus gesehen habt.
+NxtLn1=Palben1
+
+[Palben1]
+say=Richtig, Herr.  Wir haben gesehen, wir er von Ahoul-Räubern verfolgt durchs Dorf gelaufen ist!  Er hat sich mächtig mit ihnen geprügelt!
+rspDflt=None
+rspTxt1=War er verwundet?
+NxtLn1=Palben2
+
+[Palben2]
+say=Er ist nicht so gelaufen, als würde es ihm Spaß machen, wenn Ihr versteht, was ich meine.  Er wurde schon ein paarmal verwundet, bevor wir ihn aus den Augen verloren haben.
+rspDflt=None
+rspTxt1=Ist das alles, was Ihr gesehen habt?
+NxtLn1=Palben3
+
+[Palben3]
+say=Ich habe auch gesehen, wie die Ahoul kurz darauf aus dem Dorf weggerannt sind.  Die sahen aus, als hätte ihnen irgendwas eine Höllenangst eingejagt.  
+rspDflt=Das ist immer gut zu hören.  Danke für Eure Hilfe.
+
+
+;Before recovery of Chalice
+[News]
+say=Seid gegrüßt, Mylord.  Wie kann ich Euch helfen?
+rspDflt=None
+rspTxt1=Gab es etwas Neues von hier oben zu sehen?
+NxtLn1=News1
+rspTxt2=Ich bin ziemlich neu hier und sehe mich ein wenig um.  Wer seid Ihr?
+NxtLn2=News2
+
+[News1]
+say=Nichts Gutes.  Im Dorf ist irgend etwas im Busch, aber wir können nicht erkennen, was es ist.  Wir glauben, dass es mit der alten Kirche zu tun hat, aber überall ist so ein komisches Zeug.  Es ist schwer zu in Worte zu fassen, wenn Ihr versteht, was ich meine?
+Adventure=ch1-69;
+rspDflt=Ich glaube, ja.  Danke für die Information.
+rspback=News
+
+[News2]
+say=Palben bin ich, aus Aratoy, Herr.  Ich bin der beste Bogenschütze in meiner Truppe, ungelogen!  Ich treffe einen Ahoul zu Pferd-- in vollem Galopp-- aus über 100 Yards Entfernung ins Auge!  Das soll mir der alte Calvaric mal nachmachen!
+rspDflt=None
+rspTxt1=Ich habe gehört, dass Calvaric kein schlechter Bogenschütze ist.
+NxtLn1=News3
+
+[News3]
+say=Das stimmt, Herr!  Aber keiner trifft besser als Palben!
+rspDflt=Das ist gut zu wissen!  Danke.
+rspback=News
+
+;After recovery of Chalice
+[Chalice]
+say=Ihr seid doch der Held von Avalon, oder?
+rspDflt=None
+rspTxt1=Ich glaube, da habt Ihr Euch getäuscht.
+NxtLn1=Chalice1
+
+[Chalice1]
+say=Nein, ihr seid doch der Kerl, der den Kelch gefunden hat, oder?
+rspDflt=None
+rspTxt1=Nun, ja.
+NxtLn1=Chalice2
+
+[Chalice2]
+say=Dann seid Ihr ein Held!  Dieser Kelch wird ungeheuer viel ausmachen!  Wartet nur ab, Ihr werdet schon sehen!
+rspDflt=Das hoffe ich.  Wir brauchen alle Hilfe, die nur wir kriegen können.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

@@ -1,0 +1,118 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Gracias, Avery.
+say1=one(ttl(05chapter5,06chapter6));
+goto1=fiveplus
+say2=one(ttl(03chapter3,04chapter4));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Avery
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Avery]
+Say=Hola chico!  Una cara nueva siempre es bienvenida a la Puerta Sur!
+RspDflt=None
+RspTxt1=Gracias.  ¿Por qué dices eso?
+NxtLn1=Avery1
+
+[Avery1]
+Say=Llevo días encerrado aquí.  Incluso algunos de mis compañeros empiezan a darme miedo!
+RspDflt=None
+RspTxt1=¿Qué quieres decir?
+NxtLn1=Avery2
+
+[Avery2]
+Say=Serán imaginaciones mías, pero juraría que algunos de los individuos que hay por aquí ni siquiera están de nuestro lado.  ¿Puedes creerlo?
+RspDflt=None
+RspTxt1=Muy extraño.  Espero que te equivoques.
+NxtLn1=Avery3
+
+[Avery3]
+Say=Seguro que es así.  Sólo es un poco de claustrofobia.  Supongo que me comprendes.  Eso, y los turnos dobles de guardia.  Estoy muerto de cansancio.
+RspDflt=Espero que tengas la oportunidad de recuperar tus horas de sueño.  Que los buenos espíritus te protejan.
+
+[Chalice]
+Say=Hola, ¿cómo va?  ¿Qué tal las cosas fuera de la Puerta Sur?
+RspDflt=None
+RspTxt1=¿Quieres decir en el pueblo?  Es peligroso, pero de momento me está yendo bastante bien.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=No sólo el pueblo, sino la torre y el patio, también!  No salgo demasiado de aquí, ¿sabes?
+RspDflt=None
+RspTxt1=Supongo que no.  Dentro todo está igual.  La gente sigue hambrienta, pero la moral está alta.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Es bueno oír eso.  Espero que lo aguantemos bien.
+RspDflt=Eso esperamos todos.  Buenos días.
+
+[three]
+Say=[bostezo] Buenos días, señor.
+RspDflt=Buenos días, soldado.  Adiós.
+RspTxt1=¿Sigues haciendo el trabajo de dos hombres?
+nxtln1=three2
+
+[three2]
+Say=No, señor, últimamente sólo estoy cansado.  Cansado, pero no podría dormir aunque quisiera.  No hasta mucho más tarde.  Sigo sin tener ocasión de salir fuera.  Es como si estuviese recuperando meses de no dormir de golpe.  Me siento como un golem.
+RspDflt=none
+RspTxt1=¿Cómo dices, soldado Avery?  ¿Quieres decir que te sientes como si quisieras atacar a la gente o como si fueses terriblemente estúpido?
+nxtln1=three3
+
+[three3]
+Say=No, no, nada de eso.  Puede que los Golems sean criaturas estúpidas, por lo que he oído, pero seguirán haciendo la misma tarea por toda la eternidad si se les ordena.  Y aquí estoy yo, el golem.  Me obligo a mantenerme despierto durante las guardias...  conozco cada mohosa grieta de las paredes, cada mancha en los suelos de piedra.  Lo único que mantiene mi salud mental es el fumar, y me estoy quedando lentamente sin tabaco.
+script=addtitle(03knowavery);
+RspDflt=none
+RspTxt1=¿Eso es lo que te preocupa?  Creo que posiblemente podrías encontrar un lugar donde plantar un poco de tabaco.
+nxtln1=three4
+
+[three4]
+Say=Es una buena idea.  Creo que lograré hacerlo hoy mismo, antes de irme a dormir.
+RspDflt=Buena suerte, soldado, y hasta luego.
+RspTxt1=Quizá quieras pasar el rato con los demás soldados...  Una partida de huesecillos podría quitarte el aburrimiento de encima.
+nxtln1=three5
+
+[three5]
+Say=Eso parece mejor que observar cómo crece el moho.  O sea, gracias, por tu ayuda y por tus ideas.  Pueden ser justo lo que necesito.
+RspDflt=Encantado de ayudar, soldado.  Hasta luego.
+
+[fiveplus]
+Say=La otra noche soñé que el ejército de Vortigerm llegó justo a tiempo de salvarnos del ataque Sha'ahoul.  ¿Qué crees que significa?
+RspDflt=Creo que significa que todavía tenemos esperanza, soldado.  Hasta luego.
+

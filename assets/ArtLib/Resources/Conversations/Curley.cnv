@@ -1,0 +1,103 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(5/23/01)=Passed
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Thank you, Curley.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(03chapter3));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Curley
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Curley]
+Say=Greetings, sir.  How may I assist you?
+RspDflt=None
+RspTxt1=I have just arrived and am looking around.
+NxtLn1=Curley1
+RspTxt2=Where are you from?
+NxtLn2=Curley2
+RspTxt3=I was just hunting for rumors.  Have you heard any?
+NxtLn3=Curley3
+
+[Curley1]
+Say=As you can see, this is where we monks do our praying and healing.  If you ever have need of healing, come see Brother Crosby.  He's by far the best.
+RspDflt=Thank you for the information.
+rspBack=Curley
+
+[Curley2]
+Say=I am Cathean, sir.  I tried my hand as a fighter, but found that I had neither the strength nor the constitution for bloodshed.  Instead, I found my true calling as a monk.
+RspDflt=And a good thing, too.  Avalon has need of skilled healers.
+rspBack=Curley
+
+[Curley3]
+Say=A friend tells me that South Gate almost fell last night.  I would keep away from there, were I you -- unless, of course, you wish to be impaled on an Ahoul spear.
+RspDflt=None
+RspTxt1=I doubt South Gate could be breached, and I am no coward.  If there is a fight, I will be in the thick of it -- duty demands no less.
+NxtLn1=Curley4
+
+[Curley4]
+Say=As you say, sir.  I will pray for your safety.
+RspDflt=Thank you for your concern, Brother.  Good day.
+
+[Chalice]
+Say=Well met, sir!  How have things gone for you in the village?
+RspDflt=None
+RspTxt1=Quite well, thank you.  And here?  How is the situation here?
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Improving every day!  Fewer wounded come in on a day-to-day basis and more of our serious patients are surviving.  The good spirits will preserve us!
+RspDflt=I'm sure they will, Brother Curley.
+
+[three]
+Say=Congratulations on your recent successes, officer!  The keep is awash in tales of your heroic deeds!
+RspDflt=none
+RspTxt1=Really?  And I've been trying to keep a low profile...
+nxtln1=three2
+
+[three2]
+Say=Ha!  Sarcasm!  I get it!  Let it be said that Brother Curley is not without a sense of humor!
+RspDflt=I'll see to it immediately.  Farewell.
+
+[chapter6]
+Say=The power of the chalice has proven essential, but not even the cup of life will save us when the Ahoul come spilling over the walls! I fear for our sacred city.
+RspDflt=We must keep our faith, brother. Farewell.
+

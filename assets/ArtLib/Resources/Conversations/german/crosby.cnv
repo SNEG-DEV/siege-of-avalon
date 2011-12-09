@@ -1,0 +1,89 @@
+[root]
+Count=4
+Else=
+Default=
+Say1=All(ttl(01FoundBrother,!01HealBrother));
+goto1=Brother
+Say2=All(ttl(!01recovered,!01permission));
+goto2=Crosby
+Say3=All(ttl(!01recovered,01permission));
+goto3=NoChalice
+Say4=All(ttl(01recovered,01permission));
+goto4=Chalice
+
+
+[Crosby]
+say=Willkommen in der Kapelle.  Ich bin Bruder Crosby.  Wie kann ich Euch helfen?
+rspdflt=None
+rspTxt1=Ich sehe mich nur um, danke.
+NxtLn1=Crosby1
+rspTxt2=Woher kommt Ihr?
+NxtLn2=Crosby2
+rspTxt3=Was gibt's Neues hier?
+NxtLn3=Crosby3
+rspcnd4=All(stt(wounds>-1));
+rspTxt4=Ich brauche Heilung.
+NxtLn4=Chalice2
+
+[Crosby1]
+say=Wir sind hier, um zu dienen, Soldat.  Kommt wieder, falls Ihr je unsere Hilfe braucht.
+Adventure=ch1-21;
+rspdflt=Danke.
+
+[Crosby2]
+say=Ich stamme aus Elythria, Herr, aber ich diene hier seit mehreren Jahren.  Bruder Massus hat mich in der Kunst des Heilens gut unterrichtet; falls Ihr meine Fähigkeiten jemals nötig habt, fragt nur.
+Adventure=ch1-21;
+rspdflt=Ich weiß das Angebot zu schätzen, Bruder.
+
+[Crosby3]
+say=Wir zählen immer mehr Verwundete.  Die Ahoul fordern viele Opfer.  Wir arbeiten Tag und Nacht, aber es kommen immer mehr Verwundete.  Die guten Geister werden uns aber gnädig sein.
+rspdflt=Das hoffe ich, Bruder.
+
+
+[brother]
+say=Den Geistern sei Lob und Preis, Corvus!  Ihr könnt sicher sein, dass wir auf Euren Bruder gut aufpassen werden.
+script=Siege200007110049297770.removefromparty;Siege200007110049297770.setprop(enabled=false);player.addtitle(01HealBrother);player.setprop(trainingpoints=10);showmessage(Sie haben Trainingspunkte bekommen.,300);
+Adventure=ch1-22;
+rspdflt=Danke, Bruder.  Ich weiß, dass er in guten Händen ist.
+;Before recovery of Chalice
+
+[NoChalice]
+say=Hallo.  Kann ich etwas für Euch tun?
+rspdflt=none
+rspcnd1=All(stt(wounds>0));
+rspTxt1=Ich brauche Heilung.  Könnt Ihr mir helfen?
+Nxtln1=NoChalice1
+rsptxt2=Habt Ihr irgendwelche Gerüchte gehört?
+Nxtln2=NoChalice2
+
+[NoChalice1]
+say=Natürlich.  Lasst mich sehen.
+script=setprop(currentspell=heal);cast(player);player.setprop(wounds=0);player.setprop(drain=0) ;
+rspdflt=Danke, Bruder Crosby.
+
+[NoChalice2]
+say=Das Essen ist knapp.  Wenn nicht bald etwas geschieht, haben wir nichts mehr, womit wir die hungrigen Patienten füttern können.
+rspdflt=Bald werden sich die Dinge ändern.
+
+;After recovery of Chalice
+
+[Chalice]
+say=Wir alle haben von Eurem Erfolg gehört!  Danke, und herzlichen Glückwunsch!
+rspdflt=none
+rspTxt1=Es war nur meine Pflicht.  Was gibt es hier für Neuigkeiten?
+NxtLn1=Chalice1
+rspcnd2=All(stt(wounds>0));
+rspTxt2=Ich brauche Heilung.
+NxtLn2=Chalice2
+
+[Chalice1]
+say=Die Situation hat sich ständig verbessert, seitdem Ihr den Kelch zurückgebracht habt.  Die Patienten heilen schneller, die frommen Soldaten haben alle Mut gefasst, und die Moral verbessert sich.  Eure Tat hat wunderbare Auswirkungen!
+rspdflt=Das ist gut zu hören.  Danke, Bruder.
+
+[Chalice2]
+say=Natürlich.  Lasst mich sehen.
+script=setprop(currentspell=heal);cast(player);player.setprop(wounds=0);player.setprop(drain=0) ;
+rspdflt=Danke, Bruder.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

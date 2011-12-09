@@ -1,0 +1,49 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=Thank you.
+Say1=
+goto1=Soldier
+
+[Soldier]
+Say=Here is a bow, go shoot something.
+RspTxt1=You need better dialog!
+nxtLn1=Soldier1
+
+[Soldier1]
+Say=Yeah, I know, but what can I do other than mouth the lines I'm given?
+RspDflt=You know, sometimes I think that certain people around here ought to be used for target practice!
+

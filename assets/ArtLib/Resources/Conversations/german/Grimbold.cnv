@@ -1,0 +1,45 @@
+[root]
+Count=2
+Else=
+Default=Danke, Grimbold.
+Say1=All(ttl(!01recovered));
+goto1=Grimbold
+Say2=All(ttl(01recovered));
+goto2=chalice
+
+;Before recovery of Chalice
+[Grimbold]
+say=Seid gegrüßt.  Was habt Ihr auf dem Herzen?
+rspDflt=None
+rspTxt1=Ich suche eine Neuigkeit über meinen Bruder.
+NxtLn1=Grimbold1
+
+[Grimbold1]
+say=Wie, etwa der Kerl, den man gestern durchs Dorf laufen sah?
+rspDflt=None
+rspTxt1=Das ist er, ja.
+NxtLn1=Grimbold2
+
+[Grimbold2]
+say=Das war seit Tagen das Aufregendste, was hier passiert ist!  Als man uns von der Verfolgung erzählte, sind wir alle nach oben gerannt, aber es war zu spät. Er war schon außer Sichtweite.
+rspDflt=None
+rspTxt1=Hoffentlich geht es ihm gut.
+NxtLn1=Grimbold3
+
+[Grimbold3]
+say=Wir auch alle.  Mögen ihn die guten Geister beschützen.
+rspDflt=Danke.
+
+;After recovery of Chalice
+[Chalice]
+say=Ihr seid doch der, der den Kelch gefunden hat, oder?
+rspDflt=None
+rspTxt1=Das ist richtig.
+NxtLn1=Chalice1
+
+[Chalice1]
+say=Das war eine großartige Leistung.  Gratuliere!
+rspDflt=Danke.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

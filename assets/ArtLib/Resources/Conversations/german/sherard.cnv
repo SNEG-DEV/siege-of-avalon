@@ -1,0 +1,56 @@
+[Needed]
+1=sherard should be in the alchemist room
+
+[Notes]
+titlesChecked=01recovered
+
+[Question]
+
+[root]
+Count=2
+Else=
+Default=
+Say1=All(ttl(!01recovered));
+goto1=Sherard1
+Say2=All(ttl(01recovered));
+goto2=Chalice1
+
+[Sherard1]
+say=Hallo.  Ich bin Sherard.
+rspDflt=None
+rspTxt1=Was macht Ihr?
+nxtLn1=Sherard2
+rspTxt2=Was gibt es für Neuigkeiten in letzter Zeit?
+NxtLn2=Sherard3
+
+[Sherard2]
+say=Ich bin Elaraths Assistent.  Ich war schon viele Jahre bei ihm, noch bevor der Krieg begann. Wir sind gemeinsam aus Fornax hierher gekommen.  
+rspDflt=None
+rspTxt1=Gefällt es Euch, für einen Zauberer zu arbeiten?
+nxtLn1=Sherard4
+
+[Sherard3]
+say=Ich habe gehört, dass die Moral außerhalb der Burg in letzter Zeit sehr schlecht ist, besonders seit dem Scheitern der letzten Versorgungsmission.  An Eurer Stelle würde ich mir keine Gedanken machen.  Es arbeiten viele brillante Köpfe an diesem Problem.  Wir sind in den besten Händen.
+rspdflt=Das ist schön zu wissen.  Danke.
+rspBack=sherard1
+
+[Sherard4]
+say=Ich arbeite gerne mit ihm, wenn ich ganz ehrlich bin.  Es ist sogar irgendwie liebenswert, dass er sich meinen Namen nicht merken kann-- er wird im Alter immer vergesslicher, wisst ihr? Nichtsdestotrotz, sollten die Ahoul versuchen über die Mauern zu kommen, wird er Zaubersprüche gegen sie schleudern, wie kaum ein Zweiter.  Die Magie ist so tief in seiner Seele verwurzelt, er könnte sie niemals vergessen.  Und mit Glück und Courage, werde ich an seiner Seite stehen-- obwohl ich hoffentlich bis dahin den Feuerballspruch auswendig gelernt haben werde!
+rspDflt=Ein Zauberer wäre an meiner Seite immer willkommen.  Ich freue mich, Euch kennen gelernt zu haben!
+
+;After recovery of Chalice of Life (PLAYER DOES HAVE THE TITLE OF RECOVERED)
+
+[chalice1]
+say=Hallo nochmal.
+rspDflt=None
+rsptxt1=In letzter Zeit irgendwelche Gerüchte gehört ?
+NxtLn1=chalice2
+
+[chalice2]
+say=Alle reden nur von Euren Heldentaten vor den Toren Avalons.  Manchmal wünschte ich, ich wäre Kämpfer und kein Zauberlehrling.  Gratuliere!  Ihr seid wirklich eine Stütze bei diesem Konflikt.
+rspDflt=Danke für diese liebenswürdigen Worte.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed
+
+

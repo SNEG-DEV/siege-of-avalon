@@ -1,0 +1,59 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(7/19/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=Que tengáis un buen día, Penrith.
+Say1=
+goto1=Penrith
+
+[Penrith]
+Say=Hola.  Tú debes ser el hermano de Corvus.  He sabido de tu llegada a Avalon.  Tienes la misma apostura que él.
+RspDflt=None
+RspTxt1=Tenéis razón, señor.  ¿Como conocisteis a Corvus?
+NxtLn1=Penrith1
+
+[Penrith1]
+Say=Servimos juntos durante un tiempo.  Él estaba a mis órdenes hasta que consiguió su propia cohorte.  Tu hermano salvó mi vida hace tan solo unas semanas, durante un ataque nocturno.  Detuvo un rayo de fuego Chamánico que apuntaba a mi espalda con su escudo, y por ello recibió graves quemaduras en el brazo.  Le debo mucho.
+RspDflt=None
+RspTxt1=Me alegro de oír que mi hermano tiene tan buenos amigos, señor.
+NxtLn1=Penrith2
+
+[Penrith2]
+Say=Desde luego.  Dale recuerdos de mi parte, ¿lo harás?
+Adventure=ch1-53;
+RspDflt=Lo haré.  Que los buenos espíritus le protejan.
+

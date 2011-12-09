@@ -1,0 +1,12 @@
+[root]
+Count=1
+Else=
+Default=
+Say1=
+goto1=Fletcher
+
+[Fletcher]
+say=Braucht Ihr Pfeile, mein Junge? Ich mache die besten Pfeile in ganz Avalon.
+rspDflt=Nein, danke.
+rsptxt1=Ja, bitte.
+script1=merchant

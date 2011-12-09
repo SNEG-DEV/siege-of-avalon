@@ -1,0 +1,151 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,01village,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=KTChestPlate
+Added=
+
+[SyntaxCheck]
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=temp
+Default=Gracias, Sir Rion.
+say1=one(ttl(03chapter3,04chapter4,05chapter5,06chapter6));
+goto1=three
+Say2=All(ttl(!01village,!01recovered));
+goto2=rion
+Say3=All(ttl(01village,!01recovered));
+goto3=nochalice
+Say4=All(ttl(01village,01recovered));
+goto4=chalice
+
+[temp]
+Say=Lo lamento, pero el pueblo está fuera de límites durante lo que queda de ésta versión del juego.  Si compras la versión completa veré qué puedo hacer por tí.
+RspDflt=Muy bien.
+
+[Rion]
+Say=Hola.  Debes ser el hermano de Corvus.  Te pareces mucho a él.
+RspDflt=None
+RspTxt1=Lo soy.  ¿Cómo conoció a mi hermano?
+nxtLn1=Rion1
+
+[Rion1]
+Say=Él y yo éramos grandes amigos.  Apostaría que jamás he tenido uno mejor.  Me dolió mucho descubrir que había desaparecido.  Aunque no creo ni una palabra de lo que dicen.  No hay forma de que un soldado tan hábil como tu hermano pudiese abandonar un combate.
+RspDflt=None
+RspTxt1=Gracias por su simpatía.  Estoy seguro de que Corvus se alegrará cuando oiga de vuestra confianza en él.
+nxtLn1=Rion2
+
+[Rion2]
+Say=No creas todo lo que oigas de los chicos de arriba.  No conocen a tu hermano como yo.  Sé que sigue vivo.
+RspDflt=None
+RspTxt1=Yo también lo pienso.
+nxtLn1=Rion3
+
+[Rion3]
+Say=Por cierto, ten cuidado en los alrededores de la Puerta Sur.  He estado asignado aquí durante mucho tiempo y hay algunas cosas extrañas moviéndose por ahí.
+RspDflt=None
+RspTxt1=¿Cosas extrañas?
+nxtLn1=Rion4
+
+[Rion4]
+Say=Eso.  Los soldados están mirando por encima del hombro más a menudo, y confiando menos el uno en el otro; una mala cosa en tiempo de guerra.  Si no puedes confiar en el hombre con quien estás defendiendo una muralla, ¿en quién puedes confiar?
+RspDflt=Quizá son sólo nervios.  Gracias de nuevo por su confianza.
+
+[NoChalice]
+Say=Nos vemos de nuevo.  ¿Cómo te ha ido?
+RspDflt=None
+RspTxt1=Me ha ido bien.  ¿Qué es lo último de la Puerta Sur?
+nxtln1=NoChalice1
+
+[NoChalice1]
+Say=Más de lo mismo. Los soldados están más ansiosos por la espera a cada día que pasa.
+RspDflt=None
+RspTxt1=Pero la espera siempre es mejor que la muerte, ¿no?
+nxtln1=NoChalice2
+
+[NoChalice2]
+Say=Cierto, pero luchar es mejor que esperar.
+RspDflt=Como digas, Rion.  Cúidate.
+
+[Chalice]
+Say=Saludos!  ¡Tus aventuras en el pueblo te han conseguido un gran renombre!
+RspDflt=None
+RspTxt1=No estoy aquí para adquirir fama; sólo para cumplir con mi deber.
+nxtln1=Chalice1
+
+[Chalice1]
+Say=Vamos!  Todos estamos aquí para conseguir la gloria.  Es parte de lo que nos convierte en soldados.  ¡No tengas miedo de admitirlo, chico!
+RspDflt=None
+RspTxt1=Quizá.  Pero estoy más interesado en ganar la guerra que en hacerme un nombre.
+nxtln1=Chalice1
+
+[three]
+Say=Hola, buscador de gloria!  ¿Qué tal te ha ido?
+RspDflt=none
+rspcnd1=all(obj(!KTChestPlate));
+RspTxt1=Me ha ido bastante bien, la verdad.  ¡Supongo que me preocuparé más de disfrutar de la vida una vez que hayamos derrotado a los Ahoul!
+nxtln1=three2
+rspcnd2=all(obj(KTChestPlate));
+RspTxt2=Me ha ido bastante bien, la verdad.  ¡Supongo que me preocuparé más de disfrutar de la vida una vez que hayamos derrotado a los Ahoul!
+nxtln2=three6
+
+[three2]
+Say=Quieto ahí, tigre!  ¡Déjanos unos pocos a los demás!
+RspDflt=none
+RspTxt1=¿Por qué?  No tiene demasiado sentido exterminarles.  ¿No estaríamos bajando a un nivel de barbarismo equivalente al suyo?
+nxtln1=three3
+
+[three3]
+Say=¿Y qué?  Me gustaría explicarles que cualquier religión que predique tal destrucción está equivocada, pero dudo que jamás lleguen a creer eso.
+RspDflt=none
+RspTxt1=Tienes mucha razón, soldado.  La verdad es que no conozco la respuesta.  Debemos esperar a que se nos ocurra.
+nxtln1=three4
+
+[three4]
+Say=La esperanza es una comodidad demasiado preciosa, Corvu-...  Oh.  Lo siento.  Me parece recordar haber tenido esta conversación con tu hermano.
+RspDflt=none
+RspTxt1=¿De veras?  ¿Qué dijo él?
+nxtln1=three5
+
+[three5]
+Say=Prácticamente lo mismo que tu, con diferencias negligibles.  Siempre me ha maravillado su optimismo.  Un buen comandante.  Si tienes oportunidad de hablar con él, dile que Rion se interesa por su salud y le desea una pronta recuperación.
+RspDflt=Lo haré, Rion.  Hasta luego.
+
+[three6]
+Say=Venga, deja unos pocos para...  Un momento, si no me equivoco, ¿¡¿no es esa la armadura del Rey Tortain?!?  Una vez vi un dibujo...  No, no puede ser.  ¡Sí lo es!
+RspDflt=none
+RspTxt1=No puedes dudar de ti mismo, Rion.  Es la armadura del Rey Tortain.
+nxtln1=three7
+
+[three7]
+Say=Impresionante.  En cualquier caso, intentaba decirte, ¡déjame unos pocos Ahoul para nosotros!  Tener un ejército de un solo hombre puede ser divertido, pero...  [riendo]
+RspDflt=none
+RspTxt1=¿Por qué?  No le veo demasiado sentido a exterminarlos.  ¿No seríamos tan bárbaros como ellos?
+nxtln1=three3
+

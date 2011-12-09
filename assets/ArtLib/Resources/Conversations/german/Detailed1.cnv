@@ -1,0 +1,149 @@
+;Additional Dialogues
+
+;Soldier 1
+[root]
+Count=1
+Else=
+Default=Danke.
+Say1=
+goto1=Soldier
+
+[Soldier]
+say=Guten Tag. Wie kann ich Euch dienen? 
+rspDflt=None
+rsptxt1=Ich bin gerade in Avalon eingetroffen, ich sehe mich erst mal nur um.
+nxtln1=Soldier1
+
+[Soldier1]
+say=Seht es Euch gut an, mein Junge. Viel mehr als das hier gibt's in Avalon nicht zu sehen! Wären wir in Aratoy, gäbe es mehr zu bewundern.
+rspDflt=None
+rsptxt1=Seid Ihr nicht froh, hier gegen die Ahoul kämpfen zu dürfen?
+nxtln1=Soldier2
+rsptxt2=Seid Ihr aus Aratoy?
+NxtLn2=Soldier3
+
+;If 1,
+[Soldier2]
+say=Ihr seid wirklich neu, nicht wahr? Junge, wenn Ihr den Posten an der Mauer so lange besetzt habt wie ich, verblasst die Ehre, die Sieben Königreiche zu verteidigen.
+rspDflt=None
+rsptxt1=Wenn wir es nicht tun, wer dann?
+NxtLn1=Soldier4
+
+[Soldier4]
+say=Ich sage nicht, dass ich meine Pflicht nicht erfülle. Ich sage nur, ich wäre lieber in meiner Heimat auf der Jagd, das ist alles.
+rspDflt=None
+rsptxt1=Seid ihr ein erfahrener Jäger?
+NxtLn1=Soldier5
+rsptxt2=Das wäre mir ebenfalls lieber, aber ich bin stolz, hier zu sein.
+NxtLn2=Soldier6
+
+;If 1, 
+[Soldier5]
+say=Wenige sind besser als ich, selbst unter den Aratoyanern. Einmal habe ich sogar ein Herz aus vierhundert Schritt Entfernung mit einem Pfeil getroffen.
+
+rspDflt=None
+rsptxt1=Ihr irrt Euch sicher. Kein Mensch könnte einen solchen Treffer erzielen.
+NxtLn1=Soldier7
+
+[Soldier7]
+say=Zweifelt, soviel Ihr wollt. Aber Ihr werdet feststellen, dass die meisten Aratoyaner so etwas erzielen können. Einige treffen sogar noch besser als ich.
+rspDflt=None
+rsptxt1=Wenn Ihr meint. Hütet Euch.
+NxtLn1=Soldier8
+
+[Soldier8]
+say=Ihr Euch ebenfalls, Junge. Wir sehen es ungern, wenn Grünschnäbel bereits in der ersten Woche ausgeweidet werden.
+rspDflt=Ade.
+
+;If 2,
+[Soldier6]
+say=Stolz?  Ihr seid sicher von edler Geburt. Nur der Sohn eines Adligen wäre stolz darauf, am Krieg teilzunehmen.
+rspDflt=None
+rsptxt1=Wieso sagt Ihr das?
+NxtLn1=Soldier9
+
+[Soldier9]
+say=Weil die Bauernkinder immer sterben. Für gewöhnlich bleiben die Adligen unverletzt.
+rspDflt=None
+rsptxt1=Nennt Ihr die Adligen etwa Feiglinge? 
+NxtLn1=Soldier10
+
+[Soldier10]
+say=Keineswegs. Ich sage nur, Pfeile haben die Angewohnheit, Adlige zu verfehlen. Schwerter scheinen von ihrer Rüstung abzurutschen und ihre Gegner schaffen es nie, ihnen den Todesstoss zu versetzten. Seltsam, findet Ihr nicht auch?
+rspDflt=None
+rsptxt1=Zu Eurer Aufklärung: mein Vater war ein großer Krieger, der viele Verletzungen erlitt und auch meinem Bruder Corvus war das Glück, von dem Ihr sprecht, nicht hold. Er hat eine Narbe am Hals. 
+NxtLn1=Soldier11
+
+[Soldier11]
+say=Ihr seid Corvus' Bruder? Dann entschuldige ich mich, Herr. Ich wusste nicht, dass Ihr mit ihm verwandt seid. Euer Bruder ist ein tapferer Krieger, wenn auch ein wenig tollkühn. Er scheint sich immer ins dickste Gewühl zu stürzen.  
+rspDflt=Ich nehme Eure Entschuldigung an. Ich fürchte, ich muss mich jetzt verabschieden. Einen schönen Tag noch.
+     
+;If 2, 
+[Soldier3]
+say=Natürlich!  Einen solchen Ort gibt es auf dem Planeten nicht zweimal.
+rspDflt=None
+rsptxt1= Ich habe mich immer gefragt, wie es wohl in Aratoy sein mag.
+nxtln1=Soldier12
+
+[Soldier12]
+say=Wenn Ihr Euch Bäume vorstellen könnt, die Euch umarmen und umsorgen wie Eure eigene Mutter ... 
+rspDflt=None
+rsptxt1=Seid Ihr aus Perigwin?
+NxtLn1=Soldier13
+
+[Soldier13]
+say=Kein wahrer Aratoyaner könnte in einer Stadt wohnen. Meine Familie und ich bewohnten die tiefen Wälder des Nordens. Alles, was des Menschen Herzen begehrt, findet sich im Wald. Uns hat es an nichts gemangelt. 
+rspDflt=None
+rsptxt1=Wem schuldet Ihr Treue? Existiert überhaupt eine Regierung?
+nxtln1=Soldier14
+rsptxt2=Mein Vater lehrte mich einiges über die Wälder Elythriens. Ich vermute, dass ich in der Kunde der Wälder beinahe so beschlagen bin wie ein Aratoyaner.
+nxtln2=Soldier15
+
+;If 1,
+[Soldier14]
+say=Wir gehorchten der Sippenmutter. Sie ist immer die älteste Frau der Familie. Meine Tante war unsere Sippenmutter. Wir haben einen König in Aratoy und einige andere, mindere Ämter, aber wenige erkennen die Macht des Königs an. Er erfüllt hauptsächlich eine diplomatische Funktion.
+rspDflt=None
+rsptxt1=Dann ist er lediglich ein Ansprechpartner für andere Königreiche?
+nxtln1=Soldier16
+
+[Soldier16]
+say=Ihr habt es erfasst. Keiner weiß so genau, wie der König an die Macht gelangt, und wenige kümmern sich überhaupt darum. Eine gute Sippenmutter in Aratoy lebt besser als jeder König. 
+rspDflt=None
+rsptxt1=Was für eine eigenartige Landespolitik! 
+NxtLn1=Soldier17
+
+[Soldier17]
+say=So denken manche. Nachdem ich mein ganzes Leben in diesem Gefüge verbracht habe, kann ich mir nicht vorstellen, einem König der Grundbesitzer verpflichtet zu sein. Ihr aus dem Osten sind weitaus seltsamer als wir Aratoyaner.
+rspdflt=None
+rsptxt1=Vielleicht habt Ihr recht. Aber, wie Ihr sagt, ich bin an unsere Sitten gewohnt. Mir kommen sie ganz natürlich vor.
+NxtLn1=Soldier18
+rsptxt2=Diejenigen, die östlich von uns leben, sind noch weitaus seltsamer als wir.
+nxtln2=Soldier19
+
+;If 1,
+[Soldier18]
+say=Wahrlich. Vielleicht können wir uns bei einem guten Becher mehr über unsere Heimatländer austauschen, wenn die Belagerung aufgehoben ist.
+rspDflt=Ich hoffe es. Einen schönen Tag noch.
+
+;If 2, 
+[Soldier19]
+say=In der Tat!  Verflucht seien die Ahoul mit ihrer heidnischen Religion!  
+rspDflt=Mögen wir die Kraft haben, sie zu vernichten.
+
+;If 2,
+[Soldier15]
+say=Eine kühne Behauptung! Ein Aratoyaner könnte an Euch heranschleichen und Euch die Unterhosen klauen, bevor ihr es merkt! 
+rspDflt=None
+rsptxt1=Tatsächlich?  Vielleicht sollte ich also besser auf mein Hab und Gut aufpassen, wenn Aratoyaner in der Nähe sind. 
+NxtLn1=Soldier20
+
+[Soldier20]
+say=Flink mögen wir sein, Herr. Aber wie sind keine Diebe. 
+rspDflt=None
+rsptxt1=Ich habe nur gescherzt, mein Freund. Jeden, der die Ahoul bekämpft, betrachte ich als meinen Bruder und vertraue ihm mein Leben an.
+NxtLn1=Soldier21
+
+[Soldier21]
+say=Eine idealistische Haltung. Um unser aller Willen hoffe ich, dass Ihr Recht habt. 
+rspDflt=Viel Glück Euch.
+

@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Farewell.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=Hey, there.
+RspTxt1=And where are you from?
+NxtLn1=Soldier1
+RspTxt2=Have you kept your ears open?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=My home is in Oriam.  At least it was in Oriam, before the Ahoul burned it.  If I had the chance, I would dismantle them myself, but we can't afford to spare any men for anything but defense.  Always waiting for reinforcements...
+rspBack=soldier
+
+[Soldier2]
+Say=Our Captain said for us to be wary of an attack tonight.  He has a strange sense about this sort of thing, so I'd sleep near my sword if I were you.  The Ahoul have been too quiet lately -- they've got to be up to something!
+rspBack=soldier
+
+[Chalice]
+Say=May I be of assistance to you, sir?
+RspTxt1=Tell me, where are you from?
+NxtLn1=Chalice1
+RspTxt2=Heard any good rumors?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=I am from Oriam, sir.  At least it was in Oriam, before the Ahoul burned it.  They're going to get paid back with interest.  Those grass-dwellers will pay.
+rspBack=Chalice
+
+[Chalice2]
+Say=I heard the Catheans have sent for their reserves.  Perhaps they can help to break this siege.  I hope they bring some soap.  Supplies are low and soldiers are becoming ... fragrant.
+rspBack=Chalice
+

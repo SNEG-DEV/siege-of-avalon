@@ -1,0 +1,155 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,04chapter4,04elaram,04ramdestroyed,05chapter5,06chapter6,arb01,arb02
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(5/23/01)=Passed
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Thank you, Phelan.
+say1=one(ttl(05chapter5,06chapter6));
+goto1=chapter6
+say2=all(ttl(04chapter4,!04elaram));
+goto2=untoldfour
+say3=all(ttl(04chapter4,04elaram));
+goto3=toldfour
+Say4=All(ttl(!01recovered));
+goto4=Phelan
+Say5=All(ttl(01recovered));
+goto5=Chalice
+
+[Phelan]
+Say=Hello.  How have you fared, my lord?
+RspDflt=None
+RspTxt1=Things have gone well for me.  I trust everything is well here.
+NxtLn1=Phelan1
+
+[Phelan1]
+Say=As well as can be, my lord.  I'm growing uneasy, though.
+RspDflt=None
+RspTxt1=Why are you disturbed?
+NxtLn1=Phelan2
+
+[Phelan2]
+Say=Perhaps I have been on active duty too long, but I'm getting distrustful of the other soldiers in South Gate.
+RspDflt=None
+RspTxt1=All of them?
+NxtLn1=Phelan3
+
+[Phelan3]
+Say=No, sir.  Just a few of them.  I think my mind is playing tricks on me.
+RspDflt=None
+RspTxt1=Perhaps and perhaps not.  Trust your instincts and be cautious.
+NxtLn1=Phelan4
+
+[Phelan4]
+Say=Good advice, sir.  Thank you.
+RspDflt=Good day.
+
+[Chalice]
+Say=Welcome back.  We've been hearing good things about you here.
+RspDflt=None
+RspTxt1=I trust they are not all lies.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Some of them, perhaps, but I hear that you have found a valuable item.
+RspDflt=None
+RspTxt1=That part is true, but I was acting as any soldier would.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=I don't think so, sir.  There aren't many soldiers that would brave the outer village with less than a full cohort to support them.
+RspDflt=Thank you for the kind words.  May the good spirits protect you.
+
+[untoldfour]
+Say=Good day, milord...  [wince]
+RspDflt=Good day, soldier.  Pardon me.
+RspTxt1=You look to be in pain, soldier.  Do you require the attention of a healer?
+nxtln1=untoldfour2
+
+[untoldfour2]
+Say=No, milord.  There is tension in South Gate, milord.  The Seer Elazar is not himself, and this should be good news, but...  He looks to be very worried, and I'm afraid it's made me worry as well.  You understand, don't you, milord?  He's usually so cocky and assured, but now...
+RspDflt=none
+RspTxt1=Have no worry, soldier; I will visit with him presently.
+nxtln1=untoldfour3
+RspTxt2=Emotion?  Elazar?  Do tell, soldier; I am rapt.
+nxtln2=untoldfour4
+
+[untoldfour3]
+Say=Thank you, milord.  It would ease me greatly.
+RspDflt=Trouble yourself not, soldier.  Be safe.
+
+[untoldfour4]
+Say=He appears to be worried...  I couldn't believe it myself, that's why it shocked me so much.  If HE'S worried, we're all doomed!
+RspDflt=none
+RspTxt1=It is not as bad as it seems, soldier.  I will speak with Elazar; doubtless he wishes to see me.
+nxtln1=untoldfour3
+
+[toldfour]
+Say=Milord?
+RspDflt=Carry on, soldier.
+rspcnd1=all(ttl(04elaram,04ramdestroyed,!arb01));
+RspTxt1=I have destroyed the source of Elazar's worry, soldier.  The Sha'ahoul had been building a battering ram, but it now lies in ruins.
+script1=addtitle(arb01);
+nxtln1=toldfour2
+rspcnd2=all(ttl(04elaram,!04ramdestroyed,!arb02));
+RspTxt2=I have spoken with Elazar, who has had a vision of Avalon's destruction by a Sha'ahoul war machine.  I've not destroyed it yet, but I've a feeling I shall.
+script2=addtitle(arb02);
+nxtln2=toldfour4
+
+[toldfour2]
+Say=Thank the good spirits!  We are saved again!  I feel better already!  Hail %playername%!
+RspDflt=none
+RspTxt1=I wouldn't go that far, soldier, but your gratitude is appreciated.
+nxtln1=toldfour3
+
+[toldfour3]
+Say=Thank you again, sir.  I feel better already.  Farewell.
+RspDflt=Be safe, soldier.  Farewell.
+
+[toldfour4]
+Say=That is good news, sir.  May the spirits protect you on your journey.
+RspDflt=And you as well, soldier.
+
+[chapter6]
+Say=Ho! How goes your quest?
+RspDflt=Ah, yes! The quest! Excuse me.
+RspTxt1=I'm having trouble finding some things.
+nxtln1=chapter6b
+
+[chapter6b]
+Say=I always find what I'm looking for if I retrace my steps.
+RspDflt=Thank you, Phelan. Farewell.
+

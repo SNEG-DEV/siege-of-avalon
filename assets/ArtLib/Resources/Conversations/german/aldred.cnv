@@ -1,0 +1,13 @@
+[root]
+Count=1
+Else=
+Default=
+Say1=
+goto1=Aldred
+
+[Aldred]
+say=Ihr seht aus, als ob Ihr so manche Ware von mir gut gebrauchen könntet.  Kommt, seht Euch um -- Bessere  Preise findet Ihr in ganz Avalon nicht, das versichere ich Euch!
+rspDflt=Nein danke.
+rsptxt1=Danke.  Lasst doch sehen, was Ihr anzubieten habt.
+script1=merchant
+

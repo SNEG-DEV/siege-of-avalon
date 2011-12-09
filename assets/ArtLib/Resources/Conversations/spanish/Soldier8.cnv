@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Hasta luego.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=Hey.  ¿Qué pasa, tío?
+RspTxt1=¿Cual es tu historia, amigo?
+NxtLn1=Soldier1
+RspTxt2=¿Algo nuevo en radio macuto?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Yo era un siervo en Elythria.  Era una vida dura, pero ¡había más comida de la que hay aquí ahora!  Al menos, las chicas de la cocina hacen lo que pueden con lo poco que tienen.  Me encantaría un buen plato de costillas...  Oh, lo siento, debo estar divagando nuevamente.
+rspBack=soldier
+
+[Soldier2]
+Say=Nada de importancia, señor.  Pero guarde sus espaldas por aquí.  Algunos de los refugiados se sienten MUY hambrientos.
+rspBack=soldier
+
+[Chalice]
+Say=¿Qué hay de nuevo, viejo?
+RspTxt1=Oye, ¿de dónde dices que eres?
+NxtLn1=Chalice1
+RspTxt2=¿Algún cuchicheo nuevo por aquí?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Tío, vengo de la tierra más dulce de todo Eurale!  ¡Larga vida a Elythria!
+rspBack=chalice
+
+[Chalice2]
+Say=Sí, he oído que los Fornaxanos han creado un nuevo hechizo.  Nadie sabe exactamente qué hace.  Pero todos están de acuerdo en que hace algo "útil".  Gran información, ¿eh?
+rspBack=chalice
+

@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Hasta luego.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=¿Qué quieres?
+RspTxt1=¿De dónde vienes?
+NxtLn1=Soldier1
+RspTxt2=¿Has oído algún rumor nuevo?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Mi casa está en Cathea.  Bueno, estaba.  Allí criaba ganado, hasta que fui reclutado para combatir aquí.  No te rías.  Criar ganado no parece un trabajo impresionante, pero ¡ni siquiera una vaca loca está tan loca como un Ahoul.
+rspBack=soldier
+
+[Soldier2]
+Say=He oído que el Rey Vortigerm de Taberland viene con todos los hombres capaces de luchar de su reino.  Los soldados de Taberland ya han probado su valía en la batalla.  Su llegada nos salvará.  Espero que traigan comida.
+rspBack=soldier
+
+[Chalice]
+Say=¿Puedo ayudarle, señor?
+RspTxt1=¿De dónde eres?
+NxtLn1=Chalice1
+RspTxt2=¿Alguna novedad?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Nací en los altiplanos de Cathea.  Allí criaba ganado, hasta que fui reclutado para combatir aquí.  ¡Si me diesen un caballo, cabalgaría mejor que ningún salvaje Ahoul!
+rspBack=chalice
+
+[Chalice2]
+Say=Se rumorea que hay un nuevo oficial Elythriano que cambiará las tornas de esta guerra.  ¡Dicen que es el elegido de los dioses!
+rspBack=chalice
+

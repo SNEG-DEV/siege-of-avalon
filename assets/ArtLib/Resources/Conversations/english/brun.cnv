@@ -1,0 +1,92 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/12/01)=Passed
+
+[root]
+Count=4
+Else=
+Default=Farewell, Brun.
+say1=one(ttl(04chapter4,05chapter5,06chapter6));
+goto1=fourplus
+say2=all(ttl(03chapter3));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Brun
+Say4=All(ttl(01recovered));
+goto4=chalice
+
+[Brun]
+Say=Are you sure you have enough experience to walk to South Gate?  It's no place for amateurs.
+RspDflt=None
+RspTxt1=I'll be all right.  Let me pass.
+NxtLn1=Brun1
+RspTxt2=Where are you from?
+NxtLn2=Brun2
+RspTxt3=Have you heard any rumors?
+NxtLn3=Brun3
+
+[Brun1]
+Say=Fine then, but if you get yourself skewered by an Ahoul arrow, don't say I didn't warn you!
+RspDflt=Pardon me, I must be going.
+rspBack=Brun
+
+[Brun2]
+Say=I'm Cathean by birth.  I came here to make a name for myself before returning home in glory.  Now, I fear none of us may see our homes again.
+RspDflt=Keep heart, soldier.  We will triumph.
+rspBack=Brun
+
+[Brun3]
+Say=I hear the Peasants' Bailey is growing littered with the dead and starving.  We need relief soon or we will never last.
+RspDflt=The good spirits will protect us.  Good day to you.
+rspBack=Brun
+
+[chalice]
+Say=So you are he, eh?  Is it true you found the Chalice of Life?
+RspDflt=None
+RspTxt1=Yes.  I almost lost my neck in the search, too!
+NxtLn1=chalice1
+RspTxt2=What's the news around here?
+NxtLn2=chalice2
+
+[chalice1]
+Say=Well, I'm glad you managed to keep it!
+RspDflt=Thank you.
+rspBack=chalice
+
+[chalice2]
+Say=The Ahoul supposedly got more reinforcements.  It won't make a difference, though.  Once King Vortigerm arrives at the helm of his great army, they won't stand a chance!
+RspDflt=Pardon me, I must be leaving.
+rspBack=chalice
+
+[three]
+Say=Vortigerm's armies should be arriving within the next few days, right?  I can't wait to break this siege!  There's no good ale here, just some swill and that gut-wrenching stuff Gentza comes up with every once in a while.
+RspDflt=I agree, soldier.  Take care of yourself.
+
+[fourplus]
+Say=Any time now...  I can feel it.  Vortigerm will be here, and we will have nothing to worry about!  The infantry will save us!
+RspDflt=Soon, soldier, soon.  Farewell.
+

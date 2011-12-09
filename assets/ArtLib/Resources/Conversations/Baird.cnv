@@ -1,0 +1,58 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01prison,03chapter3
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Thank you, Baird.
+say1=all(ttl(03chapter3));
+goto1=three
+Say2=All(ttl(!01prison));
+goto2=Baird
+Say3=All(ttl(01prison));
+goto3=Baird2
+
+[Baird]
+Say=Sorry, sir.  There is some trouble down in the dungeon.  I've orders to hold this stairwell 'til the situation is under control.  You will need to turn back.
+RspDflt=Very well.  Good day.
+
+[Baird2]
+Say=Thanks for helping to handle the prisoners.
+script=player.setprop(trainingpoints=5);
+RspDflt=It was my pleasure, and good day to you!
+
+[three]
+Say=Hail the traitor-crushing hero!
+RspDflt=Hail to you as well, Baird.
+

@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Adios.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=¿Qué puedo hacer por ti?
+RspTxt1=¿De dónde eres?
+NxtLn1=Soldier1
+RspTxt2=¿Hay algún rumor que puedas comunicarme?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Mi patria natal es Nisos.  Solía construir barcos allí, hasta que estalló esta guerra.
+rspBack=soldier
+
+[Soldier2]
+Say=He oído que los Elythrianos han estado escondiendo comida del resto de nosotros.  ¿No es típico de esos cerdos codiciosos el hacer algo así?
+rspBack=soldier
+
+[Chalice]
+Say=¿En qué puedo ayudarle, señor?
+RspTxt1=¿De donde eres?
+NxtLn1=Chalice1
+RspTxt2=¿Hay algún rumor que puedas comunicarme?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Vengo de Nisos, señor.  El Capitán Nicophorus y yo somos buenos amigos.  ¡Podéis preguntárselo!
+rspBack=chalice
+
+[Chalice2]
+Say=Corre el rumor de que los Ahoul están empezando a huir!  ¡El mismísimo Sir Roth Hildebrand me lo dijo!
+rspBack=chalice
+

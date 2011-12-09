@@ -1,0 +1,99 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(5/23/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Gracias, Kay.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=All(ttl(!01recovered));
+goto2=Kay
+Say3=All(ttl(01recovered));
+goto3=Chalice
+
+[Kay]
+Say=No pareces herido.  ¿Qué podemos hacer por ti?
+RspDflt=None
+RspTxt1=Soy nuevo aquí, sólo estaba mirando...
+NxtLn1=Kay1
+RspTxt2=¿De dónde eres?
+NxtLn2=Kay2
+RspTxt3=¿Has oído algún rumor interesante?
+NxtLn3=Kay3
+
+[Kay1]
+Say=Bueno, bienvenido a la capilla.  Aquí nos dedicamos al negocio de salvar vidas y almas.  Si alguna vez necesitas una cosa o la otra, estaremos encantados de ayudarte.
+RspDflt=Es bueno saberlo.  Gracias.
+rspBack=Kay
+
+[Kay2]
+Say=Soy Nisosano.  Fui herido en una batalla en las afueras de la ciudadela justo antes de que empezase el asedio.  Dijeron que me iban a enviar de vuelta en la nave siguiente, dado que ya no resultaba útil.  En vez de ello, me uní a Fray Massus, y aquí todavía puedo hacer mucho bien.  Aunque con el asedio, creo que quizá no fuese tan buena idea quedarme.  Quizá debiera haber vuelto a casa!
+RspDflt=Me alegro de que te quedases.  Necesitamos toda la ayuda que podamos conseguir.
+rspBack=Kay
+
+[Kay3]
+Say=Uno de los heridos hablaba en sueños sobre desertores.  ¿No sabrás nada sobre eso, verdad?
+RspDflt=None
+RspTxt1=Es la primera noticia que tengo.
+NxtLn1=Kay4
+
+[Kay4]
+Say=Bueno, supongo que tendré que asegurarme de que Sir Roth se entera de ello.
+RspDflt=Buenos días.
+rspBack=Kay
+
+[Chalice]
+Say=Hola!  Pareces más curtido en batalla que la última vez que nos vimos.  Espero que todo vaya bien!
+RspDflt=None
+RspTxt1=Lo suficientemente bien, Kay.
+NxtLn1=Chalice1
+RspTxt2=¿Qué hay de nuevo?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Le comprendo, señor.  Buenos días.
+RspDflt=Que los buenos espíritus te protejan.
+rspBack=Chalice
+
+[Chalice2]
+Say=Desde la última vez que estuviste aquí, las cosas han ido mejorando.  Creo que los Ahoul se están descorazonando.  Quizá no pase mucho tiempo hasta que termine éste lamentable asedio.
+RspDflt=Eso esperamos todos.
+rspBack=Chalice
+
+[chapter6]
+Say=Oh, hola %playername%.  Lamento no poder hablar contigo ahora, pero tengo asuntos que atender.
+RspDflt=Comprendido.  Hasta luego, buen monje.
+

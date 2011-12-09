@@ -1,0 +1,105 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Thank you, Idan.
+say1=all(ttl(06chapter6));
+goto1=six
+say2=one(ttl(03chapter3,04chapter4,05chapter5));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Idan
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Idan]
+Say=Hello.  What brings you to South Gate?
+RspDflt=None
+RspTxt1=I'm just looking for news of my brother, Corvus.
+NxtLn1=Idan1
+
+[Idan1]
+Say=Was he a part of Ovoron's raiding party?
+RspDflt=None
+RspTxt1=Yes.
+NxtLn1=Idan2
+
+[Idan2]
+Say=Well, they all disappeared.  The guys up on the third level saw somebody yesterday.  Go ask them.
+RspDflt=I will.
+
+[Chalice]
+Say=Been on the outside, eh?  Have any fun?
+RspDflt=None
+RspTxt1=A little.  There are some things out there to fight.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=I wish I could get away from South Gate for a little sport now and again.
+RspDflt=None
+RspTxt1=Perhaps relief will come soon.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Perhaps.  Good day.
+RspDflt=Good day.
+
+[three]
+Say=Hi-uh.
+RspDflt=Bye-uh.
+RspTxt1=What's new, soldier?
+nxtln1=three2
+
+[three2]
+Say=I hear there are elves in that there jungle!  I wish I could go off and hunt there, then we'd all eat steaks tonight!
+RspDflt=none
+RspTxt1=That's not a jungle, it's a forest.
+nxtln1=three3
+
+[three3]
+Say=Even better!
+RspDflt=Pardon me, soldier, I have business to attend to...
+RspTxt1=I just remembered that I have to pick up my new codpiece...
+nxtln1=three4
+
+[three4]
+Say=Mmm...  Venison steaks and potatoes...
+RspDflt=Farewell.
+
+[six]
+Say=Oh, hey, hello, %playername%!  Did you hear the news?  The reinforcements aren't far away!  Soon we will be eating venison!  You may have laughed at me before, %playername%, but when we can eat like we are supposed to, you will thank me!  I will take my bow out and hunt them myself!
+RspDflt=I'm glad to hear it, soldier.  When you find yourself with such fine meat, I am sure you will not forget my contribution.  Farewell.
+

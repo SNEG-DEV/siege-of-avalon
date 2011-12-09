@@ -1,0 +1,92 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01foundbrother,01informed,01Recovered,01transferred,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-03
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/19/01)=Passed
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=6
+Else=
+Default=
+say1=one(ttl(04chapter4,05chapter5,06chapter6));
+goto1=chapter6
+say2=All(ttl(01foundbrother));
+goto2=rowe5
+Say3=All(ttl(!01informed,!01Recovered,!01transferred));
+goto3=Rowe1
+Say4=All(ttl(01informed,!01Recovered,!01transferred));
+goto4=Rowe2
+Say5=All(ttl(01informed,!01Recovered,01transferred));
+goto5=Rowe3
+Say6=All(ttl(01informed,01Recovered,01transferred));
+goto6=Rowe4
+
+[Rowe1]
+Say=Sorry, sir.  We're under strict order to let no one pass.  You'll have to move along.
+Adventure=ch1-03;
+RspDflt=I see.  Good day to you.
+
+[Rowe2]
+Say=I've orders to let you in.  I'd make it quick if I were you.  Sir Roth is getting less and less tolerant of foolishness!
+script=setpos(PathCorner20000500250046080510);Siege018.setpos(PathCorner20000500250046085120)
+RspDflt=Thanks for the tip.
+
+[Rowe3]
+Say=It had better be important, or I may thrash you just for the fun of it.
+script=setpos(PathCorner20000500250046080510);Siege018.setpos(PathCorner20000500250046085120)
+RspDflt=I assure you, I will be quick.
+
+[Rowe4]
+Say=Greetings, my lord!  It's an honor to have you in our hallway!
+script=setpos(PathCorner20000500250046080510);Siege018.setpos(PathCorner20000500250046085120)
+RspDflt=Thanks to you.
+
+[Rowe5]
+Say=Sorry, sir.  Sir Roth has retired to his private chambers for the evening.  You'll have to move along.
+RspDflt=I see.  Good day to you.
+
+[chapter6]
+Say=How many Ahoul does it take to start a campfire?
+RspDflt=I don't have time for this nonsense.
+RspTxt1=One?
+nxtln1=chapter6b
+RspTxt2=Two?
+nxtln2=chapter6b
+RspTxt3=Three?
+nxtln3=chapter6b
+RspTxt4=I have no idea.
+nxtln4=chapter6b
+
+[chapter6b]
+Say=As many as you can get to sit still and burn! Hahaha!
+RspDflt=Take care, Rowe.
+

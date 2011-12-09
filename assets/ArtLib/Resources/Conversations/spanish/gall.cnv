@@ -1,0 +1,97 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-59
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=all(ttl(!05chapter5));
+goto2=Gall
+Say3=all(ttl(05chapter5));
+goto3=Gall4
+
+[Gall]
+Say=Acércate más, hijo!  ¿Cómo quieres ver mis mercancías desde tan lejos?
+Adventure=ch1-59;
+RspDflt=Creo que me iré ahora.
+RspTxt1=Si tus precios son correctos, podría comprarte algo.
+script1=merchant
+RspTxt2=La verdad, no puedo, aunque dudo de que sirviese de algo.
+NxtLn2=Gall2
+
+[Gall2]
+Say=¿Qué se supone que significa eso?
+RspDflt=No importa.  Mira, debo seguir mi camino.  Buenos días.
+RspTxt1=Me temo que no he tenido la oportunidad de amasar ninguna fortuna por ahora.
+NxtLn1=Gall3
+
+[Gall3]
+Say=Bueno, eso es normal, hijo!  La mayoría de los comerciantes también compramos objetos, así que si tienes algunas cosillas que no vayas a usar, puedes venderlas y comprar algo que necesites.
+RspDflt=Volveré cuando tenga ganas de regatear.  Hasta luego.
+RspTxt1=Tengo algunos de esos objetos.  Déjame ver tus mercancías, por favor.
+script1=merchant
+
+[Gall4]
+Say=Bienvenido! Supongo que traes alguna nueva y extraña arma Ahoul para mí!
+RspDflt=No, lo siento.  Hasta luego.
+RspTxt1=¿Las has estado vendiendo a nuestros soldados?
+Nxtln1=Gall5
+RspTxt2=Podría tener algo.  Déjame ver tus mercancías, por favor.
+script2=merchant
+
+[Gall5]
+Say=A la mayoría no les interesan, pero unos pocos han mostrado curiosidad. Son buenos artesanos, para ser unos salvajes, ¿no?
+RspDflt=Han mellado muchas veces mi armadura, Gall. Intentaré conseguirte cosas interesantes si las veo. Hasta luego.
+
+[chapter6]
+Say=Ese Wilfred...  Tiene miedo al dinero!  El dinero es una de las cosas que no temeré jamás.  Ja!  ¿Qué puedo hacer por ti?
+RspDflt=Nada, gracias.  Me voy.
+RspTxt1=¿Qué tienes?
+script1=merchant
+RspTxt2=¿Dónde puedo gastar algo de dinero por aquí?
+nxtln2=chapter6b
+
+[chapter6b]
+Say=Er...  ¿Gastarlo?  Bueno, yo solía visitar el pub de Gentza de vez en cuando, y solía comprar los pasteles de Anora cada semana, para regalarlos a mis mejores clientes.  Pero con este maldito asedio que tanto dura, no puedo decir que esas cosas me importen ya demasiado.  Últimamente tengo el monedero lleno.
+RspDflt=Ja, yo también.  Hasta luego.
+RspTxt1=Quizá, pero ¿podrá el oro comprar tu vida a los Ahoul?
+nxtln1=chapter6c
+
+[chapter6c]
+Say=No, pero ante la eventualidad de que esta guerra termine y yo sobreviva, haré una fortuna con el montón de armas de esos salvajes que tengo almacenadas.  Las venderé en la puerta principal!  Los niños se pelearán por ellas!
+RspDflt=No puedo creer como son algunas personas.  Hasta luego.
+RspTxt1=Déjame ver tu material, viejo loco.
+script1=merchant
+

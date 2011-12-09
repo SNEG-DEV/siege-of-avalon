@@ -1,0 +1,81 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01FoundBrother,01informed,01Recovered,01transferred,03chapter3
+Removed=
+
+[Quest]
+Added=ch1-03
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=7
+Else=
+Default=
+say1=all(ttl(06chapter6));
+goto1=three
+say2=all(ttl(03chapter3));
+goto2=three
+Say3=All(ttl(01FoundBrother));
+goto3=york5
+Say4=All(ttl(!01informed,!01Recovered,!01transferred));
+goto4=York1
+Say5=All(ttl(01informed,!01Recovered,!01transferred));
+goto5=York2
+Say6=All(ttl(01informed,!01Recovered,01transferred));
+goto6=York3
+Say7=All(ttl(01informed,01Recovered,01transferred));
+goto7=York4
+
+[York1]
+Say=Sorry, sir.  We're under strict order to let no one pass.  You'll have to move along.
+Adventure=ch1-03;
+RspDflt=I see.  Good day to you.
+
+[York2]
+Say=There you are.  Sir Roth has been expecting a visit from you.  Go right in.
+script=setpos(PathCorner20000500250046085120);Siege017.setpos(PathCorner20000500250046080510)
+RspDflt=Thank you.
+
+[York3]
+Say=More business with Sir Roth?  Be swift.  Sir Roth is a busy man.
+script=setpos(PathCorner20000500250046085120);Siege017.setpos(PathCorner20000500250046080510)
+RspDflt=Thank you.
+
+[York4]
+Say=Hello, sir!  Sir Roth is just inside!
+script=setpos(PathCorner20000500250046085120);Siege017.setpos(PathCorner20000500250046080510)
+RspDflt=Thank you.
+
+[York5]
+Say=Sorry, sir. You will have go to the Inner Keep to see Sir Roth.
+RspDflt=Thank you.
+
+[three]
+Say=I'm sorry, sir, but General Roth is not here now.
+RspDflt=Of course.  Pardon me.
+

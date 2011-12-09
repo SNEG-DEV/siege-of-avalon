@@ -1,0 +1,229 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01healbrother,06ttcrosby
+Checked=01foundbrother,01HealBrother,01permission,01recovered,03chapter3,05chapter5,06chapter6,06Ostuff,06recip,06recipe,06Rstuff,06ttcrosby
+Removed=
+
+[Quest]
+Added=ch1-21,ch1-22,ch3-518,ch6-014,ch6-501
+Removed=ch6-501
+
+[Items]
+Given=
+Taken=
+Checked=olonvia,olonvial,rayousvia,rayousvia
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(4/10/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=8
+Else=
+Default=
+Say1=All(Ttl(06ttcrosby));
+goto1=progress
+Say2=All(Ttl(06chapter6));
+goto2=6intro
+say3=all(ttl(05chapter5,01HealBrother,01recovered,01permission,01foundbrother));
+goto3=chapter5
+say4=all(ttl(03chapter3));
+goto4=three
+Say5=All(ttl(01FoundBrother,!01HealBrother));
+goto5=Brother
+Say6=All(ttl(!01recovered,!01permission));
+goto6=Crosby
+Say7=All(ttl(!01recovered,01permission));
+goto7=NoChalice
+Say8=All(ttl(01recovered,01permission));
+goto8=Chalice
+
+[Crosby]
+Say=Bienvenido a la capilla.  Soy el Hermano Crosby.  ¿Cómo puedo ayudarte?
+RspDflt=None
+RspTxt1=Sólo estoy explorando, gracias.
+NxtLn1=Crosby1
+RspTxt2=¿De dónde eres?
+NxtLn2=Crosby2
+RspTxt3=¿Qué novedades hay por aquí?
+NxtLn3=Crosby3
+rspcnd4=All(stt(wounds>-1));
+RspTxt4=Necesito que me curen las heridas.
+NxtLn4=Chalice2
+
+[Crosby1]
+Say=Estamos aquí para servir, soldado.  Vuelve si alguna vez nos necesitas.
+Adventure=ch1-21;
+RspDflt=Gracias.
+
+[Crosby2]
+Say=Soy de Elythria, hijo, aunque levo varios años sirviendo aquí.  Fray Massus me ha entrenado bien en el arte de sanar; si alguna vez necesitas mis servicios, sólo pídelo.
+Adventure=ch1-21;
+RspDflt=Te agradezco la oferta, Hermano.
+
+[Crosby3]
+Say=Los heridos se apilan uno encima de otro.  Los Ahoul se están cobrando un precio terrible de nosotros.  Trabajamos día y noche, pero los heridos siguen llegando.  Pero al fin, los buenos espíritus brillarán sobre nosotros.
+RspDflt=Espero que lo hagan, Hermano.
+
+[brother]
+Say=Alabado sea, Corvus!  Quédate tranquilo, nos ocuparemos de tu hermano.
+Script=Siege200007110049297770.removefromparty;Siege200007110049297770.setprop(enabled=false);player.addtitle(01HealBrother);player.setprop(trainingpoints=10);showmessage(You have received some training points.,300);
+Adventure=ch1-22;
+RspDflt=Gracias, Hermano.  Sé que estará en buenas manos.
+
+[NoChalice]
+Say=Hola.  ¿Hay algo que pueda hacer por ti?
+RspDflt=none
+rspcnd1=All(stt(wounds>0));
+RspTxt1=Necesito ser curado.  ¿Podéis ayudarme?
+Nxtln1=NoChalice1
+RspTxt2=¿Habéis oído algún rumor?
+Nxtln2=NoChalice2
+
+[NoChalice1]
+Say=Naturalmente.  Déjame echar un vistazo.
+script=setprop(currentspell=heal);cast(player);player.setprop(wounds=0);player.setprop(drain=0) ;
+RspDflt=Gracias, Hermano Crosby.
+
+[NoChalice2]
+Say=La comida es escasa.  si no sucede algo pronto, no tendremos con qué alimentar a los pacientes hambrientos.
+RspDflt=Las cosas cambiarán pronto.
+
+[Chalice]
+Say=Todos hemos oído de tu éxito!  Gracias y enhorabuena!
+RspDflt=none
+RspTxt1=Sólo era mi deber.  ¿Qué novedades hay?
+NxtLn1=Chalice1
+rspcnd2=All(stt(wounds>0));
+RspTxt2=Necesito que me curen.
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Las cosas han ido mejorando rápidamente desde que trajiste de vuelta el Cáliz.  Los pacientes sanan antes, todos los soldados creyentes han mejorado su moral y coraje.  Tu gesta tiene un efecto maravilloso!
+RspDflt=Es bueno saberlo.  Gracias, Hermano.
+
+[Chalice2]
+Say=Naturalmente.  Déjame echar un vistazo.
+script=setprop(currentspell=heal);cast(player);player.setprop(wounds=0);player.setprop(drain=0) ;
+RspDflt=Gracias, Hermano.
+
+[three]
+Say=¿Qué puedo hacer por ti, hijo mío?
+RspDflt=Nada, Hermano Crosby.  Excúsame.
+rspcnd1=All(stt(wounds>-1));
+RspTxt1=Necesito que me curen.
+NxtLn1=Chalice2
+RspTxt2=He venido a preguntar por la situación de mi hermano.  Tu eres quien le ha estado atendiendo, verdad?
+nxtln2=three2
+
+[three2]
+Say=Me temo que todavía se está recuperando.  Hemos hecho todo lo posible, ahora sólo nos queda darle tiempo.  Es un milagro que hablase coherentemente cuando llegó.  Estoy seguro de que el peso de los últimos días todavía cae sobre él.  Estate tranquilo, que está presente en todas nuestras oraciones.
+adventure=ch3-518
+RspDflt=Gracias por todo, Hermano Crosby.  Hasta luego.
+
+[chapter5]
+Say=¿Y qué puedo hacer por ti, hijo mío?
+RspDflt=Lamento molestarte.
+rspcnd1=All(stt(wounds>-1));
+RspTxt1=Sigo necesitando ser curado.
+NxtLn1=Chalice2
+RspTxt2=Busco a mi hermano.
+nxtln2=chapter5b
+
+[chapter5b]
+Say=Tu hermano se marchó de la enfermería hace un tiempo. Parece que hay una vena heroica en la familia, %playername%. Corvus no podía esperar a reincorporarse al servicio.
+RspDflt=Oh, debería haberlo sabido. Hasta luego, Hermano.
+
+[6intro]
+Say=Me alegro tanto de que hayas venido, %playername%.  Elazar ha estado enfermo desde hace tiempo, y nos tememos que no estará mucho tiempo en este mundo.
+RspDflt=none
+RspTxt1=¿Cómo puedo ayudar?
+nxtln1=i2
+
+[i2]
+Say=Puesto que tu ayuda a los Catheanos fue tan efectiva cuando envenenaron al Rey Isdernus, algunos de mis hermanos han sugerido que solicitemos tu ayuda.  En realidad, no estamos muy seguros de la naturaleza exacta de su enfermedad, pero pensamos que tu experiencia nos podría ayudar a aclarar el asunto.
+RspDflt=none
+RspTxt1=En comparación con los de vuestra Orden, mis conocimientos deben ser bastante limitados; aun así, estaré encantado de ayudar si puedo.
+nxtln1=i3
+
+[i3]
+Say=Hemos intentado todos los remedios mundanos que conocemos sin éxito.  Quizá puedas ayudarnos a encontrar un remedio místico para su extraña enfermedad.
+RspDflt=none
+RspTxt1=Supongo que debería buscar el consejo de alguno de los magos residentes, pues quizá tengan alguna pista respecto a esta extraña enfermedad.
+nxtln1=i4
+
+[i4]
+Say=Te recomendaría a Elarath -- Hablé con él hace un tiempo, pero parecía estar terriblemente ocupado.  Tenía alguna información que podría ser de ayuda, creo, pero no tenía tiempo para buscarla cuando la situación de Elazar no era tan crítica.
+script=player.addtitle(06ttcrosby);
+adventure=ch6-014;
+RspDflt=Me voy a buscar su sabiduría, Hermano Crosby.  Hasta luego.
+
+[progress]
+Say=Has encontrado el conjuro necesario y sus ingredientes?
+RspDflt=none
+RspCnd1=All(ttl(06Rstuff,06Ostuff,06recipe):obj(olonvial,rayousvial))
+RspTxt1=Tengo todo lo que necesitamos.
+NxtLn1=ready
+RspCnd2=All(ttl(06recipe,06rstuff,!06ostuff):obj(rayousvial))
+RspTxt2=El mercader Rayous me ha dado uno de los ingredientes.
+NxtLn2=noo
+RspCnd3=All(ttl(06recipe,!06rstuff,06ostuff):obj(olonvial))
+RspTxt3=Casualmente, Olon tenía uno de los ingredientes que necesitamos.
+NxtLn3=nor
+RspCnd4=All(ttl(!06recipe))
+RspTxt4=Todavía debo hablar con Elarath, para determinar los detalles del conjuro y sus ingredientes.
+NxtLn4=noe
+
+[noo]
+Say=Vuelve cuando tengas el otro.
+rspdflt=
+
+[nor]
+Say=Vuelve cuando tengas el otro.
+RspDflt=Lo haré, Hermano Crosby.
+
+[noe]
+Say=Él debería tener la información que necesitarás.
+RspDflt=Le buscaré inmediatamente.
+
+[ready]
+Say=Excelente! [acepta los objetos y los mezcla en un crisol]  Ahora podemos recitar el conjuro.
+script=player.removeitem(olonvial);player.removeitem(rayousvial);player.removeitem(recipe);
+RspDflt=none
+RspTxt1=¿Está todo listo?
+nxtln1=spell
+
+[spell]
+Say=[Le da el tónico a Elazar.]  Elazar ha ingerido los ingredientes.  Puedes empezar cuando estés listo.
+RspDflt=none
+RspTxt1=Ehso garana nesah, maka aresh vedodbus...ARGH!
+nxtln1=s2
+
+[s2]
+Say=Debes ignorar el dolor y completar el conjuro, o Elazar perecerá seguramente!
+RspDflt=none
+RspTxt1=[haciendo una mueca de dolor] Wekasa mestah elleyoterris, zamus edis sipu!  [A medida que oleadas de agonía te atraviesan, te encuentras inmovilizado como una estatua.]
+nxtln1=capture
+
+[capture]
+Say=%playername%, ¿estás bien?
+script=player.setprop(frozen=true);gsOnTrigger2C6EAB37AB13B2C.setprop(triggerenabled=true);chapter22C6EAB37AB317B2.setprop(enabled=true);chapter22C6EAB37AB2F6A6.setprop(enabled=true);chapter22C6EAB37AB317B2.moveto(PathCorner2C6EAB37AB4A79E);chapter22C6EAB37AB2F6A6.moveto(PathCorner2C6EAB37AB49D8A);journalentry(chpt6-02);
+removequest=ch6-501;
+RspDflt=...[Intentas hablar, pero estás congelado e inmóvil.]
+

@@ -1,0 +1,131 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01informed,01Recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=ch3-534
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Gracias, Holly.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=one(ttl(03chapter3,04chapter4,05chapter5));
+goto2=three
+Say3=All(ttl(!01informed,!01Recovered));
+goto3=Holly
+Say4=All(ttl(01informed,!01Recovered));
+goto4=News
+Say5=All(ttl(01informed,01Recovered));
+goto5=Chalice
+
+[Holly]
+Say=¿Qué te trae por aquí?
+RspDflt=None
+RspTxt1=Estaba explorando la fortaleza.  Como puedes suponer, soy nuevo aquí.  ¿Cómo te llamas y de dónde eres?
+NxtLn1=Holly1
+RspTxt2=Sólo miraba.  Dime, ¿has oído algo de interés últimamente?
+NxtLn2=Holly2
+
+[Holly1]
+Say=Me llamo Holly y echo una mano en la cocina.  Soy de Oriam, aunque ya no quede mucho de Oriam.  Los Ahoul han destruido todo aquello que puedo recordar de mi país.
+RspDflt=Lamento tu pérdida, pero Oriam será vengada y reconstruida.
+rspBack=Holly
+
+[Holly2]
+Say=He oído que habrá un asalto a un campamento Ahoul.  Podremos aprovechar los suministros que capturemos.  Los cocineros están pasando un mal rato intentando alargar las pocas provisiones de que disponemos.
+RspDflt=Mi hermano es parte del grupo de asalto, y creo que será un éxito.
+rspBack=Holly
+
+[News]
+Say=Hola de nuevo.  ¿Cómo puedo ayudarle, señor?
+RspDflt=None
+RspTxt1=Esperaba oír las noticias más recientes.
+NxtLn1=News1
+
+[News1]
+Say=¿Habéis oído las noticias sobre la revuelta del pan en el Patio de los Campesinos?  Alguien dijo que una treintena de personas fueron aplastadas por las masas.  La pobre gente que vive allí no podrá resistir demasiado tiempo.
+RspDflt=Si la suerte nos sonríe, no deberán hacerlo.
+
+[Chalice]
+Say=Eres tú!  Dicen que habías regresado a Avalon de tus aventuras.  ¿Qué te trae de vuelta a las cocinas?
+RspDflt=None
+RspTxt1=Simplemente vengo a buscar información.  Tienes algo interesante que contarme?
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Me temo, señor, que no soy demasiado cotilla.  O sea, que nada de lo que sé podrá resultarle útil.
+RspDflt=Ya veo.  Gracias de todas formas, y buenos días.
+
+[three]
+Say=Bienvenido a las cocinas de nuevo!  Si pudiese prescindir de algo de comer, te lo daría.  Sería lo adecuado, pues de la forma que lo veo, estáis haciendo el trabajo de diez hombres!  Imaginad lo que llegaríais a hacer si estuvieseis bien alimentado!
+RspDflt=none
+RspTxt1=Parece tener sentido, pero si comiese tan bien, algún otro pasaría hambre, e intentamos salvar vidas, ¿no es así?
+nxtln1=three2
+
+[three2]
+Say=Naturalmente, señor, sólo bromeaba.  Así pues, hay algo que pueda hacer por vos?
+RspDflt=none
+RspTxt1=Podríais compartir algún cotilleo, o alguna información?
+nxtln1=three3
+
+[three3]
+Say=He oído que los Ahoul son los responsables de los escarabajos en las bodegas, pero no sé cómo pueden haberlo hecho.
+adventure=ch3-534
+RspDflt=none
+RspTxt1=Es una posibilidad.  No conocemos la capacidad de las fuerzas Sha'ahoul.
+nxtln1=three4
+
+[three4]
+Say=Me gustaría oír algo más tranquilizante.  Quiero decir, si pudieron introducir escarabajos en las bodegas, ¿no podrían entrar aquí ellos mismos?
+RspDflt=Quizá, señora mía.  Estoy seguro de que la verdad saldrá a la luz antes o después.  Hasta entonces, hasta luego.
+
+[chapter6]
+Say=Buscando a Bonnie, ¿eh? No está aquí.
+RspDflt=Ok, gracias. Cúidate, Holly.
+RspTxt1=¿Dónde está?
+nxtln1=chapter6a
+
+[chapter6a]
+Say=No estoy segura. Creo que se fue a entregar provisiones a algún lugar.
+RspDflt=Hasta luego.
+RspTxt1=¿Por qué buscaría yo a Bonnie?
+nxtln1=chapter6b
+RspTxt2=¿Cómo sabías que busco a Bonnie?
+nxtln2=chapter6c
+
+[chapter6b]
+Say=Si no lo sabes, no te lo digo! *risita*
+RspDflt=Ok, gracias. Cúidate, Holly.
+
+[chapter6c]
+Say=Como si no fuera obvio!
+RspDflt=Ok, gracias. Cúidate, Holly.
+

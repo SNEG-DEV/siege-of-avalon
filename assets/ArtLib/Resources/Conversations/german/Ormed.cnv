@@ -1,0 +1,45 @@
+[root]
+Count=2
+Else=
+Default=Danke, Ormed.
+Say1=All(ttl(!01recovered));
+goto1=Ormed
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Ormed]
+say=Nanu, ihr seid wohl neu hier, was?  Seid Ihr auch hier postiert?
+rspDflt=None
+rspTxt1=Nein.  Ich bin in eigener Sache hier.
+NxtLn1=Ormed1
+
+[Ormed1]
+say=Verstehe. Viele neue Gesichter kriegen wir nicht zu sehen.  Immer nur die gleichen Leute die das Gleiche machen, tagein, tagaus.
+rspDflt=None
+rspTxt1=Hoffentlich verbessert sich die Situation bald.
+NxtLn1=Ormed2
+
+[Ormed2]
+say=Darauf würde ich mich nicht verlassen, Herr.  Mögen Euch die guten Geister beschützen.
+rspDflt=Danke. Euch auch.
+
+;After recovery of Chalice
+[Chalice]
+say=Seid gegrüßt, Herr!  Ihr habt ja ganz schön für Aufregeung gesorgt, nicht wahr?
+rspDflt=None
+rspTxt1=Das war nicht meine Absicht.  Ich habe nur meine Pflicht als Soldat von Avalon getan.
+NxtLn1=Chalice1
+
+[Chalice1]
+say=Mehr machen wir alle nicht, Herr.  Bloß, manche von uns haben Pflichten, die uns zu Größe verhelfen, während anderen befohlen wird, den lieben langen Tag auf dem Hintern zu sitzen.
+rspDflt=None
+rspTxt1=Aber jede Aufgabe ist für den Sieg wichtig.
+NxtLn1=Chalice2
+
+[Chalice2]
+say=Wird wohl so sein, Herr.  Also dann, ade.
+rspDflt=Ade, Soldat.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

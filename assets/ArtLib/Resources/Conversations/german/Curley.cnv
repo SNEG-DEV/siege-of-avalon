@@ -1,0 +1,54 @@
+[root]
+Count=2
+Else=
+Default=Danke, Curley.
+Say1=All(ttl(!01recovered));
+goto1=Curley
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Curley]
+say=Seid gegrüßt, Herr.  Wie kann ich Euch helfen?
+rspDflt=None
+rspTxt1=Ich bin gerade angekommen und sehe mich hier um.
+NxtLn1=Curley1
+rspTxt2=Woher kommt Ihr?
+NxtLn2=Curley2
+rspTxt3=Ich bin nur auf der Suche nach Gerüchten.  Habt Ihr welche gehört?
+NxtLn3=Curley3
+
+[Curley1]
+say=Wie Ihr sehen könnt, ist dies der Ort an dem wir Mönche beten und andere heilen. Falls Ihr jemals eine Heilung benötigt, kommt her und sucht Bruder Crosby auf.  Er ist bei weitem der beste Heiler.
+rspDflt=Danke für die Information.
+rspBack=Curley
+
+[Curley2]
+say=Ich bin Catheaner, Herr.  Ich habe mich zuerst als Kämpfer versucht, aber dann stellte ich fest, dass ich weder die Kraft noch die Veranlagung fürs Blutvergießen hatte. Aber dann entdeckte ich meine wahre Berufung, als Mönch.
+rspDflt=Zum Glück. Avalon braucht geschickte Heiler.
+rspBack=Curley
+
+[Curley3]
+say=Ein Freund hat mir erzählt, dass das Südtor heute Nacht beinahe gefallen wäre.  An Eurer Stelle würde ich es meiden-- es sei denn, natürlich, Ihr wollt von einem Ahoul-Speer aufgespießt werden.
+rspDflt=None
+rspTxt1=Ich bezweifle, dass man das Südtor aufbrechen könnte, und ich bin kein Feigling.  Wenn es zu einem Kampf kommt, werde ich mitten drin sein-- das verlangt meine Pflicht von mir.
+NxtLn1=Curley4
+
+[Curley4]
+say=Wie Ihr meint, Herr.  Ich werde für Euer Heil beten.
+rspDflt=Danke für Euer Sorge, Bruder.  Ade.
+
+
+;After recovery of Chalice
+[Chalice]
+say=Seid gegrüßt, Herr!  Wie ist es Euch im Dorf ergangen?
+rspDflt=None
+rspTxt1=Ganz gut, danke.  Und hier?  Wie ist die Situation hier?
+NxtLn1=Chalice1
+
+[Chalice1]
+say=Sie wird jeden Tag besser!  Es kommen von Tag zu Tag weniger Verwundete zu uns, und es überleben immer mehr Schwerverwundete.  Die guten Geister werden uns bewahren!
+rspDflt=Davon bin ich überzeugt, Bruder Curley.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

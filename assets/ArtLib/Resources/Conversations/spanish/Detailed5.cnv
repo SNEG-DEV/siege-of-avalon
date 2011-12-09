@@ -1,0 +1,134 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=Gracias.
+Say1=
+goto1=Soldier
+
+[Soldier]
+Say=Reconozco la cara de un compatriota.  Saludos!
+RspDflt=None
+RspTxt1=¿Eres Elythriano?  Es bueno ver a alguien de casa.
+NxtLn1=Soldier1
+
+[Soldier1]
+Say=Hay gente de todo el país por aquí, pero muchos de ellos no habían visto más que la parte de atrás de su arado hasta ahora.
+RspDflt=None
+RspTxt1=Entonces, ¿la mayoría son siervos?
+NxtLn1=Soldier2
+RspTxt2=¿De qué parte de Elythria eres?
+NxtLn2=Soldier3
+
+[Soldier2]
+Say=Ya conoces a los terratenientes de Elythria.  ¿Por qué arriesgar sus propios cuellos si pueden enviar a sus siervos?
+RspDflt=None
+RspTxt1=No todos los terratenientes son cobardes.  Si mi padre no hubiese caído enfermo, ya hace años que se hubiese reunido aquí con mi hermano para luchar.
+NxtLn1=Soldier4
+
+[Soldier4]
+Say=No pretendía ofender.  Como puedes adivinar, los libertos tenemos una visión peculiar de los terratenientes.
+RspDflt=None
+RspTxt1=Y los terratenientes tenemos una visión muy peculiar de los libertos.
+NxtLn1=Soldier5
+RspTxt2=¿Y qué opinión es esa?
+NxtLn2=Soldier6
+
+[Soldier5]
+Say=Imagino que sí.  Pocos libertos valen para algo.  Aunque mis ancestros han sido herreros durante tanto tiempo como cualquiera pueda recordar, no somos los típicos libertos.
+RspDflt=None
+RspTxt1=Demasiados libertos son simplemente mendigos y pedigüeños.  Estarían mejor siendo siervos que inútiles.
+NxtLn1=Soldier7
+
+[Soldier7]
+Say=Supongo que ellos tienen una opinión distinta.  Mejor ser pobre y libre que bien alimentado pero dependiente de alguien.
+RspDflt=None
+RspTxt1=Quizá, pero recuerda que la prosperidad de nuestro país depende de esos siervos.
+NxtLn1=Soldier8
+
+[Soldier8]
+Say=Lo siento, amigo, pero creo que podríamos seguir discutiendo durante horas.  Una discusión política no es la cosa más adecuada que hacer en estos momentos, ¿no crees?
+RspDflt=Cierto, cierto.  Me disculpo y te deseo un buen día.
+
+[Soldier6]
+Say=Dado que nuestros ancestros fueron siervos en algún momento, loa mayoría de los libertos despotrica de los terratenientes.  Mi familia es una rara excepción, pues siempre hemos sido libres.
+RspDflt=None
+RspTxt1=Eso es verdaderamente raro.  Todos los Elythrianos están ligados al sistema feudal de una forma u otra.  Incluso los libertos dependen de los terratenientes para hacer negocios.
+NxtLn1=Soldier9
+
+[Soldier9]
+Say=Cierto, pero los siervos también servirían para hacer negocios si fuesen los amos de sus propias tierras, ¿no crees?
+RspDflt=None
+RspTxt1=Quizá debiéramos dejar esta discusión.  Si vamos a discutir sobre éste tema, sería mejor hacerlo en nuestro tiempo libre.
+NxtLn1=Soldier10
+
+[Soldier10]
+Say=Tienes razón.  Que tengas un buen día.
+RspDflt=Buen día a ti también.
+
+[Soldier3]
+Say=Mi familia tiene una tienda en Thymos.  Hemos sido herreros durante tanto tiempo que ninguno de mis familiares recuerda que nunca hayamos hecho otra cosa.  ¿Y tu?  ¿De qué parte de Elythria eres?
+RspDflt=None
+RspTxt1=Mi padre tiene tierras en la frontera con Nisos.  Nuestros siervos siembran cereales y cuidan cerdos.
+NxtLn1=Soldier11
+
+[Soldier11]
+Say=Entonces, ya has tenido entrenamiento como militar!
+RspDflt=None
+RspTxt1=Aprendí algunas cosas mientras crecía.
+NxtLn1=Soldier12
+RspTxt2=Naturalmente.  Aprendí a luchar antes que a gatear.
+nxtln2=soldier13
+
+[Soldier12]
+Say=Entonces todo te irá bien aquí en Avalon.  La mayoría de los soldados no sabían nada del arte de la guerra cuando llegaron.  Aunque aun así, hemos conseguido mantener a los Ahoul a ralla.
+RspDflt=None
+RspTxt1=Sólo espero ser de alguna utilidad.
+NxtLn1=Soldier14
+
+[Soldier14]
+Say=Lo serás.  Buenos días.
+RspDflt=Igualmente.
+
+[Soldier13]
+Say=¿Es eso cierto?  Descubrirás que el fanfarronear sólo te creará problemas por aquí.
+RspDflt=None
+RspTxt1=¿Quien dice que fanfarroneo?
+NxtLn1=Soldier15
+
+[Soldier15]
+Say=Yo lo digo.  Reconozco a un soldado novato en cuanto lo veo.  Te invitaría al campo de entrenamiento, pero no quisiera avergonzar demasiado a otro Elythriano.  Ve a pelear con los Ahoul, y quizá después veamos qué has aprendido.
+RspDflt=No olvidaré tu oferta.
+

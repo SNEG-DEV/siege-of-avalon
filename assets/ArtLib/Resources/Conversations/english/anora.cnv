@@ -1,0 +1,282 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01basement,01happycook,01wallhole,05pie
+Checked=01Basement,01BonnieHapp,01BonnieTale,01bug,01BugHoleFixed,01Bugs,01happycook,01recovered,01WallHole,05chapter5,05pie,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-02,ch1-03,ch1-04,ch1-29,ch1-30,ch6-004
+Removed=ch1-02,ch1-04
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(6/25/01)=Passed
+tucker(7/12/01)=Passed
+tucker(7/23/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=11
+Else=
+Default=
+Say1=all(ttl(06chapter6));
+goto1=ch6
+Say2=all(ttl(05chapter5,05pie));
+goto2=chapter5c
+Say3=all(ttl(05chapter5,01happycook));
+goto3=chapter5
+Say4=All(ttl(!01BonnieTale,!01Bugs,!01Basement));
+goto4=AnoraIntro
+Say5=All(ttl(01BonnieTale,!01Bugs,!01Basement));
+Goto5=FromBonnie
+Say6=All(ttl(!01Bugs,01Basement));
+goto6=NotDeadYet
+Say7=All(ttl(01Bugs,!01WallHole));
+goto7=Orkin
+Say8=All(ttl(01WallHole,!01HappyCook));
+Goto8=Davet
+Say9=All(ttl(!01recovered));
+goto9=NoChalice
+Say10=All(ttl(01recovered));
+goto10=Chalice
+
+[AnoraIntro]
+Say=If you've come here looking for a handout, you're wasting your time!  There's nothing to spare in these hard times.
+RspDflt=Goodbye.
+RspTxt1=I've actually come here to meet everybody.  I'm new and am taking a look around the keep.
+NxtLn1=Anora1
+RspTxt2=I'm only here to meet you.  Where are you from?
+NxtLn2=Anora2
+RspTxt3=I see.  Instead of a handout, could I possibly hear a rumor from you?
+NxtLn3=Anora4
+RspTxt4=I see.  Is there anything I can help you with?
+NxtLn4=Bugs
+
+[Anora1]
+Say=Well, make it a short look.  As you can see, we're busy preparing what little food there is.
+RspDflt=Then I'm sorry to have wasted your time.  Good day.
+
+[Anora2]
+Say=I'm from Oriam.  My husband and I used to run an inn not far from here.  When the blasted Ahoul invaded, they burned our inn and killed my husband.  Rather than roll over and die, I'm trying to help defeat Mithras the only way I can, by feeding hungry soldiers!
+Adventure=ch1-29;
+RspDflt=None
+RspTxt1=An important task!  I'm sure your food is as delicious as they all say it is.
+nxtLn1=Anora3
+
+[Anora3]
+Say=Enough!  I've work to attend to, and I'm sure you've some soldiering to see to as well!  Good day.
+RspDflt=Good day, madame.
+
+[Anora4]
+Say=A rumor?  I'm no common cook, son!  I'm the mistress of this kitchen!  Go ask someone who has time to waste for a rumor!
+RspDflt=I apologize for the interruption, ma'am.  I'll be leaving now.
+
+[FromBonnie]
+Say=If you've come here looking for a handout, you're wasting your time!  There's nothing to spare in these hard times.
+Adventure=ch1-29;
+RspDflt=none
+RspTxt1=No, madame, I have not.  I have just recently spoken with Bonnie and she informs me that there is something unusual in the kitchen basement.  I was wondering, then, if there might be something that I could do to assist in the situation?
+nxtLn1=Bugs
+
+[Bugs]
+Say=Well, you look like something of a soldier.  Perhaps there is, at that.  These creatures-
+RspDflt=None
+RspTxt1=Creatures?  What do you believe them to be?
+nxtLn1=Bugs1
+
+[Bugs1]
+Say=Rats, perhaps, but I'm not certain.  All I know for certain is that our precious stock of grain downstairs is being eaten, and it's not by us.  That silly girl Bonnie may think it's a Shade or somesuch, but what would a Shade do with flour?  Whatever it is, if it's not stopped soon there'll be nothing left for me to feed anyone.  Not even General Roth himself...
+Adventure=ch1-30;
+RspDflt=None
+rspCnd1=all(ttl(!01BonnieTale));
+RspTxt1=Sounds like a terrible predicament.  I hope it is resolved soon.
+nxtLn1=Bugs2
+RspTxt2=Allow me to dispatch these creatures for you, ma'am.
+nxtLn2=Bugs3
+
+[Bugs2]
+Say=You're not a soldier after all, are you, then?  Ha!  I've met braver doormice!
+RspDflt=I regret than I am but a new recruit.  Good day, madame.
+RspTxt1=Forgive me, madame, but you misunderstand me.  I meant only that I would resolve the situation as quickly as I am able.
+nxtLn1=Bugs3
+
+[Bugs3]
+Say=Finally someone with the courage to investigate the situation!  Be careful, lad.
+AddQuest=ch1-02;
+script=player.addtitle(01Basement)
+RspDflt=I will return shortly, but not until every one of the thieves is destroyed.
+
+[NotDeadYet]
+Say=That was quick.  You don't look as if you've struggled too hard down there.
+RspDflt=None
+RspTxt1=In truth, ma'am, I must admit the creatures are still alive.
+nxtLn1=basement1
+
+[Basement1]
+Say=Too strong for you, eh?
+RspDflt=None
+RspTxt1=Regretfully, yes, madame.  I will return once I've enhanced my skills.
+nxtLn1=Basement2
+RspTxt2=Not at all, madame.  I just need to rest a moment and then I shall continue the fight.
+nxtLn2=Basement3
+
+[Basement2]
+Say=Don't take too long or they might eat us out of victory.
+RspDflt=I will train as quickly as I can.
+
+[Basement3]
+Say=Good!  Don't come back up until every one of them is dead!
+RspDflt=I won't, ma'am.
+
+[Orkin]
+Say=What's the news?
+RspDflt=None
+RspTxt1=I've just come from the basement, madame; there was an infestation of giant beetles below feasting on the flour.  However, I have dispatched every one of them, and our food supplies are once again safe from their unwelcome mouths.
+nxtln1=Orkin1
+
+[Orkin1]
+Say=Giant- ?  I had thought rats to be down there, or... something.  Giant beetles, though...  You are unhurt?
+RemoveQuest=ch1-02;
+RspDflt=none
+RspTxt1=I am well enough, madame.  However, I must report to you that the beetles entered through a hole dug through the wall of the basement.  To prevent a further infestation, that hole must be repaired immediately.
+nxtLn1=Orkin2
+
+[Orkin2]
+Say=Yes, of course.  You should find Davet out in the mess hall.  He's a poor excuse for a soldier, but he and that friend of his should suffice for simple repair work.  Go tell him that if he ever wants to eat of my cooking again, he'll have the hole patched to my satisfaction before a day goes by.  After you're done with him, be sure to return and let me know.
+AddQuest=ch1-03;
+Script=player.addtitle(01WallHole);journalentry(anora);showmessage(Your journal has been updated.,200);
+RspDflt=It would be my pleasure, madame.
+
+[Davet]
+Say=Have you spoken with Davet yet?  Will the wall be fixed?
+RspDflt=none
+RspCnd1=All(ttl(01BugHoleFixed));
+RspTxt1=Yes, madame.  He will be fixing it promptly.
+nxtLn1=Davet2
+RspCnd2=All(ttl(!01BugHoleFixed));
+RspTxt2=Forgive me, madame.  I have not yet convinced him to do the work.
+nxtLn2=NoDavet
+
+[Davet2]
+Say=Excellent.  I thank you for all your work, soldier.  You've my word that once we've more supplies, the finest pie that I can bake will be your reward.
+RemoveQuest=ch1-04;
+script=player.addtitle(01happycook);player.setprop(trainingpoints=4);showmessage(You have received some training points,200);
+RspDflt=Though it was only my duty to assist you, madame, I shall still eagerly anticipate your creation!  Until then, a good day to you!
+
+[NoDavet]
+Say=Just tell him that if he and his expect to eat, that wall had better be fixed.  That should put some spring in his stride!
+RspDflt=Yes, madame.  I shall do so immediately.
+
+[NoChalice]
+Say=Come for your pie already?  You know as well as I that we've received no more supplies.
+RspDflt=None
+RspTxt1=I do, madame.  I was only passing through, looking for a rumor.
+nxtLn1=NoChalice1
+
+[NoChalice1]
+Say=Just between you and I, there isn't enough food to make it until the winter, much less stand all the way through it.  I think we need a miracle to survive this siege.
+RspDflt=None
+RspTxt1=Perhaps not a miracle, I think; just a little dedication and luck.
+nxtLn1=NoChalice2
+
+[NoChalice2]
+Say=I hope you are right.  May the good spirits protect you this day and every one that follows.
+RspDflt=And you too, madame.
+
+[Chalice]
+Say=I've been hearing strange things about you.  They say you're some kind of ancient hero reborn into the world of the flesh.  Is this true?
+RspDflt=None
+RspTxt1=I think not, ma'am.  I found some chalice and everyone has become excited about it.
+nxtln1=Chalice1
+
+[Chalice1]
+Say=Well, your effect here has been nothing but uplifting!  I'm glad you're among us now!
+RspDflt=None
+RspTxt1=And I am glad to be here, fighting Mithras and the Ahoul.
+nxtLn1=Chalice2
+
+[Chalice2]
+Say=Stay safe, my lord.
+RspDflt=And you too, madame.
+
+[chapter5]
+Say=Many thanks for talking to Davet. I doubt if he will ever fix that blasted hole, though. I do have your pie ready, if you'd like it...  "Mr. Hero."
+RspDflt=None
+RspTxt1=[laugh] Actually, I'm sure I'd feel the weight of an entire pie on my travels. Let me have a small bit and you may give the rest to the guards. Such a wondrous treat would brighten their day.
+Nxtln1=Chapter5b
+
+[Chapter5b]
+Say=Sure! What oddly unselfish ways you have, %playername%...  Well, was it worth the wait?
+RspDflt=[chewing] Delicious as always, m'lady. Farewell, and thank you.
+script=player.addtitle(05pie);
+
+[chapter5c]
+Say=Persistent fellow aren't you? I can see why she likes you...
+RspDflt=Who?
+
+[ch6]
+Say=Welcome again to my kitchen, %playername%.  How may I serve one of Avalon's shining defenders?
+RspDflt=none
+RspCnd1=All(ttl(!01bugs))
+RspTxt1=I was just passing through, ma'am.  How are you faring of late?
+NxtLn1=out6
+RspCnd2=All(ttl(01bugs))
+RspTxt2=You sound so formal, Anora.  Have you forgotten the green recruit who hunted bugs in your cellar not so long ago?
+NxtLn2=pt
+
+[out6]
+Say=Well enough, young man, although our supplies are almost completely gone.  Speaking of that, I must see that Bonnie brings up what's left of the food in the main cellar today.  Something seems to be getting into it, but I've been unable to discover what. Oh well, that's no concern for a hero.  Take care, %playername%.
+RspDflt=May the good spirits see you safely through these difficult times, good Anora.  Farewell.
+
+[pt]
+Say=You've come quite far, %playername%, and the lad you were has become a man long-removed from his bug-hunting beginnings.
+RspDflt=none
+RspCnd1=All(ttl(!01BonnieHappy))
+RspTxt1=True enough, I suppose.  How have you fared of late, ma'am?
+NxtLn1=out6
+RspCnd2=All(ttl(01BonnieHappy))
+RspTxt2=True enough, I suppose.  Speaking of bug hunting, how is Bonnie, the lass who first alerted me to that particular problem?
+NxtLn2=bclue
+
+[bclue]
+Say=Bonnie eh?  I can tell you've had your eye on her for a while now, and don't you try to deny it.
+RspDflt=none
+RspTxt1=Well, she is a very sweet girl, but...
+nxtln1=bclue2
+
+[bclue2]
+Say=Don't tell me you are too busy fighting the Sha'ahoul to find time enough for love -- in these dark days, you must seize what chances for happiness that present themselves.
+RspDflt=none
+RspTxt1=To ensure that these dark days do not remain so, I've no choice but to sacrifice my personal life for my duty.
+nxtln1=bclue3
+RspTxt2=I just wouldn't feel right distracting her from her duties.
+nxtln2=bclue4
+
+[bclue3]
+Say=Very well, young man -- but don't forget what it is you are fighting for.
+RspDflt=True enough, ma'am.  Farewell.
+
+[bclue4]
+Say=Oh, I'm sure she could find the time to accept a compliment from a handsome young soldier.  [She winks.]  You might be able to catch up with her before she has to make her deliveries.  Hurry, though, for South Gate is first on her list, and they give her a terrible time if their rations are late.
+adventure=ch6-004;
+RspDflt=Though I'm sure that one thing Bonnie certainly does not lack for is compliments from soldiers, I shall not neglect to speak with her.
+

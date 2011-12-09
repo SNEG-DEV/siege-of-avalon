@@ -1,0 +1,32 @@
+[root]
+Count=1
+Else=
+Default=Danke, Kyner.
+Say1=
+goto1=Kyner1
+
+[Kyner1]
+say=Hallo, mein Junge.  Mein Name ist Kyner.  Ich war ein guter Freund von Eurem Bruder.
+rspDflt=None
+rspTxt1=Es freut mich, Euch kennen zu lernen.  Habt Ihr zum Suchtrupp gehört?
+NxtLn1=Kyner2
+
+[Kyner2]
+say=Ja, habe ich.  Wir haben das Dorf abgesucht, fanden aber nichts als Werwürmer.  Wir haben eine ganze Menge davon getötet, ehe wir gingen.
+rspDflt=None
+rspTxt1=Es gab kein Zeichen von ihm?
+NxtLn1=Kyner3
+
+[Kyner3]
+say=Tut mir leid, wir fanden keine Spur von ihm.  Südlich des alten Turm des Zauberers hatte es kurz davor einen Kampf gegeben, aber wer oder was daran beteiligt war, konnte man nicht erkennen.  Es hätte alles Mögliche sein können.
+Adventure=Ch1-87;
+rspDflt=None
+rspTxt1=Danke, dass Ihr gesucht habt.
+NxtLn1=Kyner4
+
+[Kyner4]
+say=Das war das Mindeste, was ich tun konnte. Euer Bruder hat mich einmal davor bewahrt, ein Bein zu verlieren, und noch stehe ich in seiner Schuld.
+rspDflt=Bestimmt bekommt Ihr dazu noch Gelegenheit.  Gehabt Euch wohl.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

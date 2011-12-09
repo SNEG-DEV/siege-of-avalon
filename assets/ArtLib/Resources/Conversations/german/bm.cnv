@@ -1,0 +1,96 @@
+[root]
+Count=1
+Else=
+Default=Danke, Holt.
+Say1=
+goto1=Holt
+
+[Holt]
+say=Tag, der Herr!  Was kann ich für Euch tun?
+rspDflt=Gar nichts. Ade.
+rspCnd1=all(ttl(!ShownWares));
+rspTxt1=Nichts, mein Freund.  Ich wollte mich nur ein wenig umsehen.
+NxtLn1=Holt1
+rspCnd2=all(ttl(ShownWares));
+rspTxt2=Ich wollte mir Eure Ware noch einmal ansehen.
+nxtLn2=Wares
+rspCnd3=all(ttl(!01FoundTraitors,!01FoundAhoul));
+rspTxt3=Seht Ihr die beiden da drüben an der Treppe?  Ihr wisst nicht zufällig, was sie machen, oder?
+nxtLn3=Traitors
+
+[Holt1]
+say=Seht Euch um so viel Ihr wollt. Hier werdet Ihr nichts finden, was nicht in bester Ordnung wäre.  Nein, Herr, nicht eine Sache. Äh, gefällt Euch das, was Ihr seht?
+rspDflt=None
+rspTxt1=Nein, eigentlich nicht.  Die Waffen und Rüstungen da draußen sind so schlecht wie meine eigenen.
+NxtLn1=Holt2
+
+[Holt2]
+say=Ja, Herr, das ist wirklich eine herrliche Auswahl an Blechklingen und Papp-Rüstung, nicht wahr?  Auf den ersten Blick sieht es vielleicht ganz gut aus, aber beim ersten richtigen Kampf damit wäre man ganz schnell hinüber... 
+rspDflt=None
+rspTxt1=Ich habe gehört, dass hochwertiger Stahl knapp ist...
+NxtLn1=Holt3
+
+[Holt3]
+say=Ja, Herr, furchtbar knapp.  Und nachdem General Ovoron alles an guter Ausrüstung mitgenommen hat, ist nichts mehr übriggeblieben.  Aber wenn Ihr einen Moment hierher kommt, Herr, habe ich da vielleicht etwas, was Euch interessieren könnte...
+rspDflt=None
+rspTxt1=Wie Ihr wollt, aber warum flüstert Ihr auf einmal?
+NxtLn1=Holt4
+rspTxt2=Ich kann Euch versichern, dass ich das keinesfalls vorhatte.  Gehabt Euch wohl.
+nxtLn2=Holt8
+
+[Holt4]
+say=Es ist mir gelungen, ein oder zwei gute Stücke beiseite zu schaffen, die Euch eventuell gefallen könnten.  Ein leicht unsauberes Geschäft vielleicht, aber damals in Taberland habe ich gelernt, dass die mit den guten Klingen überlebt haben --ganz egal, woher sie ihre Schwerter hatten-- während die mit den schlechten Klingen...  Na ja, wir haben uns doch verstanden, oder? Diese Schönheiten hier werden dafür sorgen, dass Eure Innereien innen bleiben-- gegen Bares, natürlich.
+Adventure=ch1-63;
+rspDflt=None
+rspTxt1=Wenn Eure Preise angemessen sind, hätte ich vielleicht Interesse.  Zeigt her, was Ihr auf die Seite gebracht habt.
+Script1=addtitle(ShownWares);merchant
+rspTxt2=Ich gebe Euch kein Blutgeld.  Vielleicht suche ich Euch später noch einmal auf, aber das bezweifle ich.
+NxtLn2=Holt7
+rspTxt3=Sagt mir einen guten Grund, warum ich Euch nicht der Justiz übergeben sollte!
+NxtLn3=Holt5
+
+[Holt5]
+say=Wenn Ihr was sagt, mein Junge, werde ich es einfach abstreiten.  Euch wird sowieso niemand glauben-- was glaubt Ihr, wozu man einflußreiche Freunde hat?  Denkt Ihr, ich würde so etwas machen, ohne ein bisschen vorzusorgen?
+rspDflt=None
+rspTxt1=Immer mit der Ruhe, kleiner Mann.  Ich werde Euch doch nicht der Justiz übergeben, wenn wir beide von einem gemeinsamen Geschäft profitieren würden. Ich wollte nur sehen, ob Ihr Euch irritieren lasst.  Das tut Ihr nicht.  Gut.  Zeigt mir Eure Ware.
+Script1=addtitle(ShownWares);merchant
+rspTxt2=Vielleicht nicht.  Trotzdem habe ich im Moment kein Interesse an Eurer Ware.
+NxtLn2=Holt7
+
+
+[Holt6]
+say=Dieser Platz ist für das Geschäft reserviert.
+rspDflt=Natürlich.
+
+[Holt7]
+say=Na schön, aber Ihr müßt daran denken, es für Euch zu behalten, wenn Ihr wisst, was für Euch gut ist.
+rspDflt=Wie Ihr wollt.  Ade.
+
+[Holt8]
+say=Nein, nein!  Wartet doch!  Hört mich zu Ende zu, Herr.  Es ist nicht so, wie Ihr denkt!
+rspDflt=None
+rspTxt1=Sprecht Euch aus.
+NxtLn1=Holt4
+
+[Wares]
+say=Ist das wahr? Nun, wenn Ihr mir vielleicht unauffällig folgen wollt...
+rspDflt=none
+rspTxt1=Aber natürlich.
+script1=merchant
+
+[Traitors]
+say=Diese Burschen sind General Ovoron's Truppen.  Unhöfliche Flegel. Alles, was ich ihnen entlocken konnte-- außer funkelnden Blicken-- ist dass sie den Geräuschen nachgehen, die von unten kommen.  Wie sie das dadurch erreichen wollen, dass sie schweigend oben an der Treppe stehen, ist mir schleierhaft, aber was soll's? Vielleicht sind noch mehr von ihnen unten auf der Jagd nach Ungeziefer, und sie passen nur auf, dass nichts die Treppe hinaufkommt. Was immer sie da machen, sie behalten es jedenfalls für sich-- und sie halten alle anderen fern.  Da kommt niemand nach unten so lange sie da stehen, und ich glaube, sie lassen sich nur durch einen Befehl vom General dazu bewegen, da wegzugehen. Bloß, der General ist ja nicht mehr da.
+Adventure=ch1-64;
+rspDflt=none
+rspTxt1=Verstehe.  Danke für die Information.
+nxtln1=Traitors2
+
+[Traitors2]
+say=Jederzeit, mein Freund.  Wenn Ihr Euch wirklich unten umsehen wollt, würde ich später wiederkommen.  Sie müssen doch irgendwann schlafen, oder? So, kann ich Euch sonst noch irgendwie behilflich sein?
+rspDflt=Nein, ist schon gut.  Einen schönen Tag noch.
+rspCnd1=all(ttl(!ShownWares));
+rspTxt1=Eigentlich nicht.  Ich sehe mich nur um .
+NxtLn1=Holt1
+rspCnd2=all(ttl(ShownWares));
+rspTxt2=Ich bin außerdem hier, um mir Eure Waren noch einmal anzusehen.
+nxtLn2=Wares

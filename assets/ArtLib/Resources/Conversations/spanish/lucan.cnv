@@ -1,0 +1,212 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01steelshortage,01trainedfighter,armor fitting,combat breathing,field first aid,weapon balance
+Checked=01GetSteel,01GotSword,01ReturnedSteel,01TrainedFighter,05chapter5,05genarb01,06chapter6,Armor Fitting,Combat Breathing,Field First Aid,portalactive,Weapon Balance
+Removed=
+
+[Quest]
+Added=ch1-06,ch1-66,ch1-67
+Removed=
+
+[Items]
+Given=kshieldavalon
+Taken=
+Checked=
+Added=magicblade
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Adiós.
+say1=all(ttl(01TrainedFighter,06chapter6));
+goto1=chapter6
+Say2=all(ttl(01TrainedFighter,05chapter5));
+goto2=chapter5
+Say3=All(ttl(!01TrainedFighter));
+goto3=Lucan
+Say4=All(ttl(01TrainedFighter,!06chapter6));
+goto4=Info
+
+[Lucan]
+Say=Buenos días, señor. ¿Cómo puedo serle útil?
+RspDflt=None
+RspTxt1=Sólo estoy mirando.
+NxtLn1=Lucan1
+RspTxt2=¿Qué haces aquí?
+NxtLn2=Lucan2
+
+[Lucan1]
+Say=Muy bien, señor.  Si necesitáis alguna cosa, sólo tenéis que pedirla.
+RspDflt=Gracias, lo haré.
+rspback=Lucan
+
+[Lucan2]
+Say=Estoy a cargo de la armería de la Puerta Sur.  Es mi deber mantener a los defensores de la fortaleza bien equipados y entrenados en el uso de su equipo.
+Adventure=ch1-66;
+RspDflt=None
+RspTxt1=Vaya, yo necesito equipo nuevo.
+nxtln1=Shield
+RspTxt2=¿Qué clase de entrenamiento puedes ofrecer?
+nxtln2=TrainTitles
+rspcnd3=all(ttl(05chapter5,portalactive,!05genarb01));
+RspTxt3=¿Sí?  He oído que posees una espada encantada.  Necesito que me la prestes por el bien de Avalon.
+script3=addtitle(05genarb01);
+nxtln3=giveblade
+
+[shield]
+Say=Ya me temía que diríais eso, señor.  Lo lamento, pero en lo que respecta a armas y armaduras deberéis ver al Intendente en la Torre Exterior.  Todo lo que tengo está ya adjudicado.  No obstante, puedo proporcionaros un escudo apropiado.
+Script=Siege20000600030075742200.giveitem(KShieldAvalon,player);showmessage(You have received an item.,200);player.addtitle(01TrainedFighter);
+RspDflt=None
+RspTxt1=Mil gracias.  ¿Tienes idea de por qué los suministros y el armamento son tan escasos?
+nxtLn1=Steel
+
+[Steel]
+Say=Es el herrero, señor.  Parece que poco de lo que sale de su forja estos días tiene la calidad mínima necesaria.  Oh, no es culpa suya, señor--hay una falta crítica de acero refinado.  Además, el General Ovoron requisó la mayoría del armamento de calidad que teníamos para su incursión.  Lo que ves ahí fuera es lo que queda, señor, e incluso eso está ya apalabrado, siendo tan malo como es.
+Adventure=ch1-67;
+RspDflt=Ya veo.  Gracias por tu tiempo.
+RspTxt1=¿Avalon se ha quedado sin acero refinado?  ¿Cuando fue el último envío?
+nxtLn1=Steel2
+
+[Steel2]
+Say=No lo recuerdo exactamente, señor.  Sé que debería haber llegado acero con la flota de suministros, pero no se si ha llegado nada, después del desastre.
+RspDflt=none
+rspCnd1=all(ttl(!01GetSteel));
+RspTxt1=Un barco sobrevivió--y yo iba en él.  Sé que había comida en las bodegas de carga, pero no sé nada de acero.  Aunque admito que no tuve demasiada curiosidad--los Ahoul que intentaban hundirnos captaron toda mi atención.
+nxtLn1=Steel3
+rspCnd2=all(ttl(01GetSteel));
+RspTxt2=Un barco sobrevivió--y yo iba en él.  Sé que había comida en las bodegas de carga, pero no sé nada de acero.  Aunque admito que no tuve demasiada curiosidad--los Ahoul que intentaban hundirnos captaron toda mi atención.
+nxtLn2=Steel4
+
+[Steel3]
+Say=Podríais preguntarle al mismo herrero, señor, para saber si ha recibido algo de acero.  Diría que la única forma que tendréis de conseguir una buena espada será si él os la fabrica.  Se llama Freeman, y su herrería está en el Patio Exterior.  Aunque ahora que lo pienso, si encontráis algún Ahoul que no esté usando su arma, señor, siempre podéis pedírsela prestada, no sé si me explico...
+AddQuest=ch1-06;
+script=player.addtitle(01SteelShortage);
+RspDflt=Te sigo, pero creo que primero preguntaré al herrero--por si acaso.  Gracias por tu tiempo.
+
+[Steel4]
+Say=Podríais preguntarle al mismo herrero, señor, para saber si ha recibido algo de acero.  Diría que la única forma que tendréis de conseguir una buena espada será si él os la fabrica.  Se llama Freeman, y su herrería está en el Patio Exterior.  Aunque ahora que lo pienso, si encontráis algún Ahoul que no esté usando su arma, señor, siempre podeis pedírsela prestada, no sé si me explico...
+RspDflt=Te sigo, pero ya he hablado con el herrero.  Dice que no tiene nada, aunque insistió en que hay un escondrijo de barras de acero en algún lugar del pueblo.  Tendré que buscar a ver si encuentro algo.  Gracias por tu tiempo.
+
+[TrainTitles]
+Say=Bueno, señor, puedo proporcionar entrenamiento en:
+train=true
+RspDflt=(Salir)
+rspCnd1=All(ttl(!Combat Breathing):stt(trainingpoints>2))
+RspTxt1=Respiración de Combate(+5 Puntos de Vida, +1 Velocidad de Curación): 3pts
+script1=player.addtitle(Combat Breathing);player.setprop(trainingpoints=-3);
+nxtln1=TrainTitles
+rspCnd2=All(ttl(!Weapon Balance):stt(trainingpoints>2))
+RspTxt2=Armas Equilibradas(+2 Coordinación): 3pts
+script2=player.addtitle(Weapon Balance);player.setprop(trainingpoints=-3);
+nxtln2=TrainTitles
+rspCnd3=All(ttl(!Armor Fitting):stt(trainingpoints>2))
+RspTxt3=Colocación de Armaduras(-2 Restricción): 3pts
+script3=player.addtitle(Armor Fitting);player.setprop(trainingpoints=-3);
+nxtln3=TrainTitles
+rspCnd4=All(ttl(!Field First Aid):stt(trainingpoints>1))
+RspTxt4=Primeros Auxilios(+2 Puntos de Vida, +1 Velocidad de Curación): 2pts
+script4=player.addtitle(Field First Aid);player.setprop(trainingpoints=-2);
+nxtln4=TrainTitles
+rspCnd5=All(ttl(!01TrainedFighter));
+RspTxt5=También podría usar algo de equipo...
+nxtLn5=Shield
+
+[Info]
+Say=¿Cómo puedo ayudarte?
+RspDflt=None
+RspTxt1=¿Me preguntaba qué tipo de entrenamiento ofreces?
+nxtln1=TrainTitles
+rspCnd2=all(ttl(!01GetSteel));
+RspTxt2=¿Tienes idea de por qué el suministro de acero está tan bajo?
+NxtLn2=Steel
+rspCnd3=all(ttl(01ReturnedSteel,!01GotSword));
+RspTxt3=Sólo quería decirte que, siguiendo el consejo del herrero, he logrado localizar un pequeño almacén de acero en el pueblo.  Pronto tendrás algunas buenas armas para asignar.
+nxtLn3=NewSteel
+rspCnd4=all(ttl(01GotSword));
+RspTxt4=El herrero me dio esta Espada de Oficial a cambio de encontrar el acero.  ¿Qué piensas de ella?
+nxtLn4=Sword
+
+[NewSteel]
+Say=Esa es una noticia excelente, señor!  Esperaré ansiosamente las nuevas armas.  Y cuando lleguen, te reservaré una espada!
+RspDflt=Gracias, pero no será necesario, el herrero ya me ha prometido una.  Así pues, hasta luego...
+
+[Sword]
+Say=Una hoja excepcional, señor!  Debería serle muy útil.
+RspDflt=Eso espero.  Hasta luego!
+
+[chapter5]
+Say=De vuelta para más entrenamiento, ¿no es cierto?
+RspDflt=No, Lucan.  Perdóname.
+rspcnd1=one(ttl(!Combat Breathing,!Weapon Balance,!Armor Fitting,!Field First Aid,!01trainedfighter));
+RspTxt1=Sí, señor!
+NxtLn1=TrainTitles
+rspCnd2=All(ttl(Combat Breathing,Weapon Balance,Armor Fitting,Field First Aid,01TrainedFighter));
+RspTxt2=En realidad, sólo pasaba a verte.
+NxtLn2=chapter5b
+rspcnd3=all(ttl(portalactive,!05genarb01));
+RspTxt3=He oído que tienes una espada encantada.  Necesito tomarla prestada por el bien de Avalon.
+script3=addtitle(05genarb01);
+nxtln3=giveblade
+
+[chapter5b]
+Say=No se lo digas a nadie, pero los Sha'ahoul me atemorizan.  El viento nocturno arrastra sus cánticos a mi ventana, y me despierta con un escalofrío.  Sé que alguna de estas mañanas, me despertaré con una espada Ahoul en mi garganta.
+RspDflt=Una luz matinal nos traerá la libertad, buen Lucan.  No pierdas la esperanza, te necesitamos.
+
+[giveblade]
+Say=Sí, tengo una espada encantada, pero es una de mis piezas favoritas.  ¿Por qué debería deshacerme de ella?
+RspDflt=none
+RspTxt1=Porque mi misión actual beneficiará a todo Avalon, y para completarla, necesito un arma encantada.
+nxtln1=lame
+RspTxt2=Ya sabes todo lo que he hecho hasta ahora por Avalon.  Necesito el arma encantada porque voy a un lugar dónde las armas normales no hacen ningún daño.
+nxtln2=better
+RspTxt3=Has dormido bien últimamente, Lucan?
+nxtln3=appealing
+
+[lame]
+Say=Todas nuestras misiones benefician a Avalon.  Deberás hallar un motiva mejor que ése!
+RspDflt=none
+RspTxt1=Ya sabes todo lo que he hecho hasta ahora por Avalon.  Necesito el arma encantada porque voy a un lugar dónde las armas normales no hacen ningún daño.
+nxtln1=better
+RspTxt2=¿Has dormido bien últimamente, Lucan?
+nxtln2=appealing
+
+[better]
+Say=Eso está bien, pero, ¿qué gano yo con el trato?  ¿Cómo se beneficia el viejo Lucan, eh?
+RspDflt=none
+RspTxt1=¿Has dormido bien últimamente, Lucan?
+nxtln1=appealing
+RspTxt2=Porque mi misión actual beneficiará a todo Avalon, y para completarla, necesito un arma encantada.
+nxtln2=lame
+
+[appealing]
+Say=Por qu...  [parpadea, obviamente sorprendido]  ¿Por qué? No, pero no alcanzo a comprender...
+RspDflt=none
+RspTxt1=Muy simple, buen Lucan.  Muchos de nuestros compañeros están durmiendo mal últimamente.  Sé por qué.  Son los Sha'men, y ellos... ellos nos atacan desde un lugar protegido.  Si voy allí sin un arma mágica, me cortarán a pedacitos, y tu y todo el mundo dejareis de dormir bien hasta...
+nxtln1=appealing2
+
+[appealing2]
+Say=[traga audiblemente]  Er...  ¿Y vas a derrotar a esos Sha'men con esta espada?  Yo...  [suspira profundamente]  Oh, muy bien, %playername%, puedes quedártela, pero trátala bien.
+script=player.additem(magicblade);
+RspDflt=Gracias, Lucan, en nombre de todo Avalon.
+
+[chapter6]
+Say=%playername%! Mira, no puedo ayudarte más.  Ahora me estoy ocupando de mí mismo y no puedo perder tiempo hablando.
+RspDflt=Lo comprendo.  Cúidate, buen Lucan.
+

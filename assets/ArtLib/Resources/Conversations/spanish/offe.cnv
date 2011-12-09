@@ -1,0 +1,121 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(6/25/01)=Passed
+tucker(7/17/01)=Passed
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Buenos días, Offe.
+say1=one(ttl(05chapter5,06chapter6));
+goto1=chapter6
+say2=one(ttl(03chapter3,04chapter4));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Offe
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Offe]
+Say=Saludos, señor.
+RspDflt=Perdóname, vecino, tengo asuntos que atender en otras partes.
+RspTxt1=Saludos a ti.
+NxtLn1=Offe1
+RspTxt2=¿De dónde eres?
+NxtLn2=Offe2
+RspTxt3=¿Qué hay de nuevo?
+NxtLn3=Offe3
+
+[Offe1]
+Say=Debes ser el hermano de Corvus.  Nos salvamos la vida el uno al otro hace un año en la Puerta Sur.  Dile que Offe ha preguntado por él.
+RspDflt=Lo haré.  Buenos días.
+
+[Offe2]
+Say=Soy de aquí y allí.  Me asenté en esta área hace unos años, pero todavía estoy entre aquí y Elythria.  Era domador de ganado.  Si me dan la oportunidad, me gustaría ser jinete.
+RspDflt=Espero que tu deseo se haga realidad.
+
+[Offe3]
+Say=La situación es cada vez más desesperada.  He oído que hay algún tipo de bestia en la bodega de la cocina que se está comiendo nuestra comida!
+RspDflt=Puedes tranquilizarte respecto a ese tema.  Buenos días.
+
+[Chalice]
+Say=Parece que el pueblo ha hecho que desaparezca la inmadurez que había en ti.
+RspDflt=None
+RspTxt1=Lo hizo.  He sufrido mis primeras heridas en batalla.
+NxtLn1=Chalice1
+RspTxt2=¿Has oído algún rumor nuevo?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Ningún hombre puede llegar a soldado sin algunas cicatrices.  Buena suerte.
+RspDflt=Lo mismo digo.
+rspback=chalice
+
+[Chalice2]
+Say=He oído que la cocinera jefe busca recetas para caldo de escarabajo.  Eso no puede estar bien, ¿no es cierto?
+RspDflt=Esto... creo que no!
+rspback=chalice
+
+[three]
+Say=Uau, realmente has cambiado.
+RspDflt=none
+RspTxt1=¿Qué significa eso exactamente?
+nxtln1=three2
+
+[three2]
+Say=No te lo tomes a mal!  Simplemente quiero decir que no sé si he visto a alguien...  no sé, es como si fueses una persona totalmente distinta.  La primera vez que te vi, ibas mirando por todos lados con curiosidad infantil.  Ahora caminas por con un aire de determinación.
+RspDflt=none
+RspTxt1=Hay cosas importantes de las que encargarse.  Vamos progresando lentamente.
+nxtln1=three3
+
+[three3]
+Say=Naturalmente.  Como he dicho, no era mi intención ofender.
+RspDflt=No me has ofendido.  Hasta luego.
+
+[chapter6]
+Say=La cosas están tranquilas.  Demasiado tranquilas.
+RspDflt=Hmmm...
+RspTxt1=¿Por qué dices eso, soldado?
+nxtln1=chapter6b
+
+[chapter6b]
+Say=En mis pausas, camino por el parapeto observando a los exploradores Ahoul que se mueven por el pueblo.  Maldición, incluso he clavado alguna flecha a un par de ellos.  Últimamente hemos visto más fuegos dentro del pueblo, aunque fuera del alcance de nuestras flechas.  Creo que intentarán atacarnos por sorpresa.
+RspDflt=Esas son muy malas noticias, soldado.
+RspTxt1=¿Sorprenderte a ti, Offe? No, si sigues alerta.
+nxtln1=chapter6c
+
+[chapter6c]
+Say=Ese es el problema.  Me cuesta dormir por las noches, incluso tras un largo día de patrulla.  Siento que estoy a punto de enloquecer si no logro descansar pronto.
+RspDflt=Visita la enfermería y habla con nuestros buenos monjes.  Estoy seguro de que podrán ayudarte.  Hasta entonces, mantén la fe y tus habilidades, amigo.
+

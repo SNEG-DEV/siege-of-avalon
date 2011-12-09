@@ -1,0 +1,159 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01informed,01Recovered,04chapter4,04elaram,04ramdestroyed,06chapter6,knight
+Removed=
+
+[Quest]
+Added=ch1-69
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=6
+Else=
+Default=Gracias, Palben.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(04chapter4,!04elaram));
+goto2=untoldfour
+say3=all(ttl(04chapter4,04elaram));
+goto3=toldfour
+Say4=All(ttl(01informed,!01Recovered));
+goto4=Palben
+Say5=All(ttl(!01informed,!01Recovered));
+goto5=News
+Say6=All(ttl(01informed,01Recovered));
+goto6=Chalice
+
+[Palben]
+Say=¿Qué necesitáis de aquí arriba, señor?
+RspDflt=None
+RspTxt1=Penrith dijo que aquí arriba podíais haber visto algo referente a mi hermano Corvus.
+NxtLn1=Palben1
+
+[Palben1]
+Say=Correcto, señor.  Le vimos corriendo por el pueblo mientras le perseguían unos guerreros Ahoul!  Presentó una buena batalla!
+RspDflt=None
+RspTxt1=¿Estaba herido?
+NxtLn1=Palben2
+
+[Palben2]
+Say=No corría como si estuviese disfrutando, ya me comprendes.  Supongo que habría recibido un par de heridas antes de que le perdiésemos de vista.
+RspDflt=None
+RspTxt1=¿Es todo lo que visteis?
+NxtLn1=Palben3
+
+[Palben3]
+Say=También vi a los Ahoul salir del poblado corriendo a toda prisa poco después.  Parecía que algo les había dado un buen susto.
+RspDflt=Eso siempre son buenas noticias.  Gracias por tu ayuda.
+
+[News]
+Say=Saludos, mi señor.  ¿Cómo puedo ayudarle?
+RspDflt=None
+RspTxt1=¿Qué novedades hay por aquí arriba?
+NxtLn1=News1
+RspTxt2=Acabo de llegar aquí e intento conocer a la gente.  ¿Quién eres?
+NxtLn2=News2
+
+[News1]
+Say=Nada bueno.  Algo sucede abajo en el poblado y no podemos realmente saber qué es.  Creemos que viene de la vieja Iglesia, pero suceden cosas extrañas por todas partes.  Es difícil concretar, ¿entiendes lo que quiero decir?
+Adventure=ch1-69;
+RspDflt=Creo que sí.  Gracias por la información.
+rspback=News
+
+[News2]
+Say=Soy Palben de Aratoy, señor.  El mejor tirador de mi grupo, y no es ninguna bravata.  Puedo acertar a un jinete Ahoul --a pleno galope-- en un ojo, desde más de 100 metros de distancia.  Intenta que el viejo Calvaric consiga eso!
+RspDflt=None
+RspTxt1=He oído que Calvaric es un buen tirador...
+NxtLn1=News3
+
+[News3]
+Say=Lo es, señor!  Pero nadie es mejor que Palben!
+RspDflt=Es bueno saberlo!  Gracias.
+rspback=News
+
+[Chalice]
+Say=Tu eres el héroe de Avalon, ¿verdad?
+RspDflt=None
+RspTxt1=Creo que te equivocas.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=No, tú eres el tipo que encontró el Cáliz, ¿no es cierto?
+RspDflt=None
+RspTxt1=Bueno, sí.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Entonces eres un héroe!  Ese Cáliz marcará un mundo de diferencia!  Espera y verás!
+RspDflt=Eso espero.  Necesitamos toda la ayuda que podamos conseguir.
+
+[untoldfour]
+Say=Has oído?  Elazar tuvo una visión, y está ... está PREOCUPADO por ella.
+RspDflt=Pues no lo sabía.  Déjame que lo investigue.  Hasta luego.
+RspTxt1=¿Cómo te sientes al respecto?
+nxtln1=untoldfour2
+
+[untoldfour2]
+Say=Bueno, estoy preocupado, %playername%!  Habitualmente es tan arrogante...  Si verdaderamente ha encontrado algo que le preocupe, todos deberíamos tenerlo en cuenta!
+RspDflt=Desde luego, soldado.  Hablaré con Elazar inmediatamente!
+
+[toldfour]
+Say=¿Has oído algo sobre lo que preocupa a Elazar?
+RspDflt=none
+rspcnd1=all(ttl(04ramdestroyed,!knight));
+RspTxt1=Lo que preocupaba a Elazar ha sido eliminado.  Creo que seguirá descansando.
+nxtln1=toldfour2
+rspcnd2=all(ttl(04ramdestroyed,knight));
+RspTxt2=Lo que preocupaba a Elazar ha sido eliminado.  Creo que seguirá descansando.
+nxtln2=toldfour3
+rspcnd3=all(ttl(!04ramdestroyed));
+RspTxt3=Elazar tuvo una visión, y en ella ha visto un gran ariete que se movía por entre las ruinas de Avalon.
+nxtln3=toldfour4
+
+[toldfour2]
+Say=Maravilloso!  Sabes, te estás convirtiendo en una leyenda por aquí, %playername%!
+RspDflt=La gente empieza a dirigirse a mí por mi nombre, pero desde luego yo no me considero una leyenda.  Eres demasiado amable, Palben.  Cúidate.
+
+[toldfour3]
+Say=Maravilloso!  Sabes, te estás convirtiendo en una leyenda por aquí, Sir %playername%!
+RspDflt=La gente empieza a dirigirse a mí por mi nombre, pero desde luego yo no me considero una leyenda.  Eres demasiado amable, Palben.  Cúidate.
+
+[toldfour4]
+Say=Eso es terrible!  Estamos condenados a la destrucción!!!
+RspDflt=none
+RspTxt1=Espera un momento, soldado.  Algunos, incluyendo a Elazar, creen que las visiones son vistazos a lo que podría pasar, no a lo que pasará.
+nxtln1=toldfour5
+
+[toldfour5]
+Say=Así que vas a encontrar el ariete y a destruirlo, ¿verdad?  Sabía que nos salvarías, %playername%!
+RspDflt=Suéltame la manga, Palben, no puedo demorarme más.
+
+[chapter6]
+Say=Hola %playername%! Esta sección es segura, señor!
+RspDflt=Muy bien, soldado.
+

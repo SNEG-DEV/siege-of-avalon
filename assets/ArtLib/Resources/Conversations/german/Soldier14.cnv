@@ -1,0 +1,47 @@
+;Hello there, how can I help you?
+;May I be of assistance to you Sir?
+;What can I do for you?
+;How can I help you, Sir?
+;What is it you want?
+;Hello Sir, How may I help you?
+
+[root]
+Count=2
+Else=
+Default=Ade.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Soldier]
+say=Wie kann ich Euch dienen?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Soldier1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Soldier2
+
+[Soldier1]
+say=Ich bin ein Kind von Elythria. Ich hätte nie gedacht, dass ich solchen Heimweh nach meinem kleinen Bauernhof verspüren würde.
+rspBack=soldier
+
+[Soldier2]
+say=Wie ich höre, haben die Ahoul gestern nacht beinah den Südwall erklettert. Schlaft heute nacht nicht zu tief.
+rspBack=soldier
+
+;After Recovery of Chalice
+[Chalice]
+say=Wie kann ich Euch helfen, Herr?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Chalice1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Chalice2
+
+[Chalice1]
+say=Ich bin durch und durch Elythrianer, Herr.
+rspBack=chalice
+
+[Chalice2]
+say=Ein Freund von mir aus Aratoy sagt, dass Hauptmann Calvaric Mithras mit einem Pfeil durchbohrt hat! Wenn wir Glück haben, ist die Wunde tödlich!
+rspBack=chalice

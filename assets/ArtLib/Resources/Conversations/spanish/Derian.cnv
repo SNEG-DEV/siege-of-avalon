@@ -1,0 +1,76 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=03chapter3
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(7/12/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Gracias, Derian.
+Say1=all(ttl(!03chapter3));
+goto1=Derian
+say2=all(ttl(03chapter3));
+goto2=three
+
+[Derian]
+Say=Eh!  No vayas ahí abajo!
+RspDflt=None
+RspTxt1=¿Por qué no?
+NxtLn1=Derian1
+
+[Derian1]
+Say=Er...  porque hay...  er, nada.  Ahí abajo no hay absolutamente nada.
+RspDflt=None
+RspTxt1=Entonces ¿por qué te preocupa si bajo o no?
+NxtLn1=Derian2
+
+[Derian2]
+Say=Sólo decía... quizá tengas algo mejor que hacer.
+RspDflt=Gracias por el consejo, pero me ocuparé de mis propios asuntos yo solito.
+
+[three]
+Say=Eh!  No vayas ahí abajo!
+RspDflt=none
+RspTxt1=No, otra vez no...
+nxtln1=three2
+
+[three2]
+Say=Qué?
+RspDflt=Nada.  Adiós.
+RspTxt1=No te preocupes.  Puedes volver a tus paranoias, pero recuerda que haré lo que me plazca.
+nxtln1=three3
+
+[three3]
+Say=Na...  naturalmente, señor, no me di cuenta...
+RspDflt=Desde luego. Hasta la vista, soldado.
+

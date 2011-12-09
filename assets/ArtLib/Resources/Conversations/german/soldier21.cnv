@@ -1,0 +1,46 @@
+[root]
+Count=2
+Else=
+Default=Ade.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Soldier]
+say= Wie kann ich Euch dienen?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Soldier1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Soldier2
+
+[Soldier1]
+say= Mein Heimatland ist Cathea. Jeden Tag scheint es weiter entfernt zu sein.
+rspBack=soldier
+
+[Soldier2]
+say= Heute abend gibt es Brot für die Soldaten! Das weiß ich aus sicherer Quelle. An Eurer Stelle würde ich mich heute Abend im Kasino ganz vorne anstellen! 
+rspBack=soldier
+
+;After Recovery of Chalice
+[Chalice]
+say= Wie kann ich Euch helfen, Herr?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Chalice1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Chalice2
+
+[Chalice1]
+say= Ich bin aus Cathea hierher gekommen, um gegen die Ahoul zu kämpfen. Mit Euch in unseren Reihen werden wir siegreich sein, das weiß ich!
+rspBack=chalice
+
+[Chalice2]
+say= Nein, Herr, nur dass Mithras und seine Horde gegen uns keine Chance haben!
+rspBack=chalice
+ 
+
+
+
+
+

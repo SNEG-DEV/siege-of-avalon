@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Adios.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=¿Qué puedo hacer por ti?
+RspTxt1=¿De dónde vienes?
+NxtLn1=Soldier1
+RspTxt2=¿Has oído algún rumor interesante?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Mi país natal es Cathea.  Pero parece estar más lejos a cada día que pasa.
+rspBack=soldier
+
+[Soldier2]
+Say=Una fuente fiable, me ha dicho que esta noche los soldados tendremos pan.  ¡Yo que tu, estaría el primero de la cola del comedor esta noche!
+rspBack=soldier
+
+[Chalice]
+Say=¿Cómo puedo ayudarle, señor?
+RspTxt1=¿De dónde vienes?
+NxtLn1=Chalice1
+RspTxt2=¿Has oído algún rumor interesante?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=He venido de Cathea para luchar contra los Ahoul.  ¡Con usted entre nosotros, sé que vamos a vencer!
+rspBack=chalice
+
+[Chalice2]
+Say=No, señor, solo que Mithras y su horda no tienen escapatoria de nosotros!
+rspBack=chalice
+

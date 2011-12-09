@@ -1,0 +1,91 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Thank you, Mikel.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=one(ttl(03chapter3,04chapter4,05chapter5));
+goto2=threeup
+Say3=All(ttl(!01recovered));
+goto3=Mikel
+Say4=All(ttl(01recovered));
+goto4=chalice
+
+[Mikel]
+Say=You there!  Don't dawdle about!  There are soldiers with business around and you shouldn't be in their way!
+RspDflt=I'm sorry.
+RspTxt1=Where are you from?
+NxtLn1=Mikel1
+RspTxt2=What's the latest word from around here?
+NxtLn2=Mikel2
+
+[Mikel1]
+Say=I'm from Cathea.  I didn't always used to be a lowly guard!  I was a Cathean rider before I got kicked out!
+RspDflt=Perhaps you will rise to that position again.
+rspBack=Mikel
+
+[Mikel2]
+Say=I don't have time to gossip with you!  I don't care who your brother is, I have important things to attend to!
+RspDflt=Sorry to bother you.
+rspBack=Mikel
+
+[chalice]
+Say=You think that when you see some combat you can go about bothering soldiers with real soldiering to see to?
+RspDflt=none
+RspTxt1=Pardon me.
+NxtLn1=chalice1
+RspTxt2=What's the news?
+NxtLn2=chalice2
+
+[chalice1]
+Say=Perhaps I was a bit sharp with you.  I apologize for my sharpness.  Good day to you, sir.
+RspDflt=Good day.
+rspBack=chalice
+
+[chalice2]
+Say=Just that the Ahoul have started running away.  Their numbers may not look like they're different.  But let me assure you, they are afraid now!
+RspDflt=I certainly hope so.  Farewell.
+rspBack=chalice
+
+[chapter6]
+Say=Good day to you, %playername%.  Look, I realize I've been a bit short with you.  Please accept my swordarm when we face the Sha'ahoul in battle.
+RspDflt=It is an honor, Mikel, and likewise.  Hold to your faith and skill, brother.
+
+[threeup]
+Say=I wish I were back in Cathea.  These cold walls are chilling my heart.  I miss my horse.
+RspDflt=I'll leave you be, soldier.
+

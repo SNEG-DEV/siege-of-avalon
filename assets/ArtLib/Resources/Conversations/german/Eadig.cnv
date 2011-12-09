@@ -1,0 +1,39 @@
+[root]
+Count=2
+Else=
+Default=Danke, Eadig.
+Say1=All(ttl(!01recovered));
+goto1=Eadig
+Say2=All(ttl(01recovered));
+goto2=chalice
+
+;Before recovery of Chalice
+[Eadig]
+say=He da!  Wollt Ihr für ein paar Stunden meinen Platz einnehmen?
+rspDflt=None
+rspTxt1=Ich glaube nicht, dass diese Art von Arbeitsplatzteilung erlaubt ist.
+NxtLn1=Eadig1
+
+[Eadig1]
+say=Ach, kommt schon!  Nur ein paar Stunden, damit ich mit einer der Küchenmägde 'ne kleine... ähm, Plauderei haben kann!
+rspDflt=None
+rspTxt1=Tut mir leid, aber ich bin in eigener Sache unterwegs.
+NxtLn1=Eadig2
+
+[Eadig2]
+say=Na schön.  Lasst mich nur bei dieser langweiligen Aufgabe.  Aber wehe, Ihr wollt mal etwas von mir!
+rspDflt=Tut mir leid.  Vielleicht löst Euch der nächste Soldat ab, der vorbei kommt.
+
+;After recovery of Chalice
+[Chalice]
+say=He da!  Tut mir leid wegen neulich.  Ich habe mich einfach zu Tode gelangweilt.  Nicht, dass Ihr Euch mir gegenüber verpflichtet fühlt.
+rspDflt=None
+rspTxt1=Macht nichts.  Ich verstehe Euch gut.
+NxtLn1=Chalice1
+
+[Chalice1]
+say=Danke, Herr.  Einen schönen Tag noch!
+rspDflt=Ade.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

@@ -1,0 +1,61 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-32
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=all(ttl(!05chapter5));
+goto2=Wilfrid
+Say3=all(ttl(05chapter5));
+goto3=Wilfrid2
+
+[Wilfrid]
+Say=Saludos, soy Wilfrid, el curtidor.  Fabrico artículos de piel de todo tipo.  ¿Os gustaría echar un vistazo?
+Adventure=ch1-32;
+RspDflt=Ahora mismo, no.
+RspTxt1=Sí, me gustaría ver tus mercancías.
+script1=merchant
+
+[Wilfrid2]
+Say=Bienvenido otra vez, %playername%. ¿Todavía quieres utilizar mis artículos de cuero?
+RspDflt=Lo lamento, os confundí con otra persona.
+RspTxt1=Supongo que protegió a la vaca durante un tiempo.
+script1=merchant
+
+[chapter6]
+Say=¿Qué tal os va ahora, señor?  Lo lamento, pero no me quedan mercancías.  No hay nada que yo pueda comprar entre éstas malditas murallas, y aún así tengo miedo de llevar mi dinero conmigo.  No venderé nada más, y que quiero cerrar la tienda.
+RspDflt=Lo comprendo. Hasta luego, Wilfred.
+

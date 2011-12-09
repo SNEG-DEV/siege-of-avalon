@@ -1,0 +1,112 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(7/16/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Thank you, Kane.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(03chapter3));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Kane
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Kane]
+Say=Say, have you got a bit of tobacco I could borrow?
+RspDflt=None
+RspTxt1=I'm afraid I don't.
+NxtLn1=Kane1
+
+[Kane1]
+Say=Damn!  I went dry a few days ago and I can't leave this blasted post for days to come.  I suppose there's a shortage of tobacco inside, too.
+RspDflt=None
+RspTxt1=I imagine there isn't much of anything anymore.
+NxtLn1=Kane2
+
+[Kane2]
+Say=You're probably right.  It's a filthy habit, anyway.  Good day.
+RspDflt=And to you.
+
+[Chalice]
+Say=You again!  Why do you keep coming back here?  I assure you there's nothing happening here.
+RspDflt=None
+RspTxt1=I've been going out to the village for different reasons.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Then you'd be the soldier that found the Chalice.  You're the hero!
+RspDflt=None
+RspTxt1=Well, let's just keep that a secret between you and I.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Whatever you say.  Good luck to you, sir.
+RspDflt=And to you.
+
+[three]
+Say=Hello there, sir.
+RspDflt=none
+RspTxt1=What's new, soldier?
+nxtln1=three2
+
+[three2]
+Say=Not much, but begging your pardon, may I ask you a question?
+RspDflt=none
+RspTxt1=Certainly not, dog!  I ask the questions around here!
+nxtln1=three3
+RspTxt2=Of course!
+nxtln2=three4
+
+[three3]
+Say=As you wish.
+RspDflt=As it should be!
+
+[three4]
+Say=How is General Roth faring?  A few of us are concerned; we haven't seen him much.
+RspDflt=none
+RspTxt1=Yes, he is well, and plotting the destruction of the Ahoul and the return of peace to our land.
+nxtln1=three5
+
+[three5]
+Say=That's a relief.  Thank you.
+RspDflt=It was nothing.  Farewell.
+
+[chapter6]
+Say=I found some tobacco in a box in one of the storage rooms. Want to share it with me?
+RspDflt=No, thanks. The smoke of a burning ahoul camp are the fumes I wish to inhale. Farewell.
+

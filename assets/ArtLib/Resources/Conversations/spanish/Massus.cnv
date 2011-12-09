@@ -1,0 +1,254 @@
+[FileID]
+Author=tuck
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01recovered,01toldchalice,06massarb01
+Checked=01foundbrother,01healbrother,01Olon,01recovered,01ToldChalice,05chapter5,06chapter6,06cleanedaltar,06massarb01,06ttphelic
+Removed=
+
+[Quest]
+Added=ch1-15,ch1-16,ch1-17,ch1-25,ch6-513
+Removed=ch1-25
+
+[Items]
+Given=
+Taken=chalice
+Checked=Chalice
+Added=
+
+[SyntaxCheck]
+tucker(4/10/01)=Passed
+tucker(7/17/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=8
+Else=Brother0
+Default=
+say1=all(ttl(06chapter6));
+goto1=massusix
+say2=all(ttl(01recovered,01foundbrother,01healbrother,05chapter5));
+goto2=chapter5
+say3=All(ttl(01FoundBrother,!01HealBrother));
+goto3=Brother
+Say4=All(ttl(!01recovered,!01Olon));
+goto4=Massus
+Say5=All(ttl(!01recovered,01Olon,!01ToldChalice));
+goto5=Olon
+Say6=All(ttl(!01recovered):Obj(!Chalice));
+goto6=Village
+Say7=All(ttl(!01recovered):Obj(Chalice));
+goto7=Chalice
+Say8=All(ttl(01recovered));
+goto8=recovered
+
+[Brother]
+Say=Bendita sea, Corvus! Deberías llevarle junto al Hermano Crosby inmediatamente!
+RspDflt=Lo haré.
+
+[Massus]
+Say=Bienvenido a la capilla, hijo mío.  Has venido a rezar tus plegarias?
+RspDflt=None
+RspTxt1=No, Fraile.  Sólo estoy mirando.
+NxtLn1=Massus1
+RspTxt2=La verdad, soy nuevo aquí y estoy conociendo a algunos de los habitantes de la fortaleza.  ¿De dónde eres?
+NxtLn2=Massus2
+RspTxt3=No, señor.  Sólo estaba buscando noticias.  ¿Qué tal van las cosas por aquí?
+NxtLn3=Massus3
+
+[Massus1]
+Say=Tómate tu tiempo.  La capilla está abierta a todo aquel que busque alivio de la lucha.
+RspDflt=Gracias, Fraile.
+rspBack=Massus
+
+[Massus2]
+Say=Vine aquí con los Taberlandeses hace muchos años.  Aunque elegí no involucrarme en su guerra civil.  Sentí que se me necesitaba como guía espiritual y por los sanadores que atendían la capilla.
+RspDflt=Estoy seguro de que los soldados se alegran de tenerte entre nosotros.
+rspBack=Massus
+
+[Massus3]
+Say=Todos los que buscan sosiego espiritual vienen aquí.  Los demás monjes y yo ofrecemos salvación espiritual y curación física.
+RspDflt=None
+RspTxt1=¿Curación?
+NxtLn1=Massus4
+
+[Massus4]
+Say=Sí.  Todos estamos entrenados en las artes curativas.  El Hermano Crosby es un sanador excepcional.  Si yo estuviese buscando un sanador, iría a verle a él.
+Adventure=ch1-15;
+RspDflt=Gracias, Fraile.  Buenos días.
+rspBack=Massus
+
+[brother0]
+Say=¿Decías, %playername%?
+RspDflt=Perdóneme, Fraile, debo irme.
+RspTxt1=He venido a preguntaros por mi hermano...
+nxtln1=brother1
+
+[Brother1]
+Say=Ha venido aquí muchas veces para ser curado.  Siempre parece encontrarse en el punto donde los combates son más duros, y siempre logra las heridas más complicadas.  No obstante, ha sido afortunado.  Pero no es un hombre particularmente religioso, ¿verdad?
+Adventure=ch1-16;
+RspDflt=none
+RspTxt1=No especialmente, Fraile.
+nxtLn1=Brother2
+
+[Brother2]
+Say=¿Hay algo más que pueda hacer por ti?
+RspDflt=No, gracias.
+RspTxt1=¿Habéis oído algún rumor?
+NxtLn1=Brother3
+
+[Brother3]
+Say=Aquí intentamos alejarnos de los rumores.  Nuestras preocupaciones no son de este mundo, a menos que se trate de combatir el mal, allí donde se encuentre.
+RspDflt=Gracias de todos modos, Fraile.
+
+[Olon]
+Say=Hola de nuevo.  He oído las noticias sobre tu hermano.  Debes saber que rezamos por él.
+RspDflt=none
+RspTxt1=Gracias, Fraile.  Creo que habéis vivido en el pueblo, a las afueras de Avalon.
+nxtLn1=Olon1
+
+[Olon1]
+Say=Desde luego.  Viví allí durante tres cortos años antes de que los Ahoul nos echasen a todos de nuestra Iglesia.
+RspDflt=none
+RspTxt1=Iré allí de expedición muy pronto.  Olon el, esto... "comerciante" dijo que me podríais dar información útil sobre el pueblo.
+nxtLn1=Olon2
+
+[Olon2]
+Say=¿Olon te dijo eso?  Debe haberse equivocado.  Yo estaba casi siempre en la Iglesia, y por lo que he visto desde la muralla, queda muy poco del pueblo que nosotros conocíamos.
+RspDflt=none
+RspTxt1=¿No hay absolutamente nada que me podáis decir sobre el exterior?
+nxtLn1=Olon4
+
+[Olon4]
+Say=Puede que no sea capaz de ayudarte, pero tu sí que puedes ayudarme a mí.
+RspDflt=none
+RspTxt1=¿Qué puedo hacer por vos?
+nxtLn1=Olon5
+
+[Olon5]
+Say=Durante la evacuación del pueblo, un artefacto menor fue dejado atrás.  Hasta muy recientemente no ha tenido mayor importancia.  La Iglesia sigue en pie y estoy seguro de que sigue escondido en la bodega.  De todas formas, en los últimos tiempos, los más píos y supersticiosos de los campesinos, han comenzado a pensar que la pérdida del Cáliz de la Vida es una profecía de nuestra eventual derrota.
+AddQuest=ch1-25;
+RspDflt=none
+RspTxt1=Haré todo lo posible por recuperarlo, Fraile.
+nxtLn1=Olon7
+rspCnd2=all(obj(Chalice));
+RspTxt2=¿Es éste el Cáliz del que habláis?
+nxtln2=Chalice1
+
+[Olon7]
+Say=No hay forma de saber qué ha tomado posesión de la vieja Iglesia.  Será peligroso, pero si quieres probarlo, rezaremos para tu éxito y tu seguridad.
+Adventure=ch1-17;
+Script=journalentry(massus);addtitle(01ToldChalice);showmessage(Your journal has been updated.,200);
+RspDflt=Lo haré lo mejor que pueda, Fraile.
+
+[Village]
+Say=Bienvenido de nuevo, hijo mío.  ¿Cómo te ha ido?
+RspDflt=none
+RspTxt1=Bien, Fraile.  Aunque me temo que aún no he sido capaz de encontrar el Cáliz.
+nxtLn1=village1
+
+[Village1]
+Say=No te culpamos.  Hemos estado sin el Cáliz durante bastante tiempo, y hemos logrado sobrevivir.  Podemos seguir sin él.
+RspDflt=none
+RspTxt1=Esperaba que lo comprendieseis.  El pueblo es mucho más difícil de lo que pensaba.
+nxtLn1=village2
+RspTxt2=Continuaré buscando, Fraile.  No me rendiré.
+nxtLn2=village3
+
+[Village2]
+Say=Desde luego.  Muchos buenos soldados han muerto allí.
+RspDflt=Hasta luego, Fraile.
+
+[Village3]
+Say=Y nosotros seguiremos rezando por ti.
+RspDflt=Gracias.
+
+[Chalice]
+Say=Has vuelto intacto!  Los buenos espíritus nos sonríen!
+RspDflt=none
+RspTxt1=Sí lo hacen, Fraile.  He encontrado el Cáliz de la Vida!
+nxtLn1=Chalice1
+
+[Chalice1]
+Say=Bendito seas, hijo!  Ésta es una gran victoria para la Alianza!  El Cáliz de la Vida...  Todos tendrán coraje ahora!
+RemoveQuest=ch1-25;
+Script=player.addtitle(01recovered);takeitem(chalice,player);player.setprop(trainingpoints=10);showmessage(You have received some training points.,300);
+RspDflt=none
+RspTxt1=Vivo para servir, Fraile.  Me alegro de haber podido ayudar.
+nxtLn1=Chalice2
+
+[Chalice2]
+Say=Recuerda, hijo mío--siempre eres bienvenido aquí.
+RspDflt=Gracias, Fraile.
+
+[Recovered]
+Say=¿Hay algo que pueda hacer por ti?
+RspDflt=none
+RspTxt1=Sólo estaba mirando, esperando algún rumor.
+NxtLn1=Recovered1
+
+[Recovered1]
+Say=Bueno, como puedes imaginar, el Cáliz está teniendo el efecto deseado.  Todos los soldados que nos visitan se van con la moral más alta.  Salvamos más y más de los heridos que de otra forma perderíamos.  Tu hallazgo marca la diferencia!
+RspDflt=Esas son noticias fenomenales!
+
+[chapter5]
+Say=Ah, vuelve el soldado endurecido por la batalla! Te he mencionado en mis plegarias, %playername%. Eres un regalo de los dioses, y he tenido visiones que atestiguan tus habilidades.
+RspDflt=none
+RspTxt1=Esas alabanzas constantes me ponen nervioso, Fraile.  Hasta luego.
+NxtLn1=chapter5c
+RspTxt2=¿Qué tipo de visiones?
+NxtLn2=chapter5b
+
+[chapter5b]
+Say=Vi como cercenabas las cabezas de las serpientes malignas que intentaban penetrar en nuestros suelos sagrados. Sabe que viajas por un ancho camino, %playername%, pero estás purificado por las aguas del Cáliz.
+RspDflt=Uau. No tenía ni idea.  Hasta luego, Fraile.
+RspTxt1=Sólo quiero ayudar, Fraile. No busco las alabanzas de los hombres.
+NxtLn1=chapter5c
+
+[chapter5c]
+Say=Las alabanzas son bien merecidas, hijo mío. Tus éxitos han hecho mucho por nosotros.
+RspDflt=Estoy agradecido por la vida que me ha sido dada. Pretendo no desperdiciarla.
+
+[massusix]
+Say=Buenos días, %playername%.  Me alegro de ver que todo te va bien.
+RspDflt=Gracias, Fraile.  Por favor, disculpadme.  Debo seguir mi camino.
+rspcnd1=all(ttl(06ttphelic,!06cleanedaltar,!06massarb01));
+RspTxt1=Aprecio esas palabras, Fraile.  He venido a preguntaros acerca de algo maligno...
+script1=player.addtitle(06massarb01);
+nxtln1=massulich
+
+[massulich]
+Say=Oh, no, %playername%, ¿habéis tenido pensamientos impuros?
+RspDflt=none
+RspTxt1=He venido a preguntaros acerca de los no-muertos.  A pesar de que el espectro ha sido derrotado, debe haber algún tipo de mácula, pues hay nuevos esqueletos ahí abajo que atacarán a cualquiera...  Incluso a las ratas.  Phelic habló de una maldad persistente, y me envió a vos, puesto que vuestros conocimientos en el área son inigualables.
+nxtln1=massulich2
+
+[massulich2]
+Say=Yo no diría tanto, aunque es cierto que he dedicado mi vida a mis estudios, y que son de un tipo muy específico.  Se sabe que algunos poderosos discípulos del mal han dejado tras de sí un resto de maldad, como una enfermedad contagiosa cuyos efectos permanecen aún después de haber vencido la enfermedad misma.  Es posible, también, que el espectro lanzase algún tipo de hechizo retardado que empezó a tener efecto después de su destrucción.  En cuanto a la solución de dicho problema...  Hmm...
+RspDflt=none
+RspTxt1=¿Sí, Fraile?  ¿Tenéis alguna idea?
+nxtln1=massulich3
+
+[massulich3]
+Say=Por el momento, me temo que no.  Habitualmente, un grupo de hombres santos haría un exorcismo, pero no somos los suficientes -- y puesto que hay esqueletos ahí abajo, el viaje sería bastante peligroso, especialmente para aquellos que no han sido entrenados en el combate.  Debo pensar en esto durante un tiempo, %playername%.  Es lo mejor que puedo hacer.  Por favor, vuelve más tarde, pues podría dar con algo que nos ayude.  Sé que palabras como "quizá" y "podría" no inspiran demasiada confianza, pero éste es un problema interesante, de los que no he encontrado jamás antes, y deberé ser... creativo.
+RspDflt=none
+adventure=ch6-513;
+RspTxt1=Muy bien, Fraile.  Volveré más tarde a comprobar vuestros progresos.  Buena suerte.
+nxtln1=massulich4
+
+[massulich4]
+Say=Y buena suerte en tus encargos, %playername%.  Por favor, visita a Elazar, pues el hermano Crosby cree haber encontrado algo que cure su aflicción.
+RspDflt=Ciertamente lo haré, Fraile.  Hasta luego.
+

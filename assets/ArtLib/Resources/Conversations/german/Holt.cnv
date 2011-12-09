@@ -1,0 +1,19 @@
+[root]
+Count=1
+Else=
+Default=Danke, Holt.
+Say1=
+goto1=Holt
+
+[Holt]
+say=Seid gegrüßt, Herr.  Was kann ich für Euch tun?
+rspDflt=None
+rspTxt1=Nichts, mein Freund.  Ich wollte mich nur ein wenig umsehen.
+NxtLn1=Holt1
+
+[Holt1]
+say=Seht Euch um so viel Ihr wollt. Hier werdet Ihr nichts Schlimmes finden, Herr.  Alles in Ordnung, wie wir hier oben immer gerne sagen!  Alles in Ordnung!
+rspDflt=Offensichtlich.  Entschuldigt die Störung.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

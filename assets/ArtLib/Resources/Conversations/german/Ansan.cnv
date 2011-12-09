@@ -1,0 +1,60 @@
+[root]
+Count=2
+Else=
+Default=Danke, Ansan.
+Say1=All(ttl(!01recovered));
+goto1=Anson
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Anson]
+say=Würdest du mir bitte sagen, was du in der Küche zu suchen hast?  Ich habe euch Soldaten tausendmal gesagt, ich kann euch keine Extrawürste geben!  General Roth hat unsere Lebensmittelvorräte aus gutem Grunde streng rationiert!  Du bist vielleicht hungrig, aber wenigstens bist du gesund.
+rspDflt=None
+rspTxt1=Es tut mir leid, dass ich gestört habe. Ich bin hier neu, und wollte mich umsehen.
+NxtLn1=Anson1
+rspTxt2=Ich bin neugierig auf die Menschen die ausgewählt wurden, Avalon zu bevölkern. Wer bist du, und woher kommst du?
+NxtLn2=Anson2
+rspTxt3=Ich versuche nur, mich über die neuesten Entwicklungen auf dem Laufenden zu halten. Hast du irgendwelche Gerüchte gehört?
+NxtLn3=Anson3
+
+[Anson1]
+say=Na, dann sieh dich aber schnell um. Anora, die Chefin kann Müßiggänger in ihrer Küche nicht ausstehen.
+rspDflt=Ihr werdet kaum bemerken, dass ich hier bin.
+rspBack=Anson
+
+[Anson2]
+say=Ich heiße Ansan, und ich komme aus Cathea.  Mein Vater, ein Stallknecht, brachte mich noch während der Bauzeit mit nach Avalon.  Warum, weiß ich auch nicht; wahrscheinlich nur, um mich im Auge zu behalten.  In seinen Augen werde ich immer ein kleines Mädchen bleiben.  Wie auch immer, um aus dem Haus zu kommen habe ich hier in der Küche angefangen zu arbeiten.
+rspDflt=None
+rspTxt1=Und darüber freuen wir uns.  Jeder hier trägt seinen Teil zum Ganzen bei.  Darum wurde Avalon gebaut.
+NxtLn1=Anson4
+
+[Anson4]
+say=Ich würde dich von dem probieren lassen, was ich gerade koche, aber Anora würde mir den Kopf abreißen.  Verzeihung, Herr.
+rspDflt=Da gibt's nichts zu verzeihen -- die Lebensmittel sind rationiert, hast du doch gesagt.  Einen schönen Tag noch.
+rspBack=Anson
+
+[Anson3]
+say=Bonnie kam heute Morgen aus dem Keller gerannt und schrie, dass etwas versucht hätte, sie umzubringen. Herrin Anora meinte, sie wäre bloß eine alberne Gans, aber aus irgendeinem Grund lässt sie niemanden mehr in den Keller gehen.
+rspDflt=Es gibt bestimmt keinen Grund zur Sorge.  Danke für deine Mühe.
+rspBack=Anson
+
+;After recovery of Chalice
+[Chalice]
+say=Ja, hallo!  Der Held kehrt wieder in die Küche zurück!  Diesmal kann ich dir vielleicht sogar etwas anbieten.
+rspDflt=None
+rspTxt1=Du schmeichelst mir.  Eigentlich wollte ich nur vorbeischauen, um mich zu erkundigen, wie es hier so läuft.
+NxtLn1=Chalice1
+
+[Chalice1]
+say=Anstrengend, Herr.  Es ist schwer, die kärglichen Reste an Lebensmitteln so zu strecken, dass alle halbwegs satt werden.  Wenigstens ist die Stimmung hier gut.  Ich glaube, man kann doch gleichzeitig hungrig und glücklich sein.
+rspDflt=None
+rspTxt1=Es ist wohl möglich.  Ich wäre allerdings lieber glücklich und wohlgenährt, wenn ich ehrlich bin.
+NxtLn1=Chalice2
+
+[Chalice2]
+say=Ich auch.  Einen schönen Tag noch, junger Herr.
+rspDflt=Dir auch. Gehab dich wohl.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

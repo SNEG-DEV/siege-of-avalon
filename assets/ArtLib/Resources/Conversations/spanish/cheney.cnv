@@ -1,0 +1,117 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04campscleared,06chapter6,hunter
+Removed=
+
+[Quest]
+Added=ch3-524
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(5/23/01)=Passed
+tucker(7/12/01)=Passed
+
+[root]
+Count=5
+Else=
+Default=Gracias, Cheney.
+say1=all(ttl(06chapter6));
+goto1=cleared
+say2=all(ttl(04campscleared));
+goto2=cleared
+say3=all(ttl(03chapter3));
+goto3=three
+Say4=All(ttl(!01recovered));
+goto4=cheney1
+Say5=All(ttl(01recovered));
+goto5=cheney4
+
+[Cheney1]
+Say=Buenos días, señor.
+RspTxt1=¿De donde eres?
+NxtLn1=cheney2
+RspTxt2=¿Qué noticias hay?
+NxtLn2=cheney3
+RspDflt=Buenos días.
+
+[Cheney2]
+Say=Soy de Elythria, señor.  Ya he perdido dos hermanos en ésta lucha.  Creo que pronto perderé otro.
+RspDflt=Siento oír eso.
+rspBack=cheney1
+
+[Cheney3]
+Say=Se habla de abandonar Avalon.  Nadie en la Torre diría eso, pero lo he oído decir por los Patios.  Espero que no nos rindamos tan fácilmente.
+RspDflt=Como yo.
+rspBack=cheney1
+
+[Cheney4]
+Say=Hola, señor.  ¿Cómo puedo ayudarle?
+RspTxt1=Has oído algún rumor?
+RspDflt=Buenos días.
+NxtLn1=cheney5
+
+[cheney5]
+Say=He oído que el ejército se está volviendo más y más ambicioso. Se habla de una incursión nocturna, y quizás incluso una gran ofensiva.  Estate atento.  Puede que haya alguna batalla antes de que pase demasiado tiempo.
+RspDflt=Estoy listo para luchar.
+
+[three]
+Say=Hola, señor.  ¿A qué debo el placer de ésta visita?
+RspDflt=Perdóname, soldado.  Sólo pasaba por aquí.
+rspcnd1=all(stt(perception>24));
+RspTxt1=Puedes ahorrarte el peloteo, soldado; no me impresiona.
+nxtln1=three1
+rspcnd2=all(stt(perception<25));
+RspTxt2=Nada especial, sólo estoy atento.
+nxtln2=three3
+
+[three1]
+Say=¿...era tan obvio?
+RspDflt=none
+rspcnd1=all(ttl(!hunter));
+RspTxt1=No, no lo era, pero soy una persona inusualmente perceptiva.  Dime, ¿has oído algo interesante últimamente?
+nxtln1=three2
+rspcnd2=all(ttl(hunter));
+RspTxt2=No, no lo era, pero me han entrenado como explorador.  Dime, has oído algo interesante últimamente?
+nxtln2=three2
+
+[three2]
+Say=¿Oído?  No, pero he visto algo gracioso.  A veces vigilo los campamentos cuando no estoy de servicio, y los Sha'ahoul han estado haciendo algo, seguro, han estado haciendo algo, sí.  Puedo verles moviéndose por ahí durante la noche.  Están demasiado lejos como para ver algo más que un puñado de antorchas y sombras.
+adventure=ch3-524
+RspDflt=Mi agradecimiento por la pista, soldado.  Hasta luego.
+
+[three3]
+Say=No he oído nada que merezca mención, señor.
+RspDflt=Gracias de todos modos, soldado.  Adiós.
+
+[cleared]
+Say=Ah, he oído que fuiste tú quien destruyó a los Ahoul que he visto al sur de la fortaleza!  ¿Es cierto?
+RspDflt=none
+RspTxt1=Sí, fui yo.
+nxtln1=cleared2
+
+[cleared2]
+Say=Excelente!  Contigo de nuestra parte, esos locos bárbaros harían mejor en rendirse y tirar sus armas!
+RspDflt=none
+RspTxt1=Gracias por el cumplido, soldado.
+nxtln1=cleared3
+
+[cleared3]
+Say=Sigue adelante!
+RspDflt=Lo haré.  Hasta luego.
+

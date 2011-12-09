@@ -1,0 +1,160 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=completed,playerknown
+Checked=05ringdone,05zarnews,06chapter6,Completed,PlayerKnown
+Removed=
+
+[Quest]
+Added=ch1-19,ch1-20,ch1-22
+Removed=ch1-22
+
+[Items]
+Given=
+Taken=herb
+Checked=Herb
+Added=
+
+[SyntaxCheck]
+tucker(4/10/01)=Passed
+tucker(5/23/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Thank you, Brother Mo.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=All(ttl(!PlayerKnown,!Completed));
+goto2=Mo
+Say3=All(ttl(PlayerKnown,!Completed));
+goto3=HerbKnown
+Say4=All(ttl(Completed));
+goto4=Completed
+
+[Mo]
+Say=I'm glad ye stopped by.  I have a problem that ye may be able to solve.
+RspDflt=None
+RspTxt1=Anything, Brother.  Avalon's healers are critical to our survival.
+NxtLn1=Mo1
+RspTxt2=Actually, I was just passing through...
+NxtLn2=Mo2
+
+[Mo1]
+Say=Thank ye very much; ye truly are a gift!  By the way, I am Brother Mo.  I apologize for nae introducing myself properly, but there is precious little time to waste.  Listen -- there is a fever running about the infirmary, and 'tis spreading quickly.  Were we nae low on medical supplies, we could ease everyone's suffering with an easily-brewed tea.  Ye see our dilemma; supplies are low everywhere, and the infirmary is nae exception.
+RspDflt=None
+RspTxt1=I understand, Brother.  What kind of supplies do you need?
+NxtLn1=Mo3
+RspTxt2=Forgive me, Brother, but won't a Heal spell cure them?
+NxtLn2=Mo4
+
+[Mo2]
+Say=Listen to me, I beg of ye.  My name is Brother Mo.  I apologize for nae introducing myself properly, but there is precious little time to waste.  There is a fever running around the infirmary, and 'tis spreading quickly.  Were we nae low on medical supplies, we could ease everyone's suffering with an easily-brewed tea.  Ye see our dilemma, to be sure; supplies are low everywhere, and the infirmary is nae exception.
+RspDflt=None
+RspTxt1=I understand, Brother.  What kind of supplies do you need?
+NxtLn1=Mo3
+RspTxt2=Forgive me, Brother, but won't a Heal spell cure them?
+NxtLn2=Mo4
+
+[Mo3]
+Say=We've run out of a specific herb.  I thought we had more, but it seems we've almost run out much sooner than anticipated.  I know the influx of wounded has nae been small, but even so 'tis almost as if someone...  But that couldn't be -- this is Avalon!  Put simply, lad: we need more.  There was an orchard in the village which the monks took to using to grow the herbs we need.  They'll nae longer be in neat rows, but the herb will still be there.  But, again, ye see the problem.  The infirmary can nae afford monks to wander about doing the business of soldiers!  Would ye have Mudam the Scout to treat your wounds?  No, ye'd surely not!  Nor Captain Avarous.  That's our job.  We all do what we can.
+RspDflt=None
+RspTxt1=That we do, Brother.  How will I know which herb it is you need?
+NxtLn1=Mo5
+
+[Mo5]
+Say='Tis more of a hardy weed than fragile flower so I dare say it'll be running rampant over the orchards by now.  You will know the plant by its red petals, lush green leaves, brown, bulbous fruit, and dank, musty smell.  What I need from ye is the fruit of the plant -- the more the better.
+RspDflt=None
+RspTxt1=I shall remember your request and fulfill it when I am able.
+NxtLn1=Mo6
+
+[Mo4]
+Say=The Heal spell was developed, and is administered, for the healing of wounds won in battle.  Unfortunately, it can nae help the fever.
+Adventure=ch1-19;
+RspDflt=None
+RspTxt1=That is unfortunate, Brother, and is something of which I was unaware.  What supplies, then, are needed to combat the fever?
+NxtLn1=Mo3
+
+[Mo6]
+Say=Thank ye so much, my child.  I would be ever so grateful.
+RspDflt=I will return soon, Brother.
+AddQuest=ch1-22;
+script=Siege20000600030016357630.addTitle(PlayerKnown)
+
+[HerbKnown]
+Say=It is good to see ye again, lad.  Have ye the fruit I requested?
+RspDflt=None
+RspCnd1=All(Obj(Herb));
+RspTxt1=Yes, Brother.  Use them well.
+NxtLn1=HerbKnown1
+RspCnd2=All(Obj(!Herb));
+RspTxt2=I'm afraid I haven't had the chance yet, Brother.  I came by to let you know that I am still trying, and not to lose faith in me.
+NxtLn2=HerbKnown2
+
+[HerbKnown1]
+Say=Thank the sweet spirits, and ye as well, sir!  This will save nearly the entire infirmary.  Ah, lad, I'd swear you've been touched by the spirits themselves and I've no doubt ye'll be pulling us all out of the fire in the future.
+RspDflt=none
+Script=Siege20000600030016357630.TakeItem(Herb,Player);player.setprop(trainingpoints=2);Addtitle(Completed);journalentry(monksherbs);showmessage(Your journal has been updated.,200);
+RemoveQuest=ch1-22;
+rspCnd1=all(obj(herb));
+RspTxt1=Glad to be of service, Brother Mo.  Farewell.
+nxtLn1=Corvus
+rspCnd2=all(obj(!herb));
+RspTxt2=Glad to be of service, Brother Mo.  Farewell.
+nxtLn2=Corvus1
+
+[HerbKnown2]
+Say=I thank ye, lad, but please make haste.  Godspeed.
+RspDflt=I shall, Brother.  Farewell.
+
+[Corvus]
+Say=A moment more, lad.  I've heard of the loss of your brother, and I'd like ye to know that my prayers go with ye.  However, the time grows long that he's been missing.  I've nae doubt that though he be alive, he is gravely wounded.  A healthy Corvus would have made his way back to us long since.  Untreated wounds spawn infection, and infection spawns fever.  Like many of the soldiers here, the fever may threaten his life long before anything else allows death to claim him and Heal does nothing against a fever.  Take a piece of the herb back, lad.  When ye find him -- and I've nae doubt ye will! -- feed it to him.  'Tis vile, I'll grant, but it'll knock any fever down long enough for ye to get him back to us for proper care.
+Adventure=ch1-19;ch1-20;
+RspDflt=Thank you, Brother, for your knowledge and your kindness.  I wish you well.
+
+[Corvus1]
+Say=A moment more, lad.  I've heard of the loss of your brother, and I'd like ye to know that my prayers go with ye.  However, the time grows long that he's been missing.  I've nae doubt that though he be alive, he is gravely wounded.  A healthy Corvus would have made his way back to us long since.  Untreated wounds spawn infection, and infection spawns fever.  Like many of the soldiers here, the fever may threaten his life long before anything else allows death to claim him and Heal does nothing against a fever.  Return to the orchard and claim another piece of the herb's fruit.  When ye find him -- and I've nae doubt ye will! -- feed it to him.  'Tis vile, I'll grant, but it'll knock any fever down long enough for ye to get him back to us for proper care.
+Adventure=ch1-19;ch1-20;
+RspDflt=Thank you, Brother, for your knowledge and your kindness.  I wish you well.
+
+[Completed]
+Say=Ah, our young benefactor returns!  How can I help ye today, lad?
+RspDflt=Pardon me, Brother.  I must be on my way.
+RspTxt1=I was just wondering if you had further need of my services, Brother.
+NxtLn1=Completed1
+RspTxt2=I'm just passing through, Brother.  How goes everything with you?
+NxtLn2=Completed2
+rspcnd3=one(ttl(05ringdone,05zarnews));
+RspTxt3=I have heard that Elazar is here in the infirmary.  What is ailing him?
+nxtln3=sickzar
+
+[Completed1]
+Say=No, lad, not at the moment, but 'tis kind of you to offer!
+RspDflt=Then it was nice to see you again, Brother Mo.  Farewell.
+
+[Completed2]
+Say=Ah, lad, we've been very busy here distributing medicine.  If ye want to know anything more, you'll have to talk to the soldiers.  I'm to the bottom of my fourth pot of cappuccino!  Belinda!  More coffee!
+RspDflt=Um...  I'll do that.  And...  Get some sleep, Brother Mo.  You can't do everything by yourself.  Farewell.
+
+[sickzar]
+Say=We do not, as of yet, know what is ailing him, because he has been unconscious for quite some time and we cannot diagnose him without knowing his symptoms.  He does not show the telltale signs of any sickness that we are cognizant of; he merely came in here complaining that he was feeling ill, took a bed, and promptly fell asleep.  We have been unable to rouse him with both the most potent-smelling of herbs and the roughest of shaking.  Not even a whiff of good Gentza's corn squeezings could rouse him from this sleep.  We shall have to wait to know anything.
+RspDflt=Thank you for the information, Brother Mo.  I shall be back to check on him soon.  Farewell.
+
+[chapter6]
+Say=Hail, lad! Have you come again to see about the sickly wizard?  He has been mumbling in his sleep...  He said something about the Queen, but I couldn't make out anything after that.  I'm afraid we have nothing that can help.  Were the roads open, and the battle not raging, we would be faring better.  Alas, I fear there is nothing we can do.
+RspDflt=Fie on this sickness!  I will find a way...
+

@@ -1,0 +1,234 @@
+[FileID]
+author=tuck
+coding=
+approved=
+version=1
+
+[CharacterID]
+name=Lord Harold
+guid=
+
+[Titles]
+Set=03crownreturned,03haroldhappy,03haroldquest,03signetreturned
+Checked=01recovered,03chapter3,03haroldhappy,03haroldquest,03hartleyhappy,03hartleyquest,03knowelves,03mabondone,03mabonquest,03reportgiven,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-04,ch3-503,ch3-504,ch3-505,ch3-528,ch3-529,ch3-530,ch3-531,ch3-580,ch3-582
+Removed=ch3-503,ch3-504,ch3-505
+
+[Items]
+Given=
+Taken=ktring
+Checked=KTCrown,KTRing,statusharold
+Added=statusharold
+
+[SyntaxCheck]
+tucker(4/10/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+count=7
+else=
+Default=Gracias, Lord Harold.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(!03haroldquest,03chapter3));
+goto2=haroldthree
+say3=all(ttl(03haroldquest,!03haroldhappy));
+goto3=incomplete
+say4=all(ttl(03haroldhappy):obj(!KTCrown));
+goto4=complete
+say5=all(ttl(03haroldhappy):obj(KTCrown));
+goto5=completewith
+Say6=All(ttl(!01recovered));
+goto6=Harold1
+Say7=All(ttl(01recovered));
+goto7=Harold2
+
+[Harold1]
+Say=¿No ves que estoy ocupado, chico?  Lárgate.
+Adventure=ch1-04;
+RspDflt=Lamento molestarle, señor.
+
+[Harold2]
+Say=Debes ser un nuevo héroe de por aquí, pero sigo sin tener tiempo para tus tonterías.  ¡Fuera de mi camino!
+RspDflt=Perdonadme, señor.
+
+[haroldthree]
+Say=¿Sí?  ¿Puedo ayudarte en algo?
+RspDflt=Discúlpeme, buscaba a otra persona.
+RspTxt1=En realidad, iba a preguntarle exactamente lo mismo.
+nxtln1=haroldthree2
+rspcnd2=all(ttl(03mabonquest,!03mabondone):obj(!statusharold));
+RspTxt2=Sí, de hecho, sí.  Sir Mabon se encarga ahora del trabajo del General Ovoron, y ha descubierto que la documentación de que dispone es incompleta en varios aspectos.  Por tanto, me ha enviado a conseguir vuestro último informe de situación.
+nxtln2=statusreport
+
+[haroldthree2]
+Say=Bueno, en realidad, me alegro mucho de que me lo digas!  Soy Lord Harold, y siendo uno de los pocos Taberlandeses que quedaron en la fortaleza, desde que nuestro rey solicitó ayuda para sofocar la revuelta, he tenido ocasión de pensar en varias cosas.  Una de dichas cosas es el anillo de sello del Rey Tortain.  Debe ser recuperado, y Elazar tiene información que hará que dicha tarea sea mucho más fácil de cumplir.  Creo que ha tenido una visión o algo parecido.
+adventure=ch3-580
+RspDflt=none
+rspcnd1=all(ttl(!03hartleyquest,!03hartleyhappy));
+RspTxt1=Creo que tendríais más suerte encontrando la proverbial aguja en un pajar, amigo.
+nxtln1=haroldthree3
+rspcnd2=all(ttl(!03hartleyquest,!03hartleyhappy));
+RspTxt2=¿Por qué es tan importante hallar un anillo, incluso si se trata del de un Rey difunto?
+nxtln2=haroldthree6
+rspcnd3=all(ttl(03hartleyquest,!03hartleyhappy):obj(!KTRing));
+RspTxt3=Ah, sí.  Ya he hablado con el Barón Hartley de este anillo.
+nxtln3=haroldthree7
+rspcnd4=all(ttl(03hartleyquest,03hartleyhappy):obj(!KTRing));
+RspTxt4=Ah, sí.  Ya he hablado con el Barón Hartley de este anillo.
+nxtln4=haroldthree9
+
+[haroldthree3]
+Say=Por supuesto, y esa misma suerte es la que he tenido mientras buscaba alguna pista, pero recientemente se ha presentado sola.  Sabiendo que mi intención era localizar el anillo, Sir Roth me ha confiado que Elazar tuvo una visión de la armadura y el sello de Tortain, lo cual significa buenas y malas noticias.  De todas formas, el anillo debe ser recuperado.
+RspDflt=none
+RspTxt1=¿Y os gustaría que yo recuperase dicho anillo?
+nxtln1=haroldthree4
+rspback=haroldthree2
+
+[haroldthree4]
+Say=Sí.  Me habéis preguntado en qué podíais ayudarme, y asignaros esta tarea, me librará de preocupaciones al respecto.  Probablemente no os acordéis de mí, pero creo que nos hemos encontrado antes.  Aunque no importa, puesto que historias de vuestras gestas circulan por la fortaleza con mayor frecuencia cada día.  Creo que sois un individuo caritativo, y además, bastante competente.  ¿Aceptaréis la misión, verdad?
+RspDflt=none
+RspTxt1=Naturalmente, Lord Harold.  Lo que beneficia a Taberland, beneficia también a Avalon.
+nxtln1=haroldthree5
+rspcnd4=all(obj(KTRing));
+RspTxt4=Tenéis suerte, Lord Harold.  Ya he recuperado el anillo, y está en mi posesión.  Naturalmente, podéis quedároslo hasta que regrese Vortigerm.
+nxtln4=incomplete1
+
+[haroldthree5]
+Say=Espléndido!  Después de todo, yo tenía razón respecto a vos.  Ah, sí, también falta la armadura del rey, que debería ser devuelta si ello es posible, claro...  Puede que deseéis hablar con Elazar respecto a su visión, o probablemente no tendréis la más remota idea de por dónde empezar a buscar.  Volved  a mí cuando tengáis algo de lo que informar.  Os agradezco por anticipado vuestra contribución a nuestra causa.
+AddQuest=ch3-503
+adventure=ch3-528
+script=player.addtitle(03haroldquest);
+RspDflt=Eso haré, Lord Harold.  Hasta luego.
+
+[haroldthree6]
+Say=Es algo más que una simple herencia.  Un anillo de sello es como una firma.  Cualquier documento puede parecer que provenga del mismísimo Rey si está sellado con éste anillo.
+RspDflt=none
+RspTxt1=¿Y os gustaría que lo recuperase para que vos podáis guardarlo para el Rey Vortigerm?
+nxtln1=haroldthree4
+
+[haroldthree7]
+Say=¿Oh?  ¿Qué ha dicho?
+AddQuest=ch3-505
+removequest=ch3-503;ch3-504
+adventure=ch3-529
+RspDflt=none
+RspTxt1=[cuentas a Lord Harold los detalles]  Estoy trabajando en el cumplimiento de ésta misión.
+script1=player.addtitle(03haroldquest);
+nxtln1=haroldthree8
+
+[haroldthree8]
+Say=Ah.  Bien, cuando encuentres el anillo, puesto que lo encontrarás, devuélveselo a aquel de nosotros que te parezca más conveniente.
+RspDflt=Como queráis, Lord Harold.  Hasta luego.
+
+[haroldthree9]
+Say=¿Lo habéis hecho?  ¿Qué os ha dicho?
+RspDflt=none
+RspTxt1=[cuentas a Lord Harold los detalles]  Ya he devuelto el anillo al Barón Hartley.
+nxtln1=haroldthree10
+
+[haroldthree10]
+Say=Espléndido!  Al fin puedo dejar de preocuparme por él.  Realmente eres tan competente y caritativo como pensaba.  Probablemente el Barón Hartley ya te lo ha agradecido, pero me gustaría hacerlo de nuevo.  Tienes mi más sincera gratitud.
+adventure=ch3-530
+removequest=ch3-503;ch3-504;ch3-505
+script=player.addtitle(03haroldhappy);player.addtitle(03signetreturned);
+RspDflt=Gracias, Lord Harold.  Hasta luego.
+
+[incomplete]
+Say=Hola de nuevo.  ¿Has encontrado el anillo?
+RspDflt=Todavía no, Lord Harold.  Volveré cuando lo haya hecho.
+rspcnd1=all(obj(KTRing));
+RspTxt1=Naturalmente que sí, Lord Harold.
+nxtln1=incomplete1
+rspcnd2=all(ttl(03hartleyquest,!03hartleyhappy));
+RspTxt2=Todavía no, pero he descubierto que uno de vuestros paisano, el Barón Hartley, ha sido enviado con la misión de recuperar el mismo anillo de sello que vos buscáis.
+nxtln2=incomplete2
+rspcnd3=all(ttl(03hartleyquest,03hartleyhappy));
+RspTxt3=Ah, sí.  Ya he hablado con el Barón Hartley del anillo de sello, y se lo he devuelto a él.
+nxtln3=incomplete3
+rspcnd4=all(ttl(03mabonquest,!03mabondone):obj(!statusharold));
+RspTxt4=No, Lord Harold, todavía no, pero necesito algo de vos.  Sir Mabon se encarga ahora del trabajo del General Ovoron, y ha descubierto que la documentación de que dispone es incompleta en varios aspectos.  Por tanto, me ha enviado a conseguir vuestro último informe de situación.
+nxtln4=statusreport
+
+[incomplete1]
+Say=Espléndido!  Al fin puedo dejar de preocuparme por él.  Me has hecho un gran favor, amigo; tienes mi más sincera gratitud, e indudablemente, tendrás también la gratitud de Su Alteza en cuanto llegue.  [Sonríe]  No debo decirte cual es más valiosa, pero recordaré tu contribución.
+adventure=ch3-531
+removequest=ch3-503;ch3-504;ch3-505
+Script=player.addtitle(03haroldhappy);takeitem(KTRing,player);player.addtitle(03signetreturned);player.setprop(trainingpoints=5);showmessage(You have received some training points.,300);
+RspDflt=Aprecio vuestra gratitud, Lord Harold.  Ahora, si me disculpáis, tengo otros deberes que atender.
+rspcnd1=all(ttl(03mabonquest,!03mabondone):obj(!statusharold));
+RspTxt1=A cambio, Lord Harold, pero necesito algo de vos.  Sir Mabon se encarga ahora del trabajo del General Ovoron, y ha descubierto que la documentación de que dispone es incompleta en varios aspectos.  Por tanto, me ha enviado a conseguir vuestro último informe de situación.
+nxtln1=statusreport
+
+[incomplete2]
+Say=Ah.  Bueno, cuando hayas encontrado el anillo, entrégaselo a aquél de nosotros dos que te resulte más conveniente.  Si se lo das al Barón Hartley, por favor, recuerda informarme de ello, ¿de acuerdo?  ¿Necesitas algo más?
+adventure=ch3-529
+AddQuest=ch3-505
+removequest=ch3-503;ch3-504
+RspDflt=de momento no, Lord Harold.  Hablaré con vos en cuanto haya recuperado el anillo.
+rspcnd1=all(ttl(03mabonquest,!03mabondone):obj(!statusharold));
+RspTxt1=Pues resulta que sí.  Sir Mabon se encarga ahora del trabajo del General Ovoron, y ha descubierto que la documentación de que dispone es incompleta en varios aspectos.  Por tanto, me ha enviado a conseguir vuestro último informe de situación.
+nxtln1=statusreport
+
+[incomplete3]
+Say=Espléndido!  Al fin puedo dejar de preocuparme por él.  Realmente eres tan competente y caritativo como pensaba.  Probablemente el Barón Hartley ya te lo ha agradecido, pero me gustaría hacerlo de nuevo.  Tienes mi más sincera gratitud.
+removequest=ch3-503;ch3-504;ch3-505
+adventure=ch3-530
+script=player.addtitle(03haroldhappy);player.addtitle(03signetreturned);
+RspDflt=Sólo cumplo con mi deber, Lord Harold.  Muchas gracias.
+rspcnd1=all(ttl(03mabonquest,!03mabondone):obj(!statusharold));
+RspTxt1=A cambio, Lord Harold, pero necesito algo de vos.  Sir Mabon se encarga ahora del trabajo del General Ovoron, y ha descubierto que la documentación de que dispone es incompleta en varios aspectos.  Por tanto, me ha enviado a conseguir vuestro último informe de situación.
+nxtln1=statusreport
+
+[complete]
+Say=Hola.  ¿Qué noticias traes?
+RspDflt=Nada nuevo, Lord Harold.  Hasta luego.
+rspcnd1=all(ttl(03mabonquest,!03mabondone):obj(!statusharold));
+RspTxt1=Necesito vuestra ayuda, Lord Harold.  Sir Mabon se encarga ahora del trabajo del General Ovoron, y ha descubierto que la documentación de que dispone es incompleta en varios aspectos.  Por tanto, me ha enviado a conseguir vuestro último informe de situación.
+nxtln1=statusreport
+rspcnd2=all(ttl(03knowelves));
+RspTxt2=¿Qué podéis decirme de los elfos?
+nxtln2=elves
+
+[statusreport]
+Say=Oh, naturalmente!  Casi me había olvidado de eso.  Aquí lo tienes.
+script=player.additem(statusharold);addtitle(03crownreturned);
+adventure=ch3-582
+RspDflt=Gracias, Lord Harold.  Si no os importa, debo irme.
+
+[elves]
+Say=He oído que hacen unas flechas espléndidas.  ¡De hecho, el tipo de flechas que los mercaderes más codician!
+RspDflt=Ya veo.  Gracias por vuestro tiempo.
+
+[completewith]
+Say=Hola.  ¿Qué noticias traes?
+RspDflt=Nada nuevo, Lord Harold.  Hasta luego.
+rspcnd1=all(ttl(03mabonquest,!03mabondone,!03reportgiven):obj(!statusharold));
+RspTxt1=Necesito vuestra ayuda, Lord Harold.  Sir Mabon se encarga ahora del trabajo del General Ovoron, y ha descubierto que la documentación de que dispone es incompleta en varios aspectos.  Por tanto, me ha enviado a conseguir vuestro último informe de situación.
+nxtln1=statusreport
+rspcnd2=all(ttl(03knowelves));
+RspTxt2=¿Qué podéis decirme de los elfos?
+nxtln2=elves
+rspcnd3=all(obj(KTCrown));
+RspTxt3=De hecho, he venido explícitamente a traeros la Corona de Taberland.
+script3=takeitem(KTCrown,player);player.addtitle(03crownreturned);
+nxtln3=completewith2
+
+[completewith2]
+Say=El Rey Vortigerm estará MUY contento de conseguir esto.  En vista de ello, puedes usar la armadura del Rey Tortain hasta que Su Alteza diga lo contrario.  ¿Hay algo más que necesites?
+RspDflt=No, Lord Harold.  Hasta luego.
+RspTxt1=Sí, Lord Harold, lo hay.
+nxtln1=completewith
+
+[chapter6]
+Say=Ah, %playername%. ¿Hay algo que pueda hacer por ti?
+RspDflt=No, gracias. Debo volver a mis deberes. Hasta luego, Lord Harold.
+

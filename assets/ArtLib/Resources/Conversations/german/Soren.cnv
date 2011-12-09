@@ -1,0 +1,74 @@
+[Notes]
+TitlesChecked=01informed,01recovered
+TitlesSet=01TalkSoren
+
+[root]
+Count=3
+Else=
+Default=Danke, Soren.
+Say1=All(ttl(01informed,!01Recovered));
+goto1=Soren
+Say2=All(ttl(!01informed,!01Recovered));
+goto2=News
+Say3=All(ttl(01informed,01Recovered));
+goto3=Chalice
+
+;First approach after Penrith
+[Soren]
+say=Guten Tag, Herr.  Was führt Euch zum Wachturm?
+rspDflt=None
+rspTxt1=Ich bin hier, um mich nach Neuigkeiten über meinen Bruder zu erkundigen.
+NxtLn1=Soren1
+
+[Soren1]
+say=Euer Bruder?  Meint Ihr den Kerl, der gestern durchs Dorf gelaufen ist? 
+rspDflt=None
+rspTxt1=Ja!  War es mein Bruder?  War es Leutnant Corvus, von den Elythrianern?
+NxtLn1=Soren2
+
+[Soren2]
+say=Ja, so sicher wie ich Soren heiße.  Eine ganze Sturmfaust Ahoul-Räuber war hinter ihm her!  Immer wieder hat er sich umgedreht und ein paar von seinen Verfolgern ins Jenseits befördert.  Ein Kämpfer wie kein anderer ist Euer Bruder, Herr...
+rspDflt=None
+rspTxt1=Lebt er noch?
+NxtLn1=Soren3
+
+[Soren3]
+say=Kann ich nicht sagen, Herr.  Irgendwann verschwand er in eine Gasse, und  seitdem haben wir ihn nicht mehr gesehen.
+rspDflt=Danke.
+script=player.addtitle(01TalkSoren)
+
+;Before recovery of Chalice
+[News]
+say=Hallo.  Was sucht Ihr hier oben?
+rspTxt1=Ich wollte nur die neuesten Gerüchte hören.
+NxtLn1=News1
+rspTxt2=Ich wollte Euch nur kennen lernen.  Wer seid Ihr?
+NxtLn2=News2
+
+[News1]
+say=Unten im Dorf sind seltsame Dinge im Gange, Herr.  Ganz seltsame Dinge!  Um die alte Kirche schleichen sich Schatten herum, und wir hören seltsame Geräusche aus der Nähe der Bibliothek.  Wir wissen nicht, was wir von all dem halten sollen!
+Adventure=ch1-69;
+rspDflt=Ich auch nicht.  Danke für die Information.
+rspBack=News
+
+[News2]
+say=Mein Name ist Soren, Herr. Ich komme aus Oriam, ganz in der Nähe.  Geboren wurde ich draußen im Grenzland.  Mein Zuhause gehörte zu den ersten, die von den verfluchten Ahoul überfallen wurden.  Was aus meiner Familie wurde, weiß ich nicht,  aber ich nehme an, sie versteckt sich irgendwo.
+rspDflt=Hoffentlich ist sie in Sicherheit.  
+rspBack=News
+
+;After recovery of Chalice
+[Chalice]
+say=Willkommen zurück, Mylord!
+rspDflt=None
+rspTxt1=Hallo, Soren.  Wie ist es Euch hier oben ergangen?
+NxtLn1=Chalice1
+
+[Chalice1]
+say=Gut, Herr.  Wir haben gesehen, wie Ihr Euch unten im Dorf  umgeschaut habt.
+rspDflt=None
+rspTxt1=Hoffentlich habe ich nicht lächerlich ausgesehen!
+NxtLn1=Chalice2
+
+[Chalice2]
+say=Nein, Herr!  Es sah schon so aus, als wüßtet Ihr, was Ihr da tut.
+rspDflt=Danke, Soren.  Mögen Euch die guten Geister beschützen.

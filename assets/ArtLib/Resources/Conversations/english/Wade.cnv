@@ -1,0 +1,102 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,06chapter6,06trialdone
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Thank you.
+say1=all(ttl(06chapter6,!06trialdone));
+goto1=chapter6
+say2=all(ttl(03chapter3));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Soldier
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Soldier]
+Say=What can I do for you?
+RspDflt=Nothing, soldier.  Just passing through.
+RspTxt1=Where are you from?
+NxtLn1=Soldier1
+RspTxt2=Heard any good rumors?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=I am a child of Elythria.
+RspDflt=Very well.  Farewell, soldier.
+rspBack=soldier
+
+[Soldier2]
+Say=I hear that the Ahoul almost breached the wall last night.  Be ready to fight for your life tonight...
+RspDflt=Thank you for the advice, soldier.  Farewell.
+rspBack=soldier
+
+[Chalice]
+Say=How can I help you, sir?
+RspDflt=Please excuse me, soldier.  I've urgent business to attend to.
+RspTxt1=Where are you from?
+NxtLn1=Chalice1
+RspTxt2=Heard any good rumors?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Every bit of me is Elythrian, sir.  And I'm ready for a good fight now!
+RspDflt=I'm glad to hear it, soldier.  Farewell.
+rspBack=Chalice
+
+[Chalice2]
+Say=A friend of mine from Aratoy says that Captain Calvaric mortally wounded Mithras!  He's not a bad chap, for an Aratoyan!
+RspDflt=That's quite a rumor, soldier, but I hope it is true.  Farewell for now.
+rspBack=Chalice
+
+[three]
+Say=Is it true?  Is Mithras dead yet?
+RspDflt=none
+RspTxt1=No, soldier, not yet...  Where did you hear this?
+nxtln1=three2
+
+[three2]
+Say=Oh, I must have dreamed it or something.  Sorry to disturb you.
+RspDflt=No disturbance, soldier.  Stay safe.
+
+[chapter6]
+Say=When is all this war going to end?
+RspDflt=I don't know. Farewell.
+RspTxt1=As soon as I find Mithras.
+nxtln1=chapter6a
+
+[chapter6a]
+Say=You think...  You can't defeat Mithras!  They say he can command the elements, and that he's impossible to kill!
+RspDflt='They' said I couldn't find the chalice, or my brother...  Keep faith and skill, brother.
+

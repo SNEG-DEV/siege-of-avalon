@@ -1,0 +1,162 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01whylettertaken
+Checked=01LetterReturned,01recovered,01WhyLetterTaken,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-09,ch1-10,ch1-11,ch1-12
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=LoveLetter
+Added=
+
+[SyntaxCheck]
+tucker(5/23/01)=Passed
+tucker(7/16/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Thank you.
+say1=one(ttl(06chapter6,05chapter5));
+goto1=chapter6
+Say2=All(ttl(!01recovered,!01WhyLetterTaken));
+goto2=Soldier
+Say3=All(ttl(!01recovered,01WhyLetterTaken,!01LetterReturned));
+goto3=NotReturned
+Say4=All(ttl(!01recovered,01WhyLetterTaken,01LetterReturned));
+goto4=Returned
+Say5=All(ttl(01recovered));
+goto5=Chalice
+
+[Soldier]
+Say=Need something?
+RspDflt=No, soldier.  Please pardon me.
+RspTxt1=Where are you from?
+NxtLn1=Soldier1
+RspTxt2=Heard any good rumors?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=My home is in Cathea.  Well, once it was.  I raised cattle there, at least until I was conscripted to fight this war.  Raising cattle isn't all that impressive a job, but even a mad cow is nowhere near as vicious as an Ahoul raider.  That's why I've had -- we've all had -- to learn to be strong.
+RspDflt=I'm glad to hear of your strength, soldier.  Farewell.
+rspBack=soldier
+
+[Soldier2]
+Say=I heard King Vortigerm of Taberland is coming with every able-bodied man in his kingdom.  The soldiers of Taberland have proven themselves before in battle.  Their arrival will save us, but until then, though, we'll need every body we've got to hold off the Ahoul.  Things are tough here, and we're all just barely holding on.  If any of us breaks down, then another will, and another, until we'll be like a herd of cattle trapped in a blind panic.  And then we'll die.  We need to be strong, all of us.
+Adventure=ch1-09;ch1-10;
+RspDflt=That's good advice.  I'll keep it in mind.  Good day.
+RspTxt1=I understand.  I didn't realize the situation was so precarious.
+nxtLn1=Soldier3
+
+[Soldier3]
+Say=Of course it's precarious.  We're in a bloody siege.  Frankly, I think our only hope is if King Vortigerm gets here, and damn quickly, too.  Between betrayal from inside the walls and constant attacks from outside, historically sieges go very badly for the defenders.  And that's without mentioning the threat of disease and famine.  I've been here long enough to know that bit of military history.  You though, you have the look of a new recruit.
+RspDflt=None
+RspTxt1=I'll admit that I am but newly arrived here.  However, I'm not exactly inexperienced.
+nxtLn1=Soldier4
+
+[Soldier4]
+Say=That strength in your voice, that's good.  Maybe you'll last here after all.  Most of us here I think are strong enough to last until the King arrives, but there are one or two that I'm not so sure about.
+RspDflt=None
+RspTxt1=Really?  Like who?
+nxtLn1=Soldier5
+
+[Soldier5]
+Say=Madden, for one.  Every time I've walked the halls on patrol these last few weeks he's been blubbering about this "love" of his, about how he misses her and wishes he was home with her.  It's sad, sure, but every last one of us wishes we weren't here.  But do we get all weepy about it?  No.  And why?  Because it's exactly the sort of thing that's so dangerous.  If one of us blubbers, then the next will and so on.  We need to be strong.  Madden, though...  But at least I took care of his problem.
+RspDflt=None
+RspTxt1=What do you mean?
+nxtLn1=Soldier6
+
+[Soldier6]
+Say=He had this letter from his girl.  He read it constantly, on duty or off.  What he really needs to do is forget her and concentrate on keeping Avalon secure.  I figured that if he didn't have that damn letter, he'd be better off.  So I took it, and hid it in my room.
+Adventure=ch1-11;
+script=player.addtitle(01WhyLetterTaken);
+RspDflt=None
+RspTxt1=Theft?  Not the most noble thing to have done.
+nxtLn1=Disapprove
+RspTxt2=He's probably better off if he can forget her.
+nxtLn2=Approve
+
+[Disapprove]
+Say=Noble?  Wake up.  This is war.  We all need to be strong if we want to survive.  And after King Vortigerm arrives, I'll return it.  Until, then, however, it's better this way.
+RspDflt=Perhaps, but I'm certain there's a better way of doing things.  Good day.
+
+[Approve]
+Say=Exactly.  And it won't be forever -- after King Vortigerm arrives, I'll return it.
+RspDflt=That's for the best.  Good day to you.
+
+[NotReturned]
+Say=Hello again!  Remain strong!
+RspDflt=I will.  Good day.
+rspCnd1=all(obj(LoveLetter));
+RspTxt1=Would this be Madden's love letter here?
+nxtLn1=HasLetter
+
+[HasLetter]
+Say=Yes!  Where did you get that?  Did you ransack my room?
+RspDflt=none
+RspTxt1=As a self-confessed thief, who are you to complain?
+nxtLn1=HasLetter2
+
+[HasLetter2]
+Say=You have a point.
+RspDflt=I think I'll hold on to it for now.  I'm still deciding who I think should have it.  Good day.
+RspTxt1=I thought about what you said, and I've decided you have a point.  Here's the letter -- you should take better care of it in the future.
+nxtLn1=HasLetter3
+
+[HasLetter3]
+Say=I'm glad you see the sense of the matter.  As I said, when this crisis is over, I'll be certain to return this to Madden.  Until then, like us all, he'll have to be strong.  Good day.
+Adventure=ch1-12;
+Script=takeitem(LoveLetter,player);player.setprop(trainingpoints=1);showmessage(You have received some training points.,300);
+RspDflt=And good day to you.
+
+[Returned]
+Say=I heard Madden got his letter back.  Oh, well done!  If he breaks now, you may have killed us all.
+RspDflt=none
+RspTxt1=The source of Madden's strength is in that letter.  With it, he'll be strong enough to outlast most of us here.
+nxtLn1=Returned1
+
+[Returned1]
+Say=That's likely a load of cattle droppings.  But I hope it's true -- I've no wish to see Avalon fall.
+RspDflt=You'll be fine.  We all will, if we trust in each other's strength.  Good day.
+
+[Chalice]
+Say=The hero!  What can I do for you?
+RspDflt=Nothing.  Please excuse me.
+RspTxt1=Where are you from?
+NxtLn1=Chalice1
+RspTxt2=Heard any good rumors?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=I was born on the high plains of Cathea.  I raised cattle there, that is, until I was conscripted to fight here.  If I was given a horse, I would ride better than any Ahoul savage!  I may never be as strong as you, but I'm strong enough for that at least!
+RspDflt=Interesting.  Farewell.
+rspBack=chalice
+
+[Chalice2]
+Say=Rumor has it that a new officer with the Elythrians will turn the tide of this war.  You have the strength to do it.  I know it.  Be strong!
+RspDflt=As strong my duty requires that I to be.  Farewell.
+
+[chapter6]
+Say=I dream of when this war is over and I can return to my homeland.  This war has angered and scared me for so long I sometimes think I'll go mad.  I tire of being the strong one.  What good is strength when it is your wits that are at stake?
+RspDflt=Sometimes all you can do is hold on.  Sometimes you have to let go.  This all depends on the person, and not the situation.  I believe in your skills, soldier.  Hold to your faith.
+

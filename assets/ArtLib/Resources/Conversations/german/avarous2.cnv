@@ -1,0 +1,56 @@
+[root]
+Count=3
+Else=Avarous8
+Default=
+Say1=All(ttl(!01permission,!01Recovered,!01Avarous));
+goto1=Avarous1
+Say2=All(ttl(01permission,!01Recovered));
+goto2=Avarous3
+Say3=All(ttl(01permission,01Recovered));
+goto3=Avarous5
+
+
+;After player finishes training
+[Avarous1]
+say=Also, du meinst, du bist jetzt bereit für den Dienst als Soldat?
+rspdflt=none
+rsptxt1=Ich habe Vertrauen in meinen Fähigkeiten, Herr Hauptmann.
+NxtLn1=Avarous2
+
+[Avarous2]
+say=Wie du meinst, Soldat.  Ich werde deine Fähigkeitsstufe an die Kommandeure weitergeben, und sie werden dich mit weiteren Aufgaben betrauen.  Abtreten.
+Adventure=ch1-31;
+script=player.setprop(trainingpoints=4);journalentry(avarous);showmessage(Ihr Tagebuch wurde aktualisiert.,200);player.addtitle(01Avarous);
+rspdflt=Jawohl.  Danke, Herr Hauptmann!
+
+
+;After transfer to Mudam and before recovery of Chalice of Life
+[Avarous3]
+say=Ach, komm schon, Soldat!  Die Zeit, in der du hier Übung gebraucht hast, ist doch längst vorbei!
+rspdflt=none
+rsptxt1=Eigentlich bin ich nur hier, um die neuesten Gerüchte zu erfahren.
+nxtln1=Avarous4
+
+[Avarous4]
+say=Die Zeiten sind zu hart, als dass es auf dem Übungsplatz irgendetwas anderes gibt, als militärische Übungen.  Eines Tages können wir uns vielleicht ein bisschen entspannen und unter Soldaten plaudern, aber heute ist noch nicht der Tag.
+rspdflt=Ich verstehe.  Gehabt Euch wohl, Hauptmann.
+
+;After recovery of Chalice of Life
+
+[Avarous5]
+say=Was hat ein hervorragender Soldat wie du auf dem Übungsplatz zu suchen? Hast du nichts Wichtigeres zu erledigen?
+rsptxt1=Ich mache hier nur eine kleine Atempause, Herr Hauptmann.  Gibt's hier was Neues? 
+nxtln1=Avarous6
+
+[Avarous6]
+say=Dein Heldentum hat die Rekruten angespornt; sie üben alle noch härter als vorher.  Ich wette, dass diese neuen Soldaten es selbst mit den besten Sha'ahoul-Kriegern aufnehmen können!
+rsptxt1=Das ist eine ausgezeichnete Nachricht, Herr Hauptmann!
+nxtln1=Avarous7
+
+[Avarous7]
+say=Mögen dich die guten Geister beschützen.
+rspdflt=Und Euch.
+
+[Avarous8]
+say=Ich habe deine Geschicklichkeitsstufe an die Kommandeure weitergeben; sie werden dich bald mit weiteren Aufgaben betrauen.  Abtreten.
+rspdflt=Jawohl, Herr Hauptmann.

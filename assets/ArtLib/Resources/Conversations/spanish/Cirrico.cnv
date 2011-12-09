@@ -1,0 +1,163 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01informed,01Recovered,03chapter3,06chapter6
+Removed=
+
+[Quest]
+Added=ch3-519,ch3-520
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(5/23/01)=Passed
+tucker(7/12/01)=Passed
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Gracias, Heather.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(03chapter3));
+goto2=three
+Say3=All(ttl(!01informed,!01Recovered));
+goto3=Heather
+Say4=All(ttl(01informed,!01Recovered));
+goto4=News
+Say5=All(ttl(01informed,01Recovered));
+goto5=Chalice
+
+[Heather]
+Say=Perdóneme, señor.  ¿Qué puedo hacer por usted?
+RspDflt=None
+RspTxt1=Acabo de llegar a Avalon.  Me alegro de ver que no todos los habitantes de Avalon son soldados.  ¿Quien sois y de donde venís?
+NxtLn1=Heather1
+RspTxt2=Soy nuevo aquí, e intento tener una idea de los rumores que circulan por aquí.
+NxtLn2=Heather2
+
+[Heather1]
+Say=Me llamo Heather.  Soy la camarera de las habitaciones de los oficiales en éste lado de la torre.  He vivido toda mi vida en Oriam, pero trabajar allí era muy aburrido.  Vine a Avalon porque éste es el último bastión de esperanza para el Este, e incluso un trabajo como el mío se convierte en importante aquí.
+RspDflt=Cada uno hace su parte.  Dejadme que os agradezca por adelantado que os encarguéis de mis habitaciones.  Que tengáis un buen día.
+rspback=heather
+
+[Heather2]
+Say=Conozco camareras que tienen reputación de cotillas, pero el General Roth me despellejaría si se enterase de que voy contando por ahí las cosas que he escuchado.
+RspDflt=Me disculpo--No desearía buscaros problemas.  Preguntaré a otra persona, pues.  Gracias de todos modos.
+rspback=heather
+
+[News]
+Say=Hola de nuevo.  ¿Están sus habitaciones correctamente atendidas?
+RspDflt=None
+RspTxt1=Desde luego.  Mi habitación es todavía más confortable que la que tenía en casa.
+NxtLn1=News1
+
+[News1]
+Say=Oh, me halagáis!  Er, ¿hay alguna otra cosa que pueda hacer por vos?
+RspDflt=None
+RspTxt1=No, a menos que hayáis oído algún rumor que queráis compartir.
+NxtLn1=News2
+
+[News2]
+Say=Bueno...  por si acaso, yo no os he dicho nada, pero estad en guardia esta noche.  Parece que hay cosas extrañas por fuera de las murallas de Avalon.  He oído que los soldados de la Puerta Sur están actuando de manera extraña.  Tened cuidado.
+RspDflt=Excelente consejo en tiempos de guerra.  Gracias y buena suerte, señora.
+
+[Chalice]
+Say=Oh!  Hola.  ¿Necesitáis algo para vuestras habitaciones, señor?
+RspDflt=None
+RspTxt1=No, gracias.  Vuestras atenciones para con mi habitación han sido excelentes.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Gracias, señor!  Cuando oí quien erais vos, decidí ser extremadamente cuidadosa con vuestra habitación.
+RspDflt=None
+RspTxt1=Tonterías, sólo cumplo con mi deber.  ¿Habéis oído algo nuevo últimamente?
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Bueno, se supone que no debo hablar de cosas como ésta, pero las cosas están cambiando por aquí.  Todo el mundo tiene más confianza en nuestras fuerzas.  Incluso el General Roth, señor!
+RspDflt=Esa es una buena noticia.  Con un poco de suerte, los buenos espíritus nos llevarán a la victoria.
+
+[three]
+Say=Bienvenido, señor.  ¿Qué tal estáis?
+RspDflt=none
+RspTxt1=Estoy sorprendido de que alguien me pregunte como estoy...
+nxtln1=three2
+
+[three2]
+Say=¿Os ha desconcertado?
+RspDflt=none
+RspTxt1=Desde luego, lo ha hecho.  Creo que sois algo más que una camarera.
+nxtln1=three3
+
+[three3]
+Say=¿No lo somos todos, señor?
+RspDflt=none
+RspTxt1=Hmm.  Respondiendo a vuestra pregunta, me siento mejor cuanto más ayudo a nuestra causa.
+nxtln1=three4
+
+[three4]
+Say=Es bueno oír eso.  Ahora, si me perdonáis, señor...
+RspDflt=Ciertamente, hasta luego.
+rspcnd1=all(stt(perception>19));
+RspTxt1=¿Algo va mal, Heather?
+nxtln1=three5
+
+[three5]
+Say=Oh...  yo...  solo que hace muy poco que he perdido a un buen amigo.  No...  no están seguros de lo que le ha sucedido.  Sus heridas no eran muy serias, decían...  yo ... vuestro hermano estaba más malherido que él...
+RspDflt=none
+RspTxt1=¿Tuvisteis la oportunidad de visitarle mientras se estaba recuperando?
+nxtln1=three6
+
+[three6]
+Say=No, no la tuve, tengo... deberes que atender, y...  yo le visité, pero siempre estaba dormido, y no quise despertarle...
+RspDflt=none
+rspcnd1=all(stt(charm<20));
+RspTxt1=Hicisteis lo que fue posible, Heather.
+nxtln1=three7
+rspcnd2=all(stt(charm>19));
+RspTxt2=Hicisteis lo posible mientras hacíais lo debido, Heather.  Nadie puede culparos por no haberlo hecho mejor.
+nxtln2=three8
+
+[three7]
+Say=Supongo que tenéis razón, señor, yo solo...  necesito algún tiempo para afligirme.  Gracias por tomaros un rato para hablar conmigo.
+adventure=ch3-519
+RspDflt=Cuando queráis, mi señora.  Hasta la vista.
+
+[three8]
+Say=Tenéis razón, señor, sólo necesito tiempo para afligirme.  Gracias por reconfortarme.  Tendré un poco más de cuidado con vuestra habitación.  [sonríe debilmente]
+adventure=ch3-520
+RspDflt=Eso no será necesario, Heather.  Me alegro de haberos ayudado.  Hasta luego.
+
+[chapter6]
+Say=Oh. Hola %playername%. Estaba de camino a vuestras habitaciones. ¿Me necesitáis?
+RspDflt=none
+RspTxt1=Sólo para comentaros el espléndido trabajo que estáis haciendo. Casi espero encontrar una chocolatina en mi almohada.
+nxtln1=chapter6b
+
+[chapter6b]
+Say=*risita* Sois tan dulce! Si tuviésemos chocolatinas, seríais el primero en recibirlas.
+RspDflt=Mantén la fe, bella Heather.
+

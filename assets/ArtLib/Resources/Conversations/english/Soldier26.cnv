@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Farewell.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=What can I do for you?
+RspTxt1=Where are you from?
+NxtLn1=Soldier1
+RspTxt2=Heard any good rumors?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=I was a serf in Elythria. The war gave me freedom, m'lord, but I've never been this hungry before!
+rspBack=soldier
+
+[Soldier2]
+Say=Nothing of import, sir.  Watch your back here, though.  Some of these refugees are getting VERY hungry and I wouldn't trust them!
+rspBack=soldier
+
+[Chalice]
+Say=How can I help you, sir?
+RspTxt1=Where are you from?
+NxtLn1=Chalice1
+RspTxt2=Heard any good rumors?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=I'm from the sweetest land in Eurale!  Long live Elythria!
+rspBack=chalice
+
+[Chalice2]
+Say=My sources tell me that the Fornaxan devils have a new spell.  Some say it sets a man afire from a thousand paces, others that it rips your belly open.  I don't believe any of it though.
+rspBack=chalice
+

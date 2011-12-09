@@ -1,0 +1,69 @@
+[Notes]
+TitlesChecked=01Informed,01Recovered
+
+[root]
+Count=3
+Else=
+Default=Danke, Heather.
+Say1=All(ttl(!01informed,!01Recovered));
+goto1=Heather
+Say2=All(ttl(01informed,!01Recovered));
+goto2=News
+Say3=All(ttl(01informed,01Recovered));
+goto3=Chalice
+
+;First approach
+[Heather]
+say=Verzeihung, Herr.  Wie kann ich Euch dienen?
+rspDflt=None
+rsptxt1=Ich bin gerade erst hier eingetroffen.  Ich freue mich zu sehen, dass nicht alle Bewohner Avalons Soldaten sind.  Wer bist du und wo kommst du her?
+NxtLn1=Heather1
+rsptxt2=Ich bin hier neu, und ich versuche gerade, ein paar von den neuesten Gerüchten  aufzusammeln.
+NxtLn2=Heather2
+
+;If 1,
+[Heather1]
+say=Mein Name ist Heather.  Ich bin das Zimmermädchen für die Offiziersquartiere in diesem Teil der Burg.  Ich habe schon immer in Oriam gelebt, aber dort zu arbeiten war langweilig.  Ich kam nach Avalon, weil dies für den Osten die letzte Bastei der Hoffnung ist, und weil selbst eine Arbeit wie die Meine hier wichtig ist.
+rspDflt=Jeder trägt seinen Teil zum Ganzen bei.  Ich möchte mich bei dir im Voraus bedanken, dass du mein Quartier in Ordnung hältst.  Einen schönen Tag noch.
+
+;If 2,
+[Heather2]
+say=Ich weiß, Zimmermädchen haben den Ruf, Klatschbasen zu sein, aber General Roth würde mir das Fell gerben, wenn er wüßte, dass ich über die Dinge flüstere, die ich gehört habe.
+rspDflt=Entschuldigung -- Ich will nicht, dass du Scherereien bekommst.  Dann frage ich einen anderen.  Danke trotzdem.
+
+;Before recovery of Chalice
+[News]
+say=Seid gegrüßt.  Seid Ihr mit Eurem Quartier zufrieden?
+rspDflt=None
+rsptxt1=Und wie.  Mein Zimmer ist sogar noch komfortabler, als mein Zimmer zu Hause.
+NxtLn1=News1
+
+[News1]
+say=Oh, Ihr schmeichelt mir!  Ähm, kann ich sonst noch etwas für Euch machen?
+rspDflt=None
+rsptxt1=Nein, es sei denn, du hast ein Gerücht gehört, das du mit mir teilen willst.
+NxtLn1=News2
+
+[News2]
+say=Na ja...  das habt Ihr aber bitte nicht von mir gehört.  Seid auf der Hut heute Abend. Offenbar sind vor den Toren Avalons seltsame Dinge unterwegs.  Ich habe gehört, dass die Soldaten am Südtor sich merkwürdig benehmen.  Passt gut auf Euch auf.
+rspDflt=Ein ausgezeichneter Rat in Kriegszeiten.  Danke, und einen schönen Tag noch.
+
+;After recovery of Chalice
+[Chalice]
+say=Oh, hallo! Braucht Ihr irgendetwas für Euer Quartier, Herr?
+rspDflt=None
+rsptxt1=Nein, danke.  Die Pflege meines Zimmers ist ausgezeichnet.
+NxtLn1=Chalice1
+
+[Chalice1]
+say=Danke, Herr!  Seid ich gehört habe, wer ihr seid, mache ich mir extra Mühe bei Eurem Zimmer.
+rspDflt=None
+rsptxt1=Unsinn, ich tue doch nur meine Pflicht.  Hast du in letzter Zeit was Neues gehört?
+NxtLn1=Chalice2
+
+[Chalice2]
+say=Na ja, ich soll zwar über so etwas nicht sprechen, aber hier hat sich so manches verändert.  Die Leute hier haben immer Vertrauen in unsere Kräfte.  Sogar General Roth, Herr!
+rspDflt=Das ist eine gute Nachricht.  Hoffentlich wird uns diese gute Stimmung zum Sieg verhelfen.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

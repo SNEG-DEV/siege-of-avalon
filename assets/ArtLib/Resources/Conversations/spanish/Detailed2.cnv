@@ -1,0 +1,185 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(4/10/01)=Passed
+tucker(5/23/01)=Passed
+tucker(7/12/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Gracias.
+Say1=all(ttl(!06chapter6));
+goto1=Soldier
+say2=all(ttl(06chapter6));
+goto2=chapter6
+
+[Soldier]
+Say=La tuya es una cara nueva.  ¿Qué haces aquí, chico?
+RspDflt=None
+RspTxt1=Soy nuevo en Avalon y solo miraba por ahí.
+NxtLn1=Soldier1
+
+[Soldier1]
+Say=Carne fresca, ¿eh?  Al menos aun quedan personas lo suficientemente alocadas para luchar.
+RspDflt=None
+RspTxt1=¿Alocadas?  Defender tu tierra y la de tus aliados difícilmente pueda ser calificado de alocado.
+NxtLn1=Soldier2
+RspTxt2=No tan fresca como crees.  Me han enseñado a luchar.
+NxtLn2=Soldier4
+
+[Soldier2]
+Say=En eso estoy de acuerdo.  Lo que hacemos aquí es algo noble y necesario.  Aunque no creo que haya demasiadas esperanzas por ahora.
+RspDflt=None
+RspTxt1=¿Por qué dices eso?
+NxtLn1=Soldier3
+
+[Soldier3]
+Say=Nos superan en cuatro a uno.  Algunos exploradores dicen que hay tanto como ocho Ahoul ahí fuera por cada uno de nosotros aquí dentro.  Han transcurrido semanas desde la última vez que provisiones y tropas de refresco han entrado aquí, y ahora Ovoron quiere liderar éste estúpido ataque a un campamento Ahoul!  Si me lo estás preguntando, creo que nuestras posibilidades de éxito disminuyen con cada día que pasa.
+RspDflt=None
+RspTxt1=Ya veo.  No sabía que la situación fuese tan desalentadora.
+NxtLn1=Soldier5
+RspTxt2=Pero hemos aguantado todo este tiempo.  Eso dice mucho del carácter de los hombres que hay aquí!
+NxtLn2=Soldier6
+
+[Soldier5]
+Say=Pues ahora ya lo sabes.  Si sobrevives a las próximas semanas, será solo para ver como la cosa va a peor.
+RspDflt=None
+RspTxt1=Un hombre sabio dijo, "Las cosas deben empeorar antes de mejorar".
+NxtLn1=Soldier7
+
+[Soldier7]
+Say=Cierto, pero una mejora de nuestra situación sería algo verdaderamente extraño.
+RspDflt=No pierdas el coraje.  Creo que todavía tenemos una oportunidad.  Buenos días.
+
+[Soldier6]
+Say=Cierto, lo dice.  Defenderemos Avalon y los Siete Reinos hasta el último hombre.  Si los Ahoul nos venciesen aquí, tendrían vía libre hacia nuestros hogares.  Yo prefiero morir antes que ver a un Ahoul en mis tierras!
+RspDflt=None
+RspTxt1=¿Y dónde están dichas tierras?
+NxtLn1=Soldier9
+
+[Soldier9]
+Say=Tengo unos terrenos en el norte de Cathea.  No hay demasiadas ciudades o pueblos por allí.  La mayoría son ranchos y granjas.
+RspDflt=None
+RspTxt1=Así pues, ¿eres granjero?
+NxtLn1=Soldier10
+RspTxt2=¿Eres el capataz de tus tierras?
+NxtLn2=Soldier11
+
+[Soldier10]
+Say=No, chico.  Soy ranchero y tratante de caballos.  Laceaba y cabalgaba antes de que empezaras a gatear!
+RspDflt=None
+RspTxt1=¿Son buenos jinetes los Catheanos?
+NxtLn1=Soldier12
+
+[Soldier12]
+Say=Algunos son mejores que otros, pero la mayoría le sacarían ventaja a cualquier extranjero.
+RspDflt=None
+RspTxt1=Aprendí algunas cosas sobre los caballos mientras crecía.
+NxtLn1=Soldier13
+
+[Soldier13]
+Say=No dudo de tus habilidades, pero no eres un Jinete Catheano!
+RspDflt=None
+RspTxt1=Quizá no.  Me encantará ir a montar contigo algún día.
+NxtLn1=Soldier14
+
+[Soldier14]
+Say=Y a mí también, amigo!  Buenos días.
+RspDflt=Buenos días.
+
+[Soldier11]
+Say=Supongo.  Los Catheanos tenemos una noción distinta del liderazgo.  Soy propietario de mis tierras y contrato personal para que las trabajen para mí.  Pero no me deben obediencia, ni yo a ningún otro hombre.
+RspDflt=None
+RspTxt1=Entonces, ¿qué hace vuestro Rey?
+NxtLn1=Soldier15
+
+[Soldier15]
+Say=Nuestro Rey es un caudillo militar.  Cuando debemos defender nuestra nación frente a otros, es el Rey quien nos llama a las armas.  El Rey mantiene nuestro ejército y son sus hombres quienes entrenan a los mejores de nuestros guerreros, los Jinetes Catheanos.
+RspDflt=None
+RspTxt1=¿Son los Jinetes una especie de cuerpo de Caballería?
+NxtLn1=Soldier16
+
+[Soldier16]
+Say=En el sentido de que cabalgan, sí.  Pero los Jinetes son mucho más que eso.  Son también nuestros estrategas militares, líderes y diplomáticos.  Cuando entramos en combate, seguimos a los Jinetes.
+RspDflt=None
+RspTxt1=Creo que me gustaría conocer a alguno de esos hombres.
+NxtLn1=Soldier17
+
+[Soldier17]
+Say=No son solo hombres, chico.  Algunos de los mejores Jinetes son mujeres.  Si te quedas por aquí el tiempo suficiente, sospecho que encontrarás algunos.  Hay algunas docenas por aquí.
+RspDflt=Me mantendré alerta, entonces.  Que tengas un buen día.
+
+[Soldier4]
+Say=¿Lo has sido, cachorro?  Balancear una espada de madera contra un blanco estático es muy distinto a usar el frío acero contra un Ahoul que te está atacando.
+RspDflt=None
+RspTxt1=No dudo que lo sea, pero confío en que sabré mantenerme fiel a mi formación.
+NxtLn1=Soldier18
+
+[Soldier18]
+Say=Creo que lo harás.  Tienes esa mirada firme...  ¿De dónde eres, chico?
+RspDflt=None
+RspTxt1=Eso es cosa mía, no te incumbe.
+NxtLn1=Soldier19
+RspTxt2=Soy de Elythria.  Mi padre tenía allí tierras y un título, pero ambos han pasado a mi hermano al morir él.
+NxtLn2=Soldier20
+
+[Soldier19]
+Say=Uy, estamos sensibles, ¿eh?  No necesitas temerme.  Muy pronto, nos estaremos salvando el pellejo el uno al otro.
+RspDflt=None
+RspTxt1=Si no te importa, me guardaré algunos detalles.
+NxtLn1=Soldier21
+
+[Soldier21]
+Say=Como quieras.  Sigue tu camino, entonces.
+RspDflt=Buenos días.
+
+[Soldier20]
+Say=Y has venido aquí a buscar tu propia fama, ¿verdad?
+RspDflt=None
+RspTxt1=La verdad, vine para comunicar a mi hermano que ahora es un noble en Elythria.
+NxtLn1=Soldier22
+
+[Soldier22]
+Say=¿Quien es tu hermano?
+RspDflt=None
+RspTxt1=El teniente Corvus.
+NxtLn1=Soldier23
+
+[Soldier23]
+Say=No he oído ese nombre.  Aunque los Catheanos somos muy reservados, así que no me sorprende.
+RspDflt=Ni a mí.  Ahora debo continuar con mi entrenamiento.  Buenos días.
+
+[chapter6]
+Say=¿%playername%, verdad? He encontrado a vuestro hermano, Corvus, ha pasado antes.
+RspDflt=¿De veras? Le estoy buscando desde hace rato. Excúsame.
+

@@ -1,0 +1,72 @@
+;(if rescuing Corvus)
+[root]
+Count=1
+Else=
+Default=Danke.
+Say1=
+goto1=Corvus
+
+[Corvus]
+say=Kleiner Bruder!  Was zum...  was machst du denn hier?  Egal, du bist bestimmt auf der Suche nach mir.  Ich bin froh, dich zu sehen, kleiner Bruder.  Und stolz.  Jetzt hör mir zu-- Ich habe eine furchtbare Nachricht, die so schnell wie möglich an Sir Roth überbracht werden muss.
+rspDflt=None
+rsptxt1=Spare deine Kräfte, Bruder.  Du kannst mir alles erzählen, sobald wir wieder hinter Avalons Mauern sicher sind.
+NxtLn1=Corvus1
+
+[Corvus1]
+say=Dazu ist keine Zeit, verdammt!  Diese Nachricht wirst du vielleicht alleine überbringen müssen!
+rspDflt=None
+rspCnd1=all(obj(Herb));
+rsptxt1=Red' keinen Unsinn. Wir bringen dich sofort zu Bruder Crosby.  Bei den Geistern, du fieberst, ja!
+NxtLn1=Fever
+rspCnd2=all(obj(!Herb));
+rspTxt2=Red' keinen Unsinn. Wir bringen dich sofort zu Bruder Crosby.  
+nxtLn2=Corvus2
+
+[Fever]
+say=Mir geht's gut, kleiner Bruder.  Ich bin nur ein wenig schwindelig...
+script=TakeItem(Herb,Player);player.setprop(trainingpoints=2);showmessage(Sie haben Trainingspunkte bekommen.,200);
+rspDflt=none
+rspTxt1=Deine Wunden haben sich entzündet.  Iß das, mein Bruder.  Die Mönche sagen, dass es hilft.
+nxtLn1=Fever2
+
+[Fever2]
+say=Ja, Mutter-- Bei den Göttern, das schmeckt ja widerlich!  Und es geht mir kein bisschen besser.  Was ist das?
+rspDflt=none
+rspTxt1=Medizin, und es wird dir danach besser gehen, das verspreche ich dir.  Und nun lasst uns hier aufbrechen, in Ordnung?
+nxtLn1=Corvus2
+
+[Corvus2]
+say=Wir haben keine Zeit, uns zu streiten-- Ich komme mit, wenn ich kann.  Jetzt paß gut auf. Wenn ich nicht überlebe, musst du diese Nachricht überbringen.  Bis auf wenige Männer wurde unsere gesamte Truppe bei einem Hinterhalt niedergemetzelt.  Ich habe nur deswegen überlebt, weil ich an der Flanke ritt und mich von der Truppe getrennt habe, um nachzusehen warum sich eine Gruppe Reiter von unserer Kompanie entfernte.  Als wenige Minuten später der Angriff erfolgte, war ich von der Kompanie angeschnitten. 
+rspDflt=None
+rsptxt1=Wer hat denn sonst noch überlebt?  Wo sind sie?
+NxtLn1=Corvus3
+
+[Corvus3]
+say=Kleiner Bruder, General Ovoron ist ein Verräter.  Er hat Avalon und die Völker der Sieben Königreiche verraten.  Es waren Ovoron und seine Leutnants, die ich gesehen habe, als sie von der Kompanie wegritten.  Sie haben sich vor dem nahenden Überfall in Sicherheit gebracht.  Sie wußten, was geschehen würde und sie wollten nicht riskieren, bei dem Gemetzel noch dabeizusein.
+rspDflt=None
+rsptxt1=Nein, Corvus!  Was sagst du da...?
+NxtLn1=Corvus4
+
+[Corvus4]
+say=Während hinter mir die Schlacht tobte, die Luft vom Getöse erfüllt, fand ich Ovoron und seine Leutnants im Gespräch mit Mithras.  Ein Mitglied von Avalons Hohem Rat und der Anführer der Ahoul hielten vor meinen Augen einen gemütlichen Plausch, als würden sie sich nach einem Ausritt am Nachmittag kurz erholen!   Als würden sie die Schmerzensschreie der Sterbenden nicht vernehmen!  Gütiger Himmel, wie konnten sie so tun, als würde sie die Schreie nicht hören?  Es waren Hunderte, kleiner Bruder, Hunderte!  All meine Freunde... all meine Freunde sind an diesem Tag gestorben, und ich allein habe überlebt.
+rspDflt=None
+rsptxt1=Corvus, es tut mir leid...
+NxtLn1=Corvus5
+
+[Corvus5]
+say=Als letztes sah ich, wie Ovoron Mithras einen Tornister übergab.  Man braucht keine Fantasie, um zu erraten, was der Inhalt gewesen ist, und als mir war klar wurde, was da geschieht, drehte ich mich sofort um und ritt in vollem Galopp nach Avalon.  Man hat mich natürlich entdeckt--die Ahoul waren überall im ganzen Gebiet.  Irgendwie gelang es mir, bis zum Dorf durchzukommen, wo mein Pferd unter mir starb.  Ich lief durch die Gassen und versuchte, bis zum Tor der Festung zu kommen,  aber mir wurde der Weg abgeschnitten.  Als ich um eine Ecke bog, fand ich ein Loch, wo meine Füße fester Boden erwartete. Es war ein schlimmer Sturz, aber vermutlich hat er mir das Leben gerettet.
+rspDflt=none
+rspTxt1=Und der Oger?  Was ist mit dem Oger?
+nxtLn1=Corvus5b
+
+[Corvus5b]
+say=Ich habe mich hierher geschleppt und bin so still geblieben wie ich konnte.  Seitdem dämmere ich vor mich hin, mal wach, mal ohnmächtig. Ich weiß weder woher, noch wann der Oger gekommen ist, aber seit Stunden brüllt er und schlägt auf etwas ein.  Was auch immer er tut, er hat sich nicht die Mühe gemacht, um die Ecke zu sehen. 
+rspDflt=None
+rsptxt1=Er war durch einen Felsbrocken hier drinnen eingesperrt, den die Ahoul vor dem Eingang gerollt haben.  Eingesperrt zu sein hat ihn offenbar rasend gemacht. Als ich hier ankam, war es ihm schon gelungen, den Felsbrocken soweit zu bewegen, dass ich mich daran vorbeizwängen konnte, aber noch nicht soweit, dass er selber hätte entkommen können.
+NxtLn1=Corvus6
+
+[Corvus6]
+say=Das hat er also gemacht?  Ich konnte nicht genug Kraft sammeln, um mich bis zur Ecke zu schleppen.
+RemoveQuest=ch1-05;
+AddQuest=ch1-26;
+rspdflt=Wir müssen eiligst nach Avalon, Bruder.  Fürwahr, Sir Roth muss deine Geschichte hören, aber er muss sie von dir hören.  Nun komm.  Ich helfe dir....

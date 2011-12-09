@@ -1,0 +1,16 @@
+[root]
+Count=1
+Else=
+Default=Danke.
+Say1=
+goto1=Soldier
+
+;Before recovery of Chalice
+[Soldier]
+say=Hier habt Ihr einen Bogen; geht und schieﬂt damit auf etwas.
+rspTxt1=Ihr braucht besseren Dialog!
+nxtLn1=Soldier1
+
+[Soldier1]
+say=Ja, ich weiﬂ, aber was kann ich machen, auﬂer den Text aufzusagen, den ich bekommen habe?
+rspDflt=Wiﬂt Ihr, manchmal denke ich, bestimmte Leute hier sollten beim ‹ben als Zielscheiben dienen!

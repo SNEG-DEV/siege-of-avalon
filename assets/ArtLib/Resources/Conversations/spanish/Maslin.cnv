@@ -1,0 +1,119 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,04chapter4,04elaram,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(5/23/01)=Passed
+tucker(7/17/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Gracias, Maslin.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(04chapter4,!04elaram));
+goto2=untoldfour
+say3=all(ttl(04chapter4,04elaram));
+goto3=toldfour
+Say4=All(ttl(!01recovered));
+goto4=Maslin
+Say5=All(ttl(01recovered));
+goto5=Chalice
+
+[Maslin]
+Say=Buenos días, señor.  ¿Qué le trae por este rincón de Avalon?
+RspDflt=None
+RspTxt1=Estoy ocupado en un asunto personal.
+NxtLn1=Maslin1
+
+[Maslin1]
+Say=Suena como algo secreto, señor.  No me inmiscuiré.
+RspDflt=Gracias por vuestra consideración.  Buenos días.
+
+[Chalice]
+Say=Hola de nuevo.  ¿Sigue usted con su misión secreta?
+RspDflt=None
+RspTxt1=No es tan secreta como podáis imaginar.  Simplemente cumplo con mi deber.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Eso es todo lo que un buen soldado puede hacer, ¿no es cierto?
+RspDflt=None
+RspTxt1=Quizá.  Aunque hay algunos que van más allá de lo que el deber les exige.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Cierto.  Y sospecho que vos sois uno de esos soldados.
+RspDflt=Os agradezco el cumplido.  Buenos días.
+
+[untoldfour]
+Say=Buenos días, señor.  ¿Como va todo?
+RspDflt=Perdóname, Maslin, estaba buscando a otra persona.
+RspTxt1=Todo va bien; Maslin, gracias por preguntar.  ¿Qué sucede en la Puerta Sur estos días?
+nxtln1=untoldfour2
+
+[untoldfour2]
+Say=Todo el mundo está al límite, señor.  Es como si esperasen que suene la alarma y los Sha'ahoul empiecen a entrar por la Puerta Sur.
+RspDflt=none
+RspTxt1=¿Tienes idea de qué causa esta inquietud?
+nxtln1=untoldfour3
+
+[untoldfour3]
+Say=No, pero me pone nervioso.
+RspDflt=Er...  Sí.  Excúsame mientras llego hasta el fondo de éste problema.
+
+[toldfour]
+Say=¿Sabes qué sucede?
+RspDflt=none
+RspTxt1=Elazar tuvo una pesadilla, y estaba preocupado por ella.
+nxtln1=toldfour2
+RspTxt2=Elazar tuvo una visión inquietante, pero pronto resolveré los problemas que su Visión le ha revelado.
+nxtln2=toldfour3
+
+[toldfour2]
+Say=¿No crees que ya es un poco mayor para tener pesadillas?
+RspDflt=No lo creo.  Excúsame, ahora debo irme.
+
+[toldfour3]
+Say=Oh...  Bien.  Creo que ahora todo el mundo dejará de preocuparse.  Eso es bueno.
+RspDflt=Sí, lo es, soldado.  Ahora, si me excusas...
+
+[chapter6]
+Say=%playername%! ¿Has oído? Elazar ha caído enfermo! Lo merece.  Los espíritus le están castigando por ejercer la magia.
+RspDflt=None
+RspTxt1=Intento hacer algo para ayudarle.  No deberías despreciar tanto algo que no conoces.
+nxtln1=chapter6b
+
+[chapter6b]
+Say=No me importa.  Es un vidente.  Son malignos y no pertenecen a este lugar!  Avalon es un lugar para que la gente común viva en paz.  Ahora está en ruinas, y todo por culpa de los extraños que se han aprovechado de su seguridad.
+RspDflt=Lamento que te sientas así.  Hasta luego.
+

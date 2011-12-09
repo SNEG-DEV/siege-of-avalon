@@ -1,0 +1,237 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01calum,03reportgiven,05zarnews
+Checked=01Calum,01Informed,01recovered,03chapter3,03mabondone,03mabonquest,03reportgiven,05calarb1,05chapter5,05defenseson,05entertower,05seenzar,05zarnews,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-68,ch3-521,ch5-501,ch6-519
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=statuscalum
+Added=statuscalum
+
+[SyntaxCheck]
+tucker(7/12/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=9
+Else=
+Default=Gracias, Calum.
+say1=all(ttl(06chapter6));
+goto1=calumsix
+say2=all(ttl(05chapter5,05defenseson,05zarnews));
+goto2=restofive
+say3=all(ttl(05chapter5,05defenseson,!05zarnews));
+goto3=zarnews
+say4=all(ttl(05chapter5));
+goto4=calumfive
+say5=all(ttl(03chapter3));
+goto5=calumthree
+Say6=All(ttl(!01Informed));
+goto6=Soldier
+Say7=All(ttl(!01recovered,01informed,!01Calum));
+goto7=Calum
+Say8=All(ttl(!01recovered,01informed,01Calum));
+goto8=news
+Say9=All(ttl(01recovered,01informed));
+goto9=Chalice
+
+[Soldier]
+Say=Hola, ¿en qué puedo ayudarte?
+RspDflt=Perdóname, soldado, no quería molestarte.
+RspTxt1=¿De dónde eres?
+NxtLn1=Soldier1
+RspTxt2=¿Has oído algún rumor nuevo?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Nací en Cathea, aunque no moriré allí.  He visto mi muerte a manos de ésta horda bárbara...
+RspDflt=Ya veo.  Que tengas un buen día.
+rspBack=Soldier
+
+[Soldier2]
+Say=Ningún rumor, señor.  Sólo miserias.
+RspDflt=Ya veo.  Que tengas un buen día.
+rspBack=Soldier
+
+[Calum]
+Say=Hola, chaval.  ¿Qué necesitas de mí?
+Script=journalentry(calum);showmessage(Your journal has been updated.,200);player.addtitle(01calum);
+RspDflt=None
+RspTxt1=Penrith me ha dicho que tienes alguna información sobre mi hermano.
+NxtLn1=Calum2
+
+[Calum2]
+Say=¿Hablas de Corvus?  Le vimos correr por el pueblo ayer.  Le perseguía una partida de caza Ahoul.
+RspDflt=None
+RspTxt1=¿Escapó?  ¿Sigue vivo?
+NxtLn1=Calum3
+
+[Calum3]
+Say=No hay forma de saber eso, chico.  Se metió por un callejón oscuro, y le perdimos la pista.  Enviamos un grupo de búsqueda.  Ellos sabrá más.  Creo que fueron a informar al General Roth.
+RspDflt=None
+RspTxt1=¿Eso es todo?  ¿No hay nada más que puedas decirme?
+NxtLn1=Calum4
+
+[Calum4]
+Say=Me temo que no, chico.  Ve a ver al General Roth.  Estoy seguro de que los guardias te dejarán pasar, viendo que eres el hermano de Corvus.  Ahora que lo pienso, quizás quieras ver al hechicero, Elazar.  Ha estado murmurando sobre el pueblo últimamente.  Sus habitaciones están un poco más allá de este corredor.
+Adventure=ch1-68;
+RspDflt=Gracias.
+
+[News]
+Say=Saludos.  ¿Necesitas ayuda?
+RspDflt=No, sólo pasaba por aquí.  Perdóname.
+RspTxt1=Sí.  Quería las últimas notícias que puedas darme.
+NxtLn1=News1
+RspTxt2=Acabo de llegar a Avalon y quiero conocr a la gente.  ¿Quién eres y de dónde has venido?
+NxtLn2=News2
+
+[News1]
+Say=Si sales hacia el pueblo, ten cuidado.  Algo está sucediendo en la Iglesia.  También he visto cosas raras en el cementerio por la noche.  No creo que ninguno de los otros vigías las haya visto, porque en cuanto las señalo, desaparecen.
+RspDflt=Qué raro.  Gracias por tu ayuda.
+
+[News2]
+Say=Soy Sir Calum de Cathea.  Solía ser un pendenciero.  Reconozco que mi vista es muy buena, por eso me han puesto aquí, lejos de la torre.  Intento seguir cuidadosamente todo lo que sucede en el exterior.
+RspDflt=None
+RspTxt1=Estoy seguro de que tus ojos marcan la diferencia.
+NxtLn1=News3
+
+[News3]
+Say=No se nada de eso, chico, pero hago lo que puedo, como debería hacer todo buen soldado.
+RspDflt=Estoy de acuerdo.  Que tengas un buen día.
+
+[Chalice]
+Say=Creí haberte reconocido!  Tu eres quien encontró el Cáliz, ¿verdad?
+RspDflt=None
+RspTxt1=Correcto.  Lo encontré en la Iglesia.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Hiciste algo más que encontrarlo, o eso creo.  Antes de que fueses ahí fuera, veíamos oscuras sombras arrastrándose alrededor de la Iglesia.  Ya no las vemos más.
+RspDflt=None
+RspTxt1=Cierto, había unos bandidos escondiéndose en la Iglesia, pero les maté a todos.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Buen chico.  Sólo hay un lugar correcto para los bandidos, y es el Infierno!
+RspDflt=Sí, bueno, que tengas un buen día, Calum.
+
+[Calumthree]
+Say=Hola, ¿qué es esto?  Buenos días, viajero.
+RspDflt=No quería interrumpirte.  Perdóname.
+RspTxt1=Bien dicho, Calum.  Tienes alguna cosa que contar?
+nxtln1=calumthree1
+rspcnd2=all(ttl(03mabonquest,!03mabondone,!03reportgiven):obj(!statuscalum));
+RspTxt2=Buen día, Calum.  Vengo a petición de nuestro nuevo mariscal de campo.  Está ocupado solventando los "enredos" que dice que ha encontrado en su nueva oficina; faltan ciertos documentos, y me ha enviado a recuperar vuestro último informe de estado.
+nxtln2=statusreport
+
+[Calumthree1]
+Say=No, pero tengo una pregunta para ti.  Un amigo mío me dijo que los espectros tienen un ayudante en algún lugar, y que dicho ayudante suele ser un muerto viviente.  Lo que quisiera saber es si encontraste uno cuando estuviste allí abajo.  Mira, es que estoy escribiendo un libro...
+RspDflt=none
+RspTxt1=Ahora que lo pienso, supongo que sí...  Había uno que definitivamente no era un esqueleto, y parecía algo más que un simple zombi...
+nxtln1=calumthree2
+
+[Calumthree2]
+Say=¿Esqueletos y zombis también?  Andando por ahí, golpeando cosas y gruñendo!  Uau!  Estoy en el lugar equivocado para los jaleos de verdad!  Iré a ver si puedo conseguir que me asignen a donde está la acción!
+RspDflt=Buena suerte, Calum.  Hablaré contigo luego.
+
+[statusreport]
+Say=Ah.  Sí, por supuesto.  Sabía que estaba guardando esto por alguna razón.
+adventure=ch3-521
+script=player.additem(statuscalum);addtitle(03reportgiven);
+RspDflt=Gracias.  Ahora debo irme.
+
+[calumfive]
+Say=Buenos días, %playername%.  Has estado muy ocupado desde que hablamos por última vez.
+RspDflt=Cierto, amigo mío, y todavía lo estoy.  Perdóname.
+RspTxt1=He oído que mi hermano también ha estado bastante ocupado.
+nxtln1=calumfive2
+
+[calumfive2]
+Say=Correcto.  No le he visto mucho últimamente.  Debe estar haciendo algo importante.  ¿Así que estás trabajando otra vez con Elazar?
+RspDflt=Actualmente no, Calum.  Buenos días.
+rspcnd1=all(ttl(05entertower));
+RspTxt1=Sí, lo estoy, y no es tan desagradable como puedas pensar.  Debo encontrar un objeto mágico que ayude a Elazar y Elarath a crear otra, y mucho más efectiva, ruta de escape, por si Avalon se ve desbordado.
+nxtln1=calumfive3
+
+[calumfive3]
+Say=Esperemos no necesitarla.
+RspDflt=De acuerdo.  Hasta luego, Calum.
+
+[zarnews]
+Say=%playername%!  Elazar ha enfermado y está en cama, en la enfermería.  No se si te será posible hablar con él; desconozco la gravedad de su situación, pero aun teniendo un aspecto tan frágil, no recuerdo que se haya puesto enfermo nunca antes.
+adventure=ch5-501;
+script=player.addtitle(05zarnews);
+RspDflt=Gracias, Calum.  Estoy seguro de que Elarath podrá continuar nuestro proyecto sin Elazar.  Hasta luego.
+
+[restofive]
+Say=Espero que todo esté bien, %playername%?
+RspDflt=Eso es, Calum.  Hasta luego.
+rspcnd1=all(ttl(05seenzar,!05calarb1));
+RspTxt1=He hablado con Belinda, y me ha dicho que Elazar está en la enfermería, pero que como ha estado durmiendo, no saben qué mal le aqueja.
+script1=addtitle(05calarb1);
+nxtln1=restofive2
+
+[restofive2]
+Say=Es bueno saber que al menos está estabilizado.  Espero que los monjes descubran qué le sucede; su ayuda se echará de menos cuando sea el momento de actuar.
+RspDflt=Cierto, Calum, lo será.  Es difícil encontrar videntes sanos hoy en día.  Hasta luego.
+
+[calumsix]
+Say=Hola, %playername%.  ¿Qué te cuentas?
+RspDflt=Perdóname, Claum, no sé en qué estaba pensando.
+rspcnd1=all(stt(charm>24,perception>39));
+RspTxt1=Pareces un poco...  No sé como decirlo, Calum, quizá "fuera de ti."  ¿Qué estás pensando?
+nxtln1=calumsix4
+rspcnd2=one(stt(charm<25,perception<40));
+RspTxt2=Los monjes piensan que han encontrado una forma de mejorar el pobre estado de Elazar.
+nxtln2=calumsix2
+
+[calumsix2]
+Say=Oh, ¿es eso cierto?
+RspDflt=Sí, eso creo.  Hasta luego, Calum.
+RspTxt1=¿No te preocupa la salud del vidente, Calum?
+nxtln1=calumsix3
+
+[calumsix3]
+Say=No es él quien me preocupa.  Ya no.  Me preocupa el resto de nosotros.  La presión nos está afectando en masa, aunque lo hayamos estado negando todo el tiempo.  ¿Elazar?  Probablemente ha caído exhausto, eso es.  No creo que haya dormido últimamente.
+adventure=ch6-519;
+RspDflt=Pues lo está compensando ahora.  Perdóname, Calum.  Debo ver cómo está.
+
+[calumsix4]
+Say=Un presentimiento me tiene preocupado, %playername%.  Creo que algunos de esos reclusos que viven en el tercer nivel están planeando algo contra mí.  Cuando me acerco se callan.  Pensaría que son traidores, pero les oigo hablar tan tranquilamente con los demás que sé que debe ser mi propia paranoia.
+RspDflt=none
+RspTxt1=No podemos tener suficiente cautela, Calum.
+nxtln1=calumsix5
+RspTxt2=Probablemente sea así.  Sé fuerte, Calum.
+nxtln2=calumsix6
+
+[calumsix5]
+Say=Estoy de acuerdo.  Quizá la realidad de la situación esté finalmente tomando posesión de nuestras mentes y nuestros corazones, y donde los demás sólo juegan, mi mente juega conmigo.  Vé tranquilo, %playername%.
+rspback=calumsix4
+RspDflt=Y tú también, Calum.
+
+[calumsix6]
+Say=Eso es todo lo que siempre fuimos, %playername%.  Me sorprende que todos nosotros, incluyendo las mujeres, lo hayamos soportado con tanto humor.  Bromeamos sobre ello.  Bromeamos, como si no tuviésemos nada que perder...  Pero se empieza a notar.  Es bueno que los refuerzos estén en camino.
+adventure=ch6-519;
+rspback=calumsix4
+RspDflt=Sí, lo es, Calum.  Ve tranquilo.
+

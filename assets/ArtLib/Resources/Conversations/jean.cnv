@@ -1,0 +1,104 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01Recovered,01village,03chapter3
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(5/23/01)=Passed
+tucker(7/16/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Thank you, Jean.
+say1=all(ttl(06chapter6));
+goto1=three
+say2=all(ttl(03chapter3));
+goto2=three
+Say3=All(ttl(!01village,!01Recovered));
+goto3=Jean1
+Say4=All(ttl(01village,!01Recovered));
+goto4=Jean4
+Say5=All(ttl(01village,01Recovered));
+goto5=Jean6
+
+[Jean1]
+Say=Greetings.  You're built like Corvus, so you must be the brother I've heard about.  When I heard of his disappearance I wanted to go looking for him myself, but I have too many responsibilities here.
+RspDflt=None
+RspTxt1=Thank you.  I'm glad he has such loyal friends.
+nxtln1=jean2
+RspTxt2=Where are you from, sir?
+nxtln2=jean3
+
+[Jean2]
+Say=I continue to hope for his safe return.
+RspDflt=As do I.  Good day.
+rspBack=Jean1
+
+[Jean3]
+Say=I was born in Cathea.  My father owned a large ranch, but I never wanted to raise cattle.  I've a fighter's blood in me and I came here when I heard there was to be a war.  I brought some men and horses with me, too, so I suppose that's why they made an officer of me.  I'm the only person some of these rough Catheans will listen to!
+RspDflt=I'm glad you're here, then.
+rspBack=Jean1
+
+[Jean4]
+Say=There you are!  The village looks like it's making a warrior out of you!
+RspDflt=None
+RspTxt1=It is, indeed!  There are many things out there with which to do battle.
+nxtln1=Jean5
+
+[jean5]
+Say=Ah, how I wish I could go with you.  Alas, my duties call.
+RspDflt=I understand.  Good day to you.
+
+[jean6]
+Say=So, the village made a hero out of you after all!  It's good to see you, lad!
+RspDflt=You as well, Jean.
+RspTxt1=What's new around here?
+nxtln1=jean7
+
+[jean7]
+Say=Morale has lifted since you found that great cup out there!  Perhaps some of these sheep calling themselves warriors will actually fight now!
+RspDflt=I hope so!
+
+[three]
+Say=Ah, greetings.  What's new?
+RspDflt=none
+RspTxt1=Just the usual, doing my part.
+nxtln1=three2
+
+[three2]
+Say=Sure you are, you get to do more than the rest of us.  We'd do our "part" too if we were allowed to, so don't give me any of that sass.
+RspDflt=none
+RspTxt1=Calm down, soldier.
+nxtln1=three3
+
+[three3]
+Say=Yeah, yeah.  I'll be calm when all this is over, you get?
+RspDflt=Yes, and I think I'd better.  Farewell.
+

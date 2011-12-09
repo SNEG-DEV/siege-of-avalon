@@ -1,0 +1,69 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(4/10/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Thank you.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=all(ttl(!05chapter5));
+goto2=Soldier
+Say3=all(ttl(05chapter5));
+goto3=Soldier2
+
+[Soldier]
+Say=A good day to you, your lordship.
+RspDflt=And you too.  Please excuse me.
+RspTxt1=What do you do here?
+NxtLn1=Soldier1
+
+[Soldier1]
+Say=I am a groom, sire -- I tend to the officers' mounts.  That is, while we still use the horses to ride...
+RspDflt=A sobering thought, neighbor.  Farewell.
+
+[Soldier2]
+Say=Gads! Pardon. Er, You've need of me, sir?
+RspDflt=No Thanks.
+RspTxt1=Take it easy, friend. I'm just scavenging for gossip.
+NxtLn1=Soldier3
+
+[Soldier3]
+Say=You'll find none here, sir.  Gossip's a bad thing, sir.  Spreads like the plague, it does.
+RspDflt=Sorry to have bothered you.
+
+[chapter6]
+Say=Please excuse me, sir.  I've work to tend to.
+RspDflt=As you wish.  Farewell.
+

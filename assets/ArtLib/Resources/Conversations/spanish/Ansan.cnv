@@ -1,0 +1,134 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(7/12/01)=Passed
+tucker(7/25/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Gracias, Ansan.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(03chapter3));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Anson
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Anson]
+Say=¿Te importaría decirme qué haces en la cocina?  Os he dicho cientos de veces que no puedo daros comida extra, soldado.  El General Roth ha racionado estrictamente la comida por una buena razón, ya lo sabéis!  Podéis estar hambrientos, pero al menos estáis sanos.
+RspDflt=None
+RspTxt1=Me disculpo por molestaros.  Soy nuevo aquí y quería echar un vistazo.
+NxtLn1=Anson1
+RspTxt2=Tengo curiosidad sobre la gente que habita Avalon. ¿Quién sois y de donde venís?
+NxtLn2=Anson2
+RspTxt3=Sólo espero enterarme de los últimos cotilleos del lugar.  ¿Habéis oído algún rumor?
+NxtLn3=Anson3
+
+[Anson1]
+Say=Bueno, que tu vistazo sea rápido.  Anora, la jefa de cocinas, no soporta a los ociosos.
+RspDflt=Ni siquiera notaréis que estoy aquí.
+rspBack=Anson
+
+[Anson2]
+Say=Soy Ansan, vengo de Cathea.  Mi padre, que era mozo de cuadra, me trajo consigo cuando Avalon fue construido.  No puedo imaginar por qué; probablemente sólo para vigilarme.  Siempre seré una niñita para él.  En cualquier caso, para no seguir dependiendo de él, decidí trabajar en las cocinas.
+RspDflt=None
+RspTxt1=Y nosotros nos alegramos mucho.  Aquí todo el mundo contribuye a su manera.  Es por eso que Avalon fue construido.
+NxtLn1=Anson4
+
+[Anson4]
+Say=Os daría un poco de lo que estamos cocinando, pero Anora me mataría.  Lo siento, señor.
+RspDflt=No hay nada que perdonar--la comida está racionada, lo has dicho.  Que tengas un buen día.
+rspBack=Anson
+
+[Anson3]
+Say=Bonnie vino corriendo de las escaleras de la bodega esta mañana, diciendo que algo había intentado matarla.  La señora Anora dijo que eran tonterías, pero por algún motivo no nos deja bajar más al sótano.
+RspDflt=Estoy seguro de que no hay de qué preocuparse.  Gracias por tu tiempo.
+rspBack=Anson
+
+[Chalice]
+Say=Hola, de nuevo!  El héroe vuelve a las cocinas!  Quizás ahora pueda sí ofrecerte algo.
+RspDflt=None
+RspTxt1=Me halagas.  La verdad es que sólo me he detenido para enterarme de cómo van las cosas por aquí.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Muy estresante, señor.  Es difícil hacer que la poca comida que tenemos se aargue tanto como debe.  Al menos la moral está alta.  Creo que uno puede sentirse a la vez hambriento y feliz.
+RspDflt=None
+RspTxt1=Supongo que es posible.  Aunque la verdad, me gustaría más ser feliz estando bien alimentado.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=A mí también.  Buenos días, señor.
+RspDflt=Lo mismo digo, señora.
+
+[three]
+Say=Buenos días señor.  Qué gusto verle de nuevo por aquí.
+RspDflt=none
+RspTxt1=Encantado de verla otra vez, señorita.  ¿Cómo va el racionamiento de la comida?
+nxtln1=three2
+
+[three2]
+Say=Bueno, lo teníamos planificado por adelantado, y el racionamiento parece seguir los planes.  Me gustaría que hubiese alguna forma de aumentar nuestras reservas...  Espero que el ejército de Vortigerm nos traiga alimentos.  Deben saber lo mal que estamos... deben saberlo!
+RspDflt=none
+RspTxt1=Tranquila, señorita.  Si todos tenemos fe, lo conseguiremos.
+nxtln1=three3
+
+[three3]
+Say=Espero que estéis en lo cierto, señor.  Algunos de nosotros no estamos acostumbrados a pasarlo tan mal.
+RspDflt=none
+RspTxt1=Lo comprendo, señorita.  Todos tenemos distintos puntos fuertes y debilidades...
+nxtln1=three4
+
+[three4]
+Say=¿Qué decís, debilidades?  Vos sois el más fuerte de nuestro ejército!
+RspDflt=none
+RspTxt1=Con todo mi respeto, señorita, sé seguro que no lo soy, y tengo mis debilidades.  No me gusta ver cómo la gente sufre, y el sufrimiento se convierte en algo habitual en un castillo sitiado.
+nxtln1=three5
+
+[three5]
+Say=Supongo que tenéis razón, señor, sólo que no trabajo demasiado bien bajo presión.  A veces me gustaría ser un simple mozo de cuadra, como mi padre.  Estar aquí es deprimente.  No tan deprimente como la enfermería, supongo, pero...
+RspDflt=Me parece que lo estáis haciendo muy bien.  Tened coraje, Ansan.  Hasta luego.
+
+[chapter6]
+Say=%playername%! Corres por estos corredores como si tuvieras algo urgente que hacer aquí.   Si buscas a Bonnie, no está aquí.
+RspDflt=Ya veo.  Hasta luego.
+RspTxt1=¿Dónde está?
+nxtln1=chapter6b
+
+[chapter6b]
+Say=¿Cómo voy a saberlo?  Pregúntale a Anora.
+RspDflt=Ya veo.  Hasta luego.
+

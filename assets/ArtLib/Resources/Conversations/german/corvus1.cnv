@@ -1,0 +1,50 @@
+[root]
+Count=1
+Else=
+Default=
+Say1=
+goto1=Corvus
+
+[Corvus]
+Say=Kleiner Bruder, ich wünschte ich könnte sagen, ich freue mich, dass du hier bist, aber eine belagerte Burg ist etwas, was niemand über sich ergehen lassen sollte.  Es tut aber gut, dich wiederzusehen.  Wie geht es Mutter und Vater?
+rspdflt=none
+Rsptxt1=Darum bin ich hergekommen, um dich zu suchen, Bruder.  Vater ist vor sechs Wochen von uns gegangen.
+;Add journal entry 2
+NxtLn1=Corvus1
+Rsptxt2=Es geht ihnen gut.  Mutter lässt dich sehr lieb grüßen.
+;Add journal entry 2b
+Nxtln2=Corvus1b
+
+[Corvus1]
+say=Oh, bei den Geistern...  Ich habe schon gefürchtet, dass ich ihn nie wiedersehe, kleiner Bruder, aber ich dachte, ich würde es sein, der auf der anderen Seite auf ihn wartet.  Bei meiner Rückkehr müssen wir zu Vaters Andenken das Glas heben.
+script=journalentry(corvus2);showmessage(Ihr Tagebuch wurde aktualisiert.,200)
+rspdflt=none
+Rsptxt1=Deine Rückkehr?  Wo willst du hin?
+Nxtln1=Corvus3
+
+[Corvus1b]
+say=Du musst mir unbedingt alle Neuigkeiten von Zuhause erzählen -- vor allem den wahren Grund, warum du eine so törichte Reise unternommen hast.  Aber das wird warten müssen bis zu meiner Rückkehr morgen.
+script=journalentry(corvus2b);showmessage(Ihr Tagebuch wurde aktualisiert.,200)
+rspdflt=none
+Rsptxt1=Deine Rückkehr?  Wo willst du hin?
+Nxtln1=Corvus3
+
+[Corvus3]
+say=Ich muss sofort mit General Ovoron zu einem Überraschungsangriff ausreiten.  Wir haben gewartet, um zu sehen ob die Versorgungsflotte durch die Blockade kommt, bevor wir das Risiko auf uns nehmen, aber da die Lady Aele als einziges Schiff durchgekommen ist, müssen wir uns wohl tatsächlich auf drastischere Maßnahmen verlegen.
+rspdflt=none
+Rsptxt1=Könnt ihr vielleicht noch ein weiteres Schwert gebrauchen?
+nxtln1=corvus4
+
+[Corvus4]
+say=Nun mal langsam, kleiner Bruder.  Pferde sind knapp, und wir müssen heute Abend schnell reiten. Ich habe meine Beziehungen spielen lassen und ein Offizierspatent für dich besorgt, aber das war alles, was sich hier durch unseren Familiennamen erreichen ließ. Du wirst dich vor General Roth und Hauptmann Calvaric als guter Soldat erweisen müssen, sonst ist das nichts als ein Stück Papier.
+rspdflt=none
+Rsptxt1=Also bin ich gezwungen, nutzlos hier rumzusitzen, bis du zurückkehrst? 
+nxtln1=corvus6
+
+[Corvus6]
+Say=Das wohl kaum.  So wie ich General Roth kenne, hat er den Kommandant der Listen bereits gebeten, dich zu bewerten.  Merke dir eines; die Mönche können bei leichten Verletzungen Wunder wirken. Wenn deine Fähigkeiten in Magie sich seit unserer letzten Begegnung nicht dramatisch verbessert haben, wirst du ihre Gesichter bald sehr gut kennen!  Ach ja, und ehe ich es vergesse -- zeige dem Quartiermeister von der Außenburg dein Offizierspatent, um dich ausrüsten zu lassen, bevor du dich zum Dienst meldest.  Du findest ihn hier im Flur einige Türen weiter in Richtung Norden.
+;Give the player Commison letter
+Adventure=ch1-00;
+AddQuest=ch1-00;
+Rspdflt=Das mache ich, Bruder.  Mögen dich die Geister behüten. Wir reden weiter, wenn du wieder da bist.
+;EXIT CONVERSATION

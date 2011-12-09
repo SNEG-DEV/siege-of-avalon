@@ -1,0 +1,254 @@
+[FileID]
+Author=tuck
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01recovered,01toldchalice,06massarb01
+Checked=01foundbrother,01healbrother,01Olon,01recovered,01ToldChalice,05chapter5,06chapter6,06cleanedaltar,06massarb01,06ttphelic
+Removed=
+
+[Quest]
+Added=ch1-15,ch1-16,ch1-17,ch1-25,ch6-513
+Removed=ch1-25
+
+[Items]
+Given=
+Taken=chalice
+Checked=Chalice
+Added=
+
+[SyntaxCheck]
+tucker(4/10/01)=Passed
+tucker(7/17/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=8
+Else=Brother0
+Default=
+say1=all(ttl(06chapter6));
+goto1=massusix
+say2=all(ttl(01recovered,01foundbrother,01healbrother,05chapter5));
+goto2=chapter5
+say3=All(ttl(01FoundBrother,!01HealBrother));
+goto3=Brother
+Say4=All(ttl(!01recovered,!01Olon));
+goto4=Massus
+Say5=All(ttl(!01recovered,01Olon,!01ToldChalice));
+goto5=Olon
+Say6=All(ttl(!01recovered):Obj(!Chalice));
+goto6=Village
+Say7=All(ttl(!01recovered):Obj(Chalice));
+goto7=Chalice
+Say8=All(ttl(01recovered));
+goto8=recovered
+
+[Brother]
+Say=Praise be, Corvus! You should take him to Brother Crosby at once!
+RspDflt=I will.
+
+[Massus]
+Say=Welcome to the chapel, my son.  Have you come to offer prayers?
+RspDflt=None
+RspTxt1=No, Friar.  I'm just looking around.
+NxtLn1=Massus1
+RspTxt2=Actually, I'm new here and I wish to meet some of the residents of the keep.  Where are you from?
+NxtLn2=Massus2
+RspTxt3=No, sir.  I was just looking for any news.  What's going on around here?
+NxtLn3=Massus3
+
+[Massus1]
+Say=Take your time.  The chapel is open to anyone seeking relief from the fighting.
+RspDflt=Thank you, Friar.
+rspBack=Massus
+
+[Massus2]
+Say=I came here with the Taberlanders many years ago.  I chose not to become involved in their civil war, though.  I felt I was needed here for my spiritual guidance and for the healers who serve the chapel.
+RspDflt=I'm sure the soldiers are glad to have you among us.
+rspBack=Massus
+
+[Massus3]
+Say=All seeking spiritual fulfillment come here.  The other monks and I offer salvation and healing.
+RspDflt=None
+RspTxt1=Healing?
+NxtLn1=Massus4
+
+[Massus4]
+Say=Yes.  We are all trained in the healing arts.  Brother Crosby is an exceptional healer.  Were I seeking a healing, I would go to him.
+Adventure=ch1-15;
+RspDflt=Thank you, Friar.  Good day.
+rspBack=Massus
+
+[brother0]
+Say=Yes, %playername%?
+RspDflt=Pardon me, Friar, I must be on my way.
+RspTxt1=I came to ask you what you know of my brother...
+nxtln1=brother1
+
+[Brother1]
+Say=He has come here many times for our healing.  He always seems to be in the worst of the fighting and he always manages to take the most gruesome wounds.  He has been lucky, though.  Not a particularly religious man, is he?
+Adventure=ch1-16;
+RspDflt=none
+RspTxt1=Not especially, Friar.
+nxtLn1=Brother2
+
+[Brother2]
+Say=Is there something I can do for you?
+RspDflt=No, thank you.
+RspTxt1=Have you heard any rumors?
+NxtLn1=Brother3
+
+[Brother3]
+Say=We try to keep our ears closed to gossip here.  Our concerns are not of this world, unless it's to battle evil wherever it walks.
+RspDflt=Thank you anyway, Friar.
+
+[Olon]
+Say=Hello, again.  I heard the news of your brother.  Know that we offer prayers for his sake.
+RspDflt=none
+RspTxt1=Thank you, Friar.  I understand you lived in the village outside Avalon.
+nxtLn1=Olon1
+
+[Olon1]
+Say=Indeed.  I lived there for three short years before the Ahoul ran us all away from our Church.
+RspDflt=none
+RspTxt1=I'm going on an expedition there soon.  Olon the, well, "merchant" said you might be able to provide me with some useful information about the village.
+nxtLn1=Olon2
+
+[Olon2]
+Say=Olon told you this?  He must have been mistaken.  I kept mostly to the Church and from what I've seen from the walls there is little left of the village I knew.
+RspDflt=none
+RspTxt1=There's nothing at all you could tell me about the outside?
+nxtLn1=Olon4
+
+[Olon4]
+Say=I may not be able to help you, but you are certainly in a position to help me.
+RspDflt=none
+RspTxt1=What can I do to help you?
+nxtLn1=Olon5
+
+[Olon5]
+Say=During the evacuation of the village, a minor artifact was left behind.  Until recently, it has not been of much concern.  The Church still stands and I'm sure it remains safely hidden in the cellar.  However, in the last little while some of the more pious and superstitious of the peasants have started to believe that the loss of the Chalice of Life was a foretelling of our eventual defeat.
+AddQuest=ch1-25;
+RspDflt=none
+RspTxt1=I will do everything I can to recover it, Friar.
+nxtLn1=Olon7
+rspCnd2=all(obj(Chalice));
+RspTxt2=Would this be the Chalice you mean?
+nxtln2=Chalice1
+
+[Olon7]
+Say=There's no telling what may have taken up residence in the old Church.  It will be dangerous, but if you wish to try, we will pray for your success and safety.
+Adventure=ch1-17;
+Script=journalentry(massus);addtitle(01ToldChalice);showmessage(Your journal has been updated.,200);
+RspDflt=I will do my best, Friar.
+
+[Village]
+Say=Welcome back, my son.  How have you fared?
+RspDflt=none
+RspTxt1=Well, Friar.  I'm afraid I haven't been able to find the Chalice yet.
+nxtLn1=village1
+
+[Village1]
+Say=We assign no blame.  We have been without the Chalice for some time and we have managed to survive.  We will continue to make do without it.
+RspDflt=none
+RspTxt1=I was hoping you would understand.  The village is more trying than I imagined.
+nxtLn1=village2
+RspTxt2=I will continue to look though, Friar.  I won't give up.
+nxtLn2=village3
+
+[Village2]
+Say=Indeed.  Many a good soldier has lost his life there.
+RspDflt=So long, Friar.
+
+[Village3]
+Say=And we will continue to pray for you.
+RspDflt=Thank you.
+
+[Chalice]
+Say=You have returned unharmed!  The good spirits truly are smiling on us!
+RspDflt=none
+RspTxt1=They are indeed, Friar.  I have found the Chalice of Life!
+nxtLn1=Chalice1
+
+[Chalice1]
+Say=Bless you, son!  This is a great victory for the Alliance!  The Chalice of Life...  Everyone will take heart now!
+RemoveQuest=ch1-25;
+Script=player.addtitle(01recovered);takeitem(chalice,player);player.setprop(trainingpoints=10);showmessage(You have received some training points.,300);
+RspDflt=none
+RspTxt1=I live to serve, Friar.  I'm glad I could help.
+nxtLn1=Chalice2
+
+[Chalice2]
+Say=Remember, my son -- you are always welcome here.
+RspDflt=Thank you, Friar.
+
+[Recovered]
+Say=Is there something I can do for you?
+RspDflt=none
+RspTxt1=I was just looking around, hoping for a rumor.
+NxtLn1=Recovered1
+
+[Recovered1]
+Say=Well, as you might imagine, the Chalice is having the expected effect.  All soldiers who visit here leave here in high spirits.  We are saving more and more of the wounded that before we would have lost.  Your find is truly making a difference!
+RspDflt=That is excellent news!
+
+[chapter5]
+Say=Ah, the battle-hardened soldier returns! I've kept you in my prayers, %playername%. You are a gift from the heavens, and I've had visions that bear witness of your skills.
+RspDflt=none
+RspTxt1=These constant praises are making me a bit uneasy, Friar.  Farewell.
+NxtLn1=chapter5c
+RspTxt2=What sort of visions?
+NxtLn2=chapter5b
+
+[chapter5b]
+Say=I saw you as you cleft the heads from the devil's serpents that dared to trespass upon our holy grounds. Know that you travel a wide path, %playername%, but you are purified by the waters of the chalice.
+RspDflt=Wow. I had no idea.  Farewell, Friar.
+RspTxt1=I only want to help, Friar. I do not seek the praises of men.
+NxtLn1=chapter5c
+
+[chapter5c]
+Say=The praises are well deserved my child. Your exploits have done much for us.
+RspDflt=I am grateful for the life I have been granted. I intend not to waste it.
+
+[massusix]
+Say=Good day, %playername%.  I am glad to see that you are doing well.
+RspDflt=Thank you, Friar.  Please pardon me.  I must be on my way.
+rspcnd1=all(ttl(06ttphelic,!06cleanedaltar,!06massarb01));
+RspTxt1=I appreciate that, Friar.  I have come to ask you about something evil...
+script1=player.addtitle(06massarb01);
+nxtln1=massulich
+
+[massulich]
+Say=Oh, my, %playername%, have you been having impure thoughts?
+RspDflt=none
+RspTxt1=I have come here to ask you about the undead.  Although the lich has been defeated, there must still be some kind of taint, for there are now skeletons down below that will attack anything...  Even rats.  Phelic spoke of a lingering evil, and sent me to you, since your knowledge is unsurpassed in the area.
+nxtln1=massulich2
+
+[massulich2]
+Say=I wouldn't go as far as to say that, although it is true that I have devoted my life to my studies, and that they are of a specific sort.  Very powerful minions of evil have been known to leave behind a trace of the same evil, like some spreading disease whose effects remain after the disease itself has been defeated.  It is possible, also, that the lich cast some kind of a delayed spell that took effect after its destruction.  As far as the solution to this problem...  Hmm...
+RspDflt=none
+RspTxt1=Yes, Friar?  Do you have an idea?
+nxtln1=massulich3
+
+[massulich3]
+Say=At the moment, I'm afraid that I do not.  Usually, a group of holy men would perform an exorcism, but we do not have the numbers -- and since there are skeletons down there, the journey would be perilous indeed, especially for men who have not trained in battle.  I shall have to think on this for some time, %playername%.  It is the best I can do.  Please come check with me later, as I may just think of something that might work.  I know that words such as "may" and "might" don't engender the greatest confidence, but this is an interesting problem, the likes of which I have not been faced with heretofore, and I shall have to be... creative.
+RspDflt=none
+adventure=ch6-513;
+RspTxt1=Very well, Friar.  I shall come to check on your progress later.  Good luck.
+nxtln1=massulich4
+
+[massulich4]
+Say=And good luck to you in your endeavors, %playername%.  Please check on Elazar, for Brother Crosby believes he may have found something to cure his affliction.
+RspDflt=I shall certainly do that, Friar.  Farewell.
+

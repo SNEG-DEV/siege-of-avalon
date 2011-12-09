@@ -1,0 +1,177 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(5/23/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Thank you.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=all(ttl(!06chapter6));
+goto2=Soldier
+
+[Soldier]
+Say=Hello there.  What can I do for you?
+RspDflt=None
+RspTxt1=I've just arrived in Avalon and was just looking around.
+NxtLn1=Soldier1
+
+[Soldier1]
+Say=Take a close look, lad!  There isn't much more to Avalon than this!  If we were in Aratoy, then there would be something to look at.
+RspDflt=None
+RspTxt1=Aren't you glad to be here fighting the Ahoul?
+NxtLn1=Soldier2
+RspTxt2=Are you from Aratoy?
+NxtLn2=Soldier3
+
+[Soldier2]
+Say=You are new, aren't you?  Boy, when you've been manning the wall for as long as I have, the glory of defending the seven kingdoms fades.
+RspDflt=None
+RspTxt1=If we don't do it though, then who will?
+NxtLn1=Soldier4
+
+[Soldier4]
+Say=I'm not saying I won't do my job.  I'm just saying I'd rather be hunting in my homeland, that's all.
+RspDflt=None
+RspTxt1=Are you much of a hunter?
+NxtLn1=Soldier5
+RspTxt2=As would I, but I'm proud to be here.
+NxtLn2=Soldier6
+
+[Soldier5]
+Say=There are few that are better, even among Aratoyans!  I made a heart shot with my bow from four hundred paces once.
+RspDflt=None
+RspTxt1=You must be mistaken.  No man could make a shot like that...
+NxtLn1=Soldier7
+
+[Soldier7]
+Say=Doubt me if you will.  But you'll find that most Aratoyans can make that shot.  There are few that could do even better.
+RspDflt=None
+RspTxt1=If you say so.  Take care.
+NxtLn1=Soldier8
+
+[Soldier8]
+Say=You too, lad.  We hate to see green soldiers get gutted within the first week!
+RspDflt=Good day.
+
+[Soldier6]
+Say=Proud?  You must be nobly born.  Only a noble's son would find pride in warfare.
+RspDflt=None
+RspTxt1=Why do you say that?
+NxtLn1=Soldier9
+
+[Soldier9]
+Say=Because the peasant's children always die.  Nobles usually manage to avoid injury.
+RspDflt=None
+RspTxt1=Are you calling nobles cowards?
+NxtLn1=Soldier10
+
+[Soldier10]
+Say=No.  I'm just saying arrows have a way of missing the nobly born.  Swords seem to slide off their armor and their opponents never seem to make that killing blow.  Strange, don't you think?
+RspDflt=None
+RspTxt1=I'll have you know that my father was a great warrior who took many injuries.  My brother, Corvus, didn't seem to find the luck you speak of.  He has a scar on his neck.
+NxtLn1=Soldier11
+
+[Soldier11]
+Say=You're Corvus' brother?  I'm sorry, my lord.  I didn't know you were related to him.  Your brother is a fine warrior, if a little reckless.  He always seems to be in the thickest of the fighting.
+RspDflt=I accept your apology.  I'm afraid I must depart.  Good day to you.
+
+[Soldier3]
+Say=Of course!  There is nowhere else on this planet like it.
+RspDflt=None
+RspTxt1=I've always wondered what Aratoy is like.
+NxtLn1=Soldier12
+
+[Soldier12]
+Say=If you can imagine trees that embrace you and care for you like your own mother would...
+RspDflt=None
+RspTxt1=Are you from Perigwin?
+NxtLn1=Soldier13
+
+[Soldier13]
+Say=No true Aratoyan would live in a city.  My family and I lived in the deep northern forests.  Everything a person could ever need is provided for by the woods.  We have never wanted for anything.
+RspDflt=None
+RspTxt1=Who do you answer to?  Isn't there some kind of government?
+NxtLn1=Soldier14
+RspTxt2=My father taught me something of the forests in Elythria.  I suspect I'm almost as adept as an Aratoyan in woodslore.
+NxtLn2=Soldier15
+
+[Soldier14]
+Say=We answered to the clanmother.  The clanmother is always the eldest woman in the family.  My aunt was the clanmother for us.  We have a king in Aratoy and there are other minor offices beneath that, but few recognize the king as having any power.  He plays mostly a diplomatic role.
+RspDflt=None
+RspTxt1=He's just a figure for the other kingdoms to relate to then?
+NxtLn1=Soldier16
+
+[Soldier16]
+Say=You have the way of it.  No one's really sure how the king comes to power and few really care.  A good clanmother lives far better than any king in Aratoy.
+RspDflt=None
+RspTxt1=What queer politics your country has.
+NxtLn1=Soldier17
+
+[Soldier17]
+Say=Some would think so.  After living with it all of my life, I can't imagine having to pay homage to a king of landowner.  You easterners are far stranger than we Aratoyans.
+RspDflt=None
+RspTxt1=Perhaps you are right.  As you say though, I have always lived with these ways.  They seem natural to me.
+NxtLn1=Soldier18
+RspTxt2=Those that are east of us are even stranger though.
+NxtLn2=Soldier19
+
+[Soldier18]
+Say=True.  Perhaps we can talk more of our countries over a drink when the siege is lifted.
+RspDflt=I hope so.  Good day to you.
+
+[Soldier19]
+Say=Indeed!  Blasted Ahoul with their heathen religion!
+RspDflt=May we have the strength to destroy them.
+
+[Soldier15]
+Say=A bold statement!  An Aratoyan can sneak up on you and remove your underclothes without you even noticing!
+RspDflt=None
+RspTxt1=Is that so?  Perhaps I should be more careful of my possessions around Aratoyans then.
+NxtLn1=Soldier20
+
+[Soldier20]
+Say=Sneaky we may be, sir.  But we are not thieves.
+RspDflt=None
+RspTxt1=I was only jesting, friend.  Anyone that fights the Ahoul is my brother and I would trust them with my life.
+NxtLn1=Soldier21
+
+[Soldier21]
+Say=An idealistic sentiment.  For all of our sake, I hope you are right.
+RspDflt=Good luck to you.
+
+[chapter6]
+Say=Hail, sir. Did you need my help?
+RspDflt=Not at the moment. Farewell.
+

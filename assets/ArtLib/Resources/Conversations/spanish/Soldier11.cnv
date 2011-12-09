@@ -1,0 +1,81 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(5/23/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Adios.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=All(ttl(!01recovered));
+goto2=Soldier
+Say3=All(ttl(01recovered));
+goto3=Chalice
+
+[Soldier]
+Say=¿Qué puedo hacer por ti?
+RspTxt1=¿De donde eres?
+NxtLn1=Soldier1
+RspTxt2=¿Has oído algún rumor interesante?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Llevo demasiado tiempo lejos de Nisos, señor.  Y todavía pasará más si no hallamos la forma de romper el asedio.
+rspBack=soldier
+
+[Soldier2]
+Say=He oído del Intendente que alguien ha estado robando raciones de comida durante la noche!  ¡Ladrones apestosos!
+Adventure=ch1-07;
+script=player.addtitle(01StolenRations);
+rspBack=soldier
+
+[Chalice]
+Say=¿Cómo puedo ayudarle, señor?
+RspTxt1=¿De donde eres?
+NxtLn1=Chalice1
+RspTxt2=¿Has oído algún rumor interesante?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=He navegado hasta aquí desde Nisos y volveré bajo un pabellón victorioso!
+rspBack=chalice
+
+[Chalice2]
+Say=Sólo que los refuerzos se están apresurando para llegar pronto a Avalon.  ¡Sólo unos pocos días más de espera!
+rspBack=chalice
+
+[chapter6]
+Say=He oído decir a la asistenta que hay más gente enferma en Avalon de lo que nos dicen.
+RspDflt=Que los buenos espíritus nos protejan!  Hasta luego.
+

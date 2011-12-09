@@ -1,0 +1,45 @@
+[Notes]
+TitlesCheck=01village,01Recovered
+
+[root]
+Count=3
+Else=
+Default=Danke, Cardew.
+Say1=All(ttl(!01village,!01Recovered));
+goto1=Cardew1
+Say2=All(ttl(01village,!01Recovered));
+goto2=Cardew3
+Say3=All(ttl(01village,01Recovered));
+goto3=Cardew4
+
+
+[Cardew1]
+say=Wir waren alle über die Nachricht von Eurem Bruder bestürzt.  Er hat mir mehr, als einmal den Hals gerettet.
+rspDflt=Ich weiß Eure Anteilnahme zu schätzen. 
+rspTxt1=Danke.  Woher kommt Ihr, Herr?
+Nxtln1=Cardew2
+
+[Cardew2]
+say=Ich stamme aus Aratoy, mein Junge.  Ich war dort der Anführer eines Nomadenstammes.  Wir sind alle hergekommen, um gegen die Ahoul zu kämpfen-- wir dachten, es würde eine glorreiche und blutige Schlacht werden, und was könnte man sich Schöneres wünschen?
+rspDflt=Ich weiß es nicht, Herr, aber mögen die guten Geister Euch und Eure Männer beschützen.
+
+;After entry into village, but before recovery of Chalice
+
+[Cardew3]
+say=Seid gegrüßt, mein Junge.  Ich hoffe, es geht Euch gut.
+rspDflt=Jawohl, Herr.
+
+;After recovery of Chalice
+
+[Cardew4]
+say=Endlich kehrt der Held heim!  Von Euren Taten zu hören hat uns allen Mut gemacht!
+rspDflt=None
+rsptxt1=Danke, Herr.  Gibt es irgendwelche Neuigkeiten?
+NxtLn1=Cardew5
+
+[Cardew5]
+say=Nun, das Wichtigste darf ich Euch eigentlich nicht erzählen, aber so viel sei gesagt: die nächste richtige Mahlzeit lässt nicht mehr lange auf sich warten!
+rspDflt=Das ist wahrhaftig eine gute Nachricht!  Gehabt Euch wohl, Herr!
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

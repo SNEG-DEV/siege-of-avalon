@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Farewell.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=What do you need?
+RspTxt1=And where are you from, soldier?
+NxtLn1=Soldier1
+RspTxt2=I'd like to hear a good rumor.
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=I've come from Aratoy, and I miss the forests there terribly.  This fortress is so cold to me compared to the life of the wilderness back home.  That's why I keep plants next to my bunk in the barracks.  This place is nearly enough to suck the life out of you.  I can't wait until I can go outside again.
+rspBack=soldier
+
+[Soldier2]
+Say=I've nothing of value.  Then again, it's doubtful whether rumors are helpful at all.  At least they... sometimes... keep spirits up.
+rspBack=soldier
+
+[Chalice]
+Say=Hello, sir, how may I help you?
+RspTxt1=Where are you from, soldier?
+NxtLn1=Chalice1
+RspTxt2=I know an alert sort like you must hear a lot of rumors...
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=I come from Aratoy, the true jewel of all Eurale.  Once the Ahoul are crushed, I will return to the forests.  It's bad enough that I can't venture outside for fear of being impaled by an Ahoul arrow.
+rspBack=chalice
+
+[Chalice2]
+Say=Only that the bowmen of Aratoy are ready for a fight!  We're eager to end the siege, end the war, and end the Ahoul once and for all!
+rspBack=chalice
+

@@ -1,0 +1,59 @@
+[Notes]
+TitlesChecked=01Informed,01Recovered
+
+[root]
+Count=3
+Else=
+Default=Danke, Holly.
+Say1=All(ttl(!01informed,!01Recovered));
+goto1=Holly
+Say2=All(ttl(01informed,!01Recovered));
+goto2=News
+Say3=All(ttl(01informed,01Recovered));
+goto3=Chalice
+
+;First approach
+[Holly]
+say=Was führt Euch hierher?
+rspDflt=None
+rsptxt1=Ich erkunde die Burg.  Wie Ihr Euch vorstellen könnt, bin ich neu hier.  Wie ist Euer Name, und woher kommt Ihr?
+NxtLn1=Holly1
+rsptxt2=Ich habe mich umgesehen.  Sagt, habt Ihr in letzter etwas von Interesse gehört?
+NxtLn2=Holly2
+
+;If 1,
+[Holly1]
+say=Ich heiße Holly und ich bin Küchenhilfe.  Ich stamme aus Oriam, auch wenn nicht viel von Oriam übriggeblieben ist.  Die Ahoul haben das Gebiet, das ich meine Heimat nannte so gut wie abgebrannt.
+rspDflt=Ihr habt mein Mitgefühl. Aber Oriam wird gerächt und wieder aufgebaut.
+rspBack=Holly
+
+;If 2,
+[Holly2]
+say=Ich habe gehört, dass ein Lager der Ahoul überfallen werden soll.  Wir könnten die Vorräte gut gebrauchen.  Die Köche haben es schwer, das bisschen, was wir noch haben, zu strecken.
+rspDflt=Mein Bruder ist bei diesem Überfall dabei und ich glaube, das wird bestimmt ein Erfolg.
+rspBack=Holly
+
+;Before recovery of Chalice
+[News]
+say=Hallo nochmal.  Wie kann ich Euch dienen, Herr?
+rspDflt=None
+rsptxt1=Ich hatte gehofft, die neuesten Gerüchte von Euch zu erfahren.
+NxtLn1=News1
+
+[News1]
+say=Habt Ihr von den Krawallen im Hof der Bauersleute gehört, als es dort Brot gab?  Man erzählt sich, dass fast vierzig Leute zu Tode getrampelt wurden. Die armen Leute da drinnen halten es nicht mehr lange aus.
+rspDflt=Wenn uns das Glück hold ist, wird es nicht mehr lange dauern.
+
+;After recovery of Chalice
+[Chalice]
+say=Ihr seid es!  Ich hatte schon gehört, dass Ihr nach Eurem Abenteuer wieder in Avalon seid.  Was führt Euch in die Küche?
+rspDflt=None
+rsptxt1=Nichts als meine Suche nach Information.  Wißt Ihr etwas von Interesse, das Ihr mir mitteilen könnt?
+NxtLn1=Chalice1
+
+[Chalice1]
+say=Tut mir leid, Herr, ich bin kein Klatschweib.  Das heißt, ich wüßte nichts, was Euch nutzen würde.
+rspDflt=Verstehe.  Danke trotzdem, und einen schönen Tag noch.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

@@ -1,0 +1,84 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Adios.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=All(ttl(!01recovered));
+goto2=Soldier
+Say3=All(ttl(01recovered));
+goto3=Chalice
+
+[Soldier]
+Say=¿Qué quieres?
+RspTxt1=¿De dónde eres?
+NxtLn1=Soldier1
+RspTxt2=¿Algún cotilleo interesante por aquí?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Me arrancaron de los bosques de Aratoy para luchar en esta maldita guerra!  ¡Detesto esta miserable ciudadela!
+rspBack=soldier
+
+[Soldier2]
+Say=Avalon fue construida sobre fango.  ¡Las paredes mismas son inestables y se colapsarán en cualquier momento!  ¡Sé listo, jovencito!  ¡Escóndete!
+rspBack=soldier
+
+[Chalice]
+Say=Hola, señor, ¿en qué puedo ayudarle?
+RspTxt1=¿De dónde eres?
+NxtLn1=Chalice1
+RspTxt2=¿Algún cotilleo interesante por aquí?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Vine aquí desde Aratoy y traje un centenar de los mejores arqueros de nuestros bosques conmigo!
+rspBack=chalice
+
+[Chalice2]
+Say=Se rumorea que habrá una ofensiva nocturna muy pronto.  Mantente alerta y quizá logres formar parte de ella!
+rspBack=chalice
+
+[chapter6]
+Say=Hola, amigo!  ¿Qué te trae por aquí?  ¿Es que te has cansado de estar arriba y vienes a estar aquí abajo con nosotros?
+RspDflt=none
+RspTxt1=Simplemente vengo en busca de información.
+nxtln1=chapter6b
+
+[chapter6b]
+Say=El movimiento en esta área es inusualmente bajo, y lo mismo sucede con los rumores.  No me preocupa demasiado, quiero pasar mis últimos días en soledad.  Todavía me mantengo en contacto con los otros soldados, pero no he oído nada nuevo.
+RspDflt=Gracias de todos modos.  Hasta luego, soldado.
+

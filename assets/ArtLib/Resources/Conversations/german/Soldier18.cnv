@@ -1,0 +1,47 @@
+;Hello there, how can I help you?
+;May I be of assistance to you Sir?
+;What can I do for you?
+;How can I help you, Sir?
+;What is it you want?
+;Hello Sir, How may I help you?
+
+[root]
+Count=2
+Else=
+Default=Ade.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Soldier]
+say=Was wollt Ihr?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Soldier1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Soldier2
+
+[Soldier1]
+say= Ich komme aus Fornax, aber ich weiß nur wenig über Zauberei. Ihr Leute aus den sechs oberen Königreichen glaubt anscheinend, alle Fornaxier seien echte Zauberer!
+rspBack=soldier
+
+[Soldier2]
+say= Mein Freund sagt, ihr Vorrat an anständigem Fleisch sei erschöpft. Gebt gut acht, was Ihr eßt! Mag sein, dass es Euch nicht gefällt!
+rspBack=soldier
+
+;After Recovery of Chalice
+[Chalice]
+say= Hallo, Herr, womit kann ich Euch dienen?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Chalice1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Chalice2
+
+[Chalice1]
+say=Ich bin ein stolzer Fornaxier!
+rspBack=chalice
+
+[Chalice2]
+say= Wahrscheinlich kennt Ihr all die Gerüchte längst, die ich erzählen könnte.
+rspBack=chalice

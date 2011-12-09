@@ -1,0 +1,24 @@
+[Notes]
+titlesCheck=01recovered
+
+[root]
+Count=2
+Else=
+Default=Danke.
+Say1=All(ttl(!01recovered));
+goto1=Harold1
+Say2=All(ttl(01recovered));
+goto2=Harold2
+
+[Harold1]
+say=Seht Ihr denn nicht, dass ich zu tun habe?  Platz da!
+Adventure=ch1-04;
+RspDflt=Tut mir leid, Euch gestört zu haben, Herr.
+
+
+[Harold2]
+say=Ihr seid hier vielleicht ein neuer Volksheld, aber ich habe trotzdem keine Zeit für Euren Unsinn.  Aus dem Weg!
+RspDflt=Verzeihung, Herr.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

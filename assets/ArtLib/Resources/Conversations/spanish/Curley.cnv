@@ -1,0 +1,103 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(5/23/01)=Passed
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Gracias, Curley.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(03chapter3));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Curley
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Curley]
+Say=Saludos, señor.  ¿Cómo puedo ayudaros?
+RspDflt=None
+RspTxt1=Acabo de llegar y estoy buscando por ahí.
+NxtLn1=Curley1
+RspTxt2=¿De dónde vienes?
+NxtLn2=Curley2
+RspTxt3=Sólo estoy cazando rumores.  ¿Has visto alguno?
+NxtLn3=Curley3
+
+[Curley1]
+Say=Como puedes ver, aquí es donde los monjes rezan y ejercitan sus habilidades curativas.  Si alguna vez necesitas ser sanado, ven a ver al Hermano Crosby.  Es, de lejos, el mejor.
+RspDflt=Gracias por la información.
+rspBack=Curley
+
+[Curley2]
+Say=Soy Catheano, señor.  Intenté ser un guerrero, pero no tenía ni la constitución ni la fuerza para los baños de sangre.  En vez de eso, hallé mi verdadera vocación como monje.
+RspDflt=Y buena cosa ha sido, por cierto.  Avalon necesita sanadores cualificados.
+rspBack=Curley
+
+[Curley3]
+Say=Un amigo me ha dicho que la Puerta Sur casi sucumbió anoche.  Yo me mantendría alejado de allí, si fuese usted--a menos, naturalmente, que quisierais ser empalado por una lanza Ahoul.
+RspDflt=None
+RspTxt1=Dudo que la Puerta Sur pueda caer, y no soy un cobarde.  Si hay una batalla, estaré en su centro--el deber me lo dicta.
+NxtLn1=Curley4
+
+[Curley4]
+Say=Como digáis, señor.  Rezaré por vuestra seguridad.
+RspDflt=Gracias por vuestra preocupación, Hermano.  Buenos días.
+
+[Chalice]
+Say=Bien hecho, señor!  ¿Cómo os han ido las cosas por el pueblo?
+RspDflt=None
+RspTxt1=Bastante bien, gracias.  ¿Y aquí?  ¿Cómo están aquí las cosas?
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Mejorando día a día!  Hay menos heridos cada día, y muchos de nuestros pacientes más graves, están mejorando.  Los buenos espíritus nos protegerán!
+RspDflt=Seguro que lo harán, Hermano Curley.
+
+[three]
+Say=Enhorabuena por sus recientes éxitos, señor!  La torre está inundada de relatos de vuestras heroicas gestas!
+RspDflt=none
+RspTxt1=¿De veras?  Y yo que intento pasar desapercibido...
+nxtln1=three2
+
+[three2]
+Say=Ja!  Sarcasmo!  Lo pillo!  Que no se diga que el Hermano Curley no tiene sentido del humor!
+RspDflt=Me pondré a ello inmediatamente.  Hasta luego.
+
+[chapter6]
+Say=El poder del Cáliz ha demostrado ser vital, pero ni siquiera la Copa de la Vida nos salvará cuando los Ahoul vengan por encima de nuestras murallas! Temo por nuestra ciudad sagrada.
+RspDflt=Debemos tener fe, hermano. Hasta luego.
+

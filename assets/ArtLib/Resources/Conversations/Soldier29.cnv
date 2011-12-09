@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Farewell.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=What can I do for you?
+RspTxt1=Where are you from?
+NxtLn1=Soldier1
+RspTxt2=Heard any good rumors?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=I came here from Nisos three years ago, sir.  It seems like three lifetimes ago...
+rspBack=soldier
+
+[Soldier2]
+Say=I hear the Aratoyans are stealing from the stocks during the night.  If I catch those stinking thieves...
+rspBack=soldier
+
+[Chalice]
+Say=How can I help you, sir?
+RspTxt1=Where are you from?
+NxtLn1=Chalice1
+RspTxt2=Heard any good rumors?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=I sailed here from Nisos and I won't sail back until I have Mithras' head on a pike!
+rspBack=chalice
+
+[Chalice2]
+Say=Only that reinforcements will be here any day!
+rspBack=chalice
+

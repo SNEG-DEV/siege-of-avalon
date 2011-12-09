@@ -1,0 +1,78 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Farewell.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=All(ttl(!01recovered));
+goto2=Soldier
+Say3=All(ttl(01recovered));
+goto3=Chalice
+
+[Soldier]
+Say=Hey, man...
+RspTxt1=Say, soldier, where are you from?
+NxtLn1=Soldier1
+RspTxt2=I don't suppose you've heard any rumors recently?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=I was born in Elythria, but I don't think I'll have the opportunity to die in my homeland, man... These walls will be my tomb.  The Ahoul get bloodthirstier every day, if you can imagine, and... and...
+rspBack=soldier
+
+[Soldier2]
+Say=I don't listen to that garbage.  Rumors dull a soldier's mind, man, and we need both sharp wits and blades...  Oh, what's the use, man?
+rspBack=soldier
+
+[Chalice]
+Say=What's new, man?
+RspTxt1=Where are you from, uh, "man"?
+NxtLn1=Chalice1
+RspTxt2=Heard any good rumors?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=I am Elythrian, sir.  I can't wait to get back home, man!  At first I thought I'd never see Elythria again, but now that we've the Chalice...  Man, I can't wait to see my little brother again...
+rspBack=chalice
+
+[Chalice2]
+Say=I heard in the barracks that the cowardly Taberlanders are finally returning to Avalon.  Perhaps they will actually fight this time!  Ha! Ha!  We don't need 'em.  We've got the Chalice!  You know it's magical, right, man?  You must have known when you touched it!  We cannot lose, now!
+rspBack=chalice
+
+[chapter6]
+Say=Ah, greetings, man, er, I mean, %playername%. I trust all is well. Except for the obvious, I mean.
+RspDflt=I'll know soon enough. Farewell, soldier.
+

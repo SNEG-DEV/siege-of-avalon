@@ -1,0 +1,19 @@
+[root]
+Count=1
+Else=
+Default=Danke, Sir Phelot.
+Say1=
+goto1=Phelot
+
+[Phelot]
+say=Was...?!  Ähm...!  Was habt Ihr hier oben zu suchen?
+rspDflt=None
+rspTxt1=Ich sehe mich nur ein wenig um.  Stimmt etwas nicht?
+NxtLn1=Phelot1
+
+[Phelot1]
+say=Nein!  Alles bestens!  Alles... ähm, bestens.
+rspDflt=Verstehe.  Ich empfehle mich.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

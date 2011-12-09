@@ -1,0 +1,127 @@
+[Titles]
+Checked=01GetSteel,01GotSword,01ReturnedSteel,01TrainedFighter,Armor Fitting,Combat Breathing,Field First Aid,Weapon Balance
+Set=01steelshortage,01trainedfighter,armor fitting,combat breathing,field first aid,weapon balance
+Removed=
+
+[Quest]
+Added=ch1-06,ch1-66,ch1-67
+Removed=
+
+[Items]
+Checked=
+Taken=
+Given=kshieldavalon
+Added=
+
+[root]
+Count=2
+Else=
+Default=Ade.
+Say1=All(ttl(!01TrainedFighter));
+goto1=Lucan
+Say2=All(ttl(01TrainedFighter));
+goto2=Info
+
+[Lucan]
+say=Guten Tag, Herr. Wie kann ich Euch dienen?
+rspDflt=None
+rsptxt1=Ich sehe mich nur um.
+NxtLn1=Lucan1
+rsptxt2=Was macht Ihr hier?
+NxtLn2=Lucan2
+
+[Lucan1]
+say=Sehr wohl, Herr. Wenn Ihr etwas von mir braucht, fragt nur.
+rspDflt=Danke, mache ich.
+rspback=Lucan
+
+[Lucan2]
+say=Ich habe die Aufsicht über die Waffenkammer hier am Südtor.  Es ist meine Aufgabe, die Verteidiger der Festung mit Ausrüstung zu versorgen, und im richtigen Umgang mit der Ausrüstung auszubilden.
+Adventure=ch1-66;
+rspDflt=None
+rsptxt1=Gut, ich könnte etwas an Ausrüstung gebrauchen.
+nxtln1=Shield
+rsptxt2=Was für Ausbildung bietet Ihr an?
+nxtln2=TrainTitles
+
+[shield]
+say=Ich habe schon befürchtet, dass Ihr das sagt, Herr.  Es tut mir leid, aber um Waffen und Rüstung zu bekommen, müßt Ihr zum Quartiermeister in der Außenburg.  Alles, was ich habe ist bereits zugeteilt.  Ich kann Euch aber mit einem richtigen Schild ausstatten.
+script=Siege20000600030075742200.giveitem(KShieldAvalon,player);showmessage(Sie haben einen Gegenstand erhalten.,200);player.addtitle(01TrainedFighter);
+rspDflt=None
+rspTxt1=Danke.  Habt Ihr eine Ahnung, warum Waffen und Rüstung so knapp sind?
+nxtLn1=Steel
+
+[Steel]
+Say=Das liegt an dem Schmied, Herr.  Heutztage scheint er nur wenig hochqualitative Ware zu liefern.  Oh, das ist nicht seine Schuld, Herr-- guter Stahl ist äußerst schwer zu bekommen.  Außerdem hat General Ovoron fast alles, was wir an hochwertiger Ausrüstung noch hatten, bei seinem Ausfall mitgenommen.  Was Ihr hier seht ist das, was mir übrig geblieben ist, und selbst das ist reserviert, so minderwertig es auch ist.
+Adventure=ch1-67;
+rspDflt=Verstehe.  Danke für Eure Mühe.
+rspTxt1=Avalon hat keinen guten Stahl mehr? Wann war die letzte Lieferung?
+nxtLn1=Steel2
+
+[Steel2]
+say=Ich erinnere mich nicht genau, Herr.  Ich weiß zwar, dass eine Lieferung Stahl mit der Versorgungssflotte ankommen sollte, aber ob sie tatsächlich angekommen ist, weiß ich nicht, so nach der Katastrophe und so weiter.
+rspDflt=none
+rspCnd1=all(ttl(!01GetSteel));
+rspTxt1=Ein Schiff ist durchgekommen--und ich war darauf.  Ich weiß, dass im Frachtraum Lebensmittel waren, aber ich habe nichts über Stahl gehört.  Ich gebe zu, ich war nicht sehr neugierig-- die Ahoul, die uns zu versenken versuchten, hatten meine volle Aufmerksamkeit.
+nxtLn1=Steel3
+rspCnd2=all(ttl(01GetSteel));
+rspTxt2=Ein Schiff ist durchgekommen--und ich war darauf.  Ich weiß, dass im Frachtraum Lebensmittel waren, aber ich habe nichts über Stahl gehört.  Ich gebe zu, ich war nicht sehr neugierig-- die Ahoul, die uns zu versenken versuchten, hatten meine volle Aufmerksamkeit.
+nxtLn2=Steel4
+
+[Steel3]
+say=Ihr könnt selber beim Schmied nachfragen, Herr, ob er vielleicht edlen Stahl bekommen hat.  Anders werdet Ihr wohl kaum an ein vernünftiges Schwert kommen. Freeman heißt er, und seine Schmiede findet Ihr im Außenhof.  Wenn ich's mir recht überlege, Herr-- Falls Euch zufällig ein Ahoul über den Weg laufen sollte, der seine Waffe nicht braucht, könntet Ihr ihn ja fragen, ob Ihr sie Euch ausleihen dürft, wenn Ihr versteht, was ich meine...?
+AddQuest=ch1-06;
+script=player.addtitle(01SteelShortage);
+rspDflt=Ich verstehe schon, aber ich glaube, ich frage trotzdem erst beim Schmied nach--für alle Fälle.  Danke für Eure Mühe.
+
+[Steel4]
+say=Ihr könnt selber beim Schmied nachfragen, Herr, ob er vielleicht edlen Stahl bekommen hat.  Anders werdet Ihr wohl kaum an ein vernünftiges Schwert kommen. Freeman heißt er, und seine Schmiede findet Ihr im Außenhof.  Wenn ich's mir recht überlege, Herr-- Falls Euch zufällig ein Ahoul über den Weg laufen sollte, der seine Waffe nicht braucht, könntet Ihr ihn ja fragen, ob Ihr sie Euch ausleihen dürft, wenn Ihr versteht, was ich meine...?
+rspDflt=Ich verstehe schon, aber ehrlich gesagt, ich habe schon beim Schmied nachgefragt. Er sagt, er hätte nichts, meinte allerdings, dass es irgendwo im Dorf ein verstecktes Lager mit Stahlbarren gäbe. Dem muss ich irgendwann nachgehen Danke für Eure Mühe.
+
+[TrainTitles]
+Say=Nun Herr, ich kann Euch unterrichten in:
+train=true
+rspCnd1=All(ttl(!Combat Breathing):stt(trainingpoints>2))
+rspTxt1=Atemtechnik beim Kampf(+5 Hit Points, +1 Healing Rate): 3pts
+script1=player.addtitle(Combat Breathing);player.setprop(trainingpoints=-3);
+nxtln1=TrainTitles
+rspCnd2=All(ttl(!Weapon Balance):stt(trainingpoints>2))
+rspTxt2=Balancieren der Waffe (+2 Coordination): 3pts
+script2=player.addtitle(Weapon Balance);player.setprop(trainingpoints=-3);
+nxtln2=TrainTitles
+rspCnd3=All(ttl(!Armor Fitting):stt(trainingpoints>2))
+rspTxt3=Anpassung der Rüstung(-2 Restriction): 3pts
+script3=player.addtitle(Armor Fitting);player.setprop(trainingpoints=-3);
+nxtln3=TrainTitles
+rspCnd4=All(ttl(!Field First Aid):stt(trainingpoints>1))
+rspTxt4=Erste Hilfe im Feld(+2 Hit Points, +1 Healing Rate): 2pts
+script4=player.addtitle(Field First Aid);player.setprop(trainingpoints=-2);
+nxtln4=TrainTitles
+rspCnd5=All(ttl(!01TrainedFighter));
+rspTxt5=Ich könnte auch etwas an Ausrüstung gebrauchen.
+nxtLn5=Shield
+rspdflt=none
+
+[Info]
+say=Wie kann ich Euch dienen?
+rspDflt=None
+rsptxt1=Was für Ausbildung bietet Ihr an?
+nxtln1=TrainTitles
+rspCnd2=all(ttl(!01GetSteel));
+rsptxt2=Habt Ihr eine Ahnung, warum Waffen und Rüstung so knapp sind?
+NxtLn2=Steel
+rspCnd3=all(ttl(01ReturnedSteel,!01GotSword));
+rspTxt3=Ich wollte Euch nur sagen, dass ich den Rat des Schmiedes gefolgt bin und ein kleines verstecktes Lager von edlem Stahl im Dorf gefunden habe.  Bald werdet Ihr wenigstens einige gute Waffen austeilen können.
+nxtLn3=NewSteel
+rspCnd4=all(ttl(01GotSword));
+rspTxt4=Der Schmied hat mir dieses Offiziersschwert dafür gegeben,  dass ich den edlen Stahl gefunden habe.  Was haltet ihr davon?
+nxtLn4=Sword
+
+[NewSteel]
+say=Das ist eine ausgezeichnete Nachricht, Herr!  Ich freue mich schon auf die neue Lieferung.  Und wenn sie eintrifft, lege ich ein Schwert für Euch beiseite!
+rspDflt=Nicht nötig-- Der Schmied hat mir bereits eins versprochen.  Also dann, bis später...
+
+[Sword]
+Say=Ein wirklich hervorragendes Schwert, Herr!  Das dürfte Euch gute Dienste leisten.
+rspDflt=Das will ich hoffen.  Lebt wohl!
+

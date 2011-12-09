@@ -1,0 +1,130 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01Recovered
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=Thank you, Keman.
+Say1=
+goto1=Keman1
+
+[keman1]
+Say=How can I serve you, my lord?
+RspDflt=Pardon me, I must be on my way.
+RspTxt1=I need directions.
+NxtLn1=directions
+RspCnd2=All(ttl(!01Recovered));
+RspTxt2=Where are you from?
+NxtLn2=location1
+RspCnd3=All(ttl(01Recovered));
+RspTxt3=Where are you from?
+NxtLn3=location2
+RspCnd4=All(ttl(!01Recovered));
+RspTxt4=What's new?
+NxtLn4=rumors1
+RspCnd5=All(ttl(01Recovered));
+RspTxt5=What's new?
+NxtLn5=rumors2
+
+[directions]
+Say=Where do you need to go?
+RspDflt=none
+RspTxt1=Elarath's Laboratory
+NxtLn1=direction1
+RspTxt2=Mudam's Chamber
+NxtLn2=direction2
+RspTxt3=Sir Roth's Council
+NxtLn3=direction3
+RspTxt4=The Quartermaster
+NxtLn4=direction4
+RspTxt5=I need a healer.
+NxtLn5=direction5
+rspBack=Keman1
+
+[direction1]
+Say=Follow this hall northward.  Elarath's Laboratory is at the end.
+RspDflt=Thank you.
+rspBack=directions
+
+[direction2]
+Say=Go west down this hall to its end.  At the end you will find Mudam's Chamber.
+RspDflt=Thank you.
+rspBack=directions
+
+[direction3]
+Say=Sir Roth's Council is at the other end of this floor.  Follow either hallway around to the opposite corner and his Council will be the door with a guard posted at it.
+RspDflt=Thank you.
+rspBack=directions
+
+[direction4]
+Say=Go north along this hall and enter the first door on your left.  The Armory is through the first door on the right of that hallway.
+RspDflt=Thank you.
+rspBack=directions
+
+[direction5]
+Say=In the chapel downstairs, there is a talented healer named Crosby.  He will help you.
+RspDflt=Thank you.
+rspBack=directions
+
+[location1]
+Say=I'm from Oriam, sir.  My family's home was in the outer frontiers, among the first that Mithras burned.
+RspDflt=I'm sorry to hear that.  Good luck to you.
+rspBack=keman1
+
+[location2]
+Say=I was born in Oriam, sir.  I joined up with the army to avenge the destruction of my family's home.  Soon, I will be knighted and I will take my fight to Mithras himself!
+RspDflt=Excellent!  May the good spirits protect you!
+rspBack=keman1
+
+[rumors1]
+Say=One of the captains said there was a riot in the Peasants' Bailey yesterday.  He said they were all so hungry though that it wasn't much of a riot.  It's really too bad there's not enough food for everybody.
+RspDflt=Yes, it is.  Good day, Keman.
+rspBack=keman1
+
+[rumors2]
+Say=A friend told me that there was a great battle in the village the other day.  Did you see any of it?
+RspDflt=None
+RspTxt1=No, I'm afraid I didn't.
+NxtLn1=rumors3
+
+[rumors3]
+Say=That's too bad.  They say a new hero was made!  They say he found the Chalice of Life!
+RspDflt=None
+RspTxt1=Then we cannot fail, can we?
+NxtLn1=rumors4
+
+[rumors4]
+Say=Absolutely not!  Good day, sir!
+RspDflt=So long, Keman.
+rspBack=keman1
+

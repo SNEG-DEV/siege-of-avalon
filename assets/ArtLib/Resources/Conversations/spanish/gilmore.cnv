@@ -1,0 +1,151 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01Lahren,01recovered,01village,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(5/23/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Hola!
+say1=one(ttl(06chapter6,05chapter5));
+goto1=chapter6
+say2=all(ttl(03chapter3,04chapter4));
+goto2=three
+Say3=All(ttl(!01recovered,!01village));
+goto3=Gilmore1
+Say4=All(ttl(!01recovered,01village));
+goto4=village1
+Say5=All(ttl(01recovered,01village));
+goto5=chalice1
+
+[Gilmore1]
+Say=Hola.  Soy Gilmore.  Lamento lo de tu pérdida.
+RspDflt=None
+RspTxt1=¿De dónde es usted?
+Nxtln1=Gilmore3
+RspTxt2=Gracias.
+Nxtln2=Gilmore2
+
+[Gilmore2]
+Say=Si necesitas algo, no dudes en pedirlo.
+RspDflt=Gracias de nuevo.
+rspBack=Gilmore1
+
+[Gilmore3]
+Say=Soy Fornaxano.  Soy miembro del Consejo de Fornax y estoy aquí en calidad de consejero.
+RspDflt=None
+RspTxt1=¿Durará mucho este asedio?
+NxtLn1=Gilmore4
+rspCnd2=all(ttl(01Lahren));
+RspTxt2=Así pues, ¿sabrá usted cosas de Pellandrian?
+nxtLn2=Pell1
+
+[Gilmore4]
+Say=Espero que no!  Deseo que este conflicto termine pronto para poder volver a casa.
+RspDflt=Ojalá no se equivoque.
+rspBack=Gilmore1
+
+[village1]
+Say=¿De vuelta tan pronto?  ¿Has tenido ya suficiente de la devastación de ahí fuera?
+RspDflt=None
+RspTxt1=Todavía no, señor.  Sólo he venido a escuchar las últimas noticias de Avalon.
+NxtLn1=village2
+
+[village2]
+Say=No hay nada nuevo aquí.  Sólo la miseria y la hambruna en el Patio de los Campesinos.
+RspDflt=Lamento oír eso.
+
+[Chalice1]
+Say=Así que es a ti a quien debernos agradecer el acercarnos a la victoria.
+RspDflt=None
+RspTxt1=Sólo cumplí con mi deber como soldado y hermano.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Bueno, pues muchas gracias por ello.
+RspDflt=Buenos días, señor.
+
+[Pell1]
+Say=Naturalmente.  Ella no debería estar aquí, y sería mejor que volviese rápidamente a casa.
+RspDflt=none
+RspTxt1=¿Por qué dice eso, señor?
+NxtLn1=Pell2
+
+[Pell2]
+Say=Me temo que es un asunto interno que sólo incumbe a las gentes de Fornax.  Que tengas un buen día.
+RspDflt=Igualmente, señor.
+
+[three]
+Say=Hola de nuevo.  ¿Hay algo que pueda hacer por ti?
+RspDflt=No, estimado consejero.  Discúlpeme.
+RspTxt1=¿Cómo van los consejos, consejero?
+nxtln1=three2
+
+[three2]
+Say=Ne te cachondees de mis frustraciones.
+RspDflt=none
+RspTxt1=¿Frustraciones?  ¿Por qué estáis frustrado?
+nxtln1=three3
+
+[three3]
+Say=No hay "consejos", como has dicho, para que yo dé.  Toda esta inactividad es muy frustrante.  Me he tenido que buscar métodos de diversión alternativos.
+RspDflt=none
+RspTxt1=Ya tendréis vuestra oportunidad, Gilmore.
+nxtln1=three4
+
+[three4]
+Say=Espero que estés en lo cierto.  Simplemente deseo un poco de acción.  Por eso vine aquí desde Fornax, ¿sabes?
+RspDflt=none
+RspTxt1=Ten coraje, Gilmore.  Nada se gana con tan largos periodos de inactividad.
+nxtln1=three5
+RspTxt2=¿Quizá podríais enseñar a algunos de los soldados a jugar al ajedrez?
+nxtln2=three6
+
+[three5]
+Say=Sí, bueno...  Gracias.
+RspDflt=Me alegra ayudar, Gilmore.  Cuidaos.
+rspback=three4
+
+[three6]
+Say=Ja...  Eso es divertido.  Creo que me has alegrado el día.  Quizá eso sea lo que haga.  Gracias por la idea, por absurda que parezca.
+RspDflt=Es bueno oírle reír, Gilmore.  Cuidaos.
+
+[chapter6]
+Say=Me encantaría que esos bichos verdes de ahí fuera entrasen directamente a ver si pueden vencerme. Les demostraría cuanta magia soy capaz de soportar.
+RspDflt=none
+RspTxt1=Dudo que realmente queráis decir eso.
+nxtln1=chapter6b
+
+[chapter6b]
+Say=Cierto.  Pero a veces me pregunto si no sería mejor haberles atacado antes con toda la caballería.  Ahora seguro que conocen el terreno, y gracias a Ovoron, lo saben todo de nosotros.  ¿Qué sabemos nosotros realmente de los Sha'ahoul?
+RspDflt=Que nos quieren a todos muertos.  Es todo lo que necesito saber.
+

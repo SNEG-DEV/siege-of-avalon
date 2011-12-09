@@ -1,0 +1,38 @@
+[root]
+Count=2
+Else=
+Default=Guten Tag, Octave.
+Say1=All(ttl(!01recovered));
+goto1=Octave
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Octave]
+say=Tut mir leid, Herr, aber ich darf Euch nicht vorbeilassen.  Lord Harold hat den Hof der Bauersleute zur Sperrzone erklärt.
+Adventure=ch1-60;
+rspTxt1=Lord Harold, sagt Ihr?  Verstehe.  Ich bin neu hier.  Was gibt's Neues?
+NxtLn1=Octave1
+rspTxt2=Wo kommt Ihr her?
+NxtLn2=Octave2
+
+[Octave1]
+say=Die Ahoul haben sich wieder um das Südtor herumgeschlichen.  Sie führen ganz bestimmt etwas im Schilde.
+rspDflt=Wir werden auf sie vorbereitet sein.
+rspback=Octave
+
+[Octave2]
+say=Ich bin hier in Oriam geboren, Herr.  Mein Vater hatte einen Gemischtwarenladen, den ich geerbt habe.  Die Sha'ahoul haben ihn vor Jahren niedergebrannt.  Darum kämpfe ich-- ich habe nichts anderes zu tun.
+rspDflt=Wir freuen uns, dass Ihr uns helft, Soldat.
+rspback=Octave
+
+;After recovery of Chalice
+[Chalice]
+say=Da ist ja der Held!  Kann ich Euch irgendetwas bringen?
+rspDflt=Nein, danke.
+rspTxt1=Habt Ihr irgendwelche Gerüchte gehört?
+NxtLn1=Chalice1
+
+[Chalice1]
+say=Seht zu, dass Ihr heute Abend rechtzeitig zum Essen erscheint. Es gibt frisches Brot!
+rspDflt=Danke für den Hinweis.

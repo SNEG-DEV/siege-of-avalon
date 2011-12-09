@@ -1,0 +1,45 @@
+[root]
+Count=2
+Else=
+Default=Danke, Perry.
+Say1=All(ttl(!01recovered));
+goto1=Perry
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Perry]
+say=Hey, Freund!  Wollen wir Aufgaben tauschen?
+rspDflt=None
+rspTxt1=Das würde ich, aber ich bin jetzt in eigener Sache unterwegs.
+NxtLn1=Perry1
+
+[Perry1]
+say=Na ja, war doch einen Versuch wert, nicht? Ich muss mir noch eine Beschäftigung suchen, sonst drehe ich durch!
+rspDflt=None
+rspTxt1=Immer mit der Ruhe, Soldat.  Alles zu seiner Zeit.
+NxtLn1=Perry2
+
+[Perry2]
+say=Recht habt Ihr, Herr.
+rspDflt=Behaltet einen ruhigen Kopf.
+
+;After recovery of Chalice
+[Chalice]
+say=Hallo!  Gibt's was Neues?
+rspDflt=None
+rspTxt1=Nein, abgesehen von der Rückkehr des Kelches.
+NxtLn1=Chalice1
+
+[Chalice1]
+say=Ja, das mit dem Kelch war eine gute Nachricht, nicht wahr?
+rspDflt=None
+rspTxt1=Das hat vielen Soldaten Mut gemacht.  Das ist ein gutes Omen.
+NxtLn1=Chalice2
+
+[Chalice2]
+say=In der Tat, Herr.  Möge uns der Kelch beschützen!
+rspDflt=Ade.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

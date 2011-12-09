@@ -1,0 +1,81 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Gracias, Perry.
+say1=one(ttl(03chapter3,04chapter4,05chapter5,06chapter6));
+goto1=threeup
+Say2=All(ttl(!01recovered));
+goto2=Perry
+Say3=All(ttl(01recovered));
+goto3=Chalice
+
+[Perry]
+Say=Hey, chico!  ¿Te importaría cambiarme el puesto?
+RspDflt=None
+RspTxt1=Lo haría, pero ahora tengo trabajo.
+NxtLn1=Perry1
+
+[Perry1]
+Say=Bueno, al menos lo he intentado, no?  Debo encontrar algo que hacer por aquí antes de que me vuelva loco!
+RspDflt=None
+RspTxt1=Tranquilo, soldado.  Cada cosa a su tiempo.
+NxtLn1=Perry2
+
+[Perry2]
+Say=Tenéis razón, señor.
+RspDflt=Mantén la cabeza sobre los hombros.
+
+[Chalice]
+Say=Hola!  ¿Ha sucedido algo nuevo?
+RspDflt=None
+RspTxt1=Aparte de la devolución del Cáliz, no.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Sí, lo del Cáliz fue una buena noticia, ¿verdad?
+RspDflt=None
+RspTxt1=Ha dado nuevas esperanzas a muchos soldados.  Es un buen presagio.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Desde luego, señor.  Que el Cáliz nos proteja!
+RspDflt=Buenos días.
+
+[threeup]
+Say=Puedo oler una batalla que se acerca!  Espero que lucharás a nuestro lado, %playername%!
+RspDflt=Me siento halagado, soldado; gracias.  Ahora, si me disculpas...
+

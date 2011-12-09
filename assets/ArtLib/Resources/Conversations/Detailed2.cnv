@@ -1,0 +1,185 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(4/10/01)=Passed
+tucker(5/23/01)=Passed
+tucker(7/12/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Thank you.
+Say1=all(ttl(!06chapter6));
+goto1=Soldier
+say2=all(ttl(06chapter6));
+goto2=chapter6
+
+[Soldier]
+Say=Yours is a new face.  What's your business, lad?
+RspDflt=None
+RspTxt1=I'm new to Avalon and was just looking around.
+NxtLn1=Soldier1
+
+[Soldier1]
+Say=Fresh meat, eh?  At least there are still some foolish enough to fight.
+RspDflt=None
+RspTxt1=Foolish?  Defending your homeland and that of your allies is hardly foolish.
+NxtLn1=Soldier2
+RspTxt2=Not as fresh as you think.  I've been taught the arts of war.
+NxtLn2=Soldier4
+
+[Soldier2]
+Say=On that I agree.  What we do here is a noble and necessary thing.  However, I don't believe there is much hope for success now.
+RspDflt=None
+RspTxt1=Why do you say that?
+NxtLn1=Soldier3
+
+[Soldier3]
+Say=We are outnumbered now by four to one.  Some scouting reports say there are as many as eight Ahoul out there for every one of us in here.  It has been weeks since supplies and fresh troops have come in and Ovoron leads this foolish crusade out to attack an Ahoul camp!  If you're asking me, I say our chances of success get worse with every passing day.
+RspDflt=None
+RspTxt1=I see now.  I didn't know our situation was so grim.
+NxtLn1=Soldier5
+RspTxt2=But we have held out for this long.  That speaks volumes for the temper of the men here!
+NxtLn2=Soldier6
+
+[Soldier5]
+Say=And now you do.  If you live through the next few weeks, you will only see things worsen.
+RspDflt=None
+RspTxt1=A wise man said, "Things must worsen before they can improve."
+NxtLn1=Soldier7
+
+[Soldier7]
+Say=Aye, but an improvement of our situation would be a rare thing indeed.
+RspDflt=Don't lose heart.  I think we still have a chance yet.  Good day.
+
+[Soldier6]
+Say=It does.  We will defend Avalon and the Seven Kingdoms to the man.  If the Ahoul should break us here, they would have a free run of our homes.  I, for one, will die before I see an Ahoul on my lands!
+RspDflt=None
+RspTxt1=And where would those lands be?
+NxtLn1=Soldier9
+
+[Soldier9]
+Say=I have lands in northern Cathea.  There isn't much in the way of cities or villages there.  Mostly ranches and farms.
+RspDflt=None
+RspTxt1=You are a farmer then?
+NxtLn1=Soldier10
+RspTxt2=Are you the lord of your lands?
+NxtLn2=Soldier11
+
+[Soldier10]
+Say=No, lad.  I'm a rancher and horse trader.  I was roping and riding before I could speak!
+RspDflt=None
+RspTxt1=Are all Catheans good riders?
+NxtLn1=Soldier12
+
+[Soldier12]
+Say=Some are better than others, but most could outride any outlander.
+RspDflt=None
+RspTxt1=I learned a little of horsemanship growing up.
+NxtLn1=Soldier13
+
+[Soldier13]
+Say=I have no doubt your capable, but you're no Cathean Rider!
+RspDflt=None
+RspTxt1=Perhaps not.  I look forward to riding with you one day.
+NxtLn1=Soldier14
+
+[Soldier14]
+Say=Me as well, friend!  Good day.
+RspDflt=Good day.
+
+[Soldier11]
+Say=I suppose.  Catheans have a different notion of leadership.  I own many lands and I hire many hands to work them for me.  They don't owe homage to me, nor I to any other man.
+RspDflt=None
+RspTxt1=Then what does your King do?
+NxtLn1=Soldier15
+
+[Soldier15]
+Say=Our King is a military leader.  When we defend our nation against others, it's the King who calls us to arms.  The King keeps our standing army and it's his men that train the best of our warriors, the Cathean Riders.
+RspDflt=None
+RspTxt1=Are the Riders some form of Cavalry?
+NxtLn1=Soldier16
+
+[Soldier16]
+Say=In that they ride horses, yes.  The Riders are much more than that though.  They are also our military strategists, leaders and diplomats.  When we go into battle, we follow the Riders.
+RspDflt=None
+RspTxt1=I think I would like to meet one of these men.
+NxtLn1=Soldier17
+
+[Soldier17]
+Say=They are not just men, lad.  Many of the finest Riders have been women.  If you hang around here long enough, I suspect you'll bump into a few.  There are a few dozen here.
+RspDflt=I'll keep my eye out then.  Good day to you.
+
+[Soldier4]
+Say=Have you then, pup?  Swinging a practice lathe at a straw target is much different than swinging cold steel at a frothing Ahoul.
+RspDflt=None
+RspTxt1=I don't doubt that they are, but I trust myself to stay true to the forms.
+NxtLn1=Soldier18
+
+[Soldier18]
+Say=I think you will.  You have a steady look about you.  Where are you from, lad?
+RspDflt=None
+RspTxt1=That would be business of mine, not yours.
+NxtLn1=Soldier19
+RspTxt2=I'm from Elythria.  My father had land and title there, but they passed to my brother when my father died.
+NxtLn2=Soldier20
+
+[Soldier19]
+Say=Touchy, are you?  No need to fear me.  Soon enough, we'll be saving each other's necks.
+RspDflt=None
+RspTxt1=If it's all the same, I'd rather keep some information to myself.
+NxtLn1=Soldier21
+
+[Soldier21]
+Say=Suit yourself.  Be on your way then.
+RspDflt=Good day.
+
+[Soldier20]
+Say=And you've come here to make a name for yourself, is that right?
+RspDflt=None
+RspTxt1=Actually, I came to tell my brother he's now a lord in Elythria.
+NxtLn1=Soldier22
+
+[Soldier22]
+Say=Who's your brother?
+RspDflt=None
+RspTxt1=Lieutenant Corvus.
+NxtLn1=Soldier23
+
+[Soldier23]
+Say=I've not heard the name.  We Catheans keep to ourselves though, so it doesn't surprise me.
+RspDflt=Nor I.  I must see to my training now.  Good day.
+
+[chapter6]
+Say=%playername%, right? I met your brother, Corvus, in passing earlier.
+RspDflt=Really? I've been looking for him for some time now. Excuse me.
+

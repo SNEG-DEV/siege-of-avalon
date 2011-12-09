@@ -1,0 +1,69 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(4/10/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Gracias.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=all(ttl(!05chapter5));
+goto2=Soldier
+Say3=all(ttl(05chapter5));
+goto3=Soldier2
+
+[Soldier]
+Say=Buen día a usted, mi señor.
+RspDflt=Y a ti también. Por favor, discúlpame.
+RspTxt1=¿Qué haces aquí?
+NxtLn1=Soldier1
+
+[Soldier1]
+Say=Soy mozo de cuadra, señor--me encargo de las monturas de los oficiales.  Esto es, mientras aún usemos los caballos para cabalgar...
+RspDflt=Un pensamiento profundo, vecino.  Hasta luego.
+
+[Soldier2]
+Say=Caspita! Perdón. Er, ¿tiene usted necesidad de mí, señor?
+RspDflt=No, gracias.
+RspTxt1=Tranquilo, amigo. Sólo estoy buscando cotilleos.
+NxtLn1=Soldier3
+
+[Soldier3]
+Say=Aquí no encontrará ninguno, señor. El cotilleo es una mala cosa, señor. Se extiende como una plaga.
+RspDflt=Lamento molestarte.
+
+[chapter6]
+Say=Por favor, disculpadme, señor.  Tengo trabajo que hacer.
+RspDflt=Como desees.  Hasta la vista.
+

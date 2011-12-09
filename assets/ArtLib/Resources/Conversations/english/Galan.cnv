@@ -1,0 +1,111 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Thank you, Galan.
+say1=one(ttl(05chapter5,06chapter6));
+goto1=fivesix
+say2=one(ttl(03chapter3,04chapter4));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Galan
+Say4=All(ttl(01recovered));
+goto4=chalice
+
+[Galan]
+Say=Hey, there!  What's happening inside Avalon?
+RspDflt=None
+RspTxt1=Nothing.  Training and waiting.
+NxtLn1=Galan1
+
+[Galan1]
+Say=Aye, only the waiting part goes on in here.  It's starting to get on my nerves.  I don't like the look of some of the fellows in South Gate anymore.  I almost think some of them are up to no good.  I suppose all this waiting is making me suspicious.
+RspDflt=None
+RspTxt1=Idle waiting can do that.
+NxtLn1=Galan2
+
+[Galan2]
+Say=So it can.  Good day to you.
+RspDflt=And you.
+
+[Chalice]
+Say=Hello again.  How are things?
+RspDflt=None
+RspTxt1=Well as can be, I suppose.  And you?
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Boring as ever here in South Gate.  Everyone's talking about your find, though.  Can you believe the Chalice of Life is back?
+RspDflt=None
+RspTxt1=I can hardly believe I found it!
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Excellent work, sir.
+RspDflt=Thank you.  Take care.
+
+[three]
+Say='Lo there, Cupfinder!  I heard of your exploits with the Earthstone!  Fine piece of work.  You'll be at the top of the ladder before you know it!  Maybe get a barony of your own, a nice stronghold...
+RspDflt=none
+RspTxt1=I will have time for such fantasy when this siege is at an end.
+nxtln1=three2
+
+[three2]
+Say=Right.  Fantasy is all that can manage to bring me outside of these walls right now, so please, don't disrupt it.
+RspDflt=I wouldn't dream of it.  Farewell.
+RspTxt1=I apologize.  I did not mean to...
+nxtln1=three3
+
+[three3]
+Say=Actually, you didn't.  I'm just a bit touchy.  I wish I were out in the fields again, with the butterflies dancing and the...
+RspDflt=none
+RspTxt1=Stay focused, soldier.  You will see your fields once again.
+nxtln1=three4
+
+[three4]
+Say=You really think so?  Wow, won't that be wonderful...  Ah, the smell, I can almost smell it right now...
+RspDflt=I give up.  Enjoy your reverie.  Farewell.
+
+[fivesix]
+Say=You see, the end will soon arrive, and I will be out in the cool loam under the trees and the sun will be shining on a shimmering field of green...
+RspDflt=I hope so, soldier.  Farewell.
+RspTxt1=Such a vivid image, soldier!  I daresay you're in the wrong profession!
+nxtln1=fivesix2
+
+[fivesix2]
+Say=Wha?  I...  [He blushes floridly from his cheeks.]  Mother said something like that when I signed up...
+RspDflt=I didn't mean to make you uncomfortable, neighbor.  Please pardon me.
+

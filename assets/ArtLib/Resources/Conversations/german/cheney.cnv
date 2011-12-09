@@ -1,0 +1,48 @@
+[Notes]
+TitlesChecked=01recovered
+
+[Question]
+1=Cheney talks of battle and the player thanks him for his kind words
+
+[root]
+Count=2
+Else=
+Default=Danke, Cheney.
+Say1=All(ttl(!01recovered));
+goto1=cheney1
+Say2=All(ttl(01recovered));
+goto2=cheney4
+
+;Before recovery of Chalice
+
+[Cheney1]
+say=Good day, Herr.
+rspTxt1=Woher kommt Ihr?
+NxtLn1=cheney2
+rspTxt2=Was gibt's Neues?
+NxtLn2=cheney3
+RspDflt=Ade.
+
+[Cheney2]
+say=Ich bin Elythrianer, Herr.  Ich habe schon zwei Brüder bei den Kämpfen hier verloren.  Ich denke, bald werde ich einen weiteren verlieren.
+RspDflt=Es tut mir leid, das zu hören.
+rspBack=cheney1
+
+[Cheney3]
+say=Man spricht davon,  Avalon aufzugeben.  In der Burg würde niemand so etwas sagen, aber in den Höfen wird viel darüber geflüstert.  Ich hoffe, wir geben nicht so leicht auf.
+RspDflt=Ich auch.
+rspBack=cheney1
+
+;After recovery of Chalice
+[Cheney4]
+say=Seid gegrüßt, Herr.  Wie kann ich Euch behilflich sein?
+rspTxt1=Irgendwelche Gerüchte gehört?
+RspDflt=Gehabt Euch wohl.
+NxtLn1=cheney5
+
+[cheney5]
+say=Ich habe gehört, dass die Armee immer ehrgeiziger wird. Man spricht von einem nächtlichen Überfall und vielleicht sogar einer größeren Offensive.  Haltet die Ohren steif.  Es könnte bald zu Kämpfen kommen.
+RspDflt=Ich bin auf einen Kampf vorbereitet.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

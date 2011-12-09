@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Farewell.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=Hello there, how can I help you?
+RspTxt1=Where are you from?
+NxtLn1=Soldier1
+RspTxt2=Heard any good rumors?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=I was a farmer in Oriam.
+rspBack=soldier
+
+[Soldier2]
+Say=On watch last night, I saw the Ahoul get large reinforcements.  The fresh troops have a hungry look, so be on your guard.
+rspBack=soldier
+
+[Chalice]
+Say=May I be of assistance to you, sir?
+RspTxt1=Where are you from?
+NxtLn1=Chalice1
+RspTxt2=Heard any good rumors?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=I am from Oriam, sir. I will personally make Mithras suffer for the damage he did to my country.
+rspBack=chalice
+
+[Chalice2]
+Say=I hear there'll be an attack on the south wall tonight.  You can join me and my friends there, if you're in for a good fight!
+rspBack=chalice
+

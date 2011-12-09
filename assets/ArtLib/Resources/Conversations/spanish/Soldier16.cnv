@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Adios.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=Hola, ¿en qué puedo ayudarte?
+RspTxt1=¿De dónde vienes?
+NxtLn1=Soldier1
+RspTxt2=¿Sabes de algún rumor que me pueda interesar?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Antes de que lo quemasen, mi hogar estaba en Oriam.
+rspBack=soldier
+
+[Soldier2]
+Say=Nada interesante, señor.  Pero desconfíe de los Catheanos.  Son zoquetes homicidas.
+rspBack=soldier
+
+[Chalice]
+Say=¿Puedo serle de ayuda, señor?
+RspTxt1=¿De dónde vienes?
+NxtLn1=Chalice1
+RspTxt2=¿Sabes de algún rumor que me pueda interesar?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Nací en las fronteras de Oriam y allí volveré en cuanto hayamos derrotado a Mithras!
+rspBack=chalice
+
+[Chalice2]
+Say=Mis informadores me dicen que los Fornaxanos van a conjurar una criatura que destruirá a los Ahoul!
+rspBack=chalice
+

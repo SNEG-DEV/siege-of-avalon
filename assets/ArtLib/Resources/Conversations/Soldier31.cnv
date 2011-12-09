@@ -1,0 +1,131 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=davet
+GUID=
+
+[Titles]
+Set=01bugholefixed
+Checked=01Basement,01BonnieTale,01BugHoleFixed,01Bugs,01Recovered,01WallHole,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-03,ch1-04,ch1-27,ch1-28
+Removed=ch1-03
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=6
+Else=
+Default=
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(!01BonnieTale,!01Basement,!01Bugs));
+goto2=NoBugs
+say3=all(ttl(!01WallHole));
+goto3=MidQuest
+say4=all(ttl(01WallHole,!01BugHoleFixed));
+goto4=FixWall
+say5=all(ttl(!01Recovered,01BugHoleFixed));
+goto5=Gloating
+Say6=All(ttl(01recovered));
+goto6=Chalice
+
+[NoBugs]
+Say=Hello there, how can I help you?
+RspTxt1=Where are you from?
+NxtLn1=Soldier1
+RspTxt2=Have you heard any good rumors?
+NxtLn2=Soldier2
+RspDflt=Good day to you, sir.
+
+[Soldier1]
+Say=I was a horse trader in Cathea.  Now I am just another hungry mouth behind these terrible walls.
+RspDflt=none
+RspTxt1=As are we all.  Tell me, have you heard anything interesting lately?
+nxtLn1=Soldier2
+
+[Soldier2]
+Say=I heard tell of a Shade in the kitchen basement from Bonnie.  She may have a pretty face, but the queer ideas in her head more than counter it.  I'd stay away from that one.
+Adventure=ch1-27;
+RspDflt=A Shade, you say?  Interesting, indeed.  I thank you for your time, and bid you good day.
+
+[MidQuest]
+Say=Something I can help you with?
+RspDflt=none
+RspCnd1=all(ttl(!01Bugs));
+RspTxt1=It seems as if there is something unusual dwelling in the kitchen basement.  I was wondering if you'd care to assist me in dealing with it?
+nxtLn1=MidQuest2
+rspCnd2=all(ttl(01Bugs));
+RspTxt2=I just wanted to inform you that I've taken care of the infestation in the basement and that your assistance was not required.  I think you owe the lady Bonnie an apology, don't you?
+nxtLn2=Apology
+
+[MidQuest2]
+Say=Did Bonnie fill your head with visions of glory?  Don't be daft, man!  I've too much to do attending to my duties.  I don't have time to waste time chasing "Shades" that exist only in some silly woman's imagination.  They're simple shadows, more like.
+RspDflt=As you say, but I shall find out the truth soon enough.
+
+[Apology]
+Say=I hardly want to encourage her tales.  She'll have no such thing from me.
+RspDflt=A soldier with no sense of honor is no soldier at all.  Good day.
+
+[FixWall]
+Say=Now what?
+RspDflt=none
+RspTxt1=While the creatures in the basement have been dealt with, they've left behind a sizable hole in the wall which needs to be repaired so that no more creatures may enter.
+nxtLn1=FixWall1
+
+[FixWall1]
+Say=And what do you expect me to do about it.  My duty-
+RspDflt=none
+RspTxt1=Seems to consist of lazing about the mess hall!  Anora has told me to tell you and your friend here to fix the wall, or you'll have nothing to eat at supper.
+nxtLn1=FixWall2
+
+[FixWall2]
+Say=But...
+RemoveQuest=ch1-03;
+AddQuest=ch1-04;
+Adventure=ch1-28;
+script=player.addtitle(01BugHoleFixed);
+RspDflt=It's your choice, soldier.  Repair the wall, or grow even hungrier than you are now.  I also believe that you owe the lady Bonnie an apology.  You will deliver one, won't you?  I know you'll make the right decision.  Good day.
+
+[Gloating]
+Say=Yes?
+RspDflt=I was just checking to see if you'd started on fixing the wall, but it seems you haven't.  Isn't your belly starting to pinch yet, soldier?  Better hurry along...
+
+[Chalice]
+Say=Yes, sir?  What can I do for you, sir?
+RspDflt=Nothing, soldier.  Please excuse me.
+RspTxt1=For starters, you can be certain the kitchen cellar's wall is repaired properly.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Of course, sir!  At once, sir!
+RspDflt=Good, man.  Carry on.
+
+[chapter6]
+Say=Have you seen Bonnie?  She's been gone for hours.
+RspDflt=No I haven't.  Farewell.
+RspTxt1=Where did she go?
+nxtln1=chapter6b
+
+[chapter6b]
+Say=I don't know, ask one of the kitchen maids.
+RspDflt=Very well.
+

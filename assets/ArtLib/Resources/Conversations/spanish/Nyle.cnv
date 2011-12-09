@@ -1,0 +1,147 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Gracias, Nyle.
+say1=one(ttl(05chapter5,06chapter6));
+goto1=six
+say2=one(ttl(03chapter3,04chapter4));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Nyle
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Nyle]
+Say=Eh, tú!  ¿Qué estás haciendo en la cocina?
+RspDflt=None
+RspTxt1=Soy nuevo aquí, sólo estaba mirando.
+NxtLn1=Nyle1
+RspTxt2=Sólo quería conocer gente nueva.  ¿Quién eres y de dónde eres?
+NxtLn2=Nyle2
+RspTxt3=Busco chismorreos, amigo.  ¿Has oído alguna cosa últimamente?
+NxtLn3=Nyle3
+
+[Nyle1]
+Say=Bueno, pues echa un vistazo rápido y lárgate.  No podemos hacer nuestro trabajo mientras vigilemos que nadie robe la comida!
+RspDflt=Me insulta usted, señor--No tenía ninguna intención de robar comida.  Buenos días.
+rspback=nyle
+
+[Nyle2]
+Say=Soy Nyle, de Aratoy.  Soy mejor con una batidora y una cacerola que con un arco y una flecha.  Por eso lucho contra los Ahoul desde aquí dentro.
+RspDflt=None
+RspTxt1=Todo ejército debe ser alimentado.
+NxtLn1=Nyle4
+
+[Nyle4]
+Say=Sí, así debe ser!  Ahora, si me disculpas, creo que se me está quemando el pollo.
+RspDflt=Lamento haberte molestado.
+rspback=nyle
+
+[Nyle3]
+Say=Ve y pregúntale a Ansan.  Ella es la cotilla de la zona.
+RspDflt=Gracias.  Que los buenos espíritus te protejan.
+rspback=nyle
+
+[Chalice]
+Say=Tú otra vez!  Sabes, el escuchar el relato de tus hazañas y aventuras en el pueblo me ha hecho desear coger una espada de nuevo y convertirme en soldado!
+RspDflt=None
+RspTxt1=Gracias por el cumplido, pero me temo que sin ti en la cocina, muchos morirían de hambre.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Demasiados mueren ya de hambre.
+RspDflt=None
+RspTxt1=Cierto, pero sin una mano experimentada para prepararla, incluso una pequeña ración de comida podría estropearse.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Supongo que sí.  Buenos días, señor.
+RspDflt=Buenos días a ti.
+
+[three]
+Say=Oh, hola de nuevo.  ¿No habrás vuelto para robar comida de nuevo, verdad?
+RspDflt=none
+RspTxt1=¿Cuantas veces tengo que decirte que no voy a robar ninguna comida?
+nxtln1=three2
+RspTxt2=Sí, naturalmente.  Ahora pásame las sobras o te meteré en el cocido de esta noche.  De una forma u otra, estaré bien alimentado.
+nxtln2=three5
+
+[three2]
+Say=Oh, cálmate, soldado, sólo estaba bromeando.  ¿Qué te trae por aquí?
+RspDflt=none
+RspTxt1=La necesidad de recolectar información, que a veces resulta útil para el cumplimiento de mis misiones.
+nxtln1=three3
+
+[three3]
+Say=Oh, me temo que no puedo compartir contigo nada que vayas a encontrar útil, pero me alegro de verte.  Las cosas están como siempre por aquí, pero nos ayudaría a todos si hubiese alguna forma de conseguir más comida.
+RspDflt=none
+RspTxt1=Veré qué puedo hacer, Nyle.
+nxtln1=three4
+
+[three4]
+Say=[sonríe]  De alguna forma, suponía que lo harías.  Gracias.
+adventure=
+RspDflt=Me alegro de ayudar.  Hasta luego.
+
+[three5]
+Say=Ja!  Ja!  Es bueno ver que has desarrollado tu sentido del humor, aunque sea un poco enfermizo!  Así pues, ¿qué te trae por aquí?
+RspDflt=none
+RspTxt1=La necesidad de recolectar información, que a veces resulta útil para el cumplimiento de mis misiones.
+nxtln1=three6
+
+[three6]
+Say=No puedo decir que tenga ninguna información que pueda resultarte útil, pero esto puede que te tranquilice:  NO hemos estado usando escarabajos para el caldo!  [ríe]
+RspDflt=none
+RspTxt1=Es reconfortante...
+nxtln1=three7
+
+[three7]
+Say=Hemos usado ratas!  Ja!  En serio, me alegro de que hayas venido.  Si te es posible, por favor, ayúdanos a conseguir solventar la falta de comida.  No sé qué decirte, pero cualquier tipo de ayuda será agradecida.
+RspDflt=none
+RspTxt1=Veré qué puedo hacer, Nyle.
+nxtln1=three4
+
+[six]
+Say=Parece que ninguno de nosotros deberá preocuparse demasiado en conseguir más comida.  A uno de los soldados se le ha ocurrido echar un anzuelo por encima del parapeto y pescar en el río.  No sé cómo ha conseguido un anzuelo, pero eso no importa.  Ah!  También, El mismísimo Rey Vortigerm llegará pronto a la cabeza de su ejército!  ¿No es una noticia maravillosa?
+RspDflt=Sí, Nyle, ciertamente lo es.  Por favor, excúsame.
+RspTxt1=Me alegra oír que has encontrado nuevos materiales para trabajar, Nyle.
+nxtln1=six2
+
+[six2]
+Say=Y a mí también, %playername%!  Ahora si me disculpas...
+RspDflt=Naturalmente.
+

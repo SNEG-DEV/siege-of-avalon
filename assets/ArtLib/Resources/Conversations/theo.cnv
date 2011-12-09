@@ -1,0 +1,102 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,06chaper6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Thank you, Theo.
+say1=all(ttl(03chapter3));
+goto1=three
+Say2=All(ttl(!01recovered));
+goto2=Theo
+Say3=All(ttl(01recovered));
+goto3=chalice
+say4=all(ttl(06chaper6,01recovered));
+goto4=chapter6
+
+[Theo]
+Say=Careful, soldier.  South Gate is a dangerous place at the best of times.  The Ahoul always threaten her doors.
+RspDflt=Thanks for the warning.
+RspTxt1=Where are you from?
+NxtLn1=Theo1
+RspTxt2=Have you heard any rumors lately?
+NxtLn2=Rumors1
+
+[Theo1]
+Say=I'm from Elythria.  Your brother and I were actually in the same cohort under Penrith.  Corvus was promoted above me, though, but he's still a good friend of mine.
+RspDflt=It's good to know that my brother has many friends.
+rspBack=Theo
+
+[Rumors1]
+Say=I think South Gate is haunted.  I hear strange noises there at night.  Watch yourself.
+RspDflt=Thanks for the warning.
+rspBack=Theo
+
+[chalice]
+Say=By the fates, it's good to see you again!
+RspDflt=None
+RspTxt1=And you, Theo.
+NxtLn1=chalice1
+RspTxt2=What's the latest news?
+NxtLn2=news1
+
+[chalice1]
+Say=May the good spirits protect you.
+RspDflt=Thank you.  Farewell.
+rspBack=Chalice
+
+[news1]
+Say=We hear that there are more supplies coming.  No one will say when they are due, probably to prevent the riots that will come if they fail to make it through, but spirits are up anyway!
+RspDflt=That's good news, indeed!
+rspBack=Chalice
+
+[three]
+Say=You know, since you've been here, I've stopped seeing ghosts.
+RspDflt=none
+RspTxt1=How do you know I'm not a ghost?
+nxtln1=three2
+RspTxt2=You saw ghosts?
+nxtln2=three3
+
+[three2]
+Say=Hah...  That's... not funny.  Please leave me.
+RspDflt=As you wish.
+
+[three3]
+Say=Yeah, South Gate used to be haunted.
+RspDflt=I'm glad you're not... seeing things any more, soldier.  Excuse me...
+
+[chapter6]
+Say=Hail, %playername%! What do you need?
+RspDflt=Nothing really, just passing through. Farewell.
+

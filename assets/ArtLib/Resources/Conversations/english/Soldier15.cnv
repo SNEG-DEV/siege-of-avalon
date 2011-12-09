@@ -1,0 +1,84 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Farewell.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=All(ttl(!01recovered));
+goto2=Soldier
+Say3=All(ttl(01recovered));
+goto3=Chalice
+
+[Soldier]
+Say=What is it you want?
+RspTxt1=Where are you from?
+NxtLn1=Soldier1
+RspTxt2=Heard any good rumors?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=I was stolen from the forests of Aratoy to fight in this bloody war!  I loathe this wretched citadel!
+rspBack=soldier
+
+[Soldier2]
+Say=Avalon was built on mud.  The very walls are unstable and will collapse any day!  Be smart, young man!  Hide yourself!
+rspBack=soldier
+
+[Chalice]
+Say=Hello, sir, how may I help you?
+RspTxt1=Where are you from?
+NxtLn1=Chalice1
+RspTxt2=Heard any good rumors?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=I came here from Aratoy and brought one hundred of the best bowmen in our forests with me!
+rspBack=chalice
+
+[Chalice2]
+Say=Rumor has it that there will be a night offensive soon.  Keep your ear to the ground and you may be a part of it!
+rspBack=chalice
+
+[chapter6]
+Say=Hail, friend!  What brings you down here?  Has the excitement upstairs driven you underground with us?
+RspDflt=none
+RspTxt1=I have merely come searching for information.
+nxtln1=chapter6b
+
+[chapter6b]
+Say=The traffic in this area is unusually slow, and so is the gossip.  I've no care for such prattle and wish to spend my last days in solitude.  I still keep in touch with the other soldiers somewhat, but I've heard nothing new.
+RspDflt=Thank you either way.  Farewell, soldier.
+

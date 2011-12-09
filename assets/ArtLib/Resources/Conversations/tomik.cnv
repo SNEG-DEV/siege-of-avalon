@@ -1,0 +1,95 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-57,ch3-558
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=see chalice... so you are he, eh?
+
+[root]
+Count=4
+Else=
+Default=Thank you, Tomik.
+say1=all(ttl(06chapter6));
+goto1=three
+say2=all(ttl(03chapter3));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Brun
+Say4=All(ttl(01recovered));
+goto4=chalice
+
+[Brun]
+Say=Beyond those bars lies the South Gate, boy, and beyond that hungry Ahoul are waiting to steal your life.  Are you sure you have enough experience to walk to South Gate?  It's no place for amateurs.
+Adventure=ch1-57;
+RspDflt=None
+RspTxt1=I'll be all right.  Let me pass.
+NxtLn1=Brun1
+RspTxt2=Where are you from?
+NxtLn2=Brun2
+RspTxt3=Have you heard any rumors?
+NxtLn3=Brun3
+
+[Brun1]
+Say=Fine then, but if you get yourself skewered by an Ahoul arrow, don't say I didn't warn you!
+RspDflt=Thank you for the advice.  Farewell.
+rspBack=Brun
+
+[Brun2]
+Say=I'm Cathean by birth.  I came here to make a name for myself before returning home in glory.  Now, I fear none of us may see our homes again.
+RspDflt=Keep heart, soldier.  We will triumph.
+rspBack=Brun
+
+[Brun3]
+Say=I hear the Peasants' Bailey is growing littered with the dead and starving.  We need relief soon or we will never last.
+RspDflt=The good spirits will protect us.  Good day to you.
+rspBack=Brun
+
+[chalice]
+Say=So you are he, eh?  Is it true you found the Chalice of Life?
+RspDflt=None
+RspTxt1=Yes.  I almost lost my neck in the search, too!
+NxtLn1=chalice1
+RspTxt2=What's the news around here?
+NxtLn2=chalice2
+
+[chalice1]
+Say=Well, I'm glad you managed to keep it!
+RspDflt=Thank you.
+rspBack=chalice
+
+[chalice2]
+Say=The Ahoul supposedly got more reinforcements.  It won't make a difference, though.  Once King Vortigerm arrives at the helm of his great army, they won't stand a chance!
+RspDflt=I agree.  Pardon me; I've duties to attend to.
+rspBack=chalice
+
+[three]
+Say=Be careful if you decide to go back out there...  The Ahoul are up to something.  I can smell it in the air.  [sniff]
+adventure=ch3-558
+RspDflt=Thank you for your concern, soldier.  Farewell.
+

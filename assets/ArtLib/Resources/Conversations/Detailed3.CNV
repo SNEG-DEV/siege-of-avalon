@@ -1,0 +1,167 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=Nally
+GUID=
+
+[Titles]
+Set=
+Checked=06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(4/10/01)=Passed
+tucker(7/12/01)=Passed
+tucker(7/13/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Thank you.
+Say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(!06chapter6));
+goto2=Soldier
+
+[Soldier]
+Say=Are you lost, boy?  This is the Officers' Barracks.
+RspDflt=None
+RspTxt1=I'm not lost, just new.  I was looking around, trying to get to know the citadel.
+NxtLn1=Soldier1
+
+[Soldier1]
+Say=Well, don't be in too much of a hurry.  Little enough changes around here and I promise you'll have plenty of time to learn the citadel.
+RspDflt=None
+RspTxt1=Perhaps.  I feel the winds of change in Avalon though.
+NxtLn1=Soldier2
+RspTxt2=I'm just eager to learn about Avalon, that's all.
+NxtLn2=Soldier3
+
+[Soldier2]
+Say=Are you having a foretelling?  Are you Fornaxan born?
+RspDflt=None
+RspTxt1=No.  I'm not having a foretelling and I come from Elythria.  It's just a feeling I have.  When we sailed into Avalon I got a feeling in the pit of my stomach...
+NxtLn1=Soldier4
+
+[Soldier4]
+Say=That was just seasickness, lad!  Only Nisosans have proper sea-legs.
+RspDflt=None
+RspTxt1=Would you be from Nisos then?
+NxtLn1=Soldier5
+RspTxt2=I may not be Nisosan, but I don't lose my stomach aboard a ship.
+NxtLn2=Soldier6
+
+[Soldier5]
+Say=Of course!  Outlanders speak of Nisosans as if they are scoundrels and thieves.  They're not quite wrong either!
+RspDflt=None
+RspTxt1=Should I distrust Nisosans?
+NxtLn1=Soldier7
+
+[Soldier7]
+Say=On the walls of Avalon, no.  In a game of dice, of course!  We may pick your pocket, but we all fight the Ahoul together.
+RspDflt=None
+RspTxt1=I suppose that's comforting.  Tell me, do you know Captain Nicophorus?
+NxtLn1=Soldier8
+RspTxt2=That rhymes with the things I've heard of your countrymen so far.
+NxtLn2=Soldier9
+
+[Soldier8]
+Say=I've heard the name here and there.  Why do you ask?
+RspDflt=None
+RspTxt1=I sailed here aboard his ship.  He's a fine Captain.
+NxtLn1=Soldier10
+
+[Soldier10]
+Say=Perhaps the best in all Nisos.  I heard his ship took a quite a beating.
+RspDflt=None
+RspTxt1=Yes, but we were lucky.  None other survived the trip upriver.
+NxtLn1=Soldier11
+
+[Soldier11]
+Say=I'd heard as much.  A bad omen, lad.  A very bad omen.
+RspDflt=Yes.  Well, I must begin my training.  Good luck to you.
+
+[Soldier9]
+Say=HA! HA!  Our reputations precede us!  At least they are not telling lies about us.  Calling us honest tradesmen and such.
+RspDflt=None
+RspTxt1=Your people are not honest?
+NxtLn1=Soldier12
+
+[Soldier12]
+Say=Of course not!  We scrape our lives out raiding trader's vessels and tricking drunk sailors in harborside bars!  But I suppose that is unfair.  Not all Nisosans are buccaneers.  There are craftsmen and honest merchants among us.
+RspDflt=None
+RspTxt1=Of course.  Just as all Catheans are not horse farmers.
+NxtLn1=Soldier13
+
+[Soldier13]
+Say=Exactly.  A little advice though.  Watch your back around Nisosans here or else you might find some personal things missing.
+RspDflt=Thanks for the suggestion.  I'll keep it in mind.  Good day.
+
+[Soldier6]
+Say=Keeping your guts about you and having a sturdy pair of sea-legs are two different things, lad.
+RspDflt=None
+RspTxt1=I don't doubt your word.  But I thought I did all right aboard the ship.
+NxtLn1=Soldier14
+
+[Soldier14]
+Say=Maybe.  There's a solid look to you.  In fact, you remind me of an officer I've fought with...
+RspDflt=None
+RspTxt1=That would be my brother Corvus.
+NxtLn1=Soldier15
+
+[Soldier15]
+Say=That's it.  You have his size and color.  If you're of the same blood, then I don't doubt you'll do well here in Avalon.
+RspDflt=Thank you.  Good day.
+
+[Soldier3]
+Say=Eager, eh?  That will be hacked out of you after you see your first real siege engine.
+RspDflt=None
+RspTxt1=I've seen siege work before... in books and tapestries.
+NxtLn1=Soldier16
+
+[Soldier16]
+Say=There's a bit of a difference.  A book won't reach over the wall and stab you with a spear.  A tapestry doesn't smile when it tears your friend's arms off.
+RspDflt=None
+RspTxt1=Oh, I understand.  I'm just saying that I'm not as green as you think.
+NxtLn1=Soldier17
+
+[Soldier17]
+Say=You're green.  You'll live to regret your decision to come to Avalon.  If you're one of the lucky ones, you may even die quickly.  If you're one of the unlucky ones, you'll watch a dozen of your friends die before the Ahoul take you.  It's no story you've walked into, lad.
+RspDflt=I know and I won't disappoint anyone.  Good day.
+
+[chapter6]
+Say=Ah, %playername%. I hope all is going as planned.
+RspDflt=none
+RspTxt1=It is as well as can be expected. The Sha'ahoul continue to gather in spots about the village.  I feel something is amiss.
+nxtln1=chapter6a
+RspTxt2=Of course all is well!  We continue to drive the Sha'ahoul away from our home.  Soon, the bards will sing stories of our great victory.
+nxtln2=chapter6b
+
+[chapter6a]
+Say=With the Sha'ahoul, something is always amiss.  Keep alert.
+RspDflt=And you too, friend.  Farewell.
+
+[chapter6b]
+Say=Save your hope, son.  We both know what can happen here.  Let's do our best to help the situation.
+RspDflt=Understood.  Farewell, friend.
+

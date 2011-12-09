@@ -1,0 +1,61 @@
+[root]
+Count=2
+Else=
+Default=Danke, Nyle.
+Say1=All(ttl(!01recovered));
+goto1=Nyle
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Nyle]
+say=He, Ihr da!  Was habt Ihr hier in der Küche zu suchen?
+rspDflt=None
+rspTxt1=Ich bin hier neu und habe mich nur umgesehen.
+NxtLn1=Nyle1
+rspTxt2=Ich wollte nur ein paar Leute kennen lernen.  Wer seid Ihr und wo kommt Ihr her?
+NxtLn2=Nyle2
+rspTxt3=Ich bin auf der Suche nach Klatsch, mein Freund.  Habt Ihr in letzter Zeit irgendwelche Gerüchte gehört?
+NxtLn3=Nyle3
+
+[Nyle1]
+say=Na, dann seht Euch schnell um und verzieht Euch.  Wir können unsere Arbeit nicht machen, wenn wir Euch davon abhalten müssen, das Essen zu stehlen!
+rspDflt=Ihr beleidigt mich-- Ich hatte nicht die Absicht, Essen zu stehlen.  Ade.
+rspback=nyle
+
+
+[Nyle2]
+say=Ich heiße Nyle und komme aus Aratoy.  Ich kann mit Hackbeil und Schneebesen besser umgehen als mit Pfeil und Bogen.  Darum bekämpfe ich die Ahoul von hier aus.
+rspDflt=None
+rsptxt1=Die Soldaten mussen gefüttert werden.
+NxtLn1=Nyle4
+
+[Nyle4]
+say=Ja, stimmt!  Und jetzt, wenn Ihr mich entschuldigt, ich glaube, mein Hähnchen brennt an.
+rspDflt=Es tut mir leid, Euch gestört zu haben.
+rspback=nyle
+
+[Nyle3]
+say=Geht Ansan fragen.  Sie ist hier die Klatschbase.
+rspDflt=Danke.  Mögen Euch die guten Geister beschützen.
+rspback=nyle
+
+;After recovery of Chalice
+[Chalice]
+say=Ihr seid es wieder!  Also, nachdem ich die Geschichte von Euren Abenteuern im Dorf gehört habe, hätte ich gute Lust gehabt, wieder ein Schwert in die Hand zu nehmen und Soldat zu werden!
+rspDflt=None
+rspTxt1=Danke für das Kompliment, aber ich fürchte, ohne Euch in der Küche würden zu viele verhungern.
+NxtLn1=Chalice1
+
+[Chalice1]
+say=Es verhungern jetzt schon zu viele.
+rspDflt=None
+rsptxt1=Stimmt, aber ohne Eure geschickten Hände in der Küche, würden die kleinen Mengen Lebensmittel, die wir doch haben, verschwendet werden.
+NxtLn1=Chalice2
+
+[Chalice2]
+say=Das ist wohl wahr.  Ade, Herr.
+rspDflt=Einen schönen Tag noch.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

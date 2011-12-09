@@ -1,0 +1,125 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01Recovered
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=Gracias, Deman.
+Say1=
+goto1=Deman1
+
+[Deman1]
+Say=¿Cómo puedo ayudaros, señor?
+RspDflt=Perdóname, vecino.
+RspTxt1=Necesito direcciones.
+NxtLn1=directions
+RspCnd2=All(ttl(!01Recovered));
+RspTxt2=¿De dónde eres?
+NxtLn2=location1
+RspCnd3=All(ttl(01Recovered));
+RspTxt3=¿De dónde eres?
+NxtLn3=location2
+RspCnd4=All(ttl(!01Recovered));
+RspTxt4=¿Has oído algún rumor?
+NxtLn4=rumors1
+RspCnd5=All(ttl(01Recovered));
+RspTxt5=¿Has oído algún rumor?
+NxtLn5=rumors2
+
+[directions]
+Say=¿Dónde necesitáis ir?
+RspDflt=none
+RspTxt1=El Patio Exterior
+NxtLn1=directions1
+RspTxt2=El Laboratorio de Elarath
+NxtLn2=directions2
+RspTxt3=Las Habitaciones de Mudam
+NxtLn3=directions3
+RspTxt4=El Consejo de Sir Roth
+NxtLn4=directions4
+RspTxt5=El Intendente
+NxtLn5=directions5
+RspTxt6=Necesito un sanador.
+NxtLn6=directions6
+rspBack=Deman1
+
+[directions1]
+Say=Puedes llegar allí bajando las escaleras al nivel inferior.  Sal de la gran sala y vete por la puerta principal a tu izquierda, al Patio Exterior.
+RspDflt=Gracias por tu ayuda.
+rspBack=directions
+
+[directions2]
+Say=Ve al norte por este corredor, después ve al este hasta el final.  El Laboratorio de Elarath es la última puerta a tu izquierda.
+RspDflt=Gracias por tu ayuda.
+rspBack=directions
+
+[directions3]
+Say=Las Habitaciones de Mudam están al sur de éste corredor.
+RspDflt=Gracias por tu ayuda.
+rspBack=directions
+
+[directions4]
+Say=Las Habitaciones de Sir Roth están en la esquina, detrás de esos dos guardias.
+RspDflt=Gracias por tu ayuda.
+rspBack=directions
+
+[directions5]
+Say=Si vas al sur por este corredor un poquito, después entra al pasillo a tu izquierda, la Armería es la última puerta a tu izquierda.
+RspDflt=Gracias por tu ayuda.
+rspBack=directions
+
+[directions6]
+Say=Baja las escaleras. Encontrarás un monje llamado Crosby.  Se dice que es un excelente curandero.
+RspDflt=Gracias por tu ayuda.
+rspBack=directions
+
+[location1]
+Say=Soy de Nisos, señor.  Mi padre posee catorce navíos de guerra, pero temo que muchos se hundieron cuando el Capitán Nicophorus intentó navegar por el Voel.
+RspDflt=Gracias.
+rspBack=deman1
+
+[location2]
+Say=Nací en Nisos, señor.  Mi casa no es muy importante, pero todos somos guerreros.  Estoy orgulloso de estar aquí en Avalon!
+RspDflt=Gracias.
+rspBack=deman1
+
+[rumors1]
+Say=Uno de mis amigos dijo que los Ahoul se están preparando para otro ataque a gran escala.  Sospecho que Sir Roth nos hará hacer turnos dobles de guardia esta noche.
+RspDflt=Gracias, lo tendré en cuenta.
+rspBack=deman1
+
+[rumors2]
+Say=Un guardia de la Puerta Sur dice que vio el suelo temblar y el cielo oscurecerse cuando encontrasteis el Cáliz!  ¿Es eso cierto?  ¿Sois la reencarnación de un héroe de la antigüedad?
+RspDflt=No lo creo, pero gracias por el voto de confianza.
+rspBack=deman1
+

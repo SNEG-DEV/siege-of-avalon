@@ -1,0 +1,333 @@
+[Notes]
+Pellandrian's dialogue.
+
+[root]
+Count=11
+Else=
+Default=None
+;
+;Intro
+Say1=All(ttl(!KnowsPlayer,!01Pell));
+goto1=Intro
+;
+;Not time to start quest yet.
+Say2=All(ttl(KnowsPlayer,!01Pell));
+Goto2=MoveAlong
+;
+;Start quest
+Say3=All(ttl(01Pell,!01Lahren));
+goto3=Tale
+;
+;Returned to Pell before talking with Lahren.  Player likely just clicked on Pell for the hell of it.
+Say4=All(ttl(!01Pell2,01Lahren));
+goto4=NoLahren
+;
+;Has talked to Lahren for the first time.
+Say5=All(ttl(01Pell2,!01Lahren2));
+Goto5=Gift
+;
+;Returned to Pell before talking with Lahren.  Player likely just clicked on Pell for the hell of it.
+Say6=All(ttl(01Lahren2,!01Pell3));
+goto6=NoLahren
+;
+;Player short-circuited the plot and found a gift/finished Lahren's side of the quest before telling Pell he had to find a gift for Lahren.
+say7=all(ttl(01Pell3,01LahrenHappy,!01Lahren3));
+goto7=EarlyGoodNews
+;
+;Player here about gift, gets one instead.
+Say8=all(ttl(01Pell3,!01Lahren3));
+Goto8=Spell
+;
+;Returned to Pell before talking with Lahren.  Player likely just clicked on Pell for the hell of it.
+Say9=All(ttl(01Lahren3,!01LahrenHappy));
+goto9=NoLahren2
+;
+;Here to tell Pell Lahren is coming to talk to her.
+Say10=All(ttl(01LahrenHappy,!01PellHappy));
+Goto10=GoodNews
+;
+;End Quest
+Say11=All(ttl(01PellHappy));
+Goto11=EndQuest
+
+
+[Intro]
+say=Geht weg, und lasst mich in Frieden.
+rspDflt=None
+rspTxt1=Verzeihung, Mylady.  Ich wollte nicht stören.
+NxtLn1=Intro1
+
+[Intro1]
+say=Entschuldigung-- In letzter Zeit bin ich etwas kurz angebunden.  Dennoch möchte ich im Moment keine Gesellschaft.  Nun ja, jedenfalls nicht Eure.
+script=addtitle(KnowsPlayer);
+rspDflt=Ich verstehe.  Dann einen schönen Tag noch.
+
+[MoveAlong]
+say=Ich habe es vorhin ernst gemeint.  Ich will Eure Gesellschaft nicht.
+rspDflt=Natürlich, Mylady.  Gehabt Euch wohl.
+
+[Tale]
+say=Mir ist im Moment nicht danach,  mich mit jemandem zu unterhalten.
+rspDflt=none
+rspTxt1=Ich verstehe, Mylady, aber Olon schickt mich hierher.  Er scheint zu glauben, dass ich Euch bei irgendeinem Problem helfen kann.
+nxtLn1=Tale1
+
+[Tale1]
+say=Olon!  Endlich.  Mein Name ist Pellandrian, aber bitte nennt mich Pell.  Tja, Ihr seht jedenfalls tüchtig aus, auch wenn Ihr noch recht jung seid.
+rspDflt=none
+rspTxt1=Wenn Ihr meint, dass ich durch mein Alter-- beziehungsweise meine Jugend-- als Helfer ungeeignet  bin...
+nxtLn1=Tale2
+
+[Tale2]
+say=Nein, nein!  Entschuldigung, so habe ich es nicht gemeint.  
+rspDflt=none
+rspTxt1=Wärt Ihr denn vielleicht so nett, mir die Natur des Problems zu schildern, damit ich entscheiden kann, ob ich Euch behilflich sein kann?
+nxtLn1=Tale3
+
+[Tale3]
+say=Ja... Ihr seid ganz anders als er.  Selbst ohne Magie kann ich die Kraft beinahe spüren, die Ihr austrahlt.  Aber er?  Wenn ich nicht ganz genau aufpasse, ist es so, als ob er nicht da wäre.  Ohne Substanz, wie das Gespenst eine Mannes.  Aber wenn ich meine Aufmerksamkeit auf ihn richte....
+rspDflt=none
+rspTxt1=Mylady, ich fürchte ich verstehe nicht ganz, was Ihr sagen wollt.
+nxtLn1=Tale4
+
+[Tale4]
+say=Nein, vermutlich nicht.  Sein Name ist Lahren, und er ist der Mann, den ich heiraten will.
+rspDflt=none
+rspTxt1=Weiß er davon?
+nxtLn1=Tale5
+
+[Tale5]
+say=Alles zu seiner Zeit.  Er ist Gelehrter.  Genauer gesagt Linguist.  Die Sprache ist sein Beruf, aber Geschichten zu vertonen seine Leidenschaft.  Wie schön er erzählen kann... Aber seit langem ist seine Zunge still. Seine Harfe und seine Flöte sind fort, und mit ihnen auch seine Seele, glaube ich. Ich wünschte, Ihr könntet ihn so sehen wie damals, als ich ihn kennen lernte.  Er war ein ruhiger Mann, ja unscheinbar, bis man die Musik, die er mit den Fingern spielte, und den Gesang aus seiner Kehle hörte.  Und dann, nur dann konnte man erkennen, dass seine Augen und sein Herz alles andere als leer waren.  Sie glänzten voller Leben und.. und ich... ich--
+rspDflt=none
+rspTxt1=Ihr habt euch verliebt.
+nxtLn1=Tale6
+
+[Tale6]
+say=Ja.  Manchmal kann ich mir kein schlimmeres Schicksal vorstellen.
+rspDflt=none
+rspTxt1=Ihr scherzt, Mylady.
+nxtLn1=Tale7
+
+[Tale7]
+say=Ihr seid doch jung, nicht wahr? Ich scherze nicht.  Ich habe nie erfahren, was ihm widerfahren ist,  aber so lange ich ihn kenne hat er Todesangst vor der Magie.
+rspDflt=none
+rspTxt1=Ich verstehe nicht.  Was hat das zu tun mit--
+nxtLn1=Tale8
+
+[Tale8]
+say=Mit mir?  Alles.  Herr, ich bin Fornaxierin, und die Magie liegt uns im Blut.  Ich bin durch und durch magisch, und daran ist nichts zu ändern, nicht einmal durch die Liebe.  Davon habe ich ihm natürlich nichts erzählt.  Kein Sterbenswort.  Ich war zunächst nur mit ihm befreundet.  Wir machten uns auf nach Avalon, weil er die Sprache und die Kultur der Sha'ahoul studieren wollte.  Damals war die Belagerung nicht ganz so vollständig wie heute, aber die Reise durch Oriam war trotzdem gefährlich, wie Ihr Euch vorstellen könnt.  Aber er hatte sich entschieden, und ich konnte nicht nein sagen. Denn seht Ihr, so wie ich es mir schon seit so vielen Monaten erhofft hatte, verliebte er sich langsam in mich, und ich wollte ihn nicht aufgeben.  Fragt nicht, wohr ich das gewusst habe-- wir Fornaxier haben da unsere Methoden.  Und schlimmstenfalls, so dachte ich, könnte ich uns beide beschützen.
+rspDflt=none
+rspTxt1=Und es kam zum schlimmsten Fall, nicht wahr Mylady?
+nxtLn1=Tale9
+
+[Tale9]
+say=Ja.  Vielleicht hat Olon doch Klugheit bewiesen, dass er Euch zu mir schickte.  Sie überfielen uns nachts und Lahren wurde beim ersten Angriff schwer verwundet, seine Harfe und seine Flöte zerstört.  Als ich aufwachte brannte ich ohne nachzudenken die Ahoul auf der Stelle zu Asche.  Diese zwölf Wilden haben mich alles gekostet, Herr.  Nachdem ich sie getötet hatte, drehte ich mich zu Lahren um.  Das Entsetzen in seinem Blick war furchtbar, aber ich dachte, es wäre von dem Angriff. Dann, als ich einen Schritt auf ihn zuging, versuchte er, sich vor mir zu verkriechen. Vor MIR.  Trotz seines zertrümmerten Arms und der blutigen Wunde in der Brust, versucht er, sich vor mir zu verkriechen.  Ich musste ihn erst mit einem Lähmspruch unbeweglich machen, bevor ich ihn heilen konnte.  Auf einmal hatte mein Liebster Angst vor mir.  Ein schlimmeres Schicksal kann ich mir kaum vorstellen...
+rspDflt=none
+rspTxt1=Jetzt verstehe ich.  Es tut mir leid.
+nxtLn1=Tale10
+
+[Tale10]
+say=Eine Patrouille aus Avalon hat uns gefunden-- die Menge an magische Energie, die ich entfesseln musste, ist der Aufmerksamkeit der hiesigen Zauberer nicht entgangen.  Er hat sich erholt, aber er wollte nicht mehr mit mir sprechen.  Er wollte mich nicht einmal ansehen.  Es ist schon Monate her, dass ich in seinen Augen gesehen habe.
+rspDflt=none
+rspTxt1=Ihr habt mein Verständnis, my Mylady.  Wie kann ich Euch helfen?
+nxtLn1=Tale11
+
+[Tale11]
+say=Ich habe ihn natürlich beobachtet.  Wie könnte ich anders?  Und er hat sich verändert, oder seine Gefühle zumindest.  Ich kann aber nicht genau erkennen, wie oder warum, und ich kann nicht direkt auf ihn zugehen.  Ich würde ihn nur... weiter verängstigen, wie es bei den meisten ist.  Aber Ihr....
+rspDflt=none
+rspTxt1=Ihr wollt, dass ich mit ihm rede, um herauszubekommen was er für Euch empfindet.
+nxtLn1=Tale12
+
+[Tale12]
+say=Im Grunde, ja.  Ihr müßt mit Gespür vorgehen-- er ist alles andere als dumm und obwohl er von sanfter Natur ist, so hindert ihn das nicht daran, mißtraurisch zu sein.
+rspDflt=none
+rspTxt1=Ich werde mein Bestes tun, Mylady.
+nxtLn1=Tale13
+
+[Tale13]
+say=Danke.  Er müsste bei den Wagen der Händler zu finden sein, gleich da drüben. Olon behält ihn oft für mich im Auge.
+Adventure=ch1-40;
+AddQuest=ch1-14;
+script=player.addtitle(01Lahren)
+rspDflt=Ich komme wieder, wenn ich etwas Neues weiß.
+
+
+[NoLahren]
+say=Und, was hat er gesagt?
+rspDflt=Bisher nichts, Mylady.  Zu meinem Bedauern muss ich zugeben, dass ich immer noch nicht weiß, wie ich an ihn herantreten soll.  Aber wenn ich mehr weiß, komme ich wieder.
+
+
+[Gift]
+say=Ihr habt mit ihm gesprochen.  Ich habe gesehen, wie ihr euch in der Nähe der Händler unterhalten habt.  Erzählt doch schon, was hat er gesagt?
+rspDflt=none
+rspTxt1=Er liebt Euch, Mylady.  Ohne Frage.
+nxtLn1=Gift1
+
+[Gift1]
+say=Den Geistern sei Dank.  Vielleich habe ich doch nicht alles verdorben.
+rspDflt=none
+rspTxt1=Er leidet große Qualen, ebenso wie Ihr-- wenn ich das sagen darf, Mylady.
+nxtLn1=Gift2
+
+[Gift2]
+say=Ja, vielleicht ist es das, was ich gespürt habe.
+rspDflt=none
+rspTxt1=Dazu kann ich natürlich nichts sagen.  Ich kann allerdings sagen, dass seine Empfindungen Euch gegenüber seine Abneigung gegen die Magie zumindest gemindert haben.  Wusstet Ihr, dass er einst Magier war?
+nxtLn1=Gift3
+
+[Gift3]
+say=Ja, wenn auch nicht von ihm persönlich.  Hat er Euch zufällig erzählt...?
+rspDflt=none
+rspTxt1=Warum er die Magierkunst aufgegeben hat?  Nein.
+nxtLn1=Gift4
+
+[Gift4]
+say=Das ist etwas, was ich sehr gerne wüßte.  Aber das ist eine Sache, die Ihr ein  anderes Mal herausbekommen könnt.  Nun sagt, wenn er mich liebt, warum ist er nicht mit Euch zu mir gekommen?
+rspDflt=none
+rspTxt1=Er fürchtet sich, Mylady.  Vor einer Abweisung, oder vielleicht davor, dass Ihr ihm sein törichtes Benehmen nicht verzeihen könnt.
+nxtLn1=Gift5
+
+[Gift5]
+say=Verdammt, er war schon immer zu sehr bereit, die Schuld allein auf sich zu nehmen!  Weiß er denn nicht, dass ich mein Erbe absichtlich vor ihm verheimlicht habe?  Die Schuld liegt genauso sehr bei mir wie bei ihm.  Denkt Ihr, ich könnte zu ihm gehen, ohne eine negative Reaktion zu provozieren?
+rspDflt=none
+rspTxt1=Nein, Mylady. Ich glaube, das wäre keine gute Idee.  Die Liebe hat ihn zum Feigling gemacht, wenn es um Euch geht, und ich glaube, wenn er sehen würde, dass Ihr auf ihn zugeht, würde er wieder fliehen.  Es ist eine traurige Ironie, dass es in diesem Fall weniger eine Flucht vor Euch, als vor den Schmerzen der Liebe wäre, aber er würde nichtsdestotrotz fliehen.
+nxtLn1=Gift6
+
+[Gift6]
+say=Und was würdet Ihr vorschlagen?
+rspDflt=none
+rspTxt1=Um die Wahrheit zu sagen, ich weiß es nicht, Mylady.  Es ist ein Dilemma-- wenn Ihr nicht zu ihm gehen könnt, muss er zu Euch kommen, aber er wehrt sich vehement dagegen.  Er behauptet, eine Antwort finden zu wollen, aber ich glaube in seinem Herzen denkt er, sie bereits zu kennen, und zwar, dass Ihr ihn hasst. 
+nxtLn1=Gift7
+
+[Gift7]
+say=Wollt Ihr damit sagen, dass, selbst wenn ich Euch bitten würde, ihm zu sagen, dass ich ihn noch liebe, er Euch keinen Glauben schenken würde?
+rspDflt=none
+rspTxt1=Ja, Mylady. Das befürchte ich.  Inzwischen hat er in nichts mehr Vertrauen, am wenigsten sich selbst.
+nxtLn1=Gift8
+
+[Gift8]
+say=Dann bin ich verloren.
+rspDflt=none
+rspTxt1=Nein, Mylady.  Noch werde ich nicht aufgeben.  Auch wenn er die Beteuerung Eurer Liebe nicht annehmen würde, die Beteuerung Eures Zorns würde er bereitwillig glauben.  Und wenn er nicht zu Euch kommen will, um Euch seine Liebe zu offenbaren, so kann ich ihn vielleicht doch dazu bewegen, zu Euch zu kommen, um Euch um Vergebung zu bitten .
+nxtLn1=Gift9
+
+[Gift9]
+say=Wisst Ihr schon, wie Ihr das anstellen wollt?
+rspDflt=none
+rspTxt1=Leider noch nicht-- darüber muss ich mir noch Gedanken machen.
+nxtLn1=Gift10
+
+[Gift10]
+say=Seid vorsichtig, mein Freund.  Unsere Zukunft liegt in Euren Händen.
+RemoveQuest=ch1-15;
+AddQuest=ch1-16;
+script=player.addtitle(01Lahren2);
+rspDflt=Habt Vertrauen, Mylady.  Ich werde nicht versagen.
+
+[EarlyGoodNews]
+say=Wie hat er Eure Worte aufgenommen?
+rspDflt=none
+rspTxt1=Sehr gut, Mylady.  Ich habe ihn davon überzeugt, dass Euch ein Geschenk in Euerem angeblichen Zorn beschwichtigen würde, und dann habe ich im Dorf ein Geschenk für ihn gesucht.  Er hat es angenommen und wird sich in Kürze aufmachen, um es Euch anzubieten.
+nxtLn1=EarlyGoodNews2
+
+[EarlyGoodNews2]
+say=Im Dorf?  Das muss äußerst gefährlich gewesen sein!
+rspDflt=none
+rspTxt1=Das war es ein wenig, muss ich zugeben.  Es war nachts, also konnte ich mich halbwegs sicher herumschleichen.
+nxtLn1=EarlyGoodNews3
+
+[EarlyGoodNews3]
+say=Ich habe nie erwartet, dass Ihr Euer Leben meinetwegen oder Lahren zuliebe aufs Spiel setzen würdet, nicht einmal indirekt.  Ich stehe immer mehr in Eurer Schuld, Herr.  Kennt Ihr irgendwelche Zaubersprüche?
+Adventure=ch1-41;
+rspDflt=none
+rspCnd1=one(ttl(Heal,Flame,Frost,Charge,Hold));
+rspTxt1=Ja, einige.
+nxtLn1=EarlyGoodNews4
+rspCnd2=all(ttl(!Heal,!Flame,!Frost,!Charge,!Hold));
+rspTxt2=Nein, keine.
+nxtLn2=EarlyGoodNews4None
+
+[EarlyGoodNews4]
+say=Dann nehmt diesen Zauberspruch als Geschenk an; er wird Euch helfen, unversehrt zu bleiben, solltet Ihr Euch wieder ins Dorf wagen.  Er heißt "Schatten", und wird es den Ahoul erschweren, Euch zu sehen.  Er zieht die Schatten um Euch an; je stärker Ihr in der Magierkunst seid, umso schwieriger wird es für die Ahoul, die Schatten zu durchdringen und Euch zu sehen.
+rspDflt=none
+script=ifnottitle(shadow);player.addtitle(Shadow);endif;
+rspTxt1=Ich danke Euch, Mylady.  Wie gesagt, er müsste bald hier eintreffen.  Und der Rest, Mylady, liegt an Euch.
+nxtLn1=GoodNews1
+
+[EarlyGoodNews4None]
+say=Zauber kann ein nützliches Werkzeug sein.  Dieser einfache Spruch wird eine Hilfe sein, falls Ihr Euch wieder in das Dorf hinaus traut.  Wenn Ihr ihn anwendet, hilft er Euch unentdeckt zu bleiben, indem er Euch in Schatten hüllt.
+rspDflt=none
+script=player.addtitle(Shadow);player.addtitle(01PellHappy);
+rspTxt1=Ich danke Euch, Mylady.  Wie gesagt, er müsste bald hier eintreffen.  Und der Rest, Mylady, liegt an Euch.
+nxtLn1=GoodNews1
+
+[Spell]
+say=Wie hat er Eure Worte aufgenommen?
+rspDflt=none
+rspTxt1=Nicht so gut wie ich gehofft hatte.  Es gelang mir, ihn halbwegs davon zu überzeugen, dass ein Geschenk Euer Herz erweichen würde, aber uns fehlt das geeignete Geschenk.  Jetzt weiß ich nicht mehr weiter.
+nxtLn1=Spell1
+
+[Spell1]
+say=Ach, Lahren...  Er muss doch wissen, dass ich alles von ihm annehmen würde.
+rspDflt=none
+rspTxt1=Das vielleicht, Mylady, aber er würde Euch nicht einfach mit irgendetwas beschenken.  In der Burg gibt es so wenig Wertvolles, dass ich glaube, ich muss meine Suche draußen fortsetzen.
+nxtLn1=Spell2
+
+[Spell2]
+say=Meint Ihr etwa im Dorf?  Das wäre doch äußerst gefährlich, oder nicht?
+rspDflt=none
+rspTxt1=Höchstwahrscheinlich, ja.  Jetzt ist aber Nacht, also müsste ich einigermaßen in Sicherheit sein.  Ich muss mich sowieso nach draußen wagen, um nach meinem Bruder zu suchen, und werde dabei die Augen nach etwas Geeignetem offenhalten.
+nxtLn1=Spell3
+
+[Spell3]
+say=Ich habe nie erwartet, dass Ihr Euer Leben meinetwegen oder Lahren zuliebe aufs Spiel setzen würdet, nicht einmal indirekt.  Ich stehe immer mehr in Eurer Schuld, Herr.  Kennt Ihr irgendwelche Zaubersprüche?
+Adventure=ch1-41;
+rspDflt=none
+rspCnd1=one(ttl(Heal,Flame,Frost,Charge,Hold));
+rspTxt1=Ja, einige.
+nxtLn1=Spell4
+rspCnd2=all(ttl(!Heal,!Flame,!Frost,!Charge,!Hold));
+rspTxt2=Nein, keine.
+nxtLn2=Spell4None
+
+[Spell4]
+say=Dann nehmt diesen Zauberspruch als Geschenk an; er wird Euch helfen, unversehrt zu bleiben, solltet Ihr Euch wieder ins Dorf wagen.  Er heißt "Schatten", und wird es den Ahoul erschweren, Euch zu sehen.  Er zieht die Schatten um Euch an; je stärker Ihr in der Magierkunst seid, umso schwieriger wird es für die Ahoul, die Schatten zu durchdringen und Euch zu sehen.
+rspDflt=none
+script=player.addtitle(Shadow);
+rspTxt1=Ich danke Euch, Mylady.
+nxtLn1=Spell5
+
+[Spell4None]
+say=Zauber kann ein nützliches Werkzeug sein.  Dieser einfache Spruch dürfte eine Hilfe sein, falls Ihr Euch wieder in das Dorf hinaus traut.  Wenn Ihr ihn anwendet hilft er Euch unentdeckt zu bleiben, indem er Euch in Schatten hüllt.
+rspDflt=none
+script=player.addtitle(Shadow);
+rspTxt1=Ich danke Euch, Mylady.
+nxtLn1=Spell5
+
+[Spell5]
+say=Vielleicht hat Olon einen Rat für Euch, falls Ihr ihm noch nicht von Euren Absichten erzählt habt.  Passt auf Euch auf, mein Freund.
+script=player.addtitle(01Lahren3)
+rspDflt=Ich komme bald wieder, Mylady.
+
+
+[NoLahren2]
+say=Habt Ihr inzwischen ein Geschenk gefunden?
+rspDflt=Noch nicht, Mylady.  Ich komme wieder, wenn ich eines habe.
+
+
+[GoodNews]
+say=Und?  Kommt er?
+rspDflt=none
+rspTxt1=Ja, Mylady.  Er müsste bald hier eintreffen.  Und der Rest, Mylady, liegt an Euch.
+nxtLn1=GoodNews1
+
+[GoodNews1]
+say=Ich wünschte nur, ich hätte das alles aus eigener Kraft erreichen können. So nahe mir diese ganze Situation geht, Euch muss sie doch recht albern erschienen sein.  Ich hoffe, dass Ihr eines Tages besser versteht, wie es ist, in einer solchen Lage zu sein.  Es gibt kein schlimmeres Schicksal, als verliebt zu sein...  und auch kein schöneres.  Unterdessen stehe ich in Eurer Schuld, eine Schuld, die ich nie voll begleichen kann.  Aber sollte Ihr jemals etwas brauchen, stehe ich mit meiner Hilfe zu Euren Diensten, mein Freund.
+Adventure=ch1-42;
+RemoveQuest=ch1-19;
+script=player.addtitle(01PellHappy);Siege200008140046910160.setpos(PathCorner200009070076277610);PathCorner200009070076277610.setprop(idleduty=stand);Siege200008140046910160.moveto(PathCorner200009070076178740);
+rspDflt=Es war mir ein Vergnügen.  Und eines Tages hoffe auch ich, dass ich mich verlieben werde und somit Eure Freude teilen kann-- und Eure Trauer nachempfinden.  Bis bald, dann. Gehabt Euch wohl.
+
+[EndQuest]
+say=Ah, Ihr seid zurückgekehrt!  Ich danke Euch noch einmal für Eure Taten.  Nun sagt, wie kann ich Euch helfen?
+rspDflt=Dazu besteht kein Anlass, Mylady.  Ich bin bestens ausgestattet, um die vor mir liegenden Aufgaben zu bewältigen.  Ich bin nur gekommen, um zu sehen ob ihr euer Wiedersehen genießt.  Das tut ihr, wie ich sehe, also werde ich mich wieder auf den Weg machen.  Lebt wohl, Mylady.

@@ -1,0 +1,61 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-32
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=all(ttl(!05chapter5));
+goto2=Wilfrid
+Say3=all(ttl(05chapter5));
+goto3=Wilfrid2
+
+[Wilfrid]
+Say=Greetings.  I'm Wilfrid, the tanner.  I make leather goods of all kinds.  Would you care to take a look?
+Adventure=ch1-32;
+RspDflt=Not right now.
+RspTxt1=Yes, I think I would like to see your merchandise.
+script1=merchant
+
+[Wilfrid2]
+Say=Welcome back, %playername%. You still have use for my leather goods?
+RspDflt=I'm sorry.  I thought you were someone else.
+RspTxt1=It protected the cow for a time, I suppose.
+script1=merchant
+
+[chapter6]
+Say=How fares you this day, sir?  I regret that I have no more wares.  There remains nothing for me to buy in these cursed walls, and I carry my purse in fear as it is.  I will sell nothing else, as I must tend to closing up this shop.
+RspDflt=I understand. Farewell, Wilfred.
+

@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Farewell.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=What is it you want?
+RspTxt1=Where are you from?
+NxtLn1=Soldier1
+RspTxt2=Heard any good rumors?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=I made my home in the arms of the forests of Aratoy.
+rspBack=soldier
+
+[Soldier2]
+Say=No, sir.  I can't hear anything over the grumble of my stomach.
+rspBack=soldier
+
+[Chalice]
+Say=Hello, sir, How may I help you?
+RspTxt1=Where are you from?
+NxtLn1=Chalice1
+RspTxt2=Heard any good rumors?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=I was born in Aratoy, but Avalon is my home now!  I have but one purpose and that's to fight Mithras!
+rspBack=chalice
+
+[Chalice2]
+Say=Only that the bowmen of Aratoy are eager for a fight!  They're making wagers on who'll kill the most Ahoul.
+rspBack=chalice
+

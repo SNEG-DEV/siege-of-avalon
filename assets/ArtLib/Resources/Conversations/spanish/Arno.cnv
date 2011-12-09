@@ -1,0 +1,136 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01bugs2
+Checked=01Bugs,01recovered,03chapter3,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-62,ch3-503
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(7/12/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Gracias, Arno.
+say1=one(ttl(06chapter6,05chapter5));
+goto1=chapter6
+say2=all(ttl(03chapter3));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Lang
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Lang]
+Say=Hola.  No seréis pariente del Teniente Corvus, ¿por un casual?
+RspDflt=None
+RspTxt1=Soy su hermano.  ¿Cómo lo habéis sabido?
+NxtLn1=Lang1
+
+[Lang1]
+Say=Él solía ser mi comandante, hasta que salió con Ovoron.  Vos tenéis los mismos ojos intensos.
+RspDflt=None
+RspTxt1=¿Cómo están las cosas por aquí?
+NxtLn1=Lang2
+
+[Lang2]
+Say=No he podido dormir bien en semanas.  Creo que hay algo más viviendo en los sótanos, además de los perros!  Durante toda la noche, oímos el escarbar o quizás el cavar de alguna... rata gigante, o lo que sea!
+Adventure=ch1-62;
+RspDflt=Con un poco de suerte, alguien vendrá a relevaros de vuestros deberes pronto.
+rspCnd1=all(ttl(01Bugs));
+RspTxt1=Ahora que lo mencionáis, había un enjambre de escarabajos gigantes bajo la cocina.  Tras masticar las paredes, empezaron con la comida.  Ahora están muertos, gracias a los espíritus, pero quizás haya alguno más aquí debajo.
+nxtLn1=Bugs
+
+[Chalice]
+Say=El hermano de Corvus!  He oído que lo habéis hecho muy bien ahí fuera!
+RspDflt=None
+RspTxt1=Bueno, eso podría decirse.  He ganado algunas batallitas en el pueblo.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Antes de que nos demos cuenta, seréis un teniente, como vuestro hermano!
+RspDflt=Gracias por vuestras amables palabras.  Buenos días.
+
+[Bugs]
+Say=¿Con la comida?  Eso no es bueno.  Me alegro de que ya no estén.  Por lo que decís, es posible que haya más escarabajos gigantes aquí debajo.
+script=player.addtitle(01Bugs2);
+RspDflt=Podría ser.  Cuando tenga oportunidad, echaré un vistazo por ahí.  De momento, hasta luego.
+
+[three]
+Say=Eh, es el hermano de Corvus otra vez!  Sabéis, no pasará mucho tiempo hasta que veros pueda considerarse un honor!  [riéndose alegremente]  He oído vuestras últimas gestas, y debo decir que estoy impresionado!  Quiero decir, ¿cómo se vence a un espectro?
+RspDflt=none
+RspTxt1=Bueno, primero hay que acercarse a su piedra espectral, y luego--
+nxtln1=three2
+
+[three2]
+Say=Ya, pero...  Un espectro!  Quiero decir, un ESPECTRO!
+adventure=ch3-503
+RspDflt=Sí, bueno...  la verdad es que debo irme.
+RspTxt1=Si os quedaseis quieto un momento, os lo diría...
+nxtln1=three3
+RspTxt2=Es muy fácil, en realidad, simplemente cuchillada, giro, estocada, y empiezan a caer trocitos de no-muerto del techo.
+nxtln2=three4
+
+[three3]
+Say=Vaya, realmente no esperaba una respuesta, qué bien que he hablado con vos!
+RspDflt=Yo...ya hablaré con vos más tarde.  Hasta luego.
+
+[three4]
+Say=Ya pensaba que sería algo así!  Sólo un gran guerrero sería capaz de hacer eso!  Ja!
+RspDflt=Yo...ya hablaré con vos más tarde.  Hasta luego.
+
+[chapter6]
+Say=Hola, hermano de Corvus!  Espero que todo vaya bien.  ¿Has traído contigo la cabeza de Mithras en la punta de una lanza?
+RspDflt=Todavía no.  Discúlpame.
+RspTxt1=Mithras es demasiado poderoso para mí.  Nunca le venceré solo.
+nxtln1=chapter6b
+RspTxt2=Pronto llegará ese momento.
+nxtln2=chapter6c
+
+[chapter6b]
+Say=Yo tampoco podría, pero alguien debe hacerlo!  Veré la derrota de esa amenaza o moriré en el intento.
+RspDflt=Lo mismo digo.  Hasta luego.
+
+[chapter6c]
+Say=Se necesitarán a los mejores defensores de Avalon para terminar con la amenaza de ese maldito Mithras y sus seguidores!
+RspDflt=Estoy de acuerdo.  Hasta luego.
+RspTxt1=Me pregunto qué es lo que empezó todo este lío.  ¿Por qué no podemos vivir todos juntos en armonía?
+nxtln1=chapter6d
+
+[chapter6d]
+Say=¿Vivir en armonía?  ¿Con esos descreídos de tez blanca merodeando por mi casa, y chismorreando de noche en su extraño lenguaje?  Quizá deberías visitar la enfermería y dejar que los hermanos te hagan una revisión mental.
+RspDflt=Quizá debiera hacerlo.  Hasta luego.
+RspTxt1=Si pudiéramos hallar la forma de hablar con ellos y encontrar algo en común entre nosotros, quizá descubriríamos que no son tan distintos.
+nxtln1=chapter6e
+
+[chapter6e]
+Say=He perdido a demasiados de mis amigos y familiares para querer recibir a esos monstruos como si fuesen parientes.  Lo único que les ayudaré a descubrir es el cementerio.
+RspDflt=Aunque tu amargura esté justificada, ten cuidado con la intolerancia.  Esa actitud puede fácilmente crecer hasta incluir a todos aquellos que son ligeramente distintos a ti, hasta que descubras que te has quedado completamente solo -- ¿De veras deseas ese destino? No importa, no tengo más tiempo para esto.  Hasta luego, y por favor, reflexiona sobre lo que te he dicho.
+RspTxt1=Comprendido.  Hasta luego.
+script1=
+

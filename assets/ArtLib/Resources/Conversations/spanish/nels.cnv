@@ -1,0 +1,46 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=
+Say1=
+goto1=Nels
+
+[Nels]
+Say=Si vas en busca de instrumentos de madera sólida, yo soy tu hombre!  No hay mejor carpintero en todo Oriam.
+RspDflt=No necesito nada de madera.
+RspTxt1=Déjame ver qué tienes.
+script1=merchant
+

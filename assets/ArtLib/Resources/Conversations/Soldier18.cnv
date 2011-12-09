@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Farewell.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=What is it you want?
+RspTxt1=Where are you from?
+NxtLn1=Soldier1
+RspTxt2=Heard any good rumors?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=I am from Fornax, though I know only a little of magic.  You people from the upper six kingdoms seem to think all Fornaxans are full-blooded wizards!
+rspBack=soldier
+
+[Soldier2]
+Say=My friend tells me that they have run out of all proper meat.  Be careful of what you eat.  You may not like what it is!
+rspBack=soldier
+
+[Chalice]
+Say=Hello, sir, How may I help you?
+RspTxt1=Where are you from?
+NxtLn1=Chalice1
+RspTxt2=Heard any good rumors?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=I am Fornaxan and proud!
+rspBack=chalice
+
+[Chalice2]
+Say=You have probably already heard all of the rumors I have to tell.
+rspBack=chalice
+

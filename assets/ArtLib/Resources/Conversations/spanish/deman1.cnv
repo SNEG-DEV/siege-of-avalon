@@ -1,0 +1,72 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=ch1-01
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=Gracias, Deman.
+Say1=
+goto1=Deman1
+
+[Deman1]
+Say=Perdóneme, señor.  Mi nombre es Deman y tengo órdenes para vos.  Debes presentarte al Capitán Avarous para ser entrenado en el Patio Exterior, lo antes posible.
+AddQuest=ch1-01;
+script=Siege20000500190047682240.say();player.setprop(frozen=false);
+RspDflt=None
+RspTxt1=Gracias, pero creo que echaré un vistazo antes.
+NxtLn1=Deman2
+RspTxt2=¿Dónde está el Patio Exterior?
+NxtLn2=Deman3
+RspTxt3=¿Qué es el Patio Exterior?
+NxtLn3=Deman4
+
+[Deman2]
+Say=Como deseéis, señor, pero yo no tendría al Capitán Avarous esperando demasiado tiempo.
+RspDflt=No lo haré.  Gracias, Deman.
+RspTxt1=¿Dónde está el Patio Exterior?
+NxtLn1=Deman3
+RspTxt2=¿Qué es el Patio Exterior?
+NxtLn2=Deman4
+
+[Deman3]
+Say=Podéis llegar allí bajando las escaleras al final de la sala, hacia el nivel inferior. Salid por la puerta principal a vuestra izquierda, y estaréis allí.
+RspDflt=Gracias, Deman.
+RspTxt1=¿Y qué es exactamente?
+NxtLn1=Deman4
+
+[Deman4]
+Say=El Patio Exterior es el patio que separa la Puerta Sur de la Torre.  Se usa principalmente como patio de entrenamiento, pero algunos de los mercaderes y artesanos refugiados han instalado sus tiendas allí.
+RspDflt=Gracias.  Buenos días.
+RspTxt1=¿Y donde está situado?
+NxtLn1=Deman3
+

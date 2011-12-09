@@ -1,0 +1,45 @@
+[root]
+Count=2
+Else=
+Default=Danke, Idan.
+Say1=All(ttl(!01recovered));
+goto1=Idan
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Idan]
+say=Hallo.  Was führt Euch zum Südtor?
+rspDflt=None
+rspTxt1=Ich bin nur auf der Suche nach Neuigkeiten über meinen Bruder, Corvus.
+NxtLn1=Idan1
+
+[Idan1]
+say=Gehörte er zu Ovorons Truppenverband?
+rspDflt=None
+rspTxt1=Ja.
+NxtLn1=Idan2
+
+[Idan2]
+say=Nun, sie sind alle verschwunden.  Die Wachen ganz oben haben gestern jemanden gesehen.  Fragt sie doch.
+rspDflt=I will.
+
+;After recovery of Chalice
+[Chalice]
+say=Ihr wart draußen, was?  Hat's Spaß gemacht?
+rspDflt=None
+rspTxt1=Doch, schon.  Es gibt dort einiges, womit man sich messen kann.
+NxtLn1=Chalice1
+
+[Chalice1]
+say=Ich wünschte, ich könnte ab und zu das Südtor verlassen und mich ein bißchen amüsieren.
+rspDflt=None
+rspTxt1=Vielleicht kommt bald die Ablösung.
+NxtLn1=Chalice2
+
+[Chalice2]
+say=Vielleicht.  Ade.
+rspDflt=Ade.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

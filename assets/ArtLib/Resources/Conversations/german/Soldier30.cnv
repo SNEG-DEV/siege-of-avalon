@@ -1,0 +1,48 @@
+;Hello there, how can I help you?
+;May I be of assistance to you Sir?
+;What can I do for you?
+;How can I help you, Sir?
+;What is it you want?
+;Hello Sir, How may I help you?
+
+[root]
+Count=2
+Else=
+Default=Ade.
+Say1=All(ttl(!01recovered));
+goto1=Soldier1
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Soldier]
+say=Was wollt Ihr?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Soldier1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Soldier1
+
+[Soldier1]
+say=Verzeiht mir, Herr. Ich kann meine Pflichten nicht um eitlen Geschwätzes willen vernachlässigen.
+script=Siege20000600030016439030.setprop(AIMode=IdleAI);
+rspDflt=Ich verstehe.
+
+[Soldier2]
+say=Verzeiht mir, Herr. Ich kann meine Pflichten nicht um eitlen Geschwätzes willen vernachlässigen.
+rspBack=soldier
+
+;After Recovery of Chalice
+[Chalice]
+say=Hallo, Herr, wie kann ich Euch helfen?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Chalice1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Chalice2
+
+[Chalice1]
+say=Ich komme aus Fornax. Ich war dort der Gehilfe eines wichtigen Zauberers.
+rspBack=chalice
+
+[Chalice2]
+say=Man sagt, sobald die neuen Vorräte eintreffen, soll es ein Fest geben...
+rspBack=chalice

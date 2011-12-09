@@ -1,0 +1,70 @@
+
+
+[root]
+Count=3
+Else=
+Default=Danke, Lang.
+Say1=All(ttl(!01Bugs2));
+goto1=Arno
+Say2=All(ttl(01Bugs2,!01FoundTraitors));
+goto2=NoInfo
+Say3=all(ttl(01foundTraitors));
+goto3=Traitors
+
+;Before recovery of Chalice
+[Arno]
+say=Hallo.  Was können wir für Euch tun?
+rspDflt=None
+rspTxt1=Gar nichts.  Wie läuft alles hier?
+NxtLn1=Arno1
+
+[Arno1]
+say=Hier geht es wie jeher zu.  Seit langem haben wir nicht mehr richtig schlafen können.  Als wäre es nicht schlimm genug, permanent in Alarmbereitschaft zu sein, schabt die ganze Nacht irgend etwas unten im Keller !
+rspDflt=None
+rspCnd1=all(ttl(01Bugs));
+rspTxt1=Tatsächlich?  Heute haben Riesenkäfer den Küchenkeller befallen. Sie hatten ein Loch durch die Kellerwand gegraben und begonnen, die Vorräte zu fressen.  Inzwischen sind sie vertilgt, den Geistern sei Dank, aber vielleicht graben hier unten auch welche.
+nxtLn1=Bugs
+rspCnd2=all(ttl(!01Bugs));
+rspTxt2=Vermutlich sind es nur Ratten oder so etwas.  Nur Mut; die Belagerung wird bestimmt bald beendet.
+nxtLn2=Rats
+
+[Bugs]
+Say=Das könnte sein, obwohl es immer noch etwas beunruhigend wäre.  Käfer von unten und Ahoul von draußen.  Gefährlich Zeiten hier in Avalon.
+script=player.addtitle(01Bugs2);
+rspDflt=Das stimmt.  Aber da Eure Pflicht es nicht erlaubt, hier wegzugehen, gehe ich der Sache nach, wenn ich dazu Gelegenheit bekomme.  Bis dahin aber, ade.
+
+[Rats]
+Say=Das müssen aber Riesenratten sein, bei dem Lärm!
+script=player.addtitle(01Bugs2);
+rspDflt=Was immer es ist, wenn ich dazu Gelegenheit bekomme gehe ich der Sache nach.  Bis dahin aber, ade.
+
+
+[NoInfo]
+say=He, Freund!  Tut sich da unten schon irgendetwas Neues?
+rspDflt=Tut mir leid, aber bisher konnte ich keinen Einlass zum Keller finden.  Ich versuche es aber weiter, also werdet Ihr bald erfahren, was da vor sich geht.  Bis dahin aber, gehabt Euch wohl.
+
+
+[Traitors]
+say=Hallo!  Ich hab gesehen, wie Ihr in den Keller geflitzt seid.  Was habt Ihr für Neuigkeiten?
+rspDflt=none
+rspTxt1=Schlimme Dinge gingen im Keller vor sich. Die Wachen da unten haben mich angegriffen und ich war gezwungen, mich zu verteidigen.  Die Geräusche, die Ihr gehört habt, stammten vom Bau eines Tunnels.
+nxtLn1=Traitors1
+
+[Traitors1]
+say=Eines Tunnels?  Das verstehe ich nicht.
+rspDflt=Ich kann jetzt nicht wirklich reden, aber der Tunnel führte hinaus ins Dorf.  Es waren Verräter am Werk-- sie wollten den Ahoul Zugang zur Burg verschaffen.  Ich habe jetzt keine Zeit, um es ausführlich zu erzählen, aber passt gut auf Euch auf.  Nicht jeder hier ist ein Verbündeter.
+
+
+;After recovery of Chalice
+[Chalice]
+say=He!  Da ist ja der Held des Kelches!  Wie geht es Euch, Freund?
+rspDflt=None
+rspTxt1=Gut.  Und Euch?
+NxtLn1=Chalice1
+
+[Chalice1]
+say=Ich kann nicht klagen.  Weiter so mit der guten Arbeit!
+rspDflt=Jawohl.  Gehabt Euch wohl.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

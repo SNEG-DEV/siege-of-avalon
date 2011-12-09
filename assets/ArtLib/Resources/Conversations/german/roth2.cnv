@@ -1,0 +1,58 @@
+[Needed]
+1=art/item data for the letter to Captain Avarous
+
+[Notes]
+titlesChecked=01village,01recovered,01village
+
+
+[root]
+Count=4
+Else=
+Default=Danke, Sir Roth.
+Say1=All(ttl(01permission,01village,!01recovered));
+goto1=Village1
+Say2=All(ttl(!01permission,!01village,!01recovered));
+goto2=transfered1
+Say3=All(ttl(01permission,!01village,!01recovered));
+goto3=transfered2
+Say4=All(ttl(01permission,01village,01recovered));
+goto4=Chalice1
+
+
+
+;After entry into village, but before recovery of Chalice of Life
+
+[Village1]
+say=Wie ich sehe, hat Euch das Dorf noch nicht kleingekriegt.  Das ist gut. Wie kann ich Euch dienen?
+rspDflt=None
+rspTxt1=Ich bin nur gekommen, um das Neuste aus Avalon zu erfahren.
+nxtLn1=Village2
+
+[Village2]
+say=Den neuesten Klatsch könnt Ihr von jedem Soldaten bekommen, mein Sohn.  Bedauere, im Moment habe ich dafür keine Zeit.
+rspDflt=Es tut mir leid, Euch gestört zu haben.
+
+[transfered1]
+say=Ihr gehört jetzt Mudam an, mein Junge. Wie es weitergeht, müßt Ihr mit ihm besprechen.
+
+[Transfered2]
+say=Was führt Euch wieder hierher?  Habt Ihr von Mudam keine Erlaubnis bekommen, aus Avalon hinauszugehen?
+rsptxt1=Doch, ich habe die Erlaubnis bekommen. Ich wollte nur fragen, ob Ihr etwas über das Gebiet  außerhalb der Zitadelle wißt.
+NxtLn1=transfered3
+
+[transfered3]
+say=Ich fürchte, da kann ich Euch nicht helfen.  Ich bin für die Verteidung von Avalon im Allgemeinen zuständig.  General Ovoron ist unser Oberbefehlhaber.  Wäre er hier, wäre er der Richtige.
+rspdflt=Verstehe.  Danke für Eure Hilfe.
+
+
+;After recovery of Chalice of Life
+[chalice1]
+say=Ihr seid zurück!  Es tut gut, Euch zu sehen!  Eure Taten sind das Thema in der  Zitadelle.
+rspDflt=None
+rspTxt1=Danke, General.  Gibt es etwas Neues?
+NxtLn1=chalice2
+
+[chalice2]
+say=Vermutlich habt Ihr das schon gehört, aber Verstärkung ist unterwegs.  Nur noch wenige Wochen, und alles wird gut.
+rspDflt=Eine ausgezeichnete Neuigkeit!  Danke, Herr!
+

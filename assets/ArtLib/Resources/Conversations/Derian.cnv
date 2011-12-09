@@ -1,0 +1,76 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=03chapter3
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(7/12/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Thank you, Derian.
+Say1=all(ttl(!03chapter3));
+goto1=Derian
+say2=all(ttl(03chapter3));
+goto2=three
+
+[Derian]
+Say=Hey!  Don't go down there!
+RspDflt=None
+RspTxt1=Why not?
+NxtLn1=Derian1
+
+[Derian1]
+Say=Er...  because there's... er, nothing down there.  Nothing down there at all.
+RspDflt=None
+RspTxt1=Then why should you be concerned whether I go down there or not?
+NxtLn1=Derian2
+
+[Derian2]
+Say=I was just saying... perhaps you've got more important things to see to.
+RspDflt=Thanks for the advice, but I can attend to my own affairs.
+
+[three]
+Say=Hey!  Don't go down there!
+RspDflt=none
+RspTxt1=Not this again...
+nxtln1=three2
+
+[three2]
+Say=What?
+RspDflt=Nothing.  Farewell.
+RspTxt1=Never mind.  You can return to your paranoia now, but be advised that I shall do as I please.
+nxtln1=three3
+
+[three3]
+Say=Of...  Of course, sir, I didn't realize...
+RspDflt=Indeed.  Farewell, soldier.
+

@@ -1,0 +1,125 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01Recovered
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=Thank you, Deman.
+Say1=
+goto1=Deman1
+
+[Deman1]
+Say=How can I help you, sir?
+RspDflt=Pardon me, neighbor.
+RspTxt1=I need directions.
+NxtLn1=directions
+RspCnd2=All(ttl(!01Recovered));
+RspTxt2=Where are you from?
+NxtLn2=location1
+RspCnd3=All(ttl(01Recovered));
+RspTxt3=Where are you from?
+NxtLn3=location2
+RspCnd4=All(ttl(!01Recovered));
+RspTxt4=Have you heard any rumors?
+NxtLn4=rumors1
+RspCnd5=All(ttl(01Recovered));
+RspTxt5=Have you heard any rumors?
+NxtLn5=rumors2
+
+[directions]
+Say=Where do you need to go?
+RspDflt=none
+RspTxt1=The Outer Bailey
+NxtLn1=directions1
+RspTxt2=Elarath's Laboratory
+NxtLn2=directions2
+RspTxt3=Mudam's Chamber
+NxtLn3=directions3
+RspTxt4=Sir Roth's Council
+NxtLn4=directions4
+RspTxt5=The Quartermaster
+NxtLn5=directions5
+RspTxt6=I need a healer.
+NxtLn6=directions6
+rspBack=Deman1
+
+[directions1]
+Say=You can get there by taking these stairs to the lower level.  Go out to the grand hall and exit from the main doors to your left into the Outer Bailey.
+RspDflt=Thank you for your help.
+rspBack=directions
+
+[directions2]
+Say=Go north down this hall, then head east until you get to the end.  Elarath's Laboratory is the last door on your left.
+RspDflt=Thank you for your help.
+rspBack=directions
+
+[directions3]
+Say=Mudam's Chamber is at the south end of this hall.
+RspDflt=Thank you for your help.
+rspBack=directions
+
+[directions4]
+Say=Sir Roth's Chamber is in the corner, behind those two guards.
+RspDflt=Thank you for your help.
+rspBack=directions
+
+[directions5]
+Say=If you head south down this hall a bit then enter the hall on your left, the Armory will be the last door on your left.
+RspDflt=Thank you for your help.
+rspBack=directions
+
+[directions6]
+Say=Downstairs, there is a monk named Crosby.  He is said to be an excellent healer.
+RspDflt=Thank you for your help.
+rspBack=directions
+
+[location1]
+Say=I'm from Nisos, sir.  My father owns fourteen warships, but I fear many of those sank when Captain Nicophorus tried to sail up the Voel.
+RspDflt=Thank you.
+rspBack=deman1
+
+[location2]
+Say=I was born in Nisos, sir.  My house isn't a very important one, but we are all warriors.  I am proud to be here in Avalon!
+RspDflt=Thank you.
+rspBack=deman1
+
+[rumors1]
+Say=One of my friends said that the Ahoul are preparing for another large attack.  I suspect that Sir Roth will have us on double shifts tonight.
+RspDflt=Thank you.  I'll keep that in mind.
+rspBack=deman1
+
+[rumors2]
+Say=A guard at South Gate said he saw the ground shudder and the sky darken over when you found the Chalice!  Is it true?  Are you really an ancient hero reborn?
+RspDflt=I don't think so, but thank you for the vote of confidence.
+rspBack=deman1
+

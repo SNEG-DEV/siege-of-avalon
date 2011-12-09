@@ -1,0 +1,82 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01Recovered,01village,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(5/23/01)=Passed
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Gracias, Cardew.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=one(ttl(05chapter5,04chapter4,03chapter3));
+goto2=threeup
+Say3=All(ttl(!01village,!01Recovered));
+goto3=Cardew1
+Say4=All(ttl(01village,!01Recovered));
+goto4=Cardew3
+Say5=All(ttl(01village,01Recovered));
+goto5=Cardew4
+
+[Cardew1]
+Say=Todos nos vimos muy afectados al oír lo de tu hermano.  Él salvó mi cuello más de una vez.
+RspDflt=Aprecio el detalle.
+RspTxt1=Gracias.  ¿De dónde sois, señor?
+Nxtln1=Cardew2
+
+[Cardew2]
+Say=Soy de Aratoy, chico.  Allí era el líder de una banda nómada.  Todos vinimos aquí a luchar contra los Ahoul--supusimos que sería una batalla feroz y sangrienta, y ¿qué podría ser mejor que eso?
+RspDflt=No lo se, señor, pero que los espíritus os protejan a vos y a vuestros hombres.
+
+[Cardew3]
+Say=Saludos, chico.  Espero que todo te vaya bien.
+RspDflt=Todo va bien, señor.
+
+[Cardew4]
+Say=El héroe vuelve al fin a casa!  Oír tus gestas nos da coraje a todos!
+RspDflt=None
+RspTxt1=Gracias, señor.  ¿Hay algo nuevo por aquí?
+NxtLn1=Cardew5
+
+[Cardew5]
+Say=Bueno, no puedo contarte las cosas gordas.  Pero recuerda esto: no pasará mucho tiempo antes de que disfrutemos de una comida decente!
+RspDflt=Esa es una noticia excelente!  Buen día, señor!
+
+[chapter6]
+Say=Me cansa este constante debate y tanto trabajo pesado! Me gustaría que Roth nos enviase a la batalla ahora, antes de que nos muramos de hambre!
+RspDflt=Tendrás tu oportunidad, estoy seguro. Hasta luego.
+
+[threeup]
+Say=He oído que Anora usó merscwog en su último plato!  Qué exótico!
+RspDflt=Quizá debería probar su último plato, pues.  Hasta luego.
+

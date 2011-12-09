@@ -1,0 +1,69 @@
+[Needed]
+1=art/item data for the letter to Captain Avarous
+
+[Notes]
+titlesChecked=01transferred,01foundbrother,01informed,01village,01recovered
+TitlesSet=01transferred
+ItemsGive=Letter to Avarous
+
+[Question]
+1=Is roth only interested in the chalice after the transfer what about corvus
+
+[root]
+Count=1
+Else=
+Default=Danke, Sir Roth.
+Say1=
+goto1=Corvus1
+
+
+[Corvus1]
+say=Ihr seid wohl Corvus' Bruder.  Mein herzliches Beileid.  Wie kann ich Euch dienen?
+script=player.setprop(frozen=false);
+rspDflt=None
+rsptxt1=Ich habe eine Nachricht von Calum am Südtor bekommen.  Man hat gesehen, wie mein Bruder vor Avalon durchs Dorf geflohen ist .
+NxtLn1=Corvus2
+
+[Corvus2]
+say=Ich weiß. Diese drei Ritter gehörten zu einem Trupp, der ausgeritten ist, um nach ihm zu suchen.  Sie haben soeben Bericht erstattet.
+rspDflt=None
+rsptxt1=Was gibt es denn für Neuigkeiten, Herr?
+NxtLn1=Corvus3
+
+[Corvus3]
+say=Sie sind ins Dorf geritten und haben es abgesucht.  Sie fanden Anzeichen von einem Kampf, aber von Eurem Bruder fehlte jede Spur.  Wie Ihr vielleicht wisst, nehmen die Ahoul keine Gefangene.  Wenn Euer Bruder tot wäre, hätte man seine Leiche irgendwo im Dorf gefunden.  Daher vermuten wir, dass er noch lebt.
+rspDflt=None
+rspTxt1=Sucht Ihr noch nach ihm, Herr?
+NxtLn1=Corvus4
+
+[Corvus4]
+say=Durch das Verschwinden von General Ovorons Truppen ist die Garnison   fast leer, und bei den Sha'ahoul herrscht rege Betriebsamkeit.  Im Augenblick können wir es uns schlecht leisten, noch mehr Soldaten zu verlieren, zumal es um das Leben nur eines Mannes geht. Es tut mir leid, mein Sohn, aber wir können keine Soldaten mehr riskieren.  Nur Mut-- er ist nicht unterzukriegen.  Wenn es jemand schaffen kann, lebend nach  Avalon zurückzukehren, dann Corvus.
+rspDflt=NONE
+rspTxt1=Herr, ich möchte Euch um Erlaubnis bitten, nach meinem Bruder zu suchen.
+NxtLn1=Corvus6
+
+[Corvus6]
+say=Verstehe. Unter uns gesagt, ich hatte gehofft, dass ihr so etwas sagen würdet.  Ich glaube, da lässt sich was machen.  Ich stelle Euch unter Mudams Befehl.  Er ist Meisterkundschafter, und von ihm könnt Ihr die Erlaubnis bekommen außerhalb von Avalon auf Erkundung zu gehen.  Seid Ihr Euch aber sicher, dass Ihr das machen wollt?  Es ist sehr gefährlich draußen.  Die Ahoul patrouillen vermehrt seitdem Ovoron mit seinen Truppen davongezogen ist.
+Adventure=ch1-76;
+rspDflt=None
+rspTxt1=Ja, Herr.  Ich werde nicht ruhen ehe ich das Schicksal meines Bruders weiß.
+NxtLn1=Corvus8
+;rspTxt2=Vielleicht doch nicht.  Ich glaube, ich brauche vorher noch etwas Ausbildung.
+;NxtLn2=Corvus7
+
+[Corvus7]
+say=Ich verstehe.  Wir werden alle für Euren Bruder beten.
+rspDflt=Danke, Sir Roth.
+
+[Corvus8]
+say=Na schön.  Bringt diesen Brief zu Mudam und lasst Euch seine Einwilligung geben.  Ich hoffe, Ihr habt Eure Ausbildung ernst genommen-- sie wird jetzt von größter Wichtigkeit für Euch sein.
+AddQuest=ch1-11;
+script=player.addtitle(01transferred);giveitem(transferLetter,player);journalentry(roth);showmessage(Ihr Tagebuch wurde aktualisiert.,300);
+rspDflt=None
+rspTxt1=Danke, Sir Roth!  Ich werde Euch nicht enttäuschen.
+NxtLn1=Corvus9
+
+[Corvus9]
+say=Das hat bisher noch kein Mitglied Eurer Familie, mein Junge.  Viel Glück.
+rspDflt=Das wünsche ich uns allen, Herr.  Ade.
+

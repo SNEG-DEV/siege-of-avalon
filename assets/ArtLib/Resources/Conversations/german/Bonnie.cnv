@@ -1,0 +1,120 @@
+[Notes]
+TitlesChecked=01Informed,01Recovered
+
+[root]
+Count=6
+Else=
+Default=My Danke, lady.
+Say1=All(ttl(!01BonnieTale));
+goto1=Bonnie
+Say2=All(ttl(01BonnieTale,!01Basement,!01Bugs))
+goto2=CellarPermission
+Say3=All(ttl(01BonnieTale,01Basement,!01Bugs))
+goto3=GoingDown
+Say4=All(ttl(01Bugs,!01BonnieHappy))
+goto4=BugsGone
+Say5=All(ttl(!01Recovered));
+goto5=News1
+Say6=All(ttl(01Recovered));
+goto6=Chalice
+
+;First approach
+[Bonnie]
+say=Wenn Ihr auf der Suche nach einem Imbiss hier seid, könnt Ihr Euch gleich umdrehen.  Ihr wisst genau, dass wir dafür nicht genug Essen haben!
+rspDflt=None
+rsptxt1=Obwohl ich zugeben muss, dass ich einen Happen zu essen gut gebrauchen könnte, so ist mir die Lebensmittelknappheit hier in der Zitadelle schon bewußt.  Ich bin hier, weil ich erst vor kurzem hier angekommen bin und euch ganz einfach kennen lernen wollte.
+NxtLn1=Bonnie1
+
+;If 1,
+[Bonnie1]
+say=Nun, dann könnt Ihr mich Bonnie nennen.  Ich bin eine von Anoras Mägden.  Wie Ihr sehen könnt, auch wenn es nicht viel zu kochen gibt, so haben wir doch reichlich zu tun.
+rspDflt=none
+rspTxt1=Entschuldigung.  Es tut mir leid, gestört zu haben.  Ich verabschiede mich.
+nxtLn1=Bonnie2
+
+[Bonnie2]
+Say=Also, so schlimm ist es auch wieder nicht. Bleibt doch einen Augenblick, und vertreibt mir die Langeweile.  Es ist nur so, wenn Anora mich dabei erwischt, dass ich mit einem Soldaten die Zeit vertrödele, dann bekomme ich wieder Schelte.  Teller abzuwaschen, die schon von hungrigen Soldaten saubergeleckt worden sind, ist aber so langweilig wie nur was.  Das ist heute das vierte Mal, dass ich diese Tische abgewischt habe -- und wir haben nur eine Mahlzeit gehabt!  
+rspDflt=none
+rspTxt1=Ich verstehe.  Vielleicht bleibe ich dann doch einen Moment.  Wie gesagt, ich bin neu hier und ich versuche, so viele Menschen kennen zu lernen, wie ich kann.  Was gibt es für Neuigkeiten hier in der Küche?
+nxtLn1=Bugs
+
+;If 2,
+[Bugs]
+say=Nun, ich will keine Gerüchte in die Welt setzen, aber heute Morgen als ich im Keller einen Sack Mehl geholt habe, ist so etwas wie ein schwarzer Schatten aus der Ecke gehuscht und auf mich zu gestürzt! 'Ein Gespenst' war mein erster Gedanke. Ich habe den Sack fallen lassen und bin so schnell die Treppe hinauf gerannt, wie ich nur konnte.  Ein Gespenst kann dich mit nur einem Blick töten, wißt Ihr, und ich konnte beinahe die Kälte seiner Augen auf meinem Nacken spüren. Das Komische ist -- allerdings kann ich nicht genau sagen, ob das stimmt, denn das Pochen meines Herzes war fast noch lauter, als das Geklapper meiner Schuhe auf dem Boden -- aber ich dachte, ich hätte so etwas wie ein Zwitschern gehört, als ich die Treppe hinauf lief.
+rspDflt=none
+rsptxt1=Ich bin jedenfalls froh, dass du mit dem Leben davongekommen bist.
+nxtLn1=Bugs2
+
+[Bugs2]
+say=Anora hat mir kein Wort davon geglaubt -- sie hat mich nur ausgeschimpft.  Und Davet, dieser so genannte Soldat, der da drüben steht, hat mich nur ausgelacht, als ich ihm davon erzählte. Dann meinte er, er habe schon genug zu tun damit, die Burg zu verteidigen, ohne dass er in einem Keller herumstochert, nur wegen der Hirngespinste einer albernen Frau.  Aber Ihr-- Warum lacht Ihr nicht?
+rspDflt=none
+rsptxt1=Ich glaube, dass du heute Morgen große Angst hattest.  Und ich finde, du hast verdient, dass deine Ängste vertrieben werden.
+nxtLn1=Bugs3
+
+[Bugs3]
+say=Ihr glaubt mir...?  Ich- ich weiß nicht, was ich sagen soll. Ähm... Danke.  Aber ich an Eurer Stelle würde mich trotzdem vom Keller fernhalten.
+rspDflt=none
+rsptxt1=Nein, holde Dame.  Für dich werde ich der Sache persönlich nachgehen.
+nxtLn1=Bugs4
+
+[Bugs4]
+say=Ich danke Euch.  Vielleicht sind es nur die Ängste eines albernen Mädchens, aber...  Redet aber bitte vorher mit Anora.  Es ist ihre Küche, und Ihr werdet ihre Erlaubnis brauchen, bevor Ihr nach unten steigt.  Habt Acht!
+Adventure=ch1-24;
+script=player.addtitle(01BonnieTale)
+rspDflt=Aber natürlich.  Ich werde bald mit Neuigkeiten zurückkehren.
+
+;Has talked with Bonnie, but hasn't spoken to Anora
+[CellarPermission]
+say=Habt Ihr inzwischen Anora gesprochen?
+rspDflt=Nein, noch nicht.  Ich musste mich noch etwas vorbereiten, bevor ich in den Keller gehe, aber ich werde jetzt mit ihr sprechen.
+
+;Has talked with Bonnie and Anora, but hasn't killed the bugs
+[GoingDown]
+say=Und?  Wie steht es ?
+rspDflt=Ich glaube, du hattest recht mit deiner Vermutung, dass etwas unfreundliches im Keller haust.  Aber bei meiner Ehre schwöre ich, dass es nicht mehr lange so bleiben wird.
+
+;Bugs are dead and player hasn't yet reported back to Bonnie
+[BugsGone]
+say=Ihr seht ganz schön abgekämpft aus.  Ich hatte recht, nicht wahr?
+rspDflt=none
+rsptxt1=Ja, mein Dame.  Das Zwitschern was du gehört hast stammte tatsächlich von riesigen, käferähnlichen Kreaturen.  Sie huschten aus den Ecken hervor, wie du gesagt hast.  Es war ein Glück für dich, dass du nicht gewartet hast, um sie dir genauer anzusehen-- Ich selbst hätte ihren Angriff beinahe nicht überlebt.
+nxtLn1=BugsGone2
+
+[BugsGone2]
+say=Dann hatte ich also recht-- da unten war doch etwas!  Danke, mein Herr.  Oh, danke!
+rspDflt=none
+rsptxt1=Auch wenn es meine Pflicht war, diese Kreaturen zu vernichten, so war es mir auch eine Freude, dir zu helfen.
+nxtLn1=BugsGone3
+
+[BugsGone3]
+say=Schmeichler!  Nun geht schon!  Aber bleibt nicht zu lange fort...
+Adventure=ch1-26;
+script=player.addtitle(01BonnieHappy)
+rspDflt=Wie du willst, meine Dame.  Gehab dich wohl...
+
+;Before recovery of Chalice
+
+[News1]
+say=Hier hat sich herzlich wenig geändert, aber es tut gut, Euer Gesicht wiederzusehen.  Aber soll ich Euch ein kleines Geheimnis verraten? Lasst die Finger heute von Eintopf.  Das Fleisch darin ist nicht gerade frisch. Es wird niemanden umbringen, aber es könnte Euch übel bekommen, wenn Ihr einen empfindlichen Magen habt.
+rspDflt=Ich danke dir für deine Fürsorge, aber ich denke, ein verstimmter Magen ist immerhin besser, als ein leerer Magen.  Bis bald, holde Dame...
+
+;After recovery of Chalice
+[Chalice]
+say=Du lieber Himmel!  Ihr hättet mich vorher warnen sollen!  Ich will nicht., daß Ihr mich so seht !
+rspDflt=None
+rsptxt1=Aber holde Dame... Ich finde, du siehst gut aus.  Sehr gut, sogar.
+NxtLn1=Chalice1
+
+[Chalice1]
+say=Mag sein, aber ich glaube, ich sollte mich immer für einen Helden ein bisschen herrichten. Und nun, wenn Ihr mir sagen wollt, was Ihr auf dem Herzen habt, kann ich Euch vielleicht weiterhelfen, bevor ich noch weiter erröte...
+rspDflt=None
+rsptxt1=Oh, nichts weiter, außer Euer liebliches--  Ich meine, außer Eure neusten Berichten zu hören.
+NxtLn1=Chalice2
+
+[Chalice2]
+say=Einige der Schnelleren werden heute Abend Glück haben; zum Abendbrot heute gibt es richtiges Rindfleisch.  Soll ich eine Portion für Euch beiseite legen? 
+Adventure=ch1-26;
+rspDflt=Nein, ich nehme mein Abendmahl zusammen mit den anderen Soldaten ein.  Für dein liebenwürdige Angebot danke ich dir aber. Gehab dich wohl, holde Magd.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

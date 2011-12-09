@@ -1,0 +1,201 @@
+[root]
+Count=6
+Else=
+Default=
+Say1=All(ttl(!01GetSteel));
+goto1=Freeman
+Say2=All(ttl(01GetSteel,!01ReturnedSteel):Obj(!FineSteel));
+goto2=Looking
+Say3=All(ttl(01GetSteel,!01ReturnedSteel):Obj(FineSteel));
+goto3=MakeSword
+Say4=All(ttl(01ReturnedSteel,!01GetSword));
+goto4=Penrith
+Say5=All(ttl(01GetSword,!01GotSword));
+goto5=GetSword
+Say6=All(ttl(01GotSword));
+goto6=GotSword
+
+
+[Freeman]
+say=Hallo.  Wie kann ich Euch dienen?
+rspDflt=None
+rsptxt1=Ach, ich sehe mich nur in Eurer Schmiede um.
+nxtLn1=Freeman1
+rspCnd2=all(ttl(01SteelShortage));
+rspTxt2=Ich habe mit Lucan von der Waffenkammer am Südtor gesprochen.  Er schlug vor, daß ich Euch frage, ob Ihr in letzter Zeit guten Stahl bekommen habt.
+nxtLn2=Steel
+
+[Freeman1]
+say=Hier ist leider nicht allzu viel zu sehen.  Hammer, Amboss-- nichts besonderes.
+rspDflt=None
+rsptxt1=Dann habt Ihr also nichts zu verkaufen?
+nxtLn1=Freeman2
+
+[Freeman2]
+say=Ich habe kaum genug Metall für die Armee, geschweige denn, um Auftragsarbeiten anzufertigen, oder Ware zum Verkauf.  Schließlich werden wir ja seit längerem belagert.  Wenn Ihr zur Armee gehört, dann fragt in den Waffenkammern nach, entweder am Südtor oder in der Außenburg.
+rspDflt=Ich verstehe.  Es tut mir leid, Euch gestört zu haben.
+rspTxt1=Ihr habt also in letzter Zeit keinen Stahl geliefert bekommen?
+nxtLn1=Steel1a
+
+
+;Steel subquest
+
+;Description/background of quest
+
+[Steel1a]
+Say=Hat Lucan Euch gesagt, dass Ihr mich belästigen sollt?  Er plagt mich ständig mit Beschwerden über jüngst erhaltene Lieferungen, und dabei weiß er ganz genau, dass ich nichts dagegen tun kann!  Ich habe als Arbeitsmaterial nur Roheisen-- das ist alles!  Auch wenn ich zu den besten Waffenschmieden aus Elythria gehöre, kein Geschick und kein Wissen der Welt kann aus Roheisen gute Brustharnische oder Schwerter machen.  Also, wenn Ihr Hufeisen wollt, oder vielleicht ein paar schöne Kochtöpfe... das kann ich machen.  Noch ein paar Wochen allerdings, und Ihr werdet die Hufeisen gar nicht mehr brauchen, denn dann kommen die Pferde IN die Töpfe.
+rspDflt=none
+rspTxt1=Dazu wird es bestimmt nicht kommen.  Wie lange ist es her seit der letzten Stahllieferung?
+nxtLn1=Steel2
+
+[Steel]
+Say=Soso, hat er das?  ?  Er plagt mich ständig mit Beschwerden über jüngst erhaltene Lieferungen, und dabei weiß er ganz genau, dass ich nichts dagegen tun kann!  Ich habe als Arbeitsmaterial nur Roheisen-- das ist alles!  Auch wenn ich zu den besten Waffenschmieden aus Elythria gehöre, kein Geschick und kein Wissen der Welt kann aus Roheisen gute Brustharnische oder Schwerter machen.  Also, wenn Ihr Hufeisen wollt, oder vielleicht ein paar schöne Kochtöpfe... das kann ich machen.  Noch ein paar Wochen, allerdings, und Ihr werdet die Hufeisen gar nicht mehr brauchen, denn dann kommen die Pferde IN die Töpfe.
+RemoveQuest=ch1-06;
+rspDflt=none
+rspTxt1=Dazu wird es bestimmt nicht kommen.  Wie lange ist es her seit der letzten Stahllieferung?
+nxtLn1=Steel2
+
+[Steel2]
+Say=Zu lange, verflucht nochmal!
+Adventure=ch1-51;
+rspDflt=none
+rspTxt1=Und hier steht nichts mehr zur Verfügung?  Überhaupt nichts?
+nxtLn1=Steel3
+
+[Steel3]
+Say=Doch, doch-- wenn Euch danach ist, ein Lager der Ahoul ganz alleine zu überfallen.
+rspDflt=none
+rspTxt1=Nicht ohne ein Schwert aus edlem Stahl, wie die, die Ihr schmieden könnt!
+nxtLn1=Steel4
+
+[Steel4]
+Say=Ha!  Gut geantwortet.  Ein Punkt für Euch!  Na schön, dann hört gut zu.  Im Dorf vor dem Südtor gibt es welchen.  Das weiß ich genau!  Ich versuche schon ewig, Mudam zu überreden, einen Kundschafter hinauszuschicken, der danach suchen soll. Er aber meint, er hätte zu wenig Männer, um sie bei einer verfluchten Schatzsuche zu riskieren, und das quasi mitten in einer Armee der Ahoul.  Da ist was Wahres dran, aber ich WEISS dass der Stahl da ist.
+rspDflt=none
+rspTxt1=Go on.
+nxtLn1=Steel5
+
+[Steel5]
+Say=Betrachen wir die Sache mal so; Du steckst in einer Zitadelle fest, draußen vor der Tür steht eine feindliche Armee.  Was wird da zum wichtigsten Gut?
+rspDflt=none
+rspTxt1=Lebensmittel, nehme ich an.  Und Waffen.
+nxtLn1=Steel6
+
+[Steel6]
+Say=Seht gut.  Waffen.  Und das Gold, was man in der Tasche hat-- wie wird das einem helfen, zu überleben?
+rspDflt=none
+rspTxt1=Mein Geldbeutel ist nicht gerade voll, aber...
+nxtLn1=Steel7
+
+[Steel7]
+Say=Wird es nicht.  Um Gold auszugeben, muss man am Leben sein, also wenn sein Leben in Gefahr ist,  werden die Dinge, die einen am Leben erhalten können noch wertvoller als Gold.  Könnt Ihr mir folgen?  Im Moment sind Lebensmittel wertvoller als Gold.  Und edler Stahl genauso.
+rspDflt=none
+rspTxt1=Ich verstehe.
+nxtLn1=Steel8
+
+[Steel8]
+Say=Im Dorf gab es einen Kerl, der mehr als nur ein paar Pfennige im Geldbeutel hatte.  Außerdem hatte er ganz schön Grips. Er wusste, dass er in einer Kriegszone lebte, aber wiederum kann man vom Krieg reich werden.  Da er aber gleich vor Avalon gelebt hat, dachte er, er sei in Sicherheit.  Wenn die Ahoul je zurückkämmen, dachte er, könnte er einfach mit allen anderen in die Burg flüchten. Aber wenn das nie geschah, nun, was würde ihm sein Geld nützen?
+rspDflt=none
+rspTxt1=Nichts, nehme ich.
+nxtLn1=Steel9
+
+[Steel9]
+Say=Bravo-- Wenigstens nickt Ihr an den richtigen Stellen.  Jedenfalls, Lebensmittel verderben, Stahl nicht.  Also legte er das meiste seines Geldes in Stahlbarren an, im Glauben, dass er damit später alles würde bekommen können, was er braucht.  Wenn nötig würde er sie wie Gold ausgeben können.  Allerdings hat er nicht damit gerechnet, dass die Armee die meisten davon konfiszieren würde, als die Ahoul wieder auftauchten.  Aber nicht alle.  Ich kann schwören, dass er einiges in einem Haus im Dorf versteckt hat.  Wie gesagt, er war schlau-- die Armee hat bestimmt nicht alles bekommen.  Und die Sache ist die; er hat es nicht in die Burg geschafft.  Er hat das Dorf nie verlasen.  Ich denke, er hat noch versucht, an den versteckten Stahl zu kommen bevor er ging, und ist dabei umgekommen.  Habgier hat sich gegen Grips durchgesetzt, in genau dem falschen Moment.
+rspDflt=none
+rspTxt1=Und das kommt die Schatzsuche ins Spiel.
+nxtLn1=Steel10
+
+[Steel10]
+Say=Wenn Ihr ein gutes Schwert wollt, mache ich Euch ein gutes Schwert ...WENN Ihr mir den Stahl bringt. Oder bringt mir nur einen Barren davon, und sagt mir, wo der Rest versteckt ist.  Mit dem Beweis müssen sich die Militärs bereit erklären, sich hinauszuschleichen und den Rest zu holen.  Sie sind schlau genug um zu wissen, dass wir alles brauchen, was wir in die Hände bekommen können.
+rspDflt=none
+rspTxt1=Ich habe gehört, dass das Dorf nicht der sicherste Ort ist.  Ihr könnt mir nicht zufällig eine Karte zeichnen?
+nxtLn1=Steel11
+
+[Steel11]
+Say=Von mir bekommt Ihr keine Schatzkarte, Junge.  Er besaß mehrere Häuser--er hat sie vermietet.  Und ich könnte Euch nicht einmal zu ihnen führen, so wie das Dorf jetzt aussieht.  Ihr schafft das aber.  In Gedanken seht Ihr Euch doch als Held, oder?
+rspDflt=none
+rspTxt1=Wohl kaum.  Ich kann nur so viel versprechen: wenn ich es ins Dorf schaffe, halte ich die Augen offen: hauptsächlich nach Ahoul, muss ich gestehen, aber auch nach diesem Stahl für Euch.
+nxtLn1=Steel12
+
+[Steel12]
+Say=Braver Junge!
+rspDflt=none
+rspTxt1=Ich bin kein Junge!  Hört auf, mich so zu nennen!
+nxtLn1=Steel13
+
+[Steel13]
+Say=Schon gut... Soldat.  Mögen Euch die Geister beschützen.
+AddQuest=ch1-07;
+Adventure=ch1-52;
+script=journalentry(freeman2);showmessage(Ihr Tagebuch wurde aktualisiert.,200);player.addtitle(01GetSteel);
+rspDflt=Euch auch.
+
+; Player has quest, but hasn't found the steel yet.
+
+[Looking]
+say=Sucht weiter.  Der Stahl ist bestimmt irgendwo da draußen.
+rspDflt=Ich gebe nicht auf.  Ich will noch immer dieses Schwert.
+
+; Player has found the steel.
+
+[MakeSword]
+say=Und, Soldat?  Was erreicht?
+rspDflt=none
+rspTxt1=Kommt darauf an.  Ist es dies, wonach Ihr gesucht habt?
+nxtLn1=MakeSword1
+
+[MakeSword1]
+say=Ich wusste es doch!  Verflucht, ich wusste es! War es schwer, ihn zu finden?  Egal, interessiert mich nicht.  Wie viele davon gibt es?
+script=takeitem(finesteel,player);player.addtitle(01ReturnedSteel);
+rspDflt=none
+rspTxt1=Ich hatte nicht viel Zeit, in den Trümmern zu wühlen, aber ich denke dreißig Barren.  Vielleicht vierzig.
+nxtLn1=MakeSword2
+
+[MakeSword2]
+Say=Vierzig?  Ich hatte gehofft, dass mehr da ist...  Können wir aber trotzdem gebrauchen--jedes bisschen zählt!  Jetzt muss ich aber den Ofen anfeuern, und damit beginnen kann, die--
+rspDflt=none
+rspTxt1=Freeman? Mein Schwert?
+nxtLn1=MakeSword3
+
+[MakeSword3]
+Say=Was?  Euer Schwert?  Was schwätzt Ihr da?  Ich habe zu tun--verzieht Euch...
+rspDflt=none
+rspTxt1=Ihr habt mir ein Schwert versprochen--und ein Feines dazu.
+nxtLn1=MakeSword4
+
+[MakeSword4]
+Say=Ein feines Schwert... richtig.  Es liegt irgendwo hier rum...  Wißt ihr was? Geht zu Penrith-- er ist draußen im Südhof irgendwo, sieht ganz schneidig aus in seiner glänzenden, neuen Rüstung.  Erklärt ihm, wo Ihr den Stahl gefunden habt und überredet ihn, ein paar Leute hinauszuschicken, um alles hierher zu bringen.  Bis Ihr fertig seid, habe ich bestimmt Euer Schwert gefunden.
+rspDflt=none
+rspTxt1=Aber--
+nxtLn1=MakeSword5
+
+[MakeSword5]
+Say=Der schwierige Teil ist geschafft, Soldat.  Wollt Ihr Euch wirklich um fünf Minuten Arbeit mehr streiten?
+RemoveQuest=ch1-07;
+AddQuest=ch1-08;
+rspDflt=Nein, eigentlich nicht.  Ich komme bald wieder.  SEHR bald...
+
+; Player has returned the steel, but hasn't gotten Penrith to collect the rest of the cache.
+
+[Penrith]
+say=Und, ist der Stahl schon unterwegs?
+rspDflt=Nein, noch nicht ganz.  Aber recht bald.
+
+; Penrith is sending men to get the steel.  Player can now collect sword.
+
+[GetSword]
+say=Und, Soldat?  Was hat Penrith gesagt?
+rspDflt=none
+rspTxt1=Es hat ihn überrascht, das es den Stahl tatsächlich gibt.  Und es hat ihn erfreut.  Seine Männer werden bald anfangen, die Barren herzubringen.
+nxtLn1=GetSword1
+
+[GetSword1]
+Say=Gut, Soldat.  Sehr gut, sogar.  Und jetzt, glaube ich, gehört das hier Euch. Ihr seid sicherlich mit mir einer Meinung, dass es ein feines  Schwert ist, das Ihr mit Stolz tragen könnt. Da habt Ihr ein gutes Geschäft gemacht, oder?
+RemoveQuest=ch1-10;
+script=giveitem(officerSword,player);player.addtitle(01GotSword);
+rspDflt=Das hätte ich gebrauchen können BEVOR ich mich auf die Suche nach dem Stahl gemacht habe, Meister Schmied...  aber ich freue mich, dass ich es jetzt habe.  Ich werde sorgsam damit umgehen.  Mein Dank an Euch, und gehabt Euch wohl.
+
+; Quest has been completed and player has sword.
+
+[GotSword]
+say=Also, Soldat, leistet Euch Euer neues Schwert gute Dienste?
+rspDflt=Doch doch, in der Tat.  Danke noch einmal!

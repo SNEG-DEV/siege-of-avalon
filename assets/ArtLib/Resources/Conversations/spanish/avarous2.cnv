@@ -1,0 +1,87 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01avarous
+Checked=01Avarous,01permission,01Recovered
+Removed=
+
+[Quest]
+Added=ch1-31
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/12/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=Avarous8
+Default=
+Say1=All(ttl(!01permission,!01Recovered,!01Avarous));
+goto1=Avarous1
+Say2=All(ttl(01permission,!01Recovered));
+goto2=Avarous3
+Say3=All(ttl(01permission,01Recovered));
+goto3=Avarous5
+
+[Avarous1]
+Say=Así, ¿crees que estás listo para ser un soldado de verdad?
+RspDflt=none
+RspTxt1=Confío en mis habilidades, señor.
+NxtLn1=Avarous2
+
+[Avarous2]
+Say=Como digas, soldado.  Informaré de tu nivel a los comandantes y ellos te informarán de tus deberes.  Puedes irte.
+Adventure=ch1-31;
+Script=player.setprop(trainingpoints=4);journalentry(avarous);showmessage(Your journal has been updated.,200);player.addtitle(01Avarous);
+RspDflt=Sí, señor.  Gracias, señor.
+
+[Avarous3]
+Say=Oh, venga, soldado!  Ya se te ha pasado la hora de entrenar aquí!
+RspDflt=none
+RspTxt1=La verdad, sólo he venido a escuchar algún rumor interesante.
+nxtln1=Avarous4
+
+[Avarous4]
+Say=Los tiempos que corren son demasiado duros para que los instructores hagamos algo más que entrenar soldados.  Algún día, quizás podamos relajarnos un poco, pero todavía no es posible.
+RspDflt=Lo comprendo. Buenos días Capitán.
+
+[Avarous5]
+Say=¿Qué hace un soldado tan bueno como tú en los campos de entrenamiento?  ¿No tienes nada más importante que hacer?
+RspDflt=none
+RspTxt1=Sólo estoy tomándome un respiro, Capitán.  ¿Que hay de nuevo por aquí?
+nxtln1=Avarous6
+
+[Avarous6]
+Say=Tu heroísmo ha inspirado a los reclutas; están trabajando más duro que nunca.  Sospecho que estos nuevos soldados serán un desafío incluso para el más duro Sha'ahoul!
+RspDflt=none
+RspTxt1=Eso es una noticia excelente, Capitán!
+nxtln1=Avarous7
+
+[Avarous7]
+Say=Que los espíritus te protejan.
+RspDflt=Y a usted.
+
+[Avarous8]
+Say=He informado de tu nivel a los comandantes; muy pronto te informarán de tus deberes.  Puedes irte.
+RspDflt=Sí, señor.
+

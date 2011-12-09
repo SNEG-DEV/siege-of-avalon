@@ -1,0 +1,28 @@
+;Roth Corvus Conversation 
+
+[root]
+Count=1
+Else=
+Default=Danke.
+Say1=
+goto1=Roth
+
+[Roth]
+say=Der Beobachtungsposten hat von Eurem Erfolg berichtet.  Gratulation, gut gemacht!  Ihr seid uns allen ein Vorbild.  Corvus, es tut gut, Euch am Leben und wieder in Avalon zu sehen.
+RemoveQuest=ch1-26;
+rspDflt=None
+rsptxt1=Herr, wir haben eine beunruhigende Nachricht.
+NxtLn1=Roth1
+
+[Roth1]
+say=Ja, Mudam hat mir bereits von Eurer Entdeckung unter dem Südtor berichtet.  Wir haben eine Untersuchung eingeleitet, um die Verräter und ihre Hintermänner   zu entlarven.  Jemand in hoher Position hat ihnen geholfen; eine Verschwörung von diesem Ausmaß geheim zu halten ist keine leichte Sache. Am meisten beunruhigt mich die Tatsache, dass wer immer dahinter steht bereit ist, uns an die Sha'ahoul zu verraten.
+rspDflt=None
+rsptxt1=Ich fürchte, es handelt sich um jemanden, der an höchster Stelle steht.  Corvus hat gesehen, wie General Ovoron sich mit Mithras persönlich getroffen hat.  Ovoron übergab ihm einen Tornister voller Dokumente, nur wenige  Augenblicke bevor unsere Truppe aus dem Hinterhalt angegriffen wurde.
+NxtLn1=Roth2
+
+[Roth2]
+say=Ovoron?  Das ist eine Katastrophe!  General Ovoron war Ratsmitglied-- er weiß alles! Ich muss die anderen Ratsmitglieder sofort informieren.  Bringt Euren Bruder zu den Mönchen und seht zu, dass sie sich um seine  Wunden kümmern.  Meldet Euch bei Mudam, und ruht Euch dann ein wenig aus.  Morgen früh meldet Ihr Euch bei mir in meinen Privaträumen in der Burg.  Niemand sonst soll von Ovorons Tat erfahren.
+Adventure=ch1-77;
+AddQuest=ch1-27;
+script=player.addtitle(01EndChapter);journalentry(roth2);showmessage(Ihr Tagebuch wurde aktualisiert.,300);savegame(End of chapter1);
+rspDflt=Verstanden, Herr.

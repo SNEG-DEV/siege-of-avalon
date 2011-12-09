@@ -1,0 +1,71 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=03joined
+Checked=03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-87
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Gracias, Kyner.
+say1=one(ttl(03chapter3,04chapter4,05chapter5,06chapter6));
+goto1=three
+Say2=all(ttl(!03chapter3));
+goto2=Kyner1
+
+[Kyner1]
+Say=Hola, chaval.  Me llamo Kyner.  Era un buen amigo de tu hermano.
+RspDflt=None
+RspTxt1=Encantado de conocerte.  ¿Estabas en el grupo de búsqueda?
+NxtLn1=Kyner2
+
+[Kyner2]
+Say=Sí, lo estaba.  Hemos buscado por el pueblo y no hemos encontrado nada salvo gusanos gigantes.  Al final matamos unos cuantos antes de irnos.
+RspDflt=None
+RspTxt1=¿No había señales de él?
+NxtLn1=Kyner3
+
+[Kyner3]
+Say=Lo siento, pero no encontramos ni rastro de él.  Una lucha había tenido lugar recientemente al sur de la vieja Torre del Hechicero, pero no puedo decirte qué o quienes lucharon.  Puede haber sido cualquier cosa.
+Adventure=Ch1-87;
+RspDflt=None
+RspTxt1=Gracias por mirar.
+NxtLn1=Kyner4
+
+[Kyner4]
+Say=Es lo mínimo que podía hacer.  Tu hermano me salvó una vez que estuve a punto de perder una pierna y todavía no le he devuelto el favor.
+RspDflt=Estoy seguro de que tendrás tu oportunidad.  Que tengas un buen día.
+
+[three]
+Say=¿Deseas que te acompañe en tu misión?  Me gustaría tener la oportunidad de estirar las piernas y el brazo de mi espada, y quizá traer de vuelta algunas cabelleras Ahoul y algunas batallitas que contar, de paso!
+RspDflt=Quizá luego, Sir Kyner.
+RspTxt1=Buena idea, Sir Kyner.  Partiremos en breve.
+script1=addtoparty;addtitle(03joined);
+

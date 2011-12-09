@@ -1,0 +1,60 @@
+[root]
+Count=2
+Else=
+Default=Danke, Dillon.
+Say1=All(ttl(!01recovered));
+goto1=Dillon
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Dillon]
+say=Guten Tag.  Braucht Ihr etwas von mir?
+rspDflt=None
+rspTxt1=Nein, Soldat.  Ich bin nur auf der Durchreise.
+NxtLn1=Dillon1
+rspTxt2=Ich bin neu und möchte die Menschen kennen lernen, neben denen ich kämpfen werde.  Wer seid Ihr, und wo kommt Ihr her?
+NxtLn2=Dillon2
+
+[Dillon1]
+say=In Ordnung, Herr.  Mögen Euch die guten Geister beschützen.
+rspDflt=Euch auch.  Ade.
+
+
+[Dillon2]
+say=Ich heiße Dillon, Herr.  Früher in Fornax war ich Leibgardist eines Zauberers, aber als der Krieg begann schickte er mich hierher. 
+rspDflt=Es war nett, Euch kennen zu lernen.  Ade.
+rspBack=dillon
+
+[Dillon3]
+say=In der Kaserne erzählt man sich, dass die Zauberer eine neue, mächtige Waffe erfunden haben.  Wisst Ihr, ob das wahr ist?
+rspDflt=None
+rspTxt1=Das weiß ich nicht.  Tut mir leid.
+NxtLn1=Dillon4
+
+[Dillon4]
+say=Es ist nicht so wichtig, Mylord.  Gehabt Euch wohl.
+rspDflt=Auf Wiedersehen.
+rspBack=dillon
+
+;After recovery of Chalice
+[Chalice]
+say=Seid gegrüßt, Mylord!  Wie geht es Euch in diese Tagen?
+rspDflt=None
+rspTxt1=Gut, Dillon.  Und Euch?
+NxtLn1=Chalice1
+rspTxt2=Bestens.  Was gibt's für Neuigkeiten?
+NxtLn2=Chalice2
+
+[Chalice1]
+say=Gut genug, Herr.
+rspDflt=Ausgezeichnet.  Lebt wohl.
+rspBack=chalice
+
+[Chalice2]
+say=Es heißt, Ihr hättet einen sensationellen Sieg über die Ahoul im Dorf errungen!  Gratulation!
+rspDflt=Ob er so sensationell war, weiß ich nicht, aber ein Sieg war es.  Danke.
+rspBack=Chalice
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

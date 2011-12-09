@@ -1,0 +1,119 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,04chapter4,04elaram,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(5/23/01)=Passed
+tucker(7/17/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Thank you, Maslin.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(04chapter4,!04elaram));
+goto2=untoldfour
+say3=all(ttl(04chapter4,04elaram));
+goto3=toldfour
+Say4=All(ttl(!01recovered));
+goto4=Maslin
+Say5=All(ttl(01recovered));
+goto5=Chalice
+
+[Maslin]
+Say=Greetings, sir.  What brings you to this corner of Avalon?
+RspDflt=None
+RspTxt1=I'm on business of my own.
+NxtLn1=Maslin1
+
+[Maslin1]
+Say=Sounds like the secret kind, sir.  I won't pry.
+RspDflt=Thank you for your consideration.  Good day.
+
+[Chalice]
+Say=Hello again.  Still running about on your secret mission?
+RspDflt=None
+RspTxt1=It's not as secretive as you might imagine.  I'm merely doing my duty.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=That's all a good soldier can do, isn't it?
+RspDflt=None
+RspTxt1=Perhaps.  There are some who go beyond the call of duty, though.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=True.  I suspect you may be one of that type of soldier.
+RspDflt=I thank you for the compliment.  Good day to you.
+
+[untoldfour]
+Say=Good day, sir.  How goes it?
+RspDflt=Pardon me, Maslin, I was looking for someone else.
+RspTxt1=It goes well; Maslin, thank you for asking.  What's happening in South Gate these days?
+nxtln1=untoldfour2
+
+[untoldfour2]
+Say=Everybody's on edge, sir.  It's like they expect the alarm to be raised and Sha'ahoul to spilling into South Gate.
+RspDflt=none
+RspTxt1=Do you have any idea what's causing this uneasiness?
+nxtln1=untoldfour3
+
+[untoldfour3]
+Say=No, but it's making me uneasy.
+RspDflt=Er...  Yes.  Excuse me while I get to the root of this problem.
+
+[toldfour]
+Say=Do you know what's happening?
+RspDflt=none
+RspTxt1=Elazar had a bad dream, and he was worried about it.
+nxtln1=toldfour2
+RspTxt2=Elazar had a disturbing vision, but I will soon resolve the problems his Vision has revealed to him.
+nxtln2=toldfour3
+
+[toldfour2]
+Say=Don't you think he's a bit old to be having nightmares?
+RspDflt=I do not presume such.  Excuse me, soldier, I must be on my way.
+
+[toldfour3]
+Say=Oh...  Good.  I guess everyone will stop worrying, now.  That is good.
+RspDflt=Yes it is, soldier.  If you'll excuse me...
+
+[chapter6]
+Say=%playername%! Have you heard? Elazar has fallen ill! He deserves it. The spirits are punishing him for practicing magic.
+RspDflt=None
+RspTxt1=I'm trying to do something to help him. You shouldn't be so hateful of something you don't understand.
+nxtln1=chapter6b
+
+[chapter6b]
+Say=I don't care. He's a seer. They're evil and they don't belong here! Avalon is a place for the common folk to live in peace. She's been reduced to rubble now, and it's all because of the strange folk that come to exploit her security.
+RspDflt=I'm sorry you feel that way. Farewell.
+

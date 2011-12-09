@@ -1,0 +1,282 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01basement,01happycook,01wallhole,05pie
+Checked=01Basement,01BonnieHapp,01BonnieTale,01bug,01BugHoleFixed,01Bugs,01happycook,01recovered,01WallHole,05chapter5,05pie,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-02,ch1-03,ch1-04,ch1-29,ch1-30,ch6-004
+Removed=ch1-02,ch1-04
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(6/25/01)=Passed
+tucker(7/12/01)=Passed
+tucker(7/23/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=11
+Else=
+Default=
+Say1=all(ttl(06chapter6));
+goto1=ch6
+Say2=all(ttl(05chapter5,05pie));
+goto2=chapter5c
+Say3=all(ttl(05chapter5,01happycook));
+goto3=chapter5
+Say4=All(ttl(!01BonnieTale,!01Bugs,!01Basement));
+goto4=AnoraIntro
+Say5=All(ttl(01BonnieTale,!01Bugs,!01Basement));
+Goto5=FromBonnie
+Say6=All(ttl(!01Bugs,01Basement));
+goto6=NotDeadYet
+Say7=All(ttl(01Bugs,!01WallHole));
+goto7=Orkin
+Say8=All(ttl(01WallHole,!01HappyCook));
+Goto8=Davet
+Say9=All(ttl(!01recovered));
+goto9=NoChalice
+Say10=All(ttl(01recovered));
+goto10=Chalice
+
+[AnoraIntro]
+Say=Si has venido buscando comida, estás perdiendo el tiempo!  No hay nada que nos sobre en estos días de escasez.
+RspDflt=Adiós.
+RspTxt1=En realidad, he venido aquí a conocer a todo el mundo.  Soy nuevo, y estoy echando un vistazo a la torre.
+NxtLn1=Anora1
+RspTxt2=Sólo estoy aquí para verte a ti.  ¿De dónde eres?
+NxtLn2=Anora2
+RspTxt3=Ya veo.  En vez de comida, ¿podrías darme algún rumor que hayas escuchado?
+NxtLn3=Anora4
+RspTxt4=Ya veo.  ¿Hay algo en lo que pueda ayudarte?
+NxtLn4=Bugs
+
+[Anora1]
+Say=Bueno, que sea un vistazo corto.  Como puedes ver, estamos ocupados preparando la poca comida que hay.
+RspDflt=Entonces siento haberte hecho perder tiempo. Adiós.
+
+[Anora2]
+Say=Soy de Oriam.  Mi marido y yo solíamos llevar una posada no muy lejos de aquí.  Cuando los malditos Ahoul nos invadieron, quemaron nuestra posada y mataron a mi marido.  Antes que dejarme morir, intento ayudar a derrotar a Mithras de la única forma que conozco, alimentando a soldados hambrientos!
+Adventure=ch1-29;
+RspDflt=None
+RspTxt1=Una tarea importante!  Estoy seguro de que la comida es tan deliciosa como se dice por ahí.
+nxtLn1=Anora3
+
+[Anora3]
+Say=Ya basta!  Tengo trabajo que atender, y estoy seguro de que tu también tienes otras tareas que hacer!  Buenos días.
+RspDflt=Buenos días, señora.
+
+[Anora4]
+Say=¿Un rumor?  No soy una simple cocinera, hijo!  Soy la encargada de las cocinas!  Ve y pregunta a alguien que tenga tiempo para malgastar sobre los rumores!
+RspDflt=Me disculpo por la interrupción, señora.  Me iré inmediatamente.
+
+[FromBonnie]
+Say=Si venís buscando comida, estáis perdiendo el tiempo!  No hay nada que nos sobre en estos tiempos difíciles.
+Adventure=ch1-29;
+RspDflt=none
+RspTxt1=No, señora, no vengo por eso.  He hablado con Bonnie y me ha informado de que hay algo inusual en las bodegas de la cocina.  Me estaba preguntando, si habría algo que yo pudiera hacer para ayudar en ésta situación.
+nxtLn1=Bugs
+
+[Bugs]
+Say=Bueno, pareces algún tipo de soldado.  Quizás sí puedas hacer algo.  Esas criaturas--
+RspDflt=None
+RspTxt1=¿Criaturas?  ¿Qué creéis que son?
+nxtLn1=Bugs1
+
+[Bugs1]
+Say=Ratas, quizás, pero no estoy segura.  Todo lo que puedo asegurarte es que parte de nuestros preciosos suministros de grano son comidos por alguien ahí abajo, y no somos nosotros.  Esa chica tonta, Bonnie, parece creer que es una Sombra o algo parecido, pero ¿qué haría una Sombra con harina?  Sea lo que sea, si no lo detenemos pronto, no quedará nada con lo que alimentaros.  Ni siquiera al propio General Roth...
+Adventure=ch1-30;
+RspDflt=None
+rspCnd1=all(ttl(!01BonnieTale));
+RspTxt1=Suena como un problema terrible.  Espero que alguien lo resuelva pronto.
+nxtLn1=Bugs2
+RspTxt2=Permítame liquidar a esas criaturas por usted, señora.
+nxtLn2=Bugs3
+
+[Bugs2]
+Say=Así que después de todo no eres un soldado, ¿eh?  Ha!  He visto ratoncillos más valientes!
+RspDflt=Lamento no ser más que un nuevo recluta.  Buenos días, señora.
+RspTxt1=Perdonadme, señora, pero me habéis malinterpretado.  Solo quise decir que resolveré la situación tan rápidamente como me sea posible.
+nxtLn1=Bugs3
+
+[Bugs3]
+Say=Al fin alguien con el coraje suficiente para investigar la situación!  Ten cuidado, chico.
+AddQuest=ch1-02;
+script=player.addtitle(01Basement)
+RspDflt=Volveré pronto, pero no antes de que todos los ladronzuelos sean destruidos.
+
+[NotDeadYet]
+Say=Has ido muy rápido.  No parece que hayas luchado demasiado ahí abajo.
+RspDflt=None
+RspTxt1=En verdad, señora, debo admitir que las criaturas siguen con vida.
+nxtLn1=basement1
+
+[Basement1]
+Say=Demasiado fuertes para ti, ¿eh?
+RspDflt=None
+RspTxt1=Desgraciadamente, sí, señora.  Deberé intentarlo de nuevo una vez haya mejorado mis habilidades.
+nxtLn1=Basement2
+RspTxt2=En absoluto, señora.  Solo necesitaba descansar unos instantes y luego continuaré la lucha.
+nxtLn2=Basement3
+
+[Basement2]
+Say=No tardes mucho o terminarán con toda la comida.
+RspDflt=Me entrenaré tan rápido como me sea posible.
+
+[Basement3]
+Say=Bien!  No vuelvas a subir hasta que el último de ellos esté muerto!
+RspDflt=No lo haré, señora.
+
+[Orkin]
+Say=¿Qué noticias traes?
+RspDflt=None
+RspTxt1=Justo vengo de las bodegas, señora; estaban infestadas de escarabajos gigantes que se comían la harina.  En fin, los he liquidado a todos, y nuestras reservas de comida están una vez más a salvo de sus indeseables boquitas.
+nxtln1=Orkin1
+
+[Orkin1]
+Say=¿Escarabajos Gigantes?  Yo creía que eran ratas lo que había ahí abajo, o... algo.  Escarabajos gigantes, entonces...  ¿No te han herido?
+RemoveQuest=ch1-02;
+RspDflt=none
+RspTxt1=Estoy lo suficientemente bien, señora.  De todas formas, debo informarla de que los escarabajos penetraron a través de un agujero en la pared del sótano.  Para evitar futuras invasiones, el agujero debe ser reparado inmediatamente.
+nxtLn1=Orkin2
+
+[Orkin2]
+Say=Sí, naturalmente.  Deberías encontrar a Davet ahí fuera, en el comedor.  No es más que un pobre intento de soldado, pero él y su amigo deberían bastar para una simple reparación.  Ve y dile que si quiere volver a comer alguno de mis platos, tendrá que reparar satisfactoriamente el agujero antes de que termine el día.  Cuando termines con él, vuelve y dímelo.
+AddQuest=ch1-03;
+Script=player.addtitle(01WallHole);journalentry(anora);showmessage(Your journal has been updated.,200);
+RspDflt=Será un placer, señora.
+
+[Davet]
+Say=¿Has hablado ya con Davet? ¿Arreglará la pared?
+RspDflt=none
+RspCnd1=All(ttl(01BugHoleFixed));
+RspTxt1=Sí, señora.  La reparará pronto.
+nxtLn1=Davet2
+RspCnd2=All(ttl(!01BugHoleFixed));
+RspTxt2=Perdóneme, señora.  No he logrado convencerle para que haga el trabajo.
+nxtLn2=NoDavet
+
+[Davet2]
+Say=Excelente.  Te agradezco todos tus esfuerzos, soldado.  Tienes mi palabra de que una vez que tengamos más suministros, el mejor pastel que sea capaz de cocinar será tu recompensa.
+RemoveQuest=ch1-04;
+script=player.addtitle(01happycook);player.setprop(trainingpoints=4);showmessage(You have received some training points,200);
+RspDflt=Aunque es mi deber asistirla, señora, esperaré con anticipación su creación!  Hasta entonces, que tenga un buen día!
+
+[NoDavet]
+Say=Solo dile que si espera comer, mejor que la pared esté reparada.  Eso debería darle un poco más de garbo!
+RspDflt=Sí, señora.  Lo haré inmediatamente.
+
+[NoChalice]
+Say=¿Ya vienes a por tu pastel? Sabes tan bien como yo que no hemos recibido más provisiones.
+RspDflt=None
+RspTxt1=Lo sé, señora.  Solo pasaba por aquí, a la caza de rumores.
+nxtLn1=NoChalice1
+
+[NoChalice1]
+Say=Entre tu y yo, no hay suficiente comida para alimentarnos hasta el invierno, mucho menos para pasarlo entero.  Creo que necesitaremos un milagro para sobrevivir a este asedio.
+RspDflt=None
+RspTxt1=Quizás no exactamente un milagro, creo; bastará un poco de dedicación y buena suerte.
+nxtLn1=NoChalice2
+
+[NoChalice2]
+Say=Espero que estés en lo cierto.  Que los buenos espíritus te protejan en el día de hoy y en todos los siguientes.
+RspDflt=Y a vos también, señora.
+
+[Chalice]
+Say=He escuchado extrañas noticias sobre ti.  Dicen que eres una especie de héroe de la antigüedad reencarnado.  ¿Es eso cierto?
+RspDflt=None
+RspTxt1=Creo que no, señora.  He encontrado cierto cáliz y todo el mundo se ha emocionado con ello.
+nxtln1=Chalice1
+
+[Chalice1]
+Say=Bien, tus efectos aquí no han sido más que beneficiosos!  Me alegro de que estés entre nosotros!
+RspDflt=None
+RspTxt1=Y yo me alegro de estar aquí, luchando contra Mithras y los Ahoul.
+nxtLn1=Chalice2
+
+[Chalice2]
+Say=Vaya en paz, mi señor.
+RspDflt=Y vos también, señora.
+
+[chapter5]
+Say=Muchas gracias por hablar con Davet. Aunque no creo que llegue a arreglar el maldito agujero. Tengo tu pastel preparado, si lo quieres... 'Sr. Héroe.'
+RspDflt=None
+RspTxt1=[riendo] Vaya, creo que tomármelo todo me pesaría demasiado. Dejadme comer un pedacito y dadles el resto a los guardias. Un pastel tan maravilloso seguro que les alegrará el día.
+Nxtln1=Chapter5b
+
+[Chapter5b]
+Say=Claro! Qué extraño encontrar a alguien tan generoso, %playername%... Bueno, ¿valía la pena esperar?
+RspDflt=[masticando] Delicioso, señora. Hasta luego, y muchas gracias.
+script=player.addtitle(05pie);
+
+[chapter5c]
+Say=Eres un chico persistente, ¿verdad? Puedo entender por qué le gustas...
+RspDflt=¿A quién?
+
+[ch6]
+Say=Bienvenido nuevamente a mi cocina, %playername%.  ¿Cómo puedo servir a uno de los más relucientes defensores de Avalon?
+RspDflt=none
+RspCnd1=All(ttl(!01bugs))
+RspTxt1=Sólo pasaba por aquí, señora.  ¿Cómo os va últimamente?
+NxtLn1=out6
+RspCnd2=All(ttl(01bugs))
+RspTxt2=Suenas tan formal, Anora.  ¿Has olvidado ya al recluta novato que cazaba bichos en tu bodega hace poco tiempo?
+NxtLn2=pt
+
+[out6]
+Say=Bastante bien, jovencito, aunque nuestros suministros están prácticamente agotados.  Hablando de eso, debo asegurarme de que Bonnie suba lo que quede de comida desde la bodega.  Parece que algo se la está comiendo, pero no sé el qué.  Oh, vaya, eso no es de la incumbencia de un héroe.  Cuídate, %playername%.
+RspDflt=Que los buenos espíritus te guíen en estos tiempos difíciles, buena Anora.  Hasta luego.
+
+[pt]
+Say=Has llegado muy lejos, %playername%, y el chico que eras se ha convertido en un hombre, muy lejos de sus inicios como cazador de bichos.
+RspDflt=none
+RspCnd1=All(ttl(!01BonnieHappy))
+RspTxt1=Es verdad, supongo.  ¿Cómo os va últimamente, señora?
+NxtLn1=out6
+RspCnd2=All(ttl(01BonnieHappy))
+RspTxt2=Es verdad, supongo.  Hablando de cazar bichos, ¿cómo está Bonnie, la chica que me alertó de este problema en concreto?
+NxtLn2=bclue
+
+[bclue]
+Say=Bonnie ¿eh?  Creo que la tienes en el punto de mira, y no intentes negarlo.
+RspDflt=none
+RspTxt1=Bueno, es una chica muy dulce, pero...
+nxtln1=bclue2
+
+[bclue2]
+Say=No me digas que estás demasiado ocupado luchando contra los Sha'ahoul para encontrar tiempo para el amor -- en estos días oscuros, debes aprovechar todas las oportunidades para ser feliz que se te presenten.
+RspDflt=none
+RspTxt1=Para asegurarnos de que estos oscuros días no duren eternamente, debo sacrificar mi vida personal a mi deber.
+nxtln1=bclue3
+RspTxt2=No me sentiría bien distrayéndola de sus obligaciones.
+nxtln2=bclue4
+
+[bclue3]
+Say=Muy bien, jovencito - pero no olvides el motivo por el que luchas.
+RspDflt=Muy cierto, señora.  Hasta luego.
+
+[bclue4]
+Say=Oh, estoy segura de que encontrará el tiempo necesario para aceptar un cumplido de un joven y guapo soldado.  [Te guiña el ojo.]  Podrías alcanzarla mientras hace sus entregas.  Pero date prisa, pues la Puerta Sur es la primera en su lista, y se lo hacen pasar mal si sus raciones llegan tarde.
+adventure=ch6-004;
+RspDflt=Aunque estoy seguro de que a Bonnie no le faltan los cumplidos de los soldados, no dejaré de hablar con ella.
+

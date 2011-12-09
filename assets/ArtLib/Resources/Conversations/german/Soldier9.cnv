@@ -1,0 +1,112 @@
+[root]
+Count=6
+Else=
+Default=Nichts, Danke.
+Say1=All(ttl(!01recovered,!01LetterKnown));
+goto1=Soldier
+Say2=All(ttl(!01recovered,01LetterKnown,!01LetterReturned):Obj(!LoveLetter));
+goto2=NoLetter
+Say3=All(ttl(!01recovered,01LetterKnown,!01LetterReturned):Obj(LoveLetter));
+goto3=FoundLetter
+Say4=All(ttl(!01recovered,01LetterReturned));
+goto4=Rumour
+Say5=All(ttl(01recovered,01LetterReturned));
+goto5=Chalice
+Say6=All(ttl(01Recovered,!01LetterReturned));
+goto6=Chalice2
+
+;Before recovery of Chalice and before letter
+
+[Soldier]
+say=Was wollt Ihr?
+rspTxt1=Ich möchte gern wissen, wo Ihr herkommt.
+NxtLn1=Soldier1
+rspTxt2=Ich möchte alle Gerüchte hören, die Ihr auf Lager habt. 
+NxtLn2=Soldier2
+
+[Soldier1]
+say=Ich habe mein Heim unter den dichten Wäldern von Aratoy gebaut. Die goldenen Sonnenstrahlen, die durch das Laub dringen, sind ebenso atemberaubend schön wie meine Liebste. Ich vermisse beides, aber am meisten fehlt mir meine Liebste. Es war schlimm genug, sie zu verlassen, um in den Krieg zu ziehen, aber jetzt sitze ich in einer belagerten Festung, fern der Bäume und Gräser, fern von ihr. Ich weiß nicht einmal, ob ich dieser Todesfalle jemals entrinnen werde, um zu ihr zurückzukehren. Sie hat mir zwar geschrieben - nun ja, eigentlich ist nur ein einziger Brief bei mir angekommen. Er war mir ein Trost.
+rspDflt=None
+rspTxt1=Ich verstehe.
+nxtLn1=Letter
+
+[Letter]
+say=Eine getrocknete Rose war darin, gepflückt in ihrem Garten. Es war merkwürdig, wie der Brief und die Rose meine Sehnsucht nach ihr nur noch schlimmer machten, aber sie waren mir dennoch teuer. Sie waren ein Teil der Heimat; meine einzige Erinnerung daran, wofür wir hier überhaupt kämpfen. Nur die Liebe, die sie in diesen Brief einschloss, machte mein Leben in diesem Steinsarg erträglich. Und nun ist er verloren.
+rspDflt=None
+rspTxt1=Verloren?
+NxtLn1=Letter1
+rspTxt2=Das tut mir leid.
+NxtLn2=Soldier3
+
+[Soldier2]
+say=Wie ich höre, plant General Ovoron den Überfall eines Vorratslagers. Wir brauchen alle Vorräte, die er nur beschaffen kann, um gegen die Ahoul standzuhalten. Ich hoffe, er erbeutet auch Pfeile; ich habe fast keine mehr und ihre Herstellung war noch nie meine Stärke. Zu Hause hat meine Liebste all meine Pfeile angefertigt. Niemand konnte ihr bei der Pfeilherstellung das Wasser reichen. Ihre Pfeile flogen sogar noch gerader als die ihres Vaters, obwohl er der städtische Bogenmacher war. Aber ich habe all ihre Pfeile schon vor langer Zeit verschossen. Danach besaß ich nur noch ihren Brief und die Rose, die sie mir geschickt hat, aus der Heimat. Und nun sind auch sie verloren.
+
+rspDflt=None
+rspTxt1=Verloren?
+NxtLn1=Letter1
+rspTxt2=Es tut mir sehr leid, das zu hören.
+NxtLn2=Soldier3
+
+[Soldier3]
+say=Wünscht Ihr noch etwas?
+rspTxt1=Ich möchte gern wissen, wo Ihr herkommt.
+NxtLn1=Soldier1
+rspTxt2= Ich möchte alle Gerüchte hören, die Ihr auf Lager habt.
+NxtLn2=Soldier2
+
+[Letter1]
+say=Ja. Irgendein herzloser Bösewicht hat unter meinem Kopfkissen den Brief und unter meinem Bett die Rose gefunden und beides geraubt. Wer würde so etwas tun? Der Brief ist inzwischen bestimmt in hundert Fetzen zerrissen, oder zu Asche verbrannt.
+
+Adventure=ch1-08;
+script=player.addtitle(01LetterKnown)
+rspDflt=None
+rspTxt1=Die Ahoul sind nicht die einzigen, die grausam sein können. Fasst Euch ein Herz: ich bin sicher, die Belagerung wird bald aufgehoben sein und Ihr könnt zu Eurer Liebsten heimkehren.
+NxtLn1=Letter2
+
+[Letter2]
+say=Ich hoffe von ganzem Herzen, dass Ihr Recht habt.
+rspDflt=Ich wünsche Euch Glück, und lebt wohl.
+
+;Knows about letter
+
+[NoLetter]
+say=Ich sehne mich so sehr nach meiner Liebsten und nach meiner Heimat.
+rspDflt=Auch mein Heimweh ist groß. Lebt wohl.
+
+[FoundLetter]
+say= Ich sehne mich so sehr nach meiner Liebsten und nach meiner Heimat.
+rspDflt=Auch mein Heimweh ist groß. Lebt wohl.
+rspTxt1=Ich habe mich gefragt, ob dies wohl der Brief ist, den Ihr verloren habt?
+nxtLn1=FoundLetter2
+
+[FoundLetter2]
+say=Ihr habt ihn gefunden! Dank sei den Geistern, und Dank sei Euch! Die Rose, habt Ihr auch die Rose gefunden? Behaltet sie bitte, als Beweis meiner Dankbarkeit. Wenn dieser Krieg vorüber ist, wollen wir in Aratoy zusammenkommen und ein Glas miteinander trinken?
+Adventure=ch1-13;
+script=player.addtitle(01LetterReturned);takeitem(LoveLetter,player);player.setprop(trainingpoints=1);showmessage(Sie haben Trainingspunkte bekommen.,300);
+rspDflt=Ich freue mich darauf. Mögen die Geister - und Eure Liebste - Euch beschützen. Ade.
+
+[Rumour]
+say=Hallo! Nochmals Dank für den Brief.
+rspDflt=None
+rspTxt1=Da ist doch nichts zu danken. Ihr habt nicht zufällig irgend etwas Interessantes gehört, seit wir uns das letzte Mal unterhielten?
+nxtLn1=Rumour1
+
+[Rumour1]
+say=Leider nicht, ich habe nur meinen Brief gelesen und an meine Liebste gedacht.
+rspDflt=Ich verstehe, aber passt auf, dass Ihr das Papier nicht abnutzt! Lebt wohl.
+
+[Chalice]
+say=Wie ich höre, habt Ihr den Kelch des Lebens gefunden. Den Kelch, meinen Brief; offenbar habt ihr die Begabung, Verlorenes wiederzufinden. Bitte, macht weiterhin Gebrauch davon! 
+rspDflt=None
+rspTxt1=Ich werde in diesem Krieg mein Bestes geben. Das ist das mindeste.
+nxtLn1=Chalice1
+
+[Chalice1]
+say=Ich ebenfalls. Eigentlich habe ich nie daran geglaubt, dass ich meine Liebste wiedersehen würde, aber da nun der Kelch hier in Avalon ist, haben wir wirklich eine Chance. 
+rspDflt=Der Weg vor uns ist voller Gefahren, aber ich bin sicher, wir werden es überstehen. Lebt wohl. 
+
+[Chalice2]
+say=Wie ich höre, habt Ihr den Kelch des Lebens gefunden. Gut gemacht!
+rspDflt=None
+rspTxt1= Ich werde in diesem Krieg mein Bestes geben. Das ist das mindeste.
+nxtLn1=Chalice1

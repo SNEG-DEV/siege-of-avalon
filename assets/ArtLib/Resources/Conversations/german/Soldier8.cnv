@@ -1,0 +1,47 @@
+;Hello there, how can I help you?
+;May I be of assistance to you Sir?
+;What can I do for you?
+;How can I help you, Sir?
+;What is it you want?
+;Hello Sir, How may I help you?
+
+[root]
+Count=2
+Else=
+Default=Ade.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Soldier]
+say=Hallo.  Was gibt's, Mann?
+rspTxt1=Was habt Ihr zu berichten, Freund?
+NxtLn1=Soldier1
+rspTxt2=Hat die Gerüchteküche von Avalon irgend etwas Neues ausgekocht?
+nxtln2=Soldier2
+
+[Soldier1]
+say=Ich war Leibeigener in Elythria. Mein Leben war hart, aber ich hatte mehr zu essen als hier! Zumindest tun die Damen in der Küche ihr Bestes und versuchen, aus den wenigen Krümeln, die sie haben, etwas zu machen. Ach, wenn ich doch ein anständiges Stück Rippenfleisch hätte... Oh Verzeihung, ich hab wohl mal wieder unsinniges Zeug gefaselt. 
+rspBack=soldier
+
+[Soldier2]
+say=Nichts Wesentliches, Herr. Aber seht Euch vor. Diese Flüchtlinge werden allmählich SEHR hungrig.
+rspBack=soldier
+
+;After Recovery of Chalice
+[Chalice]
+say=Was wißt ihr zu berichten, Mann?
+rspTxt1=Sagt, wo kommt Ihr her?
+NxtLn1=Chalice1
+rspTxt2=Gibt es hier irgendwelche neuen Gerüchte?
+NxtLn2=Chalice2
+
+[Chalice1]
+say=Ich komme aus dem schönsten Land von ganz Eurale! Lang lebe Elythria!
+rspBack=chalice
+
+[Chalice2]
+say=Ja, ich habe gehört, die Fornaxier hätten einen neuen Fluch entwickelt. Leider widersprechen sich die Aussagen darüber, was er eigentlich bewirkt. Nur darin, dass er "wirksam" ist, sind sich alle einig. Tolle Information, was?
+rspBack=chalice

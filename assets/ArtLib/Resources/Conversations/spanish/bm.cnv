@@ -1,0 +1,134 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01FoundAhoul,01FoundTraitors,06chapter6,ShownWares
+Removed=
+
+[Quest]
+Added=ch1-63,ch1-64
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Gracias, Holt.
+say1=all(ttl(06chapter6));
+goto1=holtsix
+Say2=all(ttl(!06chapter6));
+goto2=Holt
+
+[Holt]
+Say='ola, se'or!  ¿Qué puede Holt hasé por usté?
+RspDflt=Nada de nada.  Adiós.
+rspCnd1=all(ttl(!ShownWares));
+RspTxt1=Nada, amigo.  Solo he venido a echar un vistazo.
+NxtLn1=Holt1
+rspCnd2=all(ttl(ShownWares));
+RspTxt2=He venido a echar otro vistazo a tus productos.
+nxtLn2=Wares
+rspCnd3=all(ttl(!bm081501,!01foundtraitors));
+RspTxt3=¿Ves a esos dos en las escaleras?  ¿No sabrás qué hacen allí, verdad?
+script3=addtitle(bm081501);
+nxtLn3=Traitors
+
+[Holt1]
+Say=Mira tanto como quieras.  No echarás nada en falta aquí, se'or.  No, se'or, nada.  Err, ¿le gusta lo que vé?
+RspDflt=None
+RspTxt1=No, naturalmente que no.  El armamento y armaduras de ahí fuera son tan malos como los míos.
+NxtLn1=Holt2
+
+[Holt2]
+Say=Sí, se'or, una bonita selección de espadas de hojalata y armaduras de papé, verdá?  Puede parecer adecuao pero er cuerpo se te queda muerto si intentas usarlas en combate real...
+RspDflt=None
+RspTxt1=He oído que hay una gran escasez de acero de calidad...
+NxtLn1=Holt3
+
+[Holt3]
+Say=Sí, se'or, una mardita escasé.  Y con er generá Ovoron yevándose todo er equipo bueno, no queda ná bueno.  Pero si se acerca aquí un momento, buen se'or, quizás tenga argo en lo que se pueda sentí interesao...
+RspDflt=None
+RspTxt1=Como desees, pero ¿por qué estás susurrando de repente?
+NxtLn1=Holt4
+RspTxt2=Te puedo asegurar que no tengo el más mínimo deseo de hacerlo.  Buenos días.
+nxtLn2=Holt8
+
+[Holt4]
+Say=He conseguío arramblar una pieza o dos que le pueden interesá.  Un negocio bajo mano, quizás, pero en Taberland aprendí que los que tienen buenas espadas, viven más--de dondequiera que sea que sacaron sus espadas.  Y los que no tenían buenas espadas...  O sea, seguro que me comprende usté.  Estas bellezas le ayudarán a mantener sus intestinos en el interior--por un precio, natural!
+Adventure=ch1-63;
+RspDflt=None
+RspTxt1=Si tus precios son razonables, podría estar interesado.  Enséñame lo que has conseguido.
+Script1=addtitle(ShownWares);merchant
+RspTxt2=Eh, No te pagaré con dinero de sangre.  Quizá pueda volver más tarde, pero lo dudo.
+NxtLn2=Holt7
+RspTxt3=Dame una buena razón por la que no deba denunciarte!
+NxtLn3=Holt5
+
+[Holt5]
+Say=Si dices algo, chavá, lo negaré.  Aunque nadie te creería igualmente--¿pa qué crees que son los amigos?  ¿Crees que haría algo así sin un poco de planificasión?
+RspDflt=None
+RspTxt1=Cálmate, hombrecito.  No voy a denunciarte cuando ambos podemos beneficiarnos.  Sólo quería saber si te chivarías.  No lo harías.  Bien.  Enséñame las cosas.
+Script1=addtitle(ShownWares);merchant
+RspTxt2=Quizá no.  Pero igualmente, no tengo interés en tus cosillas por ahora.
+NxtLn2=Holt7
+
+[Holt7]
+Say=Muy bien, pero te acordarás de cerrar el pico, si sabes lo que te conviene.
+RspDflt=Como digas.  Adiós.
+
+[Holt8]
+Say=No, no!  Espera por favor.  Escúchame, se'or.  No es lo que piensas!
+RspDflt=None
+RspTxt1=Habla.
+NxtLn1=Holt4
+
+[Wares]
+Say=¿Si?  Bueno, si quisieras--susurrando--acercarte aquí...
+RspDflt=none
+RspTxt1=Naturalmente.
+script1=merchant
+
+[Traitors]
+Say=Son un par de los chavales de Ovoron.  Tíos duros.  Todo lo que he podido sacar de ellos--además de miradas agresivas, quiero decir--es que están investigando los ruidos de abajo.  Ni idea de cómo pueden investigá si están tol dia ahí de pié arriba de la escalera, pero es lo que hay.  Iguá hay más ahí abajo, cazando bichos, y sólo se aseguran de que nada se escapa de abajo.  Sea cual sea el motivo, se lo callan--y tiene a todo el mundo alejao.  De todas formas nadie de nadie va a bajá mientras estén ellos ahí y creo que hará farta una orden der Generá Ovoron pa que se vayan.  Claro que er Generá se ha ido.
+Adventure=ch1-64;
+RspDflt=none
+RspTxt1=Ya veo.  Gracias por la información.
+nxtln1=Traitors2
+
+[Traitors2]
+Say=Cuando quieras, amigo.  Si realmente quieres vé lo que hay abajo, vuerve más tarde.  ¿Arguna vez tienen que dormí, verdá?  Bueno, puedo hacé argo más por tí?
+RspDflt=No, ya está bien.  Que tengas un buen día.
+rspCnd1=all(ttl(!ShownWares));
+RspTxt1=En realidad no, sólo estoy mirando.
+NxtLn1=Holt1
+rspCnd2=all(ttl(ShownWares));
+RspTxt2=También he venido a echar otro vistazo a tus cositas.
+nxtLn2=Wares
+
+[holtsix]
+Say=Buenos días, %playername%.  ¿Has venío a vé mi material?  Mis ventas han subío úrtimamente, así que píllalo mientras quede!
+RspDflt=No, Holt.  Debo seguir mi camino.
+RspTxt1=Sí, esperaba poder comprar algo especial para la llegada de Vortigerm...
+script1=merchant
+

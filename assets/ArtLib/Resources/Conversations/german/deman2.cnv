@@ -1,0 +1,98 @@
+[Notes]
+titlesChecked=01recovered
+
+[root]
+Count=1
+Else=
+Default=Danke, Deman.
+Say1=
+goto1=Deman1
+
+[Deman1]
+say=Wie kann ich Euch helfen, Herr?
+RspTxt1=Ich brauche eine Wegbeschreibung.
+NxtLn1=directions
+RspCnd2=All(ttl(!01Recovered));
+RspTxt2=Woher kommt Ihr?
+NxtLn2=location1
+RspCnd3=All(ttl(01Recovered));
+RspTxt3=Woher kommt Ihr?
+NxtLn3=location2
+RspCnd4=All(ttl(!01Recovered));
+RspTxt4=Habt Ihr irgendwelche Gerüchte gehört?
+NxtLn4=rumors1
+RspCnd5=All(ttl(01Recovered));
+RspTxt5=Habt Ihr irgendwelche Gerüchte gehört?
+NxtLn5=rumors2
+
+[directions]
+say=Wo wollt Ihr hin?
+RspTxt1=In den Außenhof.
+NxtLn1=directions1
+RspTxt2=Elaraths Labor.
+NxtLn2=directions2
+RspTxt3=Mudams Kammer.
+NxtLn3=directions3
+RspTxt4=Sir Roths Ratsstube.
+NxtLn4=directions4
+RspTxt5=Zum Quartiermeister.
+NxtLn5=directions5
+RspTxt6=Ich brauche einen Heiler.
+NxtLn6=directions6
+rspBack=Deman1
+
+[directions1]
+say=Ihr geht die Treppe am Ende der Flur hinunter in das Erdgeschoss. Dann geht es aus dem Haupttor zu Eurer Linken in den Außenhof.
+RspDflt=Danke für Eure Hilfe.
+rspBack=directions
+
+[directions2]
+say=Diesen Flur entlang in Richtung Norden, dann nach Osten bis zum Ende des Flurs.  Elaraths Labor ist die letzte Tür an der linken Seite.
+RspDflt=Danke für Eure Hilfe.
+rspBack=directions
+
+[directions3]
+say=Mudams Kammer ist am Südenende dieser Flur.
+RspDflt=Danke für Eure Hilfe.
+rspBack=directions
+
+[directions4]
+say=Sir Roths Ratsstube ist in der Ecke hinter den beiden Wachtposten.
+RspDflt=Danke für Eure Hilfe.
+rspBack=directions
+
+[directions5]
+say=Ihr geht diesen Flur entlang in Richtung Süden, biegt dann links ab, und die Waffenkammer ist die letzte Tür an der linken Seite.
+RspDflt=Danke für Eure Hilfe.
+rspBack=directions
+
+[directions6]
+say=Unten findet Ihr einen Mönche namens Crosby.  Er soll ein ausgezeichneter Heiler sein.
+RspDflt=Danke für Eure Hilfe.
+rspBack=directions
+
+[location1]
+;If 2 and before recovery of Chalice of Life (PLAYER DOES NOT HAVE THE TITLE OF RECOVERED), 
+say=Ich stamme aus Nisos, Herr.  Meinem Vater gehörten vierzehn Kriegsschiffe, aber ich fürchte, viele davon wurden versenkt als Kapitän Nicophorus den Fluss Voel hinaufzusegeln versuchte.
+RspDflt=Danke.
+rspBack=deman1
+
+[location2]
+;If after recovery of Chalice of Life (PLAYER DOES HAVE THE TITLE OF RECOVERED), 
+say=Ich wurde in Nisos geboren, Herr.  Mein Geschlecht ist kein sehr wichtiges, aber wir sind alle Krieger.  Ich bin stolz darauf, hier in Avalon zu sein!
+RspDflt=Danke.
+rspBack=deman1
+
+[rumors1]
+;If 3 and before recovery of Chalice of Life,
+say=Ein Freund von mir meinte, die Ahoul würden sich wieder auf einen größeren Angriff vorbereiten.  Ich vermute, dass Sir Roth heute Abend die Wache verdoppeln wird.
+RspDflt=Danke.  Das werde ich mir merken.
+rspBack=deman1
+
+[rumors2]
+;If 3 and after recovery of Chalice of Life (PLAYER DOES HAVE THE TITLE OF RECOVERED),
+say=Ein Wachposten am Südtor sagte, er hätte gesehen wie der Boden zitterte und der Himmel sich verdunkelte,  als Ihr den Kelch gefunden habt!  Ist das wahr?  Seid Ihr wirklich ein wiedergeborener Held der Antike?
+RspDflt=Ich glaube nicht,  aber danke für das Vertrauen.
+rspBack=deman1
+
+

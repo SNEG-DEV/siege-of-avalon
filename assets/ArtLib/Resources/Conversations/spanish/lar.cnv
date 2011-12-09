@@ -1,0 +1,95 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(5/23/01)=Passed
+
+[root]
+Count=4
+Else=
+Default=Gracias, Lar.
+say1=all(ttl(06chapter6));
+goto1=six
+say2=one(ttl(03chapter3,04chapter4,05chapter5));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Lar1
+Say4=All(ttl(01recovered));
+goto4=Lar4
+
+[Lar1]
+Say=Buenos días, señor.  ¿Qué puedo hacer por vos?
+RspDflt=None
+RspTxt1=¿De dónde eres?
+NxtLn1=Lar2
+RspTxt2=¿Has oído algún rumor interesante, últimamente?
+NxtLn2=Lar3
+
+[Lar2]
+Say=Soy de Oriam, señor.  No muy lejos de aquí, para ser sincero.  Mi padre era un mercader cerca de la vieja ciudad de los enanos cuando fuimos atacados.
+RspDflt=Que los buenos espíritus te protejan.
+rspBack=Lar1
+
+[Lar3]
+Say=Las noticias son malas desde el Patio de los Campesinos, señor.  Se dice que comen las cosas más atroces que uno pueda imaginar!  Me pongo enfermo solo de pensarlo, señor.
+RspDflt=Comprendo.  Gracias.
+rspBack=Lar1
+
+[Lar4]
+Say=Saludos, señor.  ¿Cómo puedo ayudarle?
+RspDflt=none
+RspTxt1=¿Habéis oído algún rumor?
+nxtln1=Lar5
+
+[Lar5]
+Say=Se dice que pronto nos llegarán refuerzos.  No se cuando, pero los Catheanos y los Aratoyanos han pedido más tropas y alimentos.
+RspDflt=Esas son buenas noticias, desde luego.
+
+[three]
+Say=[aaaaatchís]  H..H..Hola, [atchís]
+RspDflt=none
+RspTxt1=Quizá deberías ver a un curandero.  No puedo permitirme el caer enfermo.
+nxtln1=three2
+
+[three2]
+Say=Lo har...[snif]  Lo he hecho ya, pero esas hojas saben fatal!
+RspDflt=none
+RspTxt1=La medicina amarga es a menudo la más efectiva.
+nxtln1=three3
+
+[three3]
+Say=¿Dónde habéis oído esa trola?
+RspDflt=none
+RspTxt1=¿Qué importa?  Si no te tomas las hojas, pondrás enfermas a otras personas.
+nxtln1=three4
+
+[three4]
+Say=Bueno, bueno.  [tosiendo]
+RspDflt=Nos harás un favor a todos.  Hasta luego.
+
+[six]
+Say=El té que hacen los monjes es malísimo, pero me había cansado de toser y estornudar... He tenido que taparme la nariz para tragármelo, pero ahora me siento mucho mejor, como si pudiese matar a mil Ahoul!  Jaja!
+RspDflt=Me alegro de oírlo, y espero que tengas la oportunidad de hacerlo, soldado.  Avalon te da las gracias.
+

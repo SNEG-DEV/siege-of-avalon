@@ -1,0 +1,128 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6,06trialdone
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Thank you, Iven.
+say1=all(ttl(06chapter6,!06trialdone));
+goto1=chapter6
+say2=one(ttl(03chapter3,04chapter4,05chapter5));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Iven
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Iven]
+Say=You've the look of a newcomer.  Are you lost?
+RspDflt=None
+RspTxt1=No.  I was just exploring a bit.
+NxtLn1=Iven1
+RspTxt2=Not at all.  Just introducing myself to my fellow soldiers.  Who are you and where are you from?
+NxtLn2=Iven2
+RspTxt3=Nope, just hunting for rumors.  Have you heard any lately?
+NxtLn3=Iven3
+
+[Iven1]
+Say=Well, don't wander about much.  Make yourself useful.
+RspDflt=I will.  Good day.
+rspBack=Iven
+
+[Iven2]
+Say=I'm Iven from Nisos, sir.  I used to be a sailor before my boat was sent to the bottom.  When Nicophorus calls for me, I'll start sailing again with him.
+RspDflt=Nicophorus is a good man.  I hope your wish is granted.
+rspBack=Iven
+
+[Iven3]
+Say=Only the same frightened hogwash I've always been hearing.  Everyone is being too easily scared by the length of this siege.
+RspDflt=None
+RspTxt1=Perhaps.  It is a frightening situation we are in.
+NxtLn1=Iven4
+
+[Iven4]
+Say=True, but I have faith in our generals to make a success out of it.
+RspDflt=Your faith is well placed, soldier.  Good day.
+rspBack=Iven
+
+[Chalice]
+Say=How can I serve you, my lord?
+RspDflt=None
+RspTxt1=Just passing through.  I hope everything is well.
+NxtLn1=Chalice1
+RspTxt2=You can tell me the latest rumor you've heard.
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=As well as can be, sir.  Good day to you.
+RspDflt=Good day.
+rspBack=Chalice
+
+[Chalice2]
+Say=I hear Captain Calvaric spit in the eye of Mithras the other day!  Is it true?
+RspDflt=None
+RspTxt1=I suspect that one is false, but only out of circumstance.  If Calvaric were ever in the position, I'm sure he would spit at Mithras -- as would we all!
+NxtLn1=Chalice3
+
+[Chalice3]
+Say=Too true, my lord!
+RspDflt=Good day, soldier.
+rspBack=Chalice
+
+[three]
+Say=Hello... [yawn] sir.
+RspDflt=none
+RspTxt1=If you're tired, you should chew on a tea leaf, soldier.  It will keep you awake.
+nxtln1=three2
+
+[three2]
+Say=Oh, sure.  I'll just [yawn] pull out my Bag of Endless Tea Leaves and start gnawing away.
+RspDflt=none
+RspTxt1=I see your point.  It has been quite a while since any of us have been with the comforts of the lives we used to have before the cursed campfire.
+nxtln1=three3
+
+[three3]
+Say=What would you know about that?  You're an officer and the brother of the famed Lieutenant Corvus!
+RspDflt=Very well, soldier.  If that is the way you choose to see it, farewell.
+RspTxt1=What about my appearance fooled you, soldier?  Was it my fingers bedecked with golden rings, my scepter studded with pearls?  Was it the wake of a dozen personal attendants that seem to follow me everywhere?
+nxtln1=three4
+
+[three4]
+Say=Hah, good one, sir.
+RspDflt=That's what I thought.  Stay safe, soldier.
+
+[chapter6]
+Say=Hail, brother of Corvus.
+RspDflt=Hail, soldier.
+

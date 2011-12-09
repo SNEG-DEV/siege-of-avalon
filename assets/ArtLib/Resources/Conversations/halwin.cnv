@@ -1,0 +1,122 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04campscleared,06chapter6
+Removed=
+
+[Quest]
+Added=ch3-532
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/16/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Thank you, Halwin.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(04campscleared));
+goto2=cleared
+say3=all(ttl(03chapter3));
+goto3=three
+Say4=All(ttl(!01recovered));
+goto4=Halwin
+Say5=All(ttl(01recovered));
+goto5=chalice
+
+[Halwin]
+Say=Good day, sir.  I trust you are well?
+RspDflt=I am.  Good day to you.
+RspTxt1=Where are you from?
+NxtLn1=Halwin1
+RspTxt2=Have you heard any rumors?
+NxtLn2=Halwin2
+
+[Halwin1]
+Say=I sailed here from Nisos, sir.  Unfortunately, my ship, the Bleeding Siren, was burned.  Now, I'm forced to fight from my land legs.
+RspDflt=Well, I'm glad you are with us.  We need every soldier we can get.
+rspBack=Halwin
+
+[Halwin2]
+Say=I heard Nicophorus is planning a raid on an Ahoul camp up the river!  My source isn't too reliable, but we could sure use the supplies.
+RspDflt=That we could.  Good day.
+rspBack=Halwin
+
+[chalice]
+Say=I see the village brought out the soldier who was in you.  I knew Corvus' brother would make a fine warrior.
+RspDflt=Thank you for the kind words.
+RspTxt1=What's new?
+NxtLn1=chalice1
+
+[chalice1]
+Say=Keep your ears open.  There may be a fight tonight.  If you're lucky, you may get yourself a piece of the action!
+RspDflt=May the spirits protect you.
+
+[three]
+Say='Ello, sir.
+RspDflt=none
+RspTxt1=How goes it, Halwin?
+nxtln1=three2
+
+[three2]
+Say=Longin' for the old days, sir.  I miss the crisp smell of the waters.  Say, did you hear that the Sha'ahoul have something planned?
+RspDflt=none
+RspTxt1=I believe I've heard that one before, why?
+nxtln1=three3
+
+[three3]
+Say=Oh, there's been some activity to the south of Avalon, have you heard?  The scum are out there at all hours of the night, doing their demonic deeds!  It's true!
+adventure=ch3-532
+RspDflt=none
+RspTxt1=Interesting.  Do you have any idea what they're doing?
+nxtln1=three4
+
+[three4]
+Say=That's the Creator's own knowledge, right there, but you know they can't be up to any good!
+RspDflt=Certainly not.  Thank you for the information, soldier, and farewell.
+
+[cleared]
+Say=Hey!  You got rid of them, right?  It was you, wasn't it?
+RspDflt=none
+RspTxt1=I'm afraid I haven't a clue what you're talking about.
+nxtln1=cleared2
+
+[cleared2]
+Say=Sure you do!  The Ahoul we've been seeing to the south of the keep!  You've destroyed them!
+RspDflt=none
+RspTxt1=Yes, I did help to remove their threat from the area.
+nxtln1=cleared3
+
+[cleared3]
+Say=Congratulations!  You know, at first I didn't believe the stories about you, but that's amazing!  Hey, take care of yourself, huh?
+RspDflt=I plan to.  Thank you, soldier.  Stay safe.
+
+[chapter6]
+Say=Huh? Oh, %playername%! I was only just thinking of sending for you. I am uneasy, friend.  The Sha'ahoul have been especially calm today.  Something is amiss.
+RspDflt=Farewell.
+RspTxt1=So you think they're getting ready to attack?
+nxtln1=chalice1
+

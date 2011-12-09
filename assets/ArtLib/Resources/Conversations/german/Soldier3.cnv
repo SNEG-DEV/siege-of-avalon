@@ -1,0 +1,40 @@
+[root]
+Count=2
+Else=
+Default=Ade.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Soldier]
+say=Was braucht Ihr?
+rspTxt1=Und wo kommt Ihr her, Soldat?
+NxtLn1=Soldier1
+rspTxt2=Ich würde gern ein spannendes Gerücht hören.
+NxtLn2=Soldier2
+
+[Soldier1]
+say=Ich komme aus Aratoy, und ich vermisse die Wälder meiner Heimat schrecklich. Verglichen mit meinem Leben in der Wildnis erscheint mir diese Festung so kalt. Deshalb ziehe ich auch Pflanzen neben meiner Pritsche in der Kaserne. Dieser Ort könnte einem alle Lebenskraft entziehen. Ich kann es kaum erwarten, wieder ins Freie zu kommen.
+rspBack=soldier
+
+[Soldier2]
+say=Nein, Herr. Jedenfalls nichts Nützliches. Andererseits ist es zweifelhaft, ob Gerüchte jemals hilfreich sind. Zumindest können sie ...  manchmal... Zuversicht verbreiten.
+rspBack=soldier
+
+;After Recovery of Chalice
+[Chalice]
+say=Hallo, Herr, wie kann ich Euch helfen?
+rspTxt1=Wo kommt Ihr her, Soldat?
+NxtLn1=Chalice1
+rspTxt2=Ich weiß, dass ein aufgeweckter Bursche wie Ihr alle möglichen Gerüchte hört...
+NxtLn2=Chalice2
+
+[Chalice1]
+say=Ich komme aus Aratoy, der Perle von ganz Eurale.  Sobald die Ahoul vernichtet sind, kehre ich in die Wälder zurück. Es ist schlimm genug, dass ich mich vor Furcht, von einem Ahoul-Pfeil durchbohrt zu werden, nicht ins Freie wagen kann.
+rspBack=chalice
+
+[Chalice2]
+say=Nur, dass die Bogenschützen von Aratoy zum Kampf bereit sind! Wir sind begierig darauf, die Belagerung zu zerschlagen, den Krieg zu beenden und die Ahoul ein für alle Mal zu erledigen!
+rspBack=chalice

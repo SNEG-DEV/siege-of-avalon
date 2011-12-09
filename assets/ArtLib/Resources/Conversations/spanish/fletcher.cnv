@@ -1,0 +1,46 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=
+Say1=
+goto1=Fletcher
+
+[Fletcher]
+Say=¿Necesitas flechas, chico?  Hago las mejores flechas de Avalon.
+RspDflt=No, gracias.
+RspTxt1=Sí, por favor.
+script1=merchant
+

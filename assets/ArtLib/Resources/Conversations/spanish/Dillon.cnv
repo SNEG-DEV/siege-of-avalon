@@ -1,0 +1,213 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01Lahren,01recovered,03chapter3,04chapter4,05chapter5,06chapter6,06trialdone
+Removed=
+
+[Quest]
+Added=ch3-513,ch3-514,ch3-515,ch3-516,ch3-517
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Gracias, Dillon.
+say1=all(ttl(06chapter6,!06trialdone));
+goto1=chapter6
+say2=one(ttl(04chapter4,05chapter5));
+goto2=fourfive
+say3=all(ttl(03chapter3));
+goto3=three
+Say4=All(ttl(!01recovered));
+goto4=Dillon
+Say5=All(ttl(01recovered));
+goto5=Chalice
+
+[Dillon]
+Say=Saludos.  ¿Hay algo que necesites de mí?
+RspDflt=None
+RspTxt1=No, soldado.  Sólo pasaba por aquí.
+NxtLn1=Dillon1
+RspTxt2=Soy nuevo aquí y me gustaría conocer a mis futuros compañeros de batalla.  ¿Quién eres y de dónde vienes?
+NxtLn2=Dillon2
+RspTxt3=¿Qué hay de nuevo por aquí? ¿Qué se rumorea por la zona?
+nxtln3=dillon3
+
+[Dillon1]
+Say=Muy bien, señor.  Que los buenos espíritus le protejan.
+RspDflt=Igualmente.  Buenos días.
+
+[Dillon2]
+Say=Soy Dillon, señor.  Solía ser el guarda de un hechicero en Fornax, pero mi hechicero me envió aquí para ayudar en la lucha.
+RspDflt=Ha sido un placer conocerte.  Buenos días.
+rspBack=dillon
+
+[Dillon3]
+Say=He oído en los barracones que los hechiceros han descubierto una nueva y poderosa arma.  ¿Sabes algo de ello?
+RspDflt=None
+RspTxt1=Me temo que no.  Lo siento.
+NxtLn1=Dillon4
+
+[Dillon4]
+Say=No tiene importancia, señor.  Buenos días.
+RspDflt=Buenos días.
+rspBack=dillon
+
+[Chalice]
+Say=Saludos, mi señor!  ¿Qué tal le han ido estos días?
+RspDflt=None
+RspTxt1=Bien, Dillon.  ¿Y a ti?
+NxtLn1=Chalice1
+RspTxt2=Bien.  ¿Qué noticias hay?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Bastante bien, señor.
+RspDflt=Excelente.  Buenos días.
+rspBack=chalice
+
+[Chalice2]
+Say=Dicen que habéis derrotado de forma aplastante a los Ahoul en el pueblo!  Enhorabuena!
+RspDflt=No estoy seguro de que les haya derrotado de manera aplastante, pero han sido algunas victorias, sí.  Gracias.
+rspBack=Chalice
+
+[three]
+Say=Hola, señor.  No le he visto desde hace mucho.  ¿Qué tal le ha ido?  ¿Cómo está su hermano?
+RspDflt=none
+RspTxt1=Se está recuperando en la enfermería.  Estaba en muy mal estado cuando le encontré, y el camino hacia aquí no hizo sino empeorarle.  Debería estar bien a tiempo para saludar la llegada de las tropas del Rey Vortigerm.
+nxtln1=three1
+
+[three1]
+Say=Es bueno oír eso, señor.  Todos nos alegramos de tenerle aquí.
+RspDflt=Gracias, Dillon.  Hasta luego.
+rspcnd1=all(stt(perception>19,charm>13));
+RspTxt1=Pareces preocupado, soldado.  ¿Hay algo que te preocupe?
+nxtln1=three2
+rspback=three
+
+[three2]
+Say=De hecho, señor, me alegro de que me pregunteis, pues así es.  Me irrita sobremanera que todo el mundo vea Fornax como un reino de magos y nada más.  Yo soy de Fornax, y no me gusta que me encasillen.  Desconozco cómo se originó este rumor, pero está haciendo que todos se aparten de mí en los comedores... y en todas partes.
+adventure=ch3-513
+RspDflt=none
+RspTxt1=Comprendo por qué estás molesto, soldado, pero ¿qué puede hacerse al respecto?  ¿Cómo se lucha contra una ignorancia tan extendida?
+nxtln1=three3
+
+[three3]
+Say=Me gustaría saber quién la extiende, para así poder darle a esa persona un buen puñetazo en...  quiero decir, una buena charla.
+RspDflt=none
+rspcnd1=all(ttl(01Lahren));
+RspTxt1=Sé de al menos una persona con quien dudo que quieras intentar hablar o pelear.
+nxtln1=three4
+RspTxt2=No me gusta que me llamen "chico" ni "chaval" ni "hijo" ni "niño", el encasillamiento común para un joven inconsecuente y sin experiencia.  Por ello intento mostrarles que se equivocan.
+nxtln2=three20
+
+[three4]
+Say=Oh, y ¿quién es esa persona, si no le importa decírmelo?
+RspDflt=none
+RspTxt1=Ciertamente no.  Era una maga llamada Pell--
+nxtln1=three5
+
+[three5]
+Say=Ah, sí.  [adopta una expresión hosca]  La locura ha sido relativamente amable con ella, pero olvida lo que he dicho, qué te dijo como auto-nombrada embajadora y portavoz de todos los Fornaxanos?
+RspDflt=none
+RspTxt1=¿Qué problema tienes con esa mujer?
+nxtln1=three6
+
+[three6]
+Say=Es la persona más arrogante de Fornax, lo cual resulta divertido, ya que sólo es medio Fornaxana, aunque eso es irrelevante.  El problema real, por lo que he oído a menudo, es que se niega a seguir las reglas...  No pude oír más que "las reglas", pero...
+RspDflt=none
+RspTxt1=Escúpelo ya, hombre!
+nxtln1=three7
+RspTxt2=Continúa, por favor.
+nxtln2=three7
+
+[three7]
+Say=Los hechiceros creen fervientemente que la mente humana trabaja siguiendo unas leyes.  La magia doblega esas leyes, y la mente debe construir nuevas reglas.  Por ejemplo, ¿qué pasaría si no estuviésemos sujetos a la tierra?  ¿No redefiniría eso una buena parte de lo que percibimos como "real?"
+RspDflt=none
+RspTxt1=Sí, pero si la mente puede construir reglas nuevas, como has dicho...
+nxtln1=three8
+RspTxt2=Veo a dónde quieres llegar, pero ella me parece lo suficientemente estable.
+nxtln2=three10
+
+[three8]
+Say=No eternamente.  Por lo que he logrado comprender, la energía mágica circula por el cerebro como el agua por un acueducto.  Aunque es cierto que algunas mentes poseen... ah, acueductos más grandes, todas ellas tienen su límite.  Si el cerebro no puede canalizar toda la energía mágica que le llega, ésta se libera, y sin una parte activa del cerebro humano para controlarla, busca las partes inactivas...
+adventure=ch3-514
+RspDflt=none
+RspTxt1=¿Y qué sucede entonces?
+nxtln1=three9
+
+[three9]
+Say=Dicen que el subconsciente le da forma.  Yo creo que viene de los sueños.  No es necesario que te cuente los horrores que acechan allí; todos hemos tenido pesadillas de pequeños.  ¿Me comprendes?
+adventure=ch3-515
+RspDflt=none
+RspTxt1=Correcto.  ¿Qué puedo hacer para ayudarla a evitar sobrecargarse?
+nxtln1=three10
+
+[three10]
+Say=Las emociones son lo que disparan la canalización de dichos excesos de energías mágicas.  [sonríe]  No la hagas enfadar.  Probablemente sería un error fatal.  Probablemente su último exceso ha afectado al pobre Lahren.  Ahora que he respondido a tus preguntas, ¿podrías responder a las mías?
+RspDflt=none
+adventure=ch3-516
+RspTxt1=Una pregunta más, Dillon.  ¿Cómo descubriste todas éstas cosas?
+nxtln1=three11
+
+[three11]
+Say=Juraría que te he dicho hace algún tiempo que era el guarda de un hechicero.  El hechicero para el que trabajaba, alojó unas cuantas reuniones, y él y sus compañeros de hechicería hablaron de muchas cosas.  Ser un guarda tiene sus privilegios; cuanto más simple pareces y actúas, más cosas te dejan escuchar.  Así pues, ¿qué dijo Pell sobre los Fornaxanos?
+RspDflt=none
+RspTxt1=Para completar tu historia, dijo que los Fornaxanos tienen magia en la sangre, y algo de ser mágica hasta su "mismísimo núcleo", signifique eso lo que signifique.
+nxtln1=three12
+
+[three12]
+Say=Jo, jo, esa es buena!  ¿Has oído alguna vez algo tan zalamero?
+RspDflt=none
+RspTxt1=Debo confesar que no.  Hasta luego, Dillon, tengo cosas que hacer.
+nxtln1=three18
+RspTxt2=Las personas melodramáticas tienden al melodrama, Dillon.  Hasta luego.
+nxtln2=three18
+
+[three18]
+Say=Te pido que guardes silencio sobre lo que te he dicho.  Sé evasivo, miente si debes hacerlo, pero no me menciones.
+adventure=ch3-517
+RspDflt=No es problema, Dillon.  Hasta luego.
+RspTxt1=Y si lo hago?
+nxtln1=three19
+
+[three19]
+Say=Lo negaré todo.  [sonrisa]  Todo el mundo excepto tú y unos pocos amigos selectos, me suponen un hombre muy simple, incapaz de dichas reflexiones, y es más, totalmente desinteresado en tales materias.
+RspDflt=Una buena defensa, Dillon.  No te preocupes, tu nombre no será mencionado.  Adiós.
+
+[three20]
+Say=Supongo que tenéis razón sobre ello, señor.  Probablemente eso es todo lo que puedo esperar hacer; no es como si pudiese reeducar a todo el mundo a la vez.  Simplemente es irritante, ¿me comprendéis?
+RspDflt=Te comprendo, soldado, pero te sentirá mejor si te muerdes la lengua y callas.  Adiós.
+
+[chapter6]
+Say=He oído a los monjes comentar que planeaban trasladar la enfermería. ¿Por qué querrían hacer eso? Eso nos costaría muchas horas de trabajo. Con todas las horas de guardia que he estado haciendo, no creo que pueda ayudar. Los Sha'ahoul pronto atacarán de nuevo, y ellos quieren trasladar mobiliario! Me pregunto si Roth sabe algo de esto. Definitivamente, algo sucede entre los muros de Avalon!
+RspDflt=Tus suposiciones son tan buenas como las mías...  Hasta luego.
+
+[fourfive]
+Say=Es bueno verle de nuevo, señor.  He oído que su hermano insiste en volver al servicio.  El Teniente Corvus es un gran soldado!  Debe ser algo de familia!
+RspDflt=Gracias por el cumplido, Dillon.  Intentaré localizar a Corvus.
+

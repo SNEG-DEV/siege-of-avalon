@@ -1,0 +1,69 @@
+[root]
+Count=2
+Else=
+Default=Danke, Iven.
+Say1=All(ttl(!01recovered));
+goto1=Iven
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+
+[Iven]
+say=Ihr seht wie ein Neuankömmling aus.  Habt Ihr Euch verlaufen?
+rspDflt=None
+rspTxt1=Nein.  Ich habe mich nur ein wenig umgesehen.
+NxtLn1=Iven1
+rspTxt2=Ganz und gar nicht.  Ich stelle mich nur meinen Kameraden vor.  Wer seid Ihr, und wo kommt Ihr her?
+NxtLn2=Iven2
+rspTxt3=Nein, ich bin nur auf der Suche nach Neuigkeiten.  Habt Ihr irgendwelche Gerüchte gehört?
+NxtLn3=Iven3
+
+[Iven1]
+say=Nun, lauft nicht zu viel herum.  Macht Euch nützlich.
+rspDflt=Mache ich.  Ade.
+rspBack=Iven
+
+[Iven2]
+say=Ich bin Iven, aus Nisos.  Früher war ich Matrose, bis mein Boot versenkt wurde.  Wenn Nicophorus nach mir ruft, werde ich wieder mit ihm segeln.
+rspDflt=Nicophorus ist ein guter Mann.  Ich hoffe, Euer Wunsch geht in Erfüllung.
+rspBack=Iven
+
+[Iven3]
+say=Nur den gleichen, abergläubischen Quatsch, den ich letzter Zeit dauernd höre. Alle lassen sich durch die Dauer dieser Belagerung zu sehr verängstigen.
+rspDflt=None
+rspTxt1=Vielleicht. Es ist ja eine Furcht erregende Situation, in der wir uns befinden.
+NxtLn1=Iven4
+
+[Iven4]
+say=Stimmt, aber ich habe Vertrauen in unsere Generäle-- sie werden das Blatt zu unseren Gunsten wenden.
+rspDflt=Euer Vertrauen ist begründet, Soldat.  Ade.
+rspBack=Iven
+
+;After recovery of Chalice
+[Chalice]
+say=Wie kann ich Euch dienen, Mylord?
+rspDflt=None
+rspTxt1=Ich bin nur auf der Durchreise.  Ich hoffe, es geht Euch gut.
+NxtLn1=Chalice1
+rspTxt2=Ihr könnt mir das neueste Gerücht erzählen, das Ihr gehört habt.
+NxtLn2=Chalice2
+
+[Chalice1]
+say=So gut es einem gehen kann, Herr.  Gehabt Euch wohl.
+rspDflt=Auf Wiedersehen.
+rspBack=Chalice
+
+[Chalice2]
+say=Ich habe gehört, dass Hauptmann Calvaric Mithras neulich ins Gesicht gespuckt hat!  Stimmt das?
+rspDflt=None
+rspTxt1=Ich vermute, dass das eine Falschmeldung ist. Wäre Calvaric aber je in der Lage, würde er Mithras bestimmt anspucken-- wie wir alle!
+NxtLn1=Chalice3
+
+[Chalice3]
+say=Das ist wohl wahr, Mylord!
+rspDflt=Ade, Soldat.
+rspBack=Chalice
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

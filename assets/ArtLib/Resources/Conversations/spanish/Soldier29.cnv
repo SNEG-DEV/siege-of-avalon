@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Hasta luego.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=¿Qué puedo hacer por usted?
+RspTxt1=¿De dónde sois?
+NxtLn1=Soldier1
+RspTxt2=¿Habéis oído algún rumor nuevo?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Vine aquí desde Nisos hace tres años, señor.  Pero parece que haga tres vidas...
+rspBack=soldier
+
+[Soldier2]
+Say=He oído que los de Aratoy están robando nuestra comida por la noche.  Si atrapo a esos apestosos ladrones...
+rspBack=soldier
+
+[Chalice]
+Say=¿Qué puedo hacer por usted?
+RspTxt1=¿De dónde sois?
+NxtLn1=Chalice1
+RspTxt2=¿Habéis oído algún rumor nuevo
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Navegué hasta aquí desde Nisos, y no pienso volver hasta que tenga la cabeza de Mithras en la punta de mi maza!
+rspBack=chalice
+
+[Chalice2]
+Say=Sólo que los refuerzos llegarán en cualquier momento!
+rspBack=chalice
+

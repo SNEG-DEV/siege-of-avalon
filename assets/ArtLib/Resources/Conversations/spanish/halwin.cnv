@@ -1,0 +1,122 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04campscleared,06chapter6
+Removed=
+
+[Quest]
+Added=ch3-532
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/16/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Gracias, Halwin.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(04campscleared));
+goto2=cleared
+say3=all(ttl(03chapter3));
+goto3=three
+Say4=All(ttl(!01recovered));
+goto4=Halwin
+Say5=All(ttl(01recovered));
+goto5=chalice
+
+[Halwin]
+Say=Buenos días, señor.  Confío que se encuentre bien!
+RspDflt=Así es.  Buenos días.
+RspTxt1=¿De dónde eres?
+NxtLn1=Halwin1
+RspTxt2=¿Sabes de algún rumor interesante?
+NxtLn2=Halwin2
+
+[Halwin1]
+Say=Navegué hasta aquí desde Nisos, señor.  Desgraciadamente, mi barco, la Sirena Sangrante, fue quemado.  Ahora me veo forzado a luchar sobre mis piernas.
+RspDflt=Bueno, me alegro de que estés con nosotros.  Necesitamos todos los soldados que podamos conseguir.
+rspBack=Halwin
+
+[Halwin2]
+Say=He oído que Nicophorus planea un asalto al campo Ahoul corriente arriba!  Mi fuente no es demasiado fiable, pero realmente podríamos aprovechar los suministros que robásemos.
+RspDflt=Seguro que sí.  Buen día.
+rspBack=Halwin
+
+[chalice]
+Say=Veo que el pueblo sacó a la luz el soldado que había en ti.  Sabía que el hermano de Corvus sería un buen guerrero.
+RspDflt=Gracias por tus amables palabras.
+RspTxt1=¿Qué hay de nuevo?
+NxtLn1=chalice1
+
+[chalice1]
+Say=Mantén tus oídos alerta.  Podría haber una escaramuza esta noche.  Si tienes suerte, conseguirás un poco de acción!
+RspDflt=Que los espíritus te protejan.
+
+[three]
+Say=Hola, señor.
+RspDflt=none
+RspTxt1=¿Qué tal va todo, Halwin?
+nxtln1=three2
+
+[three2]
+Say=Rememorando los viejos tiempos, señor.  Echo de menos el olor del mar.  Dime, ¿has oído que los Sha'ahoul planean algo?
+RspDflt=none
+RspTxt1=Creo que he oído eso antes, ¿por qué preguntas?
+nxtln1=three3
+
+[three3]
+Say=Oh, ha habido una cierta actividad al sur de Avalon, ¿no te has enterado?  Esa escoria está ahí fuera toda la noche, haciendo sus ritos demoníacos!  Es cierto!
+adventure=ch3-532
+RspDflt=none
+RspTxt1=Interesante.  ¿Tienes idea de lo que están haciendo?
+nxtln1=three4
+
+[three4]
+Say=Sólo el Creador lo sabe, pero seguro que no planean nada bueno!
+RspDflt=Cierto.  Gracias por la información, soldado, y hasta luego.
+
+[cleared]
+Say=Eh!  Te libraste de ellos, ¿verdad?  Fuiste tú, ¿no?
+RspDflt=none
+RspTxt1=Me temo que no tengo ni idea de qué estás hablando.
+nxtln1=cleared2
+
+[cleared2]
+Say=Seguro que sí!  Los Ahoul que hemos estado viendo al sur de la fortaleza!  Los has destruido!
+RspDflt=none
+RspTxt1=Sí, he ayudado a eliminar la amenaza de su proximidad.
+nxtln1=cleared3
+
+[cleared3]
+Say=Enhorabuena!  Sabes, al principio no creía las historias que contaban de tí, pero esto es asombroso!  Cúidate, ¿vale?
+RspDflt=Lo intentaré.  Gracias, soldado.  Ten cuidado.
+
+[chapter6]
+Say=Uh? Oh, %playername%! Justamente estaba pensando en enviar alguien a buscarte.  Estoy intranquilo, amigo.  Los Sha'ahoul han estado especialmente silenciosos hoy.  Algo va mal.
+RspDflt=Hasta luego.
+RspTxt1=¿Así que crees que se preparan para atacar?
+nxtln1=chalice1
+

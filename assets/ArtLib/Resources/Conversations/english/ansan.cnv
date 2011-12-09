@@ -1,0 +1,134 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(7/12/01)=Passed
+tucker(7/25/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Thank you, Ansan.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(03chapter3));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Anson
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Anson]
+Say=Would you mind telling me what you're doing in the kitchen?  I've told you soldiers a hundred times that I can't give handouts.  General Roth has strictly rationed our food stores for a very good reason, you know!  You may be hungry, but at least you're healthy.
+RspDflt=None
+RspTxt1=I apologize for disturbing you.  I am new here, and wish to have a look around.
+NxtLn1=Anson1
+RspTxt2=I am curious about the people who have been chosen to inhabit Avalon. Who are you, and where do you come from?
+NxtLn2=Anson2
+RspTxt3=I'm merely hoping to catch up on the dealings of the local grapevine.  Have you any rumors?
+NxtLn3=Anson3
+
+[Anson1]
+Say=Well, make your look a quick one.  Anora, the mistress of the kitchen, cannot abide bystanders.
+RspDflt=You will barely know I'm here.
+rspBack=Anson
+
+[Anson2]
+Say=I am Ansan, and I'm from Cathea.  My father, a groom, brought me with him when Avalon was constructed.  I can't imagine why; probably just to look over me.  I'll always be a little girl in his eyes.  At any rate, rather than remain underfoot, I took up work here in the kitchen.
+RspDflt=None
+RspTxt1=And glad we are of it.  Everyone here contributes something important.  It's why Avalon was built.
+NxtLn1=Anson4
+
+[Anson4]
+Say=I'd give you a taste of some of what I've got cooking, but Anora would have my head.  I'm sorry, sir.
+RspDflt=Nothing to forgive -- the food is rationed, you said.  Good day to you.
+rspBack=Anson
+
+[Anson3]
+Say=Bonnie came running up the stairs from the cellar this morning, saying something had tried to kill her.  Mistress Anora said she was just being silly, but for some reason isn't letting any of us down into the basement.
+RspDflt=I'm sure there's nothing to worry about.  Thanks for your time.
+rspBack=Anson
+
+[Chalice]
+Say=Hello, again!  The hero returns to the kitchens!  I might actually have something to offer to you this time.
+RspDflt=None
+RspTxt1=You flatter me.  Actually, I just stopped by to catch up on how everything's going here.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Stressful, sir.  It's difficult trying to make meager amounts of food stretch as far we must.  At least spirits are high.  I think one might be hungry and happy at the same time.
+RspDflt=None
+RspTxt1=I suppose it's possible.  I'd rather be happy and well-fed though, truth be told.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=As would I.  Good day, sir.
+RspDflt=And to you, madam.
+
+[three]
+Say=Good tidings, sir.  It is nice to see you again.
+RspDflt=none
+RspTxt1=And nice to see you again, lady.  How fares the stretching of the food?
+nxtln1=three2
+
+[three2]
+Say=Well, we planned it out in advance, and the rationing seems to be holding up.  I wish there were some way to replenish our supplies...  I hope Vortigerm's army has some supplies for us.  They must know how badly we are faring... they simply must!
+RspDflt=none
+RspTxt1=Calm down, lady.  We will make it through if we all believe.
+nxtln1=three3
+
+[three3]
+Say=I certainly hope you're right about that, sir.  Some of us were not bred to go through so much.
+RspDflt=none
+RspTxt1=I understand, lady.  We all have different strengths and weaknesses...
+nxtln1=three4
+
+[three4]
+Say=What would you know of weakness?  You're the strongest man in the army!
+RspDflt=none
+RspTxt1=With all due respect, my lady, I am sure that I am not, and I do have weaknesses.  I do not like witnessing people suffer, and suffering is a way of life inside a castle besieged.
+nxtln1=three5
+
+[three5]
+Say=I suppose you're right, sir, I'm just not doing well under the pressure.  Sometimes I wish for the simple groom's life my father lives.  Being in here is depressing.  Not as depressing as the infirmary, I'd imagine, but...
+RspDflt=It seems to me as though you are doing fine.  Take heart, Ansan.  Farewell for now.
+
+[chapter6]
+Say=%playername%! You dash about these halls as though you've business to attend to.  If you're looking for Bonnie, she isn't here.
+RspDflt=I see.  Farewell.
+RspTxt1=Where is she?
+nxtln1=chapter6b
+
+[chapter6b]
+Say=How am I supposed to know?  Ask Anora.
+RspDflt=I see.  Farewell.
+

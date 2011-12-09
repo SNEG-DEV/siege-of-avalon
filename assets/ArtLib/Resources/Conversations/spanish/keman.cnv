@@ -1,0 +1,130 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01Recovered
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=Gracias, Keman.
+Say1=
+goto1=Keman1
+
+[keman1]
+Say=¿Cómo puedo ayudarle, mi señor?
+RspDflt=Perdóneme, debo seguir mi camino.
+RspTxt1=Necesito orientación.
+NxtLn1=directions
+RspCnd2=All(ttl(!01Recovered));
+RspTxt2=¿De dónde eres?
+NxtLn2=location1
+RspCnd3=All(ttl(01Recovered));
+RspTxt3=¿De dónde eres?
+NxtLn3=location2
+RspCnd4=All(ttl(!01Recovered));
+RspTxt4=¿Qué hay de nuevo?
+NxtLn4=rumors1
+RspCnd5=All(ttl(01Recovered));
+RspTxt5=¿Qué hay de nuevo?
+NxtLn5=rumors2
+
+[directions]
+Say=¿Dónde necesitas ir?
+RspDflt=none
+RspTxt1=Al Laboratorio de Elarath
+NxtLn1=direction1
+RspTxt2=A las Habitaciones de Mudam
+NxtLn2=direction2
+RspTxt3=Al Salón del Consejo de Sir Roth
+NxtLn3=direction3
+RspTxt4=A Intendencia
+NxtLn4=direction4
+RspTxt5=Necesito un sanador.
+NxtLn5=direction5
+rspBack=Keman1
+
+[direction1]
+Say=Sigue éste pasillo al norte.  El Laboratorio de Elarath está al final.
+RspDflt=Gracias.
+rspBack=directions
+
+[direction2]
+Say=Ve al oeste por éste pasillo hasta el final.  Allí encontrarás las Habitaciones de Mudam.
+RspDflt=Gracias.
+rspBack=directions
+
+[direction3]
+Say=El Salón del Consejo de Sir Roth está en la esquina opuesta a ésta, en éste mismo piso.  Sigue cualquier de las dos direcciones hasta la esquina opuesta, y allí verás una puerta con un guarda.
+RspDflt=Gracias.
+rspBack=directions
+
+[direction4]
+Say=Ve al norte por éste pasillo, y entra la primera puerta a tu izquierda.  La Armería es la primera puerta a la derecha de ese corredor.
+RspDflt=Gracias.
+rspBack=directions
+
+[direction5]
+Say=Abajo, en la capilla, hay un sanador de mucho talento, llamado Crosby.  Él te ayudará.
+RspDflt=Gracias.
+rspBack=directions
+
+[location1]
+Say=Soy de Oriam, señor.  El hogar de mi familia está en las fronteras exteriores, entre las primeras que fueron quemadas por Mithras.
+RspDflt=Lamento oír eso.  Buena suerte.
+rspBack=keman1
+
+[location2]
+Say=Nací en Oriam, señor.  Me uní al ejército para vengar la destrucción del hogar familiar.  Pronto seré ordenado caballero y lucharé contra Mithras mismo!
+RspDflt=Excelente!  Que los buenos espíritus te protejan!
+rspBack=keman1
+
+[rumors1]
+Say=Uno de los capitanes dijo que ayer hubo una revuelta en el Patio de los Campesinos.  Dijo que estaban tan hambrientos que ni siquiera pudo considerarse una verdadera revuelta.  Realmente las cosas están tan mal que no hay comida para todos.
+RspDflt=Sí, las cosas están muy mal.  Buenos días, Keman.
+rspBack=keman1
+
+[rumors2]
+Say=Un amigo me dijo que hubo una gran batalla el otro día en el pueblo.  ¿Viste algo de lo que sucedió?
+RspDflt=None
+RspTxt1=No, me temo que no.
+NxtLn1=rumors3
+
+[rumors3]
+Say=Que mala suerte.  Dicen que se forjó un nuevo héroe!  Dicen que halló el Cáliz de la Vida!
+RspDflt=None
+RspTxt1=Entonces no podemos fallar, ¿no es cierto?
+NxtLn1=rumors4
+
+[rumors4]
+Say=Exactamente!  Buenos días, señor!
+RspDflt=Hasta la vista, Keman.
+rspBack=keman1
+

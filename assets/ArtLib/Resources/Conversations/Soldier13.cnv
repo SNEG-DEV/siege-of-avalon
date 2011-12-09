@@ -1,0 +1,84 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Thank you.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=All(ttl(!01recovered));
+goto2=Soldier
+Say3=All(ttl(01recovered));
+goto3=Chalice
+
+[Soldier]
+Say=Hello there, how can I help you?
+RspTxt1=Where are you from?
+NxtLn1=Soldier1
+RspTxt2=Heard any good rumors?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=I used to trade horses in Cathea.  Now I am just another fighter behind these walls.
+rspBack=soldier
+
+[Soldier2]
+Say=I hear a new supply fleet will be arriving soon.  I hope it makes it here; I haven't had a decent lather upon my face in quite some time.  I wasn't meant to grow a beard.
+rspBack=soldier
+
+[Chalice]
+Say=May I be of assistance to you, sir?
+RspTxt1=Where are you from?
+NxtLn1=Chalice1
+RspTxt2=Heard any good rumors?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=I am Cathean, sir.  The toughest people in all the world!
+rspBack=chalice
+
+[Chalice2]
+Say=Only that the Ahoul horde is starting to break apart.  Word has it that some of the tribes will return to wherever they came from!
+rspBack=chalice
+
+[chapter6]
+Say=I've heard you've visited the village on occasion.  Is it as bad as they say?
+RspDflt=Yes.  Farewell.
+RspTxt1=Not a building left standing, and all is destroyed.
+nxtln1=chapter6b
+
+[chapter6b]
+Say=Egads!  If the spirits will it so, may we save these walls from that fate!
+RspDflt=Agreed.  Farewell, soldier.
+

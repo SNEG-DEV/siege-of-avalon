@@ -1,0 +1,69 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(7/12/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=
+Say1=
+goto1=Avarous
+
+[Avarous]
+Say=Ah!  Fresh meat for the grinder!  You have the look of Corvus about you.  Are you related to him?
+RemoveQuest=ch1-01;
+RspDflt=None
+RspTxt1=Yes, I am, sir.  He's my older brother.
+nxtLn1=Avarous1
+
+[Avarous1]
+Say=And a fine soldier he is, too!  I trained him myself, you know.  And you?  Are you ready to learn the basics of soldiering?
+RspDflt=None
+rspcnd1=All(ttl(!hunter));
+RspTxt1=Of course, sir.
+nxtLn1=Avarous2
+rspcnd2=All(ttl(hunter));
+RspTxt2=Of course, sir.
+nxtLn2=Avarous3
+
+[Avarous2]
+Say=Fine, then.  Mulduc will be your training partner; he'll whip you into shape in no time.  Report back to me when you think you've had enough.
+script=addtitle(01metavarous);gsOnTrigger20000600020057169140.setprop(triggerenabled=true);
+RspDflt=Yes, sir.  Right away, sir.
+
+[Avarous3]
+Say=Fine, then.  You will find some archery targets in the back, if you wish to practice with the bow.  If you'd like someone to spar with, speak to Mulduc; he'll whip you into shape in no time.  Report back to me when you think you've had enough.
+script=addtitle(01metavarous);gsOnTrigger20000600020057169140.setprop(triggerenabled=true);
+RspDflt=Yes, sir.  Right away, sir.
+

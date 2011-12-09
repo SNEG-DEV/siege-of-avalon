@@ -1,0 +1,160 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=completed,playerknown
+Checked=05ringdone,05zarnews,06chapter6,Completed,PlayerKnown
+Removed=
+
+[Quest]
+Added=ch1-19,ch1-20,ch1-22
+Removed=ch1-22
+
+[Items]
+Given=
+Taken=herb
+Checked=Herb
+Added=
+
+[SyntaxCheck]
+tucker(4/10/01)=Passed
+tucker(5/23/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Gracias, Hermano Mo.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=All(ttl(!PlayerKnown,!Completed));
+goto2=Mo
+Say3=All(ttl(PlayerKnown,!Completed));
+goto3=HerbKnown
+Say4=All(ttl(Completed));
+goto4=Completed
+
+[Mo]
+Say=Me alegro de que hayas venido.  Tengo un problema que podrías ayudarme a solventar.
+RspDflt=None
+RspTxt1=Cualquier cosa, Hermano.  Los sanadores de Avalon son importantísimos para nuestra supervivencia.
+NxtLn1=Mo1
+RspTxt2=En realidad, sólo pasaba por aquí...
+NxtLn2=Mo2
+
+[Mo1]
+Say=Muchas gracias; eres una bendición!  Por cierto, soy el Hermano Mo.  Me disculpo por no presentarme apropiadamente, pero hay poco tiempo que perder.  Escucha--hay unas fiebres que corren por la enfermería, y se están extendiendo rápidamente.  Si no tuviésemos pocos suministros de medicamentos, podríamos aliviar los sufrimientos de todos con un simple té de hierbas.  Pero ya ves nuestro dilema; los suministros escasean por todas partes, y la enfermería no es ninguna excepción.
+RspDflt=None
+RspTxt1=Comprendo, Hermano.  ¿Qué clase de suministros necesitáis?
+NxtLn1=Mo3
+RspTxt2=Perdonadme, Hermano, pero ¿no podría curarles el hechizo Sanar?
+NxtLn2=Mo4
+
+[Mo2]
+Say=Escúchame, te lo ruego.  Mi nombre es Hermano Mo.  Me disculpo por no presentarme apropiadamente, Pero hay muy poco tiempo que perder.  Hay unas fiebres que corren por la enfermería, y se están extendiendo rápidamente.  Si no tuviésemos pocos suministros de medicamentos, podríamos aliviar los sufrimientos de todos con un simple té de hierbas.  Pero ya ves nuestro dilema; los suministros escasean por todas partes, y la enfermería no es ninguna excepción.
+RspDflt=None
+RspTxt1=Comprendo, Hermano.  ¿Qué clase de suministros necesitáis?
+NxtLn1=Mo3
+RspTxt2=Perdonadme, Hermano, pero ¿no podría curarles el hechizo Sanar?
+NxtLn2=Mo4
+
+[Mo3]
+Say=Nos falta una hierba específica.  Creí que teníamos más, pero parece que se ha agotado mucho antes de lo previsto.  Sé que la influencia de los heridos no ha sido pequeña pero aún así, es como si alguien...  Pero no puede ser--esto es Avalon!  En pocas palabras, chico: necesitamos más.  Había un huerto en el pueblo dónde los monjes cultivaban la susodicha hierba.  Ya no estará en hileras ordenadas, pero la hierba estará ahí.  Aunque, de nuevo, ves el problema.  La enfermería no puede permitirse que los monjes merodeen por ahí haciendo el trabajo de los soldados!   ¿Querrías que fuese el Explorador Mudam quien intentase sanar tus heridas?  No, seguro que no!  Ni tampoco el Capitán Avarous.  Ese es nuestro trabajo.  Todos hacemos lo que podemos.
+RspDflt=None
+RspTxt1=Así es, Hermano.  ¿Cómo sabré qué hierba es la que necesitáis?
+NxtLn1=Mo5
+
+[Mo5]
+Say=Es más bien una hierba dura que una frágil flor, así que supongo que estará creciendo salvaje por el huerto.  Reconocerás la planta por sus pétalos rojos, hojas verde brillante, fruto ocre y bulboso, y un olor húmedo y de antiguo.  Lo que necesito es el fruto de la planta--cuanto más, mejor.
+RspDflt=None
+RspTxt1=Lo recordaré, e intentaré satisfacer vuestra petición en cuanto me sea posible.
+NxtLn1=Mo6
+
+[Mo4]
+Say=EL hechizo de Sanar fue desarrollado, y se usa, para curar heridas sufridas en combate.  Desgraciadamente, no puede curar la fiebre.
+Adventure=ch1-19;
+RspDflt=None
+RspTxt1=Eso es una desgracia, Hermano, y es algo de lo que no era consciente.  ¿Qué suministros necesitáis, pues, para combatir las fiebres?
+NxtLn1=Mo3
+
+[Mo6]
+Say=Muchas gracias, hijo mío.  Te estaré muy agradecido.
+RspDflt=Volveré pronto, Hermano.
+AddQuest=ch1-22;
+script=Siege20000600030016357630.addTitle(PlayerKnown)
+
+[HerbKnown]
+Say=Es bueno verte de nuevo, chico.  Tienes ya el fruto que te pedí?
+RspDflt=None
+RspCnd1=All(Obj(Herb));
+RspTxt1=Sí, hermano.  Usadlo bien.
+NxtLn1=HerbKnown1
+RspCnd2=All(Obj(!Herb));
+RspTxt2=Me temo que aun no he tenido la oportunidad, Hermano.  He venido a deciros que lo sigo intentando, y a pediros que no perdáis la fe en mí.
+NxtLn2=HerbKnown2
+
+[HerbKnown1]
+Say=Gracias a los dulces espíritus, y a vos también, señor!  Esto salvará a la práctica totalidad de los que se encuentran en la enfermería.  Ah, chico, Juro que has sido tocado por los espíritus mismos y estoy seguro de que nos ayudareis a solucionar muchos problemas en el futuro.
+RspDflt=none
+Script=Siege20000600030016357630.TakeItem(Herb,Player);player.setprop(trainingpoints=2);Addtitle(Completed);journalentry(monksherbs);showmessage(Your journal has been updated.,200);
+RemoveQuest=ch1-22;
+rspCnd1=all(obj(herb));
+RspTxt1=Me alegro de haberos sido útil, Hermano Mo.  Adiós.
+nxtLn1=Corvus
+rspCnd2=all(obj(!herb));
+RspTxt2=Me alegro de haberos sido útil, Hermano Mo.  Adiós.
+nxtLn2=Corvus1
+
+[HerbKnown2]
+Say=Te lo agradezco, chico, pero por favor, date prisa.  Mucha prisa.
+RspDflt=Lo haré, Hermano.  Hasta pronto.
+
+[Corvus]
+Say=Un momento más, chico.  He oído lo de la pérdida de tu hermano, y me gustaría que supieras que mis plegarias están contigo.  No obstante, va pasando el tiempo desde su desaparición.  No tengo la menor duda de que aunque esté todavía vivo, debe estar gravemente herido.  Un Corvus sano ya habría regresado con nosotros.  Las heridas sin tratar, generan infecciones, y las infecciones generan fiebre.  Como a tantos otros de los soldados que hay aquí, la fiebre puede amenazar su vida mucho antes de que otros factores terminen con él, y Sanar no tiene efecto sobre la fiebre.  Toma un poco de la hierba, chico.  Cuando le encuentres--y no tengo dudas de que lo harás!--dásela.  Sabe fatal, lo reconozco, pero le bajará la fiebre el tiempo suficiente para que logres traerle de vuelta aquí para que le cuidemos apropiadamente.
+Adventure=ch1-19;ch1-20;
+RspDflt=Gracias, Hermano, por vuestros conocimientos tanto como por vuestra amabilidad.  Os deseo lo mejor.
+
+[Corvus1]
+Say=Un momento más, chico.  He oído lo de la pérdida de tu hermano, y me gustaría que supieras que mis plegarias están contigo.  No obstante, va pasando el tiempo desde su desaparición.  No tengo la menor duda de que aunque esté todavía vivo, debe estar gravemente herido.  Un Corvus sano ya habría regresado con nosotros.  Las heridas sin tratar, generan infecciones, y las infecciones generan fiebre.  Como a tantos otros de los soldados que hay aquí, la fiebre puede amenazar su vida mucho antes de que otros factores terminen con él, y Sanar no tiene efecto sobre la fiebre.  Vuelve al huerto y coge otra fruta de la hierba.  Cuando le encuentres--y no tengo dudas de que lo harás!--dásela.  Sabe fatal, lo reconozco, pero le bajará la fiebre el tiempo suficiente para que logres traerle de vuelta aquí para que le cuidemos apropiadamente..
+Adventure=ch1-19;ch1-20;
+RspDflt=Gracias, Hermano, por vuestros conocimientos tanto como por vuestra amabilidad.  Os deseo lo mejor.
+
+[Completed]
+Say=Ah, nuestro joven benefactor regresa!  ¿Cómo puedo ayudarte hoy, chico?
+RspDflt=Perdonadme, Hermano, debo irme.
+RspTxt1=Me preguntaba si volvíais a tener necesidad de mis servicios, Hermano.
+NxtLn1=Completed1
+RspTxt2=Simplemente pasaba por aquí, Hermano.  ¿Cómo os va todo?
+NxtLn2=Completed2
+rspcnd3=one(ttl(05ringdone,05zarnews));
+RspTxt3=He oído que Elazar está aquí en la enfermería.  ¿Qué enfermedad le aqueja?
+nxtln3=sickzar
+
+[Completed1]
+Say=No, chico, en este momento no, pero te agradezco la oferta!
+RspDflt=Entonces, ha sido un placer veros de nuevo, Hermano Mo.  Hasta luego.
+
+[Completed2]
+Say=Ah, chico, hemos estado muy ocupados distribuyendo la medicación.  Si quieres saber algo más, debes hablar con los soldados.  Yo ya voy por mi cuarta taza de capuchino!  Belinda!  Más café!
+RspDflt=Um...  Lo haré.  Y...  dormid un poco, Hermano Mo.  No podéis hacerlo todo vos.  Hasta luego.
+
+[sickzar]
+Say=En estos momentos, no sabemos qué mal sufre, pues ha estado inconsciente desde hace mucho tiempo, y no le podemos hacer ningún diagnóstico hasta conocer los síntomas.  No muestra signos de ninguna de las enfermedades que conocemos; simplemente apareció aquí quejándose de que se sentía mal, se metió en cama, e inmediatamente cayó dormido.  No hemos sido capaces de despertarle ni con las hierbas de más fuerte aroma ni con las sacudidas más bruscas.  Ni siquiera un poco del buen maíz de Gentza pudo despertarle.  Debemos esperar para saber algo más.
+RspDflt=Gracias por la información, Hermano Mo.  Volveré pronto a ver como está.  Hasta luego.
+
+[chapter6]
+Say=Hola, chico! Has venido de nuevo a preguntar por el hechicero enfermo?  Ha estado murmurando inconsciente...  Dijo algo sobre la Reina, pero no pude entender nada después de eso.  Me temo que no tenemos nada que pueda ayudar.   Si las carreteras estuviesen abiertas, y no hubiese batalla, nos iría mejor.  Tal como están las cosas, me temo que no podemos hacer nada.
+RspDflt=Maldita sea esta enfermedad!  Encontraré una forma...
+

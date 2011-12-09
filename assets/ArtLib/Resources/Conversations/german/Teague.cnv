@@ -1,0 +1,19 @@
+[root]
+Count=1
+Else=
+Default=Danke, Teague.
+Say1=
+goto1=Teague
+
+[Teague]
+say=Ja?
+rspDflt=None
+rspTxt1=Ich wollte nicht stören.  Ich wollte nur sehen, ob hier oben alles in Ordnung ist.
+NxtLn1=Teague1
+
+[Teague1]
+say=Seht Ihr das nicht?  Hier verläuft alles völlig normal.  Keine besonderen Vorkommnisse.
+rspDflt=Nun, Danke für Eure Mühe.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

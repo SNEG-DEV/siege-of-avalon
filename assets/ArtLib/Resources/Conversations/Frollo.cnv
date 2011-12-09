@@ -1,0 +1,69 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Thank you, Sir Frollo.
+Say1=one(ttl(03chapter3,04chapter4,05chapter5,06chapter6));
+goto1=three
+say2=
+goto2=frollo
+
+[Frollo]
+Say=What's this?!  I don't think you have permission to be up here, do you?
+RspDflt=None
+RspTxt1=Permission?  I'm just having a look around.  No one said this place was off-limits.
+NxtLn1=Frollo1
+
+[Frollo1]
+Say=Well, I'm saying it is now!  You get out of here before I gut you!
+RspDflt=Yes, sir.  I'm sorry to have bothered you.
+
+[three]
+Say=You may think you're a hotshot, but that still doesn't give you license to be prowling about!
+RspDflt=none
+RspTxt1=What would I have to gain from prowling around here?  Have you something to hide?
+nxtln1=three2
+
+[three2]
+Say=Are you accusing me of something?
+RspDflt=Certainly not, Sir Frollo.  I'll be on my way.
+RspTxt1=No, I am not.  Why are you being so defensive?
+nxtln1=three3
+
+[three3]
+Say=I don't have to explain myself to you.  Kindly be on your way.
+RspDflt=I'll leave you to your bottled rage, then, Sir Frollo.  Goodbye.
+

@@ -1,0 +1,84 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=03chapter3
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=teague
+Default=Thank you, Teague.
+Say1=all(ttl(03chapter3));
+goto1=three
+
+[Teague]
+Say=Yes?
+RspDflt=None
+RspTxt1=I didn't want to bother you.  I just wanted to see how everything was going.
+NxtLn1=Teague1
+
+[Teague1]
+Say=Can't you see?  Everything's perfectly normal up here.  Nothing strange here at all.
+RspDflt=Well, thank you for your trouble.
+
+[three]
+Say=Hello?
+RspDflt=none
+RspTxt1=What's new up here?
+nxtln1=three2
+
+[three2]
+Say=I'm bored out of my skull!
+RspDflt=Ah.  I'll let you and your skull be now.  Farewell.
+RspTxt1=That's a common sentiment.
+nxtln1=three3
+
+[three3]
+Say=Creator's own truth, right?  That an' "We're gettin' a bit tired of sittin' on our duff all day long!"  What can yuh do?
+RspDflt=none
+RspTxt1=Grin and bear it, as the saying goes, eh?
+nxtln1=three4
+
+[three4]
+Say=Far too much bearin' and far too little grinnin' makes a man a bit daft.
+RspDflt=none
+RspTxt1=Yeah, but...  What can yuh do?
+nxtln1=three5
+
+[three5]
+Say=Right yuh are, sir!
+RspDflt=none
+RspTxt1=Grin and bear it, soldier.  We'll pull through this if we stay focused.
+nxtln1=three6
+
+[three6]
+Say=Hope so.  Stay safe, sir.
+RspDflt=And you as well.
+

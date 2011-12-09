@@ -1,0 +1,81 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=ch1-00
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/12/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=
+Say1=
+goto1=Corvus
+
+[Corvus]
+Say=Hermanito, me gustaría poder decir que me alegro de verte, pero una fortaleza sitiada es algo que nadie debería tener que sufrir.  De cualquier forma, es bueno verte de nuevo.  ¿Como están Padre y Madre?
+RspDflt=none
+RspTxt1=Ese es el motivo por el que he venido a verte, hermano.  Padre murió hace seis semanas.
+NxtLn1=Corvus1
+RspTxt2=Están bien.  Madre te envía su cariño.
+Nxtln2=Corvus1b
+
+[Corvus1]
+Say=Oh, espíritus...  yo temía no volver a verle más, hermanito, pero pensé que sería yo quien le estaría esperando al otro lado.  Debemos beber a la memoria de Padre en cuanto vuelva.
+Script=journalentry(corvus2);showmessage(Your journal has been updated.,200);
+RspDflt=none
+RspTxt1=¿Cuando vuelvas?  ¿Dónde vas?
+Nxtln1=Corvus3
+
+[Corvus1b]
+Say=Tendrás que contarme todo lo que ha sucedido en casa--especialmente el motivo real por el que has hecho ésta locura de viaje.  Pero deberá esperar a mi retorno por la mañana.
+Script=journalentry(corvus2b);showmessage(Your journal has been updated.,200);
+RspDflt=none
+RspTxt1=¿Tu retorno?  ¿Dónde vas?
+Nxtln1=Corvus3
+
+[Corvus3]
+Say=Debo salir inmediatamente a una incursión con el General Ovoron.  Estábamos esperando a ver si vuestra flota de suministros conseguía atravesar el bloqueo antes de correr el riesgo, pero como la Lady Aele fue la única nave que lo superó, parece que deberemos recurrir a medidas drásticas.
+RspDflt=none
+RspTxt1=¿Tenéis sitio para otra espada?
+nxtln1=corvus4
+
+[Corvus4]
+Say=Cálmate, hermanito.  Hay pocos caballos y deberemos movernos muy rápido esta noche.  He movido algunos hilos y he conseguido una orden de servicio para ti, pero eso es todo lo que nuestro apellido hará por ti aquí.  Deberás probar tu valía al General Roth y al Capitán Calvaric por ti mismo, antes de que sea nada más que un trozo de papel.
+RspDflt=none
+RspTxt1=Así, ¿debo esperar ociosamente hasta que vuelvas?
+nxtln1=corvus6
+
+[Corvus6]
+Say=No creo.  Si conozco algo al General Roth, ya habrá pedido a tu comandante que te evalúe.  Sólo recuerda que los monjes pueden hacer maravillas para curar heridas menores; a menos que tus habilidades mágicas se hayan incrementado drásticamente desde que nos vimos por última vez, deberás familiarizarte con sus caras!  Y antes de que lo olvide, muestra tu orden de servicio al intendente de la Torre Exterior para que te de algo de equipo para tu misión.  Está en el corredor al norte de aquí.
+Adventure=ch1-00;
+AddQuest=ch1-00;
+RspDflt=Lo haré, hermano.  Monta bien, y ya hablaremos cuando vuelvas.
+

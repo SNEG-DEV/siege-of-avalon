@@ -1,0 +1,975 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01amuletknown,01happywizard,01trainedwizard,05askfelious,05endofch5,05epromotedpc,05rath2zar,05ringdone,06recipe,basic energy management,deflect,flame,forget,frost,heal,hold,mage craft,mana thief,minor meditation,portalactive,protection from magic,wizard
+Checked=01AmuletKnown,01ElarathPell,01happywizard,01Lahren,01Olon,01recovered,01trainedwizar,01trainedwizard,05askfelious,05astralquest,05chapter,05chapter5,05defenseson,05elara01,05elarb04,05elarb05));one(ttl(05metfs,05elarb1,05elarb3,05Emageonly,05endofch5,05entertower,05feliousnews,05lichdea,05lichdead,05nesijarmade,05nesisnap,05nsoulfreed,05pellgiven,05ringdone,05savedlurkers,06chapter6,06oSTUFF,06recipe,06RSTUFF,06RSTUFF0,06ttCrosb,6oSTUFF,apprentic,apprentice,Basic Energy Management,Flame,Frost,Heal,Hold,Mage Craft,Minor Meditation,wizard
+Removed=
+
+[Quest]
+Added=ch1-01,ch1-23,ch1-24,ch1-73,ch1-74,ch1-75,ch1-92,ch5-15,ch5-16,ch5-47,ch5-500,ch5-501,ch5-502,ch5-503,ch5-504,ch5-505,ch5-506,ch5-507,ch5-508,ch5-509,ch5-510,ch5-511,ch5-512,ch5-513,ch5-514,ch5-544,ch5-546,ch5-547,ch6-533,ch6-534,ch6-535,ch6-536:
+Removed=ch1-23,ch5-501
+
+[Items]
+Given=spellbook
+Taken=eamulet,spscdeflect,spscforget,spscmanathief
+Checked=Eamulet,Eamulet,!SimpleAmulet,Eamulet,SimpleAmulet,olonvia,olonvial,rayousvia,queentoken,rayousvia,ringofform,spscdeflect,spscforget,spscforget,scscdeflect,scscmanathief,spscforget,spscdeflect,spscmanathief,spscmanathief
+Added=magestaff1,recipe
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=not much of a wizard but he can teach anyone to be a wizard?
+2=Need Dialog for training the player
+3=what if the player never talks to Olon the merchant?
+4=what does the amulet look like? how will the player know he has it?
+
+[root]
+Count=8
+Else=training1
+Default=Good day to you, sir wizard.
+say1=all(ttl(06recipe));
+goto1=extra
+say2=all(ttl(06chapter6,05chapter5));
+goto2=playedfive
+say3=all(ttl(06chapter6,!05chapter5));
+goto3=nplayfive
+say4=all(ttl(05chapter5));
+goto4=elarafive
+Say5=All(ttl(!01trainedwizard));
+goto5=Elarath1
+Say6=All(ttl(01Olon,!01AmuletKnown));
+goto6=training2
+Say7=All(ttl(01AmuletKnown,!01happywizard));
+goto7=village1
+Say8=All(ttl(01happywizard));
+goto8=Happywizard
+
+[Elarath1]
+Say=Welcome, soldier!  What can this old wizard do for you today?
+RspDflt=none
+RspTxt1=Nothing.  I'm sorry to have disturbed your studies.
+NxtLn1=Elarath2
+RspTxt2=I have just arrived in Avalon and I was just having a look around.  Who are you?
+NxtLn2=Elarath3
+rspcnd3=All(ttl(01trainedwizard):stt(trainingpoints>1));
+RspTxt3=I would like to learn some advanced training techniques.
+NxtLn3=TrainTitles
+
+[Elarath2]
+Say=There's nothing to apologize for, lad.  May the spirits protect you.
+RspDflt=Good day to you, wizard.
+rspBack=Elarath1
+
+[Elarath3]
+Say=I am Elarath, and, as you can see, this is my laboratory, where I am doing research on the ancient ruins that lie beneath the village.  I also serve as an advisor to Sir Roth and his council and, when I can, I teach aspiring mages to better control the forces around them.
+Adventure=ch1-01;
+RspTxt1=I see.  Thank you for your trouble.
+NxtLn1=Elarath4
+rspcnd2=All(ttl(apprentice))
+RspTxt2=I've studied the arts before but would like to develop my skill more.
+nxtln2=apprentice1
+rspcnd3=All(ttl(!apprentice))
+RspTxt3=I'm interested in learning sorcery.  Would you be able to teach me?
+NxtLn3=training
+RspDflt=None
+
+[apprentice1]
+Say=Let us see what you know... [After several hours of instruction] ...very good.  You do have a natural talent for magic. Please feel free to use the obelisks behind me for target practice or, if you are ready, I can instruct you in some of the more advanced techniques.
+Script=Siege010.giveitem(spellBook,player);player.setprop(trainingpoints=1);player.addtitle(01trainedwizard);journalentry(elarath);showmessage(Your journal has been updated.,200);
+RspTxt1=I would be most interested in anything you have to offer.
+nxtln1=TrainTitles
+RspDflt=I'm afraid that I have pressing matters to attend to.  I'll be certain to return, however!
+
+[Elarath4]
+Say=It's never a trouble to speak with curious soldiers.  Go in peace, lad.
+RspTxt1=On second thought, I guess I am interested in learning sorcery.  Could you teach me?
+NxtLn1=training
+RspDflt=Good day, sir.
+
+[training]
+Say=I can teach almost anyone to be a sorcerer!  Come closer and we shall begin... [After several hours of instruction] ...very good.  You have at least some aptitude for magic.  Please feel free to use the obelisks behind me for target practice or, if you are ready, I can instruct you in some of the more advanced techniques.
+Script=Siege010.giveitem(spellBook,player);player.setprop(trainingpoints=1);player.addtitle(01trainedwizard);journalentry(elarath);showmessage(Your journal has been updated.,200);
+RspTxt1=I would be most interested in anything you have to offer.
+nxtln1=TrainTitles
+RspDflt=I'm afraid that I have pressing matters to attend to.  I will be certain to return, however!
+
+[TrainTitles]
+Say=So, what would you like instruction in?
+train=true
+RspDflt=Nothing, wise one.  Thank you for your time.
+rspCnd1=All(ttl(!Mage Craft):stt(trainingpoints>4))
+RspTxt1=Mage Craft(+1 Perception, +2 Mysticism, +2 Recharge Rate): 5pts
+script1=player.addtitle(Mage Craft);player.setprop(trainingpoints=-5);
+nxtln1=TrainTitles
+rspCnd2=All(ttl(!Basic Energy Management):stt(trainingpoints>2))
+RspTxt2=Basic Energy Management(+5 Mana): 3pts
+script2=player.addtitle(Basic Energy Management);player.setprop(trainingpoints=-3);
+nxtln2=TrainTitles
+rspCnd3=All(ttl(!Minor Meditation):stt(trainingpoints>2))
+RspTxt3=Minor Meditation(+1 Recharge Rate): 3pts
+script3=player.addtitle(Minor Meditation);player.setprop(trainingpoints=-3);
+nxtln3=TrainTitles
+rspCnd4=All(ttl(!Flame):stt(trainingpoints>1))
+RspTxt4=Flame Spell: 2pts
+nxtln4=Flame
+rspCnd5=All(ttl(!Frost):stt(trainingpoints>1))
+RspTxt5=Frost Spell: 2pts
+nxtln5=Frost
+rspCnd6=All(ttl(!Heal):stt(trainingpoints>0))
+RspTxt6=Heal Spell: 1pt
+nxtln6=Heal
+rspCnd7=All(ttl(!Hold):stt(trainingpoints>0))
+RspTxt7=Hold Spell: 1pt
+nxtln7=Hold
+
+[Flame]
+Say=Ah, the Flame spell -- it's a classic in this profession.  This spell does a moderate amount of damage to your target.  The stronger you are in mysticism, the more damage the spell inflicts and the faster the ball of flame will travel.  Does this sound like something you would like to know how to cast?
+RspDflt=none
+RspTxt1=Yes, I think it does.
+script1=player.addtitle(Flame);player.setprop(trainingpoints=-2);
+nxtLn1=TrainTitles
+RspTxt2=Perhaps later.  What else could you teach me?
+nxtLn2=TrainTitles
+
+[Frost]
+Say=Like Flame, Frost does a moderate amount of damage to a target.  Unlike Flame, which can miss if your victim has sharp enough reflexes, Frost seeks out its target.  The stronger you are in magic, the more damage you can cause and the more likely Frost will be able to accurately find its target, no matter how they might flee or where they might hide.  Does this sound like something you would like to know how to cast?
+RspDflt=none
+RspTxt1=Yes, I think it does.
+script1=player.addtitle(Frost);player.setprop(trainingpoints=-2);
+nxtLn1=TrainTitles
+RspTxt2=Perhaps later.  What else could you teach me?
+nxtLn2=TrainTitles
+
+[Heal]
+Say=If you ever get wounded in combat -- and it's a depressingly regular occurrence, I'm afraid -- you will have two choices: wrap a dirty bandage around the wound and hope the bleeding ceases or use the Heal spell and be instantly whole.  Not much of a choice, I should think.  Does this sound like something you would like to know how to cast?
+RspDflt=none
+RspTxt1=Yes, I think it does.
+script1=player.addtitle(Heal);player.setprop(trainingpoints=-1);
+nxtLn1=TrainTitles
+RspTxt2=Perhaps later.  What else could you teach me?
+nxtLn2=TrainTitles
+
+[Hold]
+Say=A fairly useful spell, Hold will immobilize an opponent for a short length of time.  The stronger you are in the art, the longer your opponent will not be able to move -- or fight back, if you catch my meaning.  Does this sound like something you would like to know how to cast?
+RspDflt=none
+RspTxt1=Yes, I think it does.
+script1=player.addtitle(Hold);player.setprop(trainingpoints=-1);
+nxtLn1=TrainTitles
+RspTxt2=Perhaps later.  What else could you teach me?
+nxtLn2=TrainTitles
+
+[training1]
+Say=Back for more!  Magic is addictive, isn't it?  Feel free to look around.
+RspDflt=Good day to you, sir wizard.
+rspcnd1=All(ttl(01trainedwizard):stt(trainingpoints>1));
+RspTxt1=I was wondering if you might have the time to train me in some of those advanced techniques you mentioned.
+NxtLn1=TrainTitles
+RspCnd2=all(ttl(01Lahren,!01ElarathPell));
+RspTxt2=Know you, sir wizard, of the mage Pellandrian?
+nxtLn2=Pell1
+
+[training2]
+Say=So, you've come back to see the old wizard, eh?  How can I help you, lad?
+RspDflt=Pardon me for disturbing you, learned one.
+rspcnd1=all(ttl(!ela082001));
+RspTxt1=I'm going on a mission to the village soon.  I was told by Olon the, uh, "merchant" that you knew something of the village.
+script1=addtitle(ela082001);
+NxtLn1=permission1
+RspCnd2=All(ttl(!01trainedwizard):stt(trainingpoints>1));
+RspTxt2=I'm interested in learning sorcery.  Could you teach me?
+NxtLn2=training
+rspcnd3=All(ttl(01trainedwizard):stt(trainingpoints>1));
+RspTxt3=I was wondering if you might have the time to train me in some of those advanced techniques you mentioned.
+NxtLn3=TrainTitles
+RspCnd4=all(ttl(01Lahren,!01ElarathPell));
+RspTxt4=Know you, sir wizard, of the mage Pellandrian?
+nxtLn4=Pell1
+
+[permission1]
+Say=Let's see...  The village is built on the ruins of an ancient city.  When we first arrived, we took what stone we needed to build Avalon from the ruins.  Now, they are an elaborate, underground network that is virtually abandoned.  However, I wouldn't be surprised to learn that they are currently inhabited by numerous animals or perhaps even more exotic creatures.
+Adventure=ch1-74;
+RspDflt=None
+RspTxt1=Thank you for the information.
+NxtLn1=permission2
+RspTxt2=Is that all you remember?
+NxtLn2=permission3
+rspBack=training2
+
+[permission2]
+Say=Don't mention it, lad!  Good luck on the outside.
+RspDflt=I'll see you soon, Elarath.
+rspBack=permission1
+
+[permission3]
+Say=No, I'm pretty certain that -- Oh, wait!  There is something else.  I've actually been trying to recover a valuable artifact from the village for some time now.  It's an amulet that is needed in the research I'm doing on a certain portal.  Elazar had the amulet last, but it was lost when he abandoned his tower.  The tower itself is magically sealed, but the amulet is believed to have been lost when the cart carrying much of Elazar's research broke an axle and spilled its contents on the ground while passing through the village.  The amulet should still be on the ground near the broken cart.
+Adventure=ch1-73;
+AddQuest=ch1-23;
+RspDflt=None
+RspTxt1=I will see what I can do.
+NxtLn1=permission5
+
+[permission5]
+Say=Thank you for your kindness, lad!  With the amulet, hopefully I will be able to finally open the portal.  I will await your return!
+RspDflt=I'll see you soon, Elarath.
+script=player.addtitle(01AmuletKnown)
+
+[village1]
+Say=Welcome back!  How have things gone for you in the village?
+RspDflt=None
+RspCnd1=All(ttl(!01recovered):Obj(!Eamulet,!SimpleAmulet));
+RspTxt1=I haven't had much success yet.  I just came back to hear the latest news.  Have you heard anything new?
+NxtLn1=villageNews1
+rspCnd2=All(ttl(!01recovered):Obj(!Eamulet,SimpleAmulet));
+RspTxt2=I think I've recovered the amulet.
+nxtLn2=FalseAmulet
+RspCnd3=All(ttl(!01recovered):Obj(Eamulet));
+RspTxt3=After a bit of a struggle, I managed to recover the amulet.
+NxtLn3=villageAmulet
+RspCnd4=All(ttl(01recovered):Obj(!Eamulet,!SimpleAmulet));
+RspTxt4=I haven't found your amulet yet, but I did find the Chalice of Life.
+NxtLn4=villageChalice
+rspCnd5=All(ttl(01recovered):Obj(!Eamulet,SimpleAmulet));
+RspTxt5=Quite well, sir.  I have managed to recover both the Chalice of Life, as well as the amulet.
+nxtLn5=ChaliceFalseAmulet
+RspCnd6=All(ttl(01recovered):Obj(Eamulet));
+RspTxt6=Very well, sir.  I recovered Elazar's amulet and found the Chalice of Life.
+NxtLn6=villageAmuletChalice
+RspCnd7=All(ttl(!01trainedwizard))
+RspTxt7=I'm interested in learning sorcery.  Could you teach me?
+NxtLn7=training
+rspcnd8=All(ttl(01trainedwizard):stt(trainingpoints>1));
+RspTxt8=I was wondering if you might have the time to train me in some of those advanced techniques you mentioned.
+NxtLn8=TrainTitles
+RspCnd9=all(ttl(01Lahren,!01ElarathPell));
+RspTxt9=Well enough.  Know you, sir wizard, of the mage Pellandrian?
+nxtLn9=Pell1
+
+[ChaliceFalseAmulet]
+Say=Very well, indeed!  With these two items among us, the siege will surely turn in our favor!  No, wait...  This is not Elazar's amulet.
+RspDflt=none
+RspTxt1=What?  Are you certain?
+nxtLn1=FalseAmulet1
+
+[FalseAmulet]
+Say=Ah, let me see, let me see!  No...  No, this isn't it.  It's a nice piece to be sure, but this is not Elazar's amulet.
+RspDflt=none
+RspTxt1=Are you certain?
+nxtLn1=FalseAmulet1
+
+[FalseAmulet1]
+Say=Yes, lad, I'm certain.  Do you really think I wouldn't remember what a powerful magical amulet looks like?  It's odd, though -- I don't recognize this design.  Most unusual.  Now, where did I put that reference compendium...
+RspDflt=none
+script=takeitem(SimpleAmulet,player);
+RspTxt1=Ah...  Elarath?
+nxtLn1=FalseAmulet2
+
+[FalseAmulet2]
+Say=What, lad?  Can you not see that I am busy?  I thank you for this amulet, but I really must get back to work.  That compendium must be over here...
+RspDflt=none
+RspTxt1=Would you please tell me, then, what Elazar's amulet looks like?
+nxtLn1=FalseAmulet3
+
+[FalseAmulet3]
+Say=Elazar's...?  Go ask him.  It was his amulet, after all.  He's in the upper level of the South Gate.  Spirits, where did I put...?
+Adventure=ch1-75;
+AddQuest=ch1-24;
+RspDflt=none
+RspTxt1=I see.  I will do my best, sir wizard.
+nxtLn1=FalseAmulet4
+
+[FalseAmulet4]
+Say=Yes, yes.  I thank you for your efforts, but be off with you now!
+RspDflt=Goodbye.
+
+[villageNews1]
+Say=Very little changes in a citadel under siege.  The list of dead and dying soldiers grows a little longer and the hunger gnawing away at every belly grows a little stronger.
+RspTxt1=We all pray that the tide turns in our favor soon.
+NxtLn1=villageNews2
+RspDflt=None
+
+[villageNews2]
+Say=That would be a welcome change.  Will you be returning to the village soon?
+RspTxt1=No.  I don't think I yet have the skills that an expedition outside of Avalon demands.
+NxtLn1=villageNews3
+RspTxt2=Soon enough.  I will continue looking for your amulet.
+NxtLn2=villageNews4
+RspDflt=None
+
+[villageNews3]
+Say=It's harsh country out there.  I don't blame you for seeking shelter.  Good day.
+RspDflt=Good day.
+
+[villageNews4]
+Say=Thank you for your efforts, lad.  I look forward to your return.
+RspDflt=Thank you, Elarath.  May the good spirits protect you.
+
+[villageAmulet]
+Say=That's wonderful news!  I will get to work completing the portal immediately.  It is my hope that the portal can be of some help to us!
+RemoveQuest=ch1-23;
+Script=player.addtitle(01happywizard);takeitem(Eamulet,player);player.setprop(trainingpoints=5);showmessage(You received some training points,300);
+RspDflt=I hope it proves as useful as you say it will be.  Good day.
+
+[villageChalice]
+Say=The Chalice of Life?  That's a powerful artifact, indeed!  With it back among us, the soldiers will surely take heart again!
+RspDflt=None
+RspTxt1=That's what Friar Massus says.  I pray he is right.
+NxtLn1=villageChalice1
+
+[villageChalice1]
+Say=Friar Massus knows what he's about.  Just wait and see.  Will you be continuing the search for the amulet?
+RspDflt=None
+RspTxt1=Not right now.  I need to rest a bit from the fighting.
+NxtLn1=villageChalice2
+RspTxt2=Yes.  I won't give up until I've returned it to your hands.
+NxtLn2=villageChalice3
+
+[villageChalice2]
+Say=Absolutely!  I'm sure the Chalice wasn't easy to recover.  Let me know how you're doing.
+RspDflt=I will.  Good day, Elarath.
+
+[villageChalice3]
+Say=Thank you very much.  When I complete the portal, you will have free access to it.
+RspDflt=Thank you.  Good day.
+
+[villageAmuletChalice]
+Say=Very well, indeed!  With these two items among us, the siege will surely turn in our favor!
+RemoveQuest=ch1-23;
+Script=player.addtitle(01happywizard);takeitem(Eamulet,player);player.setprop(trainingpoints=5);showmessage(You received some training points,300);
+RspDflt=That would be a wonderful thing to behold, indeed.  Good day to you, sir wizard.
+
+[happywizard]
+Say=Welcome back.  What need do you have for this old wizard?
+RspDflt=None
+RspTxt1=I was just poking around for some news.
+NxtLn1=happywizard1
+
+[happywizard1]
+Say=Well, the amulet you brought to me is proving to be more difficult to work with than I anticipated.  It will likely be some time before I've activated the portal.
+RspDflt=None
+RspTxt1=I hope everything works out for you.
+NxtLn1=happywizard2
+rspcnd2=All(ttl(01trainedwizard):stt(trainingpoints>1));
+RspTxt2=I was wondering if you might have the time to train me in some of those advanced techniques you mentioned.
+NxtLn2=TrainTitles
+
+[happywizard2]
+Say=Thank you.  May the good spirits protect you.
+RspDflt=Thank you.  Good day.
+
+[Pell]
+say=
+RspDflt=none
+rspTxt1=
+nxtLn1=Pell
+
+[Pell1]
+Say=Ah, the lovely Pell has caught your eye, eh, lad?  Were I forty years younger, or perhaps even thirty...  But her heart's already taken, you know.  Uh, Arren, the lucky fellow's name is, I believe. No, wait...  Lahren.  Yes, Lahren.
+RspDflt=none
+RspTxt1=Yes, I know.  I was wondering what you might know of her.
+nxtLn1=Pell2
+
+[Pell2]
+Say=Oh, not a lot, not a lot.  Been busy with my research, you know.  And she's taken to moping about since her love won't talk to her.  The tribulations of youth -- I remember them well.  I will say that I'm surprised my fellow Fornaxans let her leave the country.  Or maybe it was they couldn't keep her in!
+RspDflt=none
+RspTxt1=What do you mean, sir wizard?
+nxtLn1=Pell3
+
+[Pell3]
+Say=She is powerful, lad -- to that I'll admit.  Beyond that, however, it is not for me to say.  She's a good person to know, though.  I just hope that unfortunate circumstance with her love is worked out in good order.
+script=addtitle(01ElarathPell);
+Adventure=ch1-92;
+RspDflt=As do I, sir.  Good day to you.
+
+[elarafive]
+Say=Good day, %playername%.  It is good to see that you are well.
+RspDflt=And you as well, wise one.  If you'll excuse me...
+rspcnd1=all(stt(trainingpoints>0));one(ttl(!Mage Craft,!Basic Energy Management,!Minor Meditation,!Flame,!Frost,!Heal,!Hold));
+RspTxt1=Do you have the time to teach me another spell or technique?
+nxtln1=elarafive1
+rspcnd2=all(ttl(!05entertower));
+RspTxt2=Thank you, Elarath.  How have you been keeping busy as of late?
+nxtln2=elarafive2
+rspcnd3=all(ttl(05entertower,!05ringdone):obj(!ringofform));
+RspTxt3=Elazar has given me an assignment to locate a ring for him that will enable you to activate the portal.  He tells me you've made great strides with it so far.
+nxtln3=elarafive3
+rspcnd4=all(ttl(05entertower,!05ringdone):obj(ringofform));
+RspTxt4=I have retrieved a ring from Elazar's tower for use on the portal, but Elazar has gone.  Have you any idea where he is?
+nxtln4=elagetring
+rspcnd5=all(ttl(05astralquest,!05elarb3));
+RspTxt5=Well met, Elarath.  I have spoken with Pell, and she has told me that...
+script5=addtitle(05elarb3);
+nxtln5=portalready
+rspcnd6=all(ttl(05pellgiven,!05askfelious));
+RspTxt6=Has Pell seen you recently?  I dropped off a strange enchanted item with her...
+nxtln6=tokenfive
+rspcnd7=all(ttl(05lichdead,!wizard,apprentice));
+RspTxt7=I have freed poor Felious' soul from its imprisonment on the Astral Plane.  I had to fight the lich again in order to accomplish this task, but Felious is now free to depart to the realm of the dead as soon as he deems.
+nxtln7=upgrader
+rspcnd8=all(ttl(05feliousnews,!05elarb1));
+RspTxt8=Felious has told me that you can find the information you need in a book entitled "Morbidicon Confinimus."  It contains details about the "heart jar" that will enable you to release Nanesi's spirit.
+script8=addtitle(05elarb1);
+nxtln8=morbidicon
+rspcnd9=all(ttl(05elarb1,!05nsoulfreed));
+RspTxt9=Good day, Elarath.  I have come to note your progress in the Morbidicon.
+script9=player.addtitle(05nsoulfreed);
+nxtln9=jaropen
+rspcnd10=one(obj(spscforget,spscdeflect,spscmanathief));
+RspTxt10=I've a few scrolls I'd like you to look at, Elarath.  I can't make any sense of them, and I was hoping that you could.
+nxtln10=decoder
+rspcnd11=all(ttl(!apprentice,05nsoulfreed,!05endofch5));
+RspTxt11=Is there anything else I can do for you or for Avalon, Elarath?
+script11=player.addtitle(05endofch5);player.addtitle(05nsoulfreed);
+nxtln11=endofch5
+rspcnd12=all(ttl(wizard,05nsoulfreed,!05endofch5));
+RspTxt12=Is there anything else I can do for you or for Avalon, Elarath?
+script12=player.addtitle(05endofch5);player.addtitle(05nsoulfreed);
+nxtln12=endofch5
+rspcnd13=all(obj(queentoken));
+RspTxt13=I have received an interesting magical item.  It appears to be linked to the Queen...
+nxtln13=seepell
+rspcnd14=all(ttl(!05elarb05));one(ttl(05metfs,05nesijarmade));
+RspTxt14=I have seen some strange things on the Astral Plane, Elarath, and...
+script14=addtitle(05elarb05);
+nxtln14=ttsherard
+rspcnd15=all(ttl(05savedlurkers,!05elarb04));
+RspTxt15=I have freed the Lurkers on the Astral Plane.  With the Astral Guardian freed, the Sha'ahoul influence in the Astral Nexus has been permanently removed.
+script15=addtitle(05elarb04);
+nxtln15=agfreed
+rspcnd16=all(ttl(!05Emageonly,apprentice,05astralquest,!05metFS));
+RspTxt16=Is there anything else that I should attend to on the Astral Plane?
+script16=addtitle(05Emageonly);
+nxtln16=mageonly
+rspcnd17=all(ttl(!05Emageonly,apprentice,05astralquest,05metFS));
+RspTxt17=Is there anything else that I should attend to on the Astral Plane?
+script17=addtitle(05Emageonly);
+nxtln17=mageonlyMF
+
+[mageonly]
+Say=If you've the time, I would like for you to look for some sign of the recently deceased mage Felious.  Though he kept his distance from the other mages in Avalon, he was nonetheless a respected member of our brotherhood.  Following his death, we've had reason to suspect that something unnatural has occured to his spirit.  If by any chance you can find out what has happened, the mages of Avalon would be very grateful.  If there is a problem, solving it would possibly elevate you enough to become peers with the finer mages of the realm.
+adventure=ch5-47;
+RspDflt=If I encounter his spirit, I will do what I can for it.  Farewell, esteemed Elarath.
+rspback=elarafive
+
+[mageonlyMF]
+Say=If you've the time, I would like for you to look for some sign of the recently deceased mage Felious.  Though he kept his distance from the other mages in Avalon, he was nonetheless a respected member of our brotherhood.  Following his death, we've had reason to suspect that something unnatural has occured to his spirit.  If by any chance you can find out what has happened, the mages of Avalon would be very grateful.  If there is a problem, solving it would possibly elevate you enough to become peers with the finer mages of the realm.
+adventure=ch5-47;
+RspDflt=I have already encountered him, and I am doing what I can to help him.  Farewell.
+rspback=elarafive
+
+
+
+[elarafive1]
+Say=My studies have taken most of my time.  However, my assistant, Sherard, has learned quite a bit since you last talked to him; I am sure he now has the capability to teach the spells and techniques I offered you.  Besides...  It would help him at last feel competent.  He wants very much to help..
+adventure=ch5-502;
+RspDflt=Agreed, Elarath; I shall ask him about it, then.  Farewell.
+rspback=elarafive
+
+[elarafive2]
+Say=Ah, Elazar and I are collaborating on the portal I may have mentioned to you earlier.  Have you spoken to him recently?  I believe he has a request for you.  Yes, I know he's hardly charismatic, but it's his request to make.  I think he's softened quite a bit since he started working on the portal...  Harrumph!  I'm sure you don't have time for my old man's prattle now!  Go see Elazar; he doubtless will know when you arrive.
+adventure=ch5-503;
+script=player.addtitle(05rath2zar);
+RspDflt=Very well.  Farewell, wise one; I shall return.
+
+[elarafive3]
+Say=Hmm, while it's true that Elazar and I have been working on the portal, I'm sure he's told you that our "strides" have come up a bit shorter than they must.  Our belief is that the enchantment on his ring of Form Protection, which is largely used to protect one against polymorphing, can be transferred to the portal itself to protect anything passing through it.  If it doesn't work, we'll simply try something else.
+RspDflt=none
+RspTxt1=I understand, Elarath.  Have you done such "enchantment transference" before?
+nxtln1=elarafive4
+RspTxt2=Then I shall return with the ring as soon as possible, Elarath.
+nxtln2=elarafive6
+rspcnd3=all(ttl(05defenseson,!05elara01));
+RspTxt3=What's preventing me from getting this ring are the defenses Elazar had sworn were inactive.  There are wraiths and worse parading his tower!  Do you know anything about his defenses, or how to defeat them?
+script3=addtitle(05elara01);
+nxtln3=elarafive7
+
+[elarafive4]
+Say=Yes, in fact, but it doesn't always work how we wish it would...  Magic is an imaginative force, you see, and sometimes it thinks of things that we don't.  We're all very amused afterwards; that is, of course, if no one gets hurt.  At least in this case we can be sure that it won't hurt a soul before it is employed.
+RspDflt=none
+RspTxt1=Elazar had suggested rats...
+nxtln1=elarafive5
+RspTxt2=Do not worry, wise one.  I will bring the ring to you in short order.
+nxtln2=elarafive6
+
+[elarafive5]
+Say=Far too stringy...  Eh?  Oh, yes, for testing the portal, of course.  Not a bad idea, although it may take a sweet voice to keep the guards from pursuing one of their only sources of sport, heh...
+RspDflt=none
+RspTxt1=Thank you for the information, Elarath.  I will visit you again once I possess the ring.
+nxtln1=elarafive6
+
+[elarafive6]
+Say=Thank you, %playername%, we'll try to make your efforts more fruitful than mere learning on our part.  Oh, and one tidbit you might find interesting; one of the Magistrates of the Council of Fornax has arrived recently.  His name is Khaele, and I have had dealings with him before.  You can expect no trouble from him, but the fact that he is here signals that he wants something.  He is still located in one of the tents in the Inner Bailey.
+adventure=ch5-546;
+RspDflt=Do not worry, wise one; I have little doubt that you will discover something that will help us.  Farewell.
+
+[elarafive7]
+Say=It doesn't surprise me that his defense, as it were, would have to do with the faction of Creation.  I haven't even the weakest idea how he got a summoning or creation spell to work on a contingent; he must have had an epiphany.  I don't think it can last forever, if that's any consolation, and I think you can handle yourself.
+adventure=ch5-504;
+RspDflt=I suppose I shall simply have to ensure that all of them have been destroyed.  Thank you, and farewell, Elarath.
+
+[elagetring]
+Say=I suppose you will be answering to me from now on, %playername%, for Sherard tells me that Elazar has taken ill.  He has probably been fretting too much over our work.  It is good for him to rest, now; he never took the time to master the more complicated enchantments, and I will only need Sherard's help to complete what I am doing.
+adventure=ch5-505;ch5-544;
+RspDflt=none
+rspcnd1=all(ttl(!05elara01));
+RspTxt1=Ah.  I wished to mention to him that the "defenses" that he thought had not been activated accosted me upon my arrival.  I doubt wraiths are native to this region.
+nxtln1=elagetring2
+RspTxt2=I see.  Since you are the one who will be doing the work, I shall leave the ring in your possession to do with as you must.
+Script2=takeitem(ringofform,player);player.addtitle(05ringdone);player.setprop(trainingpoints=5);showmessage(You have received some training points.,200);
+nxtln2=elagetring3
+
+[elagetring2]
+Say=Wraiths?  No, they aren't native to this area, and yes, those minions were likely the "defenses" he told you about.  If you give me the ring, I may begin, and I wish to do so as soon as possible.
+RspDflt=none
+RspTxt1=Of course, Elarath.  I wish you good luck in your endeavor.
+Script1=takeitem(ringofform,player);player.addtitle(05ringdone);player.setprop(trainingpoints=5);showmessage(You have received some training points.,200);
+nxtln1=elagetring3
+
+[elagetring3]
+Say=Thank you so much, %playername%.  Before I forget to mention it, Pell would like to see you.  She seems rather troubled.  Is there anything else?
+adventure=ch5-506;
+removequest=ch5-501;
+AddQuest=ch5-504;
+script=player.addtitle(05ringdone);
+RspDflt=No, Elarath.  I shall check on Pell presently.
+
+[portalready]
+Say=Yes, but listen, the portal works now!  Nightstands, vases, rats and humans alike can pass through the portal with no ill effect!
+script=player.addtitle(portalactive);
+RspDflt=none
+RspTxt1=That's good news indeed, Elarath, because I have a request to make of you...
+nxtln1=portalready2
+RspTxt2=Wonderful!  Can it take me to the Astral Plane?
+nxtln2=portalready3
+
+[portalready2]
+Say=Oh, and what might that be?
+RspDflt=none
+RspTxt1=Pell has informed me that Sha'men are summoning the spirits of some of our fellows to the Astral Plane.  She does not know exactly what these Sha'men are doing, but fears the worst.
+nxtln1=portalready4
+
+[portalready3]
+Say=Wh-  Whatever would you need to go to the Astral Plane for?
+RspDflt=none
+RspTxt1=Pell has informed me that Sha'men are summoning the spirits of some of our fellows to the Astral Plane, where they have projected themselves.  She does not know exactly what these Sha'men are doing, but fears the worst.
+nxtln1=portalready4
+
+[portalready4]
+Say=Now that I think of it, she explained that she was feeling ill some time ago.  I'm not surprised that she looked into it the way she did; after all, she's never been a sickly thing.  So you need to go to the Astral Plane, do you?  I believe the portal was originally intended to transport its users to the Astral Plane, so if I don't try to plot its exit point, hmm, you should arrive close to where you wish to go.
+RspDflt=none
+RspTxt1=Should?  Are you sure of this?
+nxtln1=portalready5
+
+[portalready5]
+Say=Oh, don't worry.  I know that wherever the portal goes is hospitable to life, and the carvings that haven't worn off suggest it is indeed the Astral Plane.  The destination was fixed when the portal was created, so I cannot guarantee that it will deposit you close to where you need to be.
+adventure=ch5-507;
+RspDflt=none
+RspTxt1=Is there anything I should remember during my travels?
+nxtln1=portalready6
+
+[portalready6]
+Say=I'm afraid I have little in the way of advice for you on your journey because very little is known about astral travel.  It is disappointing that the Sha'ahoul have managed to discover it first.  Except...
+RspDflt=none
+RspTxt1=Yes, Elarath?  What has occurred to you?
+nxtln1=portalready7
+
+[portalready7]
+Say=Yes, this is indeed important, and I'm glad you thought to ask.  Magic should work with very little hindrance on the Astral Planes, but I seriously doubt that unenchanted weapons will do any damage to the projected images of the Sha'men you will encounter.  If you doubt your casting abilities, you will need to procure such a weapon if you do not already have one.  I'm sure one of the blacksmiths, er, Tepest, I think, or...  Lucas?  Lufkin?  One should have such a sword.
+Script=journalentry(chpt5-04);showmessage(Your journal has been updated,200);
+adventure=ch5-508;ch5-547;
+RspDflt=none
+RspTxt1=Thank you for the advice, Elarath.
+nxtln1=portalready8a
+
+[portalready8a]
+Say=Before I forget, I must also teach you a spell that will aid you tremendously in the Astral Plane.  It is a minor protective spell, one that can be taught quite easily to one with your advancing magical skill.  It protects against magical effects, which are likely to be the only offense employed against you while you travel the Astral Nexus.
+RspDflt=none
+script=player.addtitle(Protection From Magic);
+RspTxt1=Thank you, Elarath.  Is there anything else I should know before I embark?
+nxtln1=portalready8
+
+[portalready8]
+Say=Not that I can recall.  The portal is activated and I shall keep a close watch on it so that it stays open for you...  That, and to ensure that nothing else comes through.  I'm not sure the Sha'men's projected selves could cross the threshold, but their spells, and anything they decide to summon, could quite conceivably do so.  Good luck, %playername%.
+adventure=ch5-509;
+RspDflt=Thank you, Elarath.  I shall see you soon.
+
+[tokenfive]
+Say=Yes, and I must admit that this is an interesting enchantment, indeed.  Again, most of what the Sha'men do is somewhat of a mystery to us.  They seem to have come across some of the same magics, but by different means, so that understanding their enchantments is almost like working on an ancient portal!
+adventure=ch5-510;
+RspDflt=none
+RspTxt1=What fate will befall Queen Nanesi if this object is merely destroyed?
+nxtln1=tokenfive2
+
+[tokenfive2]
+Say=It's possible that her spirit could get trapped, or...  Perhaps destroyed, but we will not attempt anything until some more divination can be performed.  It may just be decided that nothing is to be done to it for fear of risking her life.  Pell tells me that this type of magic is closely linked to that of the lich stone, although definitely different, as I have mentioned.  If only good Felious were still with us...
+adventure=ch5-511;
+RspDflt=none
+RspTxt1=Actually, Elarath, he might still be able to help.
+nxtln1=tokenfive3
+
+[tokenfive3]
+Say=What say you?  How?
+RspDflt=none
+RspTxt1=I encountered his spirit on the Astral Plane.  He is trapped there for the present, and it was only with his help that I was able to do what was necessary to clean the Sha'man taint from the Astral Nexus.
+nxtln1=tokenfive4
+
+[tokenfive4]
+Say=Ah.  How appropriate for him that he should find some form of life after death.  Not that I find his predicament amusing, %playername%, but I cannot miss the irony of it.  I am sure that some part of Felious thinks it a tad amusing... though probably just a tad.  We shall need to seek his advice on this matter, for he certainly must know a technique, or an incantation, that would assist us.
+AddQuest=ch5-500;
+RspDflt=none
+RspTxt1=Very well, Elarath, I shall return once Felious has advised me.
+nxtln1=tokenfive5
+RspTxt2=May I ask a few questions before I depart to confer with Felious?
+nxtln2=tokenfive6
+
+[tokenfive5]
+Say=And I shall stand watch as before.  Good speed, %playername%.
+script=player.addtitle(05askfelious);
+RspDflt=Thank you, Elarath, and farewell.
+
+[tokenfive6]
+Say=Certainly, %playername%!  What is your concern?
+RspDflt=none
+RspTxt1=Pell had said that divination was more or less her "specialty."  What do you think?
+nxtln1=tokenfive7
+RspTxt2=What will happen to Queen Nanesi if we do nothing?
+nxtln2=tokenfive8
+rspcnd3=all(ttl(05nesisnap));
+RspTxt3=Why doesn't the Queen have any recollection of what has happened to her?
+nxtln3=tokinfive9
+
+[tokenfive7]
+Say=I believe divination is one of her major studies...  [laughing softly] ...and as you can imagine, one with divinitive skills knows very much indeed!  Perhaps more than she should; the details of why the Council of Fornax requests her presence, or why she refuses to acknowledge the Council's authority, are unknown.
+adventure=ch5-512;
+RspDflt=none
+RspTxt1=Very well, Elarath.  I shall return once Felious has advised me.
+nxtln1=tokenfive5
+rspback=tokenfive6
+
+[tokenfive8]
+Say=I'd imagine she'll stay in the same state she's currently in, which is probably a pretty unsettled one, despite the appearance she may project.  Having one's spirit influenced in such a condition...  [He shakes his head slowly.]  I doubt her ethereal self really needs to be on one of the material planes, so we shall of course do what we can.  Be sure to speak with me again.
+RspDflt=none
+RspTxt1=Very well, Elarath.  I shall return once Felious has advised me.
+nxtln1=tokenfive5
+rspback=tokenfive6
+
+[tokinfive9]
+Say=You have spoken to her?  Pell has told me that they were appearing as her protectors on the Astral Plane, and I don't think that speaking to her is a good idea.  She likely doesn't even know what's happened.  Human minds can do strange things.
+adventure=ch5-513;
+RspDflt=none
+RspTxt1=Very well, Elarath.  I shall return once Felious has advised me.
+nxtln1=tokenfive5
+rspback=tokenfive6
+
+[upgrader]
+Say=Astounding.  Absolutely astounding.  It amazes me how far you've progressed in your magical abilities since the first time I've seen you.  You give me no choice...
+RspDflt=none
+RspTxt1=There's no reason to overreact, Elarath, certainly you don't think I'm a threat...
+nxtln1=upgrader2
+
+[upgrader2]
+Say=What?  Whatever are you...  [He blinks, throws back his head and laughs in a flurry of white.]  No, no, %playername%!  You are to be promoted!  Your strength in the mystical arts is already quite impressive, and with this latest feat, you've proven yourself worthy of the title of a Wizard.
+script=player.addtitle(Wizard);player.addtitle(05epromotedpc);
+adventure=ch5-514;
+RspDflt=none
+RspTxt1=I am honored, Elarath.  Is there anything I must do to retain this new status?
+nxtln1=upgrader3
+
+[upgrader3]
+Say=Nothing that you haven't done already, %playername%.  You are overdue for this privilege, which would have been given to you much earlier had you been given years of formal training.  However, I cannot deny that you exceed many mages in the application of your powers.
+RspDflt=none
+RspTxt1=Thank you, Elarath.  Is there anything else I should be made aware of?
+nxtln1=upgrader4
+RspTxt2=No rituals, no tattoos or secret handshakes?
+nxtln2=upgrader5
+
+[upgrader4]
+Say=Keep to the same code of conduct you've always followed; it has served you and our cause well.  Oh!  And before I forget, although we cannot give you the celebration one would take part in at the Academy, I do have a gift for you to mark this occasion.  I hope you will find this staff useful; it is, after all, a more appropriate weapon for a mage than some rusty blade.
+script=player.additem(MageStaff1);
+RspDflt=none
+rspcnd1=all(ttl(05nsoulfreed));
+RspTxt1=Thank you again, Elarath.  Is there anything else I can do for you or Avalon?
+script1=player.addtitle(05endofch5);player.addtitle(05nsoulfreed);
+nxtln1=endofch5
+rspcnd2=all(ttl(!05nsoulfreed));
+RspTxt2=Thank you again, Elarath.  Is there anything else I can do for you or Avalon?
+script2=player.addtitle(05nsoulfreed);
+nxtln2=finishjar
+
+[upgrader5]
+Say=Ha!  No, nothing of the sort, although had you been a student at the Academy, there would have been a celebration to mark the occasion.  To make up for the lack of fanfare and celebration, I have a gift for you to mark this occasion.  I hope that you will find this staff useful; it is, after all, a more appropriate weapon for a mage than some rusty blade.
+script=player.additem(MageStaff1);
+RspDflt=none
+RspTxt1=Thank you for this honor, Elarath.  Words alone cannot express my gratitude.
+nxtln1=upgrader6
+
+[upgrader6]
+Say=Nonsense!  It is your due, %playername%, and I'm sure the others at the Academy would agree with me.  Good luck to you.
+RspDflt=Thank you again, Elarath, and farewell for now.
+
+[endofch5]
+Say=I believe you've done just about all of it once again, %playername%.  I suggest that you get some rest.  Perhaps one of our commanders has an assignment for you.  I do not know, for as you know I have been quite busy as of late.  I believe I shall get some rest myself, soon...
+RspDflt=I believe I shall as well, Elarath.  Thank you.
+
+[finishjar]
+Say=We must finish the business with the Queen, %playername%, but other than that, I'd say that we've put in a good few days' work, wouldn't you?  [smiles toothily]
+RspDflt=Indeed we have, wise one.  I shall endeavor to finish this quest, and will speak to you when it is finished.  Farewell.
+
+[morbidicon]
+Say=Hmm, yes, indeed...  I've not had much use for that particular volume.  [He moves to the bookcase with surprising grace, and returns with an undamaged, dark grey book, which opens with a protracted crackling sound.]  I believe I see the entry in question...  Yes, I see it now.  It shall take me some time to devise a plan, even with this new information.
+adventure=ch5-15;
+RspDflt=none
+RspTxt1=Then I shall leave you to your studying, wise one.
+nxtln1=morbidicon2
+
+[morbidicon2]
+Say=Hmm...  What?  Oh!  Yes, of course, %playername%.  Pardon me, for I have much studying to do.  I knew I should have paid more attention to this book, but I have so many...  [His gaze drifts over the book.  Surprised, he flips through many pages before looking back at you.]  Please come back soon, %playername%, this book is better ordered than I had originally thought, and this will not take so long after all.
+RspDflt=I understand, Elarath.  I shall return to you in a short while to check your progress.
+
+[jaropen]
+Say=Oh!  Excellent, as a matter of fact!  It turned out being a great deal simpler than a lich stone.  It didn't take me long to find the entry I sought, and I quickly discovered a rather simple solution.  Simple, compared to the work I did on the portal.  Quiet, too, with no spectacular displays.  I'll spare you the specifics, but the heart jar is open and the Queen's soul has been released.
+RspDflt=none
+RspTxt1=What happens to a soul after it is released from a heart jar?
+nxtln1=jaropen2
+
+[jaropen2]
+Say=It is an unnatural state, as I'm sure you can imagine, to have one's soul outside of one's own body.  The soul, as it is, always stays within the body that holds the spark of life.  If it is removed, it seeks a way back, hence the invisible silver cords that tie an astrally projected person back to his or her physical body.
+RspDflt=none
+RspTxt1=Are you saying that the soul has returned to her body of its own volition?  How will the Queen be affected?
+nxtln1=jaropen3
+
+[jaropen3]
+Say=Indeed, it has, and she's likely to be completely bewildered.  The King will probably think her ill, or perhaps that the moon is affecting her.  I would suggest, as always, discretion -- the Queen will need time to recover from this experience, especially because she is probably clueless about what has been done.
+adventure=ch5-16;
+Script=journalentry(chpt5-13);showmessage(Your journal has been updated,200);
+RspDflt=Thank you for your suggestion, Elarath.  Farewell for now.
+
+[decoder]
+Say=Of course!  What would you like me to look at?
+RspDflt=Nothing, Elarath, pardon me.
+rspcnd1=all(obj(spscforget));
+RspTxt1=A scroll with a sketch of a confused man on it.
+nxtln1=forget
+rspcnd2=all(obj(spscdeflect));
+RspTxt2=A scroll with a sketch of a shield on it.
+nxtln2=deflect
+rspcnd3=all(obj(spscmanathief));
+RspTxt3=A scroll with...  Now, this one, I can't make out at all.
+nxtln3=manat
+
+[forget]
+Say=Hmm, yes, the "Forget" spell, which causes momentary confusion in your enemies, and is especially effective against spellcasters.  If you've the time, you can be taught it by this scroll.  I'm afraid the scroll will be consumed in the process, but you can learn the spell instantly.
+RspDflt=none
+RspTxt1=Of course I'd like to learn the spell, Elarath.
+Script1=player.addtitle(Forget);takeitem(spscforget,player);showmessage(You have learned the Forget spell,200);
+nxtln1=redirect
+RspTxt2=Actually, I think I'll hold on to this particular spell.  I may have some other use for it.
+nxtln2=redirect
+
+[deflect]
+Say=Oh, a "Deflect" spell, which will partially reflect attacks -- it does not say specifically whether they need be magical or physical in nature -- that have been targeted at you.  If you've the time, you can be taught it by this scroll.  I'm afraid the scroll will be consumed in the process, but you can learn the spell instantly.
+RspDflt=none
+RspTxt1=Of course I'd like to learn the spell, Elarath.
+Script1=player.addtitle(Deflect);takeitem(spscdeflect,player);showmessage(You have learned the Deflect spell,200);
+nxtln1=redirect
+RspTxt2=Actually, I think I'll hold on to this particular spell.  I may have some other use for it.
+nxtln2=redirect
+
+[manat]
+Say=Ah, a peculiar spell indeed!  This one, entitled "Mana Thief," will suck mana out of the area and will give a portion of it to you.  If you've the time, you can be taught it by this scroll.  I'm afraid the scroll will be consumed in the process, but you can learn the spell instantly.
+RspDflt=none
+RspTxt1=Of course I'd like to learn the spell, Elarath.
+Script1=player.addtitle(Mana Thief);takeitem(spscmanathief,player);showmessage(You have learned the Mana Thief spell,200);
+nxtln1=redirect
+RspTxt2=Actually, I think I'll hold on to this particular spell.  I may have some other use for it.
+nxtln2=redirect
+
+[redirect]
+Say=Are there any more scrolls you wish for me to assist you with?
+RspDflt=No, Elarath.  Thank you for your assistance.
+rspcnd1=one(obj(spscforget,scscdeflect,scscmanathief));
+RspTxt1=If you wouldn't mind.
+nxtln1=decoder
+
+[ttsherard]
+Say=I apologize for interrupting you, but please talk to Sherard about such things.  I have been busy with the portal, and have had no time to do research on the Astral Plane.  However, he has had time to do such, and may have a few useful bits of information to share with you.
+RspDflt=Er, certainly, Elarath, certainly.  Farewell.
+rspback=elarafive
+
+[agfreed]
+Say=Excellent!  At last, I can stop guarding this portal for fear that something will come through!  Thank you, %playername%.  Certainly everyone can get back to their regular sleep patterns soon!
+RspDflt=Including ourselves, eh, wise one?  Goodbye, Elarath.
+rspback=elarafive
+
+[seepell]
+Say=If you've questions about that item, I suggest you see Pell.  She has a bit of an affinity for divinitive spells, and I have been so busy lately that I wouldn't be able to concentrate on such things.
+RspDflt=I understand, Elarath.  Thank you, and goodbye.
+rspback=elarafive
+
+[playedfive]
+Say=Good day, %playername%.
+RspDflt=Pardon me, esteemed mage.  I must be off.
+RspCnd1=All(ttl(!06recipe,06ttCrosby))
+RspTxt1=I've come to seek your wisdom on the strange affliction that has stricken Elazar.
+NxtLn1=badE
+RspTxt2=What have you done to the portal, Elarath?  It is no longer active.
+nxtln2=playedfive2
+
+[playedfive2]
+Say=Oh, I thought I had told you.  Keeping it open, while not dangerous any longer, does tax me a bit due to the spells needed to activate it after such a period of inactivity.  It is ancient and needs a sort of maintenance, if you will.  Regardless, your business there is finished, %playername%, and I feel a portent of things to come that conveys to me that we must all be at our best...
+adventure=ch6-533;
+RspDflt=Thank you for the information and advice, Elarath.  I shall speak to you later.
+
+[nplayfive]
+Say=Good day, %playername%.
+RspDflt=Pardon me, esteemed mage.  I must be off.
+rspcnd1=all(stt(perception>39));
+RspTxt1=You seem a tad haggard today, Elarath.  Are you feeling well?
+nxtln1=nplayfive2
+RspCnd2=All(ttl(!06recipe,06ttCrosby))
+RspTxt2=I've come to seek your wisdom on the strange affliction that has stricken Elazar.
+NxtLn2=badE
+
+[nplayfive2]
+Say=I'm a little worried about Sherard.  He has gone off on an assignment and has not returned.  Perhaps I worry too much.
+adventure=ch6-534;
+RspDflt=I'm sure he's fine.  If you will pardon me, Elarath, I must attend to my duties.
+RspTxt1=Give him more time before you give up hope, Elarath.  Hope is all we have.
+nxtln1=nplayfive3
+RspTxt2=There is much to worry about, Elarath, but it will do no good.
+nxtln2=nplayfive4
+
+[nplayfive3]
+Say=And a precious and dwindling commodity it is, %playername%.  I would wager that most of it is placed in you.  Your efforts thus far have saved us.
+RspDflt=none
+RspTxt1=I cannot take all the credit or all the hope, Elarath.  Others sacrificed and labored for our success as well.
+nxtln1=nplayfive5
+RspTxt2=Thank you, Elarath.  I will not disappoint Avalon.
+nxtln2=nplayfive6
+
+[nplayfive4]
+Say=You are correct, of course, but it is something we cannot avoid and must cope with.  I shall endeavor to keep my hope alive.
+RspDflt=I am glad to hear that, Elarath.  Farewell; I have somewhat urgent business to attend to.
+
+[nplayfive5]
+Say=Belief in such things is precisely what places you in such high esteem in Avalon.  It is well-placed, %playername%; although an individual certainly cannot win the war, a leader and his people certainly can.
+RspDflt=Thank you for the implication, Elarath.  Pardon me while I embark on my latest assignment.
+
+[nplayfive6]
+Say=I've no doubts about that, %playername%.  May luck light your path.
+RspDflt=Thank you, Elarath.  Farewell.
+
+[badE]
+Say=Ah yes, I spoke with Brother Crosby about this some time ago, but recent events have kept me too busy to check up on the matter.  I had heard rumors that Elazar's condition was worsening, but I was not certain they were true.
+RspDflt=none
+RspCnd1=All(ttl(!05lichdead))
+RspTxt1=Indeed, he seems to be getting much worse, and Brother Crosby doesn't think he will last much longer.
+NxtLn1=nkl
+RspCnd2=All(ttl(05lichdead))
+RspTxt2=Indeed, he seems to be getting much worse, and Brother Crosby doesn't think he will last much longer.
+NxtLn2=kl
+
+[nkl]
+Say=I will gladly aid a brother mage, %playername%.  I would prefer to see him personally, but I do not feel comfortable leaving my lab now.
+RspDflt=none
+RspTxt1=From what you've heard, what would you suspect is harming him?
+nxtln1=wassawrong
+
+[kl]
+Say=Your aid to our mages has been most commendable, %playername% -- freeing Felious's spirit was particularly impressive.  In light of your efforts, I would shame myself if I didn't do what I can.
+RspDflt=none
+RspTxt1=From what you've heard, what would you suspect is harming him?
+nxtln1=wassawrong
+
+[wassawrong]
+Say=It's hard to say, especially without seeing him, but recent events lead me to believe that this must be some type of hostile magic assualt.  These things can be very tricky to determine.  What specific signs of illness has he displayed of late?
+RspDflt=none
+RspTxt1=According to Brother Crosby, his hands and head are ice-cold, while his chest is burning up.  He has been completely out of his wits or unconscious most of the time lately.
+nxtln1=bebop
+
+[bebop]
+Say=This is most unusual.  I have a tome which may shed some light on the matter.  [He snaps his fingers and a tome appears in his hand.]  Let me see... it should be here somewhere... mystical illnesses... yes! This sounds like exactly what you were describing...
+RspDflt=none
+RspCnd1=All(ttl(!05chapter5))
+RspTxt1=What have you found?
+NxtLn1=nchsix
+RspCnd2=All(ttl(05chapter5))
+RspTxt2=What have you found?
+NxtLn2=chsix
+
+[chsix]
+Say=It is a very ancient curse, slow and debilitating at first, which will consume even the most powerful mage.  Judging from its age and obscurity -- and the most likely responsible party for the curse -- I'd say the Sha'ahoul picked it up from the Naga, or else happened upon it during their brief excursion into the Astral Plane.
+adventure=ch6-534;
+RspDflt=none
+RspTxt1=Pell was helpful in our last venture to the Astral Plane.  Maybe she can help us with this matter, or we could try contacting the Astral Guardian.
+nxtln1=c62
+
+[c62]
+Say=Unfortunately I cannot contact Aenea, for I have closed the portal to conserve my own energies.  As for Pell, I've not seen much of her since that Fornaxan Magistrate came to Avalon.  No, I'm afraid we'll have to muddle through this on our own.  Fortunately, I believe I have found what we need.
+RspDflt=none
+RspTxt1=Does the text say how this curse might be treated?
+nxtln1=curse
+
+[nchsix]
+Say=It is a very ancient curse, slow and debilitating at first, which will consume even the most powerful mage.  Judging from its age and obscurity -- and the most likely responsible party for the curse -- I'd say the Sha'ahoul picked it up from the Naga, or else happened upon it during their brief excursion into the Astral Plane.
+adventure=ch6-534;
+RspDflt=none
+RspTxt1=Does the text say how this curse might be treated?
+nxtln1=curse
+
+[curse]
+Say=The instructions are vague in spots, but there is an incantation and two components detailed here.  The incantation must be read by someone "pure of heart, mind, and body" -- A fairly standard requirement, and one you certainly meet.  The components are a bit more odd, and I don't believe I have any of them, but I imagine one of the merchants in and about the castle may have them.  I'd try Rayous or Olon -- they never throw anything away.
+adventure=ch6-535;
+RspDflt=none
+RspTxt1=What components should I ask them for?
+nxtln1=comp
+
+[comp]
+Say=You will first need Grimstone Root, which Olon will likely have.  I've heard he uses it in some sort of love tonic; judging from the state of most of our companions in this besieged keep, I imagine he's not used up his supply.  The other component is a pinch of ground Swampfire Flower.  As it is sometimes used in exotic perfumes, Rayous may have it -- Did you know that perfumes were his primary stock before the war?
+adventure=ch6-536:
+RspDflt=none
+RspTxt1=How unusual.  What about the incantation?
+nxtln1=inc
+
+[inc]
+Say=I will transcribe it for you. [does so and hands to you]  It is not overly long or complex, but I fear it may be a very draining experience for you.  Be very careful when you cast this, and make sure Elazar has imbibed the tonic made from the components before you begin.
+script=player.addtitle(06recipe);player.additem(recipe);
+RspDflt=Thanks for the warning, Elarath.  I'm off to find Olon and Rayous now, for I fear Elazar may not have much time left.  Farewell, and thank you for your timely assistance.
+
+[extra]
+Say=Have you had any luck with Elazar's mysterious illness?
+RspDflt=none
+RspCnd1=All(ttl(06RSTUFF,06oSTUFF):obj(olonvial,rayousvial))
+RspTxt1=Yes, I have recovered the necessary ingredients.
+NxtLn1=gotoBC
+RspCnd2=All(ttl(06RSTUFF0,!6oSTUFF):obj(rayousvial))
+RspTxt2=I have the ingredients from Rayous, but I still must speak with Olon.
+NxtLn2=6ncomplete
+RspCnd3=All(ttl(!06RSTUFF,06oSTUFF):obj(olonvial))
+RspTxt3=I have the ingredient from Olon, but I still must speak with Rayous.
+NxtLn3=6ncomplete
+rspcnd4=all(stt(perception>39):ttl(!05chapter5));
+RspTxt4=You seem a tad haggard, Elarath.  Are you feeling well?
+nxtln4=nplayfive2
+rspcnd5=all(ttl(05chapter5));
+RspTxt5=What have you done to the portal, Elarath?  It is no longer active.
+nxtln5=playedfive2
+
+[6ncomplete]
+Say=You must have both ingredients to complete the treatment, %playername%.
+RspDflt=I will gather them, good wizard, and then do what I can for poor Elazar.
+
+[gotoBC]
+Say=Take these ingredients to Brother Crosby.  With them and the incantation, you should be able to help poor Elazar.
+RspDflt=You have my most sincere thanks -- as always -- for your assistance, wise mage.
+

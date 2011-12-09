@@ -1,0 +1,107 @@
+[Notes]
+;Hello there, how can I help you?
+;May I be of assistance to you Sir?
+;What can I do for you?
+;How can I help you, Sir?
+;What is it you want?
+;Hello Sir, How may I help you?
+	Opening Conditions
+a) Doesn't know about bugs. (!BonnieTale, !Basement, !Bugs)
+b) Knows about bugs from Anora or Bonnie (BonnieTale OR Basement, !Bugs)
+c) Bugs dead, hasn't reported wall (Bugs, !WallHole)
+d) Needs to tell to fix wall (WallHole, !BugHoleFixed)
+e) Has been told to fix wall (BugHoleFixed)
+	Notes
+Not certain 'b' can be checked in root.  Do Bonnie OR Basement in root, subdivide responses into Bugs dead or not.  Check that: since 'a' falls through, either BonnieTale or Basement or Bugs must be true and the Player is in Midquest, so just check !WallHole... :-)
+Might want to add a "bugs !wallhole" section. -- Added as a Bugs or !Bugs check in MidQuest
+
+[root]
+Count=5
+Else=
+Default=
+say1=all(ttl(!01BonnieTale,!01Basement,!01Bugs));
+goto1=NoBugs
+say2=all(ttl(!01WallHole));
+goto2=MidQuest
+say3=all(ttl(01WallHole,!01BugHoleFixed));
+goto3=FixWall
+say4=all(ttl(!01Recovered,01BugHoleFixed));
+goto4=Gloating
+Say5=All(ttl(01recovered));
+goto5=Chalice
+
+;Doesn't know about Bug quest.
+[NoBugs]
+say=Hallo, wie kann ich Euch helfen?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Soldier1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Soldier2
+rspDflt=Gehabt Euch wohl, Herr.
+
+[Soldier1]
+say=Ich war Pferdehändler in Cathea. Jetzt bin ich nur eines von vielen hungrigen Mäulern hinter diesen entsetzlichen Mauern.
+rspDflt=none
+rspTxt1=So geht es uns allen. Sagt, habt Ihr in letzter Zeit irgend etwas Interessantes gehört?
+nxtLn1=Soldier2
+
+[Soldier2]
+say=Bonnie hat behauptet, dass im Küchenkeller ein Gespenst umgehen soll. Sie mag zwar hübsch sein, aber ihre verschrobenen Einfälle heben den Reiz mehr als auf. Haltet Euch lieber von ihr fern.
+Adventure=ch1-27;
+rspDflt=Ein Geist, sagt Ihr? Interessant, in der Tat. Dank für Eure Zeit. Ich wünsche Euch einen guten Tag.
+
+
+[MidQuest]
+Say=Kann ich Euch irgendwie helfen?
+rspDflt=none
+RspCnd1=all(ttl(!01Bugs));
+RspTxt1=Anscheinend haust irgend etwas Ungewöhnliches im Küchenkeller. Hättet Ihr wohl die Güte mir zu helfen, es uns vom Hals zu schaffen?  
+nxtLn1=MidQuest2
+rspCnd2=all(ttl(01Bugs));
+RspTxt2=Ich wollte Euch nur wissen lassen, dass ich mich um die Heimsuchung im Keller gekümmert habe und dass Eure Hilfe überflüssig war. Mir scheint, Ihr solltet der Dame Bonnie Abbitte leisten, meint Ihr nicht auch?
+nxtLn2=Apology
+
+[MidQuest2]
+Say=Hat Bonnie Euch den Kopf mit Träumen vom Ruhm und Ehre vollgeblasen? So ein Blödsinn! Meine Pflichten nehmen mich völlig in Anspruch. Ich habe keine Zeit, irgendwelche 'Gespenster' zu jagen, die nur in der Fantasie einer dusseligen Frau existieren. Das sind bestimmt einfach nur irgendwelche Schatten.
+
+rspDflt=Wie Ihr meint, aber ich werde die Wahrheit ja bald herausfinden. 
+
+[Apology]
+say=Ich möchte ihre Geschichten nicht auch noch unterstützen. Ich entschuldige mich jedenfalls nicht bei ihr.
+
+rspDflt=Ein Soldat ohne Ehre ist kein Soldat. Guten Tag.
+
+;Quest done.  Must get wall fixed.
+[FixWall]
+Say=Was nun?
+rspDflt=none
+rspTxt1=Zwar wurden die Kreaturen im Keller beseitigt, aber sie hinterliessen ein beträchtliches Loch in der Wand, das repariert werden muss, damit keine weiteren Kreaturen eindringen können.
+nxtLn1=FixWall1
+
+[FixWall1]
+say=Und was erwartet Ihr von mir? Meine Pflicht -
+rspDflt=none
+rspTxt1=Besteht offenbar darin, im Kasino zu faulenzen! Anora hat mich geschickt, Euch und Euren Freund hier mit der Reparatur der Wand zu beauftragen, oder Ihr bekommt nichts zum Abendessen. 
+nxtLn1=FixWall2
+
+[FixWall2]
+say=Aber...
+RemoveQuest=ch1-03;
+AddQuest=ch1-04;
+Adventure=ch1-28;
+script=player.addtitle(01BugHoleFixed);
+RspDflt=Ihr habt die Wahl, Soldat. Repariert die Wand, oder werdet noch hungriger, als Ihr ohnehin schon seid. Mir scheint, Ihr müßt auch der Dame Bonnie Abbitte leisten. Ihr werdet Euch entschuldigen, nicht wahr? Ich weiß, dass Ihr die richtige Entscheidung treffen werdet. Guten Tag.
+
+[Gloating]
+say=Ja?
+rspDflt=Ich wollte nur nachsehen, ob Ihr schon mit der Reparatur der Wand begonnen habt, doch wie es scheint, ist das nicht der Fall. Knurrt Euch noch nicht der Magen, Soldat? Beeilt Euch lieber...
+
+;After Recovery of Chalice
+[Chalice]
+say=Ja, Herr?  Wie kann ich Euch dienen, Herr?
+rspTxt1=Zunächst könnt Ihr dafür sorgen, dass die Wand des Küchenkellers ordnungsgemäß repariert wird.
+NxtLn1=Chalice1
+
+[Chalice1]
+say=Gewiß, Herr!  Sofort, Herr!
+rspDflt=Gut, Mann. Weitermachen.

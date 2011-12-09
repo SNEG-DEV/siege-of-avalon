@@ -1,0 +1,82 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Thank you, Ormed.
+say1=one(ttl(04chapter4,05chapter5,06chapter6));
+goto1=fourup
+Say2=All(ttl(!01recovered));
+goto2=Ormed
+Say3=All(ttl(01recovered));
+goto3=Chalice
+
+[Ormed]
+Say=What's this?  You're new around here, eh?  Have you been stationed here, too?
+RspDflt=None
+RspTxt1=No.  I have personal business I'm attending to.
+NxtLn1=Ormed1
+
+[Ormed1]
+Say=Right, then.  We don't see many new people around here.  Just the same men doing the same thing, day in and day out.
+RspDflt=None
+RspTxt1=Hopefully, the situation will improve soon.
+NxtLn1=Ormed2
+
+[Ormed2]
+Say=I don't set my hopes on that, sir.  Good spirits protect you.
+RspDflt=Thank you.  You too.
+
+[Chalice]
+Say=Greetings, sir!  Made quite a bit of fuss, haven't you?
+RspDflt=None
+RspTxt1=I didn't mean to.  I was just doing my duty as a soldier of Avalon.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=That's all any of us ever do.  Some of us have duties that make us great.  Others are ordered to sit on their duff all day long.
+RspDflt=None
+RspTxt1=But every job is essential to our victory.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=I suppose they are, sir.  Good day to you, then.
+RspDflt=And to you, soldier.
+
+[fourup]
+Say=It's good to have you with us, sir.  You and your brother are a blessing!
+RspDflt=Thank you, soldier!  Farewell.
+RspTxt1=I will continue to try to exceed expectations, soldier.  Thank you for your kind words.
+

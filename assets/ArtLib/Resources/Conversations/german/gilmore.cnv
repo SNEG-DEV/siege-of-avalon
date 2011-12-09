@@ -1,0 +1,79 @@
+[Notes]
+titlesChecked=01recovered,01village
+
+[Question]
+
+[root]
+Count=3
+Else=
+Default=
+Say1=All(ttl(!01recovered,!01village));
+goto1=Gilmore1
+Say2=All(ttl(!01recovered,01village));
+goto2=village1
+Say3=All(ttl(01recovered,01village));
+goto3=chalice1
+
+
+
+[Gilmore1]
+say=Hallo.  Ich bin Gilmore.  Ihr habt mein Mitgefühl.
+rspDflt=None
+rspTxt1=Woher kommt Ihr?
+Nxtln1=Gilmore3
+rspTxt2=Danke.
+Nxtln2=Gilmore2
+
+
+[Gilmore2]
+say=Falls Ihr etwas braucht, zögert nicht, mich zu fragen.
+rspDlft=Danke nochmal.
+rspBack=Gilmore1
+
+[Gilmore3]
+say=Ich bin Fornaxier.  Ich bin Mitglied des Hohen Rates von Fornax und wurde als Berater hierher geschickt. 
+rspDflt=None
+rspTxt1=Wird diese Belagerung noch lange andauern?
+NxtLn1=Gilmore4
+rspCnd2=all(ttl(01Lahren));
+rspTxt2=Ihr wollt also etwas über Pellandrian erfahren?
+nxtLn2=Pell1
+
+[Gilmore4]
+say=Hoffentlich nicht!  Ich hoffe, dass dieser Konflikt schnell beendet wird, damit ich nach Hause zurückkehren kann.
+rspDflt=Ich bete, dass Ihr Recht habt.
+rspBack=Gilmore1
+
+;After entry into village, but before recovery of Chalice
+
+[village1]
+say=Schon wieder zurück?  Habt Ihr schon genug von dieser Einöde da draußen?
+rspDflt=None
+rspTxt1=Noch nicht, Herr.  Ich bin nur hier, um das Neuste aus Avalon zu erfahren.
+NxtLn1=village2
+
+[village2]
+say=Hier gibt es nicht Neues.  Hier gibt es nur Elend und Hungersnöte im Hof der Bauersleute.
+rspDflt=Es tut mir leid, das zu hören.
+
+;After recovery of Chalice
+
+[Chalice1]
+say=Euch haben wir es also zu verdanken, dass wir dem Sieg ein wenig näher sind.
+rspDflt=None
+rsptxt1=Ich habe nur meine Pflicht als Soldat und Bruder getan.
+NxtLn1=Chalice2
+
+[Chalice2]
+say=Nun, ich danke Euch.
+rspDflt=Gehabt Euch wohl, Herr.
+
+[Pell1]
+say=Natürlich.  Sie sollte nicht hier sein, und es wäre das Beste, wenn sie sofort nach Hause zurückkehren würde.
+rspDflt=none
+rspTxt1=Warum sagt Ihr das, Herr?
+NxtLn1=Pell2
+
+[Pell2]
+say=Ich fürchte, das ist eine interne Angelegenheit des fornaxischen Volkes.  Einen schönen Tag noch.
+RspDflt=Euch auch, Herr.

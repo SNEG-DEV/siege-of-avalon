@@ -1,0 +1,606 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01olon,01olonhappy,01pell,04maskreturned,04staffdone,04staffquest,06ostuff
+Checked=00chapterstarter,01Boots,01Key,01LahrenHappy,01MetPlayer,01Olon,01OlonHappy,01Pell,01Pell3,01permission,01Recovered,03chapter3,04chapter,04chapter4,04disrupted,04maskreturned,04notdoneyet,04ramdestroyed,04recondone,04reconquest,04staffdone,04staffquest,04warrior,05chapter5,06chapter6,06ostuff,06recipe
+Removed=
+
+[Quest]
+Added=ch1-13,ch1-17,ch1-18,ch1-20,ch1-21,ch1-28,ch1-33,ch1-34,ch1-35,ch1-36,ch1-84,ch1-85,ch4-506,ch4-511,ch4-512,ch4-546,ch4-547
+Removed=ch1-13,ch1-17,ch1-20,ch1-21,ch1-28,ch4-506
+
+[Items]
+Given=
+Taken=keyring
+Checked=dreamwalkerwand,KeyRing,MagicalMask
+Added=olonvial
+
+[SyntaxCheck]
+tucker(2/9/01)=Passed
+tucker(2/14/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=19
+Else=
+Default=Good day to you, Olon.
+Say1=All(Ttl(06ostuff));
+goto1=6end
+Say2=All(Ttl(06recipe));
+goto2=ingredient
+Say3=All(Ttl(06chapter6));
+goto3=6intro
+say4=all(ttl(05chapter5));
+goto4=five
+say5=all(ttl(04chapter4));
+goto5=olonfour
+say6=all(ttl(03chapter3));
+goto6=three
+Say7=All(ttl(!01MetPlayer));
+goto7=Olon
+Say8=All(ttl(!01permission));
+goto8=NoPermission
+Say9=All(ttl(01permission,!01Pell));
+goto9=Permission
+Say10=All(ttl(01Pell,!01Pell3));
+goto10=Pell
+Say11=all(ttl(01Pell3,!01LahrenHappy,!01Olon));
+goto11=Gift
+Say12=all(ttl(01LahrenHappy,!01Olon));
+Goto12=Late
+Say13=all(ttl(01Olon,!01LahrenHappy));
+Goto13=NoGift
+Say14=all(ttl(01Olon,01LahrenHappy,!01OlonHappy));
+Goto14=PellDone
+say15=all(ttl(!01Boots));
+Goto15=House
+say16=all(ttl(01Boots,!01Key):obj(KeyRing));
+goto16=ReturnKey
+say17=all(ttl(01Boots,!01Key):obj(!KeyRing));
+goto17=NoKey
+say18=All(ttl(!01Recovered));
+goto18=NoChalice
+say19=All(ttl(01recovered));
+goto19=Chalice
+
+[Olon]
+Say=Greetings, soldier!
+script=addtitle(01MetPlayer);
+RspDflt=Good day to you.
+RspTxt1=Hello!  I'm new here, and have been out meeting everyone I can.  Who are you, if I may ask, and where are you from?
+NxtLn1=Olon1
+
+[Olon1]
+Say=I hail from Nisos, where I'm known as Olon the Quick.  I had a bit of a reputation there as a master of sleight-of-hand and, shall we say, related activities.
+RspDflt=none
+RspTxt1=Related activities?  Do you mean you were a thief?
+NxtLn1=Olon2
+
+[Olon2]
+Say=I've always preferred the term "rogue", but then I've never been one to quibble with semantics.  I was hardly born on a pile of gold like some; I survived as I could.  These days, though, you must admit there's too little available to make that lifestyle worth bothering with, and so I've become a simple merchant, more or less.
+RspDflt=none
+RspTxt1=More or less?  And what does that mean?
+NxtLn1=Olon3
+
+[Olon3]
+Say=I keep my ear to the ground.  Even if there's not much of a market for goods, information is always important and favors still carry weight.  If you come across any interesting tidbits, I'd love to hear them.
+RspDflt=none
+RspTxt1=I'll keep that in mind.  As a "more or less simple merchant", then, what do you offer for sale?
+nxtLn1=Olon4
+
+[Olon4]
+Say=I get the feeling there would be little point in robbing you, so there's little hope that you could afford anything I have available.  Besides, I doubt you'd really be interested in what I offer.
+RspDflt=none
+RspTxt1=Your words have the sting of truth; my funds are indeed limited.
+nxtLn1=Olon5
+
+[Olon5]
+Say=Here's a bit of free advice for you.  If at some point your situation improves, I know of someone that you might wish to speak with.  His name's Holt, and he can be found in the South Gate around the Armory.  If you grow, shall we say, tired of the poor equipment the army is issuing new recruits these days, well, he may be able to help you out.
+Adventure=ch1-33;
+RspDflt=Even if I wanted to, right now there's little point.  In the future, however...  I thank you for your advice.  Good day to you.
+rspCnd1=all(ttl(01Permission));
+RspTxt1=I thank you for your advice but, truth be told, I'm here for another reason as well.  You see, my brother --
+nxtLn1=Perm1
+
+[NoPermission]
+Say=Hello again.  What's new?
+RspDflt=Nothing.  Good day.
+RspTxt1=I don't suppose you've heard anything of interest?
+NxtLn1=NoPermission1
+
+[NoPermission1]
+Say=Sorry.  I can't think of anything that would really interest you right now.
+RspDflt=Okay.  Thanks anyway.
+
+[Permission]
+Say=Welcome back!  How go things with you?
+RspDflt=none
+RspTxt1=Things are well, Olon.  I don't know if you're aware, but my brother-
+NxtLn1=Perm1
+
+[Perm1]
+Say=That would Lieutenant Corvus, I believe.
+RspDflt=none
+RspTxt1=Yes, actually.  He-
+nxtLn1=Perm2
+
+[Perm2]
+Say=Went out on a raid with General Ovoron, which has since met with disaster.  He was seen in the village being chased by Ahoul, and may still be alive.
+RspDflt=none
+RspTxt1=Yes, and-
+nxtLn1=Perm3
+
+[Perm3]
+Say=You've been transferred to Mudam's command and he's letting you out to scout the village all alone.  You realize, naturally, that going out there alone is suicide, don't you?  Then again, just as naturally, I realize telling that to people like you only convinces them to go.
+RspDflt=none
+RspTxt1=People like --  ? Never mind.  Do I want to know how you know all this?
+nxtLn1=Perm4
+
+[Perm4]
+Say=It's my job.  And, no, you probably don't want to know any more.  Did you actually have any new news for me, or were you looking for some information?
+RspDflt=none
+RspTxt1=Information.  Mudam-
+nxtLn1=Perm5
+
+[Perm5]
+Say=Suggested that you talk to me.  I don't know whether it's gratifying or annoying that he still thinks of me.  I don't suppose the army has given you your pay yet?  Or some sort of expense fund?  Never mind  --  I can tell they haven't.  Well, you'll not get more charity from me.
+RspDflt=none
+RspTxt1=But-
+nxtLn1=Perm6
+
+[Perm6]
+Say=No charity.  However, I could use a favor.  And I always pay back my favors.
+RspDflt=none
+RspTxt1=What favor?
+nxtLn1=Perm7
+
+[Perm7]
+Say=Well, I've this friend who has a bit of a problem.  She's nice and all, but there's not really anything I can do for her.  Not my area, you see, and certainly out of the league of the louts you see wandering about the Bailey.  You, though, might be able to help.  I know a lord, young though he be, when I see one.
+RspDflt=none
+RspTxt1=And what would this problem be, then?
+nxtLn1=Perm8
+
+[Perm8]
+Say=I'm afraid that it's not really my tale to tell.  If Pell decides she likes you, then she'll tell you.  Otherwise...
+RspDflt=none
+RspTxt1=And who is Pell?
+nxtLn1=Perm9
+
+[Perm9]
+Say=A friend.  And she has a problem.  That's all you need to know.  If you feel like helping, she likes watching the horses over that way.  Go talk to her.
+Adventure=ch1-34;ch1-35;ch1-36;
+RemoveQuest=ch1-28;
+AddQuest=ch1-13;
+script=player.addtitle(01Pell);
+RspDflt=I'll have to consider this for a while.  Good day.
+
+[Pell]
+Say=How goes Pell's situation?
+RspDflt=I'm still trying to find a solution.  I will return when I know more.
+
+[Gift]
+Say=How goes it with Pell?
+RspDflt=none
+RspTxt1=The problem lies with Lahren, not Pell.  He refuses to believe that Pell would merely forgive him.  I have him partially convinced that giving Pell a gift along with an apology might work, but neither he nor I have anything appropriate for a gift.  I don't suppose you have any suggestions?
+nxtLn1=Gift1
+
+[Gift1]
+Say=I'm afraid that's also out of my area.  Gold works well for most of the women I typically deal with, but Pell?  I don't think so.  With the siege on, there's not likely to be many items that would suit your needs, unless you feel like taking to robbing bedrooms.
+RspDflt=none
+RspTxt1=No, that I will not do.  There has to be something...  Maybe in the village?
+nxtLn1=Gift2
+
+[Gift2]
+Say=While there is a large world outside these walls, I must assume you mean the village immediately outside said walls.  If so, you do realize that the Ahoul have been looting it for months?  I doubt there's a pretty rock left, let alone anything valuable.  But if not in the village itself, then perhaps the Ahoul?
+RspDflt=none
+RspTxt1=You mean I should take to robbing corpses?
+nxtLn1=Gift4
+
+[Gift4]
+Say=Think of it as retrieving stolen property.
+RspDflt=none
+RspTxt1=Maybe.  I doubt they'd have anything anyway.
+nxtLn1=Gift5
+
+[Gift5]
+Say=You can but try.  As an incentive, here's a little more information for you.  I happen to know that a few people have a good knowledge of the village.  Massus the friar, for one, in the chapel, and the old wizard, Elarath, for another, inside the Outer Keep.  Go talk to them before you head out.  And if you haven't spoken with Pell about this gift, I'd also suggest you do so.
+RemoveQuest=ch1-17;
+AddQuest=ch1-18;
+RspDflt=none
+RspTxt1=I will.  Thank you.  Good day to-
+nxtLn1=Gift6
+
+[Gift6]
+Say=I'm not done yet.  There's a certain house in the village that I've an interest in.  I have it on good authority that for one reason or another, it is relatively intact, and you won't be able to mistake it for any other house.  There should be a chest inside that is magically locked.  I just need to know if the chest is actually there and if it's intact.  Got that?
+Adventure=ch1-84;
+AddQuest=ch1-20;
+script=player.addtitle(01Olon);
+RspDflt=Yes.  When I know more, I shall return.  Farewell.
+
+[Late]
+Say=I hear that you've managed to get Lahren talking with Pell again.  Well done.  I also heard that you've been out to the village already.
+RspDflt=none
+RspTxt1=Yes.  I needed to find a gift for Lahren to give to Pell.
+nxtLn1=Late1
+
+[Late1]
+Say=For your reward, there are a couple of people that you might wish to talk to concerning the village: Massus the friar and Elarath the wizard.
+RemoveQuest=ch1-13;
+script=player.addtitle(01OlonHappy);
+RspDflt=none
+RspTxt1=Thank you.  I will.  Good day to-
+nxtLn1=Gift6
+
+[NoGift]
+Say=How goes the search for a gift?
+RspDflt=none
+RspTxt1=I have not yet presented Lahren with anything he likes.
+nxtLn1=NoGift1
+
+[NoGift1]
+Say=Unfortunate.  Well, just keep looting --  I mean, retrieving stolen items.  I'm sure something will turn up.
+RspDflt=none
+rspCnd1=all(ttl(!01Boots));
+RspTxt1=I hope it does.
+nxtLn1=House
+rspCnd2=all(ttl(01Boots):obj(KeyRing));
+RspTxt2=I hope it does.  In the meantime, I have with me the key you wanted.  It has sentimental value for you, I assume?
+nxtLn2=Tunnels
+rspCnd3=all(ttl(01Boots):obj(!KeyRing));
+RspTxt3=I hope it does.
+nxtLn3=NoGift2
+
+[NoGift2]
+Say=Good luck to you, then.
+RspDflt=And to you.
+
+[PellDone]
+Say=I heard that you managed to get Pell and Lahren talking again.  Well done.
+RemoveQuest=ch1-13;
+RspDflt=none
+script=player.addtitle(01OlonHappy);
+rspCnd1=all(ttl(!01Boots));
+RspTxt1=Thank you.  It was challenging, but worth it.
+nxtLn1=House
+rspCnd2=all(ttl(01Boots):obj(KeyRing));
+RspTxt2=Thank you.  It was challenging, but worth it.  I also have with me the key you wanted.  It has sentimental value for you, I assume?
+nxtLn2=Tunnels
+rspCnd3=all(ttl(01Boots):obj(!KeyRing));
+RspTxt3=Thank you.  It was challenging, but worth it.
+nxtLn3=NoGift2
+
+[House]
+Say=Have you learned anything about that house I asked you about?
+RspDflt=No, not yet.  When I know more, I'll be back.
+RspTxt1=Yes, I found it.
+nxtLn1=House1
+
+[House1]
+Say=Was the house intact?
+RspDflt=none
+RspTxt1=No, it wasn't.
+nxtLn1=HouseDestroyed
+RspTxt2=Yes, it was.  There was indeed a chest inside.  It, also, was intact.
+nxtLn2=House2
+
+[HouseDestroyed]
+Say=Then you didn't find the right house.  I know for a fact it's intact.  Go look again.
+RspDflt=I apologize.  I thought I had found it.  When I know more, I shall return.
+
+[House2]
+Say=Did you open the chest?
+RemoveQuest=ch1-20;
+AddQuest=ch1-21;
+script=addtitle(01Boots);
+RspDflt=none
+RspTxt1=Yes, I did.
+nxtLn1=Boots
+rspCnd2=all(wrn(!shadowboots));
+RspTxt2=No, it was locked.
+nxtLn2=Locked
+rspCnd3=all(wrn(shadowboots));
+RspTxt3=No, it was locked.
+nxtLn3=Liar
+
+[Locked]
+Say=The chest actually contains something I wanted to give to you.  There should be a key to the chest somewhere in the village -- there's a spell on it such that it can't go far from its lock.  The top level of the chest contains a pair of boots.  Should you manage to capture them they're yours.  You might consider them to be, well, magical.  Just return the key to me.
+RspDflt="If I can capture them"?  I will be certain to, and the key will be yours.
+
+[Liar]
+Say=Those boots on your feet look very much like those within the chest.  Do you really think me stupid?  Lying to me isn't the wisest thing to do -- it generally only earns one pain, which is easy enough to come by around here already.  Nevertheless, what I wanted to tell you was that the boots are actually meant for you.  All I need is the key you used to open the chest.  The key is of no more use to you, after all.
+RspDflt=none
+rspCnd1=all(obj(keyring));
+RspTxt1=The key for these boots?  A fair exchange, I guess.
+nxtLn1=Tunnels
+rspCnd2=all(obj(!keyring));
+RspTxt2=Well...  I had the key, but I've... misplaced it.  I shall return when I have it.
+nxtLn2=Boots2
+
+[Boots]
+Say=You should have found a pair of boots inside, then.  Consider those boots a gift for you.  I'm surprised that you managed to open the chest actually.  I had thought the key lost.  Since the key is of no more use to you, might I have it back?
+RspDflt=none
+rspCnd1=all(obj(keyring));
+RspTxt1=The key is yours.  Sentimental value for you, then?
+nxtLn1=Tunnels
+RspTxt2=Well...  I had the key, but I've... misplaced it.  I shall return when I have it.
+nxtLn2=Boots2
+
+[Boots2]
+Say=Please do so.  I'll have more for you when you return it to me.
+RspDflt=Until later, then.
+
+[ReturnKey]
+Say=Have you got the key?
+RspDflt=none
+RspTxt1=The key is yours.  It has sentimental value for you, I assume?
+nxtLn1=Tunnels
+
+[NoKey]
+Say=Have you got the key?
+RspDflt=No, but I'll be certain to get it to you.
+
+[Tunnels]
+Say=Yes, something like that.  I have one final piece of information for you.  There is a network of tunnels running throughout the village underground.  I'd suggest that you keep an eye out for an entrance -- allegedly, there is even treasure down there.  If you do find the entrance -- and any treasure -- that would be information I'd value.  Greatly, even.
+RemoveQuest=ch1-21;
+Adventure=ch1-85;
+Script=addtitle(01Key);takeitem(KeyRing,Player);player.setprop( trainingpoints=2);showmessage(You have received some training points.,300);
+RspDflt=none
+RspTxt1=I fear that I will be too busy in the village to indulge in a hunt for these mysterious tunnels.  However, I'll be certain to keep an eye out, and if I learn anything, you'll be the first to know.  Tell me, though -- how did you manage to preserve your house when the rest of the village was practically destroyed?
+nxtLn1=Tunnels2
+
+[Tunnels2]
+Say=My house?  Odd... I don't recall ever saying that.  Good day to you.
+RspDflt=I... see.  Thank you for all your help, Olon.  Farewell.
+RspTxt1=One last question, if you will.  When Mudam originally told me to talk to you, he said, "if he will consent to speak with you."  Why did you consent, Olon?  Why have you helped me?
+nxtLn1=Tunnels3
+
+[Tunnels3]
+Say=Careful, soldier.  "Why" is a dangerous question.  Are you certain you mean to be asking it?
+RspDflt=It was only meant idly.  There is no serious need to discuss the matter.  Farewell.
+RspTxt1=I asked what I have asked.
+nxtLn1=Tunnels4
+
+[Tunnels4]
+Say=Very well.  I do not believe I have a need to obscure this from you.  Nevertheless, I would first like to state that my purposes are not nefarious, and neither do I wish you harm.  Allies are difficult to come by, and powerful ones are painfully rare.  These times will kill the unprepared and I, for one, intend to live long.  Perhaps I am wrong, and perhaps you will be worm food ere the sun rises again, but when I look at you I see the potential for greatness.  However, such potential must be cultivated to be fully realized.
+RspDflt=none
+RspTxt1=Continue.
+nxtLn1=Tunnels5
+
+[Tunnels5]
+Say=I know both what you have been told and what you will be told, and it will lead you to an opportunity, in your terms, to do good work benefitting the people of Avalon.  Along the way you may even recover your brother.  In my terms, not only do I stand to benefit with every other Avalonian, but I also perceive this as an opportunity to assist you in furthering your talents and skills.  Developing these, I believe, will gain you much recognition, and thereby a sort of power.  Powerful allies, remember.
+RspDflt=none
+RspTxt1=I owe you nothing, Olon.  We stand even.
+nxtLn1=Tunnels6
+
+[Tunnels6]
+Say=We stand even.  That I do not dispute.  But should you succeed in your tasks -- and as a betting man I wager that you will -- even should we never speak again, do not doubt that I am better off for your success.  And if we do speak again?  Well, allies may accomplish far more striving together than by working alone.  Mudam knew what he was about when he sent you to me.  Just a little something for you to keep in mind, my good soldier.
+RspDflt=Yes, I imagine it is.  Goodbye.
+
+[NoChalice]
+Say=So, the village hasn't killed you.  I guess my wager stands.  Have you learned anything more about the tunnels?
+RspDflt=none
+RspTxt1=No, I'm afraid.  I'm just sniffing out rumors.
+nxtLn1=NoChalice1
+
+[NoChalice1]
+Say=I've nothing for you that you could not find elsewhere.
+RspDflt=I thought as much.  Until later, then.
+
+[Chalice]
+Say=It seems I have won my wager; you did become a hero.
+RspDflt=none
+RspTxt1=Nothing so grand, I think -- whatever others say.  Have you anything more for me?
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=About the tunnels, you mean?  Come now, don't you think you've done enough for now?  If you still wish to deal with me, come see me in the morning.
+RspDflt=Perhaps I will.  Good night.
+
+[olonfour]
+Say=Welcome back, traveler.
+RspDflt=Pardon me, Olon, I was just passing through.  Good day to you.
+rspcnd1=all(ttl(04reconquest,!04staffquest));
+RspTxt1=I regret that I come on official business today, Olon.
+nxtln1=olonfour2
+rspcnd2=all(ttl(04staffquest,!04staffdone):obj(!dreamwalkerwand));
+RspTxt2=I regret to say that I have been unable to get the dreamwalker's wand yet.
+nxtln2=olonfour14
+rspcnd3=all(ttl(04staffquest,!04staffdone):obj(dreamwalkerwand));
+RspTxt3=I have brought you the dreamwalker's wand; now my debt is paid.
+script3=takeitem(dreamwalkerwand,player);player.addtitle(04staffdone);
+nxtln3=olonfour15
+rspcnd4=all(ttl(04notdoneyet,04recondone,04ramdestroyed,04warrior,04staffdone,04disrupted,!04maskreturned):obj(MagicalMask));
+RspTxt4=I no longer need your mask, Olon, and I have come to return it.
+script4=player.addtitle(04maskreturned);
+nxtln4=olonfour16
+
+[olonfour2]
+Say=So that's it, eh?  Well, let's have it.
+RspDflt=none
+RspTxt1=Mudam has me on a reconnaissance mission in Ahoul territory...
+nxtln1=olonfour3
+
+[olonfour3]
+Say=Oh?  And how does he think I can assist you in that undertaking?
+RspDflt=none
+RspTxt1=He knows you have an enchanted mask that will make the wearer look like a half-breed of the Sha'ahoul warrior caste.
+nxtln1=olonfour4
+
+[olonfour4]
+Say=Oh, and I'll bet he expects me to simply give it up to save humanity, is that it?  Its purpose is to save ME!
+RspDflt=none
+RspTxt1=As a matter of fact, he...
+nxtln1=olonfour5
+rspcnd2=all(ttl(01olonhappy));
+RspTxt2=To tell you the truth, he doesn't.  He told me you might have an assignment for me, but considering our past, I thought...
+nxtln2=olonfour12
+rspcnd3=all(ttl(!01olonhappy));
+RspTxt3=To tell you the truth, he doesn't.  He told me you might have an assignment for me.
+nxtln3=olonfour13
+
+[olonfour5]
+Say=It matters not.  He is mad if he thinks I'll relinquish my only piece of insurance without getting my cut!  However, considering the situation, I must let you borrow it.
+RspDflt=none
+rspcnd1=all(stt(perception<31));
+RspTxt1=I'm glad you see it that way, Olon.  I wasn't sure if you had such a refined sense of duty, or if...
+nxtln1=olonfour6
+rspcnd2=all(stt(perception>30));
+RspTxt2=Oh?  And what is the situation?
+nxtln2=olonfour11
+
+[olonfour6]
+Say=Oho!  You think I said I have to let you borrow it for the benefit of the many, right?  Ha!  You have to use it in order to pay me for using it!
+RspDflt=none
+RspTxt1=I'm not sure I follow, Olon.  In fact, I'm sure I don't.
+nxtln1=olonfour7
+RspTxt2=What is it you wish for me to do to reimburse you for the use of the mask?
+nxtln2=olonfour7
+
+[olonfour7]
+Say=You may use the mask if you wish, if you agree to fetch something for me.  With the aid of the mask, it should be a small task for you to find one of the dreamwalkers' prized wands and steal it.
+RspDflt=none
+RspTxt1=How comes it that you know about this wand, and what is a dreamwalker?
+nxtln1=olonfour8
+RspTxt2=You must be craz...  I see.  You'll, ah, understand if I stick to my assignments at the start...
+nxtln2=olonfour10
+
+[olonfour8]
+Say=How it comes that I know this is none of your concern, but I will tell you that some of the Sha'men have the ability to enter the dream world, which is some other plane of existence.  The mask I have was made from old components, and as a result, the mask's enchantment will not stand up to strong scrutiny.  Therefore, I need a new component for a new item.  So.  Do you wish to use the mask, or not?
+RspDflt=none
+RspTxt1=It is not a question of want; I must, but this is a very dangerous assignment!
+nxtln1=olonfour9
+
+[olonfour9]
+Say=I'm glad we're in agreement, then.  Take your time getting the wand, but do not cross me; it would be far easier for the both of us if you simply delivered the wand as you are agreeing to.
+adventure=ch4-511;
+RspDflt=none
+RspTxt1=Of course, Olon.  I am a man of my word.
+nxtln1=olonfour10
+RspTxt2=I'll take my time, all right, I'll...  Be back with the wand presently.
+nxtln2=olonfour10
+
+[olonfour10]
+Say=Understood.  You may pick up the mask from Pell; she has been adding an ensorcellment at my request.  The sympathetic, culture-based nature of the mask means that those of true human blood -- the defenders of Avalon -- will not be affected.  Only the Sha'ahoul will be affected by it, and even then, the more intelligent and more experienced of them will see through the illusion.  Animals are also not fooled because they do not rely primarily on sight to distinguish between enemies and allies.  I shall see you soon, yes?
+AddQuest=ch4-506;
+adventure=ch4-512;ch4-546;
+script=player.addtitle(04staffquest);journalentry(chpt4-08);
+RspDflt=Indeed, Olon.  Farewell.
+
+[olonfour11]
+Say=The situation is that you must have the mask to do what I wish you to do to pay for its use.
+RspDflt=none
+RspTxt1=Come again?
+nxtln1=olonfour7
+RspTxt2=Very well, Olon.  What is it you would have me do?
+nxtln2=olonfour7
+
+[olonfour12]
+Say=You thought I'd cut you some slack, or simply let you use the mask?  I'd be doing you a terrible disservice, my neighbor, by allowing you to fret so over owing me for its use.  No, I think it better that I require a service in exchange for its use.  Considering the situation, however, I must let you use the mask.
+RspDflt=none
+rspcnd1=all(stt(perception<31));
+RspTxt1=I'm glad you see it that way, Olon.  I wasn't sure if you had such a refined sense of duty, or if...
+nxtln1=olonfour6
+rspcnd2=all(stt(perception>30));
+RspTxt2=Oh?  And what is the situation?
+nxtln2=olonfour11
+
+[olonfour13]
+Say=He was certainly right about that.  However, I realize that either way, considering the situation, I must give you the mask.
+RspDflt=none
+rspcnd1=all(stt(perception<31));
+RspTxt1=I'm glad you see it that way, Olon.  I wasn't sure if you had such a refined sense of duty, or if...
+nxtln1=olonfour6
+rspcnd2=all(stt(perception>30));
+RspTxt2=Oh?  And what is the situation?
+nxtln2=olonfour11
+
+[olonfour14]
+Say=I've no doubt you will return to me shortly with stories of success.  [He smiles disconcertingly.]
+RspDflt=Yes, that's what I was thinking.  Farewell.
+
+[olonfour15]
+Say=So it is!  Are you finished with the mask yet?
+adventure=ch4-547;
+removequest=ch4-506;
+RspDflt=none
+rspcnd1=all(ttl(04recondone,04warrior,04ramdestroyed,04disrupted));
+RspTxt1=Yes, I have completed all assignments that I would need the mask for.  Pell's ensorcellment works like a charm.
+script1=player.addtitle(04maskreturned);
+nxtln1=olonfour16
+rspcnd2=one(ttl(!04recondone,!04warrior,!04ramdestroyed,!04disrupted));
+RspTxt2=No, I have not completed all the assignments that I need the mask for.
+script2=addtitle(04notdoneyet);
+nxtln2=olonfour17
+
+[olonfour16]
+Say=I knew it would suit your needs perfectly.  You may keep the mask; it may come in handy for you, or for "humanity," again.  It was nice doing business with you, friend.
+RspDflt=Noted.  Farewell, Olon.
+RspTxt1=Likewise.  Farewell, Olon.
+script1=
+
+[olonfour17]
+Say=That's quite all right.  Let me know when you are finished with it.
+RspDflt=Count on it.  Until then, farewell.
+
+[6intro]
+Say=Hello, %playername%.  It's been awhile since you passed this way -- I hope good fortune still follows you.  Can I help you with anything?
+RspDflt=No, Olon, I'm just wandering about.  Farewell.
+
+[ingredient]
+Say=Good to see you again, %playername%.  Is there anything I can do for you?  Business is slower each day for me, but you've brought me good luck in providing opportunities for me to turn the odd profit here and there.
+RspDflt=none
+RspCnd1=All(ttl(04chapter4))
+RspTxt1=I'm glad if I can bring you luck, Olon.  Your mask certainly kept me alive in the Sha'ahoul camp.
+NxtLn1=nc4
+RspCnd2=All(ttl(!04chapter4))
+RspTxt2=I'm glad if I can bring you luck, Olon.  Perhaps you can help me with something.
+NxtLn2=c4
+
+[nc4]
+Say=I never would have used it, likely.  It didn't provide nearly enough security for my precious skin.  Anyway, what can I do for you today?
+RspDflt=none
+RspTxt1=I'm looking for an exotic ingredient for a special tonic to treat Elazar's strange illness -- Grimstone Root, to be precise.
+nxtln1=stuff
+
+[c4]
+Say=What do you need?  My supplies are becoming a bit thin, you know.
+RspDflt=none
+RspTxt1=I'm looking for an exotic ingredient for a special tonic to treat Elazar's strange illness -- Grimstone Root, to be precise.
+nxtln1=stuff
+
+[stuff]
+Say=Grimstone Root?  I would have never thought Elarath...never mind, never mind -- just let me check.  [He rummages around for a moment, then returns with a tiny packet.]  Here you go, %playername%, no charge.  Be careful with that, or you'll end up surrounded by women wherever you go.  [He winks.]  Actually, I never believed you could make love potions with it.  My customers do, though, so I always have some.  I hope it helps you.
+script=player.additem(olonvial);player.addtitle(06OSTUFF);
+RspDflt=It will save a life, Olon.  May the good spirits reward your generosity.  Farewell.
+
+[6end]
+Say=Watch yourself, %playername%.  I've heard some dark talk lately, and I fear some are working against you.
+RspDflt=My thanks for the warning, Olon.  Farewell.
+
+[five]
+Say=Good day, %playername%.  I can't talk to you now, but I would advise you to keep your eyes open.  Moreso than they have been before.
+RspDflt=Certainly, Olon.  Thank you for the advice.
+RspTxt1=Don't you think you're being a mite paranoid?
+nxtln1=five2
+
+[five2]
+Say=The paranoid stay safe, %playername%.  Farewell.
+RspDflt=Farewell,
+
+[three]
+Say=Hello, traveler.  Please pardon me; I'm taking inventory.  Stocks are low...  [He sighs.]
+RspDflt=Very well.  Goodbye.
+

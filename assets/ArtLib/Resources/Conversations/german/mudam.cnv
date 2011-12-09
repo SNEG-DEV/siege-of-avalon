@@ -1,0 +1,282 @@
+[Notes]
+titlesChecked=01trainedScout,01transferred,01village,01foundBruder,01foundAhoul,01foundTraitors,01permission
+titlesSet=01trainedScout,01permission,01ReportTraitors
+
+[root]
+Count=6
+Else=
+Default=Danke, Mudam.
+Say1=All(ttl(!01trainedScout,!01Transferred));
+goto1=Mudam1
+Say2=all(ttl(01trainedScout,!01Transferred));
+Goto2=Training
+Say3=All(ttl(01transferred,!01Permission));
+goto3=Transferred
+Say4=all(ttl(01Permission,!01Village));
+Goto4=Training
+Say5=All(ttl(01village,!01EndChapter));
+goto5=village1
+Say6=all(ttl(01EndChapter));
+goto6=BedTime
+
+[Mudam1]
+say=Was führt Euch an meine Tür?
+rspDflt=None
+rspTxt1=Verzeihung, Herr.  Es tut mir leid, Euch gestört zu haben.
+NxtLn1=Mudam2
+rspTxt2=Verzeihung, Herr.  Ich bin gerade in Avalon eingetroffen und sehe mich ein wenig um. Wer seid Ihr, und wo kommt Ihr her?
+NxtLn2=Mudam3
+
+[Mudam2]
+say=Das macht nichts.  Bei mir sind alle Soldaten willkommen.
+RspDflt=Guten Tag, Herr.
+rspTxt1=Danke, Herr.  Darf ich denn fragen, wer Ihr seid?
+nxtLn1=Mudam3
+
+[Mudam3]
+say=Mein Name ist Mudam und ich bin in diesem Land geboren.  Ich ging zur Armee, als der Krieg gegen Mithras begann, und im Laufe der Jahre habe ich den Führern hier mein Können unter Beweis stellen dürfen.  Nun bin ich Meisterkundschafter, verantwortlich für die Ausbildung und die Einsätze der Späher.  Also, wie kann ich Euch dienen?
+Adventure=ch1-02;
+rspDflt=None
+rspTxt1=Danke, Herr.  Aber ich habe bereits genug von Eurer Zeit in Anspruch genommen, also gehe ich jetzt wieder.
+NxtLn1=Mudam4
+rspCnd2=All(ttl(!01trainedscout));
+rspTxt2=Ich verstehe.  Um ehrlich zu sein, ich würde gerne einige Fertigkeiten eines Kundschafters erlernen.  Könntet Ihr mich darin unterweisen?
+NxtLn2=Mudam5
+
+[Mudam4]
+say=Wie Ihr wollt.  Aber falls Ihr jemals etwas von mir braucht, zögert nicht, mich zu fragen!
+RspDflt=Danke noch einmal, Herr, und gehabt Euch wohl!
+
+[Mudam5]
+say=Aber natürlich.  Heutzutage interessieren sich nur wenige Soldaten dafür, richtige Kundschafter zu werden, also habe ich nur wenige Rekruten.  Dazu kommt noch die traurige Tatsache, dass die Arbeit als Kundschafter gefährlich, ja gar tödlich sein kann und, nun, die Zahl meiner Jungens wird immer kleiner.   Nun aber zur Sache: Die Kunst des erfolgreichen Spähens besteht darin, immer den Kopf unten zu halten...  [Stunden später]  ...und die Frau des Metzgers!  Haha! Du liebe Zeit, das war einer von Malk's Lieblingswitzen.  Er ist schon vor Jahren von uns gegangen, der Gute.  Ach, ja.  Ihr habt Euch gut gemacht fürs erste und ich glaube, Ihr werdet eines Tages ein guter Kundschafter werden.  Das waren natürlich nur die Grundkenntnisse; es gibt noch einige fortgeschrittene Fertigkeiten, die ich euch beibringen kann.
+script=player.addtitle(01trainedscout);player.setprop(trainingpoints=3);
+rsptxt1=Ich habe bereits genug von Eurer Zeit in Anspruch genommen.  Ich komme später wieder, um mehr zu erlernen.
+nxtln1=later
+rsptxt2=Ich möchte gerne alles lernen,  was Ihr mir beibringen könnt, Herr.
+nxtln2=Traintitles
+RspDflt=None
+
+[later]
+say=Na schön, aber kommt bald wieder.  Ich bin sicher, Ihr werdet diese Fertigkeiten in den kommenden Tagen gut gebrauchen können.
+rspdflt=Das mache ich, Herr.  Danke.
+
+
+;Before Player has seen Sir Roth
+[Training]
+say=Soso, ihr seid wieder da!
+rsptxt1=Ja, Herr.  Ich möchte gerne alles lernen,  was Ihr mir beibringen könnt.
+nxtln1=Traintitles
+RspDflt=Es tut mir leid, Herr.  Vielleicht habe ich später Zeit.
+
+;First approach after player has seen Sir Roth
+[Transferred]
+say=Und, was führt Euch heute zu mir?
+RspDflt=none
+rspCnd1=All(ttl(01trainedScout))
+rspTxt1=Auf Befehl von Sir Roth bin ich versetzt worden.  Ich gehöre jetzt offiziell zu Ihren Kundschaftern.
+NxtLn1=Transferred3
+rspCnd2=All(ttl(!01trainedScout))
+rspTxt2=Auf Befehl von Sir Roth bin ich versetzt worden.  Ich gehöre jetzt offiziell zu Ihren Kundschaftern.
+NxtLn2=NotScout
+
+[NotScout]
+say=Ich fürchte, ich kann einen Rekruten ohne Ausbildung als Kundschafter nicht gebrauchen.  Zum Glück aber kann ich da Abhilfe schaffen.  Setzt Euch erstmal.  Die Kunst des erfolgreichen Spähens besteht darin, immer den Kopf unten zu halten...  [Stunden später.]  Also, habt Ihr das Gefühl, etwas gelernt zu haben?
+script=player.addtitle(01trainedscout);player.setprop(trainingpoints=3);
+rspDflt=none
+rspTxt1=Ja, Herr.  Danke, es war sehr aufschlussreich.
+nxtLn1=Transferred3
+
+[Transferred3]
+say=Es freut mich, das zu hören und ich nehme Euch gerne als Kundschafter.  Von dem, was ich gesehen habe, und von dem was ich über Euch gehört habe, werdet Ihr mir eine Bereicherung sein.  Aber warum wollt Ihr eigentlich Kundschafter werden?
+RemoveQuest=ch1-11;
+script=takeitem(transferLetter,player);
+rspDflt=None
+rspTxt1=Nun, Herr, ich habe gehofft, die Gelegenheit zu bekommen, mich außerhalb der Zitadelle zu wagen.
+NxtLn1=transferred4
+
+[transferred4]
+say=Aber warum solltet Ihr Euch außerhalb Avalons wagen?  In letzter Zeit mehren sich die Ahoul-Patrouillen.  Da draußen ist feindliches Gebiet.  
+rspDflt=None
+rspTxt1=Das weiß ich, Herr.  Um ehrlich zu sein, ich wollte das Dorf nach Spuren von meinem Bruder durchsuchen.
+NxtLn1=transferred5
+
+[transferred5]
+say=Ah, natürlich.  Ich kannte Corvus gut.  Er war ein ausgezeichneter Soldat, obwohl es vielleicht etwas voreilig von mir ist, in der Vergangenheit von ihm zu sprechen.  An Eurer Stelle würde ich wohl das Schicksal meines Bruders wissen wollen.  Ihr solltet allerdings auch wissen, dass ich in letzter Zeit viele Kundschafter verloren habe.  Als Ergebnis, wissen wir sehr wenig darüber, was im Dorf vor sich geht.  In der Nähe des Südtors sind merkwürdige Aktivitäten  beobachtet worden, aber jedes Mal, wenn ich einen Kundschafter ausschicke, ist er nicht zurückgekehrt.  Seid Ihr ganz sicher, dass Ihr soweit seid?
+rspDflt=None
+rspTxt1=Vielleicht doch nicht, Herr.
+NxtLn1=transferred6
+rspTxt2=Aber gewiss, Herr.
+NxtLn2=transferred7
+
+[transferred6]
+say=Ich verstehe, mein Freund.  Ihr seid aufgeregt und wollt etwas Drastisches anstellen.  Vielleicht solltet Ihr aber etwas langsamer vorangehen und noch ein paar soldatische Fertigkeiten erlernen, bevor Ihr Kundschafter werdet.
+RspDflt=Ja, Herr.  Es tut mir leid, Euch gestört zu haben. Ich komme wieder wenn ich das Gefühl habe, soweit zu sein.
+
+[transferred7]
+say=Euer Selbstvertrauen spricht für Euch. Hiermit akzeptiere ich offiziell Euere Versetzung und gebe Euch den Befehl, das Gebiet außerhalb der Zitadelle auszukundschaften.  Zusätzlich zur Suche nach Eurem Bruder werdet Ihr im Dorf als unser Auge dienen.  Aber Vorsicht; dort ist es gefährliches, unbekanntes Terrain. Ihr solltet bis zum Sonnenuntergang warten und dort in den Schatten bleiben. Wenn Ihr mit jemandem sprechen wollt, der sich im Terrain außerhalb von Avalon auskennt, dann besucht Olon der Händler im Außenhof.  Wenn er mit Euch zu sprechen bereit ist, wäre er die beste Quelle für Informationen über  Ereignisse außerhalb dieser Mauer.
+Adventure=ch1-78;
+AddQuest=ch1-12;ch1-28;
+script=player.addtitle(01permission);journalentry(mudam);showmessage(Ihr Tagebuch wurde aktualisiert.,200);
+RspDflt=Danke, Herr.  Ich werde Euch nicht enttäuschen.
+
+[TrainTitles]
+Say=Nun, dann kann ich Euch Unterricht erteilen in...
+train=true
+rspCnd1=All(ttl(!Path Finding):stt(trainingpoints>4))
+rspTxt1=Fährtensuchen(+2 Coordination, -1 Restriction, +3 Stealth): 5pts 
+script1=player.addtitle(Path Finding);player.setprop(trainingpoints=-5);
+nxtln1=TrainTitles
+rspCnd2=All(ttl(!Center of Balance):stt(trainingpoints>2))
+rspTxt2=Gleichgewicht (+2 Defense, -2 Hit Recovery): 3pts
+script2=player.addtitle(Center of Balance);player.setprop(trainingpoints=-3);
+nxtln2=TrainTitles
+rspCnd3=All(ttl(!Basic Camouflage):stt(trainingpoints>2))
+rspTxt3=Grundlagen der Tarnung(+2 Stealth, -1 Restriction, +1 Perception): 3pts
+script3=player.addtitle(Basic Camouflage);player.setprop(trainingpoints=-3);
+nxtln3=TrainTitles
+rspCnd4=All(ttl(!Field First Aid):stt(trainingpoints>1))
+rspTxt4=Erste Hilfe im Feld(+2 Hit Points, +1 Healing Rate): 2pts
+script4=player.addtitle(Field First Aid);player.setprop(trainingpoints=-2);
+nxtln4=TrainTitles
+rspdflt=Mehr Zeit habe ich im Moment nicht, Herr.  Danke.
+
+;After entry into the village
+
+[village1]
+say=Willkommen zurück, Kundschafter.  Was habt Ihr zu berichten?
+
+;If player has nothing,
+RspCnd1=All(ttl(!01foundbrother,!01foundAhoul,!01foundTraitors));
+rspTxt1=Bisher habe ich nichts entdeckt, Herr.  Ich bin zurückgekommen, um zu sehen, ob Ihr etwas Neues wisst.
+NxtLn1=villageNothing
+
+;If player found brother,
+RspCnd2=All(ttl(01foundbrother,!01Reportbrother));
+rspTxt2=Im Dorf habe ich meinen Bruder gefunden, Herr!
+NxtLn2=villagebrother
+
+;If player discovered Ahoul in basement of Inn,
+RspCnd3=All(ttl(01foundAhoul,!01foundTraitors,!01reportAhoul));
+rspTxt3=Ich habe einige Ahoul entdeckt, die versuchen, einen Weg in die Burg zu graben, Herr.
+NxtLn3=villageAhoul
+
+;If player discovered traitors in SG, but NOT the Ahoul at the Inn,
+RspCnd4=All(ttl(!01foundAhoul,01foundTraitors,!01reportTraitors));
+rspTxt4=Ich habe etwas Beunruhigendes im Keller des Südtors gefunden, Herr.
+NxtLn4=villagetraitors
+
+;If player discovered both traitors in SG and Ahoul at the Inn,
+RspCnd5=All(ttl(01foundAhoul,01foundTraitors,!01reportAll));
+rspTxt5=Ich habe eine Verschwörung aufgedeckt, Avalon zu verraten, Herr!
+NxtLn5=villageAll
+
+rspCnd6=All(ttl(01trainedScout):stt(trainingpoint>0))
+rsptxt6=Ich möchte einige fortgeschrittene Fertigkeiten als Kundschafter erlernen.
+nxtln6=Traintitles
+
+
+[villageNothing]
+say=Seit Eurem Weggang hast sich nur wenig geändert.  Die Soldaten sind noch hungrig, die Bauersleute verhungern, und die Ahoul schreien nach unserem Blut.
+RspDflt=Ich verstehe, Herr.  Ich werde meine Mission fortsetzen.
+
+
+[villagebrother]
+say=Das ist eine großartige Nachricht!  Ich muss gestehen, dass ich die Hoffnung  langsam verloren habe.  Seht zu, dass Bruder Massus sich um ihn kümmert.  Aber Ihr solltet Euch jetzt ausruhen.  Dieser Krieg ist noch lange nicht zu Ende, und ich habe das Gefühl,  dass das nächste Kapitel in der Geschichte, die wir hier schreiben, bald  über uns hereinbrechen wird.
+script=player.addtitle(01reportbrother);
+RspDflt=Das werde ich tun.  Und, Herr...  ich danke Euch, sowohl für die Ausbildung als auch für Eure Güte.  Gut Nacht, Herr.
+
+
+[villageAhoul]
+say=Hoffentlich habt Ihr sie erledigt!
+Adventure=ch1-79;
+rspDflt=None
+script=player.addtitle(01reportAhoul);
+rspCnd1=all(ttl(01reportTraitors));
+rspTxt1=Das habe ich, Herr.  Ich vermute,  dass das die merkwürdige Aktivität war, über die man Euch berichtet hat.  Der Tunnel führte direkt auf das Südtor zu, und ich schätze, dass die Hälfte schon  fertig war.  Ich glaube, wir sollten die Kirche in Zukunft im Auge behalten-- wir wollen nicht, dass die Ahoul ihre Arbeit dort fortsetzen!
+nxtLn1=villageAll1
+rspCnd2=all(ttl(!01reportTraitors));
+rspTxt2=Das habe ich, Herr.  Ich vermute,  dass das die merkwürdige Aktivität war, über die man Euch berichtet hat.  Der Tunnel führte direkt auf das Südtor zu, und ich schätze, dass die Hälfte schon  fertig war.  Ich glaube, wir sollten die Kirche in Zukunft im Auge behalten-- wir wollen nicht, dass die Ahoul ihre Arbeit dort fortsetzen!
+
+NxtLn2=villageAhoul1
+
+
+[villageAhoul1]
+say=Das ist ein kluger Vorschlag, Kundschafter; ich kümmere mich sofort darum.  Avalon ist Euch zu Dank verpflichtet.
+RspDflt=Ich habe nur mein Pflicht getan, Herr.
+
+
+[villagetraitors]
+say=Was habt Ihr gesehen?
+Adventure=ch1-80;
+rspDflt=None
+script=player.addtitle(01reporttraitors);
+rspCnd1=all(ttl(01reportAhoul));
+RspTxt1=Als ich den Keller betrat, wurde ich von einer Handvoll Soldaten angegriffen.  Ich habe mich natürlich gewehrt und mir blieb nichts anderes übrig, als sie alle zu töten. Als ich die Lage weiter erkundet habe, stieß ich auf einen Tunnel, den sie ins Dorf hinaus gegraben haben.  Ich bin mir nicht ganz sicher, aber wenn mich meine Sinne nicht täuschen, führt er direkt auf die Kirche zu.  Ich glaube, sie hatten schon etwa die Hälfte des Weges zurückgelegt.
+nxtLn1=villageAll1
+rspCnd2=all(ttl(!01ReportAhoul));
+RspTxt2=Als ich den Keller betrat, wurde ich von einer Handvoll Soldaten angegriffen.  Ich habe mich natürlich gewehrt und mir blieb nichts anderes übrig, als sie alle zu töten. Als ich die Lage weiter erkundet habe, stieß ich auf einen Tunnel, den sie ins Dorf hinaus gegraben haben.  Ich bin mir nicht ganz sicher, aber wenn mich meine Sinne nicht täuschen, führt er direkt auf die Kirche zu.  Ich glaube, sie hatten schon etwa die Hälfte des Weges zurückgelegt.
+NxtLn2=villagetraitors1
+
+
+[villagetraitors1]
+say=Das ist in der Tat merkwürdig. Ich werde mich sofort um die Angelegenheit kümmern.  Danke, Kundschafter.  Abtreten.
+RspDflt=Jawohl.
+
+[villageAll]
+say=Verrat an Avalon?  Nun mal langsam-- das ist ein schwerwiegender Vorwurf.  Ihr solltet das besser erläutern.
+script=player.ifNottitle(01reportAhoul);player.addtitle(01reportAhoul);endif;player.ifNottitle(01reporttraitors);player.addtitle(01reporttraitors);endif;addtitle(01reportAll);
+rspTxt1=Ich habe einige Soldaten überrascht, die im Keller am Südtor heimlich einen Tunnel gegraben haben.  Sie haben mich angegriffen und, obwohl ich sie gezwungenmaßen getötet habe, gibt es am Südtor vermutlich noch mehr Verräter.  Im Dorf habe ich aber auch einige Ahoul entdeckt, die im Keller unter der Kirche  einen Tunnel gegraben haben.  Hätte ich sie nicht aufgehalten, wären die beiden Tunnel  aufeinander gestoßen, und die Ahoul hätten ungehindert in Avalon eindringen können.  Auch wenn ich es nicht mit Gewißheit sagen kann, ich glaube es hätte bis zu Fertigstellung des Tunnels nicht mehr lange gedauert.  Vielleicht nicht einmal zwei Tage.
+Adventure=ch1-79;ch1-80;
+NxtLn1=villageAll1
+rspDflt=None
+
+[villageAll1]
+say=Himmel bewahre!  Männer, die nach draußen ins Dorf graben und Ahoul die nach Avalon hinein graben?  Das muss ich sofort General Roth melden!  Heute habt Ihr Avalon einen großen Dienst erwiesen.
+Adventure=ch1-81;
+RspDflt=none
+rspCnd1=all(ttl(!01Ogre));
+rspTxt1=Danke, Herr.  Ich freue mich, dass ich helfen konnte.  Aber mein Bruder, Herr-- Im Moment muss ich mich um meinen Bruder kümmern.
+nxtLn1=VillageAll2
+rspCnd2=all(ttl(01Ogre));
+rspTxt2=Danke, Herr.  Ich freue mich, dass ich helfen konnte.  Aber mein Bruder, Herr-- Im Moment muss ich mich um meinen Bruder kümmern. Ich glaube, ich weiß wo er ist, und ich möchte sofort wieder nach Draußen.
+nxtLn2=VillageAll2
+
+[VillageAll2]
+say=Ja natürlich, Kundschafter.  Ich habe volles Verständnis.  Dann macht Euch auf den Weg-- und viel Glück!
+rspDflt=Jawohl, Herr!  Bis bald!
+
+[chalice]
+;After recovery of Chalice of Life
+say=Willkommen zurück, Kundschafter!  Wie ich höre, hattet Ihr draußen einigen Erfolg!
+rsptxt1=Den hatte ich in der Tat, aber nachdem ich so lange im Dorf war, bin ich hier nicht mehr ganz auf dem Laufenden.  Was gibt es Neues zu berichten?
+nxtln1=chalice1
+
+[chalice1]
+say=Als sich herumsprach, dass Ihr meinem Befehl untersteht, hatte ich auf einmal dutzende von Soldaten hier, die sich zur Ausbildung als Kundschafter melden wollten.  Ich stecke bis zu den Ohren in neuen Rekruten!
+rspdflt=Ich freue mich, dass Ihr gut zu tun habt, Herr!
+
+[BedTime]
+say=Willkommen zurück, Kundschafter!  Was habt Ihr diesmal für mich?
+rspDflt=none
+rspTxt1=Ich bin mit meinem Bruder nach Avalon zurückgekehrt, Herr.  Er erholt sich jetzt auf der Krankenstation.
+nxtLn1=BedTime2
+
+[BedTime2]
+say=Das ist eine großartige Nachricht!  Ich muss gestehen, dass ich die Hoffnung  langsam verloren habe.  Seht zu, dass die Mönche sich um ihn kümmern.  
+rspDflt=none
+rspTxt1=Das habe ich, Herr.  Ich habe Euch noch etwas zu berichten, aber Sir Roth warnte mich, dass ich es niemandem sonst sagen sollte.  Es geht um Ovoron, Herr.
+nxtLn1=BedTime3
+
+[BedTime3]
+say=Ihr meint, General--
+rspDflt=none
+rspTxt1=Nein, Herr.  Jetzt nicht mehr.  Er hat seine Männer ins Verderben geführt und geheime Dokumente an die Ahoul weitergegeben.
+nxtLn1=BedTime4
+
+[BedTime4]
+say=Ich verstehe.  Sir Roth wird nach mir schicken, wenn er mich braucht.  Ich würde Euch für diese Nachricht danken, aber ich glaube, Ihr werdet es mir nicht nachtragen, wenn ich es nicht tue.  Aber Ihr solltet Euch jetzt ausruhen.  Dieser Krieg ist noch lange nicht zu Ende, und ich habe das Gefühl,  dass das nächste Kapitel in der Geschichte, die wir hier schreiben bald  über uns hereinbrechen wird.
+RemoveQuest=ch1-12;ch1-27;
+Adventure=ch1-83;
+script=player.addtitle(01reportbrother);
+RspDflt=Das werde ich tun.  Und, Herr...  ich danke Euch, sowohl für die Ausbildung als auch für Eure Güte.  Gut Nacht, Herr.
+

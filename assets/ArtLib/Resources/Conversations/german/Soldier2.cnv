@@ -1,0 +1,40 @@
+[root]
+Count=2
+Else=
+Default=Ade.
+Say1=All (Alle?)(ttl(!01recovered));
+goto1=Soldier
+Say2=All (Alle?)(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Soldier]
+say= He, Mann ... 
+rspTxt1=Sagt, Soldat, wo kommt Ihr her?
+NxtLn1=Soldier1
+rspTxt2= Habt Ihr vielleicht in letzter Zeit irgendwelche Gerüchte gehört?
+NxtLn2=Soldier2
+
+[Soldier1]
+say=Ich kam in Elythrien zur Welt, aber ich glaube nicht, dass ich die Gelegenheit haben werde, dort zu sterben, Mann ... Diese Mauern werden meine Gruft sein. Die Ahoul werden jeden Tag blutrünstiger, falls Ihr euch das vorstellen könnt, und ... und ...
+rspBack=soldier
+
+[Soldier2]
+say=Ich gebe nichts auf solchen Blödsinn. Gerüchte machen einen Soldaten stumpfsinnig, Mann, und wir brauchen einen scharfen Verstand und eine scharfe Klinge ... Ach, was soll's?
+rspBack=soldier
+
+;After Recovery of Chalice
+[Chalice]
+say=Was habt Ihr zu berichten, Mann? 
+rspTxt1=Wo kommt Ihr her, ähm, "Mann"?
+NxtLn1=Chalice1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Chalice2
+
+[Chalice1]
+say=Ich bin Elythrianer, Herr. Ich kann's kaum erwarten, nach Hause zu kommen, Mann! Zuerst dachte ich, Ich würde Elythria nie wieder sehen, aber jetzt, wo wir den Kelch haben ... Mann, ich kann es kaum erwarten, meinen kleinen Bruder wiederzusehen. 
+rspBack=chalice
+
+[Chalice2]
+say=Ich habe in der Kaserne gehört, dass die feigen Taberlander endlich nach Avalon zurückkehren. Vielleicht werden sie diesmal tatsächlich kämpfen. Ha, ha! Wir brauchen sie nicht, wir haben den Kelch! Ihr wißt, dass er verzaubert ist, Mann, richtig? Ihr müßt es gewußt haben, als Ihr ihn angefaßt habt! Jetzt können wir gar nicht mehr verlieren! 
+rspBack=chalice

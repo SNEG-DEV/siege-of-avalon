@@ -1,0 +1,73 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=03aldred,03aldredhappy,03knowelves,04chapter4,05chapter5,06chapter
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=aldred
+Default=Thank you, fletcher.
+say1=one(ttl(03aldredhappy,!03knowelves));
+goto1=aldred
+say2=all(ttl(03knowelves));
+goto2=arrows
+say3=one(ttl(04chapter4,05chapter5,06chapter6))
+goto3=aldred
+
+[Aldred]
+Say=You look to be in need of some of my products.  Come take a look -- I promise you'll find no better prices in all of Avalon!
+RspDflt=No thanks.
+RspTxt1=Thank you.  Let me see what you have...
+script1=merchant
+
+[arrows]
+Say=You look to be in need of some of my products.  Come take a look -- I promise you'll find no better prices in all of Avalon!
+RspDflt=none
+rspcnd1=all(ttl(!03aldred));
+RspTxt1=Thank you.  Let me see what you have...
+script1=addtitle(03aldred);
+nxtln1=arrows2
+rspcnd2=all(ttl(03aldred));
+RspTxt2=Thank you.  Let me see what you have...
+script2=merchant
+
+[arrows2]
+Say=Hey, wait a second!  I remember you!  Is it true you've gone to the forest?
+RspDflt=none
+RspTxt1=Yes, it is, but really, I'd like to buy something.
+nxtln1=arrows3
+
+[arrows3]
+Say=Yeah.  If you ever go back there, keep your eyes open for some elven arrows.  I've heard they're the finest.  Good luck!
+RspDflt=none
+RspTxt1=Sure thing.  Your wares?
+script1=merchant
+

@@ -1,0 +1,40 @@
+[root]
+Count=2
+Else=
+Default=Danke.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Soldier]
+say=Wie kann ich Euch dienen?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Soldier1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Soldier2
+
+[Soldier1]
+say=Ich bin gebürtig aus Elythria.
+rspBack=soldier
+
+[Soldier2]
+say=Ich habe gehört, dass die Ahoul heute Nacht fast eine Bresche in die Mauer geschlagen hätten.  Seid auf der Hut heute Abend...
+rspBack=soldier
+
+;After Recovery of Chalice
+[Chalice]
+say=Wie kann ich Euch helfen, Herr?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Chalice1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Chalice2
+
+[Chalice1]
+say=Ich bin durch und durch Elythrianer, Herr.  Und ich bin bereit, bis zum letzten Atemzug zu kämpfen!
+rspBack=Chalice
+
+[Chalice2]
+say=Ein Freund von mir aus Aratoy hat erzählt, Hauptmann Calvaric hätte Mithras tödlich verwundet!  Er ist kein übler Kerl, für einen Aratoyer!
+rspBack=Chalice

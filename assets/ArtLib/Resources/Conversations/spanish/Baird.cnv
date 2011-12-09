@@ -1,0 +1,58 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01prison,03chapter3
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Gracias, Baird.
+say1=all(ttl(03chapter3));
+goto1=three
+Say2=All(ttl(!01prison));
+goto2=Baird
+Say3=All(ttl(01prison));
+goto3=Baird2
+
+[Baird]
+Say=Lo siento, señor.  Hay algún problema abajo en los calabozos.  Tengo órdenes de vigilar ésta escalera hasta que la situación esté bajo control.  Deberá volverse atrás.
+RspDflt=Muy bien. Buenos días.
+
+[Baird2]
+Say=Gracias por ayudarnos a manejar a los prisioneros.
+script=player.setprop(trainingpoints=5);
+RspDflt=Fue un placer, y que tengáis un buen día!
+
+[three]
+Say=Firmes ante el héroe machaca-traidores!
+RspDflt=Hola a ti también, Baird.
+

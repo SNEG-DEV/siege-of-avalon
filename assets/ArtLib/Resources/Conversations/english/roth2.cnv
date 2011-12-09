@@ -1,0 +1,81 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01permission,01recovered,01village
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Thank you, Sir Roth.
+Say1=All(ttl(01permission,01village,!01recovered));
+goto1=Village1
+Say2=All(ttl(!01permission,!01village,!01recovered));
+goto2=transfered1
+Say3=All(ttl(01permission,!01village,!01recovered));
+goto3=transfered2
+Say4=All(ttl(01permission,01village,01recovered));
+goto4=Chalice1
+
+[Village1]
+Say=I see the village hasn't defeated you yet.  That's good news.  What can I do for you?
+RspDflt=None
+RspTxt1=I've just come to get the latest news from Avalon.
+nxtLn1=Village2
+
+[Village2]
+Say=You can get gossip from any common soldier, son.  I'm sorry, but I haven't the time just now.
+RspDflt=I'm sorry to have bothered you.
+
+[transfered1]
+Say=You belong to Mudam now, son. You will have to discuss further matters with him.
+RspDflt=Very well, Sir Roth.
+
+[Transfered2]
+Say=What brings you back here?  Did Mudam not grant you permission to go outside Avalon?
+RspDflt=none
+RspTxt1=No, I have my permission.  I was curious to know if you knew anything about the land outside the citadel.
+NxtLn1=transfered3
+
+[transfered3]
+Say=I'm afraid I can't help you, lad.  I'm in charge of the general defense of Avalon.  General Ovoron is our assault commander.  Were he here, he would be the one to ask.
+RspDflt=I see.  Thank you for your help.
+
+[chalice1]
+Say=You return!  It's good to see you, lad!  Your exploits are the talk of the citadel.
+RspDflt=None
+RspTxt1=Thank you, General.  Is there any news?
+NxtLn1=chalice2
+
+[chalice2]
+Say=You've probably already heard this, but relief is on the way.  Just a few short weeks and all will be well.
+RspDflt=Excellent news!  Thank you, sir!
+

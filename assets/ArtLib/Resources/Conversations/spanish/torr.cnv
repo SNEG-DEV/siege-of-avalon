@@ -1,0 +1,46 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=
+Say1=
+goto1=torr
+
+[torr]
+Say=Conozco a un soldado necesitado de armadura en cuanto lo veo.  ¿Tenéis dinero para una armadura de buena calidad?
+RspDflt=Me temo que no.
+RspTxt1=Me gustaría ver qué tenéis.
+script1=merchant
+

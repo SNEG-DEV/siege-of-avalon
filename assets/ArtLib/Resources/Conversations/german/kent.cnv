@@ -1,0 +1,126 @@
+;Hello there, how can I help you?
+;May I be of assistance to you Sir?
+;What can I do for you?
+;How can I help you, Sir?
+;What is it you want?
+;Hello Sir, How may I help you?
+
+[root]
+Count=4
+Else=
+Default=Danke.
+Say1=All(ttl(!01recovered,!01WhyLetterTaken));
+goto1=Soldier
+Say2=All(ttl(!01recovered,01WhyLetterTaken,!01LetterReturned));
+goto2=NotReturned
+Say3=All(ttl(!01recovered,01WhyLetterTaken,01LetterReturned));
+goto3=Returned
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+;Before recovery of Chalice
+[Soldier]
+say=Braucht Ihr etwas?
+rspTxt1=Woher kommt Ihr?
+NxtLn1=Soldier1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Soldier2
+
+[Soldier1]
+say=Meine Heimat ist Cathea.  War, zumindest.  Ich war dort Viehzüchter, bis ich zur Armee eingezogen wurde. Viehzüchter ist kein besonders eindrucksvoller Beruf, aber selbst wahnsinnige Rinder sind nicht annähernd so bösartig wie die Ahoul-Plünderer.  Darum habe ich-- wie wir alle-- lernen müssen, stark zu sein.
+rspBack=soldier
+
+[Soldier2]
+say=Ich habe gehört, König Vortigerm von Taberland sei mit allen waffenfähigen Männern seines Reiches auf dem Weg hierher. Die Soldaten von Taberland haben sich schon oft im Kampf bewiesen. Sie werden unsere Rettung sein, aber bis zu ihrer Ankunft brauchen wir jeden Kerl den wir haben, um uns die Ahoul vom Leibe zu halten.  Hier geht es hart zu, und wir können alle kaum noch durchhalten.  Wenn einer von uns zusammenbricht, dann wird der Nächste folgen, und der Nächste, bis wir alle wie eine Herde Vieh in Panik geraten.  Und dann werden wir sterben.  Wir müssen stark bleiben, wir alle.
+Adventure=ch1-09;ch1-10;
+rspDflt=Das ist ein guter Rat.  Ich werde es mir merken.  Ade.
+rspTxt1=Ich verstehe.  Mir war nicht klar, dass die Situation so brenzlig ist.
+nxtLn1=Soldier3
+
+[Soldier3]
+say=Klar ist es brenzlig;  wir befinden uns mitten in einer Belagerung! Ehrlich gesagt, ich glaube unsere einzige Hoffnung besteht darin, dass König Vortigerm zu Hilfe kommt, und zwar schnell.  Bei  Sabotage innerhalb der Mauern, und ständigen Angriffen von Außen, verlaufen Belagerungen traditionell schlecht für die Verteidiger, von den Gefahren durch Krankheit und Hungersnot ganz zu schweigen.  Ich bin lange genug hier, um dieses Stück Militärgeschichte  zu kennen.  Ihr seht aber aus wie ein neuer Rekrut.
+rspDflt=None
+rspTxt1=Ich gebe zu, ich bin erst vor kurzem hier angekommen, aber ich bin nicht gerade unerfahren.
+nxtLn1=Soldier4
+
+[Soldier4]
+say=Diese Kraft in Eurer Stimme gefällt mir. Vielleicht haltet Ihr doch durch.  Ich glaube, die meisten von uns sind stark genug, um durchzuhalten bis der König eintrifft, aber bei ein oder zwei Kameraden bin ich mir nicht so sicher.
+rspDflt=None
+rspTxt1=Wirklich?  Bei wem denn?
+nxtLn1=Soldier5
+
+[Soldier5]
+say=Madden, zum Beispiel.  Immer wenn ich mit ihm in den letzten Wochen auf Patrouille war, jammerte er mir die Ohren voll von seiner "Liebsten", und wie er sie vermisst und sich wünscht, er wäre bei ihr.  Klar ist das traurig, aber jeder von uns wäre lieber daheim. Aber fangen wir etwa deswegen an zu heulen?  Nein.  Und warum?  Weil es genau das ist, was so gefährlich ist.  Wenn einer von uns zu plärren anfängt, dann wird der Nächste folgen und so weiter.  Wir müssen stark bleiben.  Madden, aber...  Na ja, wenigstens habe ich mich um sein Problem gekümmert .
+rspDflt=None
+rspTxt1=Was meint Ihr damit?
+nxtLn1=Soldier6
+
+[Soldier6]
+say=Er hatte einen Brief von seinem Mädchen.  Er hat ständig darin gelesen, ob im Dienst oder nicht.  Er sollte sie wirklich vergessen und sich auf Avalons Sicherheit konzentrieren.  Ich dachte, wenn er den vedammten Brief nicht mehr hätte, wäre er besser dran.  Also habe ich ihn genommen und in meinem Zimmer versteckt.
+Adventure=ch1-11;
+script=player.addtitle(01WhyLetterTaken);
+rspDflt=None
+rspTxt1=Diebstahl?  Nicht gerade eine edle Tat.
+nxtLn1=Disapprove
+rspTxt2=Vermutlich ist er besser dran, wenn er sie vergessen kann.
+nxtLn2=Approve
+
+[Disapprove]
+say=Edel?  Wacht auf! Hier herrscht Krieg.  Wir müssen alle stark bleiben, wenn wir ihn überleben wollen. Und wenn König Vortigerm eintrifft, gebe ich den Brief zurück.  Bis dahin aber ist es besser so. 
+rspDflt=Vielleicht, aber es gibt bestimmt einen besseren Weg, die Sache zu  regeln.  Ade.
+
+[Approve]
+say=Genau.  Und schließlich ist es nicht für immer-- wenn König Vortigerm eintrifft, gebe ich den Brief zurück.
+rspDflt=Das ist wohl das Beste.  Ade.
+
+;Letter not returned to Madden.
+[NotReturned]
+say=Hallo nochmal!  Durchhalten!
+rspDflt=Mache ich.  Ade.
+rspCnd1=all(obj(LoveLetter));
+rspTxt1=Ist das hier zufällig Maddens Liebesbrief?
+nxtLn1=HasLetter
+
+[HasLetter]
+say=Ja!  Woher habt Ihr das?  Habt Ihr etwa mein Zimmer durchsucht?
+rspDflt=none
+rspTxt1=Ihr als erklärter Dieb wollt Euch darüber  beschweren?
+nxtLn1=HasLetter2
+
+[HasLetter2]
+say=Da ist was dran.
+rspDflt=Ich glaube,  ich behalte ihn vorläufig.  Ich muss mich noch entscheiden, wer ihn bekommen soll.  Ade.
+rspTxt1=Ich habe über Eure Worte nachgedacht, und ich glaube, es ist was Wahres dran.  Hier habt Ihr den Brief-- in Zukunft solltet Ihr besser darauf aufpassen.
+nxtLn1=HasLetter3
+
+[HasLetter3]
+Say=Ich freue mich, dass Ihr in dieser Sache Vernuft angenommen habt.  Wie gesagt, wenn diese Krise vorbei ist, gebe ich den Brief an Madden zurück.  Bis dahin wird er, wie wir alle, stark bleiben müssen.  Ade.
+Adventure=ch1-12;
+script=takeitem(LoveLetter,player);player.setprop(trainingpoints=1);showmessage(Sie haben Trainingspunkte bekommen.,300);
+rspDflt=Und einen schönen Tag noch.
+
+;Letter returned, even after his speech.  The cheek! ;-)
+[Returned]
+say=Wie ich höre, hat Madden seinen Brief zurückbekommen.  Na großartig!  Wenn er jetzt zusammenbricht, habt Ihr uns vielleicht alle auf dem Gewissen.
+rspTxt1=Madden bezieht seine Kraft aus diesem Brief.  Damit wird er stärker bleiben, als die meisten von uns hier.
+nxtLn1=Returned1
+
+[Returned1]
+say=Ihr redet wahrscheinlich einen Haufen Kuhmist, aber ich hoffe, Ihr habt Recht-- Ich habe nicht den Wunsch, den Niedergang Avalons mitzuerleben.
+rspDflt=Nur Mut.  Das werden wir alle durchstehen,  wenn wir genug Vertrauen in einander haben.  Gehabt Euch wohl.
+
+;After Recovery of Chalice
+[Chalice]
+say=Der Held!  Wie kann ich Euch dienen?
+rspTxt1=Woher kommt Ihr?
+NxtLn1=Chalice1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Chalice2
+
+[Chalice1]
+say=Ich wurde auf der Hochebene von Cathea geboren.  Dort haben wir Viehzucht betrieben, jedenfalls bis ich zur Armee einberufen wurde.  Wenn ich ein Pferd hätte, würde ich besser reiten als jeder Ahoul!  Ich bin vielleicht nicht  so kräftig wie Ihr, aber dafür bin ich wenigstens kräftig genug!
+rspBack=chalice
+
+[Chalice2]
+say=Das Gerücht geht um, dass sich mit einem neuen Offizier der Elythrianer das Kriegsglück wenden wird.  Ihr habt das Zeug dazu, das weiß ich.  Viel Kraft!
+rspDflt=So viel Kraft, wie es meine Pflicht von mir verlangt.  Lebt wohl.

@@ -1,0 +1,104 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01Recovered,01village,03chapter3
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(5/23/01)=Passed
+tucker(7/16/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Gracias, Jean.
+say1=all(ttl(06chapter6));
+goto1=three
+say2=all(ttl(03chapter3));
+goto2=three
+Say3=All(ttl(!01village,!01Recovered));
+goto3=Jean1
+Say4=All(ttl(01village,!01Recovered));
+goto4=Jean4
+Say5=All(ttl(01village,01Recovered));
+goto5=Jean6
+
+[Jean1]
+Say=Saludos.  Tienes la misma constitución que Corvus, así que debes ser ese hermano del que he oído hablar.  Cuando supe de su desaparición, quise ir a buscarle personalmente, pero tengo demasiadas responsabilidades aquí.
+RspDflt=None
+RspTxt1=Gracias.  Me alegro de que tenga amigos tan leales.
+nxtln1=jean2
+RspTxt2=¿De dónde sois, señor?
+nxtln2=jean3
+
+[Jean2]
+Say=Sigo esperando que regrese sano y salvo.
+RspDflt=Igual que yo.  Buenos días.
+rspBack=Jean1
+
+[Jean3]
+Say=Nací en Cathea.  Mi padre poseía un gran rancho, pero nunca me atrajo el criar ganado.  Tengo sangre de luchador y por eso vine aquí en cuanto supe que habría guerra.  Traje conmigo unos cuantos hombres y caballos, así que supongo que por eso me hicieron oficial.  Soy el único al que muchos de esos duros Catheanos obedecen!
+RspDflt=En tal caso, me alegro de que estés aquí.
+rspBack=Jean1
+
+[Jean4]
+Say=Míralo!  Parece que el pueblo te está curtiendo como guerrero!
+RspDflt=None
+RspTxt1=Así es!  Hay muchas oportunidades allí de hallar con quien luchar.
+nxtln1=Jean5
+
+[jean5]
+Say=Ah, Cómo desearía ir contigo.  Desgraciadamente, mis deberes me retienen aquí.
+RspDflt=Comprendo.  Que tengas un buen día.
+
+[jean6]
+Say=Así que el pueblo te ha convertido en un héroe después de todo!  Es bueno verte de nuevo, chico!
+RspDflt=Lo mismo digo, Jean.
+RspTxt1=¿Qué hay de nuevo por aquí?
+nxtln1=jean7
+
+[jean7]
+Say=La moral ha aumentado desde que encontraste ese gran cáliz ahí fuera!  Quizá algunos de esos corderitos que se hacen llamar guerreros empezarán a luchar a partir de ahora!
+RspDflt=Eso espero!
+
+[three]
+Say=Ah, saludos.  ¿Qué hay de nuevo?
+RspDflt=none
+RspTxt1=Lo habitual, sigo haciendo mi trabajo.
+nxtln1=three2
+
+[three2]
+Say=Seguro que sí, haces más que el resto de nosotros.  Nosotros haríamos nuestra "parte" si nos dejasen hacerlo, así que no me vengas con historias.
+RspDflt=none
+RspTxt1=Calma, soldado.
+nxtln1=three3
+
+[three3]
+Say=Sí, sí.  Me calmaré cuando todo esto termine, ¿captas?
+RspDflt=Sí, y creo que será mejor que me vaya.  Adiós.
+

@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Adiós.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=¿Qué quieres?
+RspTxt1=¿Quiero saber de dónde eres?
+NxtLn1=Soldier1
+RspTxt2=¿Quiero saber si conoces algún rumor que pueda interesarme?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Soy de Fornax, y espero volver pronto allí.  No creo que esta situación sea en absoluto esperanzadora.  Solo es una cuestión de días...
+rspBack=soldier
+
+[Soldier2]
+Say=Los Fornaxanos no son dados a los cotilleos, señor.
+rspBack=soldier
+
+[Chalice]
+Say=Hola, señor, ¿en qué puedo ayudarle?
+RspTxt1=Pues contándome de donde vienes!
+NxtLn1=Chalice1
+RspTxt2=Pues contándome algún rumor que hayas oído!
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Vine de Fornax, señor, el más antiguo de los siete reinos.
+rspBack=chalice
+
+[Chalice2]
+Say=Esto no lo habéis escuchado de mis labios, pero han llegado nuevas provisiones.  ¡Los soldados tendrán comida de verdad muy pronto!
+rspBack=chalice
+

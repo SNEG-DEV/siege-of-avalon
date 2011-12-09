@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Hasta luego, cocodrilo.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=¿Puedo hacer algo por usted?
+RspTxt1=Sí. Decirme de dónde eres.
+NxtLn1=Soldier1
+RspTxt2=Sí. Contarme lo que hayas oído recientemente.
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Yo era un siervo el Elythria. La guerra me ha dado la libertad, mi señor, pero ¡jamás había estado tan hambriento!
+rspBack=soldier
+
+[Soldier2]
+Say=Nada que importe, señor.  Pero vigile sus espaldas.  ¡Algunos de estos refugiados están MUY hambrientos y no confiaría demasiado en ellos!
+rspBack=soldier
+
+[Chalice]
+Say=¿En qué puedo ayudarle, señor?
+RspTxt1=¿De dónde has venido?
+NxtLn1=Chalice1
+RspTxt2=¿Qué novedades has oído?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Soy de la tierra más dulce de toda Eurale!  ¡Larga vida a Elythria!
+rspBack=chalice
+
+[Chalice2]
+Say=Mis fuentes de información me han comunicado que los demonios Fornaxanos tienen un nuevo hechizo.  Algunos dicen que puede hacer arder a un hombre desde mil pasos de distancia, otros que te destripa simplemente.  Aunque la verdad, no me creo ninguna versión.
+rspBack=chalice
+

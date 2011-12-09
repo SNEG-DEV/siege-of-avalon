@@ -1,0 +1,111 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Gracias, Galan.
+say1=one(ttl(05chapter5,06chapter6));
+goto1=fivesix
+say2=one(ttl(03chapter3,04chapter4));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Galan
+Say4=All(ttl(01recovered));
+goto4=chalice
+
+[Galan]
+Say=Hola!  ¿Qué pasa por el interior de Avalon?
+RspDflt=None
+RspTxt1=Nada.  Entrenarse y esperar.
+NxtLn1=Galan1
+
+[Galan1]
+Say=Ya veo, sólo lo de esperar es lo que nosotros tenemos.  Empieza a ponerme de los nervios.  Ya no me gusta la mirada de algunos de los tipos de la Puerta Sur.  Casi empiezo a pensar que algunos no traman nada bueno.  Supongo que la espera me vuelve paranoico.
+RspDflt=None
+RspTxt1=Las esperas pueden provocar ese efecto.
+NxtLn1=Galan2
+
+[Galan2]
+Say=Puede ser.  Que tengas un buen día.
+RspDflt=Igualmente.
+
+[Chalice]
+Say=Hola de nuevo.  ¿Cómo van las cosas?
+RspDflt=None
+RspTxt1=Tan bien como es posible, supongo.  ¿Y tu?
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Tan aburrido como siempre, aquí en la Puerta Sur.  Aunque todo el mundo habla de tu hallazgo.  Puedes creer que el Cáliz de la Vida haya vuelto?
+RspDflt=None
+RspTxt1=Casi no puedo creer que lo haya encontrado!
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Excelente trabajo, señor.
+RspDflt=Gracias.  Cúidate.
+
+[three]
+Say=Hola, Encuentracopas!  He oído de tus aventuras con la Piedra de la Tierra!  Bonito trabajo.  Estarás en la cima antes de lo que piensas!  Quizás una baronía propia, un bonito castillo...
+RspDflt=none
+RspTxt1=Tendré tiempo para tales fantasías cuando este asedio termine.
+nxtln1=three2
+
+[three2]
+Say=Correcto.  La fantasía es lo único que me lleva fuera de estos muros por ahora, así que, por favor, no me la destroces.
+RspDflt=Ni lo soñaría.  Hasta luego.
+RspTxt1=Lo lamento.  Yo no pretendía...
+nxtln1=three3
+
+[three3]
+Say=En realidad, no lo has hecho.  Sólo que estoy un poco susceptible.  Me gustaría estar fuera, en los campos otra vez, con las mariposas volando a mi alrededor y...
+RspDflt=none
+RspTxt1=Soldado, mantente alerta.  Volverás a ver tus campos de nuevo.
+nxtln1=three4
+
+[three4]
+Say=¿De veras lo crees?  Sería maravilloso...  Ah, el olor, casi puedo olerlo ahora...
+RspDflt=Me rindo.  Disfruta de tus ensoñaciones.  Hasta luego.
+
+[fivesix]
+Say=Ves, el final está cerca, y podré estar fuera, en las frescas rocas bajo los árboles y el sol brillará sobre un reluciente prado verde...
+RspDflt=Eso espero, soldado.  Hasta luego.
+RspTxt1=Qué imagen más vívida, soldado!  Me atrevería a insinuar que has errado la profesión!
+nxtln1=fivesix2
+
+[fivesix2]
+Say=¿Qué?  Yo...  [Sus mejillas se sonrojan visiblemente.]  Madre dijo algo por el estilo cuando me alisté...
+RspDflt=No pretendía incomodarte, compañero. Por favor discúlpame.
+

@@ -1,0 +1,92 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/12/01)=Passed
+
+[root]
+Count=4
+Else=
+Default=Hasta luego, Brun.
+say1=one(ttl(04chapter4,05chapter5,06chapter6));
+goto1=fourplus
+say2=all(ttl(03chapter3));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Brun
+Say4=All(ttl(01recovered));
+goto4=chalice
+
+[Brun]
+Say=¿Estás seguro de tener la suficiente experiencia para atravesar la Puerta Sur?  No es lugar para aficionados.
+RspDflt=None
+RspTxt1=Estaré bien, déjame pasar.
+NxtLn1=Brun1
+RspTxt2=¿De dónde eres?
+NxtLn2=Brun2
+RspTxt3=¿Has oído rumores nuevos?
+NxtLn3=Brun3
+
+[Brun1]
+Say=Bueno, pero si te ves atravesado por una flecha Ahoul, no digas que no te avisé!
+RspDflt=Perdóname, debo irme.
+rspBack=Brun
+
+[Brun2]
+Say=Soy Catheano de nacimiento.  Vine aquí para hacerme un nombre antes de volver a casa con toda la fama.  Ahora, me temo que ninguno de nosotros podrá volver a ver su casa.
+RspDflt=Ten coraje, soldado.  Triunfaremos.
+rspBack=Brun
+
+[Brun3]
+Say=He oído que el Patio de los Campesinos está desbordado con muertos y hambrientos.  Necesitamos pronto alivio o no duraremos mucho.
+RspDflt=Los buenos espíritus nos protegerán.  Que tengas un buen día.
+rspBack=Brun
+
+[chalice]
+Say=¿Así que tú eres ÉL, eh?  ¿Es cierto que has hallado el Cáliz de la Vida?
+RspDflt=None
+RspTxt1=Sí.  Y casi pierdo mi cuello en la búsqueda, por cierto!
+NxtLn1=chalice1
+RspTxt2=¿Qué novedades hay por aquí?
+NxtLn2=chalice2
+
+[chalice1]
+Say=Vaya, me alegro de que consiguieras conservarlo!
+RspDflt=Gracias.
+rspBack=chalice
+
+[chalice2]
+Say=Se supone que los Ahoul han recibido refuerzos.  Pero no representará ninguna diferencia.  Una vez llegue el Rey Vortigerm a la cabeza de su gran ejército, no tendrán ninguna oportunidad!
+RspDflt=Perdóname, debo irme.
+rspBack=chalice
+
+[three]
+Say=Los ejércitos de Vortigerm's deberían llegar en los próximos días, verdad?  No puedo esperar terminar éste asedio!  No hay buena cerveza aquí, solo hay bazofia y ese revientacuerpos que fabrica Gentza de vez en cuando.
+RspDflt=Estoy de acuerdo, soldado.  Cúidate.
+
+[fourplus]
+Say=En cualquier momento...  puedo sentirlo.  Vortigerm estará aquí, y no tendremos nada de qué preocuparnos!  La infantería nos salvará!
+RspDflt=Pronto, soldado, pronto.  Hasta luego.
+

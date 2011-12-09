@@ -1,0 +1,16 @@
+[root]
+Count=1
+Else=
+Default=Danke.
+Say1=
+goto1=Soldier
+
+;Before recovery of Chalice
+[Soldier]
+say=Seid gegrüßt, Euer Lordschaft.
+rspTxt1=Was habt Ihr hier zu suchen?
+NxtLn1=Soldier1
+
+[Soldier1]
+say=Ich bin Stallknecht, Herr-- Ich versorge die Pferde der Offiziere.  Das heißt, ich habe es getan, als wir noch Pferde hatten....
+

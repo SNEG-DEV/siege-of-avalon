@@ -1,0 +1,96 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Hasta luego.
+say1=one(ttl(04chapter4,05chapter5,06chapter6));
+goto1=fourup
+Say2=All(ttl(!01recovered));
+goto2=Soldier
+Say3=All(ttl(01recovered));
+goto3=Chalice
+
+[Soldier]
+Say=¿Qué puedo hacer por ti?
+RspDflt=Nada, soldado.  Perdona.
+RspTxt1=¿De donde eres?
+NxtLn1=Soldier1
+RspTxt2=¿Sabes de algún rumor?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Mi patria es Cathea.  Aunque parece más lejana a cada día que transcurre.  Echo de menos a mi perro.  No me fue posible traerle aquí por "motivos sanitarios" y por la escasez de alimento.
+RspDflt=Interesante.  Hasta luego.
+rspBack=soldier
+
+[Soldier2]
+Say=Una buena fuente me dijo que ahora hay un poco de pan para los soldados.  Si yo estuviese en tu lugar, sería el primero en la cola del comedor esta noche!
+RspDflt=Me alegra oír eso, soldado.  Gracias.
+rspBack=soldier
+
+[Chalice]
+Say=Ah, el héroe honra mi pequeño trocito de Avalon!  ¿Qué puedo hacer por vos, señor?
+RspDflt=Nada soldado, sólo pasaba por aquí.  Hasta luego.
+RspTxt1=¿De donde eres?
+NxtLn1=Chalice1
+RspTxt2=¿Sabes de algún rumor?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=He venido de Cathea para luchar contra los Ahoul.  Debo admitir que no lo hice solo por la batalla...  Un amigo mío fue de los primeros habitantes de Avalon.  Murió en cumplimiento del deber, y, bueno, me gustaría que los Ahoul lo pagasen con creces.  Con vos entre nosotros, ¡estoy seguro de la victoria!
+RspDflt=Interesante.  Hasta luego.
+rspBack=chalice
+
+[Chalice2]
+Say=No, señor, nunca he encontrado utilidad a los rumores.
+RspDflt=De acuerdo, soldado.  Hasta luego.
+rspBack=chalice
+
+[fourup]
+Say=%playername%!  He estado pensando en algo, y me gustaría saber qué pensáis.  ¿Si uno de los Sha'ahoul -- uno de los humanos, claro -- decidiese traicionar a los suyos y unirse a nosotros, le dejaríais?
+RspDflt=No tengo tiempo para esto.  Hasta luego.
+RspTxt1=Supongo.  Le observaríamos con cuidado, y probablemente no confiaríamos en él hasta haber destruido a los suyos.
+nxtln1=fourup2
+RspTxt2=Naturalmente que no!  ¡Ya tenemos suficientes problemas con los traidores que hay entre nosotros para confiar en uno de nuestros enemigos!
+nxtln2=fourup3
+
+[fourup2]
+Say=Hmm.  No soy tan confiado como vos, %playername%, pero gracias por vuestra opinión.  Pensaré en ella.
+RspDflt=De nada.  Hasta luego, soldado.
+
+[fourup3]
+Say=Estoy de acuerdo, %playername%, pero la pregunta de qué hacer con ellos una vez les hayamos derrotado sigue vigente.  Gracias por vuestra opinión.  Pensaré en ella.
+RspDflt=De nada.  Hasta luego, soldado.
+

@@ -1,0 +1,297 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=05intros,basic energy management,flame,frost,heal,hold,mage craft,minor meditation
+Checked=01recovered,03chapter3,04chapter4,05chapter5,05fireworld,05forna,05geticekey,05iceworld,05introS,05lichdea,05Nagaworld,05ringdon,05SFC,05sfw,05SIW,05snw,06chapter6,Basic Energy Management,defenseson,flame,frost,heal,hold,Mage Craft,Minor Meditation
+Removed=
+
+[Quest]
+Added=ch3-572,ch5-013,ch5-050
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+garth(3/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=6
+Else=
+Default=
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(05introS));
+goto2=return
+Say3=All(ttl(05chapter5));
+goto3=ch5intro
+say4=one(ttl(03chapter3,04chapter4));
+goto4=three
+Say5=All(ttl(!01recovered));
+goto5=Sherard1
+Say6=All(ttl(01recovered));
+goto6=Chalice1
+
+[Sherard1]
+Say=Hola.  Soy Sherard.
+RspDflt=None
+RspTxt1=¿Qué haces?
+nxtLn1=Sherard2
+RspTxt2=¿Cuáles son las últimas noticias que has oído?
+NxtLn2=Sherard3
+
+[Sherard2]
+Say=Soy el asistente de Elarath.  He sido su asistente durante muchos años, desde antes de la guerra.  Vinimos juntos de Fornax.
+RspDflt=None
+RspTxt1=¿Te gusta trabajar para un hechicero?
+nxtLn1=Sherard4
+
+[Sherard3]
+Say=He oído que la moral fuera de la Torre es realmente mala últimamente, especialmente, con el fracaso de la última misión de aprovisionamiento.  Yo que tú, no me preocuparía.  Hay muchas mentes brillantes trabajando en el problema.  Estamos en buenas manos.
+RspDflt=Es bueno saberlo.  Gracias.
+rspBack=sherard1
+
+[Sherard4]
+Say=La verdad sea dicha, me gusta bastante trabajar con él.  Es un poco difícil conseguir que recuerde mi nombre--se está volviendo olvidadizo, ¿sabes?  Aun así, si esos monstruos Ahoul intentan pasar por encima de las murallas, les soltará hechizos como pocos pueden hacerlo.  La magia está embebida tan profundamente en su alma que no puede olvidarla.  Y con suerte y coraje, estaré a su lado--aunque con suerte para entonces ¡ya habré memorizado 'Bola de Fuego'!
+RspDflt=Un hechicero siempre será bienvenido a mi lado.  ¡Me alegro de conocerte!
+
+[chalice1]
+Say=Hola de nuevo.
+RspDflt=None
+RspTxt1=¿Sabes de algún rumor nuevo?
+NxtLn1=chalice2
+
+[chalice2]
+Say=Todo el mundo habla de tus hazañas fuera de Avalon.  A veces desearía ser un guerrero y no un aprendiz de mago.  ¡Enhorabuena!  Seguro que serás un factor a tener en cuenta en la lucha presente.
+RspDflt=Gracias por tus amables palabras.
+
+[three]
+Say=Bienvenido.  ¿Estás interesado en más entrenamiento mágico?
+RspDflt=none
+RspTxt1=Quizá, pero no sabía que ya fueras capaz de enseñar magia...
+nxtln1=three2
+RspTxt2=Perdóname.  Volveré cuando el hechicero, y no el aprendiz, me ofrezca entrenamiento.
+nxtln2=three5
+
+[three2]
+Say=No me está permitido, así que no lo hago, pero podría si quisiera.  Sólo practicaba para cuando sea un famoso mago.  ¡Espera y verás!
+adventure=ch3-572
+RspDflt=none
+RspTxt1=Estoy seguro de que así será, Sherard, seguro que sí.  Disculpa, debo irme.
+nxtln1=three3
+
+[three3]
+Say=No me crees, ¿verdad?  ¡Espera y verás!
+RspDflt=none
+RspTxt1=Lo haré.  Sólo que ahora debo, ah, practicar por mi cuenta, así que si me disculpas...
+nxtln1=three4
+
+[three4]
+Say=Oh!  Naturalmente.  ¡La práctica hace la perfección!
+RspDflt=Exacto.  Hasta luego.
+
+[three5]
+Say=Espera!  No te estaba ofreciendo entrenamiento, yo... sólo me preparaba para el día en que yo, también, sea un mago poderoso!  ¡Espera y verás!
+adventure=ch3-572
+RspDflt=none
+RspTxt1=Lo veremos, Sherard.  Perdóname, debo--
+nxtln1=three3
+
+[ch5intro]
+Say=Hola y bienvenido, %playername%!  Hace mucho tiempo desde que te vi por última vez -- ¿qué tal te ha ido contra los Sha'ahoul?
+RspDflt=Bien, supongo, pero no tengo tiempo para charlar.  Hasta luego.
+RspTxt1=Bastante bien, Sherard.  ¿Qué tal han ido tus estudios? Has avanzado mucho?
+nxtln1=ch5I2
+
+[ch5I2]
+Say=Te parecerá difícil de creer, pero he avanzado mucho últimamente.  Aunque algo olvidadizo, Elarath es un gran maestro.  Quizá incluso pudiera enseñarte una o dos cosas.
+script=player.addtitle(05introS);
+adventure=ch5-013
+RspDflt=Poco probable, aprendiz de poca monta.  Hasta luego.
+RspCnd1=one(ttl(!flame,!frost,!heal,!hold,!Minor Meditation,!Mage Craft,!Basic Energy Management));
+RspTxt1=Odio admitirlo, pero nunca llegué a completar mi entrenamiento Elarath.  ¿Podrías ayudarme a remediarlo?
+nxtln1=TrainTitles
+RspTxt2=Lo dudo; no obstante, podrías contestarme algunas preguntas.
+nxtln2=askquestions
+RspTxt3=Has oído algún rumor interesante últimamente, Sherard?
+nxtln3=fornax
+
+[fornax]
+Say=De hecho, el otro día vi algo bastante interesante, mientras paseaba por el Patio Interior.  Dos magos--un maestro y un aprendiz, apostaría--acababan de llegar de Fornax.  Su apariencia misteriosa causó bastante revuelo, pero la mayoría de la gente no se preocupa por los asuntos de los magos, especialmente si son de Fornaxan.  Quería hablar con ellos personalmente, pero Elarath me reclamó aquí antes de que tuviese la oportunidad.  Aunque mi curiosidad probablemente me lleve pronto de vuelta allí; después de todo, son los primeros magos nuevos que vienen a Avalon desde hace mucho.
+adventure=ch5-050
+script=addtitle(05fornax);
+RspDflt=Gracias, Sherard.  Me encantaría hablar más contigo, pero ahora debo irme.  Hasta luego.
+RspTxt1=¿Podrías quizá contestarme otra pregunta, Sherard?
+nxtln1=askquestions
+
+[return]
+Say=¿Has vuelto para beber de la fuente de sabiduría que es Sherard?
+RspDflt=Pues ahora mismo no, pero quizá más tarde puedas enseñarme el secreto de tu humildad.  Hasta luego.
+RspTxt1=La sabiduría puede venir de los sitios más insospechados; y aunque sinceramente lo dudo, podrías responderme a un par de preguntas.
+nxtln1=askquestions
+RspCnd2=one(ttl(!flame,!frost,!heal,!hold,!Minor Meditation,!Mage Craft,!Basic Energy Management));
+RspTxt2=Odio admitirlo, pero nunca llegué a completar mi entrenamiento Elarath.  ¿Podrías ayudarme a remediarlo?
+nxtln2=TrainTitles
+Rspcnd3=All(ttl(!05fornax))
+RspTxt3=¿Has oído algún rumor interesante últimamente, Sherard?
+nxtln3=fornax
+RspTxt5=¿Has oído algún rumor interesante últimamente, Sherard?
+
+[TrainTitles]
+train=true
+Say=No te sientas mal--nunca le diré a nadie que un aprendiz te ha entrenado.  Así, ¿en qué querrías instrucción?
+RspDflt=Pensándolo bien, esto puede esperar.  Adiós.
+rspCnd1=All(ttl(!Mage Craft):stt(trainingpoints>4))
+RspTxt1=Magia (+1 Percepción, +2 Misticismo, +2 Velocidad de Recarga): 5pts
+script1=player.addtitle(Mage Craft);player.setprop(trainingpoints=-5);
+nxtln1=TrainTitles
+rspCnd2=All(ttl(!Basic Energy Management):stt(trainingpoints>2))
+RspTxt2=Control Básico de Energía (+5 Mana): 3pts
+script2=player.addtitle(Basic Energy Management);player.setprop(trainingpoints=-3);
+nxtln2=TrainTitles
+rspCnd3=All(ttl(!Minor Meditation):stt(trainingpoints>2))
+RspTxt3=Meditación Menor (+1 Velocidad de Recarga): 3pts
+script3=player.addtitle(Minor Meditation);player.setprop(trainingpoints=-3);
+nxtln3=TrainTitles
+rspCnd4=All(ttl(!Flame):stt(trainingpoints>1))
+RspTxt4=Hechizo 'Bola de Fuego': 2pts
+nxtln4=Flame
+rspCnd5=All(ttl(!Frost):stt(trainingpoints>1))
+RspTxt5=Hechizo 'Escarcha': 2pts
+nxtln5=Frost
+rspCnd6=All(ttl(!Heal):stt(trainingpoints>0))
+RspTxt6=Hechizo 'Sanar': 1pt
+nxtln6=Heal
+rspCnd7=All(ttl(!Hold):stt(trainingpoints>0))
+RspTxt7=Hechizo 'Paralizar': 1pt
+nxtln7=Hold
+
+[Flame]
+Say=Ah, la Bola de Fuego--es un clásico de la profesión.  Este hechizo hace un daño moderado a tu objetivo.  Cuanto mayor sea tu misticismo, mayor daño infligirás y mayor velocidad adquirirá la bola de fuego.  ¿Te parece que esto es algo que quieres aprender?
+RspDflt=none
+RspTxt1=Sí, creo que sí.
+script1=player.addtitle(Flame);player.setprop(trainingpoints=-2);
+nxtLn1=TrainTitles
+RspTxt2=Quizá luego.  ¿Qué más puedes enseñarme?
+nxtLn2=TrainTitles
+
+[Frost]
+Say=Como la Bola de Fuego, Escarcha hace un daño moderado a un objetivo.  Pero a diferencia de aquella, que puede fallar si tu víctima tiene buenos reflejos, Escarcha busca a su blanco.  Cuanto más fuerte seas en magia, más daño harás y más fácilmente el hechizo alcanzará a su objetivo, no importa si éste se esconde o huye.  ¿Te parece algo que quieres aprender?
+RspDflt=none
+RspTxt1=Sí, creo que sí.
+script1=player.addtitle(Frost);player.setprop(trainingpoints=-2);
+nxtLn1=TrainTitles
+RspTxt2=Quizá luego.  ¿Qué más puedes enseñarme?
+nxtLn2=TrainTitles
+
+[Heal]
+Say=Si alguna vez te hieren en combate--y eso es algo que, mucho me temo, ocurre con una regularidad pasmosa--tendrás dos opciones: ponerte un vendaje alrededor de la herida y esperar que la hemorragia cese, o usar el hechizo Sanar y recuperarte inmediatamente.  No creo que tengas demasiada elección.  ¿Te parece algo que quieres aprender?
+RspDflt=none
+RspTxt1=Sí, creo que sí.
+script1=player.addtitle(Heal);player.setprop(trainingpoints=-1);
+nxtLn1=TrainTitles
+RspTxt2=Quizá luego.  ¿Qué más puedes enseñarme?
+nxtLn2=TrainTitles
+
+[Hold]
+Say=Un hechizo muy útil, Paralizar inmovilizará a un oponente durante un corto periodo de tiempo.  Cuanto más fuerte sea tu magia, más tiempo quedará paralizado el sujeto en cuestión--sin poder devolver los golpes, ya me comprendes.  ¿Te parece algo que quieres aprender?
+RspDflt=none
+RspTxt1=Sí, creo que sí.
+script1=player.addtitle(Hold);player.setprop(trainingpoints=-1);
+nxtLn1=TrainTitles
+RspTxt2=Quizá luego.  ¿Qué más puedes enseñarme?
+nxtLn2=TrainTitles
+
+[askquestions]
+Say=Pregunta lo que quieras, %playername%--Aunque hasta yo me sorprendo de la cantidad de cosas que sé ahora.
+RspDflt=No te preocupes, Sherard--Ahora debo irme.  Adiós.
+RspCnd1=All(ttl(05geticekey,!05SFC,!05lichdead))
+RspTxt1=He encontrado al espíritu de Felious el Nigromante en el Plano Astral.  ¿Sabes algo de espíritus que quedan atrapados allí?
+NxtLn1=FeliousSpirit
+RspCnd2=All(ttl(defenseson,!05ringdone))
+RspTxt2=¿Tu maestro no te ha mencionado nada sobre las defensas de la torre de Elazar, verdad?
+NxtLn2=defenseson
+RspCnd3=All(ttl(05iceworld,!05SIWC))
+RspTxt3=En mis recientes viajes por el Plano Astral, he atravesado un portal hacia Frosthelm.  ¿Sabes algo del lugar?
+NxtLn3=iceworld
+RspCnd4=All(ttl(05fireworld,!05sfwc))
+RspTxt4=¿Sabes algo de la tierra de Infernus?
+NxtLn4=fireworld
+RspCnd5=All(ttl(05Nagaworld,!05snwc))
+RspTxt5=¿Qué sabes del mundo de los Nagas?
+NxtLn5=Nagaworld
+Rspcnd6=All(ttl(!05fornax))
+RspTxt6=¿Has oído algún rumor interesante, Sherard?
+nxtln6=fornax
+
+[FeliousSpirit]
+Say=Pobre Felious!  Debo admitir que no tengo ni idea de cómo podrías ayudarle.  Me temo que las leyes que gobiernan el Plano Astral están fuera del temario de mis estudios actuales.  Para serte sincero, acabo de empezar con la geografía básica del plano.
+script1=addtitle(05SFC);
+RspDflt=Gracias, Sherard.  Me encantaría seguir hablando contigo, pero ahora debo irme.  Adiós.
+RspTxt1=Quizá podrías responderme a otra pregunta, Sherard.
+nxtln1=askquestions
+
+[defenseson]
+Say=He oído que la ha llenado de criaturas peligrosas, aunque no sé exactamente de qué tipo.  Además, deberías saber que las protecciones no eran la especialidad de Elazar.  Sea lo que sea lo que ha usado, es poco probable que incluya el control más elaborado y preciso que usan otros magos.  Más bien, una vez han sido activadas, no habrá forma simple de desactivarlas.
+RspDflt=Gracias, Sherard.  Me encantaría seguir hablando contigo, pero ahora debo irme.  Adiós.
+RspTxt1=Quizá podrías responderme a otra pregunta, Sherard.
+nxtln1=askquestions
+
+[iceworld]
+Say=Es una tierra donde jamás ha existido el calor, de acuerdo con un tomo bastante imaginativo.
+script1=addtitle(05SIWC);
+RspDflt=Gracias, Sherard.  Me encantaría seguir hablando contigo, pero ahora debo irme.  Adiós.
+RspTxt1=Quizá podrías responderme a otra pregunta, Sherard.
+nxtln1=askquestions
+
+[fireworld]
+Say=Infernus es conocida entre los magos como un lugar de gran poder, pero tambien como un lugar que destruye a la mayoría de los que buscan poseer tal poder.  Es el hogar de algunos de los monstruos más fieros que se han creado jamás.  Yo que tú, lo evitaría.
+script1=addtitle(05SIWC);
+RspDflt=Gracias, Sherard.  Me encantaría seguir hablando contigo, pero ahora debo irme.  Adiós.
+RspTxt1=Quizá podrías responderme a otra pregunta, Sherard.
+nxtln1=askquestions
+
+[Nagaworld]
+Say=¿Qué parezco, un Tomo de Conocimiento Infinito?  Además del hecho de que son mitad serpiente y mitad hombre, no sé nada de los Nagas.
+script1=addtitle(05SnwC);
+RspDflt=Gracias, Sherard.  Me encantaría seguir hablando contigo, pero ahora debo irme.  Adiós.
+RspTxt1=Quizá podrías responderme a otra pregunta, Sherard.
+nxtln1=askquestions
+
+[chapter6]
+Say=Bienvenido, %playername%...  ¿Necesitabas algo?
+RspDflt=Nada.  Lamento haberte molestado.
+RspTxt1=¿Va algo mal?
+nxtln1=chapter6a
+RspTxt2=He venido a enseñarte algunos hechizos que he aprendido!
+nxtln2=chapter6a
+
+[chapter6a]
+Say=En realidad, no parece que pueda aprender nada nuevo ahora.  Mi lección de hoy fue sobre definir el camino cuando no hay camino.  Parece que mi búsqueda de conocimiento estaba basada en mi sed de poder.  Nunca comprendí plenamente que la única utilidad de los nuevos poderes es contrarrestar el poder de una fuerza opuesta.
+RspDflt=Interesante.  Hasta luego.
+RspTxt1=Me estás diciendo que el único motivo por el que debo mejorar es Mithras?
+nxtln1=chapter6b
+RspTxt2=Pero yo quiero el poder de proteger a todo Avalon!
+nxtln2=chapter6b
+
+[chapter6b]
+Say=Solo digo que tengas cuidado.  El poder corrompe.  El poder absoluto corrompe absolutamente.  Uno no conoce sus propios límites hasta que le dan el poder para explorarlos.  Algunos de los involucrados en la creación de nuestra querida ciudad han caído y la han traicionado.
+RspDflt=Gracias por el consejo.  Pensaré en ello.  Hasta luego.
+

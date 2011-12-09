@@ -1,0 +1,112 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(7/16/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Gracias, Kane.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(03chapter3));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Kane
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Kane]
+Say=Dime, ¿tienes algo de tabaco que puedas prestarme?
+RspDflt=None
+RspTxt1=Me temo que no.
+NxtLn1=Kane1
+
+[Kane1]
+Say=Maldición!  Me he quedado sin desde hace unos días y no puedo dejar éste lugar durante días.  Supongo que ahí dentro tampoco habrá tabaco.
+RspDflt=None
+RspTxt1=Supongo que prácticamente ya no hay nada de nada.
+NxtLn1=Kane2
+
+[Kane2]
+Say=Probablemente tengas razón.  De todas formas, es un hábito bastante asqueroso.  Buenos días.
+RspDflt=Lo mismo digo.
+
+[Chalice]
+Say=Tú otra vez!  ¿Por qué sigues viniendo aquí?  Te aseguro que aquí nunca pasa nada.
+RspDflt=None
+RspTxt1=He estado yendo al pueblo por varios motivos.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Entonces tú eres el soldado que encontró el Cáliz.  Eres un héroe!
+RspDflt=None
+RspTxt1=Bueno, pero que sea un secreto entre tú y yo.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Lo que digas.  Buenos días.
+RspDflt=Lo mismo digo.
+
+[three]
+Say=Hola, señor.
+RspDflt=none
+RspTxt1=¿Qué hay de nuevo, soldado?
+nxtln1=three2
+
+[three2]
+Say=No mucho, pero perdóneme, ¿puedo preguntarle algo?
+RspDflt=none
+RspTxt1=Por supuesto que no, perro!  Yo soy quien hace las preguntas aquí!
+nxtln1=three3
+RspTxt2=Naturalmente!
+nxtln2=three4
+
+[three3]
+Say=Como digáis.
+RspDflt=Como debe ser!
+
+[three4]
+Say=¿Cómo está el General Roth?  Algunos de nosotros estamos preocupados; no le hemos visto mucho últimamente.
+RspDflt=none
+RspTxt1=Sí, está bien, y preparando la destrucción de los Ahoul y el retorno de la paz a nuestra tierra.
+nxtln1=three5
+
+[three5]
+Say=Es un alivio.  Gracias.
+RspDflt=No ha sido nada.  Hasta luego.
+
+[chapter6]
+Say=He encontrado un poco de tabaco en una caja en uno de los almacenes.  ¿Quieres compartirlo conmigo?
+RspDflt=No, gracias.  El humo de un campamento Ahoul en llamas es el único humo que deseo inhalar.  Hasta luego.
+

@@ -1,0 +1,13 @@
+[root]
+Count=1
+Else=
+Default=Danke, Teon.
+Say1=
+goto1=Davet
+
+[Davet]
+say=Ich darf Euch ohne die richtigen Papiere nicht durchlassen.
+rspDflt=Danke.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

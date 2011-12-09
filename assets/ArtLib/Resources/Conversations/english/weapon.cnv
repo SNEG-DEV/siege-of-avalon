@@ -1,0 +1,55 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=swordbasic
+Taken=
+Checked=swordbasic
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=sword2
+Default=Thank you.
+Say1=All(obj(!swordbasic));
+goto1=sword
+
+[sword]
+Say=Hello there, how can I help you?
+RspDflt=None
+RspTxt1=I need a sword!
+NxtLn1=sword1
+
+[sword1]
+Say=Try not to gut yourself!
+script=Siege20000600060052238420.giveitem(swordbasic,player);
+RspDflt=Thank you.
+
+[sword2]
+Say=You'll get nothing better from me.
+RspDflt=Very well.  Thank you.
+

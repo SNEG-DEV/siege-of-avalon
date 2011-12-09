@@ -1,0 +1,44 @@
+[root]
+Count=2
+Else=
+Default=Danke, Mikel.
+Say1=All(ttl(!01recovered));
+goto1=Mikel
+Say2=All(ttl(01recovered));
+goto2=chalice
+
+;Before recovery of Chalice
+[Mikel]
+say=He, Ihr da!  Nicht herumtrödeln!  Hier gibt's Soldaten, die es eilig haben, und Ihr solltet ihnen nicht im Wege stehen!
+rspdflt=Entschuldigung.
+rspTxt1=Woher kommt Ihr?
+NxtLn1=Mikel1
+rspTxt2=Was gibt es hier für Neuigkeiten?
+NxtLn2=Mikel2
+
+[Mikel1]
+say=Ich komme aus Cathea.  Ich war nicht immer bloß Wachposten!  Früher war ich Catheanischer Reiter, bevor man mich rausgeworfen hat!
+rspdflt=Vielleicht erlangt Ihr wieder diese Position.
+rspBack=Mikel
+
+[Mikel2]
+say=Ich habe keine Zeit, mit Euch zu schwatzen!  Mir ist egal, wer Euer Bruder ist, ich habe Wichtigeres zu tun!
+rspdflt=Tut mir leid, Euch gestört zu haben.
+rspBack=Mikel
+
+;After recovery of Chalice
+[chalice]
+say=Kaum habt Ihr ein Gefecht hinter Euch, schon glaubt Ihr wohl, Soldaten belästigen zu können, die echte soldatische Aufgaben haben!
+rspTxt1=Entschuldigt.
+NxtLn1=chalice1
+rspTxt2=Was gibt's Neues?
+NxtLn2=chalice2
+
+[chalice1]
+say=Vielleicht war ich bisschen streng mit Euch.  Ich entschuldige mich für meine Schärfe.  Gehabt Euch wohl, Herr.
+rspdflt=Ade.
+rspBack=chalice
+
+[chalice2]
+say=Nur die, dass die Ahoul begonnen haben wegzulaufen. Sie sind uns zwar zahlenmäßig immer noch überlegen, aber eines ich sage Euch-- jetzt haben sie Angst bekommen!
+rspBack=chalice

@@ -1,0 +1,160 @@
+[Notes]
+TitlesChecked=01AmuletKnown,01informed,01FoundBruder
+
+[root]
+Count=4
+Else=lastchance
+Default=Danke, Elazar.
+Say1=All(ttl(01AmuletKnown,!01GotAmulet));
+goto1=Amulet
+Say2=All(ttl(01informed,!01FoundBruder,!PlayerKnown));
+goto2=Elazar
+Say3=All(ttl(01informed,!01FoundBruder,PlayerKnown));
+goto3=nothing
+Say4=All(ttl(01FoundBrother));
+goto4=Chalice
+
+;First approach after Penrith
+[Elazar]
+say=Ich habe Euch erwartet.  Ihr sucht bestimmt nach Neuigkeiten über Euren Bruder, richtig?
+rspDflt=none
+rsptxt1=Ja.  Alles was Ihr mir sagen könnt wäre mir eine Hilfe.
+nxtln1=Elazar1
+
+[Elazar1]
+say=Ich werde Euch nichts erzählen, was Ihr nicht von den Trotteln außerhalb dieses Raumes erfahren könnt, aber ich will Euch sagen, dass ich die Lebensenergie Eures Bruders spüre.  Er ist schwach, aber er lebt.  Allerdings habe ich den Eindruck, das er irgendetwas vor mir verbergen will.  Immer wenn ich versuche, Euren Bruder genau zu orten, entschwindet er aus meiner Sicht.
+rspDflt=none
+rsptxt1=Aber Ihr seid sicher, dass er am Leben ist?
+nxtln1=Elazar2
+
+[Elazar2]
+say=Das habe ich doch gesagt, oder?  Ihr wollt ihn jetzt suchen gehen, nehme ich an? 
+rspDflt=none
+rsptxt1=Aber natürlich!  Ich kann meinen Bruder nicht seinem Schicksal überlassen!
+nxtln1=Elazar3
+
+[Elazar3]
+say=Welch edle Gesinnung.  Ich wünsche Euch viel Glück bei Euren Bestrebungen, mein Junge.
+rspDflt=none
+rsptxt1=Danke.  Und ich freue mich über die Information, dass er noch am Leben ist.
+nxtln1=Elazar4
+
+[Elazar4]
+say=Ich hab es nicht gesagt, damit Ihr Euch freut, mein Junge.  Ich habe es gesagt weil es die Wahrheit ist  und die Chance besteht, dass Ihr ihm vielleicht helfen könnt.  Eine geringe Chance zwar, aber immerhin besser als gar keine.
+rspDflt=none
+rsptxt1=Es wird mir schon gelingen.
+nxtln1=Elazar5
+
+[Elazar5]
+say=Hoffentlich behaltet Ihr Recht, um seinetwillen.  Seid vorsichtig da draußen, mein Junge.  Seltsame und üble Wesen gehen um.
+Adventure=ch1-70;
+script=journalentry(elazar);showmessage(Ihr Tagebuch wurde aktualisiert.,200);addtitle(playerknown);
+rspdflt=Das mache ich, Meister Zauberer.  Gehabt Euch wohl.
+
+
+;First approach after Elarath
+[Amulet]
+say=Neben einem liegengebliebenen Wagen, sagt Ihr? Ha!  Ha!
+rsptxt1=Ja, er meinte auch, Ihr hättet vielleicht eine Information, die mich weiterbringen würde.
+rspDflt=none
+nxtln1=Amulet1
+
+[Amulet1]
+say=Ha! Ha! Dieser senile alte....  Ihr meint doch dieses Amulett, oder?  Dieser alte Trottel ist weich im Kopf!  Nehmt das Amulett und erinnert Elarath daran, dass die Mönche Heilkräuter haben, die bei Vergesslichkeit helfen!
+Adventure=ch1-71;
+RemoveQuest=ch1-24;
+script=journalentry(amulet);showmessage(Ihr Tagebuch wurde aktualisiert.,200);Siege20000600030076018580.giveitem(EAmulet,player);addtitle(01GotAmulet);
+rsptxt1=Sollte ich sonst noch irgendetwas wissen?  Irgendetwas, was mir weiterhelfen könnte?
+nxtln1=Amulet2
+
+[Amulet2]
+say=Ich nehme an, Elarath hat euch bereits von der unterirdischen Stadt erzählt?  Ich sage Euch, Ihr sollt Euch davor in Acht nehmen.  Haltet Euch davon fern!  Es ist dort gefährlicher, als Ihr Euch überhaupt vorstellen könnt.
+rsptxt1=Gefährlich?
+nxtln1=Amulet3
+rspDflt=none
+
+[Amulet3]
+say=Ja!  Und ich meine damit nicht Werwürmer und Riesenspinnen, mein Junge!  Ich meine, dass in diesen Gängen Todesgefahr lauert-- für uns alle.
+Adventure=ch1-71;
+rsptxt1=Ich werde Eure Warnungen beherzigen, Meister Zauberer.
+nxtln1=Amulet4
+rspDflt=none
+
+[Amulet4]
+say=Belügt mich nicht, mein Junge.  Ich weiß, dass Ihr sie erkunden werdet, ganz gleich, was ich Euch sage.  Ich warne Euch nur deshalb, damit Ihr etwas besser  auf Euch aufpaßt.
+rspdflt=Das mache ich.  Danke für Euren Rat.
+
+
+;After Corvus is recovered
+[Chalice]
+say=Seid Ihr gekommen, um mir zu danken? Nicht nötig, mein Junge.  Ich freue mich nur, dass ich Recht hatte, was Euren Bruder betrifft .
+rsptxt1=Ich mich auch, Elazar.  Ohne Eure Hilfe wäre er vielleicht gestorben.
+Nxtln1=Chalice1
+rspdflt=None
+
+[Chalice1]
+say=Es freut mich, dass ich Euch behilflich sein konnte.  Um die Wahrheit zu sagen, ich war mir nicht ganz sicher, ob es Euer Bruder sei, den ich gespürt habe. Ich habe nur etwas da draußen gespürt, was nicht von Feindseligkeit durchdrungen war und daraus geschlossen, dass es Euer Bruder sei. 
+rsptxt1=Nun, wie auch immer Ihr es geschafft habt, mein Bruder ist jetzt in Sicherheit, und das habe ich, zum Teil, Euch zu verdanken. 
+Nxtln1=Chalice2
+rspdflt=None
+
+[Chalice2]
+say=Gern geschehen, Soldat.  Kommt mich wieder besuchen, wenn Ihr dafür die Zeit habt.
+rspdflt=Das werde ich.  Mögen Euch die guten Geister beschützen.
+
+
+[lastchance]
+say=Lasst mich in Ruhe.  Es sind wichtigere Angelegenheiten im Gange, die Euch nichts angehen.  Ich habe nicht die Zeit, meine Aufmerksamkeit an Euch zu verschwenden. 
+rspdflt=Tut mir leid, Euch zu stören, Herr.
+
+[nothing]
+say=Es tut mir leid, aber ich kann Euch im Moment nichts weiter anbieten.
+rspdflt=Ich verstehe.  Mögen Euch die guten Geister beschützen.
+;Available after PC knows about Pell's tale.
+rspCnd1=all(ttl(01Lahren,!01ElazarPell));
+rspTxt1=Vielleicht doch.  Kennt Ihr die Fornaxierin Pellandrian?
+nxtLn1=Pell1
+
+[Pell1]
+say=Seid nicht albern; natürlich kenne ich sie.  Sie ist gefährlich.  Lasst Euch nicht durch ihr Äußeres täuschen, mein Junge.  Ich gehörte zur Gruppe der Zauberer, die in der Nacht ihrer Ankunft in Avalon den magischen Explosionen nachging.  Von der Intensität her haben wir erwartet, gegen ein halbes Dutzend Shamen antreten zu müssen. Stattdessen fanden wir eine in Blau gekleidete Frau mit einem bewusstlosen Mann im Arm.
+script=addtitle(01ElazarPell);
+rspDflt=none
+rspTxt1=Lahren.  Ihren Liebsten.
+nxtLn1=Pell2
+
+[Pell2]
+say=Ja.  Wir fanden aber auch die Leichen, mein Junge.  Sie behauptet, von einem Dutzend Ahoul angegriffen worden zu sein, aber ich habe die Leichen selbst gezählt, und es waren mindestens doppelt so viele.  Vielleicht sogar das Dreifache, aber manche Punkte am Boden waren so verbrannt,  dass ich nicht mal sicher sein konnte, ob an der Stelle jemals etwas gelebt hatte.  In der Dunkelheit überrascht und allein, hätte selbst ich große Schwierigkeiten, mich gegen zwanzig Männer zu wehren. Aber gegen dreißig..?
+rspDflt=none
+rspTxt1=Das war bestimmt... beeindruckend.  Beängstigend, sogar.  Aber sie war verzweifelt....
+nxtLn1=Pell3
+
+[Pell3]
+say=Oh, ja.  Verzweifelt und angsterfüllt, und vor Liebe krank.  Sie war bestimmt... grandios.
+rspDflt=none
+rspTxt1=Grandios?
+nxtLn1=Pell4
+
+[Pell4]
+say=Welches Wort würdet Ihr denn verwenden, mein Junge?  Erst in einer solchen Lage zeigt sich, aus welchem Holz ein Magier geschnitzt ist.  Lasst Euch das gesagt sein: in zwanzig Jahren wird sie zu den Großen gehören.  Vielleicht sogar noch eher.  Aber nun sagt, warum interessiert Euch das?
+Adventure=ch1-90;
+rspDflt=none
+rspTxt1=Ich habe der Dame versprochen, sie mit ihrem Liebsten wieder zusammenzubringen.  Als ich erfuhr, dass sie Magierin ist, dachte ich, Ihr könntet mir vielleicht Einblick in ihr Wesen geben.
+nxtLn1=Pell5a
+rspTxt2=Ich bin ihr begegnet und war nur neugierig, mehr über die Dame zu erfahren.
+nxtLn2=Pell5b
+
+[Pell5b]
+say=Ihr lügt, mein Junge.  Das solltet Ihr lieber nicht zur Gewohnheit werden lassen.  Nichtsdestotrotz, jeder hat seine kleinen Geheimnnisse.  Ich gebe Euch einen guten Rat: am Ende spielt es meistens keine Rolle.  Und nun, wenn Ihr mich entschuldigt, mache ich mich wieder an die Arbeit.
+rspDflt=Aber natürlich.  Gehabt Euch wohl.
+
+[Pell5a]
+say=Ich wünsche Euch viel Glück, mein Junge.  Ehrlich gesagt, wir könnten ihre Hilfe hier in Avalon gut gebrauchen, und so vor Gram verzehrt ist sie zu gar nichts nütze. Und dieser Freund von ihr, Lahren....  Ich habe von den anderen  Historikern und Gelehrten gehört, dass er tiefen Einblick in die Kultur und die Schrift der Sha'ahoul gewinnen könnte, würde er sich nur der Aufgabe widmen. Ich bin ihm jedoch noch nie persönlich begegnet.  Er scheint mir aus irgendeinem Grund aus dem Weg zu gehen .
+Adventure=ch1-91;
+rspDflt=Ich verstehe.  Nun, ich danke Euch für diese Unterhaltung, Meister Zauberer.  Ich wünsche Euch viel Erfolg mit Eurer Arbeit.
+rspTxt1=Lady Pell hat mir berichtet, dass Lahren eine Abneigung gegen Magie hat... und gegen Magier.
+nxtLn1=Pell6
+
+[Pell6]
+say=Tatsächlich?  Wie seltsam.  Nun dann, mein Junge; wenn ich Euch vorhin nur aus Höflichkeit viel Glück gewünscht habe, jetzt meine ich es wirklich.  Einen schönen Tag noch.
+rspDflt=Euch auch, Meister Zauberer.  Habt Dank.
+

@@ -1,0 +1,45 @@
+[root]
+Count=2
+Else=
+Default=Danke, Kane.
+Say1=All(ttl(!01recovered));
+goto1=Kane
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Kane]
+say=Entschuldigt, habt Ihr vielleicht ein bisschen Tabak für mich?
+rspDflt=None
+rspTxt1=Leider nein.
+NxtLn1=Kane1
+
+[Kane1]
+say=Mist!  Mir ist er schon vor Tagen ausgegangen, und ich darf diesen verfluchten Posten nicht verlassen.  Ich nehme an, in der Burg ist Tabak auch knapp.
+rspDflt=None
+rspTxt1=Ich glaube, inzwischen ist alles knapp.
+NxtLn1=Kane2
+
+[Kane2]
+say=Da habt Ihr vermutlich Recht.  Na ja, es ist sowieso eine eklige Gewohnheit.  Gehabt Euch wohl.
+rspDflt=Ihr auch.
+
+;After recovery of Chalice
+[Chalice]
+say=Ihr schon wieder!  Warum kommt Ihr immer wieder hierher? Hier ist nichts los, das kann ich Euch versichern. 
+rspDflt=None
+rspTxt1=Ich bin aus verschiedenen Gründen immer wieder ins Dorf hinausgegangen.
+NxtLn1=Chalice1
+
+[Chalice1]
+say=Dann seid Ihr wohl der Soldat, der den Kelch gefunden hat!  Ihr seid ein Held!
+rspDflt=None
+rspTxt1=Na ja, behalten wir das doch einfach für uns.
+NxtLn1=Chalice2
+
+[Chalice2]
+say=Wie Ihr wollt.  Viel Glück, Herr.
+rspDflt=Euch auch.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

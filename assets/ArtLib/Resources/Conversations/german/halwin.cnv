@@ -1,0 +1,44 @@
+[Notes]
+titlesChecked=01recovered
+
+[root]
+Count=2
+Else=
+Default=Danke, Halwin.
+Say1=All(ttl(!01recovered));
+goto1=Halwin
+Say2=All(ttl(01recovered));
+goto2=chalice
+
+;Before recovery of Chalice
+[Halwin]
+say=Moin, moin, Herr.  Ich hoffe, es geht Euch gut?
+rspdflt=Doch.  Euch auch einen guten Tag.
+rspTxt1=Woher kommt Ihr?
+NxtLn1=Halwin1
+rspTxt2=Habt Ihr irgendwelche Gerüchte gehört?
+NxtLn2=Halwin2
+
+[Halwin1]
+say=Ich bin aus Nisos hierher gesegelt, Herr.  Leider ist mein Schiff, die "Blutende Sirene", ausgebrannt.  Jetzt bin ich gezwungen, hier an Land den Kampf fortzusetzen.
+rspdflt=Nun, ich freue mich, Euch bei uns zu haben.  Wir brauchen jeden Soldaten, den wir kriegen können.
+rspBack=Halwin
+
+[Halwin2]
+say=Wie ich höre hat Nicophorus vor, ein Stück flussaufwärts ein Lager der Ahoul zu überfallen!  Meine Quelle ist nicht sehr zuverlässig, aber die Vorräte könnten wir ja gut gebrauchen 
+rspdflt=Das ist wohl wahr.  Bis bald.
+rspBack=Halwin
+
+;After recovery of Chalice
+[chalice]
+say=Wie ich sehe hat das Dorf aus Euch einen richtigen Soldaten gemacht.  Ich wusste doch, dass Corvus' Bruder ein guter Kämpfer wird.
+rspdflt=Danke für die lieben Worte.
+rspTxt1=Was gibt's Neues?
+NxtLn1=chalice1
+
+[chalice1]
+say=Haltet die Ohren offen.  Heute Nacht könnte es zu einem Kampf kommen.  Wenn Ihr Glück habt, könnt Ihr vielleicht mitmachen!
+rspdflt=Mögen Euch die guten Geister beschützen.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

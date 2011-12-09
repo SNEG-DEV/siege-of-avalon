@@ -1,0 +1,102 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-60
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Que tengas un buen día, Octave.
+say1=one(ttl(05chapter5,06chapter6));
+goto1=chapter6
+say2=one(ttl(03chapter3,04chapter4));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Octave
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Octave]
+Say=Lo lamento, señor, pero no puedo dejarle pasar.  Lord Harold ha determinado que el Patio de los Campesinos está fuera de límites.
+Adventure=ch1-60;
+RspDflt=Una pena.  Seguiré mi camino, pues.
+RspTxt1=¿Lord Harold, dices?  Ya veo.  Soy nuevo por aquí.  ¿Cuáles son las novedades por aquí?
+NxtLn1=Octave1
+RspTxt2=¿De dónde eres?
+NxtLn2=Octave2
+
+[Octave1]
+Say=Los Ahoul han estado patrullando más por los alrededores de la Puerta Sur.  Definitivamente están planeando algo.
+RspDflt=Estaremos preparados para lo que sea.
+rspback=Octave
+
+[Octave2]
+Say=Nací en Oriam, señor.  Mi padre tenía un puesto comercial en la frontera que heredé.  Los Sha'Ahoul lo quemaron hace años.  Por eso lucho--no hay nada más que pueda hacer.
+RspDflt=Nos alegramos de tener tu ayuda, soldado.
+rspback=Octave
+
+[Chalice]
+Say=Ahí está el héroe!  ¿Hay algo que pueda hacer por ti?
+RspDflt=No, gracias.
+RspTxt1=¿Has oído algún rumor?
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Ve pronto al comedor esta noche.  Habrá pan fresco para cenar!
+RspDflt=Gracias por el consejo.
+
+[three]
+Say=¿No hace un día maravilloso?
+RspDflt=Sí, y yo tengo mucho trabajo.  Perdóname.
+RspTxt1=¿Qué has dicho?
+nxtln1=three2
+
+[three2]
+Say=Dije que hace un día maravilloso, ¿por qué? ¿Acaso no estás de acuerdo?
+RspDflt=none
+RspTxt1=No estoy en desacuerdo, simplemente me parece extraño que alguien... cualquiera... se sienta tan optimista, teniendo en cuenta las circunstancias.
+nxtln1=three3
+
+[three3]
+Say=¿Es tan malo?  ¿Crees que me estoy ablandando?  Me estoy ablandando!  Eh, ¿quieres luchar?
+RspDflt=none
+RspTxt1=No hay necesidad de eso.  Puedes hacer que Mulduc se entrene un rato contigo.  Yo no tengo tiempo.
+nxtln1=three4
+
+[three4]
+Say=Eh, esa es una buena idea!
+RspDflt=Me alegro de ayudarte.  Adiós.
+
+[chapter6]
+Say=Dime, ¿quieres un poco de este dulce?  Compré una caja entera de ellos a los gitanos antes de que me atrapasen entre estas paredes.  He comido algunos antes, y es extraño, pero son inofensivos.  Solía darles unos cuantos a los niños de los campesinos, cada día, pero ahora ya no puedo soportar el mirarles a los ojos.  Quizá si me lo como todo, ya no deba volver más allí.
+RspDflt=Mantente firme, soldado.  Hacemos lo que podemos.
+RspTxt1=Lo lamento, pero debo declinar tu oferta.  Mantén la fe y tus habilidades, soldado.
+

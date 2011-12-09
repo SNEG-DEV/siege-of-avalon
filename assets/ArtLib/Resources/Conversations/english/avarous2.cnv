@@ -1,0 +1,87 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01avarous
+Checked=01Avarous,01permission,01Recovered
+Removed=
+
+[Quest]
+Added=ch1-31
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/12/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=Avarous8
+Default=
+Say1=All(ttl(!01permission,!01Recovered,!01Avarous));
+goto1=Avarous1
+Say2=All(ttl(01permission,!01Recovered));
+goto2=Avarous3
+Say3=All(ttl(01permission,01Recovered));
+goto3=Avarous5
+
+[Avarous1]
+Say=So, you think you're ready for some serious soldiering?
+RspDflt=none
+RspTxt1=I feel confident in my abilities, sir.
+NxtLn1=Avarous2
+
+[Avarous2]
+Say=As you say, soldier.  I'll report your skill level to the commanders and they will assign you to your duties.  Dismissed.
+Adventure=ch1-31;
+Script=player.setprop(trainingpoints=4);journalentry(avarous);showmessage(Your journal has been updated.,200);player.addtitle(01Avarous);
+RspDflt=Yes, sir.  Thank you, sir.
+
+[Avarous3]
+Say=You're past the time when you'd need training around here!
+RspDflt=none
+RspTxt1=Actually, I just came for a good rumor.
+nxtln1=Avarous4
+
+[Avarous4]
+Say=Times are too hard for there to be anything on the training grounds but training.  One day, perhaps we can ease up a bit and let the soldiers relax, but today is not that day.
+RspDflt=I understand.  Good day, Captain.
+
+[Avarous5]
+Say=What's an excellent soldier like you doing down on the training grounds?  Isn't there something more important for you to be attending to?
+RspDflt=none
+RspTxt1=I'm just taking a moment to catch my breath, Captain.  What's new around here?
+nxtln1=Avarous6
+
+[Avarous6]
+Say=Your heroism has inspired the trainees; they're all working harder than ever before.  I suspect these new soldiers will be a match for even the best of the Sha'ahoul!
+RspDflt=none
+RspTxt1=That's excellent news, Captain!
+nxtln1=Avarous7
+
+[Avarous7]
+Say=Good spirits protect you.
+RspDflt=And you.
+
+[Avarous8]
+Say=I have reported your skill level to the commanders; they will assign you soon.  Dismissed.
+RspDflt=Yes, sir.
+

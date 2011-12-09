@@ -1,0 +1,60 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01endchapter
+Checked=
+Removed=
+
+[Quest]
+Added=ch1-26,ch1-27,ch1-77
+Removed=ch1-26
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=Thank you.
+Say1=
+goto1=Roth
+
+[Roth]
+Say=The lookouts reported your success.  Congratulations, and well done!  You are a credit to us all.  Corvus, it is good to see you alive and back in Avalon.
+RemoveQuest=ch1-26;tlq10;ch1-12;ch1-27;
+RspDflt=None
+RspTxt1=Sir, we have some disturbing news.
+NxtLn1=Roth1
+
+[Roth1]
+Say=Yes, Mudam has already told me about your discovery under South Gate.  We have launched an investigation to search out the traitors and their benefactor.  Someone with great authority has been aiding them; to keep a conspiracy of this scale secret is no easy matter. Most troubling is the fact that whoever is behind all this is willing to sell us out to the Sha'ahoul.
+RspDflt=None
+RspTxt1=I'm afraid it reaches the highest level, sir.  Corvus witnessed General Ovoron meeting with Mithras himself.  Ovoron delivered to him a satchel of documents moments before the army was ambushed.
+NxtLn1=Roth2
+
+[Roth2]
+Say=Ovoron?  This is disastrous!  General Ovoron was a council member -- he knows everything.  I must inform the other members immediately.  Take your brother to the monks and see they tend to his wounds.  Report back to Mudam, and then get some rest.  Tomorrow morning report to my private chambers in the Inner Keep.  Let no one else know about Ovoron's actions.
+Adventure=ch1-77;
+AddQuest=ch1-27;
+Script=player.addtitle(01EndChapter);journalentry(roth2);showmessage(Your journal has been updated.,300);savegame(End of chapter1);
+RspDflt=Understood, sir.
+

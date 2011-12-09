@@ -1,0 +1,129 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Gracias, Eadig.
+say1=one(ttl(05chapter5,06chapter6));
+goto1=fivesix
+say2=one(ttl(03chapter3,04chapter4));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Eadig
+Say4=All(ttl(01recovered));
+goto4=chalice
+
+[Eadig]
+Say=Eh!  ¿Quieres ocupar mi puesto aquí por unas horas?
+RspDflt=None
+RspTxt1=No creo que ese tipo de intercambios personales esté permitido.
+NxtLn1=Eadig1
+
+[Eadig1]
+Say=Oh, venga!  Dame unas horas de libertad para acercarme a la cocina y echarle a una de las camareras de la cocina un buen... er, una buena charla!
+RspDflt=None
+RspTxt1=Lo lamento, pero yo también estoy de servicio.
+NxtLn1=Eadig2
+
+[Eadig2]
+Say=Pues vale.  Déjame con este monótono trabajo, entonces.  Seguro que no te haré ningún favor a ti!
+RspDflt=Lo siento.  Quizá el próximo soldado que venga te podrá relevar.
+
+[Chalice]
+Say=Hola!  Lamento lo de la otra vez.  Simplemente estaba aburrido a morir.  No deseaba hacerle sentir en deuda conmigo.
+RspDflt=None
+RspTxt1=No te preocupes.  Lo comprendo perfectamente.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Gracias, señor.  Que tenga un buen día!
+RspDflt=Buenos días.
+
+[three]
+Say=Mi espada no ha sido usada en largo tiempo.  Al menos, no para lo que fue forjada.  Aún cuido de ella.  Sigue estando lo suficientemente afilada para afeitarme con ella.  Los demás soldados me miran de forma extraña.  También la uso para cortar queso.
+RspDflt=Iré a hablar con ellos del tema.  Adiós.
+RspTxt1=Es fascinante.  Dime, ¿qué haces para mantenerte ocupado cuando ya la has afilado?
+nxtln1=three2
+
+[three2]
+Say=Me alegro de que lo preguntes!  Luchar contra las cucarachas!  Si pones un poco de cera en sus antenas, no pueden ver bien, o algo así, y atacan a todo lo que se mueva!
+RspDflt=none
+RspTxt1=Er, seguro, déjame ir a buscar un poco de cera y que empiecen los juegos.
+nxtln1=three3
+RspTxt2=¿Aceptas apuestas?
+nxtln2=three4
+
+[three3]
+Say=Oh, no lo necesitas, mira, tengo un montón-
+RspDflt=Oh no, ¿qué hora es?  Tengo, ah, una cita con el General Roth.  Quizá luego.
+
+[three4]
+Say=Eh, nunca se me ocurrió pensarlo, es una buena idea!  Conseguiré algún dinerillo extra para mis gastos!  Eh, ¿puedes prestarme un sombrero?
+RspDflt=none
+RspTxt1=¿Para qué necesitas un sombrero?
+nxtln1=three5
+
+[three5]
+Say=Bueno, supongo que necesitaré unos cuantos para las apuestas de esta noche, y--
+RspDflt=Eadig, estás enfermo.  Adiós.
+RspTxt1=Oh, no, no los necesitarás!
+nxtln1=three6
+
+[three6]
+Say=Oh, bueno.  Supongo que simplemente usaré mi monedero.
+RspDflt=Hazlo así, Eadig.  Buenos días.
+
+[fivesix]
+Say=¿Has venido a hacer apuestas, %playername%?
+RspDflt=Esto... no, soldado, no es eso.  Discúlpame...
+RspTxt1=¿Apuestas?
+nxtln1=fivesix2
+
+[fivesix2]
+Say=Sobre las cucarachas!  Hay muy pocas, así que las apuestas han subido.  Personalmente, apostaría por la negra.  Nacen para luchar.
+RspDflt=none
+RspTxt1=Las dos son negras!
+nxtln1=fivesix3
+RspTxt2=¿Todas las apuestas se hacen con tanta información?
+nxtln2=fivesix4
+
+[fivesix3]
+Say=[Mira a los apostadores con cara de sorpresa.]  Tienes razón!  Quizá deberé cambiar las puestas para ésta!
+RspDflt=Buena suerte con eso, soldado; tengo cosas que hacer...
+
+[fivesix4]
+Say=No, no!  Especialmente para ti, %playername%, te revelo los secretos de las apuestas!
+RspDflt=No sabría en qué gastar más dinero.  Hasta luego, soldado.
+

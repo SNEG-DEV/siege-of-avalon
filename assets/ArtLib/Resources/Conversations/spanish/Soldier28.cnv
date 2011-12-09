@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Hasta luego.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=Hola, ¿cómo puedo ayudarte?
+RspTxt1=¿De dónde eres?
+NxtLn1=Soldier1
+RspTxt2=¿Has oído algún rumor interesante?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Era un granjero en Oriam.
+rspBack=soldier
+
+[Soldier2]
+Say=Ayer, mientras hacía guardia, vi cómo llegaban los refuerzos Ahoul.  Las nuevas tropas parecen muy agresivas, así que ten cuidado.
+rspBack=soldier
+
+[Chalice]
+Say=¿Cómo puedo ayudarle, señor?
+RspTxt1=¿De dónde eres?
+NxtLn1=Chalice1
+RspTxt2=¿Has oído algún rumor interesante?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Soy de Oriam, señor.  Y me encargaré personalmente de que Mithras sufra por el daño que ha causado a mi país.
+rspBack=chalice
+
+[Chalice2]
+Say=He oído que habrá un ataque contra el muro sur esta noche.  ¡Puedes unirte a mí y a mis amigos allí, si deseas participar en una buena lucha!
+rspBack=chalice
+

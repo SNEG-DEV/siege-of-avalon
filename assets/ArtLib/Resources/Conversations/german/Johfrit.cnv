@@ -1,0 +1,25 @@
+[root]
+Count=1
+Else=
+Default=Danke, Sir Johfrit.
+Say1=
+goto1=Johfrit
+
+[Johfrit]
+say=Wie bitte?  Habt Ihr mich etwas gefragt?
+rspDflt=None
+rspTxt1=Noch nicht.  Wie verläuft alles hier oben?
+NxtLn1=Johfrit1
+
+[Johfrit1]
+say=Gut!  Ihr seht doch, alles bestens!  Hier oben ist alles normal, völlig normal! 
+rspDflt=None
+rspTxt1=Ja, natürlich.  Geht es Euch gut?
+NxtLn1=Johfrit2
+
+[Johfrit2]
+say=Aber ja doch!  Es ging mir nie besser.  Sehe ich denn aus, als würde mir etwas fehlen?
+rspDflt=Nein, ich glaube nicht.  Es tut mir leid, Euch gestört zu haben.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

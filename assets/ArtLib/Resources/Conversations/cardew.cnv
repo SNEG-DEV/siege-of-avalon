@@ -1,0 +1,82 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01Recovered,01village,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(5/23/01)=Passed
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Thank you, Cardew.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=one(ttl(05chapter5,04chapter4,03chapter3));
+goto2=threeup
+Say3=All(ttl(!01village,!01Recovered));
+goto3=Cardew1
+Say4=All(ttl(01village,!01Recovered));
+goto4=Cardew3
+Say5=All(ttl(01village,01Recovered));
+goto5=Cardew4
+
+[Cardew1]
+Say=We were all upset to hear about your brother.  He saved my neck more than once.
+RspDflt=I appreciate the sentiment.
+RspTxt1=Thank you.  Where are you from, sir?
+Nxtln1=Cardew2
+
+[Cardew2]
+Say=I'm from Aratoy, lad.  I was the leader of a nomadic band there.  We all came to here to fight the Ahoul -- we figured it would be a ferocious and bloodthirsty battle, and whatever could be finer than that?
+RspDflt=I don't know, sir, but may the spirits protect you and your men.
+
+[Cardew3]
+Say=Greetings, lad.  I hope everything goes well.
+RspDflt=It does, my lord.
+
+[Cardew4]
+Say=The hero comes home at last!  Hearing of your feats has encouraged us all!
+RspDflt=None
+RspTxt1=Thank you, sir.  Is there anything new happening?
+NxtLn1=Cardew5
+
+[Cardew5]
+Say=Well, I can't really tell you of the big stuff.  Know this, though: it won't be long until a proper meal!
+RspDflt=That's excellent news, indeed!  Good day to you, sir!
+
+[chapter6]
+Say=I tire of this constant debate and drudgery! I wish Roth would just sent us to battle now, before we all starve to death!
+RspDflt=You get your chance, I'm sure. Farewell.
+
+[threeup]
+Say=I heard Anora used merscwog in her last dish!  How exotic!
+RspDflt=Perhaps I should try her latest dish, then.  Farewell.
+

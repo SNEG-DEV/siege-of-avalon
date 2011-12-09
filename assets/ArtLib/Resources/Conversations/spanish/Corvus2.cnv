@@ -1,0 +1,105 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=ch1-05,ch1-26
+Removed=ch1-05
+
+[Items]
+Given=
+Taken=
+Checked=Herb
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=Gracias.
+Say1=
+goto1=Corvus
+
+[Corvus]
+Say=Hermanito!  ¿Qué...  qué haces aquí?  No importa, debes estar buscándome.  Estoy encantado de verte, hermanito.  Y orgulloso.  Ahora, escúchame--Tengo notícias terribles que comunicar a Sir Roth tan pronto como sea posible.
+RspDflt=None
+RspTxt1=Guarda tus fuerzas, hermano.  Ya me lo dirás cuando estemos seguros tras las murallas de Avalon.
+NxtLn1=Corvus1
+
+[Corvus1]
+Say=No hay tiempo, maldita sea!  Debes llevar estas noticias de vuelta tu solo!
+RspDflt=None
+rspCnd1=all(obj(Herb));
+RspTxt1=No seas ridículo, te llevaré a ver al Hermano Crosby inmediatamente.  Espíritus, estás ardiendo!
+NxtLn1=Fever
+rspCnd2=all(obj(!Herb));
+RspTxt2=No seas ridículo, te llevaré a ver al Hermano Crosby inmediatamente.
+nxtLn2=Corvus2
+
+[Fever]
+Say=Estoy bien, hermanito.  Sólo un poco mareado...
+Script=TakeItem(Herb,Player);player.setprop(trainingpoints=2);showmessage(You have received some training points.,200);
+RspDflt=none
+RspTxt1=Tus heridas se han infectado.  Toma esto, hermano.  Los monjes dicen que te ayudará.
+nxtLn1=Fever2
+
+[Fever2]
+Say=Sí, Madre-- Espíritus, está malísimo!  Y ni siquiera me encuentro mejor.  ¿Qué es eso?
+RspDflt=none
+RspTxt1=Medicina, y te encontrarás mejor, lo prometo.  Por ahora, vayámonos de aquí, ¿de acuerdo?
+nxtLn1=Corvus2
+
+[Corvus2]
+Say=No tenemos tiempo para discutir--Vendré si puedo.  Ahora, presta atención.  En caso de que yo no sobreviva, debes entregar este mensaje.  Excepto por unos pocos hombres, toda nuestra compañía emboscada y aniquilada.  Yo sobreviví solamente porque, mientras cabalgaba por el flanco trasero, fui a investigar lo que pensé que era un grupo de jinetes separándose de nosotros.  Cuando el ataque llegó minutos después, fui separado de la compañía
+RspDflt=None
+RspTxt1=Entonces, ¿quién más sobrevivió?  ¿Dónde están?
+NxtLn1=Corvus3
+
+[Corvus3]
+Say=El General Ovoron nos ha traicionado, hermanito.  Ha traicionado a Avalon y a todos los habitantes de los Siete Reinos.  Fue a Ovoron y sus lugartenientes lo que vi separarse de nuestra compañía.  Se estaban distanciando de la futura emboscada.  Sabían lo que iba a suceder y no querían que la matanza les salpicase.
+RspDflt=None
+RspTxt1=No, Corvus!  Lo que estás diciendo...
+NxtLn1=Corvus4
+
+[Corvus4]
+Say=Con los gritos de la batalla todavía resonando en la noche, vi a Ovoron y sus lugartenientes encontrándose con Mithras mismo.  Uno de los miembros del consejo de Avalon y el líder Ahoul estaban charlando agradablemente delante de mis ojos, por el amor de los espíritus, como si estuviesen descansando de una tranquila cabalgada vespertina.  Actuaban como si no hubiese centenares de hombres escupiendo su último aliento a sólo diez minutos de distancia!  Dulces espíritus, ¿cómo podían pretender no escuchar los gritos?  Los gritos de centenares, hermanito, cientos!  Todos mis amigos... de todos mis amigos, allí, ese día, sólo yo sobreviví.
+RspDflt=None
+RspTxt1=Corvus, lo siento...
+NxtLn1=Corvus5
+
+[Corvus5]
+Say=La última cosa que vi, fue a Ovoron dándole a Mithras una cartera.  No se necesita demasiada imaginación para adivinar su contenido, y cuando me di cuenta de lo que estaba sucediendo, me di la vuelta inmediatamente y partí a todo galope hacia Avalon.  Naturalmente, me vieron--los Ahoul estaban por todas partes.  De alguna forma logré llegar al pueblo antes de que mi caballo muriese debajo mío.  Corrí a través de los edificios intentando llegar a la puerta, pero me interceptaron.  Me agaché en una esquina y hallé un agujero donde mis pies esperaban encontrar el suelo.  Fue una mala caída, pero seguramente salvó mi vida.
+RspDflt=none
+RspTxt1=¿Y el Ogro?  ¿Qué sucedió con el Ogro?
+nxtLn1=Corvus5b
+
+[Corvus5b]
+Say=Me arrastré hacia aquí, y me quedé tan silencioso como me fue posible.  He alternando entre conciencia e inconsciencia.  No sé de donde vino el Ogro, o cuando, pero ha estado gritando y dándole una paliza a algo durante horas.  Sea lo que sea lo que hacía, no se molestó en mirar lo que había tras la esquina.
+RspDflt=None
+RspTxt1=Había una gran piedra atrapándolo aquí, los Ahoul la pusieron ahí.  El estar encerrado, parece que le puso frenético.  Cuando llegué, había conseguido mover la piedra lo suficiente para dejarme pasar, pero no lo suficiente para escaparse.
+NxtLn1=Corvus6
+
+[Corvus6]
+Say=¿Eso es lo que estaba haciendo?  No pude reunir fuerzas suficientes para mirar lo que era.
+RemoveQuest=ch1-05;
+AddQuest=ch1-26;
+RspDflt=Debemos volver rápidamente a Avalon, hermano.  Ciertamente, Sir Roth debe oír tu historia, pero necesita oírla de tus labios.  Vamos.  Te ayudaré....
+

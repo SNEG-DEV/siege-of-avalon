@@ -1,0 +1,117 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01foundbrother,02chapter2,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Thank you.
+say1=one(ttl(01foundbrother,02chapter2,03chapter3,04chapter4,05chapter5,06chapter6));
+goto1=traitors
+Say2=all(ttl(!01foundbrother));
+goto2=Soldier
+
+[Soldier]
+Say=What's your business here?
+RspDflt=None
+RspTxt1=I was having a look around.  I've only just arrived in Avalon.
+NxtLn1=Soldier1
+
+[Soldier1]
+Say=Good.  We need every hand we can get.
+RspDflt=None
+RspTxt1=Where are you from?
+NxtLn1=Soldier2
+RspTxt2=Are we short of men?
+NxtLn2=Soldier3
+
+[Soldier2]
+Say=I've come from Fornax.
+RspDflt=None
+RspTxt1=Why is it Fornaxans are so secretive?
+NxtLn1=Soldier4
+
+[Soldier4]
+Say=We find that few people of the Seven Kingdoms understand magic, especially a kingdom that relies so heavily on it.  Rather than face prejudices or explain every aspect of our society, we simply keep that information to ourselves.  Few actually ever ask about our country.  They assume we won't talk about it.
+RspDflt=None
+RspTxt1=But will you?  If someone were to ask about your country, would you talk about it?
+NxtLn1=Soldier5
+
+[Soldier5]
+Say=Probably not.  Unless that individual was willing to relocate to Fornax, I don't think so.  Living with magic, whether you practice it or not, requires discipline and an open mind.  I wouldn't bother to explain anything to someone that wouldn't be willing to dedicate themselves to our ways.
+RspDflt=None
+RspTxt1=Have people ever come to your country and become a citizen?
+NxtLn1=Soldier6
+RspTxt2=So your veil of secrecy is placed on you by others, but it is also self-imposed.
+NxtLn2=Soldier7
+
+[Soldier6]
+Say=It's exceptionally rare, but it has been known to happen.  Usually we treat travelers with courtesy, but send them on their way.
+RspDflt=None
+RspTxt1=If you don't mind my saying, your country sounds unfriendly.
+NxtLn1=Soldier8
+
+[Soldier8]
+Say=We're not unfriendly.  We simply don't welcome idle curiosity.
+RspDflt=Hmmm.  If you say so.  Good day to you.
+
+[Soldier7]
+Say=It's safe to say that.  You'll probably hear different opinions from different Fornaxans but I imagine that the truth is somewhere in between.
+RspDflt=None
+RspTxt1=Thank you for talking with me about Fornax.  Perhaps in the future I'd like to learn more about your land.
+NxtLn1=Soldier9
+
+[Soldier9]
+Say=If you do, I would warn you not to trifle with other Fornaxans.  Some are notoriously unfriendly.
+RspDflt=Thanks for the advice.  Good day.
+
+[Soldier3]
+Say=We are preparing to be short of men soon.  Field General Ovoron is taking a large force out on campaign.
+RspDflt=None
+RspTxt1=My brother mentioned as much.  What have you heard?
+NxtLn1=Soldier10
+
+[Soldier10]
+Say=What I've heard may not be for me to tell.
+RspDflt=I understand.  Thanks anyway.
+RspTxt1=I'm sure you can trust me.  My brother is a lieutenant with the Elythrians.
+NxtLn1=Soldier11
+
+[Soldier11]
+Say=That means nothing to me.  My superiors have ordered me to be strict with our intelligence.
+RspDflt=I understand.  Good day to you.
+
+[traitors]
+Say=Watch yourself, friend.  Traitors lurk everywhere!  It would be terrible if we were defeated by the enemy within!
+RspDflt=Agreed.  Thank you for your advice.
+

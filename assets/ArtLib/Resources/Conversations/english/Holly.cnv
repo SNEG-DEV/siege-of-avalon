@@ -1,0 +1,131 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01informed,01Recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=ch3-534
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Thank you, Holly.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=one(ttl(03chapter3,04chapter4,05chapter5));
+goto2=three
+Say3=All(ttl(!01informed,!01Recovered));
+goto3=Holly
+Say4=All(ttl(01informed,!01Recovered));
+goto4=News
+Say5=All(ttl(01informed,01Recovered));
+goto5=Chalice
+
+[Holly]
+Say=What brings you here?
+RspDflt=None
+RspTxt1=I was exploring the keep.  As you might guess, I'm new here.  What's your name and where are you from?
+NxtLn1=Holly1
+RspTxt2=I was looking around.  Tell me, have you heard anything of interest lately?
+NxtLn2=Holly2
+
+[Holly1]
+Say=I'm Holly and I'm an extra kitchen hand.  I'm from Oriam, though there's not much of Oriam left.  The Ahoul have just about destroyed any of the country I would remember.
+RspDflt=I'm sorry for your loss, but Oriam will be avenged and rebuilt.
+rspBack=Holly
+
+[Holly2]
+Say=I heard there's to be a raid on an Ahoul camp.  We sure could use the supplies.  The cooks are having a hard time stretching the few supplies we have remaining.
+RspDflt=My brother is a part of that raid, and I believe it will be a success.
+rspBack=Holly
+
+[News]
+Say=Hello again.  How can I be of service to you, sir?
+RspDflt=None
+RspTxt1=I was hoping to catch the latest news from you.
+NxtLn1=News1
+
+[News1]
+Say=Did you hear about the bread riot in the Peasants' Bailey?  Someone said that nearly three dozen people were trampled by the mob.  The poor people in there really can't last much longer.
+RspDflt=If luck smiles on us, they won't have to.
+
+[Chalice]
+Say=It's you!  They said you were back in Avalon from your adventures.  What brings you to the kitchen?
+RspDflt=None
+RspTxt1=Nothing more than my search for information.  Do have anything of value to share with me?
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=I'm afraid, sir, that I'm not much of a gossip.  That is, nothing I know would be useful.
+RspDflt=I see.  Thank you anyway and good day to you.
+
+[three]
+Say=Welcome back to the kitchens!  If I could spare you a snack, I would.  It only makes sense, because the way I see it, you do the work of ten soldiers already!  Just think what you'd do if you were fed well!
+RspDflt=none
+RspTxt1=It seems to make sense, but if I were to eat so well, someone else would starve, and we're trying to save lives here, right?
+nxtln1=three2
+
+[three2]
+Say=Of course, sir, you know I was joking.  So, is there anything I can do for you?
+RspDflt=none
+RspTxt1=Feel like sharing any tidbits of gossip or, if you're not into gossip, some information?
+nxtln1=three3
+
+[three3]
+Say=I heard the Ahoul were responsible for the beetles in the cellar, but I don't see how that can be true.
+adventure=ch3-534
+RspDflt=none
+RspTxt1=It's a possibility.  We do not fully know the capabilities of the Sha'ahoul forces.
+nxtln1=three4
+
+[three4]
+Say=I'd have to hear something more convincing.  I mean, if they could get beetles in the cellar, couldn't they get themselves in there?
+RspDflt=Perhaps, my lady.  I'm sure the truth will come out eventually.  Until then, farewell.
+
+[chapter6]
+Say=Looking for Bonnie, eh? She isn't here.
+RspDflt=Ok, thanks. Take care, Holly.
+RspTxt1=Where is she?
+nxtln1=chapter6a
+
+[chapter6a]
+Say=I'm not sure. I think she went to deliver some food somewhere.
+RspDflt=Bye.
+RspTxt1=Why would I be looking for Bonnie?
+nxtln1=chapter6b
+RspTxt2=How did you know I was looking for Bonnie?
+nxtln2=chapter6c
+
+[chapter6b]
+Say=If you don't know, then I'm not telling! *giggle*
+RspDflt=Ok, thanks. Take care, Holly.
+
+[chapter6c]
+Say=As if it's not obvious!
+RspDflt=Ok, thanks. Take care, Holly.
+

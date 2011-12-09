@@ -1,0 +1,155 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,04chapter4,04elaram,04ramdestroyed,05chapter5,06chapter6,arb01,arb02
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(5/23/01)=Passed
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Gracias, Phelan.
+say1=one(ttl(05chapter5,06chapter6));
+goto1=chapter6
+say2=all(ttl(04chapter4,!04elaram));
+goto2=untoldfour
+say3=all(ttl(04chapter4,04elaram));
+goto3=toldfour
+Say4=All(ttl(!01recovered));
+goto4=Phelan
+Say5=All(ttl(01recovered));
+goto5=Chalice
+
+[Phelan]
+Say=Hola.  ¿Qué tal os ha ido, mi señor?
+RspDflt=None
+RspTxt1=Las cosas me han ido bien.  Confío en que todo vaya bien por aquí.
+NxtLn1=Phelan1
+
+[Phelan1]
+Say=Tan bien como puedan ir, mi señor.  No obstante, me siento cada vez más intranquilo.
+RspDflt=None
+RspTxt1=¿Qué te preocupa?
+NxtLn1=Phelan2
+
+[Phelan2]
+Say=Quizá sea que he estado de servicio durante demasiado tiempo, pero estoy empezando a desconfiar de los demás soldados en la Puerta Sur.
+RspDflt=None
+RspTxt1=¿De todos ellos?
+NxtLn1=Phelan3
+
+[Phelan3]
+Say=No, señor.  Sólo de unos pocos.  Creo que la mente me está jugando una mala pasada.
+RspDflt=None
+RspTxt1=Quizá sí, quizá no.  Confía en tus instintos y sé precavido.
+NxtLn1=Phelan4
+
+[Phelan4]
+Say=Buen consejo, señor.  Gracias.
+RspDflt=Buenos días.
+
+[Chalice]
+Say=Bienvenido.  Hemos oído cosas buenas de vos por aquí.
+RspDflt=None
+RspTxt1=Confío en que no todo sean mentiras.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Algunas, quizá, pero he oído que habéis hallado un valioso artefacto.
+RspDflt=None
+RspTxt1=Esa parte es cierta, pero sólo hice lo que cualquier soldado hubiese hecho.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=No lo crea, señor.  No hay muchos soldados que se arriesgasen a salir al pueblo sin una cohorte que les protegiese.
+RspDflt=Gracias por tu amabilidad.  Que los buenos espíritus te protejan.
+
+[untoldfour]
+Say=Buenos días, mi señor...  [mueca de dolor]
+RspDflt=Buenos días, soldado.  Discúlpame.
+RspTxt1=Pareces sentir dolor, soldado.  Necesitas atenciones médicas?
+nxtln1=untoldfour2
+
+[untoldfour2]
+Say=No, mi señor.  Hay mucha tensión en la Puerta Sur, mi señor.  El vidente Elazar no parece él mismo, y eso deberían ser buenas noticias, pero...  Parece estar muy preocupado, y me temo que eso me ha preocupado a mí también.  Lo comprendéis, ¿no es cierto, mi señor?  Habitualmente es muy engreído, pero ahora...
+RspDflt=none
+RspTxt1=No te preocupes, soldado; voy a visitarle inmediatamente.
+nxtln1=untoldfour3
+RspTxt2=¿Emoción?  ¿Elazar?  Cuéntame, soldado; tienes toda mi atención.
+nxtln2=untoldfour4
+
+[untoldfour3]
+Say=Gracias, mi señor.  Me aliviaría bastante.
+RspDflt=No te preocupes, soldado.  Quédate tranquilo.
+
+[untoldfour4]
+Say=Parece estar preocupado...  yo no me lo podía creer, por eso me ha chocado tanto.  ¡Si ÉL está preocupado, estamos todos condenados!
+RspDflt=none
+RspTxt1=No es tan malo como parece, soldado.  Hablaré con Elazar; sin duda estará deseando verme.
+nxtln1=untoldfour3
+
+[toldfour]
+Say=¿Mi señor?
+RspDflt=Sigue, soldado.
+rspcnd1=all(ttl(04elaram,04ramdestroyed,!arb01));
+RspTxt1=He destruido la fuente de preocupación de Elazar, soldado.  Los Sha'ahoul habían construido un ariete, pero ahora yace en el suelo hecho una ruina.
+script1=addtitle(arb01);
+nxtln1=toldfour2
+rspcnd2=all(ttl(04elaram,!04ramdestroyed,!arb02));
+RspTxt2=He hablado con Elazar, que tuvo una visión de la destrucción de Avalon a manos de una máquina de guerra Sha'ahoul.  Aún no la he destruido, pero tengo el presentimiento de que lo haré.
+script2=addtitle(arb02);
+nxtln2=toldfour4
+
+[toldfour2]
+Say=Gracias a los buenos espíritus!  Estamos salvados nuevamente!  Ya me siento mejor!  Saludos %playername%!
+RspDflt=none
+RspTxt1=Yo no iría tan lejos, soldado, pero aprecio tu gratitud.
+nxtln1=toldfour3
+
+[toldfour3]
+Say=Gracias de nuevo, señor.  Ya me siento mejor.  Hasta luego.
+RspDflt=Queda tranquilo, soldado.  Hasta luego.
+
+[toldfour4]
+Say=Esas son buenas noticias, señor.  Que los espíritus os protejan en vuestro viaje.
+RspDflt=Y a ti también, soldado.
+
+[chapter6]
+Say=Hey! ¿Qué tal va tu búsqueda?
+RspDflt=Ah, sí! ¡La búsqueda!  Discúlpame.
+RspTxt1=Tengo problemas para hallar algunas cosas.
+nxtln1=chapter6b
+
+[chapter6b]
+Say=Siempre encuentro lo que busco si sigo mis pasos hacia atrás.
+RspDflt=Gracias, Phelan. Hasta luego.
+

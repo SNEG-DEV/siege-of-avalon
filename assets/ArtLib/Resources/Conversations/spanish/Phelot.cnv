@@ -1,0 +1,82 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Gracias, Sir Phelot.
+say1=all(ttl(05chapter5,06chapter6));
+goto1=phelotsix
+say2=one(ttl(03chapter3,04chapter4));
+goto2=three
+Say3=all(ttl(!03chapter3));
+goto3=phelot
+
+[Phelot]
+Say=¡¿Qué?!  Ehem!  ¿Qué es lo que te trae aquí arriba?
+RspDflt=None
+RspTxt1=Solo estoy echando un vistazo.  ¿Hay algún problema?
+NxtLn1=Phelot1
+
+[Phelot1]
+Say=No!  ¡Ninguno!  Todo está... er, todo está bien.
+RspDflt=Ya veo.  Que tenga un buen día.
+
+[three]
+Say=¿Mmf?  Oh...  hola...
+RspDflt=none
+RspTxt1=¿Os encontráis bien?
+nxtln1=three2
+
+[three2]
+Say=Medio dormido.  Tengo demasiadas preocupaciones...
+RspDflt=none
+RspTxt1=Deberíais ver a un curandero para que os diese algún tónico que os permitiese dormir toda la noche.
+nxtln1=three3
+
+[three3]
+Say=Oh, buena idea.  Lo haré.
+RspDflt=Hmm.  Bien, buena suerte, Sir Phelot.
+
+[phelotsix]
+Say=Vi a los monjes.  A pesar de todas mis preocupaciones, lograron hacerme dormir.
+RspDflt=Me alegra oírlo, Phelot.  Hasta la vista.
+RspTxt1=Oh, así pues ¿os dieron un tónico?
+nxtln1=phelotsix2
+
+[phelotsix2]
+Say=[riendo] No, %playername%, simplemente empezaron a sermonearme.  Sí, me dieron un tónico.  Uno muy potente, también, creo que he tomado demasiado...
+RspDflt=Creo que he oído esto antes, Phelot.  Por favor, discúlpame.
+RspTxt1=Bien, pareces suficientemente alerta!  Discúlpame.
+

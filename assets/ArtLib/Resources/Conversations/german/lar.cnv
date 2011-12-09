@@ -1,0 +1,43 @@
+[Notes]
+TitlesChecked=01recovered
+
+[root]
+Count=2
+Else=
+Default=Danke, Lar.
+Say1=All(ttl(!01recovered));
+goto1=Lar1
+Say2=All(ttl(01recovered));
+goto2=Lar4
+
+[Lar1]
+say=Seid gegrüßt, Herr.  Wie kann ich Euch dienen?
+rspDflt=None
+rspTxt1=Woher kommt Ihr?
+NxtLn1=Lar2
+rspTxt2=Habt Ihr in letzter Zeit irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Lar3
+
+[Lar2]
+say=Ich komme aus Oriam, Herr.  Nicht weit weg von hier, ehrlich gesagt.  Mein Vater war Kaufmann in der alten Zwergenstadt als wir überfallen wurden.
+rspDflt=Mögen Euch die guten Geister beschützen.
+rspBack=Lar1
+
+[Lar3]
+say=Im Hof der Bauersleute soll es schlimm zugehen, Herr.  Wie es heißt, essen die Leute alles Mögliche dort!  Mit wird schlecht wenn ich jur daran denke .
+rspDflt=verstehe.  Danke.
+rspBack=Lar1
+
+;After recovery of Chalice
+[Lar4]
+say=Seid gegrüßt, Herr.  Wie kann ich Euch dienen?
+rspDflt=none
+rspTxt1=Habt Ihr irgendwelche Gerüchte gehört?
+nxtln1=Lar5
+
+[Lar5]
+say=Es heißt, dass bald Verstärkung eintreffen soll.  Ich weiß nicht wann, aber die Catheaner und Aratoyaner haben nach mehr Truppen und Nachschub gesandt.
+rspDflt=Das ist in der Tat eine gute Nachricht.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

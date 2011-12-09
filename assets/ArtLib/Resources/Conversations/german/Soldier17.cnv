@@ -1,0 +1,47 @@
+;Hello there, how can I help you?
+;May I be of assistance to you Sir?
+;What can I do for you?
+;How can I help you, Sir?
+;What is it you want?
+;Hello Sir, How may I help you?
+
+[root]
+Count=2
+Else=
+Default=Ade.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Soldier]
+say=Wie kann ich Euch dienen?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Soldier1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Soldier2
+
+[Soldier1]
+say=Mein Heimatland ist Nisos. Ich habe dort Schiffe gebaut, bis dieser gottlose Krieg ausbrach.
+rspBack=soldier
+
+[Soldier2]
+say=Ich habe gehört, die Elythrianer hätten Lebensmittel vor uns anderen versteckt. Würde das diesen gierigen Schweinen nicht ähnlich sehen?
+rspBack=soldier
+
+;After Recovery of Chalice
+[Chalice]
+say=Wie kann ich Euch helfen, Herr?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Chalice1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Chalice2
+
+[Chalice1]
+say=Ich komme aus Nisos, Herr. Hauptmann Nicophorus und ich sind dicke Freunde. Ihr könnt ihn fragen!
+rspBack=chalice
+
+[Chalice2]
+say=Ein Gerücht geht um, dass die Ahoul auf dem Rückzug sind!  Sir Roth Hildebrand hat es mir selbst gesagt!
+rspBack=chalice

@@ -1,0 +1,47 @@
+;Hello there, how can I help you?
+;May I be of assistance to you Sir?
+;What can I do for you?
+;How can I help you, Sir?
+;What is it you want?
+;Hello Sir, How may I help you?
+
+[root]
+Count=2
+Else=
+Default=Ade.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Soldier]
+say=Was wollt Ihr?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Soldier1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Soldier2
+
+[Soldier1]
+say=Ich erbaute mein Heim im Herzen des Waldes von Aratoy.
+rspBack=soldier
+
+[Soldier2]
+say=Nein, Herr. Mein Magen knurrt so laut, dass ich nichts anderes hören kann.
+rspBack=soldier
+
+;After Recovery of Chalice
+[Chalice]
+say=Hallo, Herr, wie kann ich Euch helfen?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Chalice1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Chalice2
+
+[Chalice1]
+say=Ich kam in Aratoy zur Welt, aber jetzt ist Avalon meine Heimat! Mein einziger Lebenszweck ist es, Mithras zu bekämpfen!
+rspBack=chalice
+
+[Chalice2]
+say=Nur, dass die Bogenschützen von Aratoy begierig auf den Kampf sind! Sie schließen schon Wetten darauf ab, wer die meisten Ahoul töten wird.
+rspBack=chalice

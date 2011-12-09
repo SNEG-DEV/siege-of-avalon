@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Farewell.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=What can I do for you?
+RspTxt1=Where are you from?
+NxtLn1=Soldier1
+RspTxt2=Heard any good rumors?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=My home country is Nisos.  I used to be a shipbuilder there, until this godforsaken war broke out.
+rspBack=soldier
+
+[Soldier2]
+Say=I've heard that the Elythrians have been hiding food from the rest of us.  Wouldn't it be just like those greedy pigs to do that?
+rspBack=soldier
+
+[Chalice]
+Say=How can I help you, sir?
+RspTxt1=Where are you from?
+NxtLn1=Chalice1
+RspTxt2=Heard any good rumors?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=I come from Nisos, sir.  Captain Nicophorus and I are great friends.  You can ask him!
+rspBack=chalice
+
+[Chalice2]
+Say=Rumor has it that the Ahoul are on the run!  Sir Roth Hildebrand himself told me!
+rspBack=chalice
+

@@ -1,0 +1,151 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,01village,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=KTChestPlate
+Added=
+
+[SyntaxCheck]
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=temp
+Default=Thank you, Sir Rion.
+say1=one(ttl(03chapter3,04chapter4,05chapter5,06chapter6));
+goto1=three
+Say2=All(ttl(!01village,!01recovered));
+goto2=rion
+Say3=All(ttl(01village,!01recovered));
+goto3=nochalice
+Say4=All(ttl(01village,01recovered));
+goto4=chalice
+
+[temp]
+Say=I'm sorry, but the village is off-limits for the remainder of this preview.  Buy the next chapter, and I'll see what I can do.
+RspDflt=Very well.
+
+[Rion]
+Say=Hello.  You must be Corvus' brother.  You have the same look about you.
+RspDflt=None
+RspTxt1=I am.  How did you know my brother?
+nxtLn1=Rion1
+
+[Rion1]
+Say=He and I were great friends.  I'd wager to say I've never had a better one.  I was broken when I heard he had disappeared.  I don't believe a word of what they say, though.  There's no way a soldier of your brother's skill could ever just roll over like that.
+RspDflt=None
+RspTxt1=Thank you for your sympathy.  I'm sure Corvus will be glad when he hears of your confidence in him.
+nxtLn1=Rion2
+
+[Rion2]
+Say=Don't believe everything you hear from the guys upstairs.  They don't know your brother like I know him.  He's still alive.
+RspDflt=None
+RspTxt1=I think so, too.
+nxtLn1=Rion3
+
+[Rion3]
+Say=By the way, be careful around South Gate.  I've been stationed here for a long time and there are strange things afoot lately.
+RspDflt=None
+RspTxt1=Strange things?
+nxtLn1=Rion4
+
+[Rion4]
+Say=Yeah.  Soldiers are looking over their shoulders more often and trusting each other less, a bad thing in a time of war.  If you can't trust the man you're defending a wall with, who can you trust?
+RspDflt=Perhaps it's just nerves.  Thanks again for your confidence.
+
+[NoChalice]
+Say=We meet again.  How have you fared?
+RspDflt=None
+RspTxt1=I have been well.  What's the latest from South Gate?
+nxtln1=NoChalice1
+
+[NoChalice1]
+Say=More of the same. The soldiers grow anxious from waiting.
+RspDflt=None
+RspTxt1=Waiting beats dying, does it not?
+nxtln1=NoChalice2
+
+[NoChalice2]
+Say=Aye, but fighting beats waiting.
+RspDflt=As you say, Rion.  Take care.
+
+[Chalice]
+Say=Good tidings to you!  Your exploits in the village have brought you great renown!
+RspDflt=None
+RspTxt1=I'm not here to acquire fame; rather, to do my duty.
+nxtln1=Chalice1
+
+[Chalice1]
+Say=Come, now!  We are all here to gain glory.  It's part of what makes us soldiers.  Don't be afraid to admit it, lad!
+RspDflt=None
+RspTxt1=Perhaps.  But I'm more interested in winning the war than making a name for myself.
+nxtln1=Chalice1
+
+[three]
+Say=Ho, glory-seeker!  How have you been faring?
+RspDflt=none
+rspcnd1=all(obj(!KTChestPlate));
+RspTxt1=I've done pretty well for myself, actually.  I guess I'll worry about enjoying myself once the Ahoul are subjugated!
+nxtln1=three2
+rspcnd2=all(obj(KTChestPlate));
+RspTxt2=I've done pretty well for myself, actually.  I guess I'll worry about enjoying myself once the Ahoul are subjugated!
+nxtln2=three6
+
+[three2]
+Say=Hold on there, tiger!  Leave a few for the rest of us!
+RspDflt=none
+RspTxt1=Why?  It makes little sense to exterminate them.  Would we not be descending as deeply into barbarism as they have?
+nxtln1=three3
+
+[three3]
+Say=Then what?  I'd hope that any religion that would preach such destruction would be wrong, but I doubt they will ever be made to believe that.
+RspDflt=none
+RspTxt1=You have a good point there, soldier.  The truth is, I don't know the answer.  We must hope that it will occur to us.
+nxtln1=three4
+
+[three4]
+Say=Hope is a precious commodity, Corvu-...  Oh.  I'm sorry.  I seem to remember having this conversation with your brother.
+RspDflt=none
+RspTxt1=Really?  What did he say?
+nxtln1=three5
+
+[three5]
+Say=Pretty much what you said, with negligible differences.  I always marveled at his optimism.  A fine commander.  Say, if you get a chance to speak with him, tell him Rion inquires after his health and wishes him well.
+RspDflt=I'll do that, Rion.  Farewell.
+
+[three6]
+Say=Say, leave a few for...  Wait a second, if I'm not mistaken, isn't that King Tortain's armor?!?  I saw a drawing of it once...  No, that couldn't be it.  Yes, it is!
+RspDflt=none
+RspTxt1=You can stop doubting yourself, Rion.  It is King Tortain's armor.
+nxtln1=three7
+
+[three7]
+Say=Impressive.  At any rate, I was trying to say, leave a few of those Ahoul for us!  Having a one-man army might be nice, but...  [laughing]
+RspDflt=none
+RspTxt1=Why?  It makes little sense to exterminate them.  Wouldn't we be as barbaric as they?
+nxtln1=three3
+

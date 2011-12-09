@@ -1,0 +1,147 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Thank you, Nyle.
+say1=one(ttl(05chapter5,06chapter6));
+goto1=six
+say2=one(ttl(03chapter3,04chapter4));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Nyle
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Nyle]
+Say=You there!  What business do you have in the kitchen?
+RspDflt=None
+RspTxt1=I'm new here and was just looking around.
+NxtLn1=Nyle1
+RspTxt2=I just wanted to meet some new people.  Who are you and where are you from?
+NxtLn2=Nyle2
+RspTxt3=Looking for gossip, friend.  Have you heard any rumors lately?
+NxtLn3=Nyle3
+
+[Nyle1]
+Say=Well, look quickly and be gone.  We can't do our job while trying to keep you from stealing the food!
+RspDflt=You insult me, sir -- I had no intention of stealing any food.  Good day.
+rspback=nyle
+
+[Nyle2]
+Say=I'm Nyle from Aratoy.  I'm better with a cleaver and whisk than I am with a bow and arrow.  That's why I fight the Ahoul from in here.
+RspDflt=None
+RspTxt1=Every army must be fed.
+NxtLn1=Nyle4
+
+[Nyle4]
+Say=Yes, they must!  Now, if you'll excuse me, I think my chicken is burning.
+RspDflt=I'm sorry to have troubled you.
+rspback=nyle
+
+[Nyle3]
+Say=Go ask Ansan.  She's the gossip around here.
+RspDflt=Thank you.  Good spirits protect you.
+rspback=nyle
+
+[Chalice]
+Say=You again!  You know, hearing the tale of your adventures in the village from my friends made me want to pick up a sword again and become a soldier!
+RspDflt=None
+RspTxt1=Thank you for the compliment, but I fear without you in the kitchen, too many would starve.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Too many are starving already.
+RspDflt=None
+RspTxt1=True, but without experienced hands to prepare them, the small amounts of food we do have would go to waste.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=I suppose they would.  Good day, sir.
+RspDflt=Good day to you.
+
+[three]
+Say=Oh, hello again.  You're not here to steal the food again, are you?
+RspDflt=none
+RspTxt1=How many times do I have to tell you people that I'm not going to steal any food?
+nxtln1=three2
+RspTxt2=Yes, actually.  Now hand over the cutlets or I'll put you in tonight's stew.  Either way, I expect to be fed.
+nxtln2=three5
+
+[three2]
+Say=Oh, calm down, soldier, you know I was joking with you.  What errand brings you here?
+RspDflt=none
+RspTxt1=The usual information-gathering that sometimes, although not often, proves useful in my assignments.
+nxtln1=three3
+
+[three3]
+Say=Oh, I'm afraid I don't have anything to share that you'd find useful, but I'm glad you stopped by.  Things are pretty much the same here, but it would help everyone out if only there were a way to bring in some more food.
+RspDflt=none
+RspTxt1=I'll see what I can find out, Nyle.
+nxtln1=three4
+
+[three4]
+Say=[smiles]  Somehow I knew you would.  Thank you.
+adventure=
+RspDflt=Glad to help.  Farewell for now.
+
+[three5]
+Say=Ha!  Ha!  It is nice to see that you have developed a sense of humor, sick as though it may be!  So, what errand brings you here?
+RspDflt=none
+RspTxt1=The usual information-gathering that sometimes, although not often, proves useful in my assignments.
+nxtln1=three6
+
+[three6]
+Say=I can't say I've got any information that would help you, but this might set you at ease.  We have NOT been using beetles in the stew!  [laughs]
+RspDflt=none
+RspTxt1=That's comforting...
+nxtln1=three7
+
+[three7]
+Say=We've been using rats!  Ha!  Seriously, though, I'm glad you've come by.  If you could, please try to find a way to help us with our food crisis.  I don't know what to tell you, but I'd really appreciate any help that you can give us.
+RspDflt=none
+RspTxt1=I'll see what I can find out, Nyle.
+nxtln1=three4
+
+[six]
+Say=It looks like neither of us will have to worry much about getting new food.  One of the soldiers finally got it in his head to cast a line over the battlements and fish in the river.  I don't know how he got his line out that far, but that doesn't matter.  Ah!  Also, King Vortigerm himself should be arriving at the head of his army shortly!  Isn't that wonderful news?
+RspDflt=Yes, Nyle, it most certainly is.  Please excuse me.
+RspTxt1=I'm happy to hear that you've found some new materials to work with, Nyle.
+nxtln1=six2
+
+[six2]
+Say=So am I, %playername%!  If you'll excuse me...
+RspDflt=Of course.
+

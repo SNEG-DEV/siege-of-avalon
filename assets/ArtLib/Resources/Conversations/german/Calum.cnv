@@ -1,0 +1,95 @@
+[Notes]
+TitlesChecked=01informed,01recovered
+
+[root]
+Count=4
+Else=
+Default=Danke, Calum.
+Say1=All(ttl(!01Informed));
+goto1=Soldier
+Say2=All(ttl(!01recovered,01informed,!01Calum));
+goto2=Calum
+Say3=All(ttl(!01recovered,01informed,01Calum));
+goto3=news
+Say4=All(ttl(01recovered,01informed));
+goto4=Chalice
+
+[Soldier]
+say=Hallo, wie kann ich Euch helfen?
+rspTxt1=Woher kommt Ihr?
+NxtLn1=Soldier1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Soldier2
+
+[Soldier1]
+say=Ich wurde in Cathea geboren, aber dort werde ich nicht sterben.  Ich habe  eine Vision meines Todes gehabt, im Kampf mit dieser barbarischen Horde...
+rspBack=Soldier
+
+[Soldier2]
+say=Keine Gerüchte, Herr.  Nur Leidensgeschichten.
+rspBack=Soldier
+
+
+;First approach after Penrith
+[Calum]
+say=Hallo, mein Junge. Was möchtet Ihr von mir?
+script=journalentry(calum);showmessage(Ihr Tagebuch wurde aktualisiert.,200);player.addtitle(01calum);
+rspDflt=None
+rspTxt1=Penrith hat gesagt, dass Ihr mir vielleicht eine Auskunft über meinen Bruder geben könnt.
+NxtLn1=Calum2
+
+[Calum2]
+say=Meint Ihr Corvus?  Wir haben gestern gesehen, wie er durch das Dorf  gerannt ist.  Er wurde von einer Meute Ahoul verfolgt.
+rspDflt=None
+rspTxt1=Ist er ihnen entkommen?  Lebt er noch?
+NxtLn1=Calum3
+
+[Calum3]
+say=Unmöglich zu sagen, mein Junge.  Er lief in eine dunkle Gasse und wir verloren ihn aus den Augen.  Inzwischen haben wir einen Suchtrupp entsandt.  Die werden mehr wissen.  Ich glaube, sie wollten bei General Roth Bericht erstatten.
+rspDflt=None
+rspTxt1=Ist das alles?  Könnt Ihr mir sonst noch irgendetwas sagen?
+NxtLn1=Calum4
+
+[Calum4]
+say=Ich fürchte nein, mein Junge.  Geht zu General Roth.  Die Wachposten werden Euch bestimmt Einlass gewähren, da Ihr Corvus' Bruder seid.  Da fällt mir ein, Ihr solltet vielleicht den  Zauberer Elazar aufsuchen.  In letzter Zeit murmelt er öfters etwas vom Dorf in seinen Bart hinein.  Seine Räume sind ein paar Türen weiter in diesem Flur.
+Adventure=ch1-68;
+rspDflt=Danke.
+
+;Before recovery of Chalice
+[News]
+say=Seid gegrüßt.  Kann ich Euch irgendwie dienen?
+rspTxt1=Ja.  Ich wollte nur die neuesten Information von Euch bekommen.
+NxtLn1=News1
+rspTxt2=Ich bin gerade in Avalon eingetroffen, und ich möchte die Leute hier kennen lernen.  Wer seid Ihr, und wo kommt Ihr her?
+NxtLn2=News2
+
+[News1]
+say=Wenn Ihr ins Dorf hinaus wollt, seid auf der Hut.  In der Nähe der Kirche ist etwas im Busch.  Außerdem sehe ich nachts merkwürdige Dinge auf dem Friedhof.  Ich glaube, die anderen Wachposten sehen sie nicht, denn wann immer ich darauf zeige, sind sie fort.
+rspDflt=Wie seltsam.  Danke für Eure Hilfe.
+
+[News2]
+say=Ich bin Sir Calum von Cathea.  Früher war ich Viehzüchter.  Ich habe gute Augen, darum hat man mich wohl hier oben postiert, weit weg von der Burg.  Ich versuche, ein wachsames Auge auf alles zu halten, was drinnen vorgeht.
+rspDflt=None
+rspTxt1=Ich bin sicher, dass Eure Augen einen wichtigen Beitrag leisten.
+NxtLn1=News3
+
+[News3]
+say=Das weiß ich nicht, aber ich tue mein Bestes, wie es jeder gute Soldat tut.
+rspDflt=Wohlan.  Gehabt Euch wohl.
+
+;After recovery of Chalice
+[Chalice]
+say=Dachte ich mir doch, dass ich Euch erkenne!  Ihr seid der Finder des Kelches, stimmt's?
+rspDflt=None
+rspTxt1=Das stimmt.  Ich habe ihn in der Kirche gefunden.
+Nxtln1=Chalice1
+
+[Chalice1]
+say=Ihr habt mehr getan, als ihn nur zu finden, glaube ich.  Bevor Ihr dort hingegangen seid, sahen wir immer dunkle Gestalten um die Kirche schleichen.  Die sehen wir nicht mehr.
+rspDflt=None
+rspTxt1=Richtig, in der Kirche hatten sich einige Banditen versteckt, aber ich habe sie alle getötet.
+NxtLn1=Chalice2
+
+[Chalice2]
+say=Gute Arbeit, Soldat.  Es gibt nur einen richtigen Ort für Banditen, und zwar die Hölle!
+rspDflt=Tja, nun, einen schönen Tag noch, Calum.

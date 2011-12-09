@@ -1,0 +1,78 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Hasta luego.
+say1=all(ttl(06chapter6));
+goto1=six
+Say2=All(ttl(!01recovered));
+goto2=Soldier
+Say3=All(ttl(01recovered));
+goto3=Chalice
+
+[Soldier]
+Say=¿Cómo?
+RspTxt1=¿De dónde eres?
+NxtLn1=Soldier1
+RspTxt2=¿Has oído algún rumor interesante?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=No tengo tiempo para chácharas.  Por favor, vete.
+rspBack=soldier
+
+[Soldier2]
+Say=No tengo tiempo para chácharas.  Por favor, vete.
+rspBack=soldier
+
+[Chalice]
+Say=Hola!
+RspTxt1=Así que ahora sí que hablarás conmigo, ¿eh?  ¿De dónde eres?
+NxtLn1=Chalice1
+RspTxt2=¿Alguna novedad por aquí?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Navegué hasta aquí desde Nisos, y llevo más tiempo aquí que nadie!  ¡Mira, mis propias manos pusieron el último ladrillo de Avalon!  ¡Una cosa es segura: no caerá durante MI guardia!
+rspBack=chalice
+
+[Chalice2]
+Say=Mis fuentes dicen que cualquier día romperemos el asedio!  ¡De verdad!  Lo he oído decir a Mithras mismo.  Nos conocemos desde hace tiempo.  ¡Me tiene miedo!  ¡De verdad!
+rspBack=chalice
+
+[six]
+Say=Creo que la espera terminará pronto.  Para mejor o para peor...  Todo el mundo está de acuerdo conmigo; ¡es cierto!
+RspDflt=Lo tendré en cuenta, soldado.  Hasta la vista.
+

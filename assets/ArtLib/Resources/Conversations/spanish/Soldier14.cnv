@@ -1,0 +1,84 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Adios.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=All(ttl(!01recovered));
+goto2=Soldier
+Say3=All(ttl(01recovered));
+goto3=Chalice
+
+[Soldier]
+Say=¿Qué puedo hacer por tí?
+RspTxt1=¿De donde eres?
+NxtLn1=Soldier1
+RspTxt2=¿Sabes de algún rumor interesante?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Soy hijo de Elythria.  Nunca pensé que echaría en falta mi pequeña granja.
+rspBack=soldier
+
+[Soldier2]
+Say=He oído que anoche los Ahoul casi logran escalar el muro sur.  No duermas muy profundamente hoy.
+rspBack=soldier
+
+[Chalice]
+Say=¿En qué puedo ayudarle, señor?
+RspTxt1=¿De donde eres?
+NxtLn1=Chalice1
+RspTxt2=¿Sabes de algún rumor interesante?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Todos y cada uno de los pedacitos de que estoy hecho son Elythrianos, señor.
+rspBack=chalice
+
+[Chalice2]
+Say=Un amigo mío Aratoyano dice que el Capitán Calvaric clavó una flecha a Mithras!  ¡Con suerte, la herida será fatal!
+rspBack=chalice
+
+[chapter6]
+Say=Dicen que los Sha'ahoul son gruñones porque son muy feos.  Yo me lo creo.
+RspDflt=Probablemente.
+RspTxt1=¿Quién te cuenta esas cosas??
+nxtln1=chapter6b
+
+[chapter6b]
+Say=Oh, montones de gente.
+RspDflt=Cúidate, soldado.
+

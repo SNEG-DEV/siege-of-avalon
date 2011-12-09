@@ -1,0 +1,134 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=Thank you.
+Say1=
+goto1=Soldier
+
+[Soldier]
+Say=I recognize the face of a countryman.  Greetings!
+RspDflt=None
+RspTxt1=You're Elythrian?  It's good to see a face from home.
+NxtLn1=Soldier1
+
+[Soldier1]
+Say=There are others from all over the countryside here, but too many have seen nothing other than the rear end of their plow ox before now.
+RspDflt=None
+RspTxt1=They are mostly serfs then?
+NxtLn1=Soldier2
+RspTxt2=What part of Elythria are you from?
+NxtLn2=Soldier3
+
+[Soldier2]
+Say=You know the ways of an Elythrian landholder.  Why would they risk their own necks when they can send their serfs?
+RspDflt=None
+RspTxt1=Not all landholders are cowards.  If my father hadn't fallen sick, he would have joined my brother in the fight here years ago.
+NxtLn1=Soldier4
+
+[Soldier4]
+Say=I didn't mean to offend.  As you might guess, we freemen have very jaded views of the landholders.
+RspDflt=None
+RspTxt1=And we landholders have very jaded views of freemen.
+NxtLn1=Soldier5
+RspTxt2=What would that opinion be?
+NxtLn2=Soldier6
+
+[Soldier5]
+Say=I imagine you do.  Few enough freemen are worth anything.  My ancestors have been smiths for as far back as any can remember, however, so we aren't typical freemen.
+RspDflt=None
+RspTxt1=Too many freeman are nothing more than rabble and beggars.  Better they were serfs than common trash.
+NxtLn1=Soldier7
+
+[Soldier7]
+Say=I expect they would hold a different opinion.  Better to be poor and free, then well-fed and beholden to someone.
+RspDflt=None
+RspTxt1=Perhaps, but remember that the commerce of our country depends on those serfs.
+NxtLn1=Soldier8
+
+[Soldier8]
+Say=I'm sorry, friend, but I think we could carry on like this for hours.  A political argument isn't the wisest idea right now, don't you think?
+RspDflt=True enough.  I apologize, and bid you good day.
+
+[Soldier6]
+Say=Since our ancestors were serfs at some point or another, most freemen despise landholders.  My family is a rare exception since we've always been free.
+RspDflt=None
+RspTxt1=That's rare indeed.  Elythrians are all bound to the feudal system in one way or another.  Even freemen depend on the landholders for business.
+NxtLn1=Soldier9
+
+[Soldier9]
+Say=True, but the serfs would bring us business if they held their own lands, would they not?
+RspDflt=None
+RspTxt1=Perhaps we should avoid this discussion.  If we're going to argue over this, I think we should so so in our spare time.
+NxtLn1=Soldier10
+
+[Soldier10]
+Say=Point taken.  Good day to you.
+RspDflt=Good day.
+
+[Soldier3]
+Say=My family has a shop in Thymos.  We've been smiths for so long that no one in my family remembers us doing anything else.  And you?  Where in Elythria are you from?
+RspDflt=None
+RspTxt1=My father has lands along the Nisosan border.  Our serfs mostly raise grains and pigs.
+NxtLn1=Soldier11
+
+[Soldier11]
+Say=So, you've already gotten military training then.
+RspDflt=None
+RspTxt1=I learned a few things when I was growing up.
+NxtLn1=Soldier12
+RspTxt2=Of course.  I've been fighting since I was a baby.
+nxtln2=soldier13
+
+[Soldier12]
+Say=Then you should do fine here in Avalon.  Most of the soldiers here knew nothing of warfare when they came.  We've still managed to hold Ahoul though.
+RspDflt=None
+RspTxt1=I only hope to be of use here.
+NxtLn1=Soldier14
+
+[Soldier14]
+Say=You will be.  Good day.
+RspDflt=And to you.
+
+[Soldier13]
+Say=Is that right?  You'll find that boasting will get you in trouble around here.
+RspDflt=None
+RspTxt1=Who says I am boasting?
+NxtLn1=Soldier15
+
+[Soldier15]
+Say=I do.  I know an untried soldier when I see one.  I'd invite you to the sparring field, but I wouldn't want to embarrass the Elythrian lord too badly.  Go dance with an Ahoul, and then perhaps we'll see what you know.
+RspDflt=I won't forget your offer.
+

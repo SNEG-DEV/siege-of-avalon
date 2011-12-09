@@ -1,0 +1,52 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(7/16/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=Thank you, Holt.
+Say1=
+goto1=Holt
+
+[Holt]
+Say=Hello there, sir.  What can Holt be doing for you, then?
+RspDflt=None
+RspTxt1=Nothing, friend.  I've just come to have a look around.
+NxtLn1=Holt1
+
+[Holt1]
+Say=Look all you want.  You won't find anything amiss here, sir.  All's well, we like to say up here!  All's well!
+RspDflt=Obviously.  Thank you for your time.
+

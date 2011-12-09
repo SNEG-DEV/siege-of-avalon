@@ -1,0 +1,116 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01bugs2
+Checked=01Bugs,01Bugs2,01FoundTraitors,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(7/16/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Gracias, Lang.
+say1=all(ttl(06chapter6,01Bugs2));
+goto1=chapter6
+say2=one(ttl(03chapter3,04chapter4,05chapter5));
+goto2=three
+Say3=All(ttl(!01Bugs2));
+goto3=Arno
+Say4=All(ttl(01Bugs2,!01FoundTraitors));
+goto4=NoInfo
+Say5=all(ttl(01foundTraitors));
+goto5=Traitors
+
+[Arno]
+Say=Hola.  ¿Qué podemos hacer por tí?
+RspDflt=None
+RspTxt1=Nada de nada.  ¿Qué tal van las cosas por aquí?
+NxtLn1=Arno1
+
+[Arno1]
+Say=Más actividad que nunca.  Nadie ha tenido un rato de sueño decente en días.  Por si estar en alerta constante no fuese suficientemente malo, algo ha estado escarbando en los sótanos toda la noche!
+RspDflt=None
+rspCnd1=all(ttl(01Bugs));
+RspTxt1=¿De veras?  Recientemente hubo una plaga de insectos gigantes en la cocina.  Habían escarbado a través de las paredes y se estaban comiendo la comida.  Ya nos hemos ocupado de eso, gracias a los espíritus, pero quizá también estén escarbando por aquí debajo.
+nxtLn1=Bugs
+rspCnd2=all(ttl(!01Bugs));
+RspTxt2=Probablemente sean sólo ratas o algo por el estilo.  Tened coraje, estoy seguro de que el asedio terminará muy pronto.
+nxtLn2=Rats
+
+[Bugs]
+Say=Podría ser, aunque sigue siendo algo preocupante.  Insectos desde abajo y Ahoul desde fuera.  Tiempos peligrosos para Avalon.
+script=player.addtitle(01Bugs2);
+RspDflt=Ciertamente.  Dado que tus deberes te mantienen aquí retenido, en cuanto tenga oportunidad investigaré qué sucede.  Por ahora, hasta la vista.
+
+[Rats]
+Say=Deben ser ratas gigantes para hacer tanto ruido durante tanto tiempo!
+script=player.addtitle(01Bugs2);
+RspDflt=Sea lo que sea, en cuanto pueda echaré un vistazo.  De momento, hasta la vista.
+
+[NoInfo]
+Say=Eh, chico!  ¿Alguna novedad respecto a lo que sucede ahí abajo?
+RspDflt=Lo lamento, pero he sido incapaz de acceder al sótano.  Aunque sigo intentándolo, así que espero tener una respuesta pronto.  Hasta entonces, buenos días.
+
+[Traitors]
+Say=Chico!  Te he visto colarte en el sótano.  ¿Qué noticias tienes?
+RspDflt=none
+RspTxt1=Cosas terribles estaban sucediendo en el sótano.  Los guardias de allí me atacaron, y me vi forzado a defenderme.  Los ruidos que oías--eran los ruidos de la construcción de un túnel.
+nxtLn1=Traitors1
+
+[Traitors1]
+Say=¿Un túnel?  Chico, no lo comprendo.
+RspDflt=Ahora mismo no puedo hablar, pero el túnel se dirigía al pueblo.  Hay traidores por aquí--planeaban que los Ahoul tuviesen una entrada a la fortaleza.  Ahora no puedo hablar, pero vigila tus espaldas.  No todos aquí son aliados.
+
+[three]
+Say=Buenos días, señor.
+RspDflt=none
+RspTxt1=¿Cómo estáis por aquí, Lang?
+nxtln1=three2
+
+[three2]
+Say=Diría que "desesperados", señor.  Vivir a este lado olvidado de la fortaleza es una tarea dura para el espíritu de un hombre.
+RspDflt=none
+RspTxt1=Lo es, soldado, pero si sucumbimos a la desesperación, los Sha'ahoul no tendrán que derrotarnos, porque ya nos habremos derrotado nosotros mismos.
+nxtln1=three3
+
+[three3]
+Say=Naturalmente.  No sé en qué estaba pensando.
+RspDflt=Venceremos si eso es lo que deseamos.  No lo olvides.  Cúidate!
+
+[chapter6]
+Say=He eliminado a un montón de esos malditos insectos en el sótano, hace un poco. Creo que el problema de los insectos está empeorando. Estos insectos no tenían miedo del hombre.
+RspDflt=Los hombres de las planicies pagarán por toda la opresión y las plagas que nos han traído!
+RspTxt1=¿Dónde estaban?  ¿Queda alguno?
+nxtln1=chapter6b
+
+[chapter6b]
+Say=He dicho que los he matado todos.  También he derrumbado el agujero desde unos cuantos metros hacia dentro, así les bloquearemos el camino de vuelta.  El trabajo está hecho, señor.
+RspDflt=Bien hecho, soldado.  Sigue así.
+

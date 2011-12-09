@@ -1,0 +1,213 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01Lahren,01recovered,03chapter3,04chapter4,05chapter5,06chapter6,06trialdone
+Removed=
+
+[Quest]
+Added=ch3-513,ch3-514,ch3-515,ch3-516,ch3-517
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Thank you, Dillon.
+say1=all(ttl(06chapter6,!06trialdone));
+goto1=chapter6
+say2=one(ttl(04chapter4,05chapter5));
+goto2=fourfive
+say3=all(ttl(03chapter3));
+goto3=three
+Say4=All(ttl(!01recovered));
+goto4=Dillon
+Say5=All(ttl(01recovered));
+goto5=Chalice
+
+[Dillon]
+Say=Greetings.  Is there something you need from me?
+RspDflt=None
+RspTxt1=No, soldier.  I'm just on my way through.
+NxtLn1=Dillon1
+RspTxt2=I'm new here and want to meet the people who I will be fighting beside.  Who are you and where are you from?
+NxtLn2=Dillon2
+RspTxt3=What's the word going around?
+nxtln3=dillon3
+
+[Dillon1]
+Say=Very well, sir.  May the good spirits protect you.
+RspDflt=And you.  Good day.
+
+[Dillon2]
+Say=I'm Dillon, sir.  I used to be a wizard's guard in Fornax, but my wizard sent me here to aid in the fighting.
+RspDflt=A pleasure to meet you.  Good day.
+rspBack=dillon
+
+[Dillon3]
+Say=I heard in the barracks that the wizards have come up with a powerful new weapon.  Do you know the truth of this?
+RspDflt=None
+RspTxt1=I'm afraid I do not.  I'm sorry.
+NxtLn1=Dillon4
+
+[Dillon4]
+Say=It's of no consequence, my lord.  Good day.
+RspDflt=Good day.
+rspBack=dillon
+
+[Chalice]
+Say=Hail, my lord!  How have you been these days?
+RspDflt=None
+RspTxt1=Well, Dillon.  And you?
+NxtLn1=Chalice1
+RspTxt2=Fine.  What's the latest news?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Well enough, sir.
+RspDflt=Excellent.  Good day.
+rspBack=chalice
+
+[Chalice2]
+Say=They say you've had stunning victories over the Ahoul in the village!  Congratulations!
+RspDflt=I'm not so sure they were stunning, but they were victories nonetheless.  Thank you.
+rspBack=Chalice
+
+[three]
+Say=Hello, sir.  I haven't seen you in a while.  How have things been?  How is your brother doing?
+RspDflt=none
+RspTxt1=He's healing up in the infirmary.  He was in bad shape when I found him, and worse shape when he finally made it here.  He should recover in time to greet  King Vortigerm's forces.
+nxtln1=three1
+
+[three1]
+Say=That's good to hear, sir.  We're glad to have you here..
+RspDflt=Thank you, Dillon.  Farewell.
+rspcnd1=all(stt(perception>19,charm>13));
+RspTxt1=You seem preoccupied, soldier.  Is something on your mind?
+nxtln1=three2
+rspback=three
+
+[three2]
+Say=As a matter of fact,  I'm glad you asked, because there is.  It irritates me that everyone sees Fornax as a kingdom of mages and nothing but.  I happen to be from Fornax, and I do not appreciate the typecasting.  I don't know where this rumor has come from, but it's really doing a great job of alienating me from my fellows in the mess hall... and everywhere else.
+adventure=ch3-513
+RspDflt=none
+RspTxt1=I understand why you are annoyed, soldier, but what can be done about it?  How do you fight such perpetuated ignorance?
+nxtln1=three3
+
+[three3]
+Say=I just wish I knew who it was being perpetuated BY so I could give that person a good punch in the...  I mean, a good talking to.
+RspDflt=none
+rspcnd1=all(ttl(01Lahren));
+RspTxt1=I know of at least one such person who I doubt you'll attempt to strike or speak with.
+nxtln1=three4
+RspTxt2=I haven't liked being called "kid" and "lad" and "son" and "child," the typecasting of a young, inexperienced inconsequential.  I'm just trying to prove them wrong.
+nxtln2=three20
+
+[three4]
+Say=Oh, and who is that, if you don't mind telling me?
+RspDflt=none
+RspTxt1=I certainly do not.  It was a mage by the name of Pell-
+nxtln1=three5
+
+[three5]
+Say=Ah, yes.  [adopts a dry expression]  Insanity has been comparatively kind to her, but never mind that, what did she say to you as self-appointed ambassador of and speaker for all Fornaxans?
+RspDflt=none
+RspTxt1=What is your problem with the woman?
+nxtln1=three6
+
+[three6]
+Say=She's the most arrogant person from Fornax, which is funny, because she's only half Fornaxan, but that's irrelevant.  The real problem, as I've overheard so often, is that she refuses to follow the rules...  I couldn't pick up any more than "the rules," but...
+RspDflt=none
+RspTxt1=Spit it out, man!
+nxtln1=three7
+RspTxt2=Please continue..
+nxtln2=three7
+
+[three7]
+Say=These wizards fervently believe that a human mind works on rules.  Magic bends those rules, and the mind must construct new rules.  For example, what if we were no longer held to the earth?  Wouldn't that redefine or destroy a good portion of what you perceived to be "real?"
+RspDflt=none
+RspTxt1=Yes, but if the mind can construct new rules, as you've said...
+nxtln1=three8
+RspTxt2=I see what you're implying, but she seems stable enough to me.
+nxtln2=three10
+
+[three8]
+Say=Not forever.  From what I've been able to gather, magical energy runs through the brain like water through an aqueduct.  While it is true that some minds possess... ah, larger aqueducts, each has its limit.  If the brain can't channel all the magical energy being brought into it, it runs freely, and without an active part of the human brain to control it, it finds the inactive parts...
+adventure=ch3-514
+RspDflt=none
+RspTxt1=What happens then?
+nxtln1=three9
+
+[three9]
+Say=They say the subconscious forms them.  I think it comes from dreams.  I don't have to tell you what horrors lurk there; we've all had nightmares as children.  You get me?
+adventure=ch3-515
+RspDflt=none
+RspTxt1=Right.  What can I do to help her keep from overloading herself?
+nxtln1=three10
+
+[three10]
+Say=Emotion is what triggers the channeling of such excessive magical energies.  [grins]  Don't anger her.  'Twould likely be a fatal mistake.  Likely her last excess has affected poor Lahren.  Now that I've answered your questions, could you answer mine?
+RspDflt=none
+adventure=ch3-516
+RspTxt1=One more question, Dillon.  How did you come across all of this information?
+nxtln1=three11
+
+[three11]
+Say=I could have sworn I mentioned to you in passing some time ago that I was once a wizard's guard for a time.  The wizard I worked for hosted a number of get-togethers, and he and his wizard-cronies spoke of many things.  Being a guard has its privileges; the simpler you look and act, the more they let you overhear.  So what did Pell say about Fornaxans?
+RspDflt=none
+RspTxt1=In addition to your story, she said that Fornaxans have magic in their blood, and something about being magical to her "very core," whatever that means.
+nxtln1=three12
+
+[three12]
+Say=Oho, that's rich!  Have you ever heard anything so smarmy in your life?
+RspDflt=none
+RspTxt1=I must confess that I have not.  Farewell, Dillon, I've matters to attend to.
+nxtln1=three18
+RspTxt2=The melodramatic tend to be just that, Dillon.  Farewell.
+nxtln2=three18
+
+[three18]
+Say=I request that you keep silent about what I have said here.  Be evasive, lie if you need to, but do not mention me.
+adventure=ch3-517
+RspDflt=Not a problem, Dillon.  Farewell.
+RspTxt1=And if I do?
+nxtln1=three19
+
+[three19]
+Say=I'll deny everything.  [smirk]  Everyone but you, and a few select others, knows me as a very simple man, incapable of such thoughts, and moreover, uninterested in them.
+RspDflt=A strong line of defense, Dillon.  Do not worry, your name will not be mentioned.  Farewell.
+
+[three20]
+Say=I suppose you're right about that, sir.  That's probably all I can hope to do; it's not like I can re-educate everyone at the same time.  It's just irritating, you get me?
+RspDflt=I understand, soldier, but you'll thank yourself for biting your tongue.  Farewell.
+
+[chapter6]
+Say=I heard the monks say they were planning to move the infirmary. Why would they do that? That's going to take a lot of labor. With my long hours on watch I don't think I can help. The Sha'ahoul will attack again soon, and they want to move furniture! I wonder if Roth knows about this. Something is definitely happening behind the walls of Avalon!
+RspDflt=Your guess is as good as mine...  Farewell.
+
+[fourfive]
+Say=It is good to see you again, sir.  I have heard that your brother insists upon being put to work again.  Such a trooper Lieutenant Corvus is!  It must run in the family!
+RspDflt=Thank you for the compliment, Dillon.  I shall attempt to seek Corvus out.
+

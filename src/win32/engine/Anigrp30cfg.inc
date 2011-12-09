@@ -1,0 +1,8 @@
+{$DEFINE DirectX}
+//{$DEFINE SHAREWARE}
+{$IFNDEF DirectX}
+  //{$DEFINE DEBUG}
+{$ENDIF}
+
+
+

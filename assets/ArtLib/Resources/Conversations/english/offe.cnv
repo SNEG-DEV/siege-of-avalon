@@ -1,0 +1,121 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(6/25/01)=Passed
+tucker(7/17/01)=Passed
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Good day to you, Offe.
+say1=one(ttl(05chapter5,06chapter6));
+goto1=chapter6
+say2=one(ttl(03chapter3,04chapter4));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Offe
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Offe]
+Say=Greetings, sir.
+RspDflt=Pardon me, neighbor, I have business to attend to elsewhere.
+RspTxt1=Greetings to you.
+NxtLn1=Offe1
+RspTxt2=Where are you from?
+NxtLn2=Offe2
+RspTxt3=What's new?
+NxtLn3=Offe3
+
+[Offe1]
+Say=You must be Corvus' brother.  We saved each other's lives on South Gate a year back.  Tell him Offe asks after him.
+RspDflt=I will.  Good day.
+
+[Offe2]
+Say=I'm from here and there.  I settled in this area a few years back, but I still bounce between here and Elythria.  I was a cattle wrangler.  If they give me the chance, I'd like to be a rider.
+RspDflt=May your wish be granted.
+
+[Offe3]
+Say=The situation is getting more and more desperate.  I hear there is some kind of beast in the kitchen cellar that's been eating our food!
+RspDflt=You may rest easy on that score, anyway.  Good day.
+
+[Chalice]
+Say=The village looks like it took the child out of you.
+RspDflt=None
+RspTxt1=It did.  I've taken my first battle wounds.
+NxtLn1=Chalice1
+RspTxt2=Have you heard a new rumor?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=No man can be a soldier without a few scars.  Good luck to you.
+RspDflt=And to you.
+rspback=chalice
+
+[Chalice2]
+Say=I heard the head cook is looking into recipes for beetle stew.  That can't be right, can it?
+RspDflt=I... I shouldn't think so!
+rspback=chalice
+
+[three]
+Say=Wow, you've really changed.
+RspDflt=none
+RspTxt1=What's that supposed to mean?
+nxtln1=three2
+
+[three2]
+Say=No offense!  I merely mean that I don't know if I've seen anyone ...  I don't know, it's like you're a completely different person.  When I first saw you, you were looking around at everything with a child's curiosity.  Now you walk the halls with a purpose.
+RspDflt=none
+RspTxt1=There are important things to be done.  Progress is being made.
+nxtln1=three3
+
+[three3]
+Say=Of course.  As I said, I did not mean to offend.
+RspDflt=No offense taken.  Farewell.
+
+[chapter6]
+Say=Things are quiet. Too quiet.
+RspDflt=Hmm...
+RspTxt1=Why do you say that, soldier?
+nxtln1=chapter6b
+
+[chapter6b]
+Say=On my breaks I walk up to the battlements to watch the Ahoul scouts running about in the village. Heck, I've even put an arrow through one or two. Lately, we've seen more campfires inside the village, and yet they're just out of range of our arrows. I think they're trying to sneak up on us.
+RspDflt=That is grim news indeed, soldier.
+RspTxt1=Sneak up on you, Offe? Not if you stay alert.
+nxtln1=chapter6c
+
+[chapter6c]
+Say=That's the thing. I have trouble sleeping at night, even after a long day's patrol. I feel like I may go mad if I don't get some rest soon.
+RspDflt=Visit the infirmary and talk to our good monks. I'm sure they can help you. Until then keep faith and skill, friend.
+

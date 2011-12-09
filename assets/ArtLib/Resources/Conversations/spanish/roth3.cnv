@@ -1,0 +1,60 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01endchapter
+Checked=
+Removed=
+
+[Quest]
+Added=ch1-26,ch1-27,ch1-77
+Removed=ch1-26
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=Gracias.
+Say1=
+goto1=Roth
+
+[Roth]
+Say=Los vigías han notificado tu éxito.  ¡Enhorabuena, muy bien hecho!  Eres un orgullo para todos nosotros.  Corvus, es bueno verte vivo y de vuelta a Avalon.
+RemoveQuest=ch1-26;tlq10;ch1-12;ch1-27;
+RspDflt=None
+RspTxt1=Señor, tenemos inquietantes noticias que darle.
+NxtLn1=Roth1
+
+[Roth1]
+Say=Sí, Mudam me ha dicho ya lo de tu descubrimiento bajo la Puerta Sur.  Hemos iniciado una investigación para hallar los traidores y su líder.  Alguien con gran autoridad les ha estado ayudando; mantener en secreto una conspiración a gran escala no es fácil. Lo más problemático es el hecho de que quien sea que está tras esto, desea vendernos a los Sha'ahoul.
+RspDflt=None
+RspTxt1=Me temo que alcanza el más alto nivel, señor.  Corvus ha presenciado un encuentro entre el General Ovoron y el mismísimo Mithras.  Ovoron le entregó una cartera con documentos instantes antes de que nuestro ejército fuese emboscado.
+NxtLn1=Roth2
+
+[Roth2]
+Say=¿Ovoron?  ¡Esto es desastroso!  El General Ovoron era un miembro del consejo--lo sabe todo. Debo informar a los otros miembros inmediatamente.  Lleva a tu hermano con los monjes, y que ellos atiendan sus heridas.  Informa de todo a Mudam, y luego descansa un poco.  Mañana por la mañana preséntate en mis habitaciones privadas en la Torre Interior.  No digas a nadie más lo de Ovoron.
+Adventure=ch1-77;
+AddQuest=ch1-27;
+Script=player.addtitle(01EndChapter);journalentry(roth2);showmessage(Your journal has been updated.,300);savegame(Fin del Capítulo 1);
+RspDflt=Comprendido, señor.
+

@@ -1,0 +1,136 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01bugs2
+Checked=01Bugs,01recovered,03chapter3,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-62,ch3-503
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(7/12/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Thank you, Arno.
+say1=one(ttl(06chapter6,05chapter5));
+goto1=chapter6
+say2=all(ttl(03chapter3));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Lang
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Lang]
+Say=Hello.  Are you related to Lieutenant Corvus, by any chance?
+RspDflt=None
+RspTxt1=I'm his brother.  How did you guess?
+NxtLn1=Lang1
+
+[Lang1]
+Say=He used to be my commander, until he went off with Ovoron.  You have the same hungry eyes.
+RspDflt=None
+RspTxt1=How are things here?
+NxtLn1=Lang2
+
+[Lang2]
+Say=I have not had a good night's sleep in weeks.  I think there's something living in the basement besides the dogs!  All night long, we hear the scratching or maybe digging of some gigantic... rat, or something!
+Adventure=ch1-62;
+RspDflt=Hopefully, someone will come to give you a break from your duties soon.
+rspCnd1=all(ttl(01Bugs));
+RspTxt1=Now that you mention it, there was a swarm of giant beetles beneath the kitchen earlier today.  After chewing through the walls they started into the food.  They're dead now, thank the spirits, but perhaps there's more below here as well.
+nxtLn1=Bugs
+
+[Chalice]
+Say=Corvus' brother!  I hear you've done well for yourself on the outside!
+RspDflt=None
+RspTxt1=You could say that.  I have had a few victories in the village.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Before we know it, you'll be a lieutenant like your brother!
+RspDflt=Thank you for the kind words.  Good day.
+
+[Bugs]
+Say=Into the food?  That's not good.  I'm glad they're gone.  From what you're saying, I guess there could be more giant bugs in the basement here, then.
+script=player.addtitle(01Bugs2);
+RspDflt=Could be.  When I get a chance I'll be certain to look into the situation.  For now, though, farewell.
+
+[three]
+Say=Hey, it's Corvus' brother again!  You know, it won't be long before meeting you is considered an honor!  [He laughs heartily.]  I've heard tale of your latest exploits, and I must say I'm impressed!  I mean, how does one defeat a lich?
+RspDflt=none
+RspTxt1=Well, first you have to get it near its lich stone, and then-
+nxtln1=three2
+
+[three2]
+Say=Yeah, but...  A lich!  I mean, a LICH!
+adventure=ch3-503
+RspDflt=Yes, well...  I really must be going.
+RspTxt1=If you'd sit still I'd tell you...
+nxtln1=three3
+RspTxt2=It's quite easy, actually, you just thrust, turn and slash, and bits of undead are raining from the ceiling.
+nxtln2=three4
+
+[three3]
+Say=Aw, I didn't really expect an answer, I'm just glad you're talking to me!
+RspDflt=I... I will speak with you later.  Farewell.
+
+[three4]
+Say=I figured it was something like that!  Only a great warrior would be able to do that!  Hah!
+RspDflt=I... I will speak with you later.  Farewell.
+
+[chapter6]
+Say=Hail, brother of Corvus!  I trust all is well.  Have you brought back the head of Mithras on a pole?
+RspDflt=Not yet.  Excuse me.
+RspTxt1=Mithras is too powerful for me.  I will never defeat him alone.
+nxtln1=chapter6b
+RspTxt2=That moment will come soon enough.
+nxtln2=chapter6c
+
+[chapter6b]
+Say=Neither could I, but someone must!  I will see the defeat of this menace or die trying.
+RspDflt=As will I.  Farewell.
+
+[chapter6c]
+Say=It will take Avalon's greatest defenders to put an end to the iron posterior of Mithras!
+RspDflt=I agree.  Farewell.
+RspTxt1=I wonder what started all of this.  Why can't we all just live together in harmony?
+nxtln1=chapter6d
+
+[chapter6d]
+Say=Live in harmony?  With those miscolored miscreants about my home at night cackling in their strange language?  Maybe you should visit the infirmary and let the brotherhood give you a once-over.
+RspDflt=Maybe I should.  Farewell.
+RspTxt1=If we could find out a way to talk to them and find some common ground, maybe we could see that we aren't that different.
+nxtln1=chapter6e
+
+[chapter6e]
+Say=I've lost far too many of my own friends and family to ever wish to embrace those monsters as though they are kin.  The only ground I wish to find for them is burial ground.
+RspDflt=Though your bitterness is no doubt well-earned, be wary of such intolerance.  Such an attitude could easily grow to include all who are even slightly different than you, until you find yourself totally alone -- Do you truly wish this fate? Never mind, I've no more time for this.  Farewell, and please do consider what I have said.
+RspTxt1=Understood.  Farewell.
+script1=
+

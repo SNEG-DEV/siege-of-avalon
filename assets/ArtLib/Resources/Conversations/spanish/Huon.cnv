@@ -1,0 +1,116 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01Bugs2,01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=ch3-533
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(7/16/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Gracias, Huon.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=one(ttl(03chapter3,04chapter4,05chapter5));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Huon
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Huon]
+Say=Hola!  ¿Podrías hacerme un favor?
+RspDflt=None
+RspTxt1=Si tengo suficiente tiempo.
+NxtLn1=Huon1
+
+[Huon1]
+Say=Hay un ruido abajo.  Todos pensamos que son ratas.  ¿Podrías hacer que el General nos enviase unos cuantos gatos o algo por el estilo?  Nos tiene en vilo toda la noche!
+RspDflt=Lo lamento, pero creo que el General tiene cosas más importantes de las que ocuparse en estos momentos.
+rspCnd1=all(ttl(01Bugs2));
+RspTxt1=Desde que encontramos los escarabajos gigantes en el subterráneo de la cocina, sospechamos que hay más bajo la Puerta Sur.  Pienso echar un vistazo a la situación más tarde.
+nxtLn1=Bugs
+
+[Bugs]
+Say=¿Escarabajos?  Aun peor que las ratas!  Espero que los mates a todos, y rápido!
+RspDflt=Lo haré lo mejor que pueda.  Buenos días.
+
+[Chalice]
+Say=Así, eres el que ha encontrado el Cáliz de la Vida!  Muchas gracias, chico!
+RspDflt=None
+RspTxt1=Solo cumplo con mi deber como soldado de Avalon.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Debe haber sido toda una aventura.
+RspDflt=None
+RspTxt1=Casi ha resultado ser más de lo que podía manejar!
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Por algún motivo, lo dudo!  Buenos días, señor.
+RspDflt=Buenos días.
+
+[three]
+Say=Buen día, señor.
+RspDflt=Excúsame, soldado.
+RspTxt1=Me estaba preguntando si tenías algún consejo para mí.
+nxtln1=three2
+
+[three2]
+Say=De hecho, sí lo tengo.  ¿Conoces a Olon?
+RspDflt=none
+RspTxt1=¿Qué pasa con él?
+nxtln1=three3
+
+[three3]
+Say=No me gusta su aspecto.  Yo que tú tendría cuidado con él!
+adventure=ch3-533
+RspDflt=Gracias por el consejo, soldado.  Hasta luego.
+
+[chapter6]
+Say=Ah, %playername%. ¿Dónde está tu montón de caparazones Ahoul?  ¿Todavía no has regresado victorioso del campo de batalla?
+RspDflt=Sabía que olvidaba algo...
+RspTxt1=Dejé que los monstruos exhalaran su último suspiro en los mismos lugares donde osaron desafiarme.
+nxtln1=chapter6c
+RspTxt2=¿Para qué necesitamos un montón de porquería entre nuestras paredes?
+nxtln2=chapter6b
+
+[chapter6b]
+Say=Ya veo lo que dices, y estoy de acuerdo. Quizá esos villanos tropezarán con los cuerpos de sus compañeros y se romperán una pierna.
+RspDflt=Lo dudo, pero siempre hay esperanza. Hasta luego.
+RspTxt1=Montañas de cuerpos Ahoul alrededor del castillo harán maravillas con su moral, ¿verdad?
+nxtln1=chapter6c
+
+[chapter6c]
+Say=Jaja! Te estás convirtiendo en un verdadero líder! Me sentiré muy honrado de luchar a tu lado cuando llegue el momento.
+RspDflt=Lo mismo digo, Huon. Hasta luego.
+

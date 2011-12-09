@@ -1,0 +1,96 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01trainedcombat
+Checked=01recovered,01trainedcombat
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/17/01)=Passed
+
+[root]
+Count=3
+Else=
+Default=Gracias, Mulduc.
+Say1=All(ttl(01recovered));
+goto1=chalice
+Say2=All(ttl(!01recovered,!01trainedcombat));
+goto2=Mulduc
+Say3=All(ttl(!01recovered,01trainedcombat));
+goto3=training
+
+[Mulduc]
+Say=¿Y tú quién eres?  ¿Qué quieres de mí?
+RspDflt=None
+rspcnd1=all(ttl(!hunter));
+RspTxt1=Soy tu nuevo oponente.  Estoy aquí para entrenar contigo.
+NxtLn1=Mulduc1
+rspcnd2=all(ttl(hunter));
+RspTxt2=Soy %playername%, tu nuevo oponente.  Estoy aquí para entrenar contigo.
+nxtln2=mulduc2
+
+[Mulduc1]
+Say=Hmmm.  No pareces muy duro.  Cuando hayas tenido suficiente, simplemente aléjate andando.  Que empiece el combate!
+script=Siege20000500310066675530.makeenemy(party);setprop(AIMode=IdleAI);player.addtitle(01trainedcombat);player.setprop(combatmode=true);
+RspDflt=Que empiece, pues!
+
+[mulduc2]
+Say=Hmmm.  No pareces muy duro.  Explorador, eh?  Sabes, también hay blancos de arquería para que practiques, pero eso puedes hacerlo luego.  Ah.  Sólo recuerda que tienes que acostumbrarte a correr y disparar, correr y disparar.  Es lo que mantiene vivo a un explorador.  Respecto a ser tu oponente, simplemente aléjate cuando hayas tenido suficiente.  Hora de practicar!!
+script=Siege20000500310066675530.makeenemy(party);setprop(AIMode=IdleAI);player.addtitle(01trainedcombat);player.setprop(combatmode=true);
+RspDflt=A por ti, entonces!
+
+[training]
+Say=Aún no confías demasiado en tus habilidades, ¿eh?  ¿Quieres entrenar un poco más?
+RspDflt=None
+RspTxt1=No, gracias.  ¿Has oído alguna cosa interesante?
+NxtLn1=Training1
+RspTxt2=Sí.
+NxtLn2=Training2
+
+[Training1]
+Say=No hay muchas cosas de interés por aquí.  Los soldados nuevos que llegan para entrenar no son más que campesinos, que intentan huir de la hambruna en el Patio de los Campesinos. Dudo que muchos de ellos valgan la pena en combate.  Éstos son malos tiempos para Avalon.
+RspDflt=Esperemos que las cosas mejoren.  Buenos días, Mulduc.
+rspback=training
+
+[Training2]
+Say=Perfecto!  Desenvaina tu espada!  Recuerda, cuando tengas suficiente, simplemente aléjate.  Prometo no atacarte por la espalda!
+script=Siege20000500310066675530.makeenemy(party);setprop(AIMode=IdleAI);player.setprop(combatmode=true);
+RspDflt=Estaré listo en cuanto tú lo estés!
+rspback=training
+
+[chalice]
+Say=Hola de nuevo!  ¿Hay algo que pueda hacer por ti?
+RspDflt=No gracias.  Discúlpame.
+RspTxt1=¿Te importaría luchar un rato?
+NxtLn1=Chalice1
+RspTxt2=¿Sabes de algún rumor nuevo?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Oh, no, mejor no!  Simplemente soy un entrenador.  No se supone que deba luchar con soldados que han estado ya en combate!
+RspDflt=Muy bien.  Que los espíritus te protejan.
+rspback=chalice
+
+[Chalice2]
+Say=Sólo que los fuegos nocturnos de los Ahoul son cada noche menos.  La guardia nocturna dice que huyen en la noche.  Saben que el asedio va a volverse a nuestro favor.  No tardará mucho en terminar!
+RspDflt=Eso espero.  Buenos días.
+rspback=chalice
+

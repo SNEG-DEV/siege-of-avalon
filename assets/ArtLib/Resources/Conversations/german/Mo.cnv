@@ -1,0 +1,151 @@
+[Notes]
+TitlesChecked=PlayerKnown,Completed
+TitlesSet=PlayerKnown,Completed
+ObjectsChecked=Herb
+
+
+[root]
+Count=3
+Else=
+Default=Danke, Bruder Mo.
+Say1=All(ttl(!PlayerKnown,!Completed));
+goto1=Mo
+Say2=All(ttl(PlayerKnown,!Completed));
+goto2=HerbKnown
+Say3=All(ttl(Completed));
+goto3=Completed
+
+;checks for presence of Bruder Mo's herb quest
+
+;if flag !herbquest or no flag herbquest
+[Mo]
+say=Ich freue mich, dass Ihr vorbeigeschaut habt.  Ich habe da ein Problem, das Ihr vielleicht lösen könnt.
+rspDflt=None
+;1a
+rspTxt1=Alles, Bruder.  Avalons Heiler sind für unser Überleben entscheidend.
+NxtLn1=Mo1
+;2a
+rspTxt2=Eigentlich bin ich nur auf der Durchreise...
+NxtLn2=Mo2
+
+;if 1a
+[Mo1]
+say=Vielen Dank; Ihr seid wirklich ein Segen!  Ich bin übrigens Bruder Mo.  Entschuldigt, dass ich mich nicht richtig vorgestellt habe, aber es ist immer so wenig Zeit.  Hört her-- im Moment grassiert ein Fieber auf der Krankenstation, das sich schnell ausbreitet.  Wenn unsere Arzneimittelvorräte nicht erschöpft wären, könnten wir die Leidenden mit einem leicht zu kochenden Kräutertee kurieren.  Ihr seht unser Dilemma; überall sind Vorräte knapp, und die Krankenstation ist keine Ausnahme.
+rspDflt=None
+;1b
+rspTxt1=Ich verstehe, Bruder.  Was für Vorräte braucht Ihr?
+NxtLn1=Mo3
+;2c
+rspTxt2=Entschuldigung, Bruder, aber lassen sie sich nicht mit einem Heilspruch kurieren?
+NxtLn2=Mo4
+
+;if 2a
+[Mo2]
+say=Hört bitte her.  Mein Name ist Bruder Mo.  Entschuldigt, dass ich mich nicht richtig vorgestellt habe, aber es ist immer so wenig Zeit.  Hört her-- im Moment grassiert ein Fieber auf der Krankenstation, das sich schnell ausbreitet.  Wenn unsere Arzneimittelvorräte nicht erschöpft wären, könnten wir die Leidenden mit einem leicht zu kochenden Kräutertee kurieren.  Ihr seht unser Dilemma; überall sind Vorräte knapp, und die Krankenstation ist keine Ausnahme.
+rspDflt=None
+;1c
+rspTxt1=Ich verstehe, Bruder.  Was für Vorräte braucht Ihr?
+NxtLn1=Mo3
+;2c
+rspTxt2=Entschuldigung, Bruder, aber lassen sie sich nicht mit einem Heilspruch kurieren?
+
+NxtLn2=Mo4
+
+;if 1b or 1c or 1e
+[Mo3]
+say=Uns fehlt ein bestimmtes Heilkraut.  Ich dachte, wir hätten noch reichlich davon, aber es ist uns viel schneller ausgegangen, als ich erwartet habe.  Ich weiß, dass der Zustrom an Verwundeten nicht gerade klein gewesen ist, aber trotzdem... Es ist beinahe so, als würde jemand...  Aber das kann nicht sein -- schließlich sind wir hier in Avalon!  In einfachen Worten: wir brauchen mehr.  Im Dorf gab es einen Obstgarten in dem wir Mönche alle Heilkräuter angepflanzt haben, die wir brauchten.  Sie wachsen bestimmt nicht mehr in saubere Reihen, aber die Kräuter müßten noch da sein.  Aber Ihr seht wieder unser Problem; die Krankenstation kann es sich nicht leisten, Mönche mit der Arbeit von Soldaten zu betrauen!   Wolltet Ihr,  dass Mudam der Kundschafter Eure Wunden pflegt?  Nein, bestimmt nicht!  Hauptmann Avarous auch nicht.  Das ist unsere Aufgabe.  Wir alle tun was wir können.
+rspDflt=None
+;1d
+rspTxt1=Das tun wir, Bruder.  Woher soll ich wissen, welches Kraut Ihr braucht?
+NxtLn1=Mo5
+
+;if 1d
+[Mo5]
+say=Es ist weniger ein robustes Kraut als eine zarte Blume, also nehme ich an, dass es inwischen den ganzen Obstgarten überwuchert.  Ihr erkennt die Pflanze an ihren roten Blüten, üppigen grünen Blätter, braunen, zwiebelartigen Früchten, und ihrem moderigen Duft. Was ich von Euch brauche sind die Früchte der Pflanze--je mehr, desto besser.
+rspDflt=None
+;1f
+rspTxt1=Ich werde mir Euren Wunsch merken und ihn, wenn ich kann, erfüllen.
+NxtLn1=Mo6
+
+;if 2b or 2c
+[Mo4]
+say=Der Heilspruch wurde entwickelt und wird verwendet für die Heilung von Wunden, die sich im Kampf zutragen.  Leider hilft er nicht bei Fieber.
+Adventure=ch1-19;
+rspDflt=None
+;1e
+rspTxt1=Das ist bedauerlich, Bruder, und etwas, was mir nicht bewusst war.  Welche Vorräte braucht Ihr denn, um das Fieber zu bekämpfen?
+NxtLn1=Mo3
+
+;if 1f
+[Mo6]
+say=Vielen Dank, mein Sohn.  Ich wäre Euch sehr verbunden.
+rspDflt=Ich werde bald wiederkehren, Bruder.
+;set flag !herbquest
+AddQuest=ch1-22;
+script=Siege20000600030016357630.addTitle(PlayerKnown)
+
+
+;if flag !herbquest
+[HerbKnown]
+say=Es tut gut, Euch wiederzusehen, mein Freund.  Habt Ihr die Früchte, um die ich Euch gebeten habe?
+;if player possesses plants
+rspDflt=None
+;1g
+RspCnd1=All(Obj(Herb));
+RspTxt1=Ja, Bruder.  Setzt sie wirkungsvoll ein.
+NxtLn1=HerbKnown1
+;if player does not possess plants
+;2g
+RspCnd2=All(Obj(!Herb));
+RspTxt2=Ich fürchte, ich hatte noch keine Gelegenheit, Bruder.  Ich bin gekommen um Euch zu sagen, dass ich es noch versuche, und Ihr das Vertrauen zu mir nicht verlieren sollt.
+NxtLn2=HerbKnown2
+
+;if 1g
+[HerbKnown1]
+say=Den guten Geistern sei Dank, und auch Euch, Herr!  Damit können wir fast alle auf der Krankenstation heilen.  Mein Sohn, ich könnte schwören, dass Ihr von den Geistern selbst berührt seid, und ich habe keinen Zweifel,  dass Ihr uns in der Zukunft noch oft aus der Patsche helfen werdet.
+;give player training points, take away herbs, set flag herbquest
+rspdflt=none
+script=Siege20000600030016357630.TakeItem(Herb,Player);player.setprop(trainingpoints=2);Addtitle(Completed);journalentry(monksherbs);showmessage(Ihr Tagebuch wurde aktualisiert.,200);
+RemoveQuest=ch1-22;
+rspCnd1=all(obj(herb));
+rspTxt1=Ich freue mich, dass ich helfen konnte, Bruder Mo.  Ade.
+nxtLn1=Corvus
+rspCnd2=all(obj(!herb));
+rspTxt2=Ich freue mich, dass ich helfen konnte, Bruder Mo.  Ade.
+nxtLn2=Corvus1
+
+;if 2g
+[HerbKnown2]
+say=Ich danke Euch, mein Freund, und jetzt beeilt Euch.  Die Geister mit Euch.
+rspDflt=Mache ich, Bruder.  Ade.
+
+[Corvus]
+say=Einen Augenblick noch, mein Freund.  Ich habe gehört, dass Euer Bruder verloren gegangen ist, und ich möchte Euch sagen, meine Gebete begleiten Euch.  Er wird aber schon sehr lange vermisst.  Wenn er noch am Leben ist, ist er bestimmt schwer verwundet.  Wäre Corvus unversehrt, hätte er längst wieder zu uns gefunden.  Unbehandelte Wunden entzünden sich leicht, und eine Entzündung wird oft von Fieber begleitet.  Wie bei vielen Soldaten hier, könnte das Fieber sein Leben bedrohen noch lange bevor seine Wunden lebensgefährlich werden, und der Heilspruch richtet gegen  Fieber nichts aus. Nehmt ein Stück von diesem Heilkraut mit zurück. Wenn Ihr ihn findet--und das werdet Ihr, da habe ich keine Zweifel!-- gebt es ihm.  Es schmeckt zwar widerwärtig, das gebe ich zu, aber es wird jedes Fieber so lange senken, bis Ihr ihn zu uns zurückbringt und wir uns um seine Genesung kümmern können.
+Adventure=ch1-19;ch1-20;
+rspDflt=Danke, Bruder, für Eure Kenntnisse und Eure Liebenswürdigkeit.  Ich wünsche Euch alles Gute.
+
+[Corvus1]
+say=Einen Augenblick noch, mein Freund.  Ich habe gehört, dass Euer Bruder verloren gegangen ist, und ich möchte Euch sagen, meine Gebete begleiten Euch.  Er wird aber schon sehr lange vermisst.  Wenn er noch am Leben ist, ist er bestimmt schwer verwundet.  Wäre Corvus unversehrt, hätte er längst wieder zu uns gefunden.  Unbehandelte Wunden entzünden sich leicht, und eine Entzündung wird oft von Fieber begleitet.  Wie bei vielen Soldaten hier, könnte das Fieber sein Leben bedrohen noch lange bevor seine Wunden lebensgefährlich werden, und der Heilspruch richtet gegen  Fieber nichts aus. Kehrt zum Obstgarten zurück und nehmt noch eine Frucht von der Heilpflanze an Euch.  Wenn Ihr ihn findet--und das werdet Ihr, da habe ich keine Zweifel!-- gebt es ihm.  Es schmeckt zwar widerwärtig, das gebe ich zu, aber es wird jedes Fieber so lange senken, bis Ihr ihn zu uns zurückbringt und wir uns um seine Genesung kümmern können.
+Adventure=ch1-19;ch1-20;
+rspDflt=Danke, Bruder für Eure Kenntnisse und Eure Liebenswürdigkeit.  Ich wünsche Euch alles Gute.
+
+
+;if flag herbquest
+[Completed]
+say=Ah, unser junger Wohltäter ist wieder da!  Wie kann ich Euch heute helfen, mein Sohn?
+;1h
+RspTxt1=Ich wollte nur fragen, ob ich noch irgendetwas für Euch tun kann, Bruder.
+NxtLn1=Completed1
+;2h
+RspTxt2=Ich bin nur auf der Durchreise, Bruder.  Wie geht es Euch?
+NxtLn2=Completed2
+
+;if 1h
+[Completed1]
+say=Nein, mein Sohn, im Moment nicht. Aber es ist nett von Euch, dass Ihr Euch danach erkundigt!
+RspDflt=Dann war es nett, Euch wiederzusehen, Bruder Mo.  Ade.
+
+;if 2h
+[Completed2]
+say=Ah, mein Sohn, wir haben alle Hände zu tun mit der Verteilung der Heilmittel.  Wenn Ihr noch etwas wissen wollt, müßt Ihr mit den Soldaten reden.  Ich habe schon die vierte Kanne Cappuccino intus!  Belinda!  Mehr Kaffee!
+RspDflt=Ähm...  das mache ich.  Und...  macht ein kurzes Schläfchen, Bruder Mo.  Ihr könnt nicht alles alleine schaffen.  Lebt wohl.

@@ -1,0 +1,105 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=ch1-05,ch1-26
+Removed=ch1-05
+
+[Items]
+Given=
+Taken=
+Checked=Herb
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=Thank you.
+Say1=
+goto1=Corvus
+
+[Corvus]
+Say=Little brother!  What are...  what are you doing here?  Never mind, you must be here to find me.  I'm glad to see you, little brother.  And proud.  Now, listen to me -- I have terrible news that Sir Roth must be made aware of as soon as possible.
+RspDflt=None
+RspTxt1=Save your strength, brother.  You can tell me once we're safely behind Avalon's walls.
+NxtLn1=Corvus1
+
+[Corvus1]
+Say=There's no time!  You may have to bring this news back on your own!
+RspDflt=None
+rspCnd1=all(obj(Herb));
+RspTxt1=Don't be ridiculous, we'll take you to see Brother Crosby at once.  Spirits, you're burning up!
+NxtLn1=Fever
+rspCnd2=all(obj(!Herb));
+RspTxt2=Don't be ridiculous, we'll take you to see Brother Crosby at once.
+nxtLn2=Corvus2
+
+[Fever]
+Say=I'm fine, little brother.  I'm just a little dizzy...
+Script=TakeItem(Herb,Player);player.setprop(trainingpoints=2);showmessage(You have received some training points.,200);
+RspDflt=none
+RspTxt1=Your wounds are infected.  Eat this, brother.  The monks say it will help.
+nxtLn1=Fever2
+
+[Fever2]
+Say=Yes, Mother -- Spirits, that's disgusting!  And I feel not a bit better, either.  What is that?
+RspDflt=none
+RspTxt1=Medicine, and you will feel better, I promise.  For now, let's leave this place, all right?
+nxtLn1=Corvus2
+
+[Corvus2]
+Say=We've no time to argue -- I will come if I can.  Now, pay attention.  In case I do not survive, you must relay this message.  Except for a few men, our entire force was ambushed and destroyed.  I survived only because, while riding rear flank, I went to investigate what I thought to be a group of riders separating from our company.  When the attack came minutes later, I was cut off from the company.
+RspDflt=None
+RspTxt1=Who else survived, then?  Where are they?
+NxtLn1=Corvus3
+
+[Corvus3]
+Say=General Ovoron has betrayed us, little brother.  He has betrayed Avalon and all the people of the Seven Kingdoms.  It was Ovoron and his lieutenants that I spotted riding away from the company.  They were distancing themselves from the coming ambush.  They knew what was coming and didn't want to risk being caught in the slaughter.
+RspDflt=None
+RspTxt1=No, Corvus!  What you're saying...
+NxtLn1=Corvus4
+
+[Corvus4]
+Say=With the cries of battle echoing over the landscape, I found Ovoron and his lieutenants meeting with Mithras himself.  One of Avalon's high council and the leader of the Ahoul were chatting pleasantly before my eyes, for spirit's sake, like they were merely resting after a quiet afternoon's ride.  They acted as if hundreds were not spitting out their last breaths but ten minutes away!  Sweet spirits, how could they pretend to not hear the screams?  The screams of hundreds, little brother, hundreds!  All my friends... of all there that day, I alone survived.
+RspDflt=None
+RspTxt1=Corvus, I'm sorry...
+NxtLn1=Corvus5
+
+[Corvus5]
+Say=The last thing I saw was Ovoron handing Mithras a satchel.  It took no imagination to guess its contents and when I realized what was happening, I immediately turned and headed towards Avalon at full gallop.  I was spotted, of course -- the Ahoul were all over the area.  Somehow I made it back to the village before my horse was cut out from under me.  I raced through the buildings trying to get to the gate, but was cut off.  I ducked around a corner and found a hole where my feet expected floor.  It was a bad fall, but it likely saved my life.
+RspDflt=none
+RspTxt1=And the Ogre?  What of the Ogre?
+nxtLn1=Corvus5b
+
+[Corvus5b]
+Say=I dragged myself over here, and stayed as silent as I could.  I've been fading in and out of consciousness.  I don't know where the Ogre came from, or when, but it's been shouting and bashing at something for hours.  Whatever it was doing, I don't believe it  ever bothered looking around the corner, or if it did, fancied me its prisoner...  Or a future meal.
+RspDflt=None
+RspTxt1=There was a boulder trapping it in here, put there by the Ahoul.  Its confinement drove it into a frenzy, it seems.  When I arrived, it had succeeded in moving the boulder enough for me to squeeze past, but not yet enough to escape itself.
+NxtLn1=Corvus6
+
+[Corvus6]
+Say=That's what it was doing?  I could not gather enough strength to peek around the corner.
+RemoveQuest=ch1-05;
+AddQuest=ch1-26;
+RspDflt=We must make haste to Avalon, brother.  In truth, Sir Roth most surely needs to hear your tale, but he needs to hear it from you.  Come now.  I'll help you...
+

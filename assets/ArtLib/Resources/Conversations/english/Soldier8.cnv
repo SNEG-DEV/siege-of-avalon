@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Farewell.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=Hey.  What's up, man?
+RspTxt1=So what's your story, friend?
+NxtLn1=Soldier1
+RspTxt2=Anything new through the grapevine of Avalon's eyes and ears?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=I was a serf in Elythria.  It was a tough life, but I had more to eat than I do here!  At least the ladies in the kitchen do what they can with what they're given.  I wish I could have a good rack of ribs...  Oh, I'm sorry, I must have been rambling again.
+rspBack=soldier
+
+[Soldier2]
+Say=Nothing of any importance, sir.  Watch your back here, though.  Some of these refugees are getting VERY hungry.
+rspBack=soldier
+
+[Chalice]
+Say=What's the good word, man?
+RspTxt1=Say, where are you from?
+NxtLn1=Chalice1
+RspTxt2=Any new whisperings in this part?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Why I come from the sweetest land in Eurale!  Long live Elythria!
+rspBack=chalice
+
+[Chalice2]
+Say=Yeah, I hear tell that the Fornaxans have developed a new spell.  No one agrees about what it does, though.  The only thing they do agree on is that it's "useful."  Great info, huh?
+rspBack=chalice
+

@@ -1,0 +1,386 @@
+[Notes]
+titlesChecked=01trainedwizard,01permission,01village,01happywizard,01Olon
+titlesSet=01trainedwizard,01AmuletKnown
+ItemsTaken=amulet
+
+[Questions]
+1=not much of a wizard but he can teach anyone to be a wizard?
+2=Need Dialog for training the player
+3=what if the player never talks to Olon the merchant?
+4=what does the amulet look like? how will the player know he has it?
+
+[Needed]
+1=Art/item data for the amulet
+
+[root]
+Count=4
+Else=training1
+Default=Seid gegrüßt, Zauberer.
+Say1=All(ttl(!01trainedwizard));
+goto1=Elarath1
+Say2=All(ttl(01Olon,!01AmuletKnown));
+goto2=training2
+Say3=All(ttl(01AmuletKnown,!01happywizard));
+goto3=village1
+Say4=All(ttl(01happywizard));
+goto4=Happywizard
+
+
+[Elarath1]
+say=Willkommen, Soldat!  Was kann ein alter Zauberer heute für Euch tun?
+RspTxt1=Nichts.  Es tut mir leid, Euch bei Eurer Arbeit gestört zu haben.
+NxtLn1=Elarath2
+RspTxt2=Ich bin soeben in Avalon eingetroffen, und ich sehe mich ein wenig um.  Wer seid Ihr?
+NxtLn2=Elarath3
+rspcnd3=All(ttl(01trainedwizard):stt(trainingpoints>1));
+RspTxt3=Ich möchte einige fortgeschrittene Zaubersprüche erlernen.
+NxtLn3=TrainTitles
+
+
+[Elarath2]
+say=Das macht keine Umstände, mein Freund.  Mögen Euch die guten Geister beschützen.
+RspDflt=Gehabt Euch wohl, Meister Zauberer.
+rspBack=Elarath1
+
+
+[Elarath3]
+say=Ich bin Elarath, und wie Ihr sehen könnt, ist dies mein Laboratorium. Hier erforsche ich die alten Ruinen, die unter dem Dorf liegen. Außerdem diene ich als Berater von Sir Roth und seinen Rat, und wenn ich Gelegenheit habe, bringe ich aufstrebende Magier bei, die Kräfte die sie umgeben zu kontrollieren.
+Adventure=ch1-01;
+RspTxt1=Ich verstehe.  Danke für Eure Mühe.
+NxtLn1=Elarath4
+rspcnd2=All(ttl(apprentice))
+;If the player has the title "apprentice"
+Rsptxt2=Ich habe die magischen Künste bereits studiert, möchte aber meine Fertigkeiten weiter entwickeln.
+nxtln2=apprentice1
+rspcnd3=All(ttl(!apprentice))
+RspTxt3=Ich würde gerne die Zauberei erlernen.  Könntet Ihr mich darin unterrichten?
+NxtLn3=training
+rspDflt=None
+
+
+
+[apprentice1]
+Say=Lasst sehen, was Ihr bereits gelernt habt... [Nach mehreren Stunden des Unterrichts] ...Sehr gut.  Ihr habt ein angeborenes Talent für Magie. Ihr dürft die Obelisken hinter mir gerne als Übungsziele benutzen, oder wenn Ihr soweit seid, kann ich Euch einige fortgeschrittene Zaubersprüche beibringen.
+script=Siege010.giveitem(spellBook,player);player.setprop(trainingpoints=1);player.addtitle(01trainedwizard);journalentry(elarath);showmessage(Ihr Tagebuch wurde aktualisiert.,200);
+rsptxt1=Ich hätte grosses Interesse an allem, was Ihr mir zeigen könnt.
+nxtln1=TrainTitles
+RspDflt=Ich fürchte, ich muss mich um dringendere Angelegenheit kümmern.  Ich komme aber ganz bestimmt wieder!
+
+
+[Elarath4]
+say=Es macht mir nie Umstände, mich mit neugierigen Soldaten zu unterhalten.  Geht in Frieden.
+RspTxt1=Wenn ich mir's noch mal überlege,  würde ich doch gerne die Zauberei erlernen.  Könntet Ihr mich darin unterrichten?
+NxtLn1=training
+RspDflt=Gehabt Euch wohl, Meister Zauberer.
+
+
+[training]
+say=Ich kann fast jeden zum Zauberer ausbilden!  Tritt näher, wir beginnen sofort... [Nach mehreren Stunden des Unterrichts] ...Sehr gut.  Ihr seid zumindest lernfähig, was die Zauberei betrifft.  Ihr dürft die Obelisken hinter mir gerne als Übungsziele benutzen, oder wenn Ihr soweit seid, kann ich Euch einige fortgeschrittene Zaubersprüche beibringen.
+script=Siege010.giveitem(spellBook,player);player.setprop(trainingpoints=1);player.addtitle(01trainedwizard);journalentry(elarath);showmessage(Ihr Tagebuch wurde aktualisiert.,200);
+rsptxt1=Ich hätte grosses Interesse an allem, was Ihr mir zeigen könnt.
+nxtln1=TrainTitles
+RspDflt=Ich fürchte, ich muss mich um dringendere Angelegenheit kümmern.  Ich komme aber ganz bestimmt wieder !
+
+
+[TrainTitles]
+Say=Also, was möchtet Ihr erlernen?
+train=true
+rspCnd1=All(ttl(!Mage Craft):stt(trainingpoints>4))
+rspTxt1=Magierkunst(+1 Perception, +2 Mysticism, +2 Recharge Rate): 5pts 
+script1=player.addtitle(Mage Craft);player.setprop(trainingpoints=-5);
+nxtln1=TrainTitles
+rspCnd2=All(ttl(!Basic Energy Management):stt(trainingpoints>2))
+rspTxt2=Grundlagen der Energielenkung(+5 Mana): 3pts
+script2=player.addtitle(Basic Energy Management);player.setprop(trainingpoints=-3);
+nxtln2=TrainTitles
+rspCnd3=All(ttl(!Minor Meditation):stt(trainingpoints>2))
+rspTxt3=Kleine Meditation(+1 Recharge Rate): 3pts
+script3=player.addtitle(Minor Meditation);player.setprop(trainingpoints=-3);
+nxtln3=TrainTitles
+rspCnd4=All(ttl(!Flame):stt(trainingpoints>1))
+rspTxt4=Feuerball: 2pts
+nxtln4=Flame
+rspCnd5=All(ttl(!Frost):stt(trainingpoints>1))
+rspTxt5=Frost: 2pts
+nxtln5=Frost
+rspCnd6=All(ttl(!Heal):stt(trainingpoints>0))
+rspTxt6=Heilen: 1pt 
+nxtln6=Heal
+rspCnd7=All(ttl(!Hold):stt(trainingpoints>0))
+rspTxt7=Lähmen: 1pt
+nxtln7=Hold
+
+[Flame]
+say=Ah, der Feuerball-- das ist ein Klassiker in diesem Beruf.  Dieser Spruch richtet beim Ziel einen mittleren Schaden  an. Je stärker Eure magischen Fähigkeiten, umso mehr Schaden richtet der Spruch an, und umso schneller fliegt der Feuerball.  Hört sich das nach etwas an, was Ihr gerne erlernen möchtet?
+rspDflt=none
+rspTxt1=Ja, ich glaube schon.
+script1=player.addtitle(Flame);player.setprop(trainingpoints=-2);
+nxtLn1=TrainTitles
+rspTxt2=Vielleicht später.  Was könntet Ihr mir sonst beibringen?
+nxtLn2=TrainTitles
+
+[Frost]
+say=Wie der Feuerball, richtet auch Frost beim Ziel einen mittleren Schaden  an.  Im Gegensatz zum Feuerball, der daneben gehen kann, wenn die Reflexe des Opfers schnell genug sind, sucht Frost das Ziel aus.  Je stärker Ihr in Magie seid, umso mehr Schaden richtet Ihr an, und umso wahrscheinlicher wird es, dass Frost das Opfer präzise trifft, egal wohin es flüchtet oder sich versteckt. Hört sich das nach etwas an, was Ihr gerne erlernen möchtet?
+rspDflt=none
+rspTxt1=Ja, ich glaube schon.
+script1=player.addtitle(Frost);player.setprop(trainingpoints=-2);
+nxtLn1=TrainTitles
+rspTxt2=Vielleicht später.  Was könntet Ihr mir sonst beibringen?
+nxtLn2=TrainTitles
+
+[Heal]
+say=Falls Ihr je im Kampf verwundet werdet--und das kommt leider häufig vor, fürchte ich-- habt Ihr zwei Möglichkeiten: entweder Ihr wickelt einen dreckigen Verband um die Wunde und hofft, dass sie zu bluten aufhört, oder Ihr wendet den Heilspruch an und seid sofort wieder ganz heil.  Keine schwierige Wahl, möchte ich meinen.  Hört sich das nach etwas an, was Ihr gerne erlernen möchtet?
+rspDflt=none
+rspTxt1=Ja, ich glaube schon.
+script1=player.addtitle(Heal);player.setprop(trainingpoints=-1);
+nxtLn1=TrainTitles
+rspTxt2=Vielleicht später.  Was könntet Ihr mir sonst beibringen?
+nxtLn2=TrainTitles
+
+[Hold]
+say=Das ist ein recht nützlicher Spruch. Mit dem Spruch "Lähmen" macht Ihr Euren Gegner für kurze Zeit bewegungsunfähig.  Je stärker Ihr in der Magierkunst seid, umso länger kann sich Euer Gegner nicht bewegen-- oder sich wehren, wenn Ihr mich versteht.  Hört sich das nach etwas an, was Ihr gerne erlernen möchtet?
+rspDflt=none
+rspTxt1=Ja, ich glaube schon.
+script1=player.addtitle(Hold);player.setprop(trainingpoints=-1);
+nxtLn1=TrainTitles
+rspTxt2=Vielleicht später.  Was könntet Ihr mir sonst beibringen?
+nxtLn2=TrainTitles
+
+;SORCERY TRAINING DIALOGUE
+
+[training1]
+say=Schon wieder da!  Magie macht süchtig, nicht wahr? Ihr könnt Euch gerne umsehen.
+RspDflt=Guten Tag, Zauberer.
+rspcnd1=All(ttl(01trainedwizard):stt(trainingpoints>1));
+RspTxt1=Ich wollte fragen, ob Ihr vielleicht die Zeit hättet, mir einige von diesen fortgeschrittenen Zaubersprüchen beizubringen, die Ihr erwähnt habt.
+NxtLn1=TrainTitles
+RspCnd2=all(ttl(01Lahren,!01ElarathPell));
+rspTxt2=Meister Zauberer, kennt Ihr die Magierin Pellandrian?
+nxtLn2=Pell1
+
+
+[training2]
+say=Soso, ihr seid wieder gekommen, um den alten Zauberer zu besuchen?  Wie kann ich Euch helfen, mein Freund?
+rspDflt=None
+RspTxt1=Ich gehe bald ins Dorf auf eine Mission.  Olon der, äh, "Händler" sagte mir, dass Ihr einiges über das Dorf  wisst.
+NxtLn1=permission1
+RspCnd2=All(ttl(!01trainedwizard):stt(trainingpoints>1));
+RspTxt2=Ich möchte gerne die Zauberei erlernen.  Könnt Ihr sie mir beibringen?
+NxtLn2=training
+rspcnd3=All(ttl(01trainedwizard):stt(trainingpoints>1));
+RspTxt3=Ich wollte fragen, ob Ihr vielleicht die Zeit hättet, mir einige von diesen fortgeschrittenen Zaubersprüchen beizubringen, die Ihr erwähnt habt.
+NxtLn3=TrainTitles
+RspCnd4=all(ttl(01Lahren,!01ElarathPell));
+rspTxt4=Meister Zauberer, kennt Ihr die Magierin Pellandrian?
+nxtLn4=Pell1
+
+[permission1]
+say=Mal nachdenken...  Das Dorf steht auf den Ruinen einer uralten Stadt.  Als wir zuerst hierher kamen, nahmen wir aus den Ruinen alles an Steinen was wir finden konnten, um Avalon zu errichten.  Jetzt ist nur noch ein riesiges, unterirdisches Tunnelgeflecht geblieben, das praktisch verlassen ist.  Es würde mich allerdings nicht überraschen, wenn es dort inzwischen von vielerlei Tieren oder vielleicht noch exotischeren Kreaturen bevölkert wäre.
+Adventure=ch1-74;
+rspDflt=None
+RspTxt1=Danke für die Information.
+NxtLn1=permission2
+RspTxt2=Fällt Euch sonst noch etwas ein?
+NxtLn2=permission3
+RspCnd3=All(ttl(!01trainedwizard):stt(trainingpoints>1))
+rspBack=training2
+
+[permission2]
+say=Keine Ursache, mein Freund!  Viel Glück da draußen.
+RspDflt=Wir sehen uns bald wieder, Elarath.
+rspBack=permission1
+
+[permission3]
+say=Nein, ich bin mir ziemlich sicher, dass-- Oh, Moment mal!  Da ist doch noch etwas.  Ich versuche tatsächlich schon seit einiger Zeit, ein wertvolles Artefakt aus dem Dorf zurückzuholen.  Es handelt sich um ein Amulett, dass ich für die  Forschungsarbeit brauche, die ich gerade an einem bestimmtem Portal durchführe.  Zuletzt hatte Elazar das Amulett, aber es ging verloren, als er seinen Turm verlassen mußte.  Der Turm selbst ist durch Magie versiegelt, aber das Amulett soll verloren gegangen sein, als der Wagen mit Elazars  Forschungsgegenständen einen Achsenbruch erlitt und die Ladung verlor, während er durchs Dorf fuhr. Das Amulett dürfte noch in der Nähe des liegengebliebenen Wagens auf dem Boden liegen.  
+Adventure=ch1-73;
+AddQuest=ch1-23;
+rspDflt=None
+RspTxt1=Ich werde sehen, was ich tun kann.
+NxtLn1=permission5
+
+
+[permission5]
+say=Danke für Eure Freundlichkeit!  Mit dem Amulett kann ich hoffentlich das Portal endlich öffnen.  Ich erwarte Eure Wiederkehr!
+RspDflt=Wir sehen uns bald wieder, Elarath.
+script=player.addtitle(01AmuletKnown)
+
+[village1]
+say=Willkommen zurück!  Wie ist es Euch im Dorf ergangen?
+;If neither chalice nor amulet
+rspDflt=None
+RspCnd1=All(ttl(!01recovered):Obj(!Eamulet,!SimpleAmulet));
+RspTxt1=Noch war ich nicht sehr erfolgreich.  Ich bin nur zurückgekommen, um die neuesten Nachrichten zu hören. Habt Ihr etwas Neues erfahren?
+NxtLn1=villageNews1
+;Has false amulet, but not real one.
+rspCnd2=All(ttl(!01recovered):Obj(!Eamulet,SimpleAmulet));
+rspTxt2=Ich glaube, ich habe das Amulett gefunden.
+nxtLn2=FalseAmulet
+;If amulet, no chalice,
+RspCnd3=All(ttl(!01recovered):Obj(Eamulet));
+RspTxt3=Nach einem harten Kampf ist es mir gelungen, das Amulett zurückzubekommen.  
+NxtLn3=villageAmulet
+;If chalice, no amulet,
+RspCnd4=All(ttl(01recovered):Obj(!Eamulet,!SimpleAmulet));
+RspTxt4=Noch habe ich Euer Amulett nicht gefunden, dafür aber den Kelch des Lebens.
+NxtLn4=villageChalice
+;Has chalice but not the real amulet.
+rspCnd5=All(ttl(01recovered):Obj(!Eamulet,SimpleAmulet));
+rspTxt5=Ganz gut, Herr.  Es ist mir gelungen, sowohl den Kelch des Lebens, als auch das Amulett zurückzubekommen.
+nxtLn5=ChaliceFalseAmulet
+;If both are recovered,
+RspCnd6=All(ttl(01recovered):Obj(Eamulet));
+rspTxt6=Sehr gut, Herr.  Ich habe Elazars Amulett gefunden und den Kelch des Lebens.
+NxtLn6=villageAmuletChalice
+RspCnd7=All(ttl(!01trainedwizard))
+RspTxt7=Ich möchte gerne die Zauberei lernen.  Könnt Ihr sie mir beibringen??
+NxtLn7=training
+rspcnd8=All(ttl(01trainedwizard):stt(trainingpoints>1));
+RspTxt8=Ich wollte fragen, ob Ihr vielleicht die Zeit hättet, mir einige von diesen fortgeschrittenen Zaubersprüchen beizubringen, die Ihr erwähnt habt.
+NxtLn8=TrainTitles
+RspCnd9=all(ttl(01Lahren,!01ElarathPell));
+rspTxt9=Ganz gut.  Meister Zauberer, kennt Ihr die Magierin Pellandrian
+nxtLn9=Pell1
+
+
+[FalseAmuletChalice]
+say=Sehr gut, sehr gut!  Mit diesen beiden Gegenständen in unseren Händen, wird uns sicherlich bald der Sieg gehören!  Nein, halt...  Das ist nicht Elazars Amulett.
+rspDflt=none
+rspTxt1=Was?!  Seid Ihr sicher?
+nxtLn1=FalseAmulet1
+
+[FalseAmulet]
+say=Ah, zeigt her, zeigt her!  Nein... Nein, das ist es nicht.  Das ist gewiss ein schönes Stück, aber es ist nicht Elazars Amulett.
+rspDflt=none
+rspTxt1=Seid Ihr sicher?
+nxtLn1=FalseAmulet1
+
+[FalseAmulet1]
+say=Ja, natürlich bin ich mir sicher.  Glaubt Ihr etwa, ich wüßte nicht mehr wie ein mächtiges, magisches Amulett aussieht?  Allerdings ist das doch etwas seltsam-- Ich erkenne diese Machart nicht.  Höchst ungewöhnlich.  Also, wo habe ich nur dieses Kompendium...?
+rspDflt=none
+script=takeitem(SimpleAmulet,player);
+rspTxt1=Äh... Elarath? 
+nxtLn1=FalseAmulet2
+
+[FalseAmulet2]
+say=Was denn, mein Junge?  Seht Ihr denn nicht, dass ich zu tun habe?  Ich danke Euch für das Amulett, aber jetzt muss ich wirklich zurück an die Arbeit.  Dieses Kompendium war doch irgendwo hier....
+rspDflt=none
+rspTxt1=Würdet Ihr mir denn bitte sagen, wie Elazars Amulett aussieht?
+nxtLn1=FalseAmulet3
+
+[FalseAmulet3]
+say=Elazars...?  Geht hin und fragt ihn.  Schließlich ist es sein Amulett.  Er wohnt am Südtor, im Obergeschoß.  Also, wo habe ich nur das Ding...?
+Adventure=ch1-75;
+AddQuest=ch1-24;
+rspDflt=none
+rspTxt1=Verstehe.  Ich werde mein Bestes versuchen, Meister Zauberer.
+nxtLn1=FalseAmulet4
+
+[FalseAmulet4]
+say=Ja, ja.  Ich danke Euch für Eure Bemühungen, aber jetzt lasst mich in Ruhe!
+rspDflt=Goodbye.
+
+
+[villageNews1]
+say=In einer belagerten Zitadelle ändert sich nur wenig.  Die Liste der Toten und sterbenden Soldaten wird jeden Tag ein wenig länger, und der Hunger in jedermanns Bauch wächst jeden Tag ein wenig mehr.
+rspTxt1=Wir alle beten, dass das Kriegsglück sich bald wenden wird.
+NxtLn1=villageNews2
+rspDflt=None
+
+[villageNews2]
+say=Das wäre eine willkommene Abwechslung.  Kehrt Ihr bald wieder ins Dorf zurück?
+rspTxt1=Nein.  Ich glaube, noch verfüge ich nicht über die notwendigen Fertigkeiten, die ich für eine Expedition außerhalb Avalons benötige.
+NxtLn1=villageNews3
+rspTxt2=Bald genug.  Ich werde die Suche nach Eurem Amulett fortsetzen.
+NxtLn2=villageNews4
+rspDflt=None
+
+[villageNews3]
+say=Da draußen geht es unerbittlich zu.  Ich kann es Euch nicht verübeln, dass Ihr   Zuflucht sucht.  Gehabt Euch wohl.
+RspDflt=Ade.
+
+[villageNews4]
+say=Danke für Eure Bemühungen, mein Freund.  Ich freue mich auf ein Wiedersehen.
+RspDflt=Danke, Elarath.  Mögen Euch die guten Geister beschützen.
+
+[villageAmulet]
+say=Das ist eine wunderbare Nachricht!  Ich mache mich sofort daran, das Portal zu verwirklichen.  Es ist meine Hoffnung, dass uns das Portal von Nutzen sein wird!
+RemoveQuest=ch1-23;
+script=player.addtitle(01happywizard);takeitem(Eamulet,player);player.setprop(trainingpoints=5);ShowMessage(Sie haben Trainingspunkte bekommen,300);
+RspDflt=Hoffentlich wird es sich als so nützlich erweisen, wie Ihr meint.  Gehabt Euch wohl.
+
+[villageChalice]
+say=Den Kelch des Lebens?  Das ist ja ein mächtiges Artefakt!  Jetzt, da wir ihn wieder haben, werden unsere Soldaten bestimmt wieder Mut fassen!
+rspDflt=None
+rspTxt1=Das behauptet Bruder Massus, zumindest.  Hoffentlich hat er Recht .
+NxtLn1=villageChalice1
+
+[villageChalice1]
+say=Bruder Massus weiß, wovon er spricht.  Wartet nur ab.  Setzt Ihr die Suche nach dem Amulett fort?
+rspDflt=None
+rspTxt1=Im Moment nicht.  Ich muss mich vom Kampf kurz erholen.
+NxtLn1=villageChalice2
+rspTxt2=Ja.  Ich gebe nicht auf, ehe es in Euren Händen ist.
+NxtLn2=villageChalice3
+
+
+[villageChalice2]
+say=Aber natürlich!  Es war bestimmt nicht leicht, den Kelch wiederzubekommen.  Lasst mich wissen, wie es Euch ergeht.
+RspDflt=I will.  Auf Wiedersehen, Elarath.
+
+[villageChalice3]
+say=Vielen Dank.  Wenn ich das Portal fertig gestellt habe, habt Ihr freien Zugang.
+RspDflt=Danke.  Ade.
+
+
+[villageAmuletChalice]
+say=Sehr gut!  Mit diesen beiden Gegenständen in unseren Händen, wird sich das  Kriegsglück gewiss zu unseren Gunsten wenden!
+RemoveQuest=ch1-23;
+script=player.addtitle(01happywizard);takeitem(Eamulet,player);player.setprop(trainingpoints=5);ShowMessage(Sie haben Trainingspunkte bekommen,300);
+RspDflt=Das wäre in der Tat eine wunderbare Sache.  Gehabt Euch wohl, Meister Zauberer.
+
+
+;If player is returning after Elarath already knows he's recovered the two artifacts
+[happywizard]
+say=Willkommen zurück.  Was kann dieser alter Zauberer für Euch tun?
+rspDflt=None
+rspTxt1=Ich wollte mich nur nach Neuigkeiten erkundigen.
+NxtLn1=happywizard1
+
+[happywizard1]
+say=Tja, es erweist sich als schwieriger, als ich erwartet habe mit dem Amulett zu arbeiten, das Ihr mir gebracht habt.  Vermutlich wird es noch eine Weile dauern, bis ich das Portal aktivieren kann.
+rspDflt=None
+rspTxt1=Ich wünsche Euch gutes Gelingen
+NxtLn1=happywizard2
+rspcnd2=All(ttl(01trainedwizard):stt(trainingpoints>1));
+RspTxt2=Ich wollte fragen, ob Ihr vielleicht die Zeit hättet, mir einige von diesen fortgeschrittenen Zaubersprüchen beizubringen, die Ihr erwähnt habt.
+NxtLn2=TrainTitles
+
+[happywizard2]
+say=Danke.  Mögen Euch die guten Geister beschützen.
+RspDflt=Danke.  Ade.
+
+[Pell]
+say=
+rspDflt=none
+rspTxt1=
+nxtLn1=Pell
+
+[Pell1]
+say=Aha, die liebliche Pell hat es Euch angetan, wie?  Wäre ich vierzig Jahre jünger, oder vielleicht nur dreißig....  Aber ihr Herz gehört schon einem anderen.  Ähm,  "Arren" heißt der Glückliche, glaube ich. Nein, halt... "Lahren".  Ja, Lahren.
+rspDflt=none
+rspTxt1=Ja, ich weiß.  Ich wollte fragen, was Ihr über sie wisst.
+nxtLn1=Pell2
+
+[Pell2]
+say=Oh, nicht allzu viel.  Ich habe mich in letzter Zeit nur mit meiner Forschung beschäftigt. Sie schleicht trübselig herum, seit ihre große Liebe nicht mehr mit ihr reden will. Ach, die Qualen der Jugend-- wie gut ich mich daran erinnere.  Allerdings hat es mich doch überrascht,  dass meine Kollegen aus Fornax sie außer Landes reisen ließen.  Aber vielleicht konnten sie sie nicht zurückhalten...
+rspDflt=none
+rspTxt1=Was meint Ihr damit, Meister Zauberer?
+nxtLn1=Pell3
+
+[Pell3]
+say=Sie hat mächtige Kräfte, mein Freund-- das muss ich gestehen.  Wie mächtig überschreitet jedoch meine Kenntnisse.  Sie ist aber ein lieber Mensch.  Ich hoffe nur, dass das Unglück mit ihrem Geliebten ein gutes Ende nimmt.
+script=addtitle(01ElarathPell);
+Adventure=ch1-92;
+rspDflt=Ich auch, Herr.  Gehabt Euch wohl.
+
+

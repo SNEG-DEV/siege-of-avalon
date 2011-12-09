@@ -1,0 +1,60 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(7/12/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Gracias, Davet.
+say1=all(ttl(06chapter6));
+goto1=chapter2
+Say2=all(ttl(!01FoundBrother));
+goto2=Davet
+say3=all(tt1(01Foundbrother,!02Chapter2));
+goto3=SeeRoth
+Say4=all(ttl(01FoundBrother,02Chapter2));
+goto4=Chapter2
+
+[Davet]
+Say=No puedo dejarte pasar, a menos que tengas la documentación adecuada.
+RspDflt=Gracias.
+
+[SeeRoth]
+Say=No querrás tener al Señor Roth esperando.
+RspDflt=Cierto.
+
+[Chapter2]
+Say=Buenos días.
+RspDflt=Sí, lo son, soldado.
+

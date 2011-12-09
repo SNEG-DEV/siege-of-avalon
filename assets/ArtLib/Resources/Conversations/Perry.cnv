@@ -1,0 +1,81 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=Thank you, Perry.
+say1=one(ttl(03chapter3,04chapter4,05chapter5,06chapter6));
+goto1=threeup
+Say2=All(ttl(!01recovered));
+goto2=Perry
+Say3=All(ttl(01recovered));
+goto3=Chalice
+
+[Perry]
+Say=Hey, lad!  Care to trade jobs with me?
+RspDflt=None
+RspTxt1=I would, but I'm on business of my own, now.
+NxtLn1=Perry1
+
+[Perry1]
+Say=Well, it was worth a try, right?  Gotta find something to do around here before I go mad!
+RspDflt=None
+RspTxt1=Stay calm, soldier.  All in good time.
+NxtLn1=Perry2
+
+[Perry2]
+Say=You're right, sir.
+RspDflt=Keep your head about you.
+
+[Chalice]
+Say=Hello!  Anything new going on?
+RspDflt=None
+RspTxt1=Other than the return of the Chalice, no.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Yeah, the Chalice was good news, now, wasn't it?
+RspDflt=None
+RspTxt1=It's given a lot of hope to many soldiers.  It's a good omen.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Indeed, sir.  May the Chalice protect us!
+RspDflt=Good day.
+
+[threeup]
+Say=I can smell a battle coming!  I hope I can fight by your side, %playername%!
+RspDflt=I'm flattered, soldier; thank you.  Now, if you'll excuse me...
+

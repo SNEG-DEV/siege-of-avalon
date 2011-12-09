@@ -1,0 +1,41 @@
+[Notes]
+titles=
+
+[root]
+Count=1
+Else=
+Default=Danke, Baldulf.
+Say1=
+goto1=Balduf1
+
+[Balduf1]
+say=Hallo, mein Freund!  Ich bin Baldulf, der Grimmige.
+rspDflt=None
+rspTxt1=Hallo.  Kennt Ihr meinen Bruder?
+NxtLn1=Balduf2
+
+[Balduf2]
+say=Ob ich ihn kenne?  Er und ich waren als Rekruten Stubenkameraden!  Darum habe ich darauf bestanden, bei der Suche nach ihm dabeizusein.
+rspDflt=None
+rspTxt1=Hattet Ihr irgendwie Glück?
+NxtLn1=Balduf3
+
+[Balduf3]
+say=Leider nein.  Euer Bruder ist spurlos verschwunden.  Das ist allerdings ein gutes Zeichen.  Die Ahoul nehmen keine Gefangenen, also wenn er ihnen über den Weg gelaufen wäre, hätten wir nur seine Leiche gefunden.  So wissen wir, dass ihn die Ahoul nicht entdeckt haben.
+rspDflt=None
+rspTxt1=Meint Ihr denn, er ist noch am Leben?
+NxtLn1=Balduf4
+
+[Balduf4]
+say=Vielleicht. Vielleicht auch nicht.  Da draußen lauern noch andere Gefahren, als die Ahoul.  In der Nähe der Bibliothek haben wir die Spuren eines großen  Tiers gefunden.  Wir haben uns aber nicht hinein gewagt.  Es könnte alles Mögliche sein.  Ich würde mich nur mit einer ganzen Schar von Soldaten hinein trauen.
+Adventure=Ch1-86;
+rspDflt=None
+rsptxt1=Danke, dass Ihr es versucht habt, Baldulf.
+NxtLn1=Balduf5
+
+[Balduf5]
+say=Keine Ursache.  Möge Euer Bruder unversehrt zu uns zurückkehren, und bereit sein, tausend Ahoul zu erschlagen!
+rspDflt=Möge er das, in der Tat.  Gehabt Euch wohl.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

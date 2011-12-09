@@ -1,0 +1,95 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-57,ch3-558
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=see chalice... so you are he, eh?
+
+[root]
+Count=4
+Else=
+Default=Gracias, Tomik.
+say1=all(ttl(06chapter6));
+goto1=three
+say2=all(ttl(03chapter3));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Brun
+Say4=All(ttl(01recovered));
+goto4=chalice
+
+[Brun]
+Say=Más allá de la reja está la Puerta Sur, chico, y más allá, los hambrientos Ahoul esperan para robarte la vida.  ¿Estás seguro de tener la suficiente experiencia para atravesar la Puerta Sur?  No es lugar para aficionados.
+Adventure=ch1-57;
+RspDflt=None
+RspTxt1=Estaré bien.  Déjame pasar.
+NxtLn1=Brun1
+RspTxt2=¿De donde eres?
+NxtLn2=Brun2
+RspTxt3=¿Has oído algún rumor interesante?
+NxtLn3=Brun3
+
+[Brun1]
+Say=Bien pues, pero si te atraviesa una flecha Ahoul, no digas que no te avisé!
+RspDflt=Gracias por el consejo.  Hasta luego.
+rspBack=Brun
+
+[Brun2]
+Say=Soy Catheano por nacimiento.  Vine aquí para hacerme un nombre antes de volver a casa.  Ahora me temo que ninguno de nosotros volverá a ver nuestra patria.
+RspDflt=Ten coraje, soldado.  Triunfaremos.
+rspBack=Brun
+
+[Brun3]
+Say=He oído que en el Patio de los Campesinos crece el número de los muertos y hambrientos.  Necesitamos alivio pronto o no sobreviviremos.
+RspDflt=Los buenos espíritus nos protegerán.  Buenos días.
+rspBack=Brun
+
+[chalice]
+Say=Así que tú eres ÉL, ¿eh?  ¿Es cierto que has encontrado el Cáliz de la Vida?
+RspDflt=None
+RspTxt1=Sí.  ¡Y casi pierdo mi cuello en la búsqueda!
+NxtLn1=chalice1
+RspTxt2=¿Qué novedades tienes por aquí?
+NxtLn2=chalice2
+
+[chalice1]
+Say=Bueno, me alegro de que lograses conservarlo!
+RspDflt=Gracias.
+rspBack=chalice
+
+[chalice2]
+Say=Supuestamente, los Ahoul recibieron más refuerzos.  Pero no representará ninguna diferencia.  ¡Una vez el Rey Vortigerm llegue a la cabeza de su gran ejército, no tendrán ninguna oportunidad!
+RspDflt=Estoy de acuerdo.  Perdóname, tengo obligaciones que atender.
+rspBack=chalice
+
+[three]
+Say=Ten cuidado si decides volver ahí fuera...  Los Ahoul están tramando algo.  Se puede oler en el aire.  [sniff]
+adventure=ch3-558
+RspDflt=Gracias por preocuparte, soldado.  Adiós.
+

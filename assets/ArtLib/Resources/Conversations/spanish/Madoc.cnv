@@ -1,0 +1,60 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=03chapter3,04chapter4,05chapter5
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=madoc
+Default=Gracias, Sir Madoc.
+Say1=one(ttl(03chapter3,04chapter4,05chapter5));
+goto1=three
+
+[Madoc]
+Say=¿Pertenecéis a ésta planta?
+RspDflt=None
+RspTxt1=No, señor.  Estoy aquí por mis propios asuntos.
+NxtLn1=Madoc1
+
+[Madoc1]
+Say=Bien, estoy seguro de que sus propios asuntos no están aquí arriba.  Circule.
+RspDflt=Muy bien, señor.  Buenos días.
+
+[three]
+Say=[frunce el ceño]  Hola.  ¿Podéis decirlo rápido?
+RspDflt=Naturalmente.  Adiós.
+RspTxt1=¿Qué hacéis aquí arriba?
+nxtln1=three2
+
+[three2]
+Say=No perdáis mi tiempo con sandeces!  Largaos!
+RspDflt=Con mucho gusto.
+

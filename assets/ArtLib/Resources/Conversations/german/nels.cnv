@@ -1,0 +1,12 @@
+[root]
+Count=1
+Else=
+Default=
+Say1=
+goto1=Nels
+
+[Nels]
+say=Wenn Ihr auf der Suche nach soliden Holzarbeiten seid, bin ich der richtige Mann!  Es gibt keinen besseren Tischler in ganz Oriam.
+rspDflt=Ich habe keine Verwendung für Holzarbeiten.
+rspTxt1=Lasst doch sehen, was Ihr anzubieten habt.
+script1=merchant

@@ -1,0 +1,159 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01informed,01Recovered,04chapter4,04elaram,04ramdestroyed,06chapter6,knight
+Removed=
+
+[Quest]
+Added=ch1-69
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=6
+Else=
+Default=Thank you, Palben.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(04chapter4,!04elaram));
+goto2=untoldfour
+say3=all(ttl(04chapter4,04elaram));
+goto3=toldfour
+Say4=All(ttl(01informed,!01Recovered));
+goto4=Palben
+Say5=All(ttl(!01informed,!01Recovered));
+goto5=News
+Say6=All(ttl(01informed,01Recovered));
+goto6=Chalice
+
+[Palben]
+Say=What will you be needing from up here, sir?
+RspDflt=None
+RspTxt1=Penrith said you may have seen something up here concerning my brother Corvus.
+NxtLn1=Palben1
+
+[Palben1]
+Say=Right, sir.  Saw him running through the village being chased by Ahoul raiders, we did!  He was giving them a mighty fight!
+RspDflt=None
+RspTxt1=Was he injured?
+NxtLn1=Palben2
+
+[Palben2]
+Say=He wasn't running like he was enjoying himself, if you know what I mean.  I expect he had taken a wound or two before we lost sight of him.
+RspDflt=None
+RspTxt1=Is that all you saw?
+NxtLn1=Palben3
+
+[Palben3]
+Say=I also saw the Ahoul running out of the village at a tear not long after.  They looked like something had given them a good scare.
+RspDflt=That's always good news.  Thank you for your help.
+
+[News]
+Say=Greetings, my lord.  How can I help you?
+RspDflt=None
+RspTxt1=What's the news from up here?
+NxtLn1=News1
+RspTxt2=I'm pretty new here and I am trying to meet some people.  Who are you?
+NxtLn2=News2
+
+[News1]
+Say=Nothing good.  Something's going on down in the village and we can't really make out what it is.  We think it's coming from the old Church, but there's strange stuff all over.  It's hard to pin it down, if you know what I mean?
+Adventure=ch1-69;
+RspDflt=I think I do.  Thank you for the information.
+rspback=News
+
+[News2]
+Say=I'm Palben from Aratoy, sir.  Best shot in my band, and that's no lie.  I can hit an Ahoul rider -- at full gallop -- in the eye from over 100 yards.  Try to get old Calvaric to do that!
+RspDflt=None
+RspTxt1=I've heard that Calvaric is quite a shot himself.
+NxtLn1=News3
+
+[News3]
+Say=He is, sir!  But nobody's better than Palben!
+RspDflt=That's good to know!  Thanks.
+rspback=News
+
+[Chalice]
+Say=You would be the hero of Avalon, right?
+RspDflt=None
+RspTxt1=I think you must have made a mistake.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=No, you're the fellow that found the Chalice, right?
+RspDflt=None
+RspTxt1=Well, yes.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Then you're a hero!  That Chalice is going to make all the difference in the world!  Just you wait and see!
+RspDflt=I hope so.  We need all the help we can get.
+
+[untoldfour]
+Say=Have you heard?  Elazar has had a vision, and he's ... he's WORRIED about it.
+RspDflt=I have not.  Allow me to investigate.  Farewell.
+RspTxt1=How do you feel about this?
+nxtln1=untoldfour2
+
+[untoldfour2]
+Say=Well, I'm worried, too, %playername%!  He's usually so arrogant...  Certainly if he's found something to worry over, we should all take heed!
+RspDflt=Indeed, soldier.  I will speak to Elazar at once!
+
+[toldfour]
+Say=Have you heard anything about what's gnawing at Elazar?
+RspDflt=none
+rspcnd1=all(ttl(04ramdestroyed,!knight));
+RspTxt1=That which gave Elazar cause for worry has been eliminated.  I believe he may still be resting.
+nxtln1=toldfour2
+rspcnd2=all(ttl(04ramdestroyed,knight));
+RspTxt2=That which gave Elazar cause for worry has been eliminated.  I believe he may still be resting.
+nxtln2=toldfour3
+rspcnd3=all(ttl(!04ramdestroyed));
+RspTxt3=Elazar has had a vision, and in it he has seen a great battering ram rolling through the ruins of Avalon.
+nxtln3=toldfour4
+
+[toldfour2]
+Say=Wonderful!  You know, you're becoming quite a legend around here, %playername%!
+RspDflt=People have begun addressing me by name now, but I doubt I'd call myself a legend.  You are too kind, Palben.  Be safe.
+
+[toldfour3]
+Say=Wonderful!  You know, you're becoming quite a legend around here, Sir %playername%!
+RspDflt=People have begun addressing me by name now, but I doubt I'd call myself a legend.  You are too kind, Palben.  Be safe.
+
+[toldfour4]
+Say=How terrible!  We're all doomed!!!
+RspDflt=none
+RspTxt1=Wait just a moment, soldier.  Some, including Elazar, believe that visions are glimpses into what might be, not what will be.
+nxtln1=toldfour5
+
+[toldfour5]
+Say=So you are to find the ram and destroy it, right?  I knew you'd save us, %playername%!
+RspDflt=Loose my sleeve, Palben, I cannot tarry any longer.
+
+[chapter6]
+Say=Hail %playername%! This section is secure, sir!
+RspDflt=Very good, soldier.
+

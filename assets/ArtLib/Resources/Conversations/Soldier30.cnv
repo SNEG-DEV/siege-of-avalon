@@ -1,0 +1,191 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Farewell.
+say1=all(ttl(06posttrial));
+goto1=6posttrial
+Say2=all(ttl(06chapter6));
+Goto2=chapter6
+Say3=All(ttl(!01recovered));
+Goto3=Soldier
+Say4=All(ttl(01recovered));
+Goto4=Chalice
+
+[Soldier]
+Say=What is it you want?
+RspTxt1=Where are you from?
+NxtLn1=Soldier1
+RspTxt2=Heard any good rumors?
+NxtLn2=Soldier1
+
+[Soldier1]
+Say=Pardon me, sir.  I can't delay my duties for idle chatting.
+script=Siege20000600030016439030.setprop(AIMode=IdleAI);
+RspDflt=I understand.
+
+[Chalice]
+Say=Hello, sir, how may I help you?
+RspTxt1=Where are you from?
+NxtLn1=Chalice1
+RspTxt2=Heard any good rumors?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=I am from Fornax.  I was assistant to an important wizard there.
+rspBack=chalice
+
+[Chalice2]
+Say=Rumor has it that there will be a feast when the new supplies arrive...
+rspBack=chalice
+
+[6posttrial]
+Say=Those lousy stinking Sha'ahoulies won't get past me sir! I'll gnawl their legs off! Let me at em!
+RspDflt=Hold fast Alain. We shall yet prevail. Farewell!
+Rspcnd1=all(ttl(!6galain));
+RspTxt1=You told me before that you were from Fornax, correct?
+Nxtln1=chapter6b
+Rspcnd2=all(ttl(6anthamas, apprentice, !6silentspirits));
+RspTxt2=I believe you once told me that you heralded from Fornax.  I'm here to inform you that your master, Anthamas Shadomar, has arrived in Avalon.  He is in the Inner Keep, in the laboratory on the second floor, and is hastily working on magical enhancements to our defenses.
+Nxtln2=anthamas
+Rspcnd3=all(ttl(6fenton, hunter, !6silentspirits));
+RspTxt3=I believe you once told me that you heralded from Fornax.  I'm here to inform you that your master, Anthamas Shadomar, has arrived in Avalon.  He is in the Inner Keep, in the laboratory on the second floor, and is hastily working on magical enhancements to our defenses.  He is working closely with the sages, who are also in the Inner Keep.
+Nxtln3=anthamas
+
+[chapter6]
+Say=May I be of service, sir?
+RspDflt=That is not necessary.  As you were.
+Rspcnd1=all(ttl(!6galain));
+RspTxt1=You told me before that you were from Fornax, correct?
+Nxtln1=chapter6b
+Rspcnd2=all(ttl(6anthamas, apprentice, !6silentspirits));
+RspTxt2=I believe you once told me that you heralded from Fornax.  I'm here to inform you that your master, Anthamas Shadomar, has arrived in Avalon.  He is in the Inner Keep, in the laboratory on the second floor, and is hastily working on magical enhancements to our defenses.
+Nxtln2=anthamas
+Rspcnd3=all(ttl(6fenton, hunter, !6silentspirits));
+RspTxt3=I believe you once told me that you heralded from Fornax.  I'm here to inform you that your master, Anthamas Shadomar, has arrived in Avalon.  He is in the Inner Keep, in the laboratory on the second floor, and is hastily working on magical enhancements to our defenses.  He is working closely with the sages, who are also in the Inner Keep.
+Nxtln3=anthamas
+
+[anthamas]
+Say=Yes indeed, sir. You speak the name of my lord and master, and by the sounds of it, he's up to his nose in scrolls and research once again.
+RspDflt=none
+RspTxt1=Aye, Alain, indeed he is; I come to you upon his request.  As it was explained to me, you were one of the first servants he sent to Avalon.
+Nxtln1=anthamas2
+
+[anthamas2]
+Say=That is correct, sir.  When I was first leaving for Avalon, I was asked to take a few things here for my master.  They were all just unimportant items.  I never quite understood why he required me to bring them with me, and always keep them close to my person.
+RspDflt=none
+RspTxt1=You speak of the satchel of items he gave to you?
+Nxtln1=anthamas3
+
+[anthamas3]
+Say=Yes, sir. Filled with a bunch of useless junk, if you ask me.  They are mostly just small trinkets.  There is...
+RspDflt=none
+RspTxt1=Pardon my interruption, but is there a glass vial in the satchel, with a hair-thin string of gold wrapped around its seal?
+Nxtln1=anthamas4
+
+[anthamas4]
+Say=There is a vial in here sir, but I can't see any string around the top.  Let me take a closer look.  [He pulls it out and examines it, and, after a moment, nods.]  Aye, sir.  There is, indeed, a gold string tied around the seal.  By the spirits, it's hardly a hair thick!  Either my eyes are fading, or I'm just getting old.
+RspDflt=none
+Rspcnd1=all(ttl(apprentice));
+RspTxt1=I doubt either is true, Alain.  Anthamas has urgently requested this vial, and I must take it to him with great haste!  It is actually an elixir, called "Silent Spirits," or some such, that captures the soundless movement of the dead.
+Nxtln1=anthamas5
+Rspcnd2=all(ttl(hunter));
+RspTxt2=I doubt either is true, Alain.  The sage Fenton, who is working in conjunction with your master, has urgently requested this very vial.
+Nxtln2=fenton
+
+[fenton]
+Say=What you say?
+RspDflt=none
+AddQuest=ch6-318;
+RspTxt1=Anthamas has given Fenton a text describing a way to make our troops move without sound, and Fenton has been charged with this development for him.  The vial is actually an elixir, called "Silent Spirits," or some such, that I am told captures the soundless movement of the dead.  I must take it to him with great haste!
+Nxtln1=anthamas6
+
+[anthamas5]
+Say=Ewww!  I've been carrying around something like THAT!  No wonder I've been getting these nervous chills like an impending doom awaits me.  They've been especially vivid lately, like a blanket of horror wrapped around me forecasting my imminent death!
+RspDflt=none
+AddQuest=ch6-319;
+RspTxt1=I don't believe it has the power to do that, Alain.  You're probably just nervous from all the recent anxiety within the castle. It's feeding on everyone, and I'd imagine you're no exception.
+Nxtln1=anthamas6
+RspTxt2=Perhaps, Alain. It is indeed a dire object.  I wish to handle it no longer then I have to, for it could have the same effect on me.
+Nxtln2=anthamas6
+
+[anthamas6]
+Say=Maybe, sir.  Either way, if my master requires it, and you have apparently been sent here in his service, I relinquish it to you.  [He hands you the vial.]
+script=player.additem(silentspirits);player.addtitle(6silentspirits);player.setprop(trainingpoints=+10);
+removequest=ch6-301;ch6-317;
+RspDflt=My thanks, Alain.  This vial will go to excellent use.
+
+[Chapter6b]
+Say=Yes, sir.  As I said, I was a servant to one of the wizards there.
+RspDflt=That's what I thought you said.  Just checking.  Farewell.
+RspTxt1=What brought you to Avalon?
+Nxtln1=chapter6c
+
+[chapter6c]
+Say=The war, sir!  All the seven kingdoms were required to send a number of available servants to the citadel.  My lord, a wizard, hand selected me to be the first of his servants to come here.  Oddly, he asked of me to carry a few small items for him.  I guess he had planned all along to come here.
+RspDflt=Perhaps, but no matter.  Farewell.
+Rspcnd1=all(ttl(!6galain));
+RspTxt1=These things I am uncertain of, Alain, but I am hearing rumors that a few Fornaxan mages have arrived recently in Avalon.  Perhaps your master is one of them?
+Nxtln1=chapter6d
+
+[chapter6d]
+Say=It's possible, but my duties here keep me from finding out.  I'm quite sure if my master did arrive, he'd head straight to wherever he could work in peace, yet have quick access to others like him.
+RspDflt=none
+RspTxt1=Out of curiosity, what is the name of your master?
+Nxtln1=master
+
+[master]
+Say=His name is Anthamas Shadomar, of House Shadomar, Ninth Circle of the Council of Wizardry in Fornax.  Most people who are not natives of Fornax simply refer to him as Anthamas.
+RspDflt=none
+RspTxt1=Ninth Circle of the Council of Wizardry?  Wow, that all sounds very impressive. What does it all mean?
+Nxtln1=master2
+
+[master2]
+Say=That he doesn't have to carry his own belongings when moving.  [He laughs.]  Seriously, though, sir, I wouldn't know.  I'm just a lowly grunt with careful hands.  I guess that's why my master had me carry this satchel of fragile but apparently unimportant items with me when I first came here.
+RspDflt=I see, Alain.  Well, carry on, then.
+RspTxt1=Could you, by chance, tell me what those things are?
+Nxtln1=master3
+
+[master3]
+Say=I'm sorry, sir.  I don't think that would be too appropriate at this time.  I am charged with keeping them, and to just let anyone look at them or know what it is I carry just wouldn't be the right thing to do.
+RspDflt=none
+RspTxt1=I understand, Alain.  They are your master's items, under your protection. It makes little difference whether you feel they are important or not.
+Nxtln1=master4
+
+[master4]
+Say=Thank you for understanding, sir.
+Script=player.addtitle(6galain);
+RspDflt=Not a problem Alain. I'd do the same thing if I was in your boots.
+

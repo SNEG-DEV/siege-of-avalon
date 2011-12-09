@@ -1,0 +1,105 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Gracias, Idan.
+say1=all(ttl(06chapter6));
+goto1=six
+say2=one(ttl(03chapter3,04chapter4,05chapter5));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Idan
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Idan]
+Say=Hola.  ¿Qué te trae a la Puerta Sur?
+RspDflt=None
+RspTxt1=Sólo estoy buscando noticias sobre mi hermano, Corvus.
+NxtLn1=Idan1
+
+[Idan1]
+Say=¿Era uno de los del grupo de ataque de Ovoron?
+RspDflt=None
+RspTxt1=Sí.
+NxtLn1=Idan2
+
+[Idan2]
+Say=Bueno, todos han desaparecido.  Los chicos del tercer piso vieron a alguien ayer.  Ve a preguntarles.
+RspDflt=Lo haré.
+
+[Chalice]
+Say=Has estado fuera, ¿eh?  ¿Fue divertido?
+RspDflt=None
+RspTxt1=Un poco.  Hay algunas cosas con las que luchar ahí fuera.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Me gustaría poder escaparme de la Puerta Sur de vez en cuando para luchar un poco.
+RspDflt=None
+RspTxt1=Quizá venga pronto el relevo.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Quizá.  Buenos días.
+RspDflt=Buenos días.
+
+[three]
+Say=Er-Hola.
+RspDflt=Er-Adiós.
+RspTxt1=¿Qué hay de nuevo, soldado?
+nxtln1=three2
+
+[three2]
+Say=He oído que hay Elfos en la jungla!  Me gustaría salir y cazar allí, entonces todos comeríamos un bistec esta noche!
+RspDflt=none
+RspTxt1=No es una jungla, es un bosque.
+nxtln1=three3
+
+[three3]
+Say=Mejor!
+RspDflt=Perdóname, soldado, tengo cosas que hacer...
+RspTxt1=Acabo de recordar que debo ir a recoger mi nueva bragueta...
+nxtln1=three4
+
+[three4]
+Say=Mmm...  Bistec de venado con patatas...
+RspDflt=Hasta luego.
+
+[six]
+Say=Oh, hey, hola, %playername%!  Has oído las noticias?  Los refuerzos no están lejos!  Pronto estaremos comiendo venado!  Puedes haberte reído de mí, %playername%, pero cuando podamos comer como se supone que debemos hacerlo, me lo agradecerás!  Cogeré mi arco y los cazaré yo mismo!
+RspDflt=Me alegro de oírlo, soldado.  Cuando encuentres esa carne tan delicada, estoy seguro de que no olvidarás mi contribución.  Hasta luego.
+

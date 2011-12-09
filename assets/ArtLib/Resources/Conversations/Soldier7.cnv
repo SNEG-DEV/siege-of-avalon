@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Farewell.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=Whatcha need?
+RspTxt1=Where are you from?
+NxtLn1=Soldier1
+RspTxt2=Heard any good rumors?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=My home is in Cathea.  Well, it was.  I raised cattle there, that is, until I was conscripted to fight here.  Don't laugh.  Raising cattle isn't all that impressive a job, but even a mad cow is nowhere near as vicious as an Ahoul raider.
+rspBack=soldier
+
+[Soldier2]
+Say=I heard King Vortigerm of Taberland is coming with every able-bodied man in his kingdom.  The soldiers of Taberland have proven themselves before in battle.  Their arrival will save us.  I hope they bring food with them.
+rspBack=soldier
+
+[Chalice]
+Say=May I be of assistance to you, sir?
+RspTxt1=Where are you from?
+NxtLn1=Chalice1
+RspTxt2=Heard any good rumors?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=I was born on the high plains of Cathea.  I raised cattle there, that is, until I was conscripted to fight here.  If I was given a horse, I would ride better than any Ahoul savage!
+rspBack=chalice
+
+[Chalice2]
+Say=Rumor has it that there is a new officer with the Elythrians who will turn the tides of this war.  They say he has been touched by the gods!
+rspBack=chalice
+

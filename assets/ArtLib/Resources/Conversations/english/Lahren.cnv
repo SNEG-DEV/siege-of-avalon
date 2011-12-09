@@ -1,0 +1,807 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01lahrenhappy,01ogre),01pell2,01pell3,05lfmc,06renarb01
+Checked=01FoundAhoul,01FoundTraitors,01Lahren,01Lahren2,01LahrenHappy,01Pell2,01Pell3,01PellHappy,04chapter4,04spelltale,04staffdone,04staffquest,05astralques,05chapter5,05LFM,05LFMandPellC,05LFMC,05libriu,05LLC,05LPworkC,05LPworry,05LTT,05magisknowp,05magisknowpc,05metM,05talkedtoL,06chapter6,06magisknowpc,06renarb01,Charge,Direct,Flame,Frost,Heal,Hold
+Removed=
+
+[Quest]
+Added=ch1-14,ch1-15,ch1-16,ch1-17,ch1-18,ch1-19,ch1-43,ch1-44,ch1-45,ch1-46,ch1-47,ch1-48,ch1-49,ch1-50,ch1-58,ch1-89,ch4-513,ch5-010,ch5-011,ch5-012,ch6-532
+Removed=ch1-14,ch1-16,ch1-17,ch1-18
+
+[Items]
+Given=
+Taken=
+Checked=AmethystRing,Diamond Ring,Diamond Ring,!AmethystRing,!Emerald Ring,!Gold Ring,!RubyRing,!SapphireRing,Diamond Ring,!AmethystRing,!Emerald Ring,!Gold Ring,!RubyRing,!SapphireRing,!DriedRose,Diamond Ring,AmethystRing,Emerald Ring,Gold Ring,RubyRing,SapphireRing,DriedRose,Emerald Ring,Gold Ring,JournalA,JournalA,!JournalB,!JournalC,!JournalD,JournalA,JournalB,JournalC,JournalD,JournalB,JournalC,JournalD,RubyRing,SapphireRing
+Added=
+
+[SyntaxCheck]
+tucker(2/7/01)=Passed
+tucker(2/15/01)=Passed
+tucker(4/10/01)=Passed
+tucker(7/16/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[Notes]
+
+[root]
+Count=11
+Else=
+Default=none
+say1=all(ttl(06chapter6));
+goto1=rensix
+say2=all(ttl(05talkedtoL));
+goto2=return
+Say3=All(ttl(05chapter5));
+goto3=Ch5intro
+say4=all(ttl(04chapter4));
+goto4=lahrenfour
+Say5=all(ttl(01LahrenHappy,01PellHappy));
+Goto5=EndQuest
+Say6=All(ttl(!01Lahren));
+goto6=Intro
+Say7=All(ttl(01Lahren,!01Pell2));
+goto7=Tale
+Say8=All(ttl(01Pell2,!01Lahren2));
+goto8=NoPell
+Say9=All(ttl(01Lahren2,!01Pell3));
+goto9=Gift
+Say10=all(ttl(01Pell3,!01LahrenHappy));
+Goto10=CheckGift
+Say11=all(ttl(01LahrenHappy,!01PellHappy));
+Goto11=PellNotHappy
+
+
+[Intro]
+Say=I have no wish to speak with you or anyone right now.  I'm not selling anything and I'm not buying anything.  Just go away.
+RspDflt=Of course.  I'm sorry to have intruded.
+
+[Tale]
+Say=Please, I just want to be left alone.
+RspDflt=none
+RspTxt1=Forgive me for saying this, but you don't look like a man who should be alone.  You look, in fact, like you're rather desperately thinking about being with someone.
+nxtLn1=Subtle1
+RspTxt2=You're obviously thinking about someone.  Who is it?
+nxtLn2=Direct1
+
+[Subtle1]
+Say=Aye, I am.  And what would you know about it, boy?
+Adventure=ch1-44;
+RspDflt=none
+RspTxt1=Being young I will admit to.  Being inexperienced I will not.
+nxtLn1=Subtle2
+
+[Subtle2]
+Say=You've a point, I suppose.  Nevertheless...
+RspDflt=none
+RspTxt1=Nevertheless?  You look to be in pure misery.  How can sharing your feelings with another make your fate worse?
+nxtLn1=Subtle3
+
+[Subtle3]
+Say=What fate worse...  I used to know someone who used an expression like that.  "There's no fate worse," she'd say.  I never truly understood until very recently.
+RspDflt=none
+RspTxt1=You are thinking "There's no fate worse than loving someone," are you not?
+nxtLn1=Subtle4
+
+[Subtle4]
+Say=Aye.  There's no fate worse.
+RspDflt=none
+RspTxt1=Has she joined the spirits, then?
+nxtLn1=Subtle5
+
+[Subtle5]
+Say=No, she hasn't, though that would make it so much easier -- I could try to forget her and move on.  I regret to say that she's here in Avalon, probably no more than a ten minute walk away.
+RspDflt=none
+RspTxt1=I'm afraid that I do not understand.  Why do you not just speak with her then?
+nxtLn1=Subtle6
+RspTxt2=I think you're being a blasted idiot just standing here then.  Go talk to her, for the spirits' sake!
+nxtLn2=Direct7
+
+[Subtle6]
+Say=I've already rejected her, don't you see?  I cannot just go talk to her.  She probably hates me, and thinks I hate her.
+RspDflt=none
+RspTxt1=Spirit's sake, why did you reject her?
+nxtLn1=Subtle7
+
+[Subtle7]
+Say=I knew her for months, and we were great friends.  Except that I... dislike magic.  Intensely.  And then I learned she was a mage.  I didn't handle it well.
+RspDflt=none
+RspTxt1=What's to dislike about magic?  It's merely a tool that we can use, like a hammer or-
+nxtLn1=Subtle8
+
+[Subtle8]
+Say=Have you been speaking with Olon?  He tries drilling that into my head.  And I know it's true, too.  It's just that there was this time...  I don't really want to talk about it.
+RspDflt=none
+rspCnd1=one(ttl(Heal,Flame,Frost,Charge,Hold));
+RspTxt1=I know a bit of magic.  Oh, I'm no wizard, but it is something that's useful to know on occasion.  I could show you-
+nxtLn1=Subtle9
+RspTxt2=I'm sorry.  I don't mean to pry.
+nxtLn2=Subtle10
+
+[Subtle9]
+Say=No!  No, I already know magic.  I know too much magic.
+RspDflt=none
+RspTxt1=I'm sorry.  I didn't realize.
+nxtLn1=Subtle10
+
+[Subtle10]
+Say=Nothing to forgive.  How could you know?  From my time as a mage I know that magic is nothing more and nothing less than a tool -- in my head, at least.  But that night it was my heart that ruled my actions.  Even today it hurts to really think about magic, but my head is beginning to win out over my heart, on this subject anyway.  The thanks for this are due in no small part to her, actually.  It was only after I realized that being away from her hurt so damn much that something occurred to me.  Perhaps -- all unknowingly to be sure! -- but perhaps I had begun to consider her as more than a friend quite some time ago.  Perhaps love for her was slowly filling my heart and slowly driving everything else out.
+Adventure=ch1-45;
+RspDflt=none
+RspTxt1=So go tell her that.
+nxtLn1=Subtle11
+
+[Subtle11]
+Say=I can't, damn your eyes!  I just can't!
+RspDflt=none
+rspCnd1=all(ttl(!Direct));
+RspTxt1=And so your fear keeps you here, miserable and alone.  Is asking for forgiveness really so difficult?
+nxtLn1=Subtle12
+rspCnd2=all(ttl(Direct));
+RspTxt2=And so your fear keeps you here, miserable and alone.  Is asking for forgiveness really so difficult?
+nxtLn2=Subtle12a
+
+[Subtle12]
+Say=Aye...
+RspDflt=none
+RspTxt1=What's her name?
+nxtLn1=Subtle13
+
+[Subtle12a]
+Say=Aye...
+RspDflt=none
+RspTxt1=Then I shall go see her.
+nxtLn1=Subtle13a
+
+[Subtle13]
+Say=What?
+RspDflt=none
+RspTxt1=I said, what's her name?
+nxtLn1=Subtle14
+
+[Subtle13a]
+Say=What?
+RspDflt=none
+RspTxt1=Consider it a good deed.  Consider it a favor.  Consider it repayment for prior acts of unkindness on my part.  Consider it anything you like, but I mean to talk to this woman of yours, and discover her mind on this matter.
+nxtLn1=Subtle15
+
+[Subtle14]
+Say=Why do you want to know that?
+RspDflt=none
+RspTxt1=Consider it a good deed.  Consider it a favor.  Consider it repayment for prior acts of unkindness on my part.  Consider it anything you like, but I mean to talk to this woman of yours, and discover her mind on this matter.
+nxtLn1=Subtle15
+
+[Subtle15]
+Say=Are you mad?  You can't just ask her-
+RspDflt=none
+RspTxt1=Think you that I'm a callous brute?  Think you that I have no sense of subtlety?  I can engage her in innocent conversation well enough, I assure you.  And I can bring the subject 'round to love with great finesse.  It is a subject most women favor, anyway, and all it would cost me is a bit of my own history, in exchange for a bit of hers.  And then you would have your answer.
+nxtLn1=Subtle16
+
+[Subtle16]
+Say=My answer...  Aye, my answer.  It would be good to finally have one, be it one way or the other.  Pellandrian is her full name, though she is loathe to admit it.  Too pretentious, she claims, but if you ask after her you may need to use it.  Pell is what I called her.  Dearest Pell...
+RemoveQuest=ch1-14;
+AddQuest=ch1-15;
+script=player.addtitle(01Pell2);
+RspDflt=Pell.  On my honor, I will seek her out for you and we will know the heart of the matter.  Until later, my friend.  Be patient a while longer.
+
+[Direct1]
+Say=Who is- ?  Sir, I do not like your tone!
+Adventure=ch1-43;
+script=addtitle(Direct);
+RspDflt=none
+RspTxt1=I would apologize for that, sir, but I find that it is not in my nature to stand to see someone in obvious pain.  And the lines graven upon your face, frankly, can have but one cause -- a woman.
+nxtLn1=Direct2
+
+[Direct2]
+Say=I have nothing to say to you, sir!  Leave me!
+RspDflt=none
+RspTxt1=I will not, sir.  Denying your heart is a dangerous business.  Tell me!  Who is it you love?
+nxtLn1=Direct4
+
+[Direct4]
+Say=Love!  I love --  I mean...  I don't --
+RspDflt=none
+RspTxt1=You do, sir.  Tell me.  Please.
+nxtLn1=Direct5
+
+[Direct5]
+Say=I love her.  Of course I do.  Oh, Pell...
+RspDflt=none
+RspTxt1=Pell?  Is that her name?
+nxtLn1=Direct6
+
+[Direct6]
+Say=Yes.  I love Pell...
+RspDflt=none
+RspTxt1=So why do you not go tell her then?
+nxtLn1=Direct7
+
+[Direct7]
+Say=Tell her?  No!  No, I couldn't do that.  Impossible.  Can't be done.
+RspDflt=none
+RspTxt1=And why, pray tell, is it impossible?
+nxtLn1=Direct8
+
+[Direct8]
+Say=Because she saved my life and then I rejected her, damn you!  Because I hated all things magical and she was a mage.  Because I was an idiot...
+RspDflt=none
+RspTxt1=Well, there's no denying that, certainly.  Magic is just a tool -- you may as well hate a hammer.
+nxtLn1=Direct9
+RspTxt2=Whoever said emotion was rational?  But magic is merely a tool-
+nxtLn2=Subtle8
+
+[Direct9]
+Say=I know that!  I was once a mage before --  Never mind.  But do you really think it easy for the head to override the heart?  And that night...  I lost everything that night, but it was not until recently that I learned the exact nature of the loss.  And when I finally did, when I found love had stolen into my heart, then her magical nature began seeming of less and less import.
+Adventure=ch1-45;
+RspDflt=none
+RspTxt1=And are you such a coward that you cannot just tell her that you were mistaken, then?
+nxtLn1=Direct10
+
+[Direct10]
+Say=I regret that you speak the truth, yes...
+RspDflt=none
+RspTxt1=Then, sir, I shall lend you my courage.  This Pell I mean to seek out and, when I find her, I shall learn if you still remain in her heart.
+nxtLn1=Direct11
+
+[Direct11]
+Say=Seek- ?  Have you taken leave of your senses?
+RspDflt=none
+RspTxt1=If she loves you, she will have little trouble telling me.  And if she does not, she will have little trouble telling me why.  An answer, friend, will then be yours.
+nxtLn1=Subtle16
+
+[NoPell]
+Say=Well, what did she say?
+RspDflt=I regret that finding her is proving more difficult than I had hoped.  Fear not, however, I will locate her soon enough and then I shall return here with haste.
+
+[Gift]
+Say=Did you find her?  What did she say?
+RspDflt=none
+RspTxt1=She remembers you, sir, but not with love.  She remembers you with anger.
+nxtLn1=Gift1
+RspTxt2=She loves you, sir.  Of that I have no doubt.
+nxtLn2=Love1
+
+[Gift1]
+Say=Anger...  I knew it.  All along, I knew it.  It's over, then.  Oh, Pell...
+RspDflt=none
+RspTxt1=Now, please bear in mind that this is merely what she told me.  And yet, as I spoke with her, I didn't really sense anger.  No, I sensed something different...
+nxtLn1=Gift2
+
+[Gift2]
+Say=Different?  How can anything different matter?
+RspDflt=none
+RspTxt1=I think that at her core she is more hurt than angry and that what she truly wants is for you to go to her and to ask, perhaps even beg, her forgiveness.  I think that would pierce the armor around her heart.  Deep inside she loves you, and if you dispel her anger and hurt, she will have no choice but to acknowledge her true feelings.
+nxtLn1=Gift3
+
+[Gift3]
+Say=You think that, do you?  I think you do not know Pell very well.
+RspDflt=none
+RspTxt1=So you believe, then, that the woman you love would be so very unwilling to hear an apology from your lips?
+nxtLn1=Gift4
+
+[Gift4]
+Say=I don't know, anymore.  All I know is that I cannot face her.
+RspDflt=none
+RspTxt1=Well, then, perhaps if I conveyed to her a token of your contrition?
+nxtLn1=Gift5
+
+[Gift5]
+Say=A token?  I have nothing.
+RspDflt=none
+RspTxt1=Nothing?
+nxtLn1=Gift6
+
+[Gift6]
+Say=The Ahoul destroyed what little I carried with me to Avalon, and everything else I possess isn't even in this nation.  Besides, I don't believe Pell to be so shallow as to accept a trinket as a bribe for forgiving me.
+RspDflt=none
+RemoveQuest=ch1-16;
+AddQuest=ch1-17;
+script=player.addtitle(01Pell3);
+RspTxt1=You misunderstand.  A gift is a tribute, a mere sign of your feelings.  It is no mean bribe, but something to show her that you would give of yourself on her behalf.
+nxtLn1=Gift7
+
+[Gift7]
+Say=Perhaps.  But I still have nothing.
+RspDflt=none
+rspCnd1=all(obj(!Diamond Ring,!AmethystRing,!Emerald Ring,!Gold Ring,!RubyRing,!SapphireRing,!DriedRose));
+RspTxt1=And I, likewise.  However, if we've come this far, I will not stop now.  I will hunt a suitable gift for you, and return when I find one.
+nxtLn1=Gift8None
+rspCnd2=all(obj(DriedRose));
+RspTxt2=I have this dried rose.  It is a traditional gift, and rare to find within the walls of a besieged keep.
+nxtLn2=Gift8Rose
+rspCnd3=One(obj(Diamond Ring,AmethystRing,Emerald Ring,Gold Ring,RubyRing,SapphireRing));
+RspTxt3=As it happens, I believe I already have a gift suitable for Pell.
+nxtLn3=HasGift
+
+[Gift8None]
+Say=You needn't bother.  It is most certainly hopeless.  I do thank you for your efforts, however.
+RspDflt=It is most certainly not hopeless!  You surrender too easily, friend.  Rest assured that I will return with a gift.  For now, farewell.
+
+[Gift8Rose]
+Say=Pell dislikes the color red, and she truly hates roses.  "I'm no bloody rose!" she'll say.  I suppose the color of her hair earned her the nickname "Rose" when she was younger, but I don't really know.  Blue is her color, blue to match her eyes.  I'll bet that she still dresses in it, from head to toe.  Am I right?  No, it doesn't matter.  I thank you for your efforts, but it is most certainly hopeless.
+Adventure=ch1-46;
+RspDflt=It is most certainly not hopeless!  You surrender too easily, friend.  Rest assured that I will return with a gift.  For now, farewell.
+
+[Love1]
+Say=What...?  I don't believe I heard-
+RspDflt=none
+RspTxt1=She loves you, sir.
+nxtLn1=Love2
+
+[Love2]
+Say=No.  No, that cannot be.  You lie!  Why are you lying?  Did you not find her?  Did you not speak with her?  She cannot love me.  I know what I did.  I know...
+RspDflt=none
+RspTxt1=You are mistaken.  I did find her, and she quite plainly-
+nxtLn1=Love3
+
+[Love3]
+Say=Go away.  You lie still!  You're no friend of mine.  Go, and leave me be!
+RspDflt=none
+RspTxt1=Forgive me, sir.  I... I had hoped this would turn out differently.  She... I did meet her, and you are correct about her feelings.  I had hoped to inspire you to speak with her, however, since though she holds anger for you in her heart-
+nxtLn1=Love4
+
+[Love4]
+Say=Anger.  I was right, and yet still I am damned by it.  Oh, Pell...
+RspDflt=none
+RspTxt1=No, sir.  By all the spirits, that I do not believe.  As I was saying, though she holds anger for you in her heart, she has plainly not forgotten you.  I had hoped to inspire you into speaking with her to ask her forgiveness.
+nxtLn1=Love5
+
+[Love5]
+Say=Forgiveness?
+RspDflt=none
+RspTxt1=I am by no means a monk, but I think that at her core she is more hurt than angry and that what she truly wants is for you to go to her and to ask, perhaps even beg, her forgiveness.  I think that would pierce the armor around her heart.  Deep inside she loves you, and if you dispel her anger and hurt, she will have no choice but to acknowledge her true feelings.
+nxtLn1=Gift3
+
+[CheckGift]
+Say=I wasn't expecting you to return.
+RspDflt=none
+rspCnd1=all(obj(!Diamond Ring,!AmethystRing,!Emerald Ring,!Gold Ring,!RubyRing,!SapphireRing));
+RspTxt1=I just wanted to let you know that I am continuing the search and hopefully I will have better news soon.
+nxtLn1=NoGift
+rspCnd2=One(obj(Diamond Ring,AmethystRing,Emerald Ring,Gold Ring,RubyRing,SapphireRing));
+RspTxt2=I've brought you something to give to Pell.
+nxtLn2=HasGift
+
+[NoGift]
+Say=As you wish.
+RspDflt=Remain patient, and farewell.
+
+[HasGift]
+Say=Really?  I...  I thank you.  What did you bring?
+RspDflt=On second thought, perhaps what I have is not suitable.  I will return with something better.  Until later...
+rspCnd1=all(obj(AmethystRing));
+RspTxt1=Perhaps she would like this amethyst ring?
+NxtLn1=Amethyst
+rspCnd2=all(obj(Diamond Ring));
+RspTxt2=Perhaps she would like this diamond ring?
+NxtLn2=Diamond
+rspCnd3=all(obj(Emerald Ring));
+RspTxt3=Perhaps she would like this emerald ring?
+NxtLn3=Emerald
+rspCnd4=all(obj(Gold Ring));
+RspTxt4=Perhaps she would like this gold ring?
+NxtLn4=Gold
+rspCnd5=all(obj(RubyRing));
+RspTxt5=Perhaps she would like this ruby ring?
+NxtLn5=Ruby
+rspCnd6=all(obj(SapphireRing));
+RspTxt6=Perhaps she would like this sapphire ring?
+NxtLn6=Sapphire
+
+[Amethyst]
+Say=Yes, perhaps that would suffice.  Do you really think she'll like it?
+RspDflt=none
+RspTxt1=Yes, I'm sure she will.
+nxtLn1=Amethyst2
+RspTxt2=Perhaps not.
+nxtLn2=HasGift
+
+[Amethyst2]
+Say=Thank you.  Let me summon my courage, and then I shall go take it to her.
+RspDflt=none
+script=takeitem(AmethystRing,Player);
+RspTxt1=Here's the ring.
+nxtLn1=GoodGem
+
+[Diamond]
+Say=Yes, perhaps that would suffice.  Do you really think she'll like it?
+RspDflt=none
+RspTxt1=Yes, I'm sure she will.
+nxtLn1=Diamond2
+RspTxt2=Perhaps not.
+nxtLn2=HasGift
+
+[Diamond2]
+Say=Thank you.  Let me summon my courage, and then I shall go take it to her.
+RspDflt=none
+script=takeitem(Diamond Ring,Player);
+RspTxt1=Here's the ring.
+nxtLn1=GoodGem
+
+[Emerald]
+Say=Yes, perhaps that would suffice.  Do you really think she'll like it?
+RspDflt=none
+RspTxt1=Yes, I'm sure she will.
+nxtLn1=Emerald2
+RspTxt2=Perhaps not.
+nxtLn2=HasGift
+
+[Emerald2]
+Say=Thank you.  Let me summon my courage, and then I shall go take it to her.
+RspDflt=none
+script=takeitem(Emerald Ring,Player);
+RspTxt1=Here's the ring.
+nxtLn1=GoodGem
+
+[Gold]
+Say=Yes, perhaps that would suffice.  Do you really think she'll like it?
+RspDflt=none
+RspTxt1=Yes, I'm sure she will.
+nxtLn1=Gold2
+RspTxt2=Perhaps not.
+nxtLn2=HasGift
+
+[Gold2]
+Say=Thank you.  Let me summon my courage, and then I shall go take it to her.
+RspDflt=none
+script=takeitem(Gold Ring,Player);
+RspTxt1=Here's the ring.
+nxtLn1=GoodGem
+
+[Ruby]
+Say=A red ruby gem?  I'm afraid that she would reject that out of hand, as nice as it is, simply because of the color.
+RspDflt=none
+RspTxt1=I understand.  Perhaps something else?
+nxtLn1=HasGift
+
+[Sapphire]
+Say=A sapphire?  Yes, of course!  She loves blue -- it's her favorite color.  She'll take this, I know it!
+RspDflt=none
+RspTxt1=If given to her in love then, yes, I am sure she will.
+nxtLn1=Sapphire2
+
+[Sapphire2]
+Say=Thank you so much.  Let me summon my courage, and then I shall go take it to her.
+RemoveQuest=ch1-17;ch1-18;
+AddQuest=ch1-19;
+Script=takeitem(SapphireRing,Player);player.addtitle(01LahrenHappy);player.setprop(trainingpoints=2);showmessage(You have received some training points.,300);
+RspDflt=Here is the ring.  I will go tell her of your approach.  The best of luck to you.
+
+[GoodGem]
+Say=You have been kind to me so far.  Perhaps you're right in this.  I can but try.
+Script=player.addtitle(01LahrenHappy);player.setprop(trainingpoints=2);showmessage(You have received some training points.,300);
+RemoveQuest=ch1-17;ch1-18;
+AddQuest=ch1-19;
+RspDflt=Take heart, friend.  If presented to her with love, I'm certain she will accept it.  I will go tell her of your approach.  The best of luck to you.
+
+[PellNotHappy]
+Say=I have not yet been to see Pell.  Gathering my courage is surprisingly difficult, but rest assured that I will go talk with her.
+RspDflt=I believe you.  Good luck.
+
+[EndQuest]
+Say=Ah, welcome!  Thank you again for reuniting us.
+RspDflt=It was my pleasure.  Good luck to the both of you.
+rspCnd1=all(ttl(!larb081401));one(obj(JournalA,JournalB,JournalC,JournalD));
+RspTxt1=I came across these writings in the village -- would you be able to tell me what they say?
+nxtLn1=Journal
+rspcnd2=all(ttl(!larb081401));
+RspTxt2=I heard from Pell that you were a scholar and a linguist.  Tell me, know you anything of the Ahoul?
+script2=addtitle(!larb081401));
+nxtLn2=Ahoul1
+
+[Journal]
+Say=Let me see what you have there...
+Adventure=ch1-58;
+RspDflt=none
+rspCnd1=all(obj(JournalA));
+RspTxt1=This is the scroll with unknown writing on it.
+nxtLn1=Unknown
+rspCnd2=all(obj(JournalB));
+RspTxt2=This is the scroll with strange writing on it.
+nxtLn2=Strange
+rspCnd3=all(obj(JournalC));
+RspTxt3=This is the scroll with odd writing on it.
+nxtLn3=Odd
+rspCnd4=all(obj(JournalD));
+RspTxt4=This is the scroll with unusual writing on it.
+nxtLn4=Unusual
+rspCnd5=all(obj(!JournalA,!JournalB,!JournalC,!JournalD));
+RspTxt5=I thought I had another, but I guess I was mistaken.  I will, however, return if I find another.  Thanks be to you!
+nxtLn5=EndJournal
+
+[EndJournal]
+Say=This time it was my pleasure.  I wish you well on your journeys.
+RspDflt=Thank you.  Farewell...
+
+[Unknown]
+Say=No, not unknown.  This is most certainly Sha'ahoul writing.  There aren't many who know anything about it due to the very short time we've known about them, but while I've been here I must admit that I've made the most of my loneliness in studying what I could.
+script=takeitem(JournalA,Player);
+RspDflt=none
+RspTxt1=Then you can help me?
+nxtLn1=Unknown1
+
+[Unknown1]
+Say=I'll do my best with my limited understanding.  Let's see...  It starts off...  Uh, that's a name, I think.  Perhaps something to do with speed.  Nevertheless, it goes on...  Oh, I see, this is a set of orders.  Something about... a dirtman escaping in the village, and the need to find him immediately.  Oh, this is cruel: a slow death is ordered, if he is captured, though it does say the dirtman is responsible for a half dozen Ahoul deaths in his flight.  At the end is written "This is commanded by someone-or-other, Sha'man."  I assume that's the local commanding officer, but I cannot read the name.
+Adventure=ch1-47;
+RspDflt=none
+RspTxt1=A dirtman escaping in the village?  That could be my brother!  Tell me, does it say anything else?
+nxtLn1=Unknown2
+
+[Unknown2]
+Say=No, I'm afraid not.  This is a fairly simple set of writings -- I don't believe I've missed anything.  I'm sorry.
+RspDflt=none
+RspTxt1=There's nothing to be sorry about.  This is more than I expected, anyway.
+nxtLn1=Another
+
+[Strange]
+Say=This is Sha'ahoul writing.  Let's see...  This is a set of orders instructing all men -- well, Ahoul, anyway, and the crossbreeds -- into the village for the night.  Their project is nearing completion and there must not be any disturbances.  Uh... the alter?  No, the Church.  Keep all dirtmen away from the Church.  Soldiers will be well rewarded for all --  uh, something I don't understand, but likely a body part... returned to the Sha'men.
+Adventure=ch1-48;
+script=takeitem(JournalB,Player);
+RspDflt=none
+RspTxt1=The Church?  There have been reports of strange events at the Church.  This is proof that the Ahoul are involved -- as if we needed any.  I had thought that there were an awful lot of Ahoul about in the village, though...  I guess I know why.  Thank you.
+nxtLn1=Another
+
+[Odd]
+Say=This writing was made by Sha'ahoul.  It seems to be some sort of journal or list of things to do.  The project would be complete within a day, and then the operation could proceed.  Extra supplies need to be ordered.  The escaped dirtman has been located-
+script=takeitem(JournalC,Player);
+Adventure=ch1-49;
+RspDflt=none
+RspTxt1=Located!  My brother has been located?  Where?
+nxtLn1=Odd1
+
+[Odd1]
+Say=Give me a moment...  He's not been captured, I don't think, at least not by the Ahoul.  Some Ahoul were killed at... the writing place?  A book place?  Maybe the Library.  Anyway, they were killed by this creature -- there's a modifier here: large?  I'm not certain.  The creature retreated into the underground of the book place, and the Ahoul managed to block it in with a rock.  A boulder, most like.  There's a strange note here.  I don't know what it means.  However, the Ahoul trackers are pretty certain that the escaped dirtman also was hiding in the book place underground and that maybe the dirtman and creature would kill each other.
+script=player.addtitle(01Ogre));
+RspDflt=none
+RspTxt1=Oh, Corvus...
+nxtLn1=Odd2
+
+[Odd2]
+Say=The note says the Sha'men should go kill the creature with his magic since the soldiers are afraid to approach it.  There's something about the creature likely being able to move the boulder if left alone long enough, so the Sha'men should go soon.
+RspDflt=none
+RspTxt1=The Sha'man is dead.  That will not be happening, at least.
+nxtLn1=Odd3
+
+[Odd3]
+Say=I, uh... I see.  That's all there is on this scroll, anyway.
+RspDflt=none
+RspTxt1=Thank you.  I think I know where my brother is now.  I owe the Sha'men that, I guess.
+nxtLn1=Another
+
+[Unusual]
+Say=This scroll is parchment, not hide.  Did it come from Avalon?  No, how could it -- there's Sha'ahoul writing on it.  On my life, though, this is very strange.
+Adventure=ch1-50;
+script=takeitem(JournalD,Player);
+RspDflt=none
+RspTxt1=Can you read the writings?
+nxtLn1=Unusual1
+
+[Unusual1]
+Say=The icons are... irregular, as if a child was writing this.  It is most difficult to make out...  The project...  goes well?  Conflict internal walls -- conflict within the walls?  Of Avalon, do you think?  I'm not certain.  Medicines stolen, death from sickness.  A hole in the wall, leading creatures -- insects? -- to food.  Meeting during battle.  No, battle is modified.  False?  False battle?  This isn't making any sense at all.
+RspDflt=none
+rspCnd1=all(ttl(!01FoundAhoul,!01FoundTraitors));
+RspTxt1=No, it makes a horrible amount of sense.  There are traitors about, Lahren -- I know it!
+nxtLn1=Another
+rspCnd2=one(ttl(01FoundAhoul,01FoundTraitors));
+RspTxt2=No, it makes a horrible amount of sense.  There are traitors about, Lahren -- I know it!  I must report this to Mudam, and soon.
+nxtLn2=Another
+
+[Another]
+Say=Did you have another scroll for me to read?
+RspDflt=No, I haven't.  I thank you for your time, but I must go.  Farewell!
+rspCnd1=one(obj(JournalA,JournalB,JournalC,JournalD));
+RspTxt1=Yes, I think so.  Let me check...
+nxtLn1=Journal
+
+[Ahoul]
+say=
+RspDflt=none
+rspTxt1=
+nxtLn1=Ahoul
+
+[Ahoul1]
+Say=Sha'ahoul is their proper name if you are referring to them as a people or culture.  The Ahoul -- the more brutish of them, resembling cousins of the orcs -- comprise but one part of their society.  Yes, you could say I know something of them.  They are why I journeyed to Avalon.  I have not spent all my days wrapped in self-inflicted misery, my friend.  I have complied much on them in my stay here, and have even discovered a handful of data on my own.
+RspDflt=none
+RspTxt1=I see.  What can you tell me about them?
+nxtLn1=Ahoul2
+
+[Ahoul2]
+Say=I'm not certain how much information you would be interested in, and what we do know is certainly still very limited.
+RspDflt=none
+RspTxt1=I find myself curious about what I am facing.  The basics, I suppose, would suffice.
+nxtLn1=Ahoul3
+
+[Ahoul3]
+Say=The basics?  Well, let me see...  The Sha'ahoul are primarily composed of Ahoul, those orcish creatures I mentioned, and Sha'men, a strain of ordinary humans.  This alliance, if you will, has been a fact for an indeterminate amount of time, but it has to have been for multiple centuries due to the development of a well-established race of crossbreeds between the humans and Ahoul.  We are still not entirely certain how this is possible, but some have speculated that it is similar to crossbreeding different species of canines, but that is not my field, so I cannot say for certain.
+RspDflt=none
+RspTxt1=I... see.
+nxtLn1=Ahoul4
+
+[Ahoul4]
+Say=To continue, the Sha'ahoul have divided themselves into several... castes, I suppose.  The Sha'men are the leaders.  They are human and are capable mages, much to our dismay.  These are very dangerous individuals, and I have learned they are responsible for many of our losses in this war.  You, however, will most likely be facing those of the warrior caste, which is comprised of Ahoul, crossbreeds and non-magical humans.  There are others, apparently -- a hunter caste, perhaps, and possibly a worker or slave caste -- but we know little of them.
+Adventure=Ch1-89;
+RspDflt=none
+RspTxt1=I thank you for your time, my friend.  I hope I can put this knowledge to good use.
+nxtLn1=Ahoul5
+
+[Ahoul5]
+Say=You are most welcome.  Should you, in your adventures, come across anything interesting related to the Sha'ahoul, I would be most eager to learn of it.
+RspDflt=I will keep that in mind.  Farewell.
+rspcnd1=one(obj(JournalA,JournalB,JournalC,JournalD));
+rsptxt1=Actually, I'm curious to know if you can decipher the written language of the Sha'ahoul...
+nxtln1=journal
+
+[lahrenfour]
+Say=Good day.
+RspDflt=Please excuse me, Lahren.  I did not mean to disturb you.
+rspcnd1=all(ttl(01lahrenhappy,!04staffdone));
+RspTxt1=Good day to you as well, my friend!  How have you been faring as of late?
+nxtln1=lahrenfour2
+rspcnd2=all(ttl(!01lahrenhappy,!04staffdone));
+RspTxt2=Good day to you, as well.  How are you on this fine day?
+nxtln2=lahrenfour7
+
+[lahrenfour2]
+Say=Better since you've been along, that's for sure.  Pell and I have been working on a project together, sort of a collaboration of our abilities.  It's been refreshing.
+RspDflt=none
+rspcnd1=all(ttl(04spelltale,04staffquest));
+RspTxt1=Yes, I heard that from Pell just a moment ago.  The mask she has been enchanting with the spell you helped her to create is to be on loan to me for some assignments I have in Sha'ahoul-occupied territories surrounding Avalon.
+nxtln1=lahrenfour3
+RspTxt2=Oh?  What is this project, if you don't mind my asking?
+nxtln2=lahrenfour6
+
+[lahrenfour3]
+Say=For a price, no doubt?
+RspDflt=none
+RspTxt1=Of course!  This is Olon we're discussing, correct?  I am to steal one of the wands of the Sha'man dreamwalkers.  I do not relish the chore.
+nxtln1=lahrenfour4
+
+[lahrenfour4]
+Say=I know of none who would!  To infiltrate a Sha'ahoul occupation is one thing...  But stealing something from a Sha'man?  I apologize; I don't mean to make it sound so incredible.  You've my best wishes.  Be sure to come back in one piece.
+RspDflt=none
+RspTxt1=It certainly is incredible, Lahren, but when I get back -- in one piece, mind you -- I'll have plenty of tales to tell.  Whether or not I should tell them, however, is a valid question.
+nxtln1=lahrenfour5
+
+[lahrenfour5]
+Say=Ah, yes, the military hush-hush.  Mustn't excite the citizens or cause them undue worry.  I trust your judgment.  Good luck.
+RspDflt=Thank you, Lahren, and farewell.
+
+[lahrenfour6]
+Say=Very well.  I know Olon wouldn't want anyone advertising it, so please don't tell anyone you don't have to.  Olon has a mask that will make him look like a Sha'ahoul.  It's his "insurance policy."  Don't look at me that way; it's his phrase.  He asked Pell and I to work on an enchantment that would grant the wearer the ability to speak and understand the Sha'ahoul tongue.  We're not exactly sure how effective it will be, but Olon insisted.  Besides, he owes us now, and he always pays back his favors.
+adventure=ch4-513;
+RspDflt=I'll remember that, Lahren.  Thank you for the information, and farewell.
+
+[lahrenfour7]
+Say=My lover and I have been working together on a project since we were reunited.  It should be finished soon.  I'm sure you'll hear from her about it; Pell tends to be a bit proud of her work.
+RspDflt=none
+RspTxt1=You've been working with her on something magical?
+nxtln1=lahrenfour8
+
+[lahrenfour8]
+Say=Yes.  Outside of our relationship, that is.  [smiles distractedly]  Oh, yes, she had me doing some research for a spell.
+RspDflt=none
+RspTxt1=Ah.  As you say, however, I'm sure I'll hear about it from her.
+nxtln1=lahrenfour9
+
+[lahrenfour9]
+Say=Yes, of course...  I wish you luck in your assignments.  Bring us back the head of Mithras!  Hah!
+RspDflt=All in good time, Lahren.  Farewell for now.
+
+[ch5intro]
+Say=Greetings, %playername%.  It is comforting to see that the Sha'ahoul have not lain you low yet.  How've you fared of late?
+script1=addtitle(05talkedtoL);
+RspDflt=Sorry, Lahren, but I've no time to speak with you.  Farewell.
+RspTxt1=Well enough.  Perhaps you can settle a few issues for me.
+NxtLn1=Queries
+
+[return]
+Say=It's good to see you again, %playername%.  Can I do you a service?
+RspDflt=Sorry, Lahren, but I've no time to speak with you.  Farewell.
+RspTxt1=Maybe you can help me.  I am seeking answers to several questions.
+NxtLn1=Queries
+
+[Queries]
+Say=Consider me at your service, %playername%.  How can I help you?
+RspDflt=On second thought, I must depart now.  Farewell, Lahren.
+RspCnd1=All(ttl(!05LPworkC,05astralquest))
+RspTxt1=What do you think of Pell's collaboration with Elarath?
+NxtLn1=Pellwork
+RspCnd2=All(ttl(!05LPworryC))
+RspTxt2=I trust things are still well with you and Pell?
+NxtLn2=Pellworry
+RspCnd3=All(ttl(!05LFMC,05magisknowpc))
+RspTxt3=I've just met the Fornaxan Magistrate.
+NxtLn3=Fmage
+RspCnd4=All(ttl(!05LFMandPellC,05LFMC))
+RspTxt4=Are you concerned that the Fornaxan Magistrate may be looking for Pell?
+NxtLn4=FMandPell
+RspCnd5=All(ttl(!05LLC,05librius))
+RspTxt5=Did you know that Elazar has a book that talks?
+NxtLn5=Talkingbook
+RspCnd6=All(ttl(05metM,!05LTTC))
+RspTxt6=My journey across the planes has recently afforded me the chance to meet a most wondrous being -- a spirit, known as the Muir, that is the guardian of near-inexhaustible volumes of knowledge.
+NxtLn6=Muir
+
+[Pellwork]
+Say=Her divination work on the dream-troubles of Avalonians means a great deal to her.  I'm very excited to see her involved in such an important project -- it's certainly eased the burden of her own troubles.  Also, it's good to see her making a place for herself here, since we've been unable to put down roots anywhere for some time.  Hopefully, my own studies will prove valuable to Avalon, and I can find my own place of acceptance here.
+script1=addtitle(05LPworkC);
+RspDflt=Thank you, Lahren.  I must depart now.  Farewell, and may the good spirits protect you.
+RspTxt1=Thank you, Lahren.  I was also wondering if you might answer another question or two for me.
+NxtLn1=Queries
+
+[Pellworry]
+Say=I've tried not to bother her with my worries, but her recent sleeping troubles have me very concerned.  More than once I've watched over her as she sleeps, only to witness her writhing terribly -- as if she were suffering tremendous pain and fear.  Though she's kept up a good front, I can see in her eyes that she has become quite worn down.  This invisible enemy is, in many ways, the most difficult thing we have ever faced together.  Also, elements from Fornax still seek Pell.
+script1=addtitle(05LPworryC);
+adventure=ch5-010
+RspDflt=That sounds terrible, Lahren.  I must depart now.  Farewell, and may the good spirits protect you.
+RspTxt1=Thank you, Lahren.  I was also wondering if you might answer another question or two for me.
+NxtLn1=Queries
+
+[Talkingbook]
+Say=For a person of my inclinations, it would be magnificent to meet such a wonder!  I must confess that I have never before heard of anything like this.  Perhaps someday -- with Elazar's permission, of course -- I can experience this marvel first-hand.
+script1=addtitle(05LLC);
+RspDflt=Thank you, Lahren.  I must depart now.  Farewell, and may the good spirits protect you.
+RspTxt1=Thank you, good friend.  I was also wondering if you might answer another question or two for me.
+NxtLn1=Queries
+
+[Fmage]
+Say=As a matter of fact, I was just about to ask you about him.  He arrived just recently; I've long suspected that agents from Fornax would eventually track us down.  Honestly, though, if he hasn't confronted us yet, he may not be planning to at all.  I've made efforts to conceal us from him, just in case.  It worries me, but I have done all I can for now.
+script=player.addtitle(05LFMC);
+adventure=ch5-011
+RspDflt=Thank you, Lahren.  I must depart now.  Farewell, and may the good spirits protect you.
+RspCnd1=All(ttl(!05LFMandPellC,05LFMC))
+RspTxt1=Are you concerned that the Fornaxan Magistrate may be looking for Pell?
+NxtLn1=FMandPell
+RspTxt2=Thank you, friend Lahren.  I was also wondering if you might answer another question or two for me.
+NxtLn2=Queries
+
+[FMandPell]
+Say=Obviously, I am concerned about this, but there is little to do yet.  The Fornaxan Magistrate has made no move against us yet, so there seems to be no immediate threat.  I've not told Pell about him yet; though she has every right to know, I do not think she should have to endure any additional stress right now.  Please, %playername%, do not speak to her of this.
+script1=addtitle(05LFMandPellC);
+adventure=ch5-012
+RspDflt=I will honor your wishes, Lahren.  Farewell, and may the good spirits protect you.
+RspTxt1=Thank you, Lahren.  I was also wondering if you might answer another question or two for me.
+NxtLn1=Queries
+
+[Muir]
+Say=Such a being is a scholar's dream!  Oh, the things I could learn from it!  If I were not so worried for Pell, I would love to travel with you to meet this marvel.
+script1=addtitle(05LTTC);
+RspDflt=Truly it is a wonder -- as well as an invaluable aid to me on my journey.  Farewell, friend Lahren.
+RspTxt1=Thank you, good Lahren.  I was also wondering if you might answer another question or two for me.
+NxtLn1=Queries
+
+[rensix]
+Say=Good day, %playername%.
+RspDflt=Good day to you as well, Lahren.  Pardon me; I am needed urgently elsewhere.
+rspcnd1=all(ttl(05magisknowpc,!06renarb01));
+RspTxt1=Good day, Lahren.  Has Pell...
+script1=player.addtitle(06renarb01);
+nxtln1=mainscreenturnon
+rspcnd2=all(ttl(06magisknowpc,!06renarb01));
+RspTxt2=I met a man named Khaele today, who claims to be one of the Magistrates for the Council of Fornax...
+script2=player.addtitle(06renarb01);
+nxtln2=whatyousay
+
+[mainscreenturnon]
+Say=Spoken to Khaele?  Yes, and...  Incredibly, the situation's been handled.  I don't know the details, and I don't really care to...  You can ask Pell, if you wish.  It is her matter, and it is with her you should speak if you wish to hear anything more than hearsay.
+adventure=ch6-532;
+RspDflt=As you wish, Lahren.  Thank you for your frankness, and farewell.
+
+[whatyousay]
+Say=That he is, and doubtless you are wondering about something he said concerning Pell?  The Council really wants her back, apparently they wish to accuse her of something.  It is her matter, and it is with her you should speak if you wish to hear anything more than hearsay.
+adventure=ch6-532;
+RspDflt=As you wish, Lahren; thank you for your frankness.  Farewell.
+

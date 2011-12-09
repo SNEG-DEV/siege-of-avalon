@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Adios.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=Hola, ¿cómo puedo ayudarte?
+RspTxt1=Pues mira, me podrías decir de donde vienes!
+NxtLn1=Soldier1
+RspTxt2=¿Has oído algo interesante por ahí?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Mi hogar está en Oriam.  Al menos, estaba en Oriam, antes de que los Ahoul lo quemaran y asesinaran a mi mujer e hijos.
+rspBack=soldier
+
+[Soldier2]
+Say=Nuestro capitán nos ha dicho que nos preparemos para un ataque esta noche.  ¡Confío mucho en él, así que ten cuidado esta noche!
+rspBack=soldier
+
+[Chalice]
+Say=¿Puedo ayudarle, señor?
+RspTxt1=Pues sí, ¿me podrías decir de donde vienes?
+NxtLn1=Chalice1
+RspTxt2=¿Has oído algo interesante por ahí?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Soy de Oriam, señor.
+rspBack=chalice
+
+[Chalice2]
+Say=He oído que los Catheanos han enviado a buscar a sus reservistas.  Son luchadores valerosos, y su ayuda debería girar las tornas de este asedio.
+rspBack=chalice
+

@@ -1,0 +1,71 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Thank you, Engres.
+say1=all(ttl(03chapter3));
+goto1=three
+Say2=all(ttl(!03chapter3));
+goto2=Engres1
+
+[Engres1]
+Say=The name is Engres.
+RspDflt=None
+RspTxt1=Were you a friend of my brother?
+nxtLn1=Engres2
+
+[Engres2]
+Say=Can't say as I was.  I just volunteered to get out of the citadel.
+RspDflt=None
+RspTxt1=I see.  Did you see anything out there?
+NxtLn1=Engres3
+
+[Engres3]
+Say=A load of voreworms and a bunch of tracks outside the old Church.  I reckon the voreworms been feeding on the dead.
+Adventure=Ch1-88;
+RspDflt=None
+RspTxt1=What kind of tracks?
+NxtLn1=Engres4
+
+[Engres4]
+Say=Who knows?  Could be human, could be Ahoul.  All I know is something's been going on in the old Church.  I'd keep away from there if I were you.
+RspDflt=Thanks for the advice.
+
+[three]
+Say=Well, hello there.  I'm surprised to see that you keep coming back in one piece!  If you let me join your party, I'll make sure that you'll live another day.
+RspDflt=Perhaps another time, Sir Engres.
+RspTxt1=Your confidence serves you well, Sir Engres.  Let us be on our way.
+script1=addtoparty;addtitle(03joined);
+

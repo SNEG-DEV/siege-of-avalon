@@ -1,0 +1,109 @@
+;Detailed Dialogue	
+
+;Soldier 5
+[root]
+Count=1
+Else=
+Default=Danke.
+Say1=
+goto1=Soldier
+
+[Soldier]
+say=Ich erkenne das Gesicht eines Landsmanns. Seid gegrüßt! 
+rspDflt=None
+rsptxt1=Ihr seid Elythrianer? Es ist gut, ein Gesicht aus der Heimat zu sehen.
+NxtLn1=Soldier1
+
+[Soldier1]
+say=Es sind viele aus unserem Land hier, aber leider haben die meisten bisher noch nie etwas anderes gesehen, als den Hintern ihrer Pflugochsen. 
+rspDflt=None
+rsptxt1=Dann sind die meisten Leibeigene?
+NxtLn1=Soldier2
+rsptxt2=Aus welchem Teil Elythriens stammt Ihr? 
+NxtLn2=Soldier3
+
+;If 1,
+[Soldier2]
+say=Ihr kennt die Sitten der elythrianischen Grundbesitzer. Warum den eigenen Hals riskieren, wenn sie ihre Leibeigenen schicken können?
+rspDflt=None
+rsptxt1=Nicht alle Grundbesitzer sind Feiglinge. Wäre mein Vater nicht krank geworden, hätte er schon vor Jahren hier mit meinem Bruder Seite an Seite gekämpft. 
+NxtLn1=Soldier4
+
+[Soldier4]
+say=Ich wollte Euch nicht beleidigen. Wie Ihr sicher erraten habt, halten wir Freien die Grundbesitzer für ziemlich verkommen.
+rspDflt=None
+rsptxt1=Und wir Grundbesitzer halten die Freien für ziemlich verkommen.
+NxtLn1=Soldier5
+rsptxt2=Und was mag diese Meinung sein?
+NxtLn2=Soldier6
+
+;If 1,
+[Soldier5]
+say=Das kann ich mir lebhaft vorstellen. Wenige Freie sind überhaupt etwas wert. Meine Vorfahren waren jedoch Schmiede, so weit ich mich zurückerinnern kann, also sind wir keine typischen Freien. 
+rspDflt=None
+rsptxt1=Zu viele Freie sind nichts als Pöbel und Bettler. Es wäre besser, sie wären Leibeigene, als solcher Abschaum. 
+NxtLn1=Soldier7
+
+[Soldier7]
+say=Ich vermute, sie würden das anders sehen. Lieber frei und arm, als gut ernährt, aber jemandem verpflichtet. 
+rspDflt=None
+rsptxt1=Vielleicht, aber denkt dran, die Wirtschaft unseres Landes hängt von diesen Leibeigenen ab. 
+NxtLn1=Soldier8
+
+[Soldier8]
+say=Es tut mir leid, Freund; wir könnten wahrscheinlich stundenlang so weiterreden. Doch ein politisches Streitgespräch ist momentan nicht die allerbeste Idee, meint Ihr nicht auch? 
+rspDflt=Fürwahr. Ich entschuldige mich und wünsche Euch einen guten Tag.
+;If 2,
+[Soldier6]
+say=Da alle unsere Vorfahren irgendwann Leibeigene waren, verachten wir Freien die Grundbesitzer. Meine Familie ist eine seltene Ausnahme. Wir waren immer frei. 
+rspDflt=None
+rsptxt1=Das ist in der Tat selten. Elythrianer sind alle mehr oder minder vom Feudalsystem abhängig. Selbst die Freien sind mit den Grundbesitzern geschäftlich verbunden. 
+NxtLn1=Soldier9
+
+[Soldier9]
+say=Das ist wahr, aber die Leibeigenen würden mit uns auch Geschäfte machen, wenn sie ihre eigenen Ländereien besäßen, oder? 
+rspDflt=None
+rsptxt1=Vielleicht sollten wir diese Diskussion abbrechen. Wenn wir uns schon deshalb streiten, sollten wir das in unserer Freizeit tun. 
+NxtLn1=Soldier10
+
+[Soldier10]
+say=Gut gesagt. Ade.
+rspDflt=Ade.
+
+;If 2,
+[Soldier3]
+say=Meine Familie betreibt einen Laden in Thymos. Wir sind so lange Schmiede gewesen, dass sich keiner in der Familie mehr an etwas anderes erinnert. Und Ihr? Von wo in Elythria stammt Ihr? 
+rspDflt=None
+rsptxt1=Mein Vater besitzt Land an der Grenze zu Nisosa. Unsere Leibeigenen ziehen meistens Getreide oder züchten Schweine. 
+NxtLn1=Soldier11
+
+[Soldier11]
+say=Also habt Ihr bereits eine militärische Ausbildung empfangen. 
+rspDflt=None
+rsptxt1=Ich habe einiges während meiner Jugendjahre gelernt.
+NxtLn1=Soldier12
+rsptxt2= Natürlich. Ich habe gekämpft, seit ich ein Säugling war.
+nxtln1=Soldier13
+
+;If 1,
+[Soldier12]
+say=Dann solltet Ihr Euch hier in Avalon gut halten. Die meisten Soldaten hier hatten keine Ahnung von Kriegführung, als sie ankamen. Dennoch haben wir bisher die Ahoul zurückhalten können. 
+rspDflt=None
+rsptxt1=Ich hoffe nur, dass ich hier von Nutzen sein kann.
+NxtLn1=Soldier14
+
+
+[Soldier14]
+say=Das werdet Ihr. Ade.
+rspDflt=Ade.
+
+;If 2,
+[Soldier13]
+say=Tatsächlich? Ihr werdet erleben, dass Prahlerei Euch hier große Schwierigkeiten einbringt. 
+rspDflt=None
+rsptxt1=Wer sagt denn, dass ich prahle? 
+NxtLn1=Soldier15
+
+[Soldier15]
+say=Ich sage es. Ich erkenne einen unerfahrenen Soldaten auf den ersten Blick. Ich würde Euch zu einer Runde im Übungsfeld herausfordern, aber ich möchte einen Elythrianischen Herrn nicht allzu sehr demütigen. Geht und tanzt mit einem Ahoul, dann werden wir vielleicht sehen, was Ihr könnt. 
+rspDflt=Ich werde Euer Angebot nicht vergessen.

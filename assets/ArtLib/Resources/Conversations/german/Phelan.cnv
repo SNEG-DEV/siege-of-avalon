@@ -1,0 +1,57 @@
+[root]
+Count=2
+Else=
+Default=Danke, Phelan.
+Say1=All(ttl(!01recovered));
+goto1=Phelan
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Phelan]
+say=Hallo.  Wie ist es Euch ergangen, Mylord?
+rspDflt=None
+rspTxt1=Wie sonst als gut?  Ich hoffe, hier ist alles in Ordnung.
+NxtLn1=Phelan1
+
+[Phelan1]
+say=Den Umständen entsprechend, Mylord.  Ich werde allerdings unruhig.
+rspDflt=None
+rspTxt1=Warum seid Ihr beunruhigt?
+NxtLn1=Phelan2
+
+[Phelan2]
+say=Vielleicht bin ich zu lange im Einsatz, aber ich traue langsam den anderen Soldaten am Südtor nicht.
+rspDflt=None
+rspTxt1=Allen?
+NxtLn1=Phelan3
+
+[Phelan3]
+say=Nein, Herr.  Nur ein paar davon.  Ich glaube, mein Verstand spielt mir einen Streich.
+rspDflt=None
+rspTxt1=Vielleicht. Vielleicht aber auch nicht.  Vertraut auf Eure Instinkte und seid vorsichtig.
+NxtLn1=Phelan4
+
+[Phelan4]
+say=Ein guter Rat, Herr.  Danke.
+rspDflt=Auf Wiedersehen.
+
+;After recovery of Chalice
+[Chalice]
+say=Willkommen zurück. Wir haben viel Gutes über Euch gehört.
+rspDflt=None
+rspTxt1=Hoffentlich waren es nicht alles Lügen.
+NxtLn1=Chalice1
+
+[Chalice1]
+say=Manches, vielleicht, aber ich habe gehört, dass Ihr einen wertvollen Gegenstand gefunden habt.
+rspDflt=None
+rspTxt1=Das stimmt schon, aber ich habe nur wie jeder andere Soldat gehandelt.
+NxtLn1=Chalice2
+
+[Chalice2]
+say=Das glaube ich nicht, Herr.  Es gibt nicht viele Soldaten, die sich ohne eine volle Kohorte als Verstärkung in das Dorf  wagen würden.
+rspDflt=Danke für die freundlichen Worte.  Mögen Euch die guten Geister beschützen.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

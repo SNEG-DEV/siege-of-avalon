@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Adiós.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=Hola, ¿en qué puedo ayudarte?
+RspTxt1=Puedes ayudarme diciéndome de dónde eres!
+NxtLn1=Soldier1
+RspTxt2=Puedes ayudarme contándome algún comentario que hayas oído por ahí!
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Mi casa está en Cathea.  Crío vaquillas, o al menos, lo hacía antes de esta maldita guerra que me reclamó.
+rspBack=soldier
+
+[Soldier2]
+Say=He oído que el Rey Vortigerm de Taberland viene hacia aquí con todos y cada uno de los hombres disponibles de su reino.  ¡Esperemos que además, el chico-rey traiga comida!
+rspBack=soldier
+
+[Chalice]
+Say=¿Puedo ayudarle en algo, señor?
+RspTxt1=Puedes ayudarme diciéndome de dónde eres!
+NxtLn1=Chalice1
+RspTxt2=Puedes ayudarme contándome algún comentario que hayas oído por ahí!
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Nací en los altiplanos de Cathea.  ¡Dadme un caballo y os lo demostraré!
+rspBack=chalice
+
+[Chalice2]
+Say=Corre el rumor de que hay un nuevo oficial Elythriano que hará que ganemos esta guerra.  ¡Dicen que mide dos metros y tiene una mirada de fuego!
+rspBack=chalice
+

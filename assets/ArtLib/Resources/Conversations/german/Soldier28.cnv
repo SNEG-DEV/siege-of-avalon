@@ -1,0 +1,47 @@
+;Hello there, how can I help you?
+;May I be of assistance to you Sir?
+;What can I do for you?
+;How can I help you, Sir?
+;What is it you want?
+;Hello Sir, How may I help you?
+
+[root]
+Count=2
+Else=
+Default=Ade.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Soldier]
+say=Hallo, wie kann ich Euch helfen?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Soldier1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Soldier2
+
+[Soldier1]
+say=Ich war Bauer in Oriam.
+rspBack=soldier
+
+[Soldier2]
+say=Gestern Nacht während der Wache habe ich beobachtet, wie große Verstärkungstruppen zu den Ahoul stießen. Sie sahen hungrig aus, seid also auf der Hut.
+rspBack=soldier
+
+;After Recovery of Chalice
+[Chalice]
+say=Kann ich Euch behilflich sein, Herr?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Chalice1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Chalice2
+
+[Chalice1]
+say=Ich bin aus Oriam, Herr. Ich werde eigenhändig dafür sorgen, dass Mithras für den Schaden bezahlt, den er meinem Land zugefügt hat. 
+rspBack=chalice
+
+[Chalice2]
+say=Wie ich höre, soll der südliche Wall heute Nacht angegriffen werden. Kommt dorthin und gesellt Euch mir und meinen Freunden zu, falls Ihr Lust auf einen guten Kampf habt!
+rspBack=chalice

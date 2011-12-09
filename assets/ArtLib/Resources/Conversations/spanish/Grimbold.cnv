@@ -1,0 +1,128 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Gracias, Grimbold.
+say1=one(ttl(06chapter6,05chapter5));
+goto1=chapter6
+say2=one(ttl(03chapter3,04chapter4));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Grimbold
+Say4=All(ttl(01recovered));
+goto4=chalice
+
+[Grimbold]
+Say=Saludos.  ¿Qué haces por aquí?
+RspDflt=None
+RspTxt1=Busco noticias de mi hermano.
+NxtLn1=Grimbold1
+
+[Grimbold1]
+Say=¿Quién? ¿El tío que vieron corriendo por el pueblo anoche?
+RspDflt=None
+RspTxt1=Ese mismo, sí.
+NxtLn1=Grimbold2
+
+[Grimbold2]
+Say=Ha sido la cosa más interesante que nos ha sucedido en días!  Cuando vinieron con las noticias de la caza, todo el mundo subió a verlo, pero ya era demasiado tarde.  Ya había desaparecido de la vista.
+RspDflt=None
+RspTxt1=Espero que esté bien.
+NxtLn1=Grimbold3
+
+[Grimbold3]
+Say=Como todos nosotros.  Que los espíritus le protejan.
+RspDflt=Gracias.
+
+[Chalice]
+Say=Dime, tu eres el chaval que encontró la copa, ¿verdad?
+RspDflt=None
+RspTxt1=Verdad.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Un buen trabajo.  Enhorabuena!
+RspDflt=Gracias.
+
+[three]
+Say=Hey, Encuentracopas!  ¿Como va todo?
+RspDflt=Bien.  Excúsame, soldado.
+RspTxt1=¿"Encuentracopas"?  Así es como me llaman los soldados?
+nxtln1=three2
+
+[three2]
+Say=Entre otras cosas, como Destruyespectros y Erradicatraidores...
+RspDflt=none
+RspTxt1=[umpppf]  No puedes decirlo en serio.
+nxtln1=three3
+
+[three3]
+Say=Nah, no lo hago.  Esos son solo mis motes para ti.
+RspDflt=Gracias a los espíritus.  Hasta la vista, soldado.
+
+[chapter6]
+Say=Saludos %playername%, el que ha derribado legiones de Sha'ahoul y extraído la vida del espectro!
+RspDflt=none
+RspTxt1=Discúlpame; tengo asuntos que atender.
+nxtln1=chapter6a
+RspTxt2=Mira, todo es cuestión de mover bien la muñeca...
+nxtln2=chapter6b
+
+[chapter6a]
+Say=La verdad es que necesitas soltarte un poco el pelo.  Posiblemente, éstos sean nuestros últimos días de vida.  No podemos estar tan serios todo el tiempo!
+RspDflt=Disculpa, pero tengo una prisa terrible.
+RspTxt1=Lo siento, amigo.  He tenido que machacar a tantos Sha'ahoul, que supongo que mis puños necesitan un pequeño descanso.
+nxtln1=chapter6c
+
+[chapter6b]
+Say=[sacando su espada] Mírame!  Soy un hombre de las llanuras, grande, verde, repugnante y malvado, que ha venido a quitarte las tierras! Groarrr!  [Te indica que le sigas el juego.]
+RspDflt=none
+RspTxt1=La verdad es que no tengo tiempo para esto.
+nxtln1=chapter6a
+RspTxt2=<sacas tu arma y juegas con él>
+nxtln2=chapter6d
+
+[chapter6c]
+Say=Jaja! Eso está mejor, amigo!  Muy pronto venceremos a esos cretinos!
+RspDflt=Cúidate, Grimbold.
+
+[chapter6d]
+Say=[unos minutos después...] Jaja! Ha sido una actuación pésima, pero una lucha brillante, amigo mío.  Supongo que los exploradores de las llanuras tiemblan entre los arbustos cuando pasas por allí.
+Script=player.setprop(trainingpoints=4);#showmessage.trainingpoints#;
+RspDflt=Fiu!  Tengo que irme.  Tengo asuntos que atender.
+RspTxt1=Espero que sean lo suficientemente estúpidos para hacerse ver.  Más Ahoul valientes en espacio abierto, significan menos barro en mis botas.
+nxtln1=chapter6c
+

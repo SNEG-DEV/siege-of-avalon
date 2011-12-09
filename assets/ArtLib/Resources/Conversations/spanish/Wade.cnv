@@ -1,0 +1,102 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,06chapter6,06trialdone
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Gracias.
+say1=all(ttl(06chapter6,!06trialdone));
+goto1=chapter6
+say2=all(ttl(03chapter3));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Soldier
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Soldier]
+Say=¿Qué puedo hacer por ti?
+RspDflt=Nada, soldado. Sólo pasaba por aquí.
+RspTxt1=¿De dónde eres?
+NxtLn1=Soldier1
+RspTxt2=¿Has oído algún rumor últimamente?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Soy hijo de Elythria.
+RspDflt=Muy bien. Hasta luego, soldado.
+rspBack=soldier
+
+[Soldier2]
+Say=He oído que los Ahoul casi atraviesan el muro anoche.  Prepárate para luchar por tu vida esta noche...
+RspDflt=Gracias por el consejo, soldado. Hasta la vista.
+rspBack=soldier
+
+[Chalice]
+Say=¿Qué puedo hacer por usted, señor?
+RspDflt=Por favor, excúsame, soldado.  Tengo asuntos urgentes que resolver.
+RspTxt1=¿De dónde eres?
+NxtLn1=Chalice1
+RspTxt2=¿Has oído algún rumor últimamente?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Cada pedacito de mi cuerpo es Elythriano, señor.  ¡Y estoy listo para una buena lucha ahora mismo!
+RspDflt=Me alegra oírlo, soldado.  Hasta la vista.
+rspBack=Chalice
+
+[Chalice2]
+Say=Un amigo mío de Aratoy dice que el Capitán Calvaric hirió mortalmente a Mithras!  ¡No es mal tipo, para ser Aratoyano!
+RspDflt=Ese es todo un rumor, soldado, pero ojalá sea cierto.  Hasta la vista.
+rspBack=Chalice
+
+[three]
+Say=¿Es cierto?  ¿Ha muerto ya Mithras?
+RspDflt=none
+RspTxt1=No, soldado, todavía no...  ¿Dónde has oído eso?
+nxtln1=three2
+
+[three2]
+Say=Oh, debo haberlo soñado o algo por el estilo.  Lamento molestarte.
+RspDflt=No es molestia, soldado.  Hasta luego.
+
+[chapter6]
+Say=¿Cuándo terminará esta guerra?
+RspDflt=No lo sé.  Hasta luego.
+RspTxt1=En cuanto encuentre a Mithras.
+nxtln1=chapter6a
+
+[chapter6a]
+Say=Crees...  ¡No puedes derrotar a Mithras!  ¡Dicen que los elementos le obedecen, y que es imposible matarle!
+RspDflt='Decían' que no podría encontrar el cáliz, o a mi hermano...  Mantén tu fe y tus habilidades, compañero.
+

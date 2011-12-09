@@ -1,0 +1,128 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6,06trialdone
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Gracias, Iven.
+say1=all(ttl(06chapter6,!06trialdone));
+goto1=chapter6
+say2=one(ttl(03chapter3,04chapter4,05chapter5));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Iven
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Iven]
+Say=Pareces nuevo aquí.  ¿Te has perdido?
+RspDflt=None
+RspTxt1=No.  Sólo estaba explorando un poco.
+NxtLn1=Iven1
+RspTxt2=En absoluto.  Sólo me estoy presentando a mis compañeros soldados.  Quién eres tú y de dónde vienes?
+NxtLn2=Iven2
+RspTxt3=Qué va, sólo voy a la caza de rumores.  Has oído alguno últimamente?
+NxtLn3=Iven3
+
+[Iven1]
+Say=Bueno, no merodees demasiado.  Debes buscar la forma de hacerte útil.
+RspDflt=Lo haré.  Buenos días.
+rspBack=Iven
+
+[Iven2]
+Say=Soy Iven, de Nisos.  Solía ser un marino hasta que mi bote se hundió.  En cuanto Nicophorus me llame, volveré a navegar con él.
+RspDflt=Nicophorus es un buen hombre.  Ojalá que se cumpla tu deseo.
+rspBack=Iven
+
+[Iven3]
+Say=Sólo los mismos cuchicheos de espantadizos que se vienen oyendo desde siempre.  Todo el mundo se deja espantar por la duración de este asedio.
+RspDflt=None
+RspTxt1=Quizá.  Pero la nuestra es una situación espantosa.
+NxtLn1=Iven4
+
+[Iven4]
+Say=Cierto, pero confío en que nuestros generales sabrán sacarnos de ella con éxito.
+RspDflt=Tu fe está bien depositada, soldado.  Buenos días.
+rspBack=Iven
+
+[Chalice]
+Say=¿Cómo puedo servirle, mi señor?
+RspDflt=None
+RspTxt1=Sólo pasaba por aquí.  Espero que todo vaya bien.
+NxtLn1=Chalice1
+RspTxt2=¿Puedes contarme los últimos rumores que hayas escuchado?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Tan bien como es posible dadas las circunstancias, señor.  Que tengáis un buen día.
+RspDflt=Buen día.
+rspBack=Chalice
+
+[Chalice2]
+Say=He oído que el Capitán Calvaric le escupió a Mithras en el ojo, el otro día!  ¿Es eso cierto?
+RspDflt=None
+RspTxt1=Sospecho que eso es un falso rumor, pero sólo porque no ha tenido oportunidad.  Si Calvaric estuviese en situación de escupirle a Mithras, estoy seguro de que lo haría--como haríamos todos!
+NxtLn1=Chalice3
+
+[Chalice3]
+Say=Muy cierto, mi señor!
+RspDflt=Buenos días, soldado.
+rspBack=Chalice
+
+[three]
+Say=Hola... [bostezando] señor.
+RspDflt=none
+RspTxt1=Si estás cansado, deberías masticar una hoja de té, soldado.  Te mantendrá despierto.
+nxtln1=three2
+
+[three2]
+Say=Oh, seguro.  Simplemente sacaré mi [bostezo] Bolsa de Hojas de Té Infinitas y comenzaré a masticar una.
+RspDflt=none
+RspTxt1=Hmmm, ya veo.  Ha pasado mucho tiempo desde que hemos podido disfrutar del confort al que estamos acostumbrados antes de este desdichado asedio.
+nxtln1=three3
+
+[three3]
+Say=¿Qué sabrás de eso?  Tu eres un oficial y hermano del famoso Teniente Corvus!
+RspDflt=none
+RspTxt1=¿Qué es lo que te ha hecho darte cuenta, soldado?  ¿Han sido mis dedos adornados con anillos de oro, mi cetro engarzado con perlas?  ¿O han sido la docena de asistentes personales que me siguen a todas partes?
+nxtln1=three4
+
+[three4]
+Say=Ja, muy buena, señor.
+RspDflt=Justo lo que pensaba.  Cúidate, soldado.
+
+[chapter6]
+Say=Hola, hermano de Corvus.
+RspDflt=Hola, soldado.
+

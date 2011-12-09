@@ -1,0 +1,118 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Thank you, Avery.
+say1=one(ttl(05chapter5,06chapter6));
+goto1=fiveplus
+say2=one(ttl(03chapter3,04chapter4));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Avery
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Avery]
+Say=Hello, lad!  A new face in South Gate is always welcome!
+RspDflt=None
+RspTxt1=Thank you.  Why do you say that?
+NxtLn1=Avery1
+
+[Avery1]
+Say=Been cooped up here for days, sir.  Some of the fellows in here are starting to give me the creeps!
+RspDflt=None
+RspTxt1=How do you mean?
+NxtLn1=Avery2
+
+[Avery2]
+Say=It's just my imagination, sir, but I could almost swear some of the blokes in here aren't on our side.  Can you imagine that?
+RspDflt=None
+RspTxt1=Very odd.  I hope you're wrong.
+NxtLn1=Avery3
+
+[Avery3]
+Say=I'm sure I am.  Just a bit of cabin fever, sir.  You understand.  That, and I've been working double shifts.  I'm as tired as the dead.
+RspDflt=I hope you get the opportunity to get some proper sleep.  May the good spirits protect you.
+
+[Chalice]
+Say=Hello there!  How's it been outside of South Gate?
+RspDflt=None
+RspTxt1=You mean in the village?  It's dangerous, but I've been faring pretty well.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Not only the village, but the Bailey and Keep too!  Don't get out of here much, do I?
+RspDflt=None
+RspTxt1=I suppose not.  Everything inside is the same.  People are still hungry, but spirits are up.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=That's good to hear.  I hope we can last.
+RspDflt=So do we all.  Good day.
+
+[three]
+Say=[yawn] Good day, sir.
+RspDflt=Good day, soldier.  Farewell.
+RspTxt1=Have you been doing the work of two men again?
+nxtln1=three2
+
+[three2]
+Say=Not recently, sir, I'm just tired.  Tired, but I couldn't go to sleep if I wanted to.  Not until much later.  I still haven't had much of a chance to get out.  It's like I've been catching up on months of missed sleep all at once.  I feel like a golem.
+RspDflt=none
+RspTxt1=Pardon, soldier Avery?  Do you mean to say you feel like throwing people around, or that you feel incredibly stupid?
+nxtln1=three3
+
+[three3]
+Say=No, no, nothing like that.  Golems are stupid creatures, from what I've heard, but they'll do the same thing forever if you tell them to.  And here I am, the golem.  I tell myself to stay awake during guard duty...  I know every mildewed crack in these walls, every stain on the stone floors.  The only thing that has kept me together is my smoke break, and I'm slowly running out of my sweet tobacco.
+script=addtitle(03knowavery);
+RspDflt=none
+RspTxt1=Is that what you're worrying about?  I think you could probably find a place where you could grow your tobacco.
+nxtln1=three4
+
+[three4]
+Say=That's a good idea.  I think I'll manage to find out about that before I go to sleep tonight.
+RspDflt=Good luck, soldier, and farewell.
+RspTxt1=You might want to spend some time with the other soldiers...  A game of bones would probably take you out of your boredom.
+nxtln1=three5
+
+[three5]
+Say=Beats looking at mildew.  Say, thanks.  Thanks for your help, and for your suggestions.  This might be just what I need.
+RspDflt=Glad to help, soldier.  Farewell.
+
+[fiveplus]
+Say=I had a dream the other night that Vortigerm's army arrived just in time to save us from the Sha'ahoul attack.  What do you think that means?
+RspDflt=I think it means we still have hope, soldier.  Farewell.
+

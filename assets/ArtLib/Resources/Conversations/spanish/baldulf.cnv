@@ -1,0 +1,88 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=03chapter3
+Removed=
+
+[Quest]
+Added=ch1-86
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/12/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Gracias, Baldulf.
+say1=all(ttl(03chapter3));
+goto1=three
+Say2=all(ttl(!03chapter3));
+goto2=Balduf1
+
+[Balduf1]
+Say=Hola, chaval!  Me llamo Baldulf, el feroz y terrible.
+RspDflt=None
+RspTxt1=Hola.  ¿Conocías a mi hermano?
+NxtLn1=Balduf2
+
+[Balduf2]
+Say=¿Conocerle?  Si fuimos compañeros de litera cuando éramos reclutas novatos!  Por eso insistí en continuar buscándole.
+RspDflt=None
+RspTxt1=¿Tuvisteis suerte?
+NxtLn1=Balduf3
+
+[Balduf3]
+Say=Lamento decirlo, pero no.  No le hemos visto el pellejo a tu hermano.  Pero en realidad, eso son buenas noticias.  Los Ahoul no toman prisioneros, así que si se hubiese encontrado con ellos, habríamos hallado sus restos sin vida.  Por eso sabemos que los Ahoul no le han encontrado.
+RspDflt=None
+RspTxt1=Entonces, ¿crees que todavía está vivo?
+NxtLn1=Balduf4
+
+[Balduf4]
+Say=Puede que sí, o puede que no.  Hay otras cosas ahí fuera además de los Ahoul, ¿sabes?  Vimos trazas de una gran bestia cerca de la Librería.  No nos atrevimos a entrar.  Podría haber sido cualquier cosa.  Yo no entraría allí a menos que tuviese conmigo a un buen puñado de guerreros.
+Adventure=Ch1-86;
+RspDflt=None
+RspTxt1=Gracias por intentarlo, Baldulf.
+NxtLn1=Balduf5
+
+[Balduf5]
+Say=De nada.  Deseo que tu hermano vuelva con nosotros sano y listo para liquidar unos cuantos Ahoul!
+RspDflt=Yo también lo deseo.  Que tengas un buen día.
+
+[three]
+Say=¿Hay algo que pueda hacer por usted, señor?
+RspDflt=No, Baldulf, solo pasaba por aquí.  Buen día.
+RspTxt1=¿Cómo te sientes, Baldulf?
+nxtln1=three2
+
+[three2]
+Say=Me siento bien, señor...
+RspDflt=none
+RspTxt1=¿No te notas un poco menos "feroz y terrible" de lo normal?
+nxtln1=three3
+
+[three3]
+Say=Quizás un poco, señor.
+RspDflt=Cúidate, Baldulf.  Necesitaremos esa ferocidad para derrotar a los Ahoul!  Hasta luego, guerrero.
+

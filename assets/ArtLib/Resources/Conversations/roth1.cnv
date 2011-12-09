@@ -1,0 +1,86 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01transferred
+Checked=
+Removed=
+
+[Quest]
+Added=ch1-11,ch1-76
+Removed=
+
+[Items]
+Given=transferletter
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+allen(02/12/2001)=Passed
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=Thank you, Sir Roth.
+Say1=
+goto1=Corvus1
+
+[Corvus1]
+Say=You would be Corvus' brother.  I am sorry for your loss.  What can I do for you?
+script=player.setprop(frozen=false);
+RspDflt=None
+RspTxt1=I received some news from Calum at South Gate, sir.  My brother was seen escaping through the village outside Avalon.
+NxtLn1=Corvus2
+
+[Corvus2]
+Say=I know.  These three knights were part of a search party that went out looking for him.  They have just returned with their report.
+RspDflt=None
+RspTxt1=What's the news, then, sir?
+NxtLn1=Corvus3
+
+[Corvus3]
+Say=They went out into the village and hunted around.  They found signs of a battle but there was no sign of your brother anywhere.  As you may know, the Ahoul aren't known to take prisoners.  If your brother had been killed, his body would have been somewhere in the village.  Therefore, we suspect he is still alive.
+RspDflt=None
+RspTxt1=Are you still looking for him, sir?
+NxtLn1=Corvus4
+
+[Corvus4]
+Say=The disappearance of General Ovoron's force has left the garrison depleted and the Sha'ahoul are showing signs of great activity.  At this time we can ill afford any more men lost, especially over the life of just one soldier. I am sorry, son, but we can't risk any more of our forces searching for him.  Take heart -- he is an excellent survivor.  If anyone can make it back to Avalon alive, it's Corvus.
+RspDflt=None
+RspTxt1=I would like your permission to search for my brother, sir.
+NxtLn1=Corvus6
+
+[Corvus6]
+Say=I see.  Confidentially, I was hoping that you would say something like that.  I believe something could be arranged.  I will transfer you to Mudam's command.  He is the Master of Scouts, and from him, you may gain orders to search outside Avalon.  However, are you sure you want to do this?  It is very dangerous outside Avalon.  The Ahoul have increased their patrols ever since Ovoron's troops left.
+Adventure=ch1-76;
+RspDflt=None
+RspTxt1=Yes, sir.  I won't rest until I know my brother's fate.
+NxtLn1=Corvus8
+
+[Corvus8]
+Say=Very well.  Take this letter to Mudam and get his approval.  I hope you've taken your training seriously -- it's about to become very important to you.
+AddQuest=ch1-11;
+Script=player.addtitle(01transferred);giveitem(transferLetter,player);journalentry(roth);showmessage(Your journal has been updated.,300);
+RspDflt=None
+RspTxt1=Thank you, Sir Roth!  I won't let you down.
+NxtLn1=Corvus9
+
+[Corvus9]
+Say=No member of your family ever has, son.  Good luck to you.
+RspDflt=Good luck to us all, sir.  Farewell.
+

@@ -1,0 +1,135 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/13/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=Gracias.
+Say1=
+goto1=Soldier
+
+[Soldier]
+Say=¿Hay algún problema, chico?
+RspDflt=None
+RspTxt1=No hay problema.  Soy nuevo aquí, por ello quería conocer a algunos de los oficiales.
+NxtLn1=Soldier1
+
+[Soldier1]
+Say=Muchos de ellos se irán en breve con Ovoron.
+RspDflt=None
+RspTxt1=Lo sé.  Mi hermano está entre ellos.
+NxtLn1=Soldier2
+RspTxt2=Sí, he oído cosas sobre la incursión.  ¿Crees que tendrá éxito?
+NxtLn2=Soldier3
+
+[Soldier2]
+Say=¿Quién es tu hermano?
+RspDflt=None
+RspTxt1=Su nombre es Corvus y está con los Elythrianos.
+NxtLn1=Soldier4
+
+[Soldier4]
+Say=Conozco el nombre, pero nunca me lo han presentado.  Se dice que el General Roth le pide consejo a Corvus de vez en cuando.
+RspDflt=None
+RspTxt1=¿Por qué debería un hombre como el General Roth escuchar a mi hermano?
+NxtLn1=Soldier5
+
+[Soldier5]
+Say=Debe haber pasado mucho tiempo desde que le viste por última vez, pues tu hermano es un gran soldado.  Pocos conocen el área alrededor de Avalon tan bien como él.  Es valiente y un excelente explorador, así como un espadachín experto.
+RspDflt=None
+RspTxt1=Tienes razón, hace mucho que no le veía.  Parece más avezado.
+NxtLn1=Soldier6
+RspTxt2=Siempre he sabido que Corvus sería un gran guerrero.  Espero poder seguir sus pasos.
+NxtLn2=Soldier7
+
+[Soldier6]
+Say=Seguro que sí.  Es un veterano de este asedio, y un líder ejemplar.  Si ordena a sus hombres que luchen, es porque él ya lo está haciendo.
+RspDflt=Entonces, además es un buen líder!  Debo ir a entrenarme.  Buen día.
+
+[Soldier7]
+Say=Son grandes pasos a seguir.  Tu hermano tiene muchos amigos aquí, y una gran reputación.
+RspDflt=None
+RspTxt1=No quiero ser mi hermano.  Sólo quiero que mi familia esté orgullosa de mí, y honrar el nombre de mi padre.
+NxtLn1=Soldier8
+
+[Soldier8]
+Say=Un bonito sentimiento.  Pero déjame avisarte.  Pocas de las cosas que suceden aquí son honorables.  He hecho pocas cosas aquí de las que pueda sentirme orgulloso.  Probablemente tu hermano piense lo mismo.
+RspDflt=None
+RspTxt1=Pero seguro que estás orgulloso de defender los Siete Reinos.
+NxtLn1=Soldier9
+
+[Soldier9]
+Say=Sí.  Y también he hecho cosas de las que no hablaré.  Recuerda:  la Pena es la compañera del soldado.
+RspDflt=Comprendo.  Buena suerte.
+
+[Soldier3]
+Say=Éxito?  Eso sería una novedad.  Hasta ahora, todas nuestras ofensivas han encontrado derrota y humillación.
+RspDflt=None
+RspTxt1=Haber aguantado tanto tiempo se puede considerar un éxito.
+NxtLn1=Soldier10
+
+[Soldier10]
+Say=Quizá, a menos que lo consideres el aplazamiento de nuestras muertes.
+RspDflt=None
+RspTxt1=¿Son todos tus paisanos tan sombríos?
+NxtLn1=Soldier11
+
+[Soldier11]
+Say=Naturalmente.  Si tu fueses de Oriam, también serías sombrío.
+RspDflt=None
+RspTxt1=No, no lo sería.  Me daría coraje el pensar que tantos han venido en mi ayuda.
+NxtLn1=Soldier12
+RspTxt2=Quizá, pero también intentaría salvar tanto como me fuese posible.
+NxtLn2=Soldier13
+
+[Soldier12]
+Say=¿Coraje?  Nuestro país es una zona de guerra.  Si perdemos, se pierde todo, incluso nuestras vidas.  Si ganamos, nos quedamos sin hogar, sin familia y con un país devastado.  ¿Por qué debería darme coraje el que unos pocos cientos de extranjeros hayan venido aquí a morir conmigo?
+RspDflt=None
+RspTxt1=Lo siento, nunca lo había pensado de ésta manera.
+NxtLn1=Soldier14
+
+[Soldier14]
+Say=Obviamente no.  Pero no te culpo.
+RspDflt=Gracias por tu comprensión.  Ahora debo irme.
+
+[Soldier13]
+Say=Todo aquello que podía salvarse ha sido reclamado por la alianza para luchar contra los Ahoul.  Eso es todo lo que me queda.  Cuando la guerra termine, ¿qué?
+RspDflt=None
+RspTxt1=Entonces llegará el momento de reconstruir vuestro país y hacerlo más fuerte.
+NxtLn1=Soldier15
+
+[Soldier15]
+Say=Un bonito pensamiento, pero demasiado idealista.  Quizá te necesiten en alguna otra parte.
+RspDflt=De hecho, creo que es así.  Buen día.
+

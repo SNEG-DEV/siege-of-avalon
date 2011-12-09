@@ -1,0 +1,122 @@
+[FileID]
+Author=tucker
+Coding=n/a
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=05seenzar
+Checked=03chapter3,05chapter5,05defenseson,05ringdone,05seenzar,05zarnews,06chapter6,PlayerKnown
+Removed=
+
+[Quest]
+Added=ch3-512,ch5-500
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Gracias, Belinda.
+say1=all(ttl(PlayerKnown,06chapter6));
+goto1=chapter6
+Say2=all(ttl(PlayerKnown,05chapter5));
+goto2=chapter5
+Say3=All(ttl(!PlayerKnown));
+goto3=Belinda
+Say4=All(ttl(PlayerKnown));
+goto4=News
+
+[Belinda]
+Say=No pareces herido.  ¿Por qué has venido a la enfermería?  ¿Buscas a alguien?
+RspDflt=None
+RspTxt1=No, buena señora.  Soy nuevo aquí y sólo estoy mirando.  ¿Puedo preguntar quién sois vos?
+NxtLn1=Belinda1
+RspTxt2=No, señora.  Sólo me estoy familiarizando con la ciudadela.  ¿Dígame, que chismes ha oído últimamente?
+NxtLn2=Belinda2
+
+[Belinda1]
+Say=Soy Belinda, y trabajo aquí en la enfermería.  Me temo que no soy tan buena sanadora como Crosby o Fray Massus, pero intento reconfortar a los heridos y moribundos.  Es lo menos que puedo hacer.
+RspDflt=None
+RspTxt1=Estoy seguro que sus esfuerzos son apreciados por todos.  Tenga un buen día.
+NxtLn1=Belinda3
+
+[Belinda2]
+Say=Uno de los soldados dijo que los Ahoul casi toman la Puerta Sur la otra noche.  No es cierto, ¿verdad?  Perderla sería una catástrofe!
+RspDflt=None
+RspTxt1=Desde luego, no lo sería, pero no debéis tener miedo.  Confío en que la Puerta Sur esté intacta, si no, estaríamos hasta el cuello de Ahoul.  Hasta luego.
+NxtLn1=Belinda3
+
+[Belinda3]
+Say=Espera, yo te conozco.  Eres el hermano del Teniente Corvus, ¿no?  Se nos está terminando el material necesario para combatir unas fiebres que se están extendiendo por la enfermería.  Y... bueno, ¿podrías hablar con el Hermano Mo sobre el tema?  Estoy segura de que podrías ayudarnos!
+script=AddTitle(PlayerKnown);
+RspDflt=Lo haré, si vos creéis que ayudará, mi señora.  Hasta luego.
+
+[News]
+Say=Hola otra vez, señor.  ¿Necesitáis algo?
+RspTxt1=Sólo mantengo mis oídos abiertos.  ¿Habéis oído algo útil?
+NxtLn1=News1
+rspcnd2=all(ttl(03chapter3));
+RspTxt2=¿Cómo se encuentra mi hermano?
+nxtln2=news2
+RspDflt=No, Belinda.  Sólo pasaba por aquí, lamento molestarla.
+
+[News1]
+Say=Nada importante desde la última vez que hablamos, señor.  Aquellos pacientes que no tienen las fiebres, están en proceso de recuperación, así que no hablan mucho, salvo para pedir más agua.  Y nuestros sanadores están demasiado ocupados para preocuparse por los cotilleos.
+RspDflt=Gracias de todas formas, mi señora.
+
+[news2]
+Say=Cada día pasa más horas consciente.  Cuando es coherente, habla de su frustración por estar aquí, en la enfermería, ya que supone que se encuentra bien.  La verdad es que sus heridas físicas pueden estar curadas, pero ha recibido algunos golpes fuertes en la cabeza.  Dadas nuestras habilidades, sólo el tiempo puede curarle.
+adventure=ch3-512
+RspDflt=none
+RspTxt1=Estoy seguro de que os ocuparéis de él, Belinda.
+nxtln1=news3
+
+[news3]
+Say=Sólo lo mejor para un oficial de su categoría.
+RspDflt=Muy acertado.  Gracias, Belinda.
+
+[chapter5]
+Say=Oh, hola %playername%. ¿Necesitas algo?
+rspdflt=
+RspTxt1=Sólo pasaba para ver qué tal van las cosas por la enfermería.
+NxtLn1=News1
+RspTxt2=¿Alguna habladuría interesante para mí?
+NxtLn2=News1
+rspcnd3=all(ttl(05defenseson,!05ringdone,05zarnews,!05seenzar));
+RspTxt3=He oído decir a Calum que Elazar está enfermo, y que está aquí en la enfermería.  ¿Es eso cierto?
+nxtln3=chapter52
+rspcnd4=all(ttl(05defenseson,05ringdone,!05zarnews,!05seenzar));
+RspTxt4=He oído decir a Elarath que Elazar está enfermo, y que está aquí en la enfermería.  ¿Es eso cierto?
+nxtln4=chapter52
+rspcnd5=all(ttl(05defenseson,05ringdone,05zarnews,!05seenzar));
+RspTxt5=He oído decir tanto a Calum como a Elarath, que Elazar está enfermo y que está aquí en la enfermería.  ¿Es eso cierto?
+nxtln5=chapter52
+
+[chapter52]
+Say=Sí, es cierto...  Ahora mismo duerme.  No estamos muy seguros de qué es lo que va mal con él...  Ni siquiera sabemos si algo va mal con él.  Por favor, no le molestes.
+script=player.addtitle(05seenzar);
+adventure=ch5-500;
+RspDflt=Naturalmente, Belinda.  Supongo que vendré más tarde a ver cómo está.
+
+[chapter6]
+Say=Elazar sigue terriblemente enfermo, y no tenemos ni idea de cómo salvarle. Por favor, ayúdanos!
+RspDflt=Haré lo que pueda. Hasta luego, Belinda.
+

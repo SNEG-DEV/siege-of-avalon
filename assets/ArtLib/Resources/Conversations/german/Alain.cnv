@@ -1,0 +1,14 @@
+[root]
+Count=1
+Else=
+Default=Danke, Alain.
+Say1=All(ttl(!chapter2))
+goto1=Alain
+
+[Alain]
+say=Ich fürchte nein, Herr.  Ihr habt nicht die richtigen Ausweispapiere, also darf ich Euch nicht passieren lassen.
+rspdflt=Danke trotzdem.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed
+

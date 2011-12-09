@@ -1,0 +1,169 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01bonniehappy,01bonnietale,06tbonnie
+Checked=01Basement,01BonnieHapp,01BonnieTale,01Bug,01Bugs,01Recovered,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-24,ch1-26,ch6-007
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+garth(5/24/01)=Passed
+tucker(7/12/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=7
+Else=
+Default=Muchas gracias, señora.
+Say1=All(ttl(06chapter6));
+goto1=ch6
+Say2=All(ttl(!01BonnieTale));
+goto2=Bonnie
+Say3=All(ttl(01BonnieTale,!01Basement,!01Bugs))
+goto3=CellarPermission
+Say4=All(ttl(01BonnieTale,01Basement,!01Bugs))
+goto4=GoingDown
+Say5=All(ttl(01Bugs,!01BonnieHappy))
+goto5=BugsGone
+Say6=All(ttl(!01Recovered));
+goto6=News1
+Say7=All(ttl(01Recovered));
+goto7=Chalice
+
+[Bonnie]
+Say=Si venís buscando un aperitivo, ya os podéis volver por dónde habéis venido.  Sabéis que no tenemos suficiente comida para eso!
+RspDflt=None
+RspTxt1=Aunque debo admitir que podría comer alguna cosilla, soy consciente de la situación de la comida aquí, en la ciudadela.  Vengo porque he llegado recientemente, y deseo hacer nuevas amistades.
+NxtLn1=Bonnie1
+
+[Bonnie1]
+Say=Bien, podéis llamarme Bonnie, entonces.  Soy una de las asistentes de Anora.  No obstante, como puedes ver, aunque no haya mucho que cocinar, todavía tenemos bastante trabajo.
+RspDflt=none
+RspTxt1=Mis disculpas, señora mía.  Lamento profundamente haberla entorpecido.  Me iré inmediatamente, entonces.
+nxtLn1=Bonnie2
+
+[Bonnie2]
+Say=Oh, no, no es necesario.  Quedaos un momento, y aliviad mi aburrimiento.  No deseo que Anora me coja haraganeando con algún soldado, pues me ganaría una reprimenda.  La verdad es que limpiar mesas que ya han sido relamidas por soldados hambrientos que buscan hasta la última migaja, ya podéis imaginar que resulta altamente tedioso.  Es la cuarta vez hoy que he limpiado estas mesas--y sólo hemos tenido una comida!
+RspDflt=none
+RspTxt1=Lo comprendo. Quizás me quede un momento entonces.  Como he dicho, soy nuevo por estos lares e intento conocer a tanta gente como me sea posible.  ¿Qué cotilleos recientes me podéis contar sobre las cocinas?
+nxtLn1=Bugs
+
+[Bugs]
+Say=Bueno, no soy persona que guste de difundir rumores, pero esta mañana, cuando estaba abajo en la bodega buscando un saco de harina, fue como si una sombra negra saltase desde la esquina y se arrastrase por el suelo! 'Una Sombra,' fue lo que pensé, y tiré aquel saco y corrí hacia la escalera tan rápido como me permitieron mis piernas y ésta falda.  Una Sombra puede mataros con una simple mirada, ¿sabéis?, y casi pude sentir el frío de sus ojos en mi nuca mientras corría.  Lo divertido es--y la verdad, no puedo estar segura, pues sentía mi corazón palpitando en mis oídos, con más fuerza que el sonido de mis pisadas al correr--pero creo que oí algo parecido a un castañeteo mientras subía la escalera.
+RspDflt=none
+RspTxt1=Me alegro, pues, de que escapaseis con vida.
+nxtLn1=Bugs2
+
+[Bugs2]
+Say=Anora no me creyó cuando se lo conté--simplemente me riñó.  Y Davet, ese pretendido guerrero de allí, simplemente se rió de mí cuando se lo conté, y dijo que estaba demasiado ocupado defendiendo la torre para ir mirando por la bodega sólo por las tontas imaginaciones de una mujer.  Vos, no obstante--¿por qué no os reís de mí?
+RspDflt=none
+RspTxt1=Porque yo creo que os asustasteis mucho esta mañana.  También creo que merecéis que vuestros miedos sean eliminados.
+nxtLn1=Bugs3
+
+[Bugs3]
+Say=¿Vos creéis...?  Yo...-- yo no sé qué decir.  Umm.  Gr- gracias, supongo.  Pero aun así, yo me mantendría alejada de la bodega si fuese vos.
+RspDflt=none
+RspTxt1=No, señora.  Investigaré personalmente por vos.
+nxtLn1=Bugs4
+
+[Bugs4]
+Say=Os lo agradezco.  Quizá sean sólo las tontas imaginaciones de una mujer, pero...  Hablad primero con Anora.  Es su cocina, y necesitaréis su permiso antes de bajar.  Tened cuidado!
+Adventure=ch1-24;
+script=player.addtitle(01BonnieTale)
+RspDflt=Naturalmente, señora mía.  Volveré pronto, y traeré novedades.
+
+[CellarPermission]
+Say=¿Habéis hablado ya con Anora?
+RspDflt=No, señora.  Necesitaba prepararme un poco antes de ir al subterráneo.  Iré a hablar con ella ahora.
+
+[GoingDown]
+Say=¿Y?  ¿Qué novedades hay?
+RspDflt=Creo que teníais buenos motivos para sospechar que algun ser no amistoso merodea por el subterráneo.  No obstante, juro por mi honor, que nopermanecerá ahí mucho tiempo.
+
+[BugsGone]
+Say=Parece que has pasado por algún aprieto.  Yo tenía razón, ¿verdad?
+RspDflt=none
+RspTxt1=Sí, mi señora.  El castañeteo que oísteis, de hecho, lo hacían unas criaturas que parecían escarabajos gigantes.  Salían de las esquinas, como vos dijísteis.  Ha sido una buena idea no esperar para determinar la amenaza exacta--yo mismo, a duras penas he sobrevivido.
+nxtLn1=BugsGone2
+
+[BugsGone2]
+Say=Entonces, yo tenía razón--había algo allí abajo!  Gracias mi señor.  Muchas gracias!
+RspDflt=none
+RspTxt1=Aunque era mi deber destruir a las criaturas, ha sido mi placer el poder ayudaros.
+nxtLn1=BugsGone3
+
+[BugsGone3]
+Say=Adulador!  Idos, pues!  Pero no paséis mucho tiempo lejos...
+Adventure=ch1-26;
+script=player.addtitle(01BonnieHappy)
+RspDflt=Como deseéis, mi señora.  Hasta la próxima vez...
+
+[News1]
+Say=Poca cosa ha cambiado por aquí, aunque siempre es bueno ver vuestra cara.  Pero ¿me permitís que os cuente un pequeño secreto?  Alejaos del cocido de esta noche.  La carne que hemos usado no es exactamente fresca.  No va a hacer daño a nadie, pero podríais tener problemas si vuestro estómago es delicado.
+RspDflt=Os agradezco la preocupación, pero es mejor, creo, para mi estómago, el tener una ligera indigestión que el estar vacío.  Hasta luego, entonces, mi señora...
+
+[Chalice]
+Say=Mi señor!  Debisteis avisarme antes!  No quiero que me veáis tan desaliñada!
+RspDflt=None
+RspTxt1=Oh, señora... Jamás me parecéis desaliñada.  Siempre os veis preciosa.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Quizá, pero puedo estar mejor para un héroe.  Ahora, si me decís qué quereis, quizá pueda ayudaros antes de sonrojarme todavía más...
+RspDflt=None
+RspTxt1=Oh, nada mas que veros a v--  quiero decir, oír vuestras últimas novedades.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Algunos de los más rápidos tendrán suerte esta noche; hay ternera de verdad en la cena de hoy.  ¿Querríais que separase una porción para vos?
+Adventure=ch1-26;
+RspDflt=No, debo comer con los demás soldados.  Sin embargo, os agradezco la oferta, y la recordaré con gratitud.  Hasta luego, señora.
+
+[ch6]
+Say=Oh, %playername%, que alegría veros!  Ha pasado mucho tiempo desde que os he visto -- Temí que quizá los Sha'ahoul habían eliminado a otro de nuestros héroes.
+RspDflt=none
+RspCnd1=All(ttl(01bugs))
+RspTxt1=A pesar de haber pasado por muchas dificultades,  Los espíritus me han protegido y me han permitido superarlas todas.
+NxtLn1=db
+RspCnd2=All(ttl(!01bugs))
+RspTxt2=A pesar de haber pasado por muchas dificultades,  Los espíritus me han protegido y me han permitido superarlas todas.
+NxtLn2=nodb
+
+[db]
+Say=Bien, tened cuidado -- vuestras acciones significan mucho para mucha gente, y yo personalmente estaría muy apenada si supiera de vuestra muerte.  Vos fuisteis el único que me escuchó, cuando esos asquerosos escarabajos infectaron el sótano, y nunca olvidaré la amabilidad que me mostrasteis.
+script1=player.addtitle(06Tbonnie);
+RspDflt=none
+RspTxt1=Considero mi obligación, así como mi placer, el hacer todo lo que pueda por alguien tan agradable y tan bella como vos.
+nxtln1=goingtoSG
+
+[goingtoSG]
+Say=Sois un adulador, %playername%.  Me gustaría quedarme y charlar, pero debo irme a entregar las provisiones a los soldados de la Puerta Sur.  Tened cuidado, hermoso guerrero.
+adventure=ch6-007;
+RspDflt=Espero que los espíritus nos vuelvan a reunir pronto, dulce Bonnie.  Hasta luego.
+
+[nodb]
+Say=Espero que continúen haciéndolo -- Avalon no puede permitirse perder hombres como vos.  Me encantaría pasar más tiempo con vos, %playername%, pero ahora debo rastrear la bodega en busca de provisiones.
+RspDflt=Sois demasiado amable, señora.  Hasta luego.
+

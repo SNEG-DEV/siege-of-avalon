@@ -1,0 +1,81 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01permission,01recovered,01village
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Gracias, Sir Roth.
+Say1=All(ttl(01permission,01village,!01recovered));
+goto1=Village1
+Say2=All(ttl(!01permission,!01village,!01recovered));
+goto2=transfered1
+Say3=All(ttl(01permission,!01village,!01recovered));
+goto3=transfered2
+Say4=All(ttl(01permission,01village,01recovered));
+goto4=Chalice1
+
+[Village1]
+Say=Veo que el enemigo en el pueblo todavía no te ha derrotado.  Eso es bueno.  ¿Qué puedo hacer por ti?
+RspDflt=None
+RspTxt1=He vuelto para conocer los últimos acontecimientos de Avalon.
+nxtLn1=Village2
+
+[Village2]
+Say=Puedes conseguir cotilleos de cualquier soldado, hijo.  Lo lamento, pero ahora no tengo tiempo para eso.
+RspDflt=Lamento haberle molestado.
+
+[transfered1]
+Say=Ahora perteneces a Mudam, hijo. Deberás discutir los asuntos futuros con él.
+RspDflt=Muy bien, Sir Roth.
+
+[Transfered2]
+Say=¿Qué te trae de vuelta?  ¿No te ha dado Mudam permiso para salir de Avalon?
+RspDflt=none
+RspTxt1=No, tengo el permiso.  Tenía curiosidad por saber si vos podíais decirme algo sobre las tierras del exterior de la ciudadela.
+NxtLn1=transfered3
+
+[transfered3]
+Say=Me temo que no puedo ayudarte, chico.  Estoy a cargo de la defensa de Avalon.  El General Ovoron es nuestro comandante de asalto.  Si estuviese aquí, sería la persona apropiada a quien preguntar.
+RspDflt=Comprendo.  Gracias por vuestra ayuda.
+
+[chalice1]
+Say=Has vuelto!  ¡Es bueno verte de nuevo, chico!  Tus hazañas son la comidilla de la ciudadela.
+RspDflt=None
+RspTxt1=Gracias, General.  ¿Hay alguna novedad?
+NxtLn1=chalice2
+
+[chalice2]
+Say=Probablemente ya lo hayas escuchado, pero hay refuerzos en camino.  En unas pocas semanas, todo estará bien.
+RspDflt=Esa es una excelente noticia!  ¡Gracias, señor!
+

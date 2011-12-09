@@ -1,0 +1,46 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=
+Say1=
+goto1=torr
+
+[torr]
+Say=I know a soldier in need of armor when I see one.  Have you the money for quality armor?
+RspDflt=I'm afraid I don't.
+RspTxt1=I'd like to see what you have.
+script1=merchant
+

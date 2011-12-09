@@ -1,0 +1,117 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01foundbrother,02chapter2,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Gracias.
+say1=one(ttl(01foundbrother,02chapter2,03chapter3,04chapter4,05chapter5,06chapter6));
+goto1=traitors
+Say2=all(ttl(!01foundbrother));
+goto2=Soldier
+
+[Soldier]
+Say=¿Qué haces por aquí?
+RspDflt=None
+RspTxt1=Sólo echaba un vistazo.  Acabo de llegar a Avalon.
+NxtLn1=Soldier1
+
+[Soldier1]
+Say=Bien.  Necesitamos toda la ayuda que podamos conseguir.
+RspDflt=None
+RspTxt1=¿De dónde eres?
+NxtLn1=Soldier2
+RspTxt2=¿Vamos cortos de hombres?
+NxtLn2=Soldier3
+
+[Soldier2]
+Say=Vengo de Fornax.
+RspDflt=None
+RspTxt1=¿Por qué sois tan reservados los Fornaxanos?
+NxtLn1=Soldier4
+
+[Soldier4]
+Say=Sabemos que poca gente de los Siete Reinos comprende la magia, especialmente a un reino que depende tanto de ella.  Antes que enfrentarnos a los prejuicios o explicar cada faceta de nuestra sociedad, nos guardamos la información para nosotros mismos.  En realidad, pocos preguntan sobre nuestro país.  Suponen que no hablaremos de él.
+RspDflt=None
+RspTxt1=¿Pero lo haríais?  Si alguien te pregunta sobre tu país, ¿hablarías de él?
+NxtLn1=Soldier5
+
+[Soldier5]
+Say=Probablemente no.  A menos que ese individuo estuviese pensando en trasladarse a Fornax, no lo creo.  Vivir con la magia, aunque no la practiques, requiere disciplina y una mentalidad abierta.  No me molestaría en explicar nada a alguien que no estuviese dispuesto a asumir nuestra forma de ser.
+RspDflt=None
+RspTxt1=¿Ha habido alguien que se dirigiese a tu país para convertirse allí en ciudadano?
+NxtLn1=Soldier6
+RspTxt2=Así pues, vuestro secretismo os viene impuesto por otros, pero también por vosotros mismos.
+NxtLn2=Soldier7
+
+[Soldier6]
+Say=Es excepcionalmente raro, pero ha sucedido.  Habitualmente, tratamos a los visitantes con cortesía, pero les invitamos a seguir su camino.
+RspDflt=None
+RspTxt1=Si no te molesta que te lo diga, tu país no parece demasiado amistoso.
+NxtLn1=Soldier8
+
+[Soldier8]
+Say=Somos amistosos.  Simplemente no nos gusta la curiosidad ociosa.
+RspDflt=Hmmm.  Si tu lo dices...  Que tengas un buen día.
+
+[Soldier7]
+Say=Eso es bastante acertado.  Probablemente oigas opiniones distintas de distintos Fornaxanos pero supongo que la verdad es un cierto término medio.
+RspDflt=None
+RspTxt1=Gracias por hablar conmigo sobre Fornax.  Quizá en el futuro desee aprender más sobre tu país.
+NxtLn1=Soldier9
+
+[Soldier9]
+Say=Si lo haces, te advierto que no intentes charlar con otros Fornaxanos.  Algunos son apreciablemente ariscos.
+RspDflt=Gracias por el consejo.  Buenos días.
+
+[Soldier3]
+Say=Nos estamos preparando para la falta de soldados muy pronto.  El General Ovoron se llevará una gran fuerza de campaña.
+RspDflt=None
+RspTxt1=Mi hermano me lo ha mencionado.  ¿Qué has oído?
+NxtLn1=Soldier10
+
+[Soldier10]
+Say=Lo que haya oído podría ser confidencial.
+RspDflt=Lo comprendo.  Gracias de todos modos.
+RspTxt1=Estoy seguro de que puedes confiar en mí.  Mi hermano es un teniente Elythriano.
+NxtLn1=Soldier11
+
+[Soldier11]
+Say=Eso no significa nada para mí.  Mis superiores me han ordenado ser muy estricto con la divulgación de secretos.
+RspDflt=Lo comprendo.  Que tengas un buen día.
+
+[traitors]
+Say=Ten cuidado, amigo.  Los traidores están en todas partes!  Sería terrible si nos derrotara el enemigo interior!
+RspDflt=Estoy de acuerdo.  Gracias por tu consejo.
+

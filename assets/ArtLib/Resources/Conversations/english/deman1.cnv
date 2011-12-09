@@ -1,0 +1,72 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=ch1-01
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=1
+Else=
+Default=Thank you, Deman.
+Say1=
+goto1=Deman1
+
+[Deman1]
+Say=Pardon, sir.  My name is Deman and I have orders for you.  You are to report to Captain Avarous for training in the Outer Bailey as soon as possible.
+AddQuest=ch1-01;
+script=Siege20000500190047682240.say();player.setprop(frozen=false);
+RspDflt=None
+RspTxt1=Thank you, but I think I'll look around first.
+NxtLn1=Deman2
+RspTxt2=Where is the Outer Bailey?
+NxtLn2=Deman3
+RspTxt3=What is the Outer Bailey?
+NxtLn3=Deman4
+
+[Deman2]
+Say=As you wish, sir, but I wouldn't keep Captain Avarous waiting for too long.
+RspDflt=I won't.  Thank you, Deman.
+RspTxt1=Where is the Outer Bailey?
+NxtLn1=Deman3
+RspTxt2=What is the Outer Bailey?
+NxtLn2=Deman4
+
+[Deman3]
+Say=You can get there by taking the stairs at the end of the hall to the lower level. Go out the main doors to your left into the Outer Bailey.
+RspDflt=Thank you, Deman.
+RspTxt1=And what is it, exactly?
+NxtLn1=Deman4
+
+[Deman4]
+Say=The Outer Bailey is the yard separating South Gate from the Keep.  It is used primarily as a training ground, but some of the refugee merchants and craftsmen have set up their shops there.
+RspDflt=Thanks.  Good day.
+RspTxt1=And where is it located?
+NxtLn1=Deman3
+

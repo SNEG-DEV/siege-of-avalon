@@ -1,0 +1,110 @@
+;Detailed Dialogue
+
+;Soldier 4
+
+[root]
+Count=1
+Else=
+Default=Danke.
+Say1=
+goto1=Soldier
+
+[Soldier]
+say=Gibt's ein Problem, Junge?
+rspDflt=None
+rsptxt1=Kein Problem. Ich bin neu hier, also wollte ich ein paar Offiziere kennenlernen.  
+NxtLn1=Soldier1
+
+[Soldier1]
+say=Viele brechen bald mit Ovoron auf.
+rspDflt=None
+rsptxt1=Ich weiß. Mein Bruder gehört zu ihnen.
+NxtLn1=Soldier2
+rsptxt2=Ja, Ich habe von dem Überraschungsangriff gehört. Glaubt Ihr, es wird ihnen gelingen?
+NxtLn2=Soldier3
+
+;If 1,
+[Soldier2]
+say=Wer ist Euer Bruder?
+rspDflt=None
+rsptxt1= Er heisst Corvus und dient bei den Elythrianern.
+NxtLn1=Soldier4
+
+[Soldier4]
+say=Der Name ist mir bekannt, aber ich habe ihn nie kennengelernt. Es heisst, der General erbittet hin und wieder sogar Corvus' Rat. 
+rspDflt=None
+rsptxt1=Warum sollte ein Mann wie General Roth auf meinen Bruder hören?
+nxtln1=Soldier5
+
+[Soldier5]
+say=Es ist wahrscheinlich eine Weile her, seit Ihr Euren Bruder gesehen habt. Inzwischen ist er ein hervorragender Soldat. Wenige kennen das Gebiet um Avalon so gut wie er. Er ist sowohl ein tapferer, erstklassiger Kundschafter, als auch ein Meister im Schwertkampf. 
+rspDflt=None
+rsptxt1=Ihr habt Recht. Es ist lange her, seit ich ihn zuletzt gesehen habe. Er sah abgehärtet aus. 
+NxtLn1=Soldier6
+rsptxt2=Ich wußte schon immer, dass aus Corvus ein grosser Krieger wird. Ich hoffe, dass ich in seine Fußstapfen treten kann. 
+NxtLn2=Soldier7
+
+;If 1,
+[Soldier6]
+say=Ich nehme es an. In dieser Belagerung ist er ein Mann der ersten Stunde und gibt allen ein gutes Beispiel. Wenn er seine Männer zum Kampf befiehlt, steht er schon mitten drin. 
+rspDflt=Also ist er auch ein guter Anführer. Ich muss üben. Ade.
+
+;If 2,
+[Soldier7]
+say=Das sind grosse Fußstapfen. Euer Bruder hat viele Freunde und einen ausgezeichneten Ruf. 
+rspDflt=None
+rsptxt1=Ich habe nicht den Anspruch, mein Bruder zu sein. Ich möchte nur, dass meine Familie stolz auf mich ist und dass ich meines Vaters Namen Ehre bringe.
+NxtLn1=Soldier8
+
+[Soldier8]
+say=Ein lobenswerter Anspruch. Doch hört auf meine Warnung. Hier geschieht wenig Ehrenvolles. Hier habe ich wenige Taten vollbracht, auf die ich stolz bin. Euer Bruder fühlt wahrscheinlich ähnlich. 
+rspDflt=None
+rsptxt1=Sicher seid Ihr stolz darauf, die Sieben Königreiche zu verteidigen.
+NxtLn1=Soldier9
+
+[Soldier9]
+say=Ja. Aber ich habe auch Dinge getan, über die ich nicht sprechen will. Hört gut zu: die Reue ist des Soldaten steter Kamerad. 
+rspDflt=Ich verstehe. Viel Glück Euch.
+
+;If 2,
+[Soldier3]
+say=Erfolg? Das wäre etwas Neues. Bis jetzt haben unsere ganzen Angriffe nur zu Niederlage und Metzelei geführt.
+rspDflt=None
+rsptxt1=Die Festung hier überhaupt so lange zu halten, ist doch wohl ein Erfolg.
+NxtLn1=Soldier10
+
+[Soldier10]
+say=Vielleicht - es sei denn, man betrachtet es lediglich als Galgenfrist. 
+rspDflt=None
+rsptxt1= Sind alle Eure Landsleute so niedergeschmettert? 
+NxtLn1=Soldier11
+
+[Soldier11]
+say=Natürlich. Wärt Ihr aus Oriam, würde es Euch auch so ergehen. 
+rspDflt=None
+rsptxt1=Nein, im Gegenteil. Ich würde mir ein Herz fassen, weil so viele gekommen sind, um mir zu helfen.
+NxtLn1=Soldier12
+rsptxt2=Vielleicht; dennoch würde ich versuchen zu retten, was zu retten ist.
+nxtln2=Soldier13
+
+;If 1,
+[Soldier12]
+say=Ein Herz fassen? Unser Land ist ein Kriegsgebiet. Verlieren wir den Krieg, verlieren wir alles, sogar unser Leben. Gewinnen wir, bleiben uns zerstörte Häuser, dezimierte Familien und verbrannte Erde. Wieso sollte ich mir ein Herz fassen, weil ein paar Hundert Ausländer gekommen sind, um mit mir zu sterben? 
+rspDflt=None
+rsptxt1=Es tut mir leid. So habe ich das noch nie gesehen. 
+NxtLn1=Soldier14
+
+[Soldier14]
+say=Offenbar nicht. Ich nehme es Euch nicht übel.
+rspDflt=Danke für Euer Verständnis. Ich muss mich jetzt verabschieden.
+
+;If 2,
+[Soldier13]
+say=Alles Nennenswerte ist längst von den Alliierten für den Kampf gegen die Ahoul beschlagnahmt worden. Das ist alles, was mir übriggeblieben ist. Wenn der Kampf vorbei ist, was dann? 
+rspDflt=None
+rsptxt1=Dann baut Ihr euer Land wieder auf und macht es stärker.
+nxtln1=Soldier15
+
+[Soldier15]
+say=Ein netter Gedanke, aber höchst idealistisch. Vielleicht werdet Ihr anderswo gebraucht. 
+rspDflt=Tatsächlich glaube ich, dass ich woanders zu tun habe. Ade.

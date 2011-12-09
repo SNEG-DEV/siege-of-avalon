@@ -1,0 +1,95 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01trainedcombat
+Checked=01recovered,01trainedcombat
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(7/17/01)=Passed
+
+[root]
+Count=3
+Else=
+Default=Thank you, Mulduc.
+Say1=All(ttl(01recovered));
+goto1=chalice
+Say2=All(ttl(!01recovered,!01trainedcombat));
+goto2=Mulduc
+Say3=All(ttl(!01recovered,01trainedcombat));
+goto3=training
+
+[Mulduc]
+Say=Who are you then?  What would you have of me?
+RspDflt=None
+rspcnd1=all(ttl(!hunter));
+RspTxt1=I'm %playername%, your new sparring partner.  I'm here to train with you.
+NxtLn1=Mulduc1
+rspcnd2=all(ttl(hunter));
+rsptxt2=I'm %playername%, your new sparring partner.  I'm here to train with you.
+nxtln2=mulduc2
+
+[Mulduc1]
+Say=Hmmm.  You don't look too tough.  Just walk away when you have had enough.  Time to play!
+script=Siege20000500310066675530.makeenemy(party);setprop(AIMode=IdleAI);player.addtitle(01trainedcombat);player.setprop(combatmode=true);
+RspDflt=Have at you, then!
+
+[mulduc2]
+say=Hmmm.  You don't look too tough.  Scout, eh?  Y'know, there are archery targets for you to practice with, too, but you can do that later.  Ah.  Just remember to get used to running and shooting, running and shooting.  It's what keeps a scout alive.  Now as for the sparring, just walk away when you have had enough.  Time to play!
+script=Siege20000500310066675530.makeenemy(party);setprop(AIMode=IdleAI);player.addtitle(01trainedcombat);player.setprop(combatmode=true);
+RspDflt=Have at you, then!
+
+[training]
+Say=Still not too confident of your abilities, eh?  Want to train some more?
+RspDflt=None
+RspTxt1=No, thank you.  Have you heard any rumors?
+NxtLn1=Training1
+RspTxt2=Yes.
+NxtLn2=Training2
+
+[Training1]
+Say=Not much of interest around here.  The new soldiers coming in to train are nothing more than peasants, looking to escape the starvation of the Peasants' Bailey.  I doubt many of them will be worth much in a fight.  These are dark times here in Avalon.
+RspDflt=Let's pray that things improve.  Good day, Mulduc.
+rspback=training
+
+[Training2]
+Say=Fine, then!  Raise your weapon!  Remember, just walk away when you've had enough.  I promise I won't swing at your back!
+script=Siege20000500310066675530.makeenemy(party);setprop(AIMode=IdleAI);player.setprop(combatmode=true);
+RspDflt=Ready when you are!
+rspback=training
+
+[chalice]
+Say=Hello again!  Is there something I can do for you?
+RspDflt=No thank you.  Excuse me.
+RspTxt1=Care to spar with me?
+NxtLn1=Chalice1
+RspTxt2=Have you heard any good rumors?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Oh, no you don't!  I'm purely a trainer.  I wasn't meant to cross blades with a battle-hardened soldier!
+RspDflt=Very well.  Spirits protect you.
+rspback=chalice
+
+[Chalice2]
+Say=Only that the cooking fires of the Ahoul are growing fewer by the night.  The night watch says that they're all stealing away in the night.  They know the tide of the siege is turning in our favor.  It won't be long now!
+RspDflt=I hope not.  Good day.
+rspback=chalice

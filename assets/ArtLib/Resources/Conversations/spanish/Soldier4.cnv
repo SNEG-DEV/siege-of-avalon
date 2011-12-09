@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Hasta luego.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=Hey, tío.
+RspTxt1=¿Y de dónde eres?
+NxtLn1=Soldier1
+RspTxt2=¿Has tenido los oídos bien atentos?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Mi casa está en Oriam.  Al menos, estaba en Oriam, antes de que los Ahoul la quemasen.  Si tuviese la oportunidad, les destruiría yo mismo, pero no podemos permitirnos que nadie abandone la defensa de la fortaleza.  Siempre esperando los refuerzos...
+rspBack=soldier
+
+[Soldier2]
+Say=Nuestro Capitán nos dijo que estuviésemos muy alerta esta noche.  Tiene un sexto sentido para este tipo de asuntos, así que yo que tú, dormiría cerca de mi espada esta noche.  Los Ahoul han estado demasiado tranquilos últimamente -- ¡deben estar tramando algo!
+rspBack=soldier
+
+[Chalice]
+Say=¿Puedo ayudarle en algo, señor?
+RspTxt1=Dime, ¿de dónde eres?
+NxtLn1=Chalice1
+RspTxt2=¿Has oído algún rumor interesante?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Soy de Oriam, señor.  Al menos, era de Oriam, antes de que los Ahoul lo quemasen.  Les devolveremos el favor con intereses.  Esos amantes del césped lo pagarán caro.
+rspBack=Chalice
+
+[Chalice2]
+Say=He oído que los Catheanos han enviado a buscar sus reservistas.  Quizá nos puedan ayudar a romper el asedio.  Espero que traigan algo de jabón.  Los suministros escasean, y los soldados se están volviendo... aromáticos.
+rspBack=Chalice
+

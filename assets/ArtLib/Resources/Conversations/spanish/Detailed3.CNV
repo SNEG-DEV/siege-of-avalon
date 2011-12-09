@@ -1,0 +1,167 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=Nally
+GUID=
+
+[Titles]
+Set=
+Checked=06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(4/10/01)=Passed
+tucker(7/12/01)=Passed
+tucker(7/13/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Gracias.
+Say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(!06chapter6));
+goto2=Soldier
+
+[Soldier]
+Say=¿Te has perdido, chico?  Estos son los dormitorios de los oficiales.
+RspDflt=None
+RspTxt1=No estoy perdido, solo soy nuevo.  Estaba echando un vistazo, intentando familiarizarme con la ciudadela.
+NxtLn1=Soldier1
+
+[Soldier1]
+Say=Bueno, pues no te des demasiada prisa.  Pocas cosas cambian por aquí, y te doy mi palabra de que tendrás mucho tiempo para observar la ciudadela.
+RspDflt=None
+RspTxt1=Quizá.  Pero siento que los vientos del cambio están llegando a Avalon.
+NxtLn1=Soldier2
+RspTxt2=Simplemente, estoy impaciente por aprender cosas sobre Avalon.
+NxtLn2=Soldier3
+
+[Soldier2]
+Say=¿Es eso una premonición?  ¿Eres Fornaxano?
+RspDflt=None
+RspTxt1=No.  No es una premonición, y vengo de Elythria.  Sólo es algo que intuyo.  Cuando navegábamos hacia Avalon, tuve esa sensación en la boca del estómago...
+NxtLn1=Soldier4
+
+[Soldier4]
+Say=Eso era un simple mareo, chico!  Solo los Nisosanos tienen pies firmes en una cubierta.
+RspDflt=None
+RspTxt1=Así pues, ¿eres de Nisos?
+NxtLn1=Soldier5
+RspTxt2=Puede que no sea Nisosano, pero no me mareo en un bajel.
+NxtLn2=Soldier6
+
+[Soldier5]
+Say=Naturalmente!  Los extranjeros hablan de los Nisosanos como si fuesen escoria y ladrones.  Tampoco se equivocan demasiado!
+RspDflt=None
+RspTxt1=¿Debo desconfiar de los Nisosanos?
+NxtLn1=Soldier7
+
+[Soldier7]
+Say=Entre los muros de Avalon, no.  En un juego de dados, naturalmente!  Puede que te robemos la cartera, pero todos luchamos contra los Ahoul juntos.
+RspDflt=None
+RspTxt1=Supongo que eso es reconfortante.  Dime, ¿conoces al Capitán Nicophorus?
+NxtLn1=Soldier8
+RspTxt2=Eso encaja con las cosas que he ido oyendo sobre tus paisanos.
+NxtLn2=Soldier9
+
+[Soldier8]
+Say=He oído el nombre aquí y allí.  Por qué lo preguntas?
+RspDflt=None
+RspTxt1=Navegué con él hasta aquí.  Es un buen Capitán.
+NxtLn1=Soldier10
+
+[Soldier10]
+Say=Quizá el mejor de todo Nisos.  He oído que su barco fue bastante vapuleado.
+RspDflt=None
+RspTxt1=Sí, pero fuimos afortunados.  Ningún otro barco sobrevivió al viaje.
+NxtLn1=Soldier11
+
+[Soldier11]
+Say=Eso he oído.  Una mala profecía, chico.  Una pésima profecía.
+RspDflt=Ya.  Buen, debo empezar mi entrenamiento.  Que tengas buena suerte.
+
+[Soldier9]
+Say=JA! JA!  Nuestra reputación nos precede!  Al menos no están contando mentiras sobre nosotros.  Llamándonos mercaderes honestos y cosas parecidas.
+RspDflt=None
+RspTxt1=¿Tu gente no es honesta?
+NxtLn1=Soldier12
+
+[Soldier12]
+Say=Naturalmente no lo son!  Nos ganamos la vida atacando navíos de comerciantes y engañando a marineros borrachos en los bares del puerto!  Aunque supongo que eso es injusto.  No todos los Nisosanos son bucaneros.  Hay algunos artesanos y mercaderes honestos entre nosotros.
+RspDflt=None
+RspTxt1=Naturalmente.  Igual que no todos los Catheanos son cuidadores de caballos.
+NxtLn1=Soldier13
+
+[Soldier13]
+Say=Exactamente.  Un consejo:  guarda tus espaldas cuando estés cerca de un Nisosano por aquí, o echarás en falta algunos objetos personales.
+RspDflt=Gracias por el consejo.  Lo tendré presente.  Buenos días.
+
+[Soldier6]
+Say=Mantener tus intestinos tranquilos no es lo mismo que tener un paso firme, chico.
+RspDflt=None
+RspTxt1=No lo dudo.  Pero creí que me comporté más o menos bien abordo de la nave.
+NxtLn1=Soldier14
+
+[Soldier14]
+Say=Quizá.  Tienes aspecto firme.  De hecho, me recuerdas a un oficial junto al que he luchado...
+RspDflt=None
+RspTxt1=Ése debe ser mi hermano Corvus.
+NxtLn1=Soldier15
+
+[Soldier15]
+Say=Ése es.  Tienes su tamaño y aspecto.  Si sois de la misma sangre, no dudo que estarás bien aquí en Avalon.
+RspDflt=Gracias.  Buenos días.
+
+[Soldier3]
+Say=Impaciente, ¿eh?  Ya se te quitará la impaciencia en cuanto veas la primera máquina de asedio de veras.
+RspDflt=None
+RspTxt1=He visto máquinas de asedio antes... en libros y tapices.
+NxtLn1=Soldier16
+
+[Soldier16]
+Say=Hay cierta diferencia.  Un libro no alcanzará a empalarte con una lanza por encima de la muralla.  Un tapete no sonríe cuando le parte los brazos a tu amigo.
+RspDflt=None
+RspTxt1=Oh, ya comprendo.  Solo digo que no estoy tan verde como piensas.
+NxtLn1=Soldier17
+
+[Soldier17]
+Say=Estás verde.  Vivirás para lamentar tu decisión de venir a Avalon.  Si eres de los afortunados, quizá mueras rápidamente.  Si eres de los desgraciados, verás como mueren una docena de tus amigos antes de que los Ahoul te maten.  No has entrado en ningún cuento, chico.
+RspDflt=Lo sé, y no voy a defraudar a nadie.  Buenos días.
+
+[chapter6]
+Say=Ah, %playername%. Espero que todo vaya según los planes.
+RspDflt=none
+RspTxt1=Va tan bien como puede esperarse. Los Sha'Ahoul continúan agrupándose en algunos puntos del pueblo.  Creo que algo no va bien.
+nxtln1=chapter6a
+RspTxt2=Naturalmente que todo va bien!  Continuamos expulsando a los Sha'Ahoul de nuestro hogar.  Pronto, los bardos cantarán historias sobre nuestra gran victoria.
+nxtln2=chapter6b
+
+[chapter6a]
+Say=Con los Sha'Ahoul, siempre hay algo que no va bien.  Mantente alerta.
+RspDflt=Y tu también, amigo.  Hasta la vista.
+
+[chapter6b]
+Say=Guarda tu esperanza, hijo.  Ambos sabemos lo que puede suceder aquí.  Hagamos lo que podamos para mejorar la situación.
+RspDflt=Comprendido.  Hasta la vista, amigo.
+

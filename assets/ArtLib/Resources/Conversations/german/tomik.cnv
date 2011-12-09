@@ -1,0 +1,59 @@
+[Notes]
+titlesCheck=01recovered
+
+[Questions]
+1=see chalice... so you are he, eh?
+
+[root]
+Count=2
+Else=
+Default=Danke, Tomik.
+Say1=All(ttl(!01recovered));
+goto1=Brun
+Say2=All(ttl(01recovered));
+goto2=chalice
+
+
+[Brun]
+say=Hinter diesen Latten liegt das Südtor, Freund, und  dahinter liegen die Ahoul auf der Lauer. Seid Ihr sicher, dass Ihr erfahren genug seid, um den Weg zum Südtor zu wagen?  Das ist kein Ort für Grünschnäbel.
+Adventure=ch1-57;
+rspDflt=None
+rspTxt1=Ich komme schon zurecht.  Lasst mich passieren.
+NxtLn1=Brun1
+rspTxt2=Wo kommt Ihr her?
+NxtLn2=Brun2
+rspTxt3=Habt Ihr irgendwelche Gerüchte gehört?
+NxtLn3=Brun3
+
+[Brun1]
+say=Na schön, aber wenn Ihr von einem Pfeil der Ahoul durchbohrt werdet, sagt nicht, ich hätte Euch nicht gewarnt!
+rspBack=Brun
+
+[Brun2]
+say=Ich bin Catheaner von Geburt.  Ich bin hergekommen, um Ruhm zu erlangen und als gefeierter Held nach Hause zurückzukehren. Jetzt befürchte ich, dass niemand von uns sein Zuhause wiedersehen wird.
+rspDflt=Kopf hoch, Soldat.  Wir werden siegen.
+rspBack=Brun
+
+[Brun3]
+say=Ich habe gehört, dass überall im Hof der Bauersleute Tote und Verhungernde herumliegen.  Wir brauchen Hilfe bald, sonst halten wir nicht durch.
+rspDflt=Die guten Geister werden uns beschützen. Gehabt Euch wohl.
+rspBack=Brun
+
+;After recovery of Chalice
+
+[chalice]
+say=Ihr seid es also, ja? Stimmt es, dass Ihr den Kelch des Lebens gefunden habt?
+rspDflt=None
+rspTxt1=Ja.  Und fast hätte es mich Kopf und Kragen gekostet!
+NxtLn1=chalice1
+rsptxt2=Was gibt's hier Neues zu berichten?
+NxtLn2=chalice2
+
+[chalice1]
+say=Na, ich bin froh, dass Ihr sie doch behalten habt!
+rspDflt=Danke.
+rspBack=chalice
+
+[chalice2]
+say=Die Ahoul sollen angeblich Verstärkung bekommen haben. Das wird ihnen aber trotzdem nichts nützen.  Sobald König Vortigerm mit seiner riesigen Armee eintrifft, haben die keine Chance mehr!
+rspBack=chalice

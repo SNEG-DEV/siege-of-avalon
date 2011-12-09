@@ -1,0 +1,47 @@
+[Notes]
+titlesChecked=01recovered
+[root]
+Count=2
+Else=
+Default=Danke, Theo.
+Say1=All(ttl(!01recovered));
+goto1=Theo
+Say2=All(ttl(01recovered));
+goto2=chalice
+
+;Before recovery of Chalice
+[Theo]
+say=Vorsicht, Soldat.  Am Südtor ist es ohnehin gefährlich.  Die Ahoul lauern immer vor den Toren.
+rspdflt=Danke für die Warnung.
+rsptxt1=Wo kommt Ihr her?
+NxtLn1=Theo1
+rsptxt2=Habt Ihr in letzter Zeit irgendwelche Gerüchte gehört?
+NxtLn2=Rumors1
+
+[Theo1]
+say=Ich komme aus Elythria.  Euer Bruder und ich haben in der gleichen Kohorte gedient, unter Penriths Befehl.  Corvus wurde zwar vor mir befördert, aber er ist trotzdem ein guter Freund geblieben.
+rspdflt=Es ist schön zu wissen, dass mein Bruder so viele Freunde hat.
+rspBack=Theo
+
+[Rumors1]
+say=Ich glaube, am Südtor spukt es.  Dort hört man nachts seltsame Geräusche.  Passt auf Euch auf.
+rspdflt=Danke für die Warnung.
+rspBack=Theo
+
+;After recovery of Chalice
+[chalice]
+say=Bei den Geistern, es ist schön, Euch wiederzusehen!
+rspdflt=None
+rspTxt1=Euch auch, Theo.
+NxtLn1=chalice1
+rspTxt2=Was gibt's für Neuigkeiten?
+NxtLn2=news1
+
+[chalice1]
+say=Mögen Euch die guten Geister beschützen.
+rspBack=Chalice
+
+[news1]
+say=Wir haben gehört, dass Nachschub unterwegs ist.  Niemand will sagen, wann er ankommen soll, vermutlich um Krawallen vorzubeugen, wenn nichts durchkommt, aber die Moral ist trotzdem gut!
+rspdflt=Das ist wirklich eine gute Nachricht!
+rspBack=Chalice

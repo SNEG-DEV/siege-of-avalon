@@ -1,0 +1,163 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01informed,01Recovered,03chapter3,06chapter6
+Removed=
+
+[Quest]
+Added=ch3-519,ch3-520
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(5/23/01)=Passed
+tucker(7/12/01)=Passed
+tucker(7/24/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=5
+Else=
+Default=Thank you, Heather.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=all(ttl(03chapter3));
+goto2=three
+Say3=All(ttl(!01informed,!01Recovered));
+goto3=Heather
+Say4=All(ttl(01informed,!01Recovered));
+goto4=News
+Say5=All(ttl(01informed,01Recovered));
+goto5=Chalice
+
+[Heather]
+Say=Pardon me, sir.  What can I do for you?
+RspDflt=None
+RspTxt1=I've only just arrived in Avalon.  I'm glad to see that not all of Avalon's inhabitants are soldiers.  Who are you and where do you come from?
+NxtLn1=Heather1
+RspTxt2=I'm new here, and I'm trying to pick up a feel for the rumors around here.
+NxtLn2=Heather2
+
+[Heather1]
+Say=My name is Heather.  I'm the chambermaid for the officer's quarters in this part of the keep.  I've lived all my life here in Oriam, but working there was a bore.  I came to Avalon because this is the last bastion of hope for the people of the eastern lands of the Seven Kingdoms , and even a job like mine becomes more important here.
+RspDflt=Everyone does their part.  Let me thank you in advance for caring for my quarters.  Good day to you.
+rspback=heather
+
+[Heather2]
+Say=I know chambermaids have a reputation for being gossips, but General Roth would have my hide if he knew I was whispering about the things I've heard.
+RspDflt=I apologize -- I wouldn't want to get you into trouble with Sir Roth.  I'll ask someone else, then.  Thanks anyway.
+rspback=heather
+
+[News]
+Say=Hello, again.  Are your quarters satisfactory?
+RspDflt=None
+RspTxt1=Indeed.  My room is even more comfortable than my room back home.
+NxtLn1=News1
+
+[News1]
+Say=Oh, you flatter me!  Um, is there something else I can do for you?
+RspDflt=None
+RspTxt1=Not unless you've heard a rumor you'd like to share.
+NxtLn1=News2
+
+[News2]
+Say=Well...  You didn't hear this from me, mind you, but be on your guard later tonight.  Apparently, strange things are afoot outside the walls of Avalon.  I've heard tell that the soldiers in South Gate are acting strangely.  Watch yourself.
+RspDflt=Excellent advice in a time of war.  Thank you and good day to you, lady.
+
+[Chalice]
+Say=Oh!  Hello.  Did you need something for your quarters, sir?
+RspDflt=None
+RspTxt1=No, thank you.  Your attention to my room has been excellent.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Thank you, sir!  When I heard who you were, I decided to be extra careful with your room.
+RspDflt=None
+RspTxt1=Nonsense, I'm just doing my duty.  Have you heard anything new, lately?
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Well, I'm not supposed to talk about things like this, but things are changing around here.  Everybody up here is gaining confidence in our strength.  Even General Roth, sir!
+RspDflt=That's good news.  Hopefully, these good spirits will help carry us to victory.
+
+[three]
+Say=Welcome back, sir.  How have you been doing?
+RspDflt=none
+RspTxt1=I'm rather surprised to hear someone ask me how I'm doing...
+nxtln1=three2
+
+[three2]
+Say=Has it taken you aback?
+RspDflt=none
+RspTxt1=Indeed, it has.  Methinks you are more than a mere chambermaid.
+nxtln1=three3
+
+[three3]
+Say=Aren't we all, sir?
+RspDflt=none
+RspTxt1=Hmm.  To answer your question, I'm doing better every time I further our cause.
+nxtln1=three4
+
+[three4]
+Say=That's good to hear.  Now if you'll forgive me, sir?
+RspDflt=Certainly.  Farewell.
+rspcnd1=all(stt(perception>19));
+RspTxt1=Is there something wrong, Heather?
+nxtln1=three5
+
+[three5]
+Say=Oh...  I...  Just had a good friend pass away.  They...  They're not sure what happened to him.  His wounds weren't that serious, they say...  I... your brother was wounded worse than he...
+RspDflt=none
+RspTxt1=Did you have much of a chance to visit him when he was recovering?
+nxtln1=three6
+
+[three6]
+Say=No, I didn't, I've... duties to do, and...  I visited him but he was always sleeping, and I didn't want to wake him...  Oh, my...
+RspDflt=none
+rspcnd1=all(stt(charm<20));
+RspTxt1=You did what you could, Heather.
+nxtln1=three7
+rspcnd2=all(stt(charm>19));
+RspTxt2=You did what you could while you were doing what you must, Heather.  No one can blame you for doing your best.
+nxtln2=three8
+
+[three7]
+Say=I suppose you're right, sir, I just...  need some time to grieve.  Thank you for taking the time to talk to me.
+adventure=ch3-519
+RspDflt=Any time, my lady.  Farewell.
+
+[three8]
+Say=You're right, sir, I just need time to grieve.  Thank you for comforting me.  I'll give your room a little more attention.  [smiles weakly]
+adventure=ch3-520
+RspDflt=That won't be necessary, Heather.  I'm glad to have helped.  Farewell.
+
+[chapter6]
+Say=Oh. Hello %playername%. I was just on my way to your quarters. Did you have need of me?
+RspDflt=none
+RspTxt1=Only to remark on what a splendid job you are doing. I almost expected a mint on my pillow.
+nxtln1=chapter6b
+
+[chapter6b]
+Say=*giggle* You are so sweet! If we had any mints to give, you'd be the first to receive them.
+RspDflt=Keep faith, fair Heather.
+

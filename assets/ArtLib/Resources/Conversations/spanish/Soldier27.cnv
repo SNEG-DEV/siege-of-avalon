@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Adios.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=¿Qué narices quieres?
+RspTxt1=Pues saber de dónde vienes!
+NxtLn1=Soldier1
+RspTxt2=Pues cotillear un rato!
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Mi casa está construida entre los brazos de los bosques de Aratoy.
+rspBack=soldier
+
+[Soldier2]
+Say=No, señor.  No puedo oír nada por encima del rugido de mi estómago.
+rspBack=soldier
+
+[Chalice]
+Say=Hola, señor, ¿en qué puedo ayudarle?
+RspTxt1=¿Podrías decirme de dónde vienes?
+NxtLn1=Chalice1
+RspTxt2=¿Podrías contarme algún rumor interesante?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Nací en Aratoy, pero Avalon es ahora mi hogar!  ¡No tengo otro propósito en esta vida que luchar contra Mithras!
+rspBack=chalice
+
+[Chalice2]
+Say=Sólo que los arqueros de Aratoy están deseando entrar en liza!  Hacen apuestas sobre quien matará más Ahoul.
+rspBack=chalice
+

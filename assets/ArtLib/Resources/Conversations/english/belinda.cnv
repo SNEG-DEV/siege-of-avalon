@@ -1,0 +1,122 @@
+[FileID]
+Author=tucker
+Coding=n/a
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=05seenzar
+Checked=03chapter3,05chapter5,05defenseson,05ringdone,05seenzar,05zarnews,06chapter6,PlayerKnown
+Removed=
+
+[Quest]
+Added=ch3-512,ch5-500
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Thank you, Belinda.
+say1=all(ttl(PlayerKnown,06chapter6));
+goto1=chapter6
+Say2=all(ttl(PlayerKnown,05chapter5));
+goto2=chapter5
+Say3=All(ttl(!PlayerKnown));
+goto3=Belinda
+Say4=All(ttl(PlayerKnown));
+goto4=News
+
+[Belinda]
+Say=You don't look injured.  Why have you come to our infirmary?  Are you looking for someone?
+RspDflt=None
+RspTxt1=No, good lady.  I'm new here and I'm just looking around.  Who, may I ask, are you?
+NxtLn1=Belinda1
+RspTxt2=No, madame.  I was just trying to acquaint myself with the citadel.  Tell me, what news have you heard?
+NxtLn2=Belinda2
+
+[Belinda1]
+Say=I'm Belinda, and I work here in the infirmary.  I'm afraid I'm not quite the healer that Crosby or Friar Massus are, but I try to comfort the wounded and dying.  It's the least I can do.
+RspDflt=None
+RspTxt1=I'm sure your efforts are greatly appreciated.  Good day to you.
+NxtLn1=Belinda3
+
+[Belinda2]
+Say=One of the soldiers in here said that the Ahoul almost breached South Gate the other night.  It's not true, is it?  Such a loss would be a catastrophe!
+RspDflt=None
+RspTxt1=Indeed it would, but you needn't fear.  I trust South Gate is intact, otherwise we would all be knee-deep in Ahoul.  Farewell.
+NxtLn1=Belinda3
+
+[Belinda3]
+Say=Wait, I know you.  You're Lieutenant Corvus' brother, right?  We're running dreadfully short on some supplies needed to combat a fever spreading about the infirmary.  And... well, could you please talk to Brother Mo about it?  I'm certain you could help us!
+script=AddTitle(PlayerKnown);
+RspDflt=I'll make it a point to, if you think it would help, my lady.  Farewell.
+
+[News]
+Say=Welcome back, sir.  Do you need anything?
+RspTxt1=Just keeping my ears open.  Hear anything useful?
+NxtLn1=News1
+rspcnd2=all(ttl(03chapter3));
+RspTxt2=How is my brother faring?
+nxtln2=news2
+RspDflt=No, Belinda.  Just passing through, sorry to disturb you.
+
+[News1]
+Say=Nothing of import since last we spoke, sir.  Those of the patients not still in the fever are recovering, so they don't speak much save to ask for more water.  And our healers are far too busy to care about gossip.
+RspDflt=Thank you, anyway, my lady.
+
+[news2]
+Say=He spends a few more hours every day conscious.  When he is coherent, he talks of being frustrated with us for keeping him here because he thinks he is well.  The truth of it is that his physical injuries may be healed, but he has taken some sharp blows to the head.  Only time can heal those, given our current abilities.
+adventure=ch3-512
+RspDflt=none
+RspTxt1=I'm sure you'll take good care of him, Belinda.
+nxtln1=news3
+
+[news3]
+Say=Only the best befits an officer of his renown.
+RspDflt=Agreed.  Thank you, Belinda.
+
+[chapter5]
+Say=Oh, greetings %playername%. Did you need something?
+rspdflt=
+RspTxt1=I just stopped by to see how things are going in the infirmary.
+NxtLn1=News1
+RspTxt2=Any interesting gossip for me today?
+NxtLn2=News1
+rspcnd3=all(ttl(05defenseson,!05ringdone,05zarnews,!05seenzar));
+RspTxt3=I heard from Calum that Elazar has taken ill, and is here in the infirmary.  Is that true?
+nxtln3=chapter52
+rspcnd4=all(ttl(05defenseson,05ringdone,!05zarnews,!05seenzar));
+RspTxt4=I heard from Elarath that Elazar has taken ill, and is here in the infirmary.  Is that true?
+nxtln4=chapter52
+rspcnd5=all(ttl(05defenseson,05ringdone,05zarnews,!05seenzar));
+RspTxt5=I heard from Calum and Elarath that Elazar has taken ill, and is here in the infirmary.  Is that true?
+nxtln5=chapter52
+
+[chapter52]
+Say=Yes, it is true...  He is sleeping right now.  We are unsure as of yet what is wrong with him...  Or if anything is wrong with him.  Please do not disturb him.
+script=player.addtitle(05seenzar);
+adventure=ch5-500;
+RspDflt=Of course, Belinda.  I suppose I shall check his progress later.
+
+[chapter6]
+Say=Elazar is still terribly ill, and we have no idea how to save him. Please help!
+RspDflt=I will do my best. Farewell, Belinda.
+

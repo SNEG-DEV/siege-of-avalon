@@ -1,0 +1,23 @@
+[root]
+Count=2
+Else=
+Default=Danke, Baird.
+Say1=All(ttl(!01prison))
+goto1=Baird
+Say2=All(ttl(01prison))
+goto2=Baird2
+
+
+[Baird]
+say=Es tut mir leid, Herr.  Unten im Kerker gibt es Ärger.  Ich habe Befehl, diese Treppe zu sichern, bis die Situation wieder unter Kontrolle ist.  Ihr müßt umkehren.
+rspDflt=Na schön.  Ade.
+
+[Baird2]
+say=Danke, dass Ihr geholfen habt, die Gefangenen zu beruhigen. 
+script=player.setprop(trainingpoints=5);
+rspdflt=Es war mir eine Freude. Einen schönen Tag noch!
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed
+
+

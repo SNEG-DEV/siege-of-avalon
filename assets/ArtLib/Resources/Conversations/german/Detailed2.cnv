@@ -1,0 +1,160 @@
+[Titles]
+Checked=
+Set=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Checked=
+Taken=
+Given=
+Added=
+
+[root]
+Count=1
+Else=
+Default=Danke.
+Say1=
+goto1=Soldier
+
+[Soldier]
+say=Ein neues Gesicht. Was habt Ihr für ein Anliegen, Junge?
+rspDflt=None
+rsptxt1=Ich bin neu in Avalon und wollte mich nur mal umsehen.
+NxtLn1=Soldier1
+
+[Soldier1]
+say=Frischfleisch, was? Zumindest gibt es noch ein paar, die so närrisch sind, kämpfen zu wollen.
+rspDflt=None
+rsptxt1=Närrisch? Ich halte es kaum für närrisch, das eigene Heimatland und die Heimat der Verbündeten zu verteidigen.
+NxtLn1=Soldier2
+rsptxt2=Nicht so frisch wie Ihr meint. Ich wurde in den Kriegskünsten ausgebildet.
+NxtLn2=Soldier3
+
+[Soldier2]
+say=Dem stimme ich zu. Was wir hier tun, ist ehrenvoll und notwendig. Ich glaube jedoch nicht, dass noch viel Hoffnung auf Erfolg besteht.
+rspDflt=None
+rsptxt1=Warum sagt Ihr so etwas?
+NxtLn1=Soldier4
+
+[Soldier3]
+say=Der Feind ist uns vier zu eins überlegen. Manche Kundschafter behaupten sogar, dass da draußen acht Ahoul auf jeden von uns lauern. Seit Wochen haben wir weder Verpflegung noch frische Truppen bekommen und jetzt hat Ovoron diesen blödsinnigen Plan, das Lager der Ahoul anzugreifen. Wenn Ihr mich fragt, verschlechtern sich unsere Aussichten mit jedem Tag.
+rspDflt=None
+rsptxt1=Jetzt verstehe ich.  Ich war mir über den Ernst unserer Lage nicht bewusst.
+NxtLn1=Soldier5
+rsptxt2=Aber wir haben bis jetzt durchgehalten. Das spricht Bände über den Charakter unserer Männer hier!
+NxtLn2=Soldier6
+
+[Soldier5]
+say=Und nun wißt Ihr's.  Falls Ihr die nächsten paar Wochen überlebt, werdet Ihr mit eigenen Augen sehen, wie sich unsere Lage verschlechtert.
+rspDflt=None
+rsptxt1=Ein Weiser Mann sagte, "Alle Dinge müssen erst schlimmer werden, bevor sie sich zum Guten wenden."
+NxtLn1=Soldier7
+
+[Soldier7]
+say=Gewiss, aber eine Verbesserung unserer Lage wäre wahrlich eine überraschende Wendung.
+rspDflt=None
+rsptxt1=Verliert nicht den Mut.  Ich glaube, wir haben immer noch eine Chance.  Ade.
+NxtLn1=Soldier8
+
+[Soldier6]
+say=So ist es. Wir werden Avalon und die Sieben Königreiche bis zum letzten Mann verteidigen. Falls die Ahoul uns hier besiegen, werden sie unsere Heimstätten überrennen. Ich für meinen Teil werde lieber sterben, als einen Ahoul auf meinen Ländereien zu sehen!
+rspDflt=None
+rsptxt1=Und wo befinden sich diese Ländereien?
+NxtLn1=Soldier9
+
+[Soldier9]
+say=Ich habe Grundbesitz im nördlichen Cathea. Dort gibt es kaum Dörfer oder gar Städte. Hauptsächlich Viehwirtschaft und Bauernhöfe.
+rspDflt=None
+rsptxt1=Ihr seid also Bauer?
+NxtLn1=Soldier10
+rsptxt2=Seid Ihr der Grundherr Eures Besitzes?
+NxtLn2=Soldier11
+
+[Soldier10]
+say=Nein, Junge.  Ich bin Pferdezüchter und -händler.  Ich saß im Sattel und beherrschte das Seil, bevor ich sprechen konnte!
+rspDflt=None
+rsptxt1=Sind alle Catheaner gute Reiter?
+NxtLn1=Soldier12
+
+[Soldier12]
+say=Manche sind besser als andere, aber die meisten könnten jeden Fremden im Sattel schlagen.
+rspDflt=None
+rsptxt1= Ich lernte in meiner Kindheit etwas über Reiterei.
+NxtLn1=Soldier13
+
+[Soldier13]
+say=Zweifellos könnt Ihr Euch im Sattel halten, aber Ihr seid noch lange kein Catheanischer Reiter!
+rspDflt=None
+rsptxt1=Vielleicht nicht. Ich freue mich auf die Gelegenheit, mit Euch zusammen zu reiten. 
+nxtLn1=Soldier14
+
+[Soldier14]
+say=Ich ebenfalls, mein Freund! Ade.
+rspDflt=Ade.
+
+[Soldier11]
+say=Vermutlich. Catheaner haben eine andere Auffassung von Herrschaft. Ich besitze umfangreiche Ländereien und beschäftige viele Hilfskräfte. Jedoch schulden sie mir keinen Tribut, noch bin ich jemandem Treue schuldig.
+rspDflt=None
+rsptxt1=Was tut dann Eurer König?
+NxtLn1=Soldier15
+
+[Soldier15]
+say=Unser König ist ein Militärführer. Wenn wir uns gegen andere Völker verteidigen, ist es der König, der uns zu den Waffen ruft. Er unterhält unsere Armee und seine Soldaten bilden die besten unserer Krieger aus, die Catheanische Reiter.
+rspDflt=None
+rsptxt1=Sind diese Reiter Kavallerie-Einheiten?
+NxtLn1=Soldier16
+
+[Soldier16]
+say=Insofern, als sie auf Pferden reiten, ja. Die Reiter sind jedoch mehr als das: sie stellen unsere Kriegsstrategen, Offiziere und Diplomaten. Wenn wir in den Kampf ziehen, folgen wir den Reitern.
+rspDflt=None
+rsptxt1=Ich glaube, ich würde einen solchen Mann gern kennenlernen.
+NxtLn1=Soldier17
+
+[Soldier17]
+say=Es sind nicht nur Männer, Junge. Viele der besten Reiter sind Frauen. Falls Ihr lange genug hier bleibt, werdet Ihr bestimmt einigen begegnen. Es sind mehrere Dutzend hier.
+rspDflt=Dann werde nach ihnen Ausschau halten. Einen schönen Tag noch.
+
+[Soldier4]
+say=Soso, habt Ihr? Ein Holzschwert gegen eine Zielscheibe hauen, ist etwas ganz anderes, als kalten Stahl gegen einen geifernden Ahoul zu führen.
+rspDflt=None
+rsptxt1=Ich bezweifle es keinen Augenblick, aber ich traue mir zu, der Form treu zu bleiben.
+NxtLn1=Soldier18
+
+[Soldier18]
+say=Das glaube ich euch gern. Ihr habt einen festen Blick. Wo kommt Ihr her, Junge?
+rspDflt=None
+rsptxt1=Das ist wohl meine Angelegenheit, nicht Eure.
+NxtLn1=Soldier19
+rsptxt2=Ich stamme aus Elythria.  Mein Vater hielt dort Grundbesitz und ein Adelspatent, aber als er starb, ging alles an meinen Bruder über.
+NxtLn2=Soldier20
+
+[Soldier19]
+say=Ihr seid ganz schön nervös. Mich braucht Ihr nicht zu fürchten. Schon bald werden wir uns gegenseitig die Hälse retten.
+rspDflt=None
+rsptxt1=Wenn es Euch nichts ausmacht, möchte ich einige Informationen für mich behalten.
+NxtLn1=Soldier21
+
+[Soldier21]
+say=Wie Ihr wollt. Geht Eures Weges.
+rspDflt=Ade.
+
+[Soldier20]
+say=Und Ihr seid hergekommen, um Eurem Namen Ehre zu verdienen, nicht wahr?
+rspDflt=None
+rsptxt1=Eigentlich bin ich gekommen, um meinem Bruder mitzuteilen, dass er jetzt in Elythria ein Grundbesitzer ist.
+NxtLn1=Soldier22
+
+[Soldier22]
+say=Wer ist Euer Bruder?
+rspDflt=None
+rsptxt1=Leutnant Corvus.
+NxtLn1=Soldier23
+
+[Soldier23]
+say=Ich habe den Namen nie gehört. Wir Catheaner bleiben allerdings stets unter uns, also überrascht es mich nicht.
+rspDflt=Mich ebensowenig. Ich muss jetzt üben. Ade.
+

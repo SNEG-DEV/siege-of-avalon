@@ -1,0 +1,29 @@
+[root]
+Count=1
+Else=
+Default=Guten Tag, Penrith.
+Say1=
+goto1=Penrith
+
+
+;Before arrival of search party
+[Penrith]
+say=Hallo.  Ihr seid bestimmt Corvus' Bruder.  Ich habe gehört, dass Ihr in Avalon seid.  Ihr habt dieselbe Haarfarbe und Körperhaltung wie er.
+rspdflt=None
+rspTxt1=Das stimmt, Herr.  Woher kennt Ihr Corvus?
+NxtLn1=Penrith1
+
+[Penrith1]
+say=Wir haben lange gemeinsam gedient.  Er stand unter meinem Befehl, bis er eine eigene Kohorte bekam.  Euer Bruder hat mir erst von einigen Wochen bei einem nächtlichen Überfall das Leben gerettet.  Er hat mit seinem Schild den Feuerstrahl eines Sha'mans gestoppt, der auf meinen Rücken zielte, und sich dabei den Arm schwer verbrannt.  Ich stehe tief in seiner Schuld.
+rspdflt=None
+rspTxt1=Es freut mich, dass mein Bruder solcher Freunde hat, Herr.
+NxtLn1=Penrith2
+
+[Penrith2]
+say=Die hat er, in der Tat.  Grüßt ihn bitte von Penrith, wenn Ihr ihn seht.
+Adventure=ch1-53;
+rspDflt=Das mache ich.  Mögen Euch die guten Geister beschützen.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed
+

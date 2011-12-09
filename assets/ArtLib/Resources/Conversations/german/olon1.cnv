@@ -1,0 +1,440 @@
+[Notes]
+titlesChecked=01thieftrained,01permission,01recovered,01village
+titlesSet=01thieftrained
+;Ignoring 01thieftrained for now.  Can't as yet see a use for it, and it should be a sight more difficult to get than just by talking with Olon.
+;
+;Titles listed above are out of date.  Current list:
+; 01MetPlayer - self-explanitory
+; 01Pell - Set to start the Pell/Lahren quest in Pell's cnv.  Pell2 and Pell3 track the state of that quest.  Ditto Lahren1 through Lahren3.
+; 01LahrenHappy - Convinced Lahren to speak with Pell.  Done with Lahren.
+; 01Olon - Set when Olon tells player about Elarath and Massus' quests.
+; 01Boots - Set when Player knows about boots in the chest.  Used to govern the behaviour of the key return logic, if the key wasn't returned as soon as the player was told about the boots.
+; 01OlonHappy - Set when Olon told that Pell/Lahren quest is done.
+; 01Key - Set when key returned.
+;
+; Notes: the PITA factor of running two quests that can be completed in any order is damn high.  There are too many possible event orderings to cover easily.
+ 
+
+[root]
+Count=13
+Else=
+Default=Guten Tag, Olon.
+
+Say1=All(ttl(!01MetPlayer));
+goto1=Olon
+;
+;Can't yet get into village.
+Say2=All(ttl(!01permission));
+goto2=NoPermission
+;
+;Can get into village.  Here looking for info, probably--send player on quest.
+Say3=All(ttl(01permission,!01Pell));
+goto3=Permission
+;
+;Mid Pell quest, before gift stuff.
+Say4=All(ttl(01Pell,!01Pell3));
+goto4=Pell
+;
+;Needs gift, hasn't been told about Elarath, Massus or house.
+Say5=all(ttl(01Pell3,!01LahrenHappy,!01Olon));
+goto5=Gift
+;
+;Player skipped talking to Olon and has been out in the village long enough to finish Pell's Quest.  Belatedly tell him of Elarath, etc.
+Say6=all(ttl(01LahrenHappy,!01Olon));
+Goto6=Late
+;
+;Player back from village.  Not found gift.  Will loop here until Pell's quest is done.  There's an opportunity to learn of the boots, and/or return the key.
+Say7=all(ttl(01Olon,!01LahrenHappy));
+Goto7=NoGift
+;
+;Player back from village.  Found gift.  Will trigger only once (via OlonHappy).  There's an opportunity to learn of the boots, and/or return the key.
+Say8=all(ttl(01Olon,01LahrenHappy,!01OlonHappy));
+Goto8=PellDone
+;
+;Pell's quest is done, but the player has not yet learned of boots.  Should never take this branch.
+say9=all(ttl(!01Boots));
+Goto9=House
+;
+;At this point, 01Boots has certainly been set but the key's not been returned.  Player knows about boots, and has key to return.
+Say10=all(ttl(01Boots,!01Key):obj(KeyRing));
+Goto10=ReturnKey
+;
+;Knows about key and hasn't returned it, but doesn't have it with them.
+Say11=all(ttl(01Boots,!01Key):obj(!KeyRing));
+Goto11=NoKey
+;
+;Olon's now effectively done for Chapter 1.
+;
+;Has been to village, but hasn't gotten Chalice.
+Say12=All(ttl(!01Recovered));
+goto12=NoChalice
+;
+;Has recovered Chalice.
+Say13=All(ttl(01recovered));
+goto13=Chalice
+
+
+
+;First approach
+[Olon]
+say=Seid gegrüßt, Soldat!
+script=addtitle(01MetPlayer);
+rspdflt=Guten Tag.
+rspTxt1=Hallo!  Ich bin neu hier und unterwegs, um alle kennenzulernen.  Wer seid Ihr, wenn ich fragen darf, und wo kommt Ihr her?
+NxtLn1=Olon1
+
+[Olon1]
+say=Ich stamme aus Nisos, wo man mich Olon, der Flinke nennt.  Ich hatte dort den Ruf, Meister der Fingerfertigkeit, und sagen wir mal,  der Warenverteilung zu sein.
+rspDflt=none
+rspTxt1= Warenverteilung?  Heißt das, Ihr wart Dieb?
+NxtLn1=Olon2
+
+[Olon2]
+say=Mir hat die Berufsbezeichnung "Gauner" immer besser gefallen, aber ich streite mich nur ungern über Semantik.  Ich bin nicht mit einem goldenen Löffel im Mund geboren, wie manche Leute; Ich habe mich durchgeschlagen so gut ich konnte.  Aber heutzutage gibt es auf diesem Arbeitsgebiet zu wenig zu tun, als dass es lukrativ wäre, also bin ich einfacher Händler geworden, mehr oder weniger.
+rspDflt=none
+rspTxt1=Mehr oder weniger?  Was heißt das?
+NxtLn1=Olon3
+
+[Olon3]
+say=Ich habe mein Ohr ständig am Puls der Masse.  Auch wenn es für Waren keinen großen Markt gibt, Information ist immer wichtig, und Gefälligkeiten werden erwidert.  Falls Ihr irgendwelche interessante Neuigkeiten hört, würde ich sie gerne erfahren.
+rspDflt=none
+rspTxt1=Daran werde ich denken. Was habt Ihr denn als "mehr oder weniger einfacher Händler" anzubieten?
+nxtLn1=Olon4
+
+[Olon4]
+say=Ich habe das Gefühl,  Euch auszurauben hätte wenig Sinn, also glaube ich kaum, dass Ihr Euch irgendetwas leisten könnt, was ich habe.  Außerdem bezweifle ich, dass ich wirklich Interesse hättet an dem, was ich anzubieten habe.
+rspDflt=none
+rspTxt1=An Eueren Worten ist was Wahres dran; meine Mittel sind tatsächlich etwas begrenzt.
+nxtLn1=Olon5
+
+[Olon5]
+say=Hier ein kostenloser Rat für Euch:  falls sich Eure finanzielle Situation irgendwann bessert, kenne ich jemand, mit dem Ihr Euch eventuell unterhalten solltet. Sein Name ist Holt, und Ihr findet ihn in der Waffenkammer am Südtor.  Solltet Ihr, sagen wir mal, der schlechten Ausrüstung überdrüssig werden, die die neuen Rekruten heutzutage von der Armee bekommen, na ja, dann kann er Euch vielleicht behilflich sein.
+Adventure=ch1-33;
+rspDflt=Selbst wenn ich wollte, im Moment hätte das wenig Sinn.  In der Zukunft, jedoch... Ich danke Euch für diesen Rat.  Einen schönen Tag noch.
+rspCnd1=all(ttl(01Permission));
+rspTxt1=Ich danke Euch für Euren Rat,  aber um ehrlich zu sein, bin ich aus noch einem anderen Grund hier.  Seht Ihr, mein Bruder--
+nxtLn1=Perm1
+
+
+;Former Thief training dialogue.  Unused.  (And extremely cheesy, which is why it's still here... :-)
+[Tricks]
+say=Na ja, wenn Euer Kommandant nichts dagegen hat, kann ich Euch gerne ein paar Sachen zeigen. 
+rspDflt=Danke.
+script=player.addtitle(01thieftrained)
+
+
+;Before player has permission to leave citadel
+[NoPermission]
+say=Hallo, nochmal.  Was gibt's Neues?
+rspDflt=Nichts.  Schönen Tag noch.
+rspTxt1=Ihr habt nicht zufällig irgendetwas von Interesse gehört?
+NxtLn1=NoPermission1
+
+[NoPermission1]
+say=Tut mir leid, im Moment fällt mir nichts ein, was für Euch von Interesse wäre.
+rspDflt=Okay.  Danke trotzdem.
+
+;First approach after player has permission to leave
+[Permission]
+say=Willkommen zurück!  Wie geht's denn so?
+rspDflt=none
+rspTxt1=Es geht so, Olon.  Ich weiß nicht, ob es Euch bekannt ist, aber mein Bruder--
+NxtLn1=Perm1
+
+[Perm1]
+say=Das wäre Leutnant Corvus, glaube ich?
+rspDflt=none
+rspTxt1=Ja, in der Tat.  Er--
+nxtLn1=Perm2
+
+[Perm2]
+say=--ist zu einem Einsatz mit General Ovoron ausgeritten, der in einer Katastrophe endete.  Er wurde zuletzt im Dorf gesehen, verfolgt von Ahoul, und ist vielleicht noch am Leben.
+rspDflt=none
+rspTxt1=Ja, und--
+nxtLn1=Perm3
+
+[Perm3]
+say=--und ihr seid zu Mudam's Kommando versetzt worden, und er lässt Euch das Dorf ganz alleine auskundschaften.  Euch ist doch wohl klar, dass es Selbstmord ist, alleine dort hinzugehen, oder? Wiederum ist mir klar, dass, wenn man Leuten wie Euch so etwas sagt, sie nur noch entschlossener werden.
+rspDflt=none
+rspTxt1=Leuten wie--? Schwamm drüber.  Muss ich wissen, woher Ihr das alles wisst?
+nxtLn1=Perm4
+
+[Perm4]
+say=Das ist mein Job. Und nein, das müsst Ihr nicht wissen. Habt Ihr eigentlich eine Neuigkeit für mich, oder seid Ihr auf der Suche nach Informationen?
+rspDflt=none
+rspTxt1=Informationen.  Mudam--
+nxtLn1=Perm5
+
+[Perm5]
+say=--schlug vor, dass Ihr Euch mit mir unterhaltet.  Ich weiß nicht, ob es erfreulich oder ärgerlich ist, dass er noch an mich denkt.  Ich nehme an, die Armee hat Euch noch keinen Sold bezahlt, oder? Oder irgendeine Art Spesenbegleichung?  Egal --Ich sehe schon, dass das nicht der Fall ist. Nun, von mir bekommt Ihr keine Almosen mehr.
+rspDflt=none
+rspTxt1=Aber--
+nxtLn1=Perm6
+
+[Perm6]
+say=Keine Almosen.  Ihr könntet mir allerdings einen Gefallen tun.  Und einen  Gefallen erwidere ich immer.
+rspDflt=none
+rspTxt1=Was für ein Gefallen ?
+nxtLn1=Perm7
+
+[Perm7]
+say=Nun, eine Freundin von mir hat ein kleines Problem.  Sie ist nett und so, aber ich kann eigentlich nicht viel für sie tun.  Nicht mein Bereich, versteht Ihr, und sie ist den Trotteln, die im Hof herumlungern, weit überlegen.  Aber Ihr könnt vielleicht helfen.  Einen Edelmann erkenne ich auf Anhieb, auch wenn er jung ist.
+rspDflt=none
+rspTxt1=Und was, genau,  ist das für ein Problem?
+nxtLn1=Perm8
+
+[Perm8]
+say=Ich fürchte, die Geschichte darf ich eigentlich nicht weitergeben. Wenn Pell Euch mag, dann wird sie sie Euch erzählen. Ansonsten...
+rspDflt=none
+rspTxt1=Und wer ist Pell?
+nxtLn1=Perm9
+
+[Perm9]
+say=Eine Freundin.  Und sie hat ein Problem.  Mehr braucht Ihr nicht zu wissen.  Wenn Euch danach ist, ihr zu helfen-- sie sieht gerne den Pferden zu, da drüben.  Geht und redet mit ihr.
+Adventure=ch1-34;ch1-35;ch1-36;
+RemoveQuest=ch1-28;
+AddQuest=ch1-13;
+script=player.addtitle(01Pell);
+rspDflt=Darüber muss ich eine Weile nachdenken.  Auf Wiedersehen.
+
+
+[Pell]
+say=Was macht Pell's Situation?
+rspDflt=Ich versuche noch immer, eine Lösung zu finden.  Ich komme wieder wenn ich mehr weiß.
+
+
+[Gift]
+say=Wie geht es Pell?
+rspDflt=none
+rspTxt1=Das Problem liegt nicht bei Pell, sondern bei Lahren.  Er will einfach nicht glauben, dass Pell ihn verzeihen würde.  Ich habe ihn halbwegs davon überzeugt, dass ein Geschenk an Pell zusammen mit einer Entschuldigung eventuell funktionieren könnte, aber weder er noch ich haben ein angemessenes Geschenk.  Ihr habt nicht zufällig einen Vorschlag?
+nxtLn1=Gift1
+
+[Gift1]
+say=Ich fürchte, auch das liegt nicht in meinem Bereich.  Gold kommt gut an bei den meisten Frauen, mit denen ich es normalerweise zu tun habe, aber bei Pell...?  Glaube ich nicht.  Bei dieser Belagerung, wird es nicht allzuviele Gegenstände geben, die Euren Bedürfnissen entsprechen, es sei denn, Euch ist danach, in Schlafzimmer einzubrechen.
+rspDflt=none
+rspTxt1=Nein, das werde ich nicht tun. Es muss doch etwas geben...  Vielleicht im Dorf?
+nxtLn1=Gift2
+
+[Gift2]
+say=Die Welt außerhalb dieser Mauern ist zwar groß, aber ich nehme an, dass Ihr das Dorf direkt vor besagten Mauern meint.  Wenn ja, dann ist Euch wohl klar, dass es die Ahoul seit Monaten plündern?  Ich bezweifle, dass da auch nur ein hübscher Stein zu finden ist, geschweige denn irgendetwas Wertvolles.  Aber wenn schon nicht im Dorf selbst, dann vielleicht bei den Ahoul?
+rspDflt=none
+rspTxt1=Meint Ihr etwa, ich soll Leichenfledderei betreiben?
+nxtLn1=Gift4
+
+[Gift4]
+say=Betrachten wir es als Zurückholen von gestohlenem Gut.
+rspDflt=none
+rspTxt1=Vielleicht.  Wahrscheinlich haben sie sowieso nichts bei sich.
+nxtLn1=Gift5
+
+[Gift5]
+say=Versuchen kann man es ja.  Hier, als Anreiz habe ich eine Information für Euch.  Zufällig kenne ich ein paar Leute, die sich im Dorf gut auskennen.  Zum einen wäre da Massus, der Mönch in der Kappelle, und dann gibt es noch den alten Zauberer Elarath, der in der Außenburg wohnt.  Geht und redet mit ihnen, bevor Ihr ins Dorf geht.  Und wenn Ihr noch nicht mit Pell über das Geschenk gesprochen habt, würde ich das auch noch nachholen.
+RemoveQuest=ch1-17;
+AddQuest=ch1-18;
+rspDflt=none
+rspTxt1=Das mache ich.  Danke.  Gehabt Euch --
+nxtLn1=Gift6
+
+[Gift6]
+say=Ich bin noch nicht fertig.  Im Dorf gibt es ein gewisses Haus, an dem ich Interesse habe.  Von einer zuverlässigen Quelle weiß ich, dass es relativ unbeschädigt ist, und dadurch leicht zu erkennen unter den anderen Häusern.  Darin befindet sich eine Truhe mit einem magischen Schloss.  Ich muss nur wissen, ob die Truhe tatsächlich da ist, und ob sie noch intakt ist.  Alles klar?
+Adventure=ch1-84;
+AddQuest=ch1-20;
+script=player.addtitle(01Olon);
+rspDflt=Ja.  Wenn ich mehr weiß, komme ich wieder.  Ade.
+
+
+[Late]
+say=Wie ich höre, ist es Euch gelungen, Lahren zu überreden, wieder mit Pell zu reden.  Bravo.  Außerdem habe ich gehört, dass Ihr schon im Dorf wart.
+rspDflt=none
+rspTxt1=Ja.  Ich musste ein Geschenk finden, das Lahren Pell geben konnte.
+nxtLn1=Late1
+
+[Late1]
+say=Als Belohnung für Euch, es gibt ein paar Leute, mit denen ihr vielleicht über das Dorf reden solltet: Massus der Mönch und Elarath der Zauberer.
+RemoveQuest=ch1-13;
+script=player.addtitle(01OlonHappy);
+rspDflt=none
+rspTxt1=Danke.  Mache ich.  Gehabt Euch--
+nxtLn1=Gift6
+
+[NoGift]
+say=Was macht die Suche nach einem Geschenk?
+rspDflt=none
+rspTxt1=Noch habe ich nichts gefunden, was Lahren gefällt.
+nxtLn1=NoGift1
+
+[NoGift1]
+say=Schade.  Nun, macht einfach weiter-- ich meine, mit dem Zurückholen von gestohlenem Gut.  Ich bin sicher, ihr werdet schon etwas finden.
+rspDflt=none
+;Player has not been told about boots.
+rspCnd1=all(ttl(!01Boots));
+rspTxt1=Das hoffe ich.
+nxtLn1=House
+;Player told about boots, and has brought key.
+rspCnd2=all(ttl(01Boots):obj(KeyRing));
+rspTxt2=Das hoffe ich.  Davon abgesehen, ich habe den Schlüssel bei mir, den Ihr haben wolltet. Ihr hängt aus sentimentalen Gründen daran, nehme ich an?
+nxtLn2=Tunnels
+;Player told about boots, but does not have key, either because it was already returned or he doesn't have it to return.
+rspCnd3=all(ttl(01Boots):obj(!KeyRing));
+rspTxt3=Das hoffe ich.
+nxtLn3=NoGift2
+
+
+[NoGift2]
+say=Dann wünsche ich Euch noch viel Glück.
+RspDflt=Euch auch.
+
+[PellDone]
+say=Wie ich höre habt Ihr es geschafft, dass Lahren und Pell wieder miteinander reden.  Bravo.  
+RemoveQuest=ch1-13;
+rspDflt=none
+script=player.addtitle(01OlonHappy);
+;Player not yet told about boots.
+rspCnd1=all(ttl(!01Boots));
+rspTxt1=Danke.  Es war eine Herausforderung, aber die Sache wert.
+nxtLn1=House
+;Player told about boots, and has key to return.
+rspCnd2=all(ttl(01Boots):obj(KeyRing));
+rspTxt2=Danke.  Es war eine Herausforderung, aber die Sache wert. Ich habe auch den Schlüssel bei mir, den Ihr haben wolltet. Ihr hängt aus sentimentalen Gründen daran, nehme ich an?
+nxtLn2=Tunnels
+;Player told about boots, but does not have key, either because it was already returned or he doesn't have it to return.
+rspCnd3=all(ttl(01Boots):obj(!KeyRing));
+rspTxt3=Danke.  Es war eine Herausforderung, aber die Sache wert.
+nxtLn3=NoGift2
+
+;Sequence about Player's discovery (or not) of Olon's house.  There's no flag set for finding the house or the boots, so players can say pretty much whatever they want.
+[House]
+say=Habt Ihr inzwischen etwas über das Haus erfahren, von dem ich Euch erzählt habe?
+rspDflt=Nein, noch nicht.  Wenn ich mehr weiß, komme ich wieder.
+rspTxt1=Ja, ich habe es gefunden.
+nxtLn1=House1
+
+[House1]
+say=War das Haus intakt?
+rspDflt=none
+rspTxt1=Nein, war es nicht.
+nxtLn1=HouseDestroyed
+rspTxt2=Ja, war es.  Darin befand sich tatsächlich eine Truhe.  Auch sie war intakt.
+nxtLn2=House2
+
+[HouseDestroyed]
+say=Dann habt Ihr nicht das richtige Haus gefunden.  Ich weiß genau, dass es intakt ist.  Geht und sucht noch einmal.
+rspDflt=Das tut mir leid.  Ich dachte, ich hätte es gefunden.  Wenn ich mehr weiß, komme ich wieder.
+
+[House2]
+say=Habt Ihr die Truhe geöffnet?
+RemoveQuest=ch1-20;
+AddQuest=ch1-21;
+script=addtitle(01Boots);
+rspDflt=none
+;Player can say yes, true or not, doesn't matter.
+rspTxt1=Ja, habe ich.
+nxtLn1=Boots
+;Player can say no, true or not, and Olon won't know.
+rspCnd2=all(wrn(!shadowboots));
+rspTxt2=Nein, Sie war verschlossen.
+nxtLn2=Locked
+;Player is wearing boots for all to see, and still feels like lying to Olon.  Silly rabbit.
+rspCnd3=all(wrn(shadowboots));
+rspTxt3=Nein, sie war verschlossen.
+nxtLn3=Liar
+
+
+[Locked]
+say=Die Truhe enthält etwas, das ich Euch eigentlich schenken wollte.  Irgendwo im Dorf muss der Schlüssel der Truhe sein-- er ist so verzaubert, dass er nicht sehr weit weg von der Truhe sein kann.  Im oberen Fach der Truhe sind ein Paar Stiefel.  Wenn es Euch gelingt, sie einzufangen, gehören Sie Euch. Man könnte sie als, na ja, Zauberstiefel betrachten.  Bringt mir nur den Schlüssel.
+rspDflt="Wenn ich sie einfange"?  Das werde ich gewiss, und den Schlüssel bringe ich Euch.
+
+[Liar]
+say=Diese Stiefel, die Ihr da an den Füßen habt sehen den Stiefeln aus der Truhe verdammt ähnlich.  Haltet Ihr mich wirklich für so dumm?  Mich zu belügen ist nicht das Klügste-- normalerweise führt es nur zu Leid, und davon gibt es hierorts schon reichlich.  Trotzdem, was ich Euch sagen wollte ist, dass diese Stiefel eigentlich für Euch gedacht waren.  Alles was ich brauche ist der Schlüssel, mit dem Ihr die Truhe geöffnet habt.  Der Schlüssel nützt Euch ja sowieso nichts mehr.
+rspDflt=none
+rspCnd1=all(obj(keyring));
+rspTxt1=Den Schlüssel gegen diese Stiefel? Das ist ein fairer Tausch.
+nxtLn1=Tunnels
+rspCnd2=all(obj(!keyring));
+rspTxt2=Na ja...  Ich hatte den Schlüssel, aber ich habe ihn... verlegt.  Ich komme wieder wenn ich ihn habe.
+nxtLn2=Boots2
+
+
+[Boots]
+Say=Ihr hättet darin ein Paar Stiefel finden sollen. Betrachtet die Stiefel als ein Geschenk für Euch.  Eigentlich überrascht es mich, dass ihr die Truhe  öffnen konntet;  ich dachte, der Schlüssel wäre verlorengegangen.  Da der Schlüssel für Euch nicht mehr von Nutzen ist, könnte ich ihn zurückhaben?
+rspDflt=none
+rspCnd1=all(obj(keyring));
+rspTxt1=Der Schlüssel gehört Euch. Ihr hängt wohl aus sentimentalen Gründen daran?
+nxtLn1=Tunnels
+rspTxt2=Na ja...  Ich hatte den Schlüssel, aber ich habe ihn... verlegt.  Ich komme wieder, wenn ich ihn habe.
+nxtLn2=Boots2
+
+[Boots2]
+Say=Bitte macht das.  Ich habe mehr für Euch, wenn Ihr ihn mir zurückbringt.
+RspDflt=Also dann, bis später.
+
+[ReturnKey]
+Say=Habt Ihr den Schlüssel?
+rspDflt=none
+rspTxt1=Der Schlüssel gehört Euch.  Ihr hängt wohl aus sentimentalen Gründen daran?
+nxtLn1=Tunnels
+
+[NoKey]
+Say=Habt Ihr den Schlüssel?
+RspDflt=Nein, aber ich werde dafür Sorgen, dass Ihr ihn bekommt.
+
+[Tunnels]
+say=Ja, so etwas Ähnliches.  Ich habe eine letzte Information für Euch.  Unter dem ganzen Dorf gibt es ein Netz von Tunneln. Ich schlage vor, dass Ihr die Augen nach einem Eingang aufhaltet-- angeblich ist da unten sogar ein Schatz zu finden.  Wenn Ihr den Eingang findet-- und den Schatz-- wäre das eine Information, die ich gerne hätte.  Sehr, sogar.
+RemoveQuest=ch1-21;
+Adventure=ch1-85;
+script=addtitle(01Key);takeitem(KeyRing,Player);player.setprop( trainingpoints=2);showmessage(Sie haben Trainingspunkte bekommen.,300);
+rspDflt=none
+rspTxt1=Ich fürchte, ich werde im Dorf zu viel zu tun haben, um nach diesen mysteriösen Tunneln zu suchen.  Ich halte aber die Augen auf, und falls ich etwas merke, werdet Ihr es als Erster erfahren.  Aber sagt mir eines--wie ist es Euch gelungen, Euer Haus vor der Zerstörung zu bewahren, wo der Rest des Dorfs praktisch dem Erdboden gleichgemacht wurde?
+nxtLn1=Tunnels2
+
+[Tunnels2]
+say=Mein Haus?  Komisch... Ich erinnere mich nicht daran, das je behauptet zu haben.  Schönen Tag noch.
+Adventure=ch1-38;
+rspDflt=Ich... verstehe.  Danke für Eure Hilfe, Olon.  Gehabt Euch wohl.
+rspTxt1=Eine letzte Frage, wenn Ihr erlaubt.  Als Mudam mir damals riet, mit Euch zu reden, sagte er, "Wenn er bereit ist, mit Euch zu reden."  Warum wart Ihr bereit, Olon?  Warum habt Ihr mir geholfen?
+nxtLn1=Tunnels3
+
+[Tunnels3]
+say=Vorsicht, Soldat.  "Warum" ist eine gefährliche Frage.  Wollt Ihr sie mir ganz bestimmt stellen? 
+rspDflt=Ich habe nur so gefragt.  Es besteht eigentlich kein Grund, die Sache ernsthaft zu diskutieren.  Ade.
+rspTxt1=Was ich gefragt habe, habe ich gefragt.
+nxtLn1=Tunnels4
+
+[Tunnels4]
+say=Na schön.  Ich glaube,  ich muss es Euch nicht vorenthalten.  Trotzdem möchte ich vorher sagen, dass ich nicht aus niederen Beweggründen handele, noch möchte ich Euch etwas zuleide tun.  Verbündete sind schwer zu finden, und mächtige Verbündete erst recht.  Wer in diesen Zeiten unvorbereitet ist, stirbt schnell, und ich habe die Absicht, ein  langes Leben zu führen.  Vielleicht irre ich mich, und ihr seid Wurmfutter noch ehe die Sonne wieder aufgeht, aber wenn ich mir Euch ansehe, sehe ich das Potenzial zur Größe.  Solches Potenzial muss jedoch gefördert werden, wenn es sich verwirklich soll.
+rspDflt=none
+rspTxt1=Sprecht weiter.
+nxtLn1=Tunnels5
+
+[Tunnels5]
+say=Ich weiß, was man Euch gesagt hat, und auch was man Euch noch sagen wird, und das wird Euch zu vielen Gelegenheiten führen bei denen Ihr, aus Eurer Sicht, Gutes tun werdet für die Bewohner von Avalon.  Unterwegs werdet Ihr vielleicht sogar Euren Bruder wieder finden.  Aus meiner Sicht ist es so; wie jeder andere Avalonier auch, kann ich aus Euren Erfolgen profitieren, aber ich betrachte es auch als eine Gelegenheit,  Euch zu helfen dadurch, dass ich Eure Begabungen und Eure Fähigkeiten fördere.  Dass Ihr Euch weiterentwickelt wird Euch noch viel Anerkennung einbringen, und das ist eine Form von Macht.  Mächtige Verbündete, wisst Ihr noch?
+rspDflt=none
+rspTxt1=Ich schulde Euch nichts, Olon.  Wir sind quitt.
+nxtLn1=Tunnels6
+
+[Tunnels6]
+say=Wir sind quitt.  Das bestreite ich nicht.  Aber wenn Ihr bei Euren Aufgaben erfolgreich seid-- und als Glücksspieler möchte ich darauf mein Leben verwetten, auch wenn wir uns niemals wieder sprechen, so zweifele ich nicht daran, dass ich von Euren Erfolgen profitieren werde.  Und wenn wir uns wieder sprechen?  Nun, gemeinsam können Verbündete viel mehr erreichen, als allein.  Mudam wusste schon, was er tat, als er Euch zu mir geschickt hat.  Behaltet das im Sinn, guter Soldat.
+rspDflt=Ja,  das werde ich wohl.  Ade.
+
+
+;Before recovery of Chalice
+[NoChalice]
+say=Soso, ihr seid nicht im Dorf gestorben.  Mein Wette steht dann wohl noch.  Habt Ihr inzwischen mehr über die Tunnel erfahren?
+rspDflt=none
+rsptxt1=Nein, leider nicht.  Ich gehe noch immer den Gerüchten nach.
+nxtLn1=NoChalice1
+
+[NoChalice1]
+say=Ich habe nichts für Euch, was Ihr nicht anderswo finden würdet.
+rspdflt=Das habe ich mir gedacht.  Also dann, bis bald.
+
+;After recovery of Chalice
+[Chalice]
+say=Anscheinend habe ich meine Wette gewonnnen; ihr seid doch Held geworden.  
+rspDflt=none
+rspTxt1=So großartig war das alles nicht-- egal, was andere sagen mögen.  Habt Ihr sonst noch etwas für mich?
+NxtLn1=Chalice1
+
+[Chalice1]
+say=Über die Tunnel, meint Ihr?  Nun kommt, meint Ihr nicht, Ihr hättet schon genug getan? Wenn Ihr noch mit mir handeln wollt, kommt mich morgen früh besuchen.
+rspDflt=Vielleicht mache ich das.  Gute Nacht.

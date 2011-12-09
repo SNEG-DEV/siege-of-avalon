@@ -1,0 +1,97 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-59
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=3
+Else=
+Default=
+say1=all(ttl(06chapter6));
+goto1=chapter6
+Say2=all(ttl(!05chapter5));
+goto2=Gall
+Say3=all(ttl(05chapter5));
+goto3=Gall4
+
+[Gall]
+Say=Come closer, son!  How can you see my fine goods from that distance?
+Adventure=ch1-59;
+RspDflt=I think I'll be on my way.
+RspTxt1=If your prices are fair, I may buy something.
+script1=merchant
+RspTxt2=In truth, I cannot, although I doubt that would help much.
+NxtLn2=Gall2
+
+[Gall2]
+Say=What's that supposed to mean?
+RspDflt=It matters not.  Listen, I must be on my way.  Good day to you.
+RspTxt1=I'm afraid I've not had a chance to amass much money yet.
+NxtLn1=Gall3
+
+[Gall3]
+Say=Well, that's all right, son!  Most of us merchants will buy, as well, so if you've got a few things you've no use for any more, you can sell them for something you need.
+RspDflt=I'll come back when I'm in a haggling mood.  Farewell.
+RspTxt1=I have a few such items.  Let me see your wares, please.
+script1=merchant
+
+[Gall4]
+Say=Welcome back! I'm supposing you have some strange new Ahoul weapons for me?
+RspDflt=No, I do not.  Farewell.
+RspTxt1=You've been selling those to soldiers?
+Nxtln1=Gall5
+RspTxt2=I might have something.  Let me see your wares, please.
+script2=merchant
+
+[Gall5]
+Say=Most soldiers don't care much for them, but a few have been curious. They are of fine craftsmanship for such savages, eh?
+RspDflt=They have put many dents in my armor, Gall.  I'll try to pick up anything interesting if I see it.  Farewell.
+
+[chapter6]
+Say=That Wilfred...  Scared of money he is!  Money's one thing I'll ne'er fear.  Ha!  So what can I do for you?
+RspDflt=Nothing, thank you.  I'm off.
+RspTxt1=What do you have?
+script1=merchant
+RspTxt2=Where can you possibly spend any money here?
+nxtln2=chapter6b
+
+[chapter6b]
+Say=Er...  Spend it?  Well, I used to visit Gentza's pub from time to time, and I used to buy Anora's pies every week to give to high paying customers.  But, with this blamed siege lasting so long, I can't say that I care for those things much anymore.  I've a full purse as of late.
+RspDflt=Heh, me too.  Farewell.
+RspTxt1=Maybe, but will your gold buy your life from the Ahoul?
+nxtln1=chapter6c
+
+[chapter6c]
+Say=No, but on the chance that this blasted war ends with me alive, I'll make a wagonload of gold with my store of weapons from those savages.  I'll sell them at the main gate!  The children will be begging for them!
+RspDflt=I can't believe some people. Farewell.
+RspTxt1=Let me see your wares, you old fool.
+script1=merchant
+

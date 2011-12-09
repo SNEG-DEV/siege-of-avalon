@@ -1,0 +1,237 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=01calum,03reportgiven,05zarnews
+Checked=01Calum,01Informed,01recovered,03chapter3,03mabondone,03mabonquest,03reportgiven,05calarb1,05chapter5,05defenseson,05entertower,05seenzar,05zarnews,06chapter6
+Removed=
+
+[Quest]
+Added=ch1-68,ch3-521,ch5-501,ch6-519
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=statuscalum
+Added=statuscalum
+
+[SyntaxCheck]
+tucker(7/12/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=9
+Else=
+Default=Thank you, Calum.
+say1=all(ttl(06chapter6));
+goto1=calumsix
+say2=all(ttl(05chapter5,05defenseson,05zarnews));
+goto2=restofive
+say3=all(ttl(05chapter5,05defenseson,!05zarnews));
+goto3=zarnews
+say4=all(ttl(05chapter5));
+goto4=calumfive
+say5=all(ttl(03chapter3));
+goto5=calumthree
+Say6=All(ttl(!01Informed));
+goto6=Soldier
+Say7=All(ttl(!01recovered,01informed,!01Calum));
+goto7=Calum
+Say8=All(ttl(!01recovered,01informed,01Calum));
+goto8=news
+Say9=All(ttl(01recovered,01informed));
+goto9=Chalice
+
+[Soldier]
+Say=Hello there, how can I help you?
+RspDflt=Pardon me, sir knight, I didn't mean to disturb you.
+RspTxt1=Where are you from?
+NxtLn1=Soldier1
+RspTxt2=Heard any good rumors?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=I was born in Cathea, though I will not die there.  I have seen my death at the hands of this barbaric horde...
+RspDflt=I see.  Good day to you.
+rspBack=Soldier
+
+[Soldier2]
+Say=No rumors, sir.  Only misery.
+RspDflt=I see.  Good day to you.
+rspBack=Soldier
+
+[Calum]
+Say=Hello there, lad.  What will you be needing from me?
+Script=journalentry(calum);showmessage(Your journal has been updated.,200);player.addtitle(01calum);
+RspDflt=None
+RspTxt1=Penrith said you might have some information for me about my brother.
+NxtLn1=Calum2
+
+[Calum2]
+Say=Corvus, you mean?  We saw him running through the village a while ago.  He was being pursued by an Ahoul hunting party.
+RspDflt=None
+RspTxt1=Did he escape them?  Is he alive?
+NxtLn1=Calum3
+
+[Calum3]
+Say=No way of telling that, lad.  He turned down a dark alley and we lost track of him.  We sent out a search party, though.  They'll know more.  I think they went to report to General Roth.
+RspDflt=None
+RspTxt1=Is that all?  Is there anything else you can tell me?
+NxtLn1=Calum4
+
+[Calum4]
+Say=I'm afraid not, lad.  Go see General Roth.  I'm sure the guards will admit you, seeing as you're Corvus' brother.  Come to think of it, you might want to see the wizard, Elazar.  He's been muttering to himself about the village rather more of late.  His rooms are a bit further up this corridor.
+Adventure=ch1-68;
+RspDflt=Thank you.
+
+[News]
+Say=Greetings.  Is there some help you need?
+RspDflt=No, just passing through.  Pardon me.
+RspTxt1=Yes.  I just wanted to get the latest information from you.
+NxtLn1=News1
+RspTxt2=I've just arrived in Avalon and I want to meet some of the people.  Who are you and where are you from?
+NxtLn2=News2
+
+[News1]
+Say=If you're heading out to the village, be careful.  Something's going on over at the Church.  I also see strange things in the graveyard at night.  I don't think any of the other lookouts see them, because whenever I point, they're gone.
+RspDflt=How strange.  Thank you for your help.
+
+[News2]
+Say=I'm Sir Calum from Cathea.  I used to be a wrangler.  I reckon my eyes are good, that's why they put me up here, away from the keep.  I try to keep a close eye on everything that goes on outside.
+RspDflt=None
+RspTxt1=I'm sure your eyes are making quite a difference.
+NxtLn1=News3
+
+[News3]
+Say=I don't know about that, lad, but I do my best, as any good soldier should.
+RspDflt=Agreed.  Good day to you.
+
+[Chalice]
+Say=I thought I recognized you!  You'd be the finder of the Chalice, right?
+RspDflt=None
+RspTxt1=That's correct.  I found it in the Church.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=Did more than just find it, I think.  Before you went out there, we saw dark figures creeping around that Church.  We don't see them anymore.
+RspDflt=None
+RspTxt1=Right, there were some bandits hiding in the Church, but I killed them all.
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Good soldiering, lad.  Only one rightful place for bandits, and that's in a scavenger's belly!
+RspDflt=Yes, well, good day to you, Sir Calum.
+
+[Calumthree]
+Say=Hello, what's this?  Good day, traveler.
+RspDflt=I didn't mean to interrupt you.  Pardon me.
+RspTxt1=Well met, Calum.  Have any tales to tell?
+nxtln1=calumthree1
+rspcnd2=all(ttl(03mabonquest,!03mabondone,!03reportgiven):obj(!statuscalum));
+RspTxt2=Good day, Calum.  I came here at the behest of our new field marshall.  He is busy setting aright the "mess" he says he found in his new office; certain documents are missing, and he has sent me to retrieve your latest status report.
+nxtln2=statusreport
+
+[Calumthree1]
+Say=No, but I had a question for you.  I was told by a friend of mine that liches get a helper somewhere, and that helper is usually the walking dead.  What I wanted to know is if you found one when you were down there.  You see, I'm writing a book...
+RspDflt=none
+RspTxt1=Come to think of it, I suppose I did...  There was one there who definitely was not a skeleton, and seemed more than a mere zombie...
+nxtln1=calumthree2
+
+[Calumthree2]
+Say=Skeletons and zombies, too?  Walking around, hitting things and groaning!  Wow!  I'm truly in the wrong racket on this side of the sword!  I'm going to see if I can't pull some duty where there's some action!
+RspDflt=Good luck, Calum.  I'll speak with you later.
+
+[statusreport]
+Say=Ah.  Yes, of course.  I knew I was hanging on to this for a reason.
+adventure=ch3-521
+script=player.additem(statuscalum);addtitle(03reportgiven);
+RspDflt=Thank you.  I must be on my way now.
+
+[calumfive]
+Say=Good day, %playername%.  You've been up to much since we last spoke.
+RspDflt=Indeed, friend, and I still am.  Pardon me.
+RspTxt1=I hear that my brother has been quite busy, as well.
+nxtln1=calumfive2
+
+[calumfive2]
+Say=Correct.  I haven't seen much of him lately.  He must be doing some important work.  So you are working with Elazar again?
+RspDflt=Not currently, Calum.  Good day to you.
+rspcnd1=all(ttl(05entertower));
+RspTxt1=Yes, I am, and it's not as unpleasant as you might believe it to be.  I am to find a magical item that will help Elazar and Elarath create another, much more effective  escape route, should Avalon be overrun.
+nxtln1=calumfive3
+
+[calumfive3]
+Say=Let us hope that we shall not require it.
+RspDflt=Agreed.  Farewell, Calum.
+
+[zarnews]
+Say=%playername%!  Elazar has taken ill and is abed in the infirmary.  I don't know if you'll be able to speak to him; I do not know the severity of his condition, but for as frail as he appears, I do not recall him ever taking ill before.
+adventure=ch5-501;
+script=player.addtitle(05zarnews);
+RspDflt=Thank you, Calum.  I'm sure Elarath can continue on our project without Elazar.  Farewell.
+
+[restofive]
+Say=I trust all is well, %playername%?
+RspDflt=That it is, Calum.  Farewell for now.
+rspcnd1=all(ttl(05seenzar,!05calarb1));
+RspTxt1=I have spoken to Belinda, and she has told me that Elazar is indeed in the infirmary, but as he has been sleeping, they do not know what, if anything, he currently suffers from.
+script1=addtitle(05calarb1);
+nxtln1=restofive2
+
+[restofive2]
+Say=It is nice to hear that he is at least in a stable condition.  I hope the monks discover what is ailing him, for his aid will be missed when it comes time for action.
+RspDflt=True, Calum, it will.  Sane Seers are hard to come by these days.  Farewell.
+
+[calumsix]
+Say='Lo, %playername%.  What's the word?
+RspDflt=Pardon me, Calum, I don't know what I was thinking.
+rspcnd1=all(stt(charm>24,perception>39));
+RspTxt1=You seem a tad...  I don't know what to call it, Calum, except "off."  What's on your mind?
+nxtln1=calumsix4
+rspcnd2=one(stt(charm<25,perception<40));
+RspTxt2=The monks believe they may have found a way to remedy poor Elazar's condition.
+nxtln2=calumsix2
+
+[calumsix2]
+Say=Oh, is that right?
+RspDflt=Yes, I think so.  Farewell, Calum.
+RspTxt1=Are you not worried for the Seer's welfare, Calum?
+nxtln1=calumsix3
+
+[calumsix3]
+Say=It's not him I'm worried about.  Not any more.  I'm worried about the rest of us.  The pressure is starting to get to us as a whole, while all the time we've been in denial.  Elazar?  He's probably dropped from exhaustion, is what it is.  I don't think the man sleeps.
+adventure=ch6-519;
+RspDflt=He's compensating for it right now.  Pardon me, Calum.  I must check on him.
+
+[calumsix4]
+Say=A gut feeling has me on edge, %playername%.  I think a few of those recluses who live on the third level are planning a prank on me.  Voices go silent when I approach.  I'd think them traitors, but they talk so freely with others that I know it must be my own paranoia.
+RspDflt=none
+RspTxt1=We can't be too careful, Calum.
+nxtln1=calumsix5
+RspTxt2=Probably so.  Be strong, Calum.
+nxtln2=calumsix6
+
+[calumsix5]
+Say=I agree.  Perhaps the truth of our situation is finally settling in our hearts and minds, and where they play games with others, my mind plays games with me.  Be well, %playername%.
+rspback=calumsix4
+RspDflt=And you too, Calum.
+
+[calumsix6]
+Say=That's all we've ever been, %playername%.  It amazes me that all of us, including the ladies, have handled it with such grace.  We make jokes about it.  Jokes, as though we don't stand to lose anything...  We're starting to show it.  Good thing the reinforcements are coming.
+adventure=ch6-519;
+rspback=calumsix4
+RspDflt=Yes, it is, Calum.  Stay safe.
+

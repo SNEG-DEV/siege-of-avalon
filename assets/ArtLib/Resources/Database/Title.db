@@ -1,0 +1,159 @@
+01AmuletKnown||||||||||||||||||0
+01Basemet||||||||||||||||||0
+01Bugs||||||||||||||||||0
+01Calum||||||||||||||||||0
+01FoundAhoul||||||||||||||||||0
+01FoundBrother||||||||||||||||||0
+01FoundTraitors||||||||||||||||||0
+01HappyCook||||||||||||||||||0
+01HappyWizard||||||||||||||||||0
+01Informed||||||||||||||||||0
+01Olon||||||||||||||||||0
+01Permission||||||||||||||||||0
+01Recovered||||||||||||||||||0
+01ReportAhoul||||||||||||||||||0
+01ReportBrother||||||||||||||||||0
+01ReportTraitors||||||||||||||||||0
+01TrainedCombat||||||||||||||||||0
+01TrainedScout||||||||||||||||||0
+01TrainedTheif||||||||||||||||||0
+01TrainedWizard||||||||||||||||||0
+01Transferred||||||||||||||||||0
+01Village||||||||||||||||||0
+Apprentice|True|||||||||||||||||0
+Hunter|True|||||||||||||||||0
+Squire|True|||||||||||||||||0
+PathFinding|||2||||3|-1||||||||||0
+01TrainedFighter||||||||||||||||||0
+Mage Craft|True||||2||||||1|||2||||0
+Minor Meditation|True|||||||||||||1||||0
+Combat Breathing|True||||||||||||1||5|||0
+Armor Fitting|True|||||||-2||||||||||0
+Field First Aid|True||||||||||||1||2|||0
+Path Finding|True||2||||3|-1||||||||||0
+Basic Camouflage|True||||||2|-1|||1|||||||0
+Weapon Balance|True||2|||||||||||||||0
+Center of Balance|True|||||||||-2||||||||2
+Basic Energy Management|True|||||||||||||||5||0
+02maddercynric|False|||||||||||||||||0
+02knowcynric|False|||||||||||||||||0
+02madcynric|False|||||||||||||||||0
+02knowbeir|False|||||||||||||||||0
+02getdinadon|False|||||||||||||||||0
+02nodinadon|False|||||||||||||||||0
+02dinadonjoined|False|||||||||||||||||0
+02awakesoldier|False|||||||||||||||||0
+02ringbring|False|||||||||||||||||0
+02tracyknow1|False|||||||||||||||||0
+02happygolucky|False|||||||||||||||||0
+02knowfelious|False|||||||||||||||||0
+02knowfesterb|False|||||||||||||||||0
+02knowfesterm|False|||||||||||||||||0
+02gencha01|False|||||||||||||||||0
+02caerleon|False|||||||||||||||||0
+02itherquest|False|||||||||||||||||0
+02recalcilite|False|||||||||||||||||0
+02itherhappy|False|||||||||||||||||0
+02itherdead|False|||||||||||||||||0
+02itherdead2|False|||||||||||||||||0
+02itherdead3|False|||||||||||||||||0
+02gotpermission|False|||||||||||||||||0
+02knowlurcker|False|||||||||||||||||0
+02knowlurker|False|||||||||||||||||0
+02killmycorpse|False|||||||||||||||||0
+02scfelious|False|||||||||||||||||0
+02pagecluename|False|||||||||||||||||0
+02knowmonk|False|||||||||||||||||0
+02toughneese|False|||||||||||||||||0
+02gotguard|False|||||||||||||||||0
+02gotscout|False|||||||||||||||||0
+02odscout|False|||||||||||||||||0
+02knoworvyn|False|||||||||||||||||0
+02psychicfriend|False|||||||||||||||||0
+02oslahappy|False|||||||||||||||||0
+02recalcitrantosla|False|||||||||||||||||0
+02oslatagsalong|False|||||||||||||||||0
+02oslastaysbehind|False|||||||||||||||||0
+02apprinparty|False|||||||||||||||||0
+02apprmaybe|False|||||||||||||||||0
+02estonequest|False|||||||||||||||||0
+02estonequestcomp|False|||||||||||||||||0
+02courierquestcomp|False|||||||||||||||||0
+02saucyend|False|||||||||||||||||0
+02traitorquestcomp|False|||||||||||||||||0
+02knowtracy|False|||||||||||||||||0
+02tracyknow2|False|||||||||||||||||0
+02ringdeliv|False|||||||||||||||||0
+02signetsent|False|||||||||||||||||0
+02refused|False|||||||||||||||||0
+02writer|False|||||||||||||||||0
+02chapass|False|||||||||||||||||0
+02signetring|False|||||||||||||||||0
+02saucywacian|False|||||||||||||||||0
+02waynarwing|False|||||||||||||||||0
+02weldonnopass|False|||||||||||||||||0
+02knowwylie|False|||||||||||||||||0
+Basic Energy|True|||||||||||||||5||0
+Wizard Craft|True||2||3||||||2|||1||||0
+Lesser Meditation|True|||||||-1||||||2||||0
+Energy Management|True|||||||||||||||25||0
+Mystic Arts|True||3||5||||||3|||1||||0
+Meditaion|True|||||||-5||||||3||||0
+Advanced Energy Management|True|||||||-5||||||||45||0
+Master of Mystic Arts|True||5||15||||||5|||||||0
+Mind Control|True|||||||-15||||||5||||0
+Energy Control|True|||||||||||||||125||0
+Field First-Aid|True||||||||||||1|||||0
+Weapon Skill|True||3|||5||||||||||||0
+Endurance|True|||||||-5||||||||||0
+Weapon Mastery|True||3|||10||||||||||||0
+Pain Control|True||||||||||||3||30|||0
+Fortitude|True|||||||-10||||||||||0
+Combat Mastery|True||5|||15|||||5|||||||0
+Pain Manipulation|True||||||||||||5||50|||0
+Free Action|True|||||||-20||||||||||0
+Silent Movement|True||3||||5|||||||||||0
+Body Control|True||||||||-2|-4||||||||4
+Advanced Camouflage|True||||||3|-5|||2|||||||0
+Shadow Walker|True||3||||5||-3|||||||||0
+Focus|True|||||||||-5||||||||5
+Camouflage|True||||||4|-15|||2|||||||0
+Phantom Movements|True||3||||5||-3|||||||||0
+Transcendent Will|True|||||||||-7||||||||10
+Master of the Shadows|True||||||6|-25|||4|||||||0
+Combative|False|||||||||||||||||0
+Fighter|False|||||||||||||||||0
+Mage|False|||||||||||||||||0
+Caster|False|||||||||||||||||0
+Scout|False|||||||||||||||||0
+Healfirst|False|||||||||||||||||0
+Dinadon|False||||||||-10|-5|||5|5|25||7|3
+Vasek|False|||||||-10|-5|-10|||10||15||6|5
+Wyatt|False||||||10|-10|-5|-10|||5||10||7|0
+Phelic|False|||||||||-6|||5|10|10|25||5
+felious|False||||||||||||||30|||20
+Lich|False||||||||||||999|999|999|999||999
+Pain Tolerance|True||||||||||||2||15|||0
+Phantoms|False||||||||||||||30|||0
+Pain|True||||||||||||-5||-10|||0
+Burden|True|||||||10||||||||||0
+Kalevi|False||14||||20|-15|-5|-10|||5||10||7|0
+Engres|False|3|11||||||-10|-5|||5|5|15||8|6
+Kynar|False|7|||||-10||-10|-5|||5|5|25||9|3
+uni|False||||||||||||||50|||10
+Guardians|False||||||||-4|-5|||||25|||0
+Lizard|False||||||||10|||||||||0
+Knight|True|||||5||||||5||||||0
+Ranger|True||5||||5|||||||||||0
+slowattack|False||||||||20|||||||||0
+strong|False|15|||||||20|||||||||0
+fastattack|False||||||||-4|||||||||0
+yetiattack|False|25|||||||12|||||||||7
+Meditation|True|||||||-5||||||3||||0
+wolfattack|False||||||||11|||||||||0
+highrestric|False||||||-50|100||||||||||0
+gooddefense|False||5|||||||5||||||||7
+longlife|False||||||||||||||50|||0
+highrestric2|False|||||||100||||||||||0
+Wizard|True||||5||||||5|||||||0
+corvus|False|||||25||-8|-10|-5|||10||75||7|5

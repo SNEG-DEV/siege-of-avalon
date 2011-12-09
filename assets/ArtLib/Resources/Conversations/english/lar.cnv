@@ -1,0 +1,95 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(5/23/01)=Passed
+
+[root]
+Count=4
+Else=
+Default=Thank you, Lar.
+say1=all(ttl(06chapter6));
+goto1=six
+say2=one(ttl(03chapter3,04chapter4,05chapter5));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Lar1
+Say4=All(ttl(01recovered));
+goto4=Lar4
+
+[Lar1]
+Say=Good day, sir.  What can I do for you?
+RspDflt=None
+RspTxt1=Where are you from?
+NxtLn1=Lar2
+RspTxt2=Have you heard any good rumors lately?
+NxtLn2=Lar3
+
+[Lar2]
+Say=I'm from Oriam, sir.  Not far from here, in truth.  My father was a merchant near the old dwarf city when we were attacked.
+RspDflt=Good spirits protect you.
+rspBack=Lar1
+
+[Lar3]
+Say=The news is bad from the Peasants' Bailey, sir.  They are said to be eating the most atrocious things imaginable!  I get sick to even think of it.
+RspDflt=I see.  Thank you.
+rspBack=Lar1
+
+[Lar4]
+Say=Greetings, sir.  How can I serve you?
+RspDflt=none
+RspTxt1=Have you heard a rumor?
+nxtln1=Lar5
+
+[Lar5]
+Say=It is said that there will be relief soon.  I don't know when, but the Catheans and the Aratoyans have sent for more troops and supplies.
+RspDflt=That is good news, indeed.
+
+[three]
+Say=[sneeze]  H.. H.. Hello, [sneeze]
+RspDflt=none
+RspTxt1=Perhaps you should go see a healer.  I can't afford to become ill.
+nxtln1=three2
+
+[three2]
+Say=I'll...[sniffing]  I've already been, but that tea tastes terrible!
+RspDflt=none
+RspTxt1=Bitter medicine is often the most effective.
+nxtln1=three3
+
+[three3]
+Say=Where did you hear that tripe?
+RspDflt=none
+RspTxt1=What does it matter?  If you don't drink the tea, you'll get other people sick.
+nxtln1=three4
+
+[three4]
+Say=Fine, fine.  [He coughs.]
+RspDflt=You'll be doing us all a favor.  Farewell.
+
+[six]
+Say=That tea the monks brew is terrible, but I got sick of coughing and sniffling...  I had to pinch my nose to swallow it, but I'm feeling much better now, like I could slay a thousand Ahoul!  Ahah!
+RspDflt=I'm glad to hear it, and I hope you get the chance, soldier.  Avalon thanks you.
+

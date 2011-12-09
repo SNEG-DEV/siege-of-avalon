@@ -1,0 +1,101 @@
+[Notes]
+TitlesCheck=01recovered
+[Needed]
+1=Keman should be in the corner by the north stairs
+
+[root]
+Count=1
+Else=
+Default=Danke, Keman.
+Say1=
+goto1=Keman1
+
+[keman1]
+say=Wie kann ich Euch dienen, Mylord?
+RspTxt1=Ich brauche eine Wegbeschreibung.
+NxtLn1=directions
+RspCnd2=All(ttl(!01Recovered));
+RspTxt2=Woher kommt Ihr?
+NxtLn2=location1
+RspCnd3=All(ttl(01Recovered));
+RspTxt3=Woher kommt Ihr?
+NxtLn3=location2
+RspCnd4=All(ttl(!01Recovered));
+RspTxt4=Was gibt's Neues?
+NxtLn4=rumors1
+RspCnd5=All(ttl(01Recovered));
+RspTxt5=Was gibt's Neues?
+NxtLn5=rumors2
+
+[directions]
+say=Wo wollt Ihr hin?
+RspTxt1=Elaraths Labor.
+NxtLn1=direction1
+RspTxt2=Mudams Kammer.
+NxtLn2=direction2
+RspTxt3=Sir Roths Ratsstube.
+NxtLn3=direction3
+RspTxt4=Zum Quartiermeister.
+NxtLn4=direction4
+RspTxt5=Ich brauche einen Heiler.
+NxtLn5=direction5
+rspBack=Keman1
+
+[direction1]
+say=Diesen Flur entlang in nördlicher Richtung.  Elaraths Labor ist am Ende.
+RspDflt=Danke.
+rspBack=directions
+
+[direction2]
+say=Geh diesen Flur hinunter bis zum Ende.  Dort findet Ihr Mudams Kammer.
+RspDflt=Danke.
+rspBack=directions
+
+[direction3]
+say=Sir Roths Ratsstube ist am anderen Ende dieses Flurs.  Geht den Flur entlang bis zur gegenüberliegenden Ecke. Seine Ratsstube ist die Tür mit einem Wachposten davor.
+RspDflt=Danke.
+rspBack=directions
+
+[direction4]
+say=Geht diesen Flur entlang in nördliche Richtung und dann durch die erste Tür links.  Die Waffenkammer ist die erste Tür in dem Flur auf der rechten Seite.
+RspDflt=Danke.
+rspBack=directions
+
+[direction5]
+say=In der Kapelle unten gibt es einen begabten Heiler namens Crosby.  Er wird Euch helfen.
+RspDflt=Danke.
+rspBack=directions
+
+[location1]
+;Before recovery of Chalice of Life
+say=Ich komme aus Oriam, Herr.  Das Haus meiner Familie war im Grenzland und gehörte zu den ersten, die die Mithras dem Erdboden gleichmachte.
+RspDflt=Es tut mir leid, das zu hören.  Also dann, viel Glück Euch.
+rspBack=keman1
+
+[location2]
+;After recovery of Chalice of Life (PLAYER DOES HAVE THE TITLE OF RECOVERED)
+say=Ich komme aus Oriam, Herr. Ich bin zur Armee gegangen, um den Tod meiner Familie zu rächen.  Bald werde ich zum Ritter geschlagen, und dann kämpfe ich gegen Mithras persönlich!
+RspDflt=Ausgezeichnet!  Mögen Euch die guten Geister beschützen!
+rspBack=keman1
+
+[rumors1]
+say=Ein Hauptmann hat mir gesagt, dass es gestern im Hof der Bauersleute Krawall gab.  Er meinte allerdings, die Bauern wären so ausgehungert,  dass es kein richtiger Aufruhr war.  Es ist wirklich schlimm, dass das Essen nicht für alle reicht.
+RspDflt=Ja, ist es.  Ade, Keman.
+rspBack=keman1
+
+[rumors2]
+say=Ein Freund von mir hat erzählt, dass es neulich im Dorf einen großen Kampf gegeben hat.  Habt Ihr das zufällig gesehen?
+rspDflt=None
+RspTxt1=Nein, leider nicht.
+NxtLn1=rumors3
+
+[rumors3]
+say=Schade.  Es heißt, dass dort ein neuer Held geboren wurde!  Man sagt, er habe den Kelch des Lebens gefunden!
+rspDflt=None
+RspTxt1=Dann können wir nicht scheitern, nicht wahr?
+NxtLn1=rumors4
+
+[rumors4]
+say=Bestimmt nicht!  Gehabt Euch wohl, Herr!
+RspDflt=Bis bald, Keman.
+rspBack=keman1

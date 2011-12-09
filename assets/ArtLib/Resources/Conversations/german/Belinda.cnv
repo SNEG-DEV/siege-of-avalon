@@ -1,0 +1,62 @@
+[Notes]
+TitlesChecked=PlayerKnown
+TitlesSet=PlayerKnown
+
+[root]
+Count=2
+Else=
+Default=Danke, Belinda.
+Say1=All(ttl(!PlayerKnown));
+goto1=Belinda
+Say2=All(ttl(PlayerKnown));
+goto2=News
+
+;if no !knowbelinda
+[Belinda]
+say=Ihr seht nicht verletzt aus. Warum seid Ihr hier auf der Krankenstation?  Sucht Ihr jemanden?
+rspDflt=None
+rsptxt1=Nein, gute Frau.  Ich bin hier neu und sehe mich nur ein wenig um.  Wer seid Ihr, wenn ich fragen darf?
+NxtLn1=Belinda1
+rsptxt2=Nein, gute Frau.  Ich versuche nur, mich hier in der Zitadelle ein wenig zurechtzufinden.  Sagt, habt Ihr eine Neuigkeit für mich?
+NxtLn2=Belinda2
+
+;If 1a
+[Belinda1]
+say=Ich heiße Belinda, und ich abeite hier auf der Krankenstation.  Meine Kenntnisse in der Kunst des Heilens sind nicht zu vergleichen mit denen von Crosby oder Bruder Massus, aber ich versuche, die Verwundeten und Sterbenden zu trösten.  Das ist das Mindeste, was ich tun kann.
+rspDflt=None
+;1b
+rspTxt1=Eure Bemühungen werden bestimmt sehr geschätzt.  Einen schönen Tag noch.
+NxtLn1=Belinda3
+
+
+;If 2a
+[Belinda2]
+say=Einer der Soldaten hier hat erzählt, dass die Ahoul neulich abends beinahe im Südtor eine Bresche geschlagen hätten.  Das stimmt doch nicht, oder?  Ein solcher Durchbruch wäre eine Katastrophe!
+rspDflt=None
+;1c
+rsptxt1=Das wäre es in der Tat, aber Ihr braucht keine Sorge zu haben.  Ich denke, das Südtor ist intakt, sonst würden wir bis über den Hals in Ahoul stecken.  Ade.
+NxtLn1=Belinda3
+
+;if 1b or 1c
+[Belinda3]
+say=Moment, ich kenne Euch doch. Ihr seid Lieutenant Corvus' Bruder, oder?  Uns gehen die Vorräte eines bestimmten Mittels aus, das wir zur Bekämpfung eines Fiebers brauchen, das auf der Krankenstation grassiert.  Und... nun, könntet Ihr vielleicht mit Bruder Mo darüber sprechen?  Ich bin sicher, Ihr könnt uns helfen!
+;out
+script=Siege20000600050065763880.AddTitle(PlayerKnown);
+rspDflt=Das werde ich ganz bestimmt machen, wenn ihr meint, dass es etwas nützt. Ade, gute Frau.
+
+
+;if knowbelinda
+[News]
+say=Seid gegrüßt, Herr.  Braucht Ihr etwas?
+;1d
+rspTxt1=Ich halte nur meine Ohren offen.  Gibt es irgendetwas Neues?
+NxtLn1=News1
+rspDflt=Nein, Belinda.  Ich bin nur auf der Durchreise. Entschuldigt die Störung.
+
+;if 1d
+[News1]
+say=Nichts von Belang seitdem wir uns das letzte Mal gesprochen haben, Herr.  Die Patienten, die sich inzwischen vom Fieber erholen sprechen nicht viel, außer um Wasser zu bitten. Und unsere Heiler sind viel zu beschäftigt, um sich mit Klatsch zu befassen.
+rspDflt=Danke trotzdem, gute Frau.
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

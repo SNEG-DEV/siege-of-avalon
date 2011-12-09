@@ -1,0 +1,116 @@
+[FileID]
+Author=tucker
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01Bugs2,01recovered,03chapter3,04chapter4,05chapter5,06chapter6
+Removed=
+
+[Quest]
+Added=ch3-533
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+tucker(7/16/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Thank you, Huon.
+say1=all(ttl(06chapter6));
+goto1=chapter6
+say2=one(ttl(03chapter3,04chapter4,05chapter5));
+goto2=three
+Say3=All(ttl(!01recovered));
+goto3=Huon
+Say4=All(ttl(01recovered));
+goto4=Chalice
+
+[Huon]
+Say=Hi!  Could you do us a favor?
+RspDflt=None
+RspTxt1=If time permits.
+NxtLn1=Huon1
+
+[Huon1]
+Say=There's a scratching downstairs.  We all think it's rats.  Could you have the General send over a few cats or something?  It's keeping us up at night!
+RspDflt=I'm sorry, but I think the General has more important things to deal with right now.
+rspCnd1=all(ttl(01Bugs2));
+RspTxt1=Since giant beetles were discovered in the kitchen basement earlier today, we suspect that there are more beneath South Gate.  I'm planning on looking into the situation later.
+nxtLn1=Bugs
+
+[Bugs]
+Say=Beetles?  Even worse than rats!  I hope you kill them all, and quickly!
+RspDflt=I will do my best.  Good day.
+
+[Chalice]
+Say=So, you'd be the one who found the Chalice of Life!  Thank you much, lad!
+RspDflt=None
+RspTxt1=Just doing my duty as a soldier of Avalon.
+NxtLn1=Chalice1
+
+[Chalice1]
+Say=It must have been quite an adventure.
+RspDflt=None
+RspTxt1=It almost proved to be more than I could handle!
+NxtLn1=Chalice2
+
+[Chalice2]
+Say=Somehow I doubt that!  Good day to you, sir.
+RspDflt=Good day.
+
+[three]
+Say=Good day, sir.
+RspDflt=Excuse me, soldier.
+RspTxt1=I was wondering if you had any advice for me.
+nxtln1=three2
+
+[three2]
+Say=As a matter of fact, I do.  You know that Olon character?
+RspDflt=none
+RspTxt1=What of him?
+nxtln1=three3
+
+[three3]
+Say=I don't like the looks of him.  I'd be careful around him if I were you!
+adventure=ch3-533
+RspDflt=Thank you for the advice, soldier.  Farewell.
+
+[chapter6]
+Say=Ah, %playername%. Where is your wagon of Ahoul carcasses? Have you not yet again returned from the field victorious?
+RspDflt=I knew I had forgottten something...
+RspTxt1=I left the monsters to draw their final breaths at the very places where they dared to challenge me.
+nxtln1=chapter6c
+RspTxt2=What do we need with a wagon of scum inside these sacred walls?
+nxtln2=chapter6b
+
+[chapter6b]
+Say=I see your point, and I agree. Maybe these villains will trip on the bodies of their brothers and be defeated.
+RspDflt=I doubt that, but one can hope. Farewell.
+RspTxt1=Piles of Ahoul heaped around the castle would do wonders for their morale, eh?
+nxtln1=chapter6c
+
+[chapter6c]
+Say=Haha! You are truly becoming a leader! I will be honored to fight beside you when the time comes.
+RspDflt=Likewise, Huon. Farewell.
+

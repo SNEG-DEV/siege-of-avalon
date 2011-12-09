@@ -1,0 +1,720 @@
+[FileID]
+author=tuck
+coding=
+approved=
+version=1
+
+[CharacterID]
+name=Mudam
+guid=
+
+[Titles]
+Set=00mudamrefused,01permission,01reportahoul,01reportall,01reportbrother,01reporttraitors,01trainedscout,04chapter4,04knowram,04recondone,04reconquest,04rptmeetcal,04rptnagacal,6mudam,6mudamamulet,basic camouflage,center of balance,field first aid,path finding
+Checked=00seemudam,01EndChapter,01foundAhoul,01foundbrother,01foundTraitors,01Ogre,01Permission,01reportAhoul,01reportAll,01Reportbrother,01reportTraitors,01trainedScou,01trainedScout,01Transferred,01Village,04chapter4,04elaram,04endofch4,04knowram,04mudaram,04ramdestroyed,04recondone,04recondone));one(ttl(04sawram,04reconquest,04rptmeetcal,04sawmeeting,04sawnaga,04sawram,04sawwarriors,04seemudam,04talkedto,04talkto,04warrior,06chapter6,6mudam,6mudamamulet,Basic Camouflage,Center of Balance,Field First Aid,hunter,Path Finding
+Removed=00seemudam
+
+[Quest]
+Added=ch1-02,ch1-11,ch1-12,ch1-27,ch1-28,ch1-78,ch1-79,ch1-80,ch1-81,ch1-83,ch1-93,ch3-505,ch4-500,ch4-501,ch4-502,ch4-503,ch4-504,ch4-505,ch4-506,ch4-507,ch4-508,ch4-509,ch4-510,ch4-521,ch4-522,ch4-523,ch4-524,ch4-528,ch4-529,ch4-530,ch4-536,ch4-537,ch4-538,ch4-542,ch4-543,ch6-314,ch6-324,ch6-325
+Removed=ch1-11,ch1-12,ch1-27,ch3-505,ch4-500,ch4-504,ch4-505
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=unseenamulet
+
+[SyntaxCheck]
+tucker(2/7/01)=Passed
+tucker(2/9/01)=Passed
+tucker(2/14/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=16
+Else=
+Default=Gracias, Mudam.
+say1=all(ttl(00seemudam,!hunter));
+goto1=chapterstarter
+say2=all(ttl(00seemudam,hunter));
+goto2=chapterstartx
+say3=all(ttl(6mudam));
+goto3=chapter6i
+say4=all(ttl(06chapter6, !6mudam));
+goto4=chapter6
+say5=all(ttl(05chapter5));
+goto5=mudafive
+say6=all(ttl(04chapter4,04reconquest));
+goto6=fourreport
+say7=all(ttl(04chapter4,!04reconquest));
+goto7=fourgivequest
+say8=all(ttl(04chapter4));
+goto8=fourdefault
+say9=one(ttl(02chapter2,03chapter3));
+goto9=mudatwo
+say10=all(ttl(01reportbrother));
+goto10=bedposttime
+Say11=All(ttl(!01trainedScout,!01Transferred));
+goto11=Mudam1
+Say12=all(ttl(01trainedScout,!01Transferred));
+Goto12=Training
+Say13=All(ttl(01transferred,!01Permission));
+goto13=Transferred
+Say14=all(ttl(01Permission,!01Village));
+Goto14=Training
+Say15=All(ttl(01village,!01EndChapter));
+goto15=village1
+Say16=all(ttl(01EndChapter));
+goto16=BedTime
+
+[Mudam1]
+Say=¿Qué te trae a mi puerta?
+RspDflt=None
+RspTxt1=Perdóneme, señor.  Lamento haberle molestado.
+NxtLn1=Mudam2
+RspTxt2=Perdóneme, señor.  Soy un recién llegado a Avalon y sólo estoy mirando y conociendo a la gente.  ¿Quién sois y de dónde venís?
+NxtLn2=Mudam3
+
+[Mudam2]
+Say=No te preocupes.  Todos los soldados son bienvenidos a mis habitaciones.
+RspDflt=Buenos días, pues, señor.
+RspTxt1=Gracias, señor.  Me estaba preguntando ¿quién sois vos?
+nxtLn1=Mudam3
+
+[Mudam3]
+Say=Mi nombre es Mudam y soy nativo de estas tierras.  Me uní a este ejército cuando la lucha con Mithras era todavía muy joven, y a lo largo de los años, supongo que he demostrado mi valía a los líderes de por aquí.  Ahora soy Maestro de Exploradores, a cargo de su entrenamiento y asignación.  Así pues, ¿qué puedo hacer por ti?
+Adventure=ch1-02;
+RspDflt=None
+RspTxt1=Gracias, señor.  Ya os he robado suficiente tiempo, señor, así que ahora seguiré mi camino.
+NxtLn1=Mudam4
+rspCnd2=All(ttl(!01trainedscout));
+RspTxt2=Ya veo, señor.  La verdad sea dicha, estoy interesado en aprender algunas habilidades de exploración.  ¿Sería posible que me adiestraseis?
+NxtLn2=Mudam5
+
+[Mudam4]
+Say=Como quieras.  ¡Si alguna vez necesitas alguna cosa, no dudes en pedírmela!
+RspDflt=Gracias de nuevo, y buenos días, señor!
+
+[Mudam5]
+Say=Naturalmente.  Hoy en día no hay muchos soldados interesados en aprender cómo convertirse en exploradores por lo que tengo pocos alumnos.  Añade a eso el triste hecho de que es el trabajo de explorador es peligroso y mortal, y, bueno, el número de exploradores sigue descendiendo.  Habiendo dicho eso, el gran secreto de ser explorador es mantener la cabeza gacha...  [Las horas pasan.]  ...y la mujer del carnicero.  Je, je!  Espíritus, esa era una de las mejores bromas de Malk.  Ya hace años que murió.  Ah, bien.  Lo has hecho bien para ser un novato, y creo que podrás llegar a ser un buen explorador, eventualmente.  Por descontado, estas eran las técnicas básicas; hay muchas habilidades avanzadas que puedo enseñarte.
+script=player.addtitle(01trainedscout);player.setprop(trainingpoints=3);
+RspTxt1=Ya os he robado suficiente tiempo por ahora, señor.  Volveré más tarde para que me sigáis instruyendo.
+nxtln1=later
+RspTxt2=Estoy interesado en todo lo que podáis enseñarme, señor.
+nxtln2=Trainingtitles
+RspDflt=None
+
+[later]
+Say=Muy bien, pero vuelve pronto.  Estoy seguro de que encontrarás esas habilidades muy útiles en el futuro.
+RspDflt=Lo haré, señor.  Gracias.
+
+[Training]
+Say=Así, has vuelto a por más!
+RspTxt1=Sí, señor.  Estoy interesado en cualquier cosa que me podáis enseñar.
+nxtln1=Trainingtitles
+RspDflt=Lo lamento, señor.  Quizá mas tarde tenga tiempo.
+
+[Transferred]
+Say=Bueno, ¿qué te trae por aquí hoy?
+RspDflt=none
+rspCnd1=All(ttl(01trainedScout))
+RspTxt1=He recibido las órdenes de traslado de Sir Roth.  Ahora seré oficialmente uno de vuestros exploradores.
+NxtLn1=Transferred3
+rspCnd2=All(ttl(!01trainedScout))
+RspTxt2=He recibido las órdenes de traslado de Sir Roth.  Ahora seré oficialmente uno de vuestros exploradores.
+NxtLn2=NotScout
+
+[NotScout]
+Say=Me temo que no puedo aceptar a un novato sin entrenamiento para que sea explorador.  Aunque afortunadamente, creo que puedo arreglarlo.  Siéntate, chico.  Primero, el gran secreto para ser un explorador es mantener tu maldita cabeza baja...  [Pasan las horas.]  Bien, ahora, crees que has aprendido algo?
+script=player.addtitle(01trainedscout);player.setprop(trainingpoints=3);
+RspDflt=none
+RspTxt1=Sí señor.  Gracias, señor, ha sido muy instructivo.
+nxtLn1=Transferred3
+
+[Transferred3]
+Say=Me alegro de oírlo, y estaré encantado de tomarte bajo mi tutela como a los demás chicos.  De lo que he visto de ti, y de lo que me han contado, serás un buen pupilo.  Pero ¿realmente deseas ser explorador?
+RemoveQuest=ch1-11;
+script=takeitem(transferLetter,player);
+RspDflt=None
+RspTxt1=Bueno, señor, esperaba tener la oportunidad de aventurarme fuera de la ciudadela.
+NxtLn1=transferred4
+
+[transferred4]
+Say=¿Por qué querrías salir fuera de Avalon?  Hay más patrullas Ahoul últimamente.  Es territorio hostil, eso de ahí fuera.
+RspDflt=None
+RspTxt1=Lo sé, señor.  Para ser sincero, quería buscar en el pueblo pistas sobre la desaparición de mi hermano.
+NxtLn1=transferred5
+
+[transferred5]
+Say=Ah, naturalmente.  Conocí bien a Corvus.  Era un soldado excelente, aunque quizá me estoy precipitando al usar el tiempo pasado para referirme a él.  Si yo fuera tu, supongo que también querría conocer el destino de mi hermano.  Deberías saber que recientemente he perdido muchos exploradores.  Por lo tanto, sabemos muy poco sobre lo que sucede en el pueblo.  Desde la Puerta Sur se han visto signos de actividades extrañas, pero cada vez que he enviado un explorador a investigar, nunca ha regresado.  ¿Estás completamente seguro de que es algo para lo que estás preparado?
+RspDflt=None
+RspTxt1=Quizá no, señor.
+NxtLn1=transferred6
+RspTxt2=Completamente, señor.
+NxtLn2=transferred7
+
+[transferred6]
+Say=Lo comprendo, chico.  Estás enfadado y quieres hacer algo drástico.  Aunque quizá deberías reposarlo un poco, y adquirir más habilidades como soldado antes de convertirte en explorador.
+RspDflt=Sí señor.  Lamento haberle molestado, pero volveré tan pronto como me sienta preparado.
+
+[transferred7]
+Say=Veo que tienes confianza en ti mismo.  Acepto tu transferencia y te ordeno investigar fuera de la ciudadela.  Además de buscar a tu hermano, serás nuestros ojos en el pueblo.  Pero sé cauteloso; es un territorio desconocido y peligroso. Deberías esperar hasta la puesta de sol y mantenerte en las sombras.  Si quieres hablar con alguien que sepa cosas sobre el territorio fuera de Avalon, deberías buscar a Olon en el Patio Exterior, cerca de los mercaderes.  Si acepta hablar contigo, es la mejor fuente de información para lo que sucede fuera de las murallas.
+Adventure=ch1-78;
+AddQuest=ch1-12;ch1-28;
+script=player.addtitle(01permission);journalentry(mudam);showmessage(Your journal has been updated.,200);
+RspDflt=Gracias, señor.  No le defraudaré.
+
+[Trainingtitles]
+Say=Bien, pues, puedo instruirte en...
+train=true
+rspCnd1=All(ttl(!Path Finding):stt(trainingpoints>4))
+RspTxt1=Exploración(+2 Coordinación, -1 Restricción, +3 Sigilo): 5pts
+script1=player.addtitle(Path Finding);player.setprop(trainingpoints=-5);
+nxtln1=Trainingtitles
+rspCnd2=All(ttl(!Center of Balance):stt(trainingpoints>2))
+RspTxt2=Equilibrio(+2 Defensa, -2 Velocidad de Recuperación): 3pts
+script2=player.addtitle(Center of Balance);player.setprop(trainingpoints=-3);
+nxtln2=Trainingtitles
+rspCnd3=All(ttl(!Basic Camouflage):stt(trainingpoints>2))
+RspTxt3=Camuflaje Básico(+2 Sigilo, -1 Restricción, +1 Percepción): 3pts
+script3=player.addtitle(Basic Camouflage);player.setprop(trainingpoints=-3);
+nxtln3=Trainingtitles
+rspCnd4=All(ttl(!Field First Aid):stt(trainingpoints>1))
+RspTxt4=Primeros Auxilios(+2 Puntos de Vida, +1 Velocidad Curación): 2pts
+script4=player.addtitle(Field First Aid);player.setprop(trainingpoints=-2);
+nxtln4=Trainingtitles
+RspDflt=Ahora mismo no tengo tiempo para más, señor.  Gracias.
+
+[village1]
+RspDflt=none
+Say=Bienvenido de vuelta, explorador.  ¿Qué tienes que informar?
+RspCnd1=All(ttl(!01foundbrother,!01foundAhoul,!01foundTraitors));
+RspTxt1=No he descubierto nada por ahora, señor.  He vuelto para saber si había alguna novedad.
+NxtLn1=villageNothing
+RspCnd2=All(ttl(01foundbrother,!01Reportbrother));
+RspTxt2=He hallado a mi hermano en el pueblo, señor!
+NxtLn2=villagebrother
+RspCnd3=All(ttl(01foundAhoul,!01foundTraitors,!01reportAhoul));
+RspTxt3=He descubierto a algunos Ahoul intentando construir un túnel hacia el interior de la fortaleza, señor.
+NxtLn3=villageAhoul
+RspCnd4=All(ttl(!01foundAhoul,01foundTraitors,!01reportTraitors));
+RspTxt4=He descubierto algo inquietante en el sótano de la Puerta Sur, señor.
+NxtLn4=villagetraitors
+RspCnd5=All(ttl(01foundAhoul,01foundTraitors,!01reportAll));
+RspTxt5=He descubierto un complot para traicionar a Avalon, señor!
+NxtLn5=villageAll
+rspCnd6=All(ttl(01trainedScout):stt(trainingpoint>0))
+RspTxt6=Me gustaría aprender algunas habilidades avanzadas de exploración.
+nxtln6=Trainingtitles
+
+[villageNothing]
+Say=La situación ha cambiado muy poco desde tu partida.  Los soldados siguen hambrientos, los campesinos se siguen muriendo de hambre y los Ahoul siguen pidiendo nuestra sangre a gritos.
+RspDflt=Ya veo, señor.  Continuaré con mi misión.
+
+[villagebrother]
+Say=Esas son buenísimas noticias!  Debo decir que mis esperanzas habían empezado a desvanecerse.  Asegúrate de que Fray Massus le da los mejores cuidados.  Y tú--tú debes descansar un poco.  Esta guerra aún no ha terminado, y me da la impresión de que el próximo capítulo de la historia estará pronto aquí.
+removequest=ch1-27;
+script=player.addtitle(01reportbrother);
+RspDflt=Lo haré, señor.  Y, señor...  Tiene usted mi agradecimiento, tanto por vuestro entrenamiento como por vuestra amabilidad.  Buenas noches, señor.
+
+[villageAhoul]
+Say=Espero que les liquidases!
+Adventure=ch1-79;
+RspDflt=None
+script=player.addtitle(01reportAhoul);
+rspCnd1=all(ttl(01reportTraitors));
+RspTxt1=Lo hice, señor.  Creo que ésta era la actividad sospechosa de la que os habían informado.  El túnel se dirigía directamente hacia la Puerta Sur y me temo que ya estaba a mitad de camino.  Deberemos mantener bien vigilada la vieja Iglesia desde ahora--no queremos que los Ahoul continúen con su trabajo allí!
+nxtLn1=villageAll1
+rspCnd2=all(ttl(!01reportTraitors));
+RspTxt2=Lo hice, señor.  Creo que ésta era la actividad sospechosa de la que os habían informado.  El túnel se dirigía directamente hacia la Puerta Sur y me temo que ya estaba a mitad de camino.  Deberemos mantener bien vigilada la vieja Iglesia desde ahora--no queremos que los Ahoul continúen con su trabajo allí!
+NxtLn2=villageAhoul1
+
+[villageAhoul1]
+Say=Esa es una sugerencia bastante prudente, explorador, y una que veré que se lleve a cabo inmediatamente.  Avalon tiene una deuda de gratitud contigo.
+RspDflt=Era mi deber, señor.
+
+[villagetraitors]
+Say=¿Qué has visto?
+Adventure=ch1-80;
+removequest=ch1-501;
+RspDflt=None
+script=player.addtitle(01reporttraitors);
+rspCnd1=all(ttl(01reportAhoul));
+RspTxt1=Cuando entré en el sótano, fui atacado por un grupo de soldados.  Me defendí, naturalmente, y no tuve otro remedio que matarles.  Explorando a fondo, hallé un túnel que estaban excavando en dirección al pueblo.  No puedo estar seguro de a dónde se dirigían, pero si mis sentidos no se equivocan, creo que se dirigían directamente hacia la Iglesia.  Creo que quizá estuviesen a mitad de camino hacia allí.
+nxtLn1=villageAll1
+rspCnd2=all(ttl(!01ReportAhoul));
+RspTxt2=Cuando entré en el sótano, fui atacado por un grupo de soldados.  Me defendí, naturalmente, y no tuve otro remedio que matarles.  Explorando a fondo, hallé un túnel que estaban excavando en dirección al pueblo.  No puedo estar seguro de a dónde se dirigían, pero si mis sentidos no se equivocan, creo que se dirigían directamente hacia la Iglesia.  Creo que quizá estuviesen a mitad de camino hacia allí.
+NxtLn2=villagetraitors1
+
+[villagetraitors1]
+Say=Eso es curioso, desde luego.  Me encargaré de investigarlo inmediatamente.  Gracias, explorador.  Puedes irte.
+RspDflt=Sí, señor.
+
+[villageAll]
+Say=¿Traicionar a Avalon?  Tranquilo, chico -- esa es una acusación muy seria.  Mejor que te expliques.
+script=player.ifNottitle(01reportAhoul);player.addtitle(01reportAhoul);endif;player.ifNottitle(01reporttraitors);player.addtitle(01reporttraitors);endif;addtitle(01reportAll);
+removequest=ch1-501;
+RspTxt1=Descubrí a algunos soldados excavando en secreto un túnel en el sótano de la Puerta Sur.  Me atacaron y, aunque me vi forzado a matarles, es probable que haya más traidores en la Puerta Sur.  Aunque en el pueblo, también descubrí a algunos Ahoul excavando un túnel en el sótano de la Iglesia.  Hasta que les detuve, ambos túneles iban a encontrarse, y darles a los Ahoul un pasaje hacia el interior de Avalon.  Aunque no puedo estar seguro, creo que el encuentro de ambos túneles no hubiese tardado demasiado.  Quizá menos de un día o dos.
+Adventure=ch1-79;ch1-80;
+NxtLn1=villageAll1
+RspDflt=None
+
+[villageAll1]
+Say=Los espíritus nos preserven...  ¿Hombres excavando hacia el pueblo y Ahoul excavando hacia Avalon?  ¡Debo informar inmediatamente al General Roth!  Chico, hoy le has hecho un heroico favor a Avalon.
+Adventure=ch1-81;
+RspDflt=none
+rspCnd1=all(ttl(!01Ogre));
+RspTxt1=Gracias, señor.  Me alegro de haber ayudado.  Pero mi hermano, señor--ahora mismo debo preocuparme por mi hermano.
+nxtLn1=VillageAll2
+rspCnd2=all(ttl(01Ogre));
+RspTxt2=Gracias, señor.  Me alegro de haber ayudado.  Pero mi hermano, señor--ahora mismo debo preocuparme por mi hermano.  Creo que sé dónde está, señor, y espero sacarle de allí lo antes posible.
+nxtLn2=VillageAll2
+
+[VillageAll2]
+Say=Naturalmente, explorador.  Lo comprendo perfectamente.  Antes de que te vayas, deberías saber que dondequiera que esté tu hermano, puede que no esté solo.  Circulan rumores por Avalon sobre una criatura muy grande, de forma humanoide merodeando por algunos lugares del pueblo, especialmente cerca de las ruinas de la librería.  Había descartado esas historias como producto de mentes exhaustas, pero he visto cosas más extrañas surgir de los bosques cercanos a Avalon.  De cualquier manera, ten cuidado la próxima vez que busques a Corvus.  ¡Hasta luego, pues--y buena suerte!
+adventure=ch1-93;
+RspDflt=Sí, señor!  ¡Hasta luego, señor!
+
+[BedTime]
+Say=Bienvenido, explorador.  ¿Qué tienes para mí ahora?
+RspDflt=none
+RspTxt1=He traído a mi hermano de vuelta a Avalon, señor.  Está descansando en la enfermería.
+nxtLn1=BedTime2
+
+[BedTime2]
+Say=Esa es una muy buena noticia!  Debo decir que había empezado a perder la esperanza.  Asegúrate de que los monjes le dan el mejor de los cuidados.
+RspDflt=none
+RspTxt1=Ya lo he hecho, señor.  Hay más cosas de las que debo informaros, pero Sir Roth me ha dicho que no lo hablemos con nadie más.  Es sobre Ovoron, señor.
+nxtLn1=BedTime3
+
+[BedTime3]
+Say=Quieres decir el General--
+RspDflt=none
+RspTxt1=No, señor.  Ya no.  Ha conducido a sus hombres a una matanza, señor, y ha entregado documentos secretos a los Ahoul.
+nxtLn1=BedTime4
+
+[BedTime4]
+Say=Comprendo.  Sir Roth me llamará cuando me necesite.  Te daría las gracias por tu informe, pero estoy seguro de que me perdonarás si no lo hago.  Pero tú -- tú debes descansar.  Esta guerra aun no ha terminado y tengo la impresión de que el próximo capítulo está a punto de llegar.
+RemoveQuest=ch1-12;ch1-27;
+Adventure=ch1-83;
+script=player.addtitle(01reportbrother);
+RspDflt=Lo haré, señor.  Y, señor...  tenéis mi agradecimiento, tanto por vuestro entrenamiento, como por vuestra amabilidad.  Buenas noches, señor.
+
+[fourdefault]
+Say=No quiero ser desagradable, pero por favor no me molestes ahora.  Muchas cosas requieren mi atención en este momento.  [Suspira cansinamente]  Enviaré a por ti si te necesito.  Gracias por tu atención.
+RspDflt=Así pues, hablaré con usted más tarde, señor.
+
+[fourgivequest]
+Say=Ah, supongo que Entrowe te ha encontrado por fin.  Muy bien.  ¿Has oído algo sobre la reciente actividad Sha'ahoul cerca de las murallas de Avalon?
+RspDflt=none
+removequest=ch4-500;
+RspTxt1=Puede que haya oído algo por el estilo a los soldados, señor, pero los rumores...
+nxtln1=fourgivequest2
+RspTxt2=No, señor, eso es algo de lo que no tengo noticias.
+nxtln2=fourgivequest2
+
+[fourgivequest2]
+Say=Permíteme ser el primero que te diga que no se trata de simples rumores.  Desde hace un tiempo, hemos estado observando actividad en tres ubicaciones, aproximadamente al sudoeste, sur y este de Avalon.  Al principio, los Sha'ahoul deambulaban por allí como hacen siempre, y pensamos que quizá estaban buscando restos de las batallas y lo que los pobladores hubiesen dejado atrás.  Pero ahora tenemos claro que, puesto que se han agrupado, deben estar llevando a cabo alguno de sus planes...
+RspDflt=none
+RspTxt1=A esta distancia debería ser fácil ver lo que hacen.  ¿Nadie ha... ?
+nxtln1=fourgivequest3
+
+[fourgivequest3]
+Say=Sí, sí, hemos sido capaces de ver que están haciendo algo, pero... nunca hubiera dicho que esa área podía ser tan oscura.  Creo que hay magia chamánica en la zona, ocultando sus maquinaciones.  También hay informes de, esto, monstruos dotados de inteligencia en la zona del este que necesito que confirmes o refutes.  Se trata de una misión arriesgada; debes explorar las tres zonas, descubrir lo que puedas, y volver aquí.  Sé que suena muy peligroso, pero tengo una idea.
+adventure=ch4-504;
+RspDflt=none
+RspTxt1=¿Qué idea?
+nxtln1=fourgivequest4
+
+[fourgivequest4]
+Say=Es la que me dio la idea de ésta arriesgada maniobra.  Verás, Olon y yo, aunque hemos seguido distintos caminos en nuestras respectivas carreras...  Simplemente debes saber, aunque no lo divulgues, que seguimos teniendo una muy buena relación.  Resulta que sé -- Olon puede ser muy bocazas cuando toma demasiado vino, cosa que no sucede muy a menudo -- que ha pagado montones de dinero para que fabriquen un objeto mágico especialmente para él.  Tiene un propósito.
+adventure=ch4-505;ch4-528;
+RspDflt=none
+RspTxt1=¿Hacer que un hombre se vuelva invisible?
+nxtln1=fourgivequest5
+
+[fourgivequest5]
+Say=Casi lo aciertas.  No obstante, la invisibilidad tiene un precio muy elevado, y Olon... eh, bueno, no perdamos tiempo hablando de eso...  Este objeto del que hablo es una máscara, y hará que su portador parezca un híbrido de la casta Guerrera de los Sha'ahoul.  Debes convencer a Olon de que te entregue la máscara, puesto que dudo seriamente de que puedas tener éxito sin ella.  No sé si el hechizo de la máscara te permitirá hablar y entender la lengua de la casta guerrera, pero no tengo la menor duda de que serás capaz de solucionar ese problema.  Cuando lo hagas, asegúrate de descubrir cuándo tienen planeado su ataque.  Eh...  ¿Preguntas?
+adventure=ch4-506;
+RspDflt=none
+RspTxt1=¿Creéis que dejar caer vuestro nombre en la conversación me ayudará a conseguir la máscara?
+nxtln1=fourgivequest6
+
+[fourgivequest6]
+Say=Es posible, aunque con él, nunca se sabe; puede que te haga algún encargo como pago por ella.  Tiene... un sentido del honor un poco especial, pero cree en el pago de sus deudas.  ¿O debería decir que cree en no tener deudas?  En cualquier caso, es un instinto de supervivencia en los hombres de su tipo.  Antes de que me olvide, también me gustaría que encontrases a un explorador al que envié para hacer un mapa de los campamentos Sha'ahoul; aunque me temo lo peor, espero que el explorador y sus mapas estén a salvo, puesto que los mapas te serían de indudable utilidad en la misión, y él era un joven muy valiente.
+RspDflt=none
+RspTxt1=¿Algo más, Mudam?
+script1=journalentry(chpt4-01);
+nxtln1=fourgivequest6b
+
+[fourgivequest6b]
+Say=Ja!  ¡No, eso es todo lo que te pido por hoy!  Sé que parece mucho, y habitualmente, enviaría a uno de mis oficiales con mayor experiencia para encargarse de un asunto como éste, pero se encuentra ya en una misión y no está disponible por ahora.  ¿Tienes más preguntas?
+adventure=ch4-529;ch4-537;
+RspDflt=none
+RspTxt1=¿Hay algún tipo de información concreta que esperas que obtenga?
+nxtln1=fourgivequest7
+RspTxt2=¿Sabes algo del estado de salud de mi hermano?  No puedo creer que lleve tanto tiempo fuera.
+nxtln2=fourgivequesta
+RspTxt3=No hay más preguntas, Mudam.  Empezaré con esta misión inmediatamente.
+nxtln3=fourgivequest8
+RspTxt4=Antes hablaste de una misteriosa raza de no-humanos, pero inteligentes al este...  ¿Qué sabes de ellos?
+nxtln4=fourgivequestb
+
+[fourgivequestb]
+Say=Se han oído rasgueos, silbidos y sombras que tenían extrañas formas y se movían de acuerdo con ellas.  Por lo que sabemos, se trata de un truco de los Chamanes.  Los ruidos son arrastrados por el viento, pero ¿hasta nuestras murallas en medio de la quietud la noche?  En cualquier caso, vale la pena investigar, puesto que la noche, no la oscuridad mágica, es lo que oculta a esas criaturas de nosotros.  Confío en el explorador que me trajo esta información.
+adventure=ch4-536;
+RspDflt=none
+RspTxt1=Gracias, Mudam.  No tengo más preguntas, empezaré con esta misión inmediatamente.
+nxtln1=fourgivequest8
+rspback=fourgivequest6b
+
+[fourgivequesta]
+Say=Aunque no esté completamente recuperado, está lo suficientemente curado para cumplir nuevas misiones.  Ha estado muy ocupado, y antes de que lo preguntes, no fui yo quien le devolvió al servicio activo; insistió en realizar nuevas misiones.
+adventure=ch4-521;
+RspDflt=none
+RspTxt1=Gracias, Mudam.  No tengo más preguntas, empezaré con esta misión inmediatamente.
+nxtln1=fourgivequest8
+rspback=fourgivequest6b
+
+[fourgivequest7]
+Say=Sé tan exhaustivo como puedas, pero no hagas locuras.  Sé rápido.  No debo recordarte que te he elegido especialmente para esta misión porque, francamente, no podemos permitirnos fallar, y necesito alguien lo suficientemente valiente como para creer que este plan pueda triunfar.
+RspDflt=none
+RspTxt1=Me halagas con tus comentarios, Mudam.  Empezaré inmediatamente.
+nxtln1=fourgivequest8
+rspback=fourgivequest6b
+
+[fourgivequest8]
+Say=Excelente.  Vuelve a informarme en cuanto sepas algo de esas tres regiones.  Visita al General Roth, pues tiene otra misión para ti en el área por la que te moverás.  Recuerda mantenerte oculto, dejar a los miembros de tu equipo en la fortaleza -- después de todo, sólo hay una máscara -- y si encuentras a la guardia de élite de Mithras' elite...  Corre.  Hemos... intentado derrotarles varias veces, y...  Todo el que se ha enfrentado a ellos ha muerto.
+AddQuest=ch4-501;ch4-502;ch4-503;ch4-504;
+adventure=ch4-507;ch4-538;ch4-542;
+script=player.addtitle(04reconquest);
+RspDflt=Naturalmente, Mudam.  Te veré pronto.
+
+[fourreport]
+Say=Bienvenido!  ¿Tienes algo que informar?
+RspDflt=Me temo que no.  Discúlpame, Mudam.
+rspcnd1=all(ttl(!04recondone));one(ttl(04sawram,04sawnaga,04sawwarriors));
+RspTxt1=He investigado algunas de las áreas de las que me hablaste.
+nxtln1=subreporta1
+rspcnd2=all(ttl(04sawram,04sawnaga,04sawwarriors,!04recondone));
+RspTxt2=He terminado de explorar cada una de las tres áreas de las que me hablaste.
+nxtln2=subreportb1
+rspcnd3=all(ttl(04mudaram,!04knowram,04ramdestroyed));
+RspTxt3=He destruido la, máquina de guerra Sha'ahoul.
+script3=addtitle(04knowram);
+nxtln3=subreportc1
+rspcnd4=all(ttl(04talkto,!04talkedto,04warrior));
+RspTxt4=He hablado con los guerreros y ya sé cuando planean su ataque.
+script4=addtitle(04talkedto);
+nxtln4=subreportc2
+rspcnd5=all(ttl(04sawmeeting,!04rptmeetcal));
+RspTxt5=He descubierto un cónclave de los Sha'men al sur de Avalon, en una zona protegida de la tienda de Mithras.  Opino que planean su ataque.
+script5=player.addtitle(04rptmeetcal);
+nxtln5=subreportd1
+rspcnd6=all(ttl(04endofch4));
+RspTxt6=Desde luego, Mudam.  He terminado la misión que me había asignado Sir Roth y pensé que te gustaría saberlo.
+nxtln6=endofour
+
+[subreporta1]
+Say=Sí, pero ¿por qué has vuelto antes de completar tu misión?
+RspDflt=none
+rspcnd1=all(stt(charm>19));
+RspTxt1=Mis disculpas, Mudam, pero creí que ésta información era urgente.  Los mandos deben ser informados...
+nxtln1=subreporta2
+rspcnd2=all(stt(charm<20));
+RspTxt2=Simplemente pensé que lo que tenía que informar era lo suficietemente importante para venir aquí inmediatamente.
+nxtln2=subreporta3
+
+[subreporta2]
+Say=Quizá debería haber mencionado que necesito información de las tres regiones antes de poder tomar una decisión verdaderamente eficaz.  Aplaudo tu iniciativa; eres rápido y capaz, pero por favor, vuelve sólo cuando tengas información sobre las tres áreas.
+adventure=ch4-522;
+RspDflt=Hasta luego, pues, Mudam, y...  Gracias.
+
+[subreporta3]
+Say=Quizá debería haber mencionado que necesito información de las tres regiones antes de poder tomar una decisión verdaderamente eficaz.  Por favor, vuelve sólo cuando tengas información sobre las tres áreas.
+adventure=ch4-522;
+RspDflt=Naturalmente.  Volveré muy pronto.
+
+[subreportb1]
+Say=Excelente!  ¿Qué has descubierto?
+RspDflt=none
+removequest=ch4-504;
+RspTxt1=Para empezar, al este de Avalon, he descubierto que los informes de no-humanos eran ciertos.  Eran principalmente humanos.  De la cintura hacia arriba, al menos.  No obstante, de la cintura hacia abajo, tenían cuerpo de serpiente.
+script1=player.addtitle(04recondone);journalentry(chpt4-02);
+nxtln1=subreportb2
+
+[subreportb2]
+Say=Continúa, por favor.
+RspDflt=none
+RspTxt1=Tras visitar la zona del suroeste, presencié el proceso de construcción de un armazón de madera.  Los Sha'ahoul trabajaban en él mientras me aproximé a observarlo.
+nxtln1=subreportb3
+
+[subreportb3]
+Say=Ya veo.  El General Ovoron era un experto en el arte del asedio; probablemente estén construyendo esa máquina bajo sus órdenes.  ¿Sabes cual es su destino? O al menos, ¿cómo planean usarlo los Sha'ahoul?
+adventure=ch4-543;
+RspDflt=none
+rspcnd1=all(ttl(04elaram));
+RspTxt1=De hecho, he hablado con Elazar sobre una visión que ha tenido.  En su visión, ve un ariete que trae la destrucción a Avalon.  Supuse que esa máquina era el ariete todavía incompleto.
+nxtln1=subreportb4
+rspcnd2=all(ttl(!04elaram));
+RspTxt2=No lo sé seguro, pero no se me ocurre qué otra cosa podría ser, aparte de una máquina de guerra.  Indudablemente deberá estar completada antes de que los Sha'ahoul puedan atacar.
+nxtln2=subreportb4
+
+[subreportb4]
+Say=¿Y en la ubicación del sureste?
+RspDflt=none
+rspcnd1=all(ttl(!04warrior));
+RspTxt1=Un grupo de guerreros Sha'ahoul merodeando, algunos entrenándose y hablando entre ellos, probablemente esperando la orden de ataque.
+nxtln1=subreportb5
+rspcnd2=all(ttl(04warrior,!04ramdestroyed));
+RspTxt2=Un grupo de guerreros Sha'ahoul merodeando por allí, entrenando y hablando entre ellos.  Tuve la oportunidad de hablar con algunos de ellos, y aparentemente están en alerta, esperando la orden de ataque.  Suponen que el ataque empezará en cuanto terminen su gran máquina.
+script2=addtitle(04talkedto);
+nxtln2=subreportb12
+rspcnd3=all(ttl(04warrior,04ramdestroyed));
+RspTxt3=Un grupo de guerreros Sha'ahoul merodeando por allí, entrenando y hablando entre ellos.  Tuve la oportunidad de hablar con algunos de ellos, y aparentemente están en alerta, esperando la orden de ataque.  Suponen que el ataque empezará en cuanto terminen su gran máquina de guerra, pero la he destruido para que tengamos un poco más de tiempo.
+script3=addtitle(04talkedto);addtitle(04knowram);
+nxtln3=subreportb13
+
+[subreportb5]
+Say=¿Probablemente?  ¿No has hablado con ninguno de ellos?  Primero, necesito saber lo que dicen los guerreros.  Por lo que dices, supongo que planean  un ataque, y me gustaría saber cuándo será.  Sé que es arriesgado, pero he oído, de mis propias fuentes, que la máscara tiene un encantamiento adicional, y ya deberías saber lo suficiente de los Sha'ahoul para estar seguro.  Si no, bueno...  te he visto correr a toda prisa lo suficiente para saber que tienes unas poderosas piernas.  [se ríe]
+adventure=ch4-523
+RspDflt=none
+RspTxt1=Sí, qué divertido.  ¿Decíais...?
+script1=addtitle(04talkto);
+nxtln1=subreportb6
+
+[subreportb6]
+Say=Sí.  Esos hombres-serpiente se conocen como Naga.  Sé que existen, pero nunca he visto uno personalmente; sólo ilustraciones y vagas historias junto al fuego.  Me sorprende que hayan venido a nuestra región; normalmente se mantienen a distancia de los campamentos humanos, por alguna razón.  Sus implicaciones tendrá, pero no son nada de lo que yo deba preocuparme.  Cuando tengas la oportunidad, informa de ésta actividad al Capitán Calvaric; es su departamento, después de todo, y probablemente decidirá que puesto que no representan una amenaza inmediata, no debemos preocuparnos por ellos.
+adventure=ch4-508;
+RspDflt=none
+RspTxt1=Muy bien...  ¿Hay algo más?
+script1=player.addtitle(04rptnagacal);
+nxtln1=subreportb11
+
+[subreportb8]
+Say=Ah, ya veo.  Si no te molesta que lo pregunte, ¿qué te ha dado la idea de tomar tal iniciativa?
+removequest=ch4-505;
+RspDflt=none
+rspcnd1=all(ttl(04elaram));
+RspTxt1=Estoy convencido de que el ariete de la visión de Elazar es la máquina para la que servían las piezas que he destruido.
+nxtln1=subreportb9
+rspcnd2=all(ttl(!04elaram));
+RspTxt2=No pude dejar pasar la oportunidad.  Es cierto, el propósito exacto de la máquina es desconocido, pero está claro que se trataba de un único objeto que estaban montando, junto a sus tropas, ahora...
+nxtln2=subreportb9
+
+[subreportb9]
+Say=Ya veo lo que piensas.  Sea como sea, eso debería darnos tiempo suficiente para la llegada de Vortigerm.  [se acaricia el puente de la nariz]  Si tienes algo más que informar, no te prives de pasar por aquí...  No voy a moverme del lugar.  Gracias por completar tan rápidamente las misiones.
+adventure=ch4-524;ch4-530
+RspDflt=Como quieras, Mudam.  Hasta luego.
+
+[subreportb10]
+Say=Muy bien...  Si tienes algo más que informar, no te prives de pasar por aquí...  [se acaricia el puente de la nariz]  No voy a moverme del lugar.
+RspDflt=Como quieras, Mudam.
+
+[subreportb11]
+Say=Ah, veamos.  Destruye su máquina de asedio; eso debería darnos más tiempo... para rezar por la llegada de nuestros refuerzos.  Respecto al método que utilices, no importa, pero el fuego sería bastante eficiente.  Sí, creo, y simbólico.  Deberías procurarte algunos aceites de uno de nuestros alquimistas para que te ayude al respecto.  Eso es todo por ahora, a menos que tengas más secretos que revelarme.
+RspDflt=none
+AddQuest=ch4-505;
+adventure=ch4-509;
+rspcnd1=all(ttl(04ramdestroyed));
+RspTxt1=De hecho, señor, es así.  Ya he destruido el proyecto de ariete del enemigo.
+script1=addtitle(04knowram);
+nxtln1=subreportb8
+rspcnd2=all(ttl(!04ramdestroyed));
+script2=addtitle(04mudaram);
+RspTxt2=No tengo ninguno, Mudam.
+nxtln2=subreportb10
+
+[subreportb12]
+Say=Ya veo, muy bien.  Primero, esos hombres-serpiente se conocen como Naga.  Sé que existen, pero nunca he visto uno personalmente; sólo ilustraciones y vagas historias junto al fuego.  Sus implicaciones tendrá, pero no son nada de lo que yo deba preocuparme.  Cuando tengas la oportunidad, informa de ésta actividad al Capitán Calvaric; es su departamento, después de todo.
+adventure=ch4-508;
+RspDflt=none
+RspTxt1=Muy bien...  ¿Algo más?
+script1=player.addtitle(04rptnagacal);
+nxtln1=subreportb11
+
+[subreportb13]
+Say=Ah, ya veo.  Si no te molesta que lo pregunte, ¿qué te ha dado la idea de tomar tal iniciativa?
+removequest=ch4-505;
+RspDflt=none
+rspcnd1=all(ttl(04elaram));
+RspTxt1=La visión de Elazar.  Estoy convencido de que el ariete de la visión de Elazar es la máquina para la que servían las piezas que he destruido.
+nxtln1=subreportb14
+rspcnd2=all(ttl(!04elaram));
+RspTxt2=No pude dejar pasar la oportunidad.  Es cierto, el propósito exacto de la máquina es desconocido, pero está claro que se trataba de un único objeto que estaban montando, junto a sus tropas, ahora... para destruir Avalon.
+nxtln2=subreportb14
+
+[subreportb14]
+Say=Bastante bien.  La única otra cosa que tengo para ti...  Esos hombres-serpiente se conocen como Naga.  Sé que existen, pero nunca he visto uno personalmente; sólo ilustraciones y vagas historias junto al fuego.  Me sorprende que hayan venido a nuestra región; normalmente se mantienen a distancia de los campamentos humanos, por alguna razón.  Sus implicaciones tendrá, pero no son nada de lo que yo deba preocuparme.  Habla con el Capitán Calvaric; es su departamento, después de todo, no el mío, y probablemente decidirá no hacer nada a menos que representen una amenaza directa.  Infórmale de lo que has visto.
+adventure=ch4-508;ch4-530;
+RspDflt=none
+RspTxt1=Muy bien...  ¿Algo más?
+script1=player.addtitle(04rptnagacal);
+nxtln1=subreportb15
+
+[subreportb15]
+Say=Por ahora no.  Si tienes algo más que informar, no te prives de pasar por aquí...  [se acaricia el puente de la nariz]  No voy a moverme del lugar, estaré quemando el aceite de medianoche.
+RspDflt=Como quieras, Mudam.  Hasta luego.
+
+[subreportc1]
+Say=Esas noticias son excelentes!  Sabía que no sería un problema para ti.  ¡Ja!  ¿Tienes algo más que informar?
+removequest=ch4-505;
+RspDflt=Por el momento no, Mudam.  Volveré en cuanto tenga algo más.
+rspback=fourreport
+
+[subreportc2]
+Say=¿Y cuándo será eso?
+RspDflt=none
+rspcnd1=all(ttl(04ramdestroyed));
+RspTxt1=Tan pronto como completen su máquina de guerra, pero dado que la he destruido, es indudable que su ataque se retrasará.
+script1=addtitle(04knowram);
+nxtln1=subreportc3
+rspcnd2=all(ttl(!04ramdestroyed));
+RspTxt2=Tan pronto como completen su máquina de guerra.
+nxtln2=subreportc4
+
+[subreportc3]
+Say=Excelente!  ¡Esto debería darnos suficiente tiempo para que lleguen los refuerzos!  ¡Apuesto a que el viejo Calvaric se sentirá muy aliviado!  Oh...  ¿Tienes algo más que informar?
+removequest=ch3-505;
+rspcnd1=all(ttl(04sawmeeting,04rptmeetcal));
+RspTxt1=He descubierto un cónclave de los Sha'men al sur de Avalon, en una zona protegida de la tienda de Mithras.  Opino que planean su ataque, el mismo que he abortado al destruir su ariete.
+script1=player.addtitle(04rptmeetcal);
+nxtln1=subreportd1
+RspDflt=No, Mudam.  Volveré en cuanto tenga algo más.
+rspback=fourreport
+
+[subreportc4]
+Say=Entonces debes darte prisa y asegurarte que es destruida!  ¡Rápido!
+script=addtitle(04mudaram);
+AddQuest=ch3-505;
+RspDflt=Naturalmente.  Volveré enseguida.
+
+[subreportd1]
+Say=Aunque me gustaría hacer una sugerencia, estaría entrometiéndome en el terreno del Capitán Calvaric.  Infórmale de esto, y te encargará que hagas lo que sea pertinente.  ¿Hay algo más que desees mencionar?
+adventure=ch4-510;
+RspDflt=Por ahora no, Mudam.  Hablaré contigo luego.  Hasta luego.
+rspback=fourreport
+
+[endofour]
+Say=¿Ah sí?  Muy bien, ¿cuáles son esas noticias increíbles?
+RspDflt=none
+RspTxt1=He tenido éxito en la conclusión del plan de Sir Roth para asesinar al General Ovoron.
+nxtln1=endofour2
+
+[endofour2]
+Say=Desde luego, esas son buenas noticias.  Sé que Sir Roth le consideraba el mayor riesgo a nuestra seguridad.  Desde luego era una misión que sólo podía ordenar él, y no se me ocurre mejor momento para hacerlo.  Seguramente eso detendrá temporalmente a los Ahoul; no pueden aplicar los principios tácticos de Ovoron sin su supervisión y guía.
+RspDflt=none
+RspTxt1=Esto nos dará tiempo suficiente para que las tropas de Vortigerm lleguen hasta aquí!
+nxtln1=endofour3
+
+[endofour3]
+Say=Me sorprendería si no fuese así.  Ciertamente han de volver a planificar muchas cosas antes de poder pensar en otro asalto.  Has quitado un gran peso de nuestra espalda colectiva, y con el alivio, francamente, me llega un cierto cansancio.  Si no lo has hecho, por favor, informa al Capitán Calvaric de que el traidor ya no existe.  Eso le debería dar también un respiro.  Y después, descansa un poco.  Pareces extenuado.
+RspDflt=Sí, señor.  Hablaré con vos en nuestra próxima misión.  Hasta luego.
+
+[chapter6]
+Say=%playername%!  Debo hablar contigo inmediatamente, ¡el tiempo se acaba!
+RspDflt=Más rápido de lo que pensáis; tengo poco tiempo para charlar, Mudam.  Adiós
+RspTxt1=He oído que deseáis hablar conmigo.
+Nxtln1=chapter6b
+
+[chapter6b]
+Say=Sí, naturalmente.  Me temo que me iré pronto.  Estoy tan ocupado como los sabios de la Torre Interior... Hablando de los cuales, deberías enterarte de lo que están haciendo en cuanto hayamos terminado.
+RspDflt=none
+RspTxt1=¿Iros?  ¿Ahora?  ¿En nuestro momento de mayor necesidad, cuando los Sha'ahoul llaman a nuestra puerta?
+Nxtln1=chapter6c
+
+[chapter6c]
+Say=%playername%.  [Baja la voz.]  Debo irme en esta hora sombría, pero no abandono a Avalon.  He recibido órdenes de embarcarme en una misión para la que sólo yo estoy cualificado.  Aunque no puedo decirte exactamente de qué se trata, si tengo éxito, tendremos la oportunidad de terminar por fin con este asedio.  No debo hablar más, pues temo que alguien pueda oírnos y frustrar estos planes.  Hasta luego, %playername%.  Debo terminar mis preparativos antes de irme, y no tengo tiempo que perder.
+script=player.addtitle(6mudam);
+adventure=ch6-324;
+RspDflt=Lo comprendo, Mudam.  Os deseo éxito en vuestra misión.
+Rspcnd1=all(ttl(hunter, !6mudamamulet));
+RspTxt1=Como deseéis, Mudam.  ¿Necesitáis ayuda?  Quizá podría venir con vos...
+Nxtln1=chapter6d
+
+[chapter6d]
+Say=No, %playername%.  Por mucho que me gustase que vinieses conmigo, tienes que atender otras obligaciones tan importantes como las mías.
+RspDflt=none
+RspTxt1=De acuerdo, Mudam.  Supongo que debería irme, entonces.
+Nxtln1=chapter6e
+
+[chapter6e]
+Say=Antes de que te vayas, %playername%, hay algo que deseo que tengas.  [Te entrega un amuleto]  Éste medallón me lo dieron cuando me convertí en Maestro de Exploradores.
+RspDflt=none
+RspTxt1=Pero, Mudam, no merezco tal honor.  No soy más que un simple explorador que todavía te pide que compartas con él porciones de tu talento.
+Nxtln1=chapter6f
+
+[chapter6f]
+Say=Ni yo tampoco lo era cuando esto me fue entregado.  Llévalo siempre contigo, %playername%.  Recuerda sus marcas, y muéstralo con precaución, pues cada explorador que se haya convertido en cazador, reconocerá sus marcas y te respetará.  El amuleto en sí mismo es antiguo, de mucho antes del tiempo de mis tatarabuelos.  Tiene un encantamiento, y cuando su portador esté listo, revelará su poder y le llevará al pasaje de las sombras.
+RspDflt=none
+script1=player.additem(unseenamulet);player.addtitle(6mudamamulet);player.setprop(trainingpoints=+10);
+AddQuest=ch6-314;
+RspTxt1=¿Un encantamiento?
+Nxtln1=chapter6g
+
+[chapter6g]
+Say=Si crees que ya tienes la suficiente experiencia para liberar su poder, ve a visitar al sabio Fenton.  [Entre susurros]  Hace de emisario del conocimiento e historiador de los exploradores.  Podríamos decir que es un miembro honorario.  Ahora, debo volver con mis preparativos.  Que los espíritus caminen siempre en tu sombra.
+RspDflt=Pronto estaremos todos bebiendo cerveza a la salud de tu éxito, Mudam.  Que los espíritus caminen también siempre en tu sombra.
+RspTxt1=Parece como si te olvidases de algo, Mudam...
+nxtln1=chapter6h
+
+[chapter6h]
+Say=Oh, casi olvidaba decírtelo!  Mis fuentes me han informado de que uno de los guardias en el comedor podría estar llevando algo para uno de los magos Fornaxanos.  Quizá quieras echar un vistazo.
+adventure=ch6-325;
+RspDflt=Gracias Mudam, y que los espíritus caminen siempre en tu sombra.
+
+[chapter6i]
+Say=[Te ignora mientras sigue preparando sus cosas]
+RspDflt=<Irte>
+
+[chapterstarter]
+Say=Ah, %playername%; supongo que Entrowe te ha encontrado por fin.  Muy bien.  La misión que tengo para ti es un poco complicada y larga, y requerirá una voluntad de hierro, así como una buena dosis de sigilo.  Esta misión implica el reconocimiento de lo que se ha convertido en territorio enemigo, especialmente las áreas ocupadas por los Sha'ahoul en el pueblo, y más allá.  Si deseas aceptarla, deberás empezar inmediatamente, y notificaré a los demás que estás a mis órdenes.  Si deseas buscar otra misión, no hay problema.  Sé que Corvus se ha curado completamente y ha vuelto a incorporarse al servicio.  Así pues, %playername%, deseas aceptar esta misión?
+Script=savegame(Opción Capítulo 4);
+RspDflt=none
+rspcnd1=all(ttl(!hunter));
+RspTxt1=Creo que no, Mudam.  Buscaré otra forma de ayudara a Avalon.
+script1=player.removetitle(00seemudam);player.addtitle(00mudamrefused);
+nxtln1=chapterstarter2
+RspTxt2=Sí, Mudam, lo haré.  ¿Cuáles son los detalles de esta misión?
+script2=player.removetitle(00seemudam);player.addtitle(04chapter4);SetDeathScreen(ch4Death);SetMaxParty(2);
+nxtln2=chapterstarter3
+
+[chapterstarter2]
+Say=Muy bien, %playername%, pronto enviaré a buscar al Teniente Corvus.  No dudo que encontrarás algo más con lo que ocupar tu tiempo.  Puedes irte.
+removequest=ch4-500;
+adventure=chx-002;
+RspDflt=Hasta luego, Mudam.
+
+[chapterstarter3]
+Say=Excelente.  Has oído rumores sobre los Sha'ahoul congregándose últimamente en las afueras del pueblo, ¿verdad?
+RspDflt=none
+removequest=ch4-500;
+RspTxt1=Puede que haya oído algo por el estilo a los soldados, señor, pero los rumores...
+nxtln1=fourgivequest2
+RspTxt2=No, señor, eso es algo de lo que no tengo noticias.
+nxtln2=fourgivequest2
+
+[chapterstartx]
+Say=Ah, %playername%; supongo que Entrowe te ha encontrado por fin.  Muy bien.  La misión que tengo para ti es un poco complicada y larga, y requerirá una voluntad de hierro, así como una buena dosis de sigilo.  No obstante, dado que has elegido la profesión de explorador, no hay mejor misión para ti que ésta, y dudo que la rechazases aunque pudieras.  Esta misión implica el reconocimiento de lo que se ha convertido en territorio enemigo, especialmente las áreas ocupadas por los Sha'ahoul en el pueblo, y más allá.
+Script=savegame(Opción Capítulo 4);
+RspDflt=none
+RspTxt1=¿Cuáles son los detalles específicos de la misión, señor?
+script1=player.removetitle(00seemudam);player.addtitle(04chapter4);SetDeathScreen(ch4Death);SetMaxParty(2);
+nxtln1=chapterstarter3
+
+[mudatwo]
+Say=He estado haciendo de entrenador bastante a menudo estos días, y debo confesar que todavía me deja terriblemente extenuado.
+RspDflt=Lo comprendo, Mudam.  Hablaré contigo cuando mandes a buscarme.
+
+[mudafive]
+Say=He oído que ayudas a nuestros magos en algo.  Con un poco de suerte estarán intentando hacer que nuestros guerreros sean indetectables; ¡podríamos barrer el continente de enemigos si tuviésemos esa habilidad!  No, no me lo digas, ¡quiero que sea una sorpresa!
+RspDflt=Er, naturalmente, Mudam.  Hasta luego.
+
+[bedposttime]
+Say=Si me disculpas, otros asuntos requieren mi atención.  ¿Por qué no hablas con Sir Roth o con su paje sabelotodo, si quieres nuevas misiones?
+RspDflt=Tienes razón, Mudam, es una idea excelente.
+

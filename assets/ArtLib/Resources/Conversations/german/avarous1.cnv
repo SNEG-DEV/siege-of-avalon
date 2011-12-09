@@ -1,0 +1,37 @@
+[root]
+Count=1
+Else=
+Default=
+Say1=
+goto1=Avarous
+
+[Avarous]
+say=Ah!  Frischfleisch für den Wolf!  Irgendwie seht Ihr Corvus ähnlich.  Seit Ihr mit ihm verwandt?
+RemoveQuest=ch1-01;
+rspDflt=None
+rsptxt1=Ja, bin ich, Herr Hauptmann.  Er ist mein älterer Bruder.
+nxtLn1=Avarous1
+
+[Avarous1]
+say=Und ein großartiger Soldat dazu!  Ich habe ihn selbst ausgebildet, wißt Ihr.  Und Ihr? Seid Ihr bereit, die Grundausbildung als Soldat zu beginnen?
+rspDflt=None
+rspcnd1=All(ttl(!hunter));
+rsptxt1=Selbstverständlich, Herr Hauptmann.
+nxtLn1=Avarous2
+rspcnd2=All(ttl(hunter));
+rsptxt2=Selbstverständlich, Herr Hauptmann.
+nxtLn2=Avarous3
+
+[Avarous2]
+say=Na schön.  Mulduc wird Euer Ausbilder sein; er wird Euch in null Komma nichts in Form bringen. Meldet Euch wieder bei mir wenn Ihr meint, dass es reicht.
+script=addtitle(01metavarous);gsOnTrigger20000600020057169140.setprop(triggerenabled=true);
+rspDflt=Zu Befehl, Herr Hauptmann!
+
+
+[Avarous3]
+say=Na schön.  Hinten findet Ihr die Zielscheiben fürs Bogenschießen.  Meldet Euch wieder bei mir, wenn Ihr meint, dass es reicht.
+script=addtitle(01metavarous);gsOnTrigger20000600020057169140.setprop(triggerenabled=true);
+rspDflt=Zu Befehl, Herr Hauptmann
+
+[SyntaxCheck]
+Michael Caruso(3/17/01)=Passed

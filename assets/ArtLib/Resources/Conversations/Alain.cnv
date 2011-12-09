@@ -1,0 +1,59 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+mike(2/26/01)=Passed
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=4
+Else=
+Default=Thank you, Alain.
+say1=all(ttl(06chapter6));
+goto1=chapter2
+Say2=All(ttl(!01FoundBrother));
+goto2=Alain
+say3=All(Ttl(01FoundBrother,!02Chapter2));
+goto3=SeeRoth
+say4=All(ttl(02Chapter2));
+goto4=Chapter2
+
+[Alain]
+Say=I'm afraid not, sir.  You don't have the right credentials, so I can't let you pass.
+RspDflt=Thanks anyway.
+
+[SeeRoth]
+Say=Good Morning, Sir Roth is waiting for you in his quarters. You'd better hurry.
+RspDflt=That's where I'm headed now.
+
+[Chapter2]
+Say=Good day!
+RspDflt=Good day Soldier!
+

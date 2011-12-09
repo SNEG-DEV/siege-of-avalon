@@ -1,0 +1,72 @@
+[FileID]
+Author=
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=
+Removed=
+
+[Quest]
+Added=
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+
+[Problems]
+1=
+
+[Questions]
+1=
+
+[root]
+Count=2
+Else=
+Default=Hasta luego.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+[Soldier]
+Say=¿Sí?
+RspTxt1=¿De dónde eres?
+NxtLn1=Soldier1
+RspTxt2=¿Has oído algún chismorreo interesante?
+NxtLn2=Soldier2
+
+[Soldier1]
+Say=Soy de Fornax y espero volver allí pronto.  No creo que la situación aquí vaya a mejorar.  Ésta fortaleza necesita hechiceros más cualificados...  Y más mujeres, ya me entiendes.
+rspBack=soldier
+
+[Soldier2]
+Say=Los Fornaxanos no chismorrean, señor.
+rspBack=soldier
+
+[Chalice]
+Say=¿Sí?
+RspTxt1=Estoy haciendo una encuesta. ¿De dónde eres?
+NxtLn1=Chalice1
+RspTxt2=¿Has oído algún chismorreo interesante?
+NxtLn2=Chalice2
+
+[Chalice1]
+Say=Vengo de Fornax, señor.  Al principio no creí que lo lográsemos, pero la esperanza de todos aumenta día a día.
+rspBack=chalice
+
+[Chalice2]
+Say=Puesto que los Fornaxanos no chismorrean, esto no es un chismorreo, ¿entendido?  De acuerdo.  He oído que un nuevo navío de suministros llegará la semana próxima.  ¡Finalmente, podremos comer decentemente!
+rspBack=chalice
+

@@ -1,0 +1,47 @@
+;Hello there, how can I help you?
+;May I be of assistance to you Sir?
+;What can I do for you?
+;How can I help you, Sir?
+;What is it you want?
+;Hello Sir, How my I help you?
+
+[root]
+Count=2
+Else=
+Default=Ade.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Soldier]
+say=Hallo, wie kann ich Euch helfen?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Soldier1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Soldier2
+
+[Soldier1]
+say=Meine Heimat ist Cathea. Ich bin dort Viehzüchter, zumindest war ich das, bis dieser verfluchte Krieg mich erwischt hat.
+rspBack=soldier
+
+[Soldier2]
+say=Wie ich höre, ist König Vortigern von Taberland mit allen waffenfähigen Männern seines Reiches auf dem Weg hierher. Hoffentlich bringt der königliche Knabe auch Mundvorrat mit!
+rspBack=soldier
+
+;After Recovery of Chalice
+[Chalice]
+say=Kann ich Euch behilflich sein, Herr?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Chalice1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Chalice2
+
+[Chalice1]
+say= Ich bin auf der Hochebene von Cathea geboren. Gebt mir ein Pferd und ich beweise es Euch!
+rspBack=chalice
+
+[Chalice2]
+say= Man sagt, dass die Elythrianer einen neuen Offizier haben, der diesen Krieg zu unseren Gunsten wenden wird.  Er soll weit über zwei Meter groß sein und Augen aus Feuer besitzen!
+rspBack=chalice

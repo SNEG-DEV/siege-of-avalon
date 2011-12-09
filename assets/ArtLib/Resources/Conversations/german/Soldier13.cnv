@@ -1,0 +1,47 @@
+;Hello there, how can I help you?
+;May I be of assistance to you Sir?
+;What can I do for you?
+;How can I help you, Sir?
+;What is it you want?
+;Hello Sir, How may I help you?
+
+[root]
+Count=2
+Else=
+Default=Danke.
+Say1=All(ttl(!01recovered));
+goto1=Soldier
+Say2=All(ttl(01recovered));
+goto2=Chalice
+
+;Before recovery of Chalice
+[Soldier]
+say=Hallo, wie kann ich Euch helfen?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Soldier1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Soldier2
+
+[Soldier1]
+say=Ich war Pferdehändler in Cathea. Jetzt bin ich nur einer von vielen Kriegern hinter diesen Mauern.
+rspBack=soldier
+
+[Soldier2]
+say=Wie ich höre, wird bald eine Flotte mit neuen Vorräten eintreffen. Ich hoffe, dass sie durchkommt; es ist lange her, seit ich anständigen Rasierschaum auf dem Gesicht gespürt habe. Mir steht nun einmal kein Bart.
+rspBack=soldier
+
+;After Recovery of Chalice
+[Chalice]
+say=Kann ich Euch behilflich sein, Herr?
+rspTxt1=Wo kommt Ihr her?
+NxtLn1=Chalice1
+rspTxt2=Irgendwelche interessanten Gerüchte gehört?
+NxtLn2=Chalice2
+
+[Chalice1]
+say=Ich bin Catheaner, Herr. Das tapferste Volk der ganzen Welt!
+rspBack=chalice
+
+[Chalice2]
+say=Nur, dass die Ahoul-Horde allmählich auseinanderfällt. Man sagt, manche Stämme werden an ihren jeweiligen Heimatort zurückkehren!
+rspBack=chalice

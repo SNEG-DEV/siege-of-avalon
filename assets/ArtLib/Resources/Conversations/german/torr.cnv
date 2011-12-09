@@ -1,0 +1,13 @@
+[root]
+Count=1
+Else=
+Default=
+Say1=
+goto1=torr
+
+[torr]
+say=Ich erkenne einen Soldaten auf der Suche nach einer Rüstung sofort.  Habt Ihr das Geld für eine hochwertige Rüstung?
+rspdflt=Leider nein.
+rsptxt1=Ich möchte sehen, was Ihr anzubieten habt.
+script1=merchant
+

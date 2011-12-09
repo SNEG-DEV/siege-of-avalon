@@ -1,0 +1,117 @@
+[FileID]
+Author=mike
+Coding=
+Approved=
+version=1
+
+[CharacterID]
+Name=
+GUID=
+
+[Titles]
+Set=
+Checked=01recovered,03chapter3,04campscleared,06chapter6,hunter
+Removed=
+
+[Quest]
+Added=ch3-524
+Removed=
+
+[Items]
+Given=
+Taken=
+Checked=
+Added=
+
+[SyntaxCheck]
+tucker(5/23/01)=Passed
+tucker(7/12/01)=Passed
+
+[root]
+Count=5
+Else=
+Default=Thank you, Cheney.
+say1=all(ttl(06chapter6));
+goto1=cleared
+say2=all(ttl(04campscleared));
+goto2=cleared
+say3=all(ttl(03chapter3));
+goto3=three
+Say4=All(ttl(!01recovered));
+goto4=cheney1
+Say5=All(ttl(01recovered));
+goto5=cheney4
+
+[Cheney1]
+Say=Good day, sir.
+RspTxt1=Where are you from?
+NxtLn1=cheney2
+RspTxt2=What's the news?
+NxtLn2=cheney3
+RspDflt=Good day.
+
+[Cheney2]
+Say=I'm Elythrian, sir.  I have already lost two brothers to the fighting here.  Soon, I think I will lose another.
+RspDflt=I'm sorry to hear that.
+rspBack=cheney1
+
+[Cheney3]
+Say=There's talk of abandoning Avalon.  Nobody in the Keep would say such a thing, but I've heard whisper of it in the Baileys.  I hope we don't give up so easily.
+RspDflt=As do I.
+rspBack=cheney1
+
+[Cheney4]
+Say=Hello, sir.  How can I be of aid to you?
+RspTxt1=Heard any rumors?
+RspDflt=Good day.
+NxtLn1=cheney5
+
+[cheney5]
+Say=I have heard that the army is getting more and more ambitious. There is talk of a night raid and perhaps even a large offensive.  Keep your ears open.  There may be some fighting before too long.
+RspDflt=I'm ready for a fight.
+
+[three]
+Say=Hello, sir.  To what do I owe the pleasure of this visit?
+RspDflt=Pardon me, soldier.  I was just making my way through.
+rspcnd1=all(stt(perception>24));
+RspTxt1=You can ditch the sweetness, soldier; I'm not impressed.
+nxtln1=three1
+rspcnd2=all(stt(perception<25));
+RspTxt2=Nothing special, just keeping my ears open.
+nxtln2=three3
+
+[three1]
+Say=...Was it that obvious?
+RspDflt=none
+rspcnd1=all(ttl(!hunter));
+RspTxt1=No, it was not, but I am an unusually perceptive person.  Tell me, have you heard anything interesting lately?
+nxtln1=three2
+rspcnd2=all(ttl(hunter));
+RspTxt2=No, it was not, but I've had some scout training.  Tell me, have you heard anything interesting lately?
+nxtln2=three2
+
+[three2]
+Say=Heard?  Nah, but I seen something kinda funny.  I sometimes watch the camps when I'm not on duty, and the Sha'ahoul have been doing something, to be sure, they've been doing something, yup.  During the night I can see them bustling about.  Too far away to make anything out but a bunch of torches and shadows.
+adventure=ch3-524
+RspDflt=My thanks for the tip, soldier.  Farewell.
+
+[three3]
+Say=I have not heard anything worth mentioning, sir.
+RspDflt=My thanks regardless, soldier.  Goodbye.
+
+[cleared]
+Say=Ah, I heard it was you who destroyed the Ahoul I've seen south of the stronghold!  Is it true?
+RspDflt=none
+RspTxt1=Yes, it was me.
+nxtln1=cleared2
+
+[cleared2]
+Say=Excellent!  With you on our side, those barbaric fools would do well to throw down their arms!
+RspDflt=none
+RspTxt1=Thank you for the compliment, soldier.
+nxtln1=cleared3
+
+[cleared3]
+Say=Keep up the good work!
+RspDflt=I shall.  Farewell.
+
