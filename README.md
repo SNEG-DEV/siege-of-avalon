@@ -1,14 +1,5 @@
 #Siege of Avalon : Open Source#
 
-The aim of this project is to port the original Win32 Delphi code, over to C# using MonoGame and XNA, so that it can be enjoyed by more people. When complete the plan is to release on Windows Phone, iOS, Android, MacOS, Linux and via PlayStation Suite (PS Vita, Xperia phones and eventually PS3).
+Siege of Avalon : Open Source is an attempt to keep this great isometric RPG game alive by continuing development on it. Our aim is to create a SDL version of the engine that will work on Win32, Linux and where ever Pascal compilers and SDL are supported.
 
-If you are an ex-Delphi developer and fancy writing a flexible 2.5D isometric engine in C# using XNA, this is your opportunity. The beauty is that assets already exist, so once the game engine is done, it should hopefully be fairly easy to integrate the assets.
-
-License
--------
-You are NOT permitted to rip any of the assets (image, sound, levels or anything else) from this project, 
-nor are you permitted to rebadge this game and sell it as your own.
-It MUST remain opensource for everyone to enjoy freely.
-You agree to contribute back to this awesome game should you make any bug fixes/enhancements.
-
-By downloading the source, you hereby agree to the aforementioned license.
+This is a fork from the CartBlanche repository with an eye on getting things "fixed" enough to keep to the original thinking of the game since the entire episode set is available on GoG for download.  The other reason for the "fork" is to provide a sort of "safe" spot to grab the codebase under the PROPER license of LGPL 2.0 as indicated in the headers from the SourceForge bit-rotted CVS drop.
