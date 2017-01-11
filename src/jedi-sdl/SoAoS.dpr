@@ -140,7 +140,7 @@ var
   Parameters : array[0..1] of string;
 begin
   //MovieProcess := ExtractFilePath( ParamStr( 0 ) ) + MoviePlayer;
-  MovieProcess := ExtractFilePath( ParamStr( 0 ) ) + MoviePlayer;
+  MovieProcess := MoviePlayer;
   Parameters[0] := aMoviePath;
   Parameters[1] := aSwitches;
   ExecAndWait( MovieProcess, Parameters );
