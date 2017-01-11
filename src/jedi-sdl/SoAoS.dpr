@@ -155,9 +155,9 @@ begin
   and ( bShowIntro ) then
   begin
      if ( SoASettings.FullScreen ) then
-       PlayBinkMovie( Movie, SoASettings.MovieSwitches + '/P' )
+       PlayBinkMovie( Movie, SoASettings.MovieSwitches + '--intf dummy --no-osd vlc://quit --fullscreen' )
      else
-       PlayBinkMovie( Movie, '/I1' );
+       PlayBinkMovie( Movie, '--intf dummy --no-osd vlc://quit' );
   end;
 end;
 
@@ -170,9 +170,9 @@ begin
   and ( bShowOuttro ) then
   begin
     if ( SoASettings.FullScreen ) then
-      PlayBinkMovie( Movie, SoASettings.MovieSwitches )
+      PlayBinkMovie( Movie, SoASettings.MovieSwitches + '--intf dummy --no-osd vlc://quit --fullscreen' )
     else
-      PlayBinkMovie( Movie, '/I1' );
+      PlayBinkMovie( Movie, '--intf dummy --no-osd vlc://quit' );
   end;
 end;
 
