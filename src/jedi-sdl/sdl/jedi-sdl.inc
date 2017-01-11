@@ -268,7 +268,6 @@
   {$H+}
   {$PACKRECORDS 4}        // Added for record
   {$MACRO ON}             // Added For OpenGL
-  {$THREADING on}
   {$DEFINE Delphi}
   {$DEFINE UseAT}
   {$UNDEF USE_STDCALL}
