@@ -1,2 +1,3 @@
 #! /bin/bash
-fpc SoAoS.dpr -Sd -B -FE../../../game -FUdcu
+mkdir -p dcu
+fpc SoAoS.dpr -Sd -B -FE../../assets -FUdcu
