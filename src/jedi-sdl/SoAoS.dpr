@@ -128,52 +128,41 @@ uses
 {$R *.res}
 {$ENDIF}
 
-procedure PlayMovie( aMoviePath, aSwitches : string );
 const
   {$IFDEF WIN32}
   MoviePlayer : string = 'vlc.exe';
   {$ELSE}
-  MoviePlayer : string = 'vlc';
+  MoviePlayer : string = '/usr/bin/vlc';
   {$ENDIF}
-var
-  MovieProcess : string;
-  Parameters : array[0..1] of string;
-begin
-  //MovieProcess := ExtractFilePath( ParamStr( 0 ) ) + MoviePlayer;
-  MovieProcess := MoviePlayer;
-  Parameters[0] := aMoviePath;
-  Parameters[1] := aSwitches;
-  ExecAndWait( MovieProcess, Parameters );
-end;
 
 
 procedure PlayOpeningMovie;
 var
   Movie : string;
+  Flags : string;
 begin
   Movie := DIR_CUR + SoASettings.MoviePath + DIR_SEP + SoASettings.OpeningMovie;
-  if FileExists( Movie )
-  and ( bShowIntro ) then
-  begin
-     if ( SoASettings.FullScreen ) then
-       PlayMovie( Movie, SoASettings.MovieSwitches + '--intf dummy --no-osd vlc://quit --fullscreen' )
-     else
-       PlayMovie( Movie, '--intf dummy --no-osd vlc://quit' );
+  if FileExists( Movie ) and ( bShowIntro ) then begin
+	Flags := '--intf dummy --no-osd ';
+     	if ( SoASettings.FullScreen ) then
+       		Flags := Flags + '--fullscreen ' + SoASettings.MovieSwitches + ' ';
+	Movie := Flags + Movie;
+	ExecuteProcess(MoviePlayer, Movie);
   end;
 end;
 
 procedure PlayClosingMovie;
 var
   Movie : string;
+  Flags : string;
 begin
   Movie := DIR_CUR + SoASettings.MoviePath + DIR_SEP + SoASettings.ClosingMovie;
-  if FileExists( Movie )
-  and ( bShowOuttro ) then
-  begin
-    if ( SoASettings.FullScreen ) then
-      PlayMovie( Movie, SoASettings.MovieSwitches + '--intf dummy --no-osd vlc://quit --fullscreen' )
-    else
-      PlayMovie( Movie, '--intf dummy --no-osd vlc://quit' );
+  if FileExists( Movie ) and ( bShowIntro ) then begin
+	Flags := '--intf dummy --no-osd ';
+     	if ( SoASettings.FullScreen ) then
+       		Flags := Flags + '--fullscreen ' + SoASettings.MovieSwitches + ' ';
+	Movie := Flags + Movie;
+	ExecuteProcess(MoviePlayer, Movie);
   end;
 end;
 
