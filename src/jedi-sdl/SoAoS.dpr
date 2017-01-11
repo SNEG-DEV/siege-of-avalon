@@ -128,18 +128,19 @@ uses
 {$R *.res}
 {$ENDIF}
 
-procedure PlayBinkMovie( aMoviePath, aSwitches : string );
+procedure PlayMovie( aMoviePath, aSwitches : string );
 const
   {$IFDEF WIN32}
-  BinkPlayer : string = 'BinkPlay';
+  MoviePlayer : string = 'vlc.exe';
   {$ELSE}
-  BinkPlayer : string = 'BinkPlayer';
+  MoviePlayer : string = 'vlc';
   {$ENDIF}
 var
   MovieProcess : string;
   Parameters : array[0..1] of string;
 begin
-  MovieProcess := ExtractFilePath( ParamStr( 0 ) ) + BinkPlayer;
+  //MovieProcess := ExtractFilePath( ParamStr( 0 ) ) + MoviePlayer;
+  MovieProcess := ExtractFilePath( ParamStr( 0 ) ) + MoviePlayer;
   Parameters[0] := aMoviePath;
   Parameters[1] := aSwitches;
   ExecAndWait( MovieProcess, Parameters );
@@ -155,9 +156,9 @@ begin
   and ( bShowIntro ) then
   begin
      if ( SoASettings.FullScreen ) then
-       PlayBinkMovie( Movie, SoASettings.MovieSwitches + '--intf dummy --no-osd vlc://quit --fullscreen' )
+       PlayMovie( Movie, SoASettings.MovieSwitches + '--intf dummy --no-osd vlc://quit --fullscreen' )
      else
-       PlayBinkMovie( Movie, '--intf dummy --no-osd vlc://quit' );
+       PlayMovie( Movie, '--intf dummy --no-osd vlc://quit' );
   end;
 end;
 
@@ -170,9 +171,9 @@ begin
   and ( bShowOuttro ) then
   begin
     if ( SoASettings.FullScreen ) then
-      PlayBinkMovie( Movie, SoASettings.MovieSwitches + '--intf dummy --no-osd vlc://quit --fullscreen' )
+      PlayMovie( Movie, SoASettings.MovieSwitches + '--intf dummy --no-osd vlc://quit --fullscreen' )
     else
-      PlayBinkMovie( Movie, '--intf dummy --no-osd vlc://quit' );
+      PlayMovie( Movie, '--intf dummy --no-osd vlc://quit' );
   end;
 end;
 
