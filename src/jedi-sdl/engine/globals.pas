@@ -34,10 +34,19 @@ var
   //Player
   Player, Current : TCharacter;
 
-implementation
+const
+	{$IFDEF WIN32}
+		MoviePlayer = 'vlc.exe';
+		DIR_SEP = '\';
+		DIR_CUR = '';
+	{$ELSE}
+		MoviePlayer = '/usr/bin/vlc';
+		DIR_SEP = '/';
+		DIR_CUR = '';
+	{$ENDIF}
 
-uses
-  xplatformutils;
+
+implementation
 
 initialization
 begin

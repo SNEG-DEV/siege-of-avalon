@@ -294,7 +294,6 @@ implementation
 
 uses
   SysUtils,
-  xplatformutils,
   logger,
   globals,
   GameMainMenu,

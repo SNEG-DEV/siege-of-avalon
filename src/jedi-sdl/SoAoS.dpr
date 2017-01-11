@@ -88,6 +88,7 @@ program SoAoS;
 }
 {******************************************************************************}
 
+
 uses
   SysUtils,
   sdl in 'sdl/sdl.pas',
@@ -121,19 +122,12 @@ uses
   smpeg in 'sdl/smpeg.pas',
   registryuserpreferences in 'sdl/registryuserpreferences.pas',
   userpreferences in 'sdl/userpreferences.pas',
-  AniDec30 in 'engine/AniDec30.pas',
-  xplatformutils in 'sdl/xplatformutils.pas';
+  AniDec30 in 'engine/AniDec30.pas';
 
+ 
 {$IFDEF WIN32}
 {$R *.res}
 {$ENDIF}
-
-const
-  {$IFDEF WIN32}
-  MoviePlayer : string = 'vlc.exe';
-  {$ELSE}
-  MoviePlayer : string = '/usr/bin/vlc';
-  {$ENDIF}
 
 
 procedure PlayOpeningMovie;

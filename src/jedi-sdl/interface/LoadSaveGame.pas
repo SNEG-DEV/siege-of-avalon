@@ -181,7 +181,6 @@ implementation
 
 uses
   SysUtils,
-  xplatformutils,
   sdlgameinterface,
   logger,
   globals,

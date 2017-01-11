@@ -107,7 +107,6 @@ implementation
 
 uses
   SysUtils,
-  xplatformutils,
   logger,
   sdlaudiomixer,
   globals,

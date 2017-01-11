@@ -124,7 +124,6 @@ implementation
 
 uses
   SysUtils,
-  xplatformutils,
   logger,
   globals,
   NewGame,

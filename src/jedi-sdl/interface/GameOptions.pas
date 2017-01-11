@@ -119,7 +119,6 @@ implementation
 
 uses
   SysUtils,
-  xplatformutils,
   globals,
   GameMainMenu,
   sdlgameinterface;

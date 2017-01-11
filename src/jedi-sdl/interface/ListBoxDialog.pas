@@ -110,7 +110,6 @@ type
 implementation
 
 uses
-  xplatformutils,
   globals,
   GameMainMenu;
 

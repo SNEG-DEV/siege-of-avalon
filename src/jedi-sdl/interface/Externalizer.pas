@@ -95,7 +95,6 @@ type
 implementation
 
 uses
-  xplatformutils,
   globals;
 
 { TExternalizer }
