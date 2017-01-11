@@ -221,8 +221,12 @@ var
   strlist : array of WideString;
   ReturnedSurface : PSDL_Surface;
   BltRect : TSDL_Rect;
+
 begin
   PrepareFont;
+
+  // Arbitrarily set the length of our dynamically grown arrays to ZERO, per the spec...
+  SetLength(strlist, 0);
 
   // Do an initial check to see if it already fits
   case FRenderType of
@@ -277,7 +281,7 @@ begin
       i := Length( strChopped );
       while ( i <> 0 ) do
       begin
-        if ( string( strChopped[ i ] ) <> ' ' ) and ( Integer( string( strChopped[ i ] ) ) <> 13 ) then
+        if ( string( strChopped[ i ] ) <> ' ' ) and ( StrToInt( string( strChopped[ i ] ) ) <> 13 ) then
           dec( i )
         else
         begin
@@ -327,7 +331,7 @@ begin
       i := Length( strChopped );
       while ( i <> 0 ) do
       begin
-        if ( string( strChopped[ i ] ) <> ' ' ) and ( Integer( string( strChopped[ i ] ) ) <> 13 ) then
+        if ( string( strChopped[ i ] ) <> ' ' ) and ( StrToInt ( string( strChopped[ i ] ) ) <> 13 ) then
           dec( i )
         else
         begin
@@ -377,7 +381,7 @@ begin
       i := Length( strChopped );
       while ( i <> 0 ) do
       begin
-        if ( string( strChopped[ i ] ) <> ' ' ) and ( Integer( string( strChopped[ i ] ) ) <> 13 ) then
+        if ( string( strChopped[ i ] ) <> ' ' ) and ( StrToInt ( string( strChopped[ i ] ) ) <> 13 ) then
           dec( i )
         else
         begin
