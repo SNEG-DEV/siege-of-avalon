@@ -1,7 +1,14 @@
 #Unix temporary files
 *~
 
-# Generated binaries paths.
-/assets/SoAoS
-/assets/SoAoS.log
-/src/jedi-sdl/dcu
+# Lazarus backup files
+backups/
+
+# Generated Files Paths
+/assets/Siege
+/assets/Siege.exe
+/assets/Siege.log
+/assets/*.dll
+/assets/*.o
+/assets/*.ppu
+/assets/*.compiled
