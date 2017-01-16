@@ -2,7 +2,7 @@
 *~
 
 # Lazarus backup files
-backups/
+backup/
 
 # Generated Files Paths
 /assets/Siege
