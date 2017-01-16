@@ -71,11 +71,9 @@ interface
 uses
 {$IFDEF DirectX}
 {$IFnDEF FPC}
-  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
-  DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
@@ -101,7 +99,7 @@ type
   TShowGraphic = class( TDisplay )
   private
     BMBack : TBitmap;
-    DXBack : IDirectDrawSurface;
+    DXBack : SDL_surface;
     procedure FormMouseDown( Sender : TObject; Button : TMouseButton; Shift : TShiftState; X, Y : Integer );
   protected
     procedure MouseDown( Sender : TAniview; Button : TMouseButton;

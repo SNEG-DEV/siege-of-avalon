@@ -71,11 +71,9 @@ interface
 uses
 {$IFDEF DirectX}
 {$IFnDEF FPC}
-  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
-  DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
@@ -118,14 +116,14 @@ type
     CaratVisible : boolean;
     //Bitmap stuff
     BMBack : TBitmap; //The inventory screen bitmap used for loading
-    DXBack : IDirectDrawSurface; //DD surface that holds the statistics screen before blit
-    DXCircle : IDirectDrawSurface; //circle used for outline
-    //DXRightArrow:  IDirectDrawSurface;
-    //DXLeftArrow:  IDirectDrawSurface;
-    DXBox : IDirectDrawSurface;
-    DXBlack : IDirectDrawSurface;
-    DXContinue : IDirectDrawSurface;
-    DXCancel : IDirectDrawSurface;
+    DXBack : SDL_surface; //DD surface that holds the statistics screen before blit
+    DXCircle : SDL_surface; //circle used for outline
+    //DXRightArrow:  SDL_surface;
+    //DXLeftArrow:  SDL_surface;
+    DXBox : SDL_surface;
+    DXBlack : SDL_surface;
+    DXContinue : SDL_surface;
+    DXCancel : SDL_surface;
     InfoRect : array[ 0..17 ] of InformationRect; //was 35  //collision rects for information
     ArrowRect : array[ 0..15 ] of InformationRect; //collision rects for arrows
     StatAdjustments : array[ 0..7 ] of integer; //used to see if we've added points to a stat or not

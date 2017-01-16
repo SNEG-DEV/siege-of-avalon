@@ -71,11 +71,9 @@ interface
 uses
 {$IFDEF DirectX}
 {$IFnDEF FPC}
-  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
-  DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
@@ -119,11 +117,11 @@ type
     CaratTimer : TTimer;
     //Bitmap stuff
     BMBack : TBitmap; //The inventory screen bitmap used for loading
-    DXBack : IDirectDrawSurface;
-    DXBackHighlight : IDirectDrawSurface; //so we know which file is selected for loading
-    DXLoad : IDirectDrawSurface;
-    DXCancel : IDirectDrawSurface;
-    DXok : IDirectDrawSurface;
+    DXBack : SDL_surface;
+    DXBackHighlight : SDL_surface; //so we know which file is selected for loading
+    DXLoad : SDL_surface;
+    DXCancel : SDL_surface;
+    DXok : SDL_surface;
     SelectRect : TList; //collision rects for selectable text
     pTextItem : pItem;
     XAdj, YAdj : integer; //adjust ments for placement of the sheet
@@ -229,7 +227,7 @@ end; //Destroy
 procedure TLoadGame.Init;
 var
   InvisColor : integer;
-  DXTemp : IDirectDrawSurface;
+  DXTemp : SDL_surface;
   BM : TBitmap;
   i : integer;
 
@@ -1081,7 +1079,7 @@ end; //paint
 procedure TLoadGame.DeleteSavedFile;
 var
   BM : TBitmap;
-  DXBorders : IDirectDrawSurface;
+  DXBorders : SDL_surface;
   InvisColor : integer;
   nRect : TRect;
 const
@@ -1127,7 +1125,7 @@ end; //DeleteSavedFile
 procedure TLoadGame.OverwriteSavedFile;
 var
   BM : TBitmap;
-  DXBorders : IDirectDrawSurface;
+  DXBorders : SDL_surface;
   InvisColor : integer;
   nRect : TRect;
 const
@@ -1173,7 +1171,7 @@ end; //OverwriteSavedFile
 procedure TLoadGame.MustEnterName;
 var
   BM : TBitmap;
-  DXBorders : IDirectDrawSurface;
+  DXBorders : SDL_surface;
   InvisColor : integer;
   nRect : TRect;
 begin
@@ -1208,7 +1206,7 @@ procedure TLoadGame.ShowScreen;
 var
   PicName : string;
   BM : TBitmap;
-  DXTemp : IDirectDrawSurface;
+  DXTemp : SDL_surface;
   InvisColor : integer;
   i : integer;
   nRect : TRect;

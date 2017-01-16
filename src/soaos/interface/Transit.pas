@@ -68,7 +68,6 @@ interface
 
 uses
 {$IFnDEF FPC}
-  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
@@ -79,13 +78,11 @@ uses
   Forms,
   GameText,
   Graphics,
-  DirectX,
   Anigrp30,
   Engine,
   DXEffects,
   DXUtil,
   Display,
-  MMTimer,
   digifx,
   DFX,
   LogFile;
@@ -97,7 +94,7 @@ type
   private
     Region : TRect;
     Blend : integer;
-    FImage : IDirectDrawSurface;
+    FImage : SDL_surface;
     FIndex : integer;
     procedure SetImage( const Value : string );
     procedure SetIndex( const Value : integer );
@@ -117,8 +114,8 @@ type
   THotspot = class( TObject )
   private
     Region : TRect;
-    FGrayImage : IDirectDrawSurface;
-    FRedImage : IDirectDrawSurface;
+    FGrayImage : SDL_surface;
+    FRedImage : SDL_surface;
     Owner : TTransit;
     procedure SetGrayImage( const Value : string );
     procedure SetRedImage( const Value : string );
@@ -141,9 +138,9 @@ type
   TTransit = class( TDisplay )
   private
     FOnClose : TNotifyEvent;
-    DXBack : IDirectDrawSurface;
-    DXDirty : IDirectDrawSurface;
-    Background : IDirectDrawSurface;
+    DXBack : SDL_surface;
+    DXDirty : SDL_surface;
+    Background : SDL_surface;
     MouseOverBack : boolean;
     HotspotList : TList;
     Selected : THotspot;

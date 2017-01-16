@@ -66,7 +66,6 @@ interface
 
 uses
 {$IFnDEF FPC}
-  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
@@ -79,9 +78,7 @@ uses
   Dialogs,
   AniDec30,
   AStar,
-  MMTimer,
 {$IFDEF DirectX}
-  DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
@@ -138,8 +135,8 @@ type
     TilesInVideo : Boolean;
     ItemsInVideo : Boolean;
     FullRefresh : boolean;
-    FTileImages : IDirectDrawSurface;
-    FItemImages : IDirectDrawSurface;
+    FTileImages : SDL_surface;
+    FItemImages : SDL_surface;
 {$ENDIF}
 {$IFNDEF DirectX}
     FTileMasks : HBITMAP;
@@ -165,8 +162,8 @@ type
     procedure Release;
     procedure Restore;
 {$IFDEF DirectX}
-    procedure DefineTile( Index : Word; Image : IDirectDrawSurface; Color : TColor );
-    function DefineItem( Index : Word; Image : IDirectDrawSurface; const StripHeights, CollisionMasks, LineOfSightMasks, LightPoints : array of Word; Color : TColor; Slope : Single; Visible, AutoTransparent, Vertical : boolean ) : PItemInfo;
+    procedure DefineTile( Index : Word; Image : SDL_surface; Color : TColor );
+    function DefineItem( Index : Word; Image : SDL_surface; const StripHeights, CollisionMasks, LineOfSightMasks, LightPoints : array of Word; Color : TColor; Slope : Single; Visible, AutoTransparent, Vertical : boolean ) : PItemInfo;
     procedure MoveToVideo;
 {$ENDIF}
 {$IFNDEF DirectX}
@@ -203,7 +200,7 @@ type
 {$IFDEF DirectX}
     Blinking : Boolean;
     StateDuration : Integer;
-    procedure AddStrip( Image : IDirectDrawSurface; var NewX, NewY : word );
+    procedure AddStrip( Image : SDL_surface; var NewX, NewY : word );
 {$ENDIF}
 {$IFNDEF DirectX}
     procedure AddStrip( Image, Mask : TBitmap; var NewX, NewY : word );
@@ -283,8 +280,8 @@ type
     procedure SetFilter( X, Y : Longint; FilterID : SmallInt ); overload;
     procedure SetFilter( X, Y : Longint; FilterID : SmallInt; FilterMask : Word ); overload;
 {$IFDEF DirectX}
-    procedure DefineTile( Zone, Index : Word; Image : IDirectDrawSurface );
-    function DefineItem( Zone, Index : Word; Image : IDirectDrawSurface; const StripHeights, CollisionMasks, LineOfSightMasks, LightPoints : array of Word; Slope : Single; Visible, AutoTransparent, Vertical : Boolean ) : PItemInfo;
+    procedure DefineTile( Zone, Index : Word; Image : SDL_surface );
+    function DefineItem( Zone, Index : Word; Image : SDL_surface; const StripHeights, CollisionMasks, LineOfSightMasks, LightPoints : array of Word; Slope : Single; Visible, AutoTransparent, Vertical : Boolean ) : PItemInfo;
 {$ENDIF}
 {$IFNDEF DirectX}
     procedure DefineTile( Zone, Index : Word; BITMAP : TBitmap );
@@ -493,8 +490,8 @@ type
   TImageSheet = class( TAniResource )
   private
 {$IFDEF DirectX}
-    Picture : IDirectDrawSurface;
-    procedure SetImage( const Value : IDirectDrawSurface );
+    Picture : SDL_surface;
+    procedure SetImage( const Value : SDL_surface );
 {$ENDIF}
 {$IFNDEF DirectX}
     Picture : HBITMAP;
@@ -513,7 +510,7 @@ type
     procedure FreeResources; override;
     procedure Render( Figure : TAniFigure ); override;
     property Frames : Longint read GetFrames;
-    property Image : IDirectDrawSurface write SetImage;
+    property Image : SDL_surface write SetImage;
   end;
 
   TAniView = class( TGraphicControl )
@@ -541,9 +538,9 @@ type
     XRayImage : TBitmap;
 {$ENDIF}
 {$IFDEF DirectX}
-    lpDDSMap : IDirectDrawSurface;
-    Work : IDirectDrawSurface;
-    XRayImage : IDirectDrawSurface;
+    lpDDSMap : SDL_surface;
+    Work : SDL_surface;
+    XRayImage : SDL_surface;
 {$ENDIF}
     XRayWidth : Integer;
     XRayHeight : Integer;
@@ -575,7 +572,7 @@ type
     procedure UpdateMap;
     procedure DrawTile( GridLoc : Pointer; i, j, Layer : Integer );
 {$IFDEF DirectX}
-    procedure CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y, Layer : Integer; ClipRect : PRect );
+    procedure CopyTile( Dest : SDL_surface; GridLoc : Pointer; X, Y, Layer : Integer; ClipRect : PRect );
 {$ENDIF}
 {$IFNDEF DirectX}
     procedure CopyTile( Dest : HDC; GridLoc : Pointer; X, Y, Layer : Integer; ClipRect : PRect );
@@ -676,8 +673,8 @@ function FindColorMatch( Color : TColor ) : word;
 var
 {$IFDEF DirectX}
   lpDD : IDirectDraw;
-  lpDDSFront : IDirectDrawSurface;
-  lpDDSBack : IDirectDrawSurface;
+  lpDDSFront : SDL_surface;
+  lpDDSBack : SDL_surface;
   ResWidth : Integer;
   ResHeight : Integer;
   DXMode : Boolean;
@@ -705,7 +702,7 @@ end;
 
 function FindColorMatch( Color : TColor ) : word;
 begin
-  result := DDColorMatch( lpDDSBack, Color );
+  result := SDLColorMatch( lpDDSBack, Color );
 end;
 
 //------------------------------------------------------------------------------
@@ -1235,7 +1232,7 @@ var
   ddsd : TDDSurfaceDesc;
   C16 : word;
   p16 : ^word;
-  TempSurface : IDirectDrawSurface;
+  TempSurface : SDL_surface;
   LightR1, LightG1, LightB1 : word;
   Pitch : longint;
   TimeCount : longword;
@@ -2854,7 +2851,7 @@ end;
 
 {$IFDEF DirectX}
 
-function TAniMap.DefineItem( Zone, Index : Word; Image : IDirectDrawSurface; const StripHeights, CollisionMasks, LineOfSightMasks, LightPoints : array of Word; Slope : Single; Visible, AutoTransparent, Vertical : Boolean ) : PItemInfo;
+function TAniMap.DefineItem( Zone, Index : Word; Image : SDL_surface; const StripHeights, CollisionMasks, LineOfSightMasks, LightPoints : array of Word; Slope : Single; Visible, AutoTransparent, Vertical : Boolean ) : PItemInfo;
 begin
   if ( Zone >= Zones.Count ) then
   begin
@@ -2880,7 +2877,7 @@ end;
 
 {$IFDEF DirectX}
 
-procedure TAniMap.DefineTile( Zone, Index : Word; Image : IDirectDrawSurface );
+procedure TAniMap.DefineTile( Zone, Index : Word; Image : SDL_surface );
 begin
   if ( Zone >= Zones.Count ) then
     Exit;
@@ -5552,7 +5549,7 @@ end;
 
 {$IFDEF DirectX}
 
-procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y, Layer : Integer; ClipRect : PRect );
+procedure TAniView.CopyTile( Dest : SDL_surface; GridLoc : Pointer; X, Y, Layer : Integer; ClipRect : PRect );
 {$ENDIF}
 {$IFNDEF DirectX}
   procedure TAniView.CopyTile( Dest : HDC; GridLoc : Pointer; X, Y, Layer : Integer; ClipRect : PRect );
@@ -7940,7 +7937,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
     Cached := True;
   end;
 
-  function TZone.DefineItem( Index : Word; Image : IDirectDrawSurface; const StripHeights,
+  function TZone.DefineItem( Index : Word; Image : SDL_surface; const StripHeights,
     CollisionMasks, LineOfSightMasks, LightPoints : array of Word; Color : TColor; Slope : Single; Visible,
     AutoTransparent, Vertical : Boolean ) : PItemInfo;
 
@@ -7952,7 +7949,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
       StripData, TileData : ^Word;
       Strips, Rows, Tiles : Integer;
       W, H : integer;
-      NewItemImages : IDirectDrawSurface;
+      NewItemImages : SDL_surface;
       ddsd : DDSurfaceDesc;
       ddck : DDCOLORKEY;
 //  BltFx: DDBLTFX;
@@ -8163,14 +8160,14 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
       Inc( Result, Index - 1 );
     end;
 
-    procedure TZone.DefineTile( Index : Word; Image : IDirectDrawSurface; Color : TColor );
+    procedure TZone.DefineTile( Index : Word; Image : SDL_surface; Color : TColor );
       var
         NewMaxIndex : Word;
         NewBitWidth, NewBitHeight : Longint;
         i, j, X, Y : Integer;
         NewTile : TileInfo;
         W, H : integer;
-        NewTileImages : IDirectDrawSurface;
+        NewTileImages : SDL_surface;
         ddsd : DDSurfaceDesc;
         ddck : DDCOLORKEY;
         BltFx : DDBLTFX;
@@ -8581,8 +8578,8 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
 
       procedure TZone.MoveToVideo;
       var
-        NewTileImages : IDirectDrawSurface;
-        NewItemImages : IDirectDrawSurface;
+        NewTileImages : SDL_surface;
+        NewItemImages : SDL_surface;
         ddsd : DDSurfaceDesc;
         ddck : DDCOLORKEY;
         i, Rem : integer;
@@ -8701,11 +8698,11 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
         FItemBitWidth := Map.FStripWidth;
       end;
 
-      procedure TLightZone.AddStrip( Image : IDirectDrawSurface; var NewX, NewY : word );
+      procedure TLightZone.AddStrip( Image : SDL_surface; var NewX, NewY : word );
         var
           NewBitWidth, NewBitHeight : Longint;
           W, H : integer;
-          NewItemImages : IDirectDrawSurface;
+          NewItemImages : SDL_surface;
           ddsd : DDSurfaceDesc;
           ddck : DDCOLORKEY;
 //  BltFx: DDBLTFX;
@@ -9334,7 +9331,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
         end;
 
 
-        procedure TImageSheet.SetImage( const Value : IDirectDrawSurface );
+        procedure TImageSheet.SetImage( const Value : SDL_surface );
           begin
             Picture := nil;
             Picture := Value;

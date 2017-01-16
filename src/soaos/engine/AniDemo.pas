@@ -70,7 +70,6 @@ interface
 
 uses
 {$IFnDEF FPC}
-  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
@@ -88,7 +87,6 @@ uses
   LogFile,
   Spells,
 {$IFDEF DirectX}
-  DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
@@ -149,7 +147,7 @@ var
 type
   TPopup = class( TObject )
   private
-    Surface : IDirectDrawSurface;
+    Surface : SDL_surface;
     Count : Integer;
     FX, FY : Integer;
     FMsgID : Integer;
@@ -233,15 +231,15 @@ type
     Spinner : Integer;
     NewGame : Boolean;
 {$IFDEF DirectX}
-    OverlayB : IDirectDrawSurface;
-    OverlayR : IDirectDrawSurface;
-    ManaEmpty : IDirectDrawSurface;
-    LifeEmpty : IDirectDrawSurface;
-    SpellBar : IDirectDrawSurface;
-    SpellGlyphs : IDirectDrawSurface;
-    NoSpellIcon : IDirectDrawSurface;
-    HelpBox : IDirectDrawSurface;
-    PauseImage : IDirectDrawSurface;
+    OverlayB : SDL_surface;
+    OverlayR : SDL_surface;
+    ManaEmpty : SDL_surface;
+    LifeEmpty : SDL_surface;
+    SpellBar : SDL_surface;
+    SpellGlyphs : SDL_surface;
+    NoSpellIcon : SDL_surface;
+    HelpBox : SDL_surface;
+    PauseImage : SDL_surface;
 {$ENDIF}
     FCurrentTheme : string;
     ScreenShot : TBitmap;
@@ -1297,10 +1295,10 @@ begin
     end;
 
     NPCHealthBltFx.dwSize := SizeOf( DDBLTFX );
-    NPCHealthBltFx.dwFillColor := DDColorMatch( lpDDSFront, $1F1F5F );
+    NPCHealthBltFx.dwFillColor := SDLColorMatch( lpDDSFront, $1F1F5F );
 
     NPCManaBltFx.dwSize := SizeOf( DDBLTFX );
-    NPCManaBltFx.dwFillColor := DDColorMatch( lpDDSFront, $B09730 );
+    NPCManaBltFx.dwFillColor := SDLColorMatch( lpDDSFront, $B09730 );
 
     NPCBarXCoord[ 1 ] := 67;
     NPCBarXCoord[ 2 ] := 153;
@@ -3348,7 +3346,7 @@ var
   SrcX, SrcY, DstX, DstY : Integer;
   W, H : Integer;
   Image : TImage;
-  Surface : IDirectDrawSurface;
+  Surface : SDL_surface;
   DC : HDC;
   ddsd : TDDSurfaceDesc;
   Bits : BITPLANE;

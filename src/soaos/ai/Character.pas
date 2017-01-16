@@ -1,8 +1,6 @@
 unit Character;
 
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
+{$MODE Delphi}
 
 {******************************************************************************}
 {                                                                              }
@@ -69,21 +67,14 @@ unit Character;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType, LMessages,
-{$ENDIF}
   Classes,
   SysUtils,
   Anigrp30,
   AniDec30,
   Graphics,
-{$IFDEF DirectX}
-  DirectX,
   DXUtil,
   DXEffects,
-{$ENDIF}
   digifx,
   DFX,
   Resource,
@@ -372,7 +363,7 @@ type
     CollideCount : Integer;
     MsgDuration : Integer;
 {$IFDEF DirectX}
-    MsgImage : IDirectDrawSurface;
+    MsgImage : SDL_surface;
 {$ENDIF}
 {$IFNDEF DirectX}
     MsgImage : HBITMAP;
@@ -453,9 +444,9 @@ type
     function MeetsRequirements( Character : TCharacter ) : Boolean; virtual;
     procedure PickUp; virtual;
     procedure Drop; virtual;
-    function GetInventoryImage : IDirectDrawSurface;
-    function GetInventoryShadow : IDirectDrawSurface;
-    function GetIconicImage : IDirectDrawSurface;
+    function GetInventoryImage : SDL_surface;
+    function GetInventoryShadow : SDL_surface;
+    function GetIconicImage : SDL_surface;
     procedure SaveProperties( List : TStringList ); override;
     procedure Init; override;
     function ShouldSave : boolean; override;
@@ -8969,7 +8960,7 @@ begin
   end;
 end;
 
-function TItem.GetIconicImage : IDirectDrawSurface;
+function TItem.GetIconicImage : SDL_surface;
 var
   ColorMatch : integer;
   W, H : integer;
@@ -9049,7 +9040,7 @@ begin
   end;
 end;
 
-function TItem.GetInventoryImage : IDirectDrawSurface;
+function TItem.GetInventoryImage : SDL_surface;
 var
   ColorMatch : integer;
   ddsd : TDDSurfaceDesc;
@@ -9109,7 +9100,7 @@ begin
   end;
 end;
 
-function TItem.GetInventoryShadow : IDirectDrawSurface;
+function TItem.GetInventoryShadow : SDL_surface;
 var
   ColorMatch : integer;
   W, H : integer;

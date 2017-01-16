@@ -70,7 +70,6 @@ interface
 
 uses
 {$IFnDEF FPC}
-  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
@@ -81,7 +80,6 @@ uses
   AniDec30,
   IniFiles,
 {$IFDEF DirectX}
-  DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
@@ -243,8 +241,8 @@ type
   private
     Data : string;
 {$IFDEF DirectX}
-    function GetImage( ImageIndex : Integer ) : IDirectDrawSurface;
-    procedure GetImage1( ImageIndex : Integer; Surface : IDirectDrawSurface; W : integer );
+    function GetImage( ImageIndex : Integer ) : SDL_surface;
+    procedure GetImage1( ImageIndex : Integer; Surface : SDL_surface; W : integer );
 {$ENDIF}
 {$IFNDEF DirectX}
     function GetImage( ImageIndex : Integer ) : TBitmap;
@@ -253,7 +251,7 @@ type
     procedure LoadData( INI : TStringINIFile ); override;
     function Define( Map : TAniMap; Zone : byte; Index : word ) : integer; virtual;
 {$IFDEF DirectX}
-    property Image[ ImageIndex : Integer ] : IDirectDrawSurface read GetImage;
+    property Image[ ImageIndex : Integer ] : SDL_surface read GetImage;
 {$ENDIF}
 {$IFNDEF DirectX}
     property Image[ ImageIndex : Integer ] : TBitmap read GetImage;
@@ -2253,7 +2251,7 @@ var
   INI : TStringINIFile;
   ImageIndex : integer;
 {$IFDEF DirectX}
-  BM : IDirectDrawSurface;
+  BM : SDL_surface;
   ddck : DDCOLORKEY;
   BltFx : DDBLTFX;
 {$ENDIF}
@@ -2384,7 +2382,7 @@ var
   AutoTransparent : Boolean;
   ImageIndex : integer;
 {$IFDEF DirectX}
-  BM : IDirectDrawSurface;
+  BM : SDL_surface;
   ddck : DDCOLORKEY;
   BltFx : DDBLTFX;
 {$ENDIF}
@@ -2503,7 +2501,7 @@ begin
   end;
 end;
 
-procedure TStaticResource.GetImage1( ImageIndex : Integer; Surface : IDirectDrawSurface; W : integer );
+procedure TStaticResource.GetImage1( ImageIndex : Integer; Surface : SDL_surface; W : integer );
 var
   Bits : BITPLANE;
   ddsd : TDDSurfaceDesc;
@@ -2539,7 +2537,7 @@ end;
 
 {$IFDEF DirectX}
 
-function TStaticResource.GetImage( ImageIndex : Integer ) : IDirectDrawSurface;
+function TStaticResource.GetImage( ImageIndex : Integer ) : SDL_surface;
 var
   Bits : BITPLANE;
   W : integer;
@@ -2667,7 +2665,7 @@ end;
 function TTileResource.Define( Map : TAniMap; Zone : byte; Index : word ) : integer;
 var
 {$IFDEF DirectX}
-  TileBM : IDirectDrawSurface;
+  TileBM : SDL_surface;
   ddck : DDCOLORKEY;
   BltFx : DDBLTFX;
 {$ENDIF}

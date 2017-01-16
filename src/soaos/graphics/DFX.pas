@@ -70,7 +70,6 @@ interface
 
 uses
 {$IFnDEF FPC}
-  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
@@ -83,7 +82,6 @@ uses
   Dialogs,
   digifx,
 {$IFDEF DirectX}
-  DirectX,
   DXUtil,
   Anigrp30,
 {$ENDIF}
@@ -228,12 +226,12 @@ begin
 {$IFDEF DirectX}
     if dfx_pixelformat = PIXFMT_555 then
     begin
-      if DDColorMatch( lpDDSBack, clWhite ) <= 32767 then
+      if SDLColorMatch( lpDDSBack, clWhite ) <= 32767 then
         exit;
     end
     else if dfx_pixelformat = PIXFMT_565 then
     begin
-      if DDColorMatch( lpDDSBack, clWhite ) > 32767 then
+      if SDLColorMatch( lpDDSBack, clWhite ) > 32767 then
         exit;
     end
 {$ENDIF}

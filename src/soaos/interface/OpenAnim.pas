@@ -71,11 +71,9 @@ interface
 uses
 {$IFDEF DirectX}
 {$IFnDEF FPC}
-  MMSystem, Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
-  DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
@@ -103,9 +101,9 @@ type
     KeepOnPlaying : boolean;
     //Bitmap stuff
     BMBack : TBitmap;
-    DXBack : IDirectDrawSurface;
-    DXSiege : IDirectDrawSurface;
-    DXLogo : IDirectDrawSurface;
+    DXBack : SDL_surface;
+    DXSiege : SDL_surface;
+    DXLogo : SDL_surface;
     XAdj, YAdj : integer;
     FCancel : boolean;
     procedure PlayAnim;

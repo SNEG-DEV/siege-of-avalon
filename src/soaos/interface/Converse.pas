@@ -70,11 +70,9 @@ interface
 
 uses
 {$IFnDEF FPC}
-  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
-  DirectX,
   DXUtil,
   DXEffects,
   Messages,
@@ -113,7 +111,7 @@ type
     INI : TMemINIFile;
     procedure LoadConversation;
   protected
-    Image : IDirectDrawSurface;
+    Image : SDL_surface;
     procedure MouseDown( Sender : TAniView; Button : TMouseButton;
       Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
     procedure MouseMove( Sender : TAniView;
@@ -201,7 +199,7 @@ procedure TConverseBox.Init;
 var
   Filename : string;
   BM : TBitmap;
-  Shadow : IDirectDrawSurface;
+  Shadow : SDL_surface;
 const
   FailName : string = 'TConverseBox.Init';
 begin

@@ -1,8 +1,6 @@
 unit LoaderBox;
 
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
+{$MODE Delphi}
 
 {******************************************************************************}
 {                                                                              }
@@ -68,16 +66,9 @@ unit LoaderBox;
 
 interface
 uses
-{$IFDEF DirectX}
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType, LMessages,
-{$ENDIF}
-  DirectX,
   DXUtil,
   DXEffects,
-{$ENDIF}
   Forms,
   Classes,
   Graphics,
@@ -89,7 +80,7 @@ uses
 type
   TLoaderBox = class( TObject )
   private
-    DxBox : IDirectDrawSurface;
+    DxBox : SDL_surface;
     OldValue : integer;
     BltFx : DDBLTFX;
   public
@@ -118,7 +109,7 @@ begin
 {$ENDIF}
   try
     BltFx.dwSize := SizeOf( BltFx ); //RGB(244,164,4)
-    BltFx.dwFillColor := DDColorMatch( lpDDSFront, RGB( 32, 128, 16 ) );
+    BltFx.dwFillColor := SDLColorMatch( lpDDSFront, RGB( 32, 128, 16 ) );
     inherited;
   except
     on E : Exception do
@@ -168,7 +159,7 @@ begin
   //lpDDSBack.BltFast(250, 169, DXBox, Rect(0, 0, BMBack.width, BMBack.Height), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
   //Draw beveling
     BltFx.dwSize := SizeOf( BltFx );
-    BltFx.dwFillColor := DDColorMatch( DXBox, RGB( 205, 205, 205 ) );
+    BltFx.dwFillColor := SDLColorMatch( DXBox, RGB( 205, 205, 205 ) );
   //DXBox.Blt(rect(50+i-5,500+i-5,750,500+i+1-5),nil,rect(50+i-5,500+i-5,750,500+i+1-5),DDBLT_COLORFILL + DDBLT_WAIT, BltFx);
 
     lpDDSBack.BltFast( 0, 0, DXBox, Rect( 0, 0, BMBack.width, BMBack.Height ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );

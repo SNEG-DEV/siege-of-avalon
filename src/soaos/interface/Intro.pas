@@ -71,11 +71,9 @@ interface
 uses
 {$IFDEF DirectX}
 {$IFnDEF FPC}
-  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
-  DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
@@ -100,14 +98,14 @@ uses
 type
   TIntroRect = record
     Rect : TRect;
-    Image : IDirectDrawSurface;
+    Image : SDL_surface;
     Enabled : boolean;
   end;
 
   TIntro = class( TDisplay )
   private
     AreYouSureBoxVisible : boolean;
-    DXBack : IDirectDrawSurface;
+    DXBack : SDL_surface;
     PrevChoice : integer;
     txtMessage : array[ 0..1 ] of string;
     procedure AreYouSure;
@@ -387,7 +385,7 @@ end;
 procedure TIntro.AreYouSure;
 var
   BM : TBitmap;
-  DXBorders : IDirectDrawSurface;
+  DXBorders : SDL_surface;
   InvisColor : integer;
   nRect : TRect;
 const

@@ -65,13 +65,11 @@ unit AniDec30;
 interface
 
 uses
-  SDL2, SDL2_image,
-  LCLIntf, LCLType, LMessages,
+  LCLIntf, LCLType,
   Classes,
   Graphics,
   SysUtils,
-  Controls,
-  LogFile;
+  Controls;
 
 const
   MaxItems = 2047;

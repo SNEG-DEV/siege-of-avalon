@@ -71,11 +71,9 @@ interface
 uses
 {$IFDEF DirectX}
 {$IFnDEF FPC}
-  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
-  DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
@@ -94,9 +92,9 @@ type
   TScroll = class( TObject )
   private
     DescList : TStringList;
-    DxSheet : IDirectDrawSurface; //Surface used for statistics
-    DxFrame : IDirectDrawSurface; //Nifty roller thing for statistics
-    DxDirty : IDirectDrawSurface;
+    DxSheet : SDL_surface; //Surface used for statistics
+    DxFrame : SDL_surface; //Nifty roller thing for statistics
+    DxDirty : SDL_surface;
     ScrollFactor : integer; //How far we've scrolled
     StatsScrollItem : TItem; //Index for scroll item
     MaxScroll : integer; //max Scroll YCoord

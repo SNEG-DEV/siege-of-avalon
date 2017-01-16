@@ -71,11 +71,9 @@ interface
 uses
 {$IFDEF DirectX}
 {$IFnDEF FPC}
-  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
-  DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
@@ -109,12 +107,12 @@ type
   TAIOptions = class( TObject )
   private
     AI : TCompanion;
-    Image, Check : IDirectDrawSurface;
+    Image, Check : SDL_surface;
     CheckW, CheckH : integer;
   public
     Region : TRect;
     CheckBox : array[ 0..7 ] of TRect;
-    constructor Create( Character : TCharacter; AImage, DXCheck : IDirectDrawSurface; X, Y : integer );
+    constructor Create( Character : TCharacter; AImage, DXCheck : SDL_surface; X, Y : integer );
     procedure Click( X, Y : integer );
     procedure Draw;
   end;
@@ -124,16 +122,16 @@ type
     FOnDraw : TDrawTheGuyEvent;
     //Bitmap stuff
     BMBack : TBitmap;
-    DXBack : IDirectDrawSurface;
-    DXBackToGame : IDirectDrawSurface;
-    DXLeftGeeble : IDirectDrawSurface;
-    DXRightGeeble : IDirectDrawSurface;
-    DXBox : IDirectDrawSurface;
-    DXBox2 : IDirectDrawSurface;
+    DXBack : SDL_surface;
+    DXBackToGame : SDL_surface;
+    DXLeftGeeble : SDL_surface;
+    DXRightGeeble : SDL_surface;
+    DXBox : SDL_surface;
+    DXBox2 : SDL_surface;
     SelectRect : array[ 0..20 ] of TInfoRect;
     txtMessage : array[ 0..23 ] of string;
     AIBoxList : TList;
-    AIImage : IDirectDrawSurface;
+    AIImage : SDL_surface;
     procedure ShowChars;
     procedure SetUpCollRects;
   protected
@@ -193,7 +191,7 @@ end; //Destroy
 procedure TAddKickNPC.Init;
 var
   i : integer;
-  DXBorder : IDirectDrawSurface;
+  DXBorder : SDL_surface;
 const
   FailName : string = 'TAddKickNPC.init';
 begin
@@ -831,7 +829,7 @@ end; //SetUpCollRects
 
 {procedure TAddKickNPC.DrawThem(Character: TCharacter; X, Y: integer);
 var
-  DXSurface: IDirectDrawSurface;
+  DXSurface: SDL_surface;
   BM:Tbitmap;
 begin
   BM:=TBitmap.create;
@@ -872,7 +870,7 @@ begin
 end;
 
 constructor TAIOptions.Create( Character : TCharacter;
-  AImage, DXCheck : IDirectDrawSurface; X, Y : integer );
+  AImage, DXCheck : SDL_surface; X, Y : integer );
 var
   W, H : integer;
   i : integer;

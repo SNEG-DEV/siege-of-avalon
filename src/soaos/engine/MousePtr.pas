@@ -71,11 +71,9 @@ interface
 uses
 {$IFDEF DirectX}
 {$IFnDEF FPC}
-  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
-  DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
@@ -96,8 +94,8 @@ type
   TMousePtr = class( TObject )
   private
     BMBack : TBitmap;
-    DXMousePtr : IDirectDrawSurface;
-    DXDirty : IDirectDrawSurface;
+    DXMousePtr : SDL_surface;
+    DXDirty : SDL_surface;
     MouseTimer : TTimer;
     Mpt : TPoint;
     MouseCounter : integer;
@@ -117,7 +115,7 @@ type
     procedure SetEnabled( const Value : boolean );
   protected
   public
-    DxSurface : IDirectDrawSurface; //surface to draw pointer to
+    DxSurface : SDL_surface; //surface to draw pointer to
     constructor Create;
     destructor Destroy; override;
     procedure SetAnim( Frame, Frames, Speed : integer );

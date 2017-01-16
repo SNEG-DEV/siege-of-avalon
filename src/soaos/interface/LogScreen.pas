@@ -71,11 +71,9 @@ interface
 uses
 {$IFDEF DirectX}
 {$IFnDEF FPC}
-  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
-  DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
@@ -103,12 +101,12 @@ type
   private
     //Bitmap stuff
     BMBack : TBitmap; //The inventory screen bitmap used for loading
-    DXBack : IDirectDrawSurface;
-    DXBackToGame : IDirectDrawSurface; //Back To Game highlight
-    DXPrev : IDirectDrawSurface;
-    DXNext : IDirectDrawSurface;
-    DXPrev2 : IDirectDrawSurface;
-    DXNext2 : IDirectDrawSurface;
+    DXBack : SDL_surface;
+    DXBackToGame : SDL_surface; //Back To Game highlight
+    DXPrev : SDL_surface;
+    DXNext : SDL_surface;
+    DXPrev2 : SDL_surface;
+    DXNext2 : SDL_surface;
     MaxPages : integer;
     INI : TMemIniFile;
     IniFileFound : boolean;
@@ -183,7 +181,7 @@ end; //Destroy
 
 procedure TLogScreen.Init;
 var
-  DXBorder : IDirectDrawSurface;
+  DXBorder : SDL_surface;
   i : integer;
 const
   FailName : string = 'TLogScreen.init';
