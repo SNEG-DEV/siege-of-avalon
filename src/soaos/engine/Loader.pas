@@ -70,6 +70,7 @@ interface
 
 uses
 {$IFnDEF FPC}
+  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
@@ -81,6 +82,7 @@ uses
   Anigrp30,
   AniDec30,
 {$IFDEF DirectX}
+  DirectX,
   DXUtil,
 {$ENDIF}
   Character,

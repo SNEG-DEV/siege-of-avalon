@@ -68,37 +68,39 @@ interface
 
 uses
 {$IFnDEF FPC}
+  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
+  DirectX,
   DXRender,
   Graphics;
 
-procedure DrawAdd( Dest : SDL_surface; const DestRect, SrcRect : TRect; Source : IDirectDrawSurface;
+procedure DrawAdd( Dest : IDirectDrawSurface; const DestRect, SrcRect : TRect; Source : IDirectDrawSurface;
   TRANSPARENT : Boolean; Alpha : Integer );
 
-procedure DrawAlpha( Dest : SDL_surface; const DestRect, SrcRect : TRect; Source : IDirectDrawSurface;
+procedure DrawAlpha( Dest : IDirectDrawSurface; const DestRect, SrcRect : TRect; Source : IDirectDrawSurface;
   TRANSPARENT : Boolean; Alpha : Integer );
 
-procedure DrawMult( Dest : SDL_surface; const DestRect, SrcRect : TRect; Source : IDirectDrawSurface;
+procedure DrawMult( Dest : IDirectDrawSurface; const DestRect, SrcRect : TRect; Source : IDirectDrawSurface;
   TRANSPARENT : Boolean; Alpha : Integer );
 
-procedure DrawSub( Dest : SDL_surface; const DestRect, SrcRect : TRect; Source : IDirectDrawSurface;
+procedure DrawSub( Dest : IDirectDrawSurface; const DestRect, SrcRect : TRect; Source : IDirectDrawSurface;
   TRANSPARENT : Boolean; Alpha : Integer );
 
-procedure DrawInvSub( Dest : SDL_surface; const DestRect, SrcRect : TRect; Source : IDirectDrawSurface;
+procedure DrawInvSub( Dest : IDirectDrawSurface; const DestRect, SrcRect : TRect; Source : IDirectDrawSurface;
   TRANSPARENT : Boolean; Alpha : Integer );
 
-procedure FillRectAdd( Dest : SDL_surface; const DestRect : TRect; RGBCol : TColor );
+procedure FillRectAdd( Dest : IDirectDrawSurface; const DestRect : TRect; RGBCol : TColor );
 
-procedure FillRectAlpha( Dest : SDL_surface; const DestRect : TRect; RGBCol : TColor;
+procedure FillRectAlpha( Dest : IDirectDrawSurface; const DestRect : TRect; RGBCol : TColor;
   Alpha : Integer );
 
-procedure FillRectSub( Dest : SDL_surface; const DestRect : TRect; RGBCol : TColor );
+procedure FillRectSub( Dest : IDirectDrawSurface; const DestRect : TRect; RGBCol : TColor );
 
 implementation
 
-procedure DrawAdd( Dest : SDL_surface; const DestRect, SrcRect : TRect; Source : IDirectDrawSurface;
+procedure DrawAdd( Dest : IDirectDrawSurface; const DestRect, SrcRect : TRect; Source : IDirectDrawSurface;
   TRANSPARENT : Boolean; Alpha : Integer );
 const
   FailName : string = 'DXEffects.DrawAdd';
@@ -138,7 +140,7 @@ begin
   end;
 end;
 
-procedure DrawAlpha( Dest : SDL_surface; const DestRect, SrcRect : TRect; Source : IDirectDrawSurface;
+procedure DrawAlpha( Dest : IDirectDrawSurface; const DestRect, SrcRect : TRect; Source : IDirectDrawSurface;
   TRANSPARENT : Boolean; Alpha : Integer );
 const
   FailName : string = 'DXEffects.DrawAlpha';
@@ -178,7 +180,7 @@ begin
   end;
 end;
 
-procedure DrawMult( Dest : SDL_surface; const DestRect, SrcRect : TRect; Source : IDirectDrawSurface;
+procedure DrawMult( Dest : IDirectDrawSurface; const DestRect, SrcRect : TRect; Source : IDirectDrawSurface;
   TRANSPARENT : Boolean; Alpha : Integer );
 const
   FailName : string = 'DXEffects.DrawMult';
@@ -218,7 +220,7 @@ begin
   end;
 end;
 
-procedure DrawSub( Dest : SDL_surface; const DestRect, SrcRect : TRect; Source : IDirectDrawSurface;
+procedure DrawSub( Dest : IDirectDrawSurface; const DestRect, SrcRect : TRect; Source : IDirectDrawSurface;
   TRANSPARENT : Boolean; Alpha : Integer );
 const
   FailName : string = 'DXEffects.DrawSub';
@@ -258,7 +260,7 @@ begin
   end;
 end;
 
-procedure DrawInvSub( Dest : SDL_surface; const DestRect, SrcRect : TRect; Source : IDirectDrawSurface;
+procedure DrawInvSub( Dest : IDirectDrawSurface; const DestRect, SrcRect : TRect; Source : IDirectDrawSurface;
   TRANSPARENT : Boolean; Alpha : Integer );
 const
   FailName : string = 'DXEffects.DrawInvSub';
@@ -298,7 +300,7 @@ begin
   end;
 end;
 
-procedure FillRectAdd( Dest : SDL_surface; const DestRect : TRect; RGBCol : TColor );
+procedure FillRectAdd( Dest : IDirectDrawSurface; const DestRect : TRect; RGBCol : TColor );
 const
   FailName : string = 'DXEffects.FillRectAdd';
 var
@@ -314,7 +316,7 @@ begin
   end;
 end;
 
-procedure FillRectAlpha( Dest : SDL_surface; const DestRect : TRect; RGBCol : TColor;
+procedure FillRectAlpha( Dest : IDirectDrawSurface; const DestRect : TRect; RGBCol : TColor;
   Alpha : Integer );
 const
   FailName : string = 'DXEffects.FillRectAlpha';
@@ -331,7 +333,7 @@ begin
   end;
 end;
 
-procedure FillRectSub( Dest : SDL_surface; const DestRect : TRect; RGBCol : TColor );
+procedure FillRectSub( Dest : IDirectDrawSurface; const DestRect : TRect; RGBCol : TColor );
 const
   FailName : string = 'DXEffects.FillRectSub';
 var

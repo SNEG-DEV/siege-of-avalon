@@ -153,10 +153,10 @@ const
   IID_IDirectDraw: TGUID = '{6C14DB80-A733-11CE-A521-0020AF0BE560}';
   IID_IDirectDraw2: TGUID = '{B3A6F3E0-2B43-11CF-A2DE-00AA00B93356}';
   IID_IDirectDraw4: TGUID = '{9C59509A-39BD-11D1-8C4A-00C04FD930C5}';
-  IID_SDL_surface: TGUID = '{6C14DB81-A733-11CE-A521-0020AF0BE560}';
-  IID_SDL_surface2: TGUID = '{57805885-6EEC-11CF-9441-A82303C10E27}';
-  IID_SDL_surface3: TGUID = '{DA044E00-69B2-11D0-A1D5-00AA00B8DFBB}';
-  IID_SDL_surface4: TGUID = '{0B2B8630-AD35-11D0-8EA6-00609797EA5B}';
+  IID_IDirectDrawSurface: TGUID = '{6C14DB81-A733-11CE-A521-0020AF0BE560}';
+  IID_IDirectDrawSurface2: TGUID = '{57805885-6EEC-11CF-9441-A82303C10E27}';
+  IID_IDirectDrawSurface3: TGUID = '{DA044E00-69B2-11D0-A1D5-00AA00B8DFBB}';
+  IID_IDirectDrawSurface4: TGUID = '{0B2B8630-AD35-11D0-8EA6-00609797EA5B}';
   IID_IDirectDrawPalette: TGUID = '{6C14DB84-A733-11CE-A521-0020AF0BE560}';
   IID_IDirectDrawClipper: TGUID = '{6C14DB85-A733-11CE-A521-0020AF0BE560}';
   IID_IDirectDrawColorControl: TGUID = '{4B9F0EE0-0D7E-11D0-9B06-00A0C903A3B8}';
@@ -173,10 +173,10 @@ type
   IDirectDraw = interface;
   IDirectDraw2 = interface;
   IDirectDraw4 = interface;
-  SDL_surface = interface;
-  SDL_surface2 = interface;
-  SDL_surface3 = interface;
-  SDL_surface4 = interface;
+  IDirectDrawSurface = interface;
+  IDirectDrawSurface2 = interface;
+  IDirectDrawSurface3 = interface;
+  IDirectDrawSurface4 = interface;
   IDirectDrawPalette = interface;
   IDirectDrawClipper = interface;
   IDirectDrawColorControl = interface;
@@ -239,16 +239,16 @@ type
       ddckSrcColorkey: TDDColorKey;           // SrcColorkey override
       );
     1: (
-      lpDDSZBufferDest: SDL_surface;  // Surface to use as Z buffer for dest
+      lpDDSZBufferDest: IDirectDrawSurface;  // Surface to use as Z buffer for dest
       _union1b: DWORD;
-      lpDDSZBufferSrc: SDL_surface;   // Surface to use as Z buffer for src
+      lpDDSZBufferSrc: IDirectDrawSurface;   // Surface to use as Z buffer for src
       _union1d: DWORD;
       _union1e: DWORD;
       _union1f: DWORD;
       _union1g: DWORD;
-      lpDDSAlphaDest: SDL_surface;    // Surface to use as Alpha Channel
+      lpDDSAlphaDest: IDirectDrawSurface;    // Surface to use as Alpha Channel
       _union1i: DWORD;
-      lpDDSAlphaSrc: SDL_surface;     // Surface to use as Alpha Channel
+      lpDDSAlphaSrc: IDirectDrawSurface;     // Surface to use as Alpha Channel
       dwFillDepth: DWORD;                    // depth value for z-buffer
       );
     2: (
@@ -262,7 +262,7 @@ type
       _union2h: DWORD;
       _union2i: DWORD;
       _union2j: DWORD;
-      lpDDSPattern: SDL_surface;       // Surface to use as pattern
+      lpDDSPattern: IDirectDrawSurface;       // Surface to use as pattern
       );
   end;
 
@@ -592,9 +592,9 @@ type
       dwFlags: DWORD;                      // flags
       );
     1: (
-      lpDDSAlphaDest: SDL_surface;  // Surface to use as alpha channel for dest
+      lpDDSAlphaDest: IDirectDrawSurface;  // Surface to use as alpha channel for dest
       _union1b: DWORD;
-      lpDDSAlphaSrc: SDL_surface;   // Surface to use as alpha channel for src
+      lpDDSAlphaSrc: IDirectDrawSurface;   // Surface to use as alpha channel for src
       );
   end;
 
@@ -606,7 +606,7 @@ type
   PDDBltBatch = ^TDDBltBatch;
   TDDBltBatch = record
     lprDest: PRect;
-    lpDDSSrc: SDL_surface;
+    lpDDSSrc: IDirectDrawSurface;
     lprSrc: PRect;
     dwFlags: DWORD;
     lpDDBltFx: PDDBltFX;
@@ -808,11 +808,11 @@ type
       lpContext: Pointer): HResult; stdcall;
   LPDDENUMMODESCALLBACK2 = TDDEnumModesCallback2;
 
-  TDDEnumSurfacesCallback = function(lpDDSurface: SDL_surface;
+  TDDEnumSurfacesCallback = function(lpDDSurface: IDirectDrawSurface;
       const lpDDSurfaceDesc: TDDSurfaceDesc; lpContext: Pointer): HResult; stdcall;
   LPDDENUMSURFACESCALLBACK = TDDEnumSurfacesCallback;
 
-  TDDEnumSurfacesCallback2 = function(lpDDSurface: SDL_surface4;
+  TDDEnumSurfacesCallback2 = function(lpDDSurface: IDirectDrawSurface4;
       const lpDDSurfaceDesc: TDDSurfaceDesc2; lpContext: Pointer): HResult; stdcall;
   LPDDENUMSURFACESCALLBACK2 = TDDEnumSurfacesCallback2;
 
@@ -827,9 +827,9 @@ type
     function CreatePalette(dwFlags: DWORD; lpColorTable: PPaletteEntry;
         out lplpDDPalette: IDirectDrawPalette; pUnkOuter: IUnknown): HResult; stdcall;
     function CreateSurface(const lpDDSurfaceDesc: TDDSurfaceDesc;
-        out lplpDDSurface: SDL_surface; pUnkOuter: IUnknown): HResult; stdcall;
-    function DuplicateSurface(lpDDSurface: SDL_surface;
-        out lplpDupDDSurface: SDL_surface): HResult; stdcall;
+        out lplpDDSurface: IDirectDrawSurface; pUnkOuter: IUnknown): HResult; stdcall;
+    function DuplicateSurface(lpDDSurface: IDirectDrawSurface;
+        out lplpDupDDSurface: IDirectDrawSurface): HResult; stdcall;
     function EnumDisplayModes(dwFlags: DWORD;
         const lpDDSurfaceDesc: TDDSurfaceDesc; lpContext: Pointer;
         lpEnumModesCallback: TDDEnumModesCallback): HResult; stdcall;
@@ -839,7 +839,7 @@ type
     function GetCaps(var lpDDDriverCaps: TDDCaps; var lpDDHELCaps: TDDCaps): HResult; stdcall;
     function GetDisplayMode(var lpDDSurfaceDesc: TDDSurfaceDesc): HResult; stdcall;
     function GetFourCCCodes(var lpNumCodes, lpCodes: DWORD): HResult; stdcall;
-    function GetGDISurface(out lplpGDIDDSSurface: SDL_surface): HResult; stdcall;
+    function GetGDISurface(out lplpGDIDDSSurface: IDirectDrawSurface): HResult; stdcall;
     function GetMonitorFrequency(var lpdwFrequency: DWORD): HResult; stdcall;
     function GetScanLine(var lpdwScanLine: DWORD): HResult; stdcall;
     function GetVerticalBlankStatus(var lpbIsInVB: BOOL): HResult; stdcall;
@@ -861,9 +861,9 @@ type
     function CreatePalette(dwFlags: DWORD; lpColorTable: PPaletteEntry;
         out lplpDDPalette: IDirectDrawPalette; pUnkOuter: IUnknown): HResult; stdcall;
     function CreateSurface(const lpDDSurfaceDesc: TDDSurfaceDesc;
-        out lplpDDSurface: SDL_surface; pUnkOuter: IUnknown): HResult; stdcall;
-    function DuplicateSurface(lpDDSurface: SDL_surface;
-        out lplpDupDDSurface: SDL_surface): HResult; stdcall;
+        out lplpDDSurface: IDirectDrawSurface; pUnkOuter: IUnknown): HResult; stdcall;
+    function DuplicateSurface(lpDDSurface: IDirectDrawSurface;
+        out lplpDupDDSurface: IDirectDrawSurface): HResult; stdcall;
     function EnumDisplayModes(dwFlags: DWORD;
         const lpDDSurfaceDesc: TDDSurfaceDesc; lpContext: Pointer;
         lpEnumModesCallback: TDDEnumModesCallback): HResult; stdcall;
@@ -873,7 +873,7 @@ type
     function GetCaps(var lpDDDriverCaps: TDDCaps; var lpDDHELCaps: TDDCaps): HResult; stdcall;
     function GetDisplayMode(var lpDDSurfaceDesc: TDDSurfaceDesc): HResult; stdcall;
     function GetFourCCCodes(var lpNumCodes, lpCodes: DWORD): HResult; stdcall;
-    function GetGDISurface(out lplpGDIDDSSurface: SDL_surface): HResult; stdcall;
+    function GetGDISurface(out lplpGDIDDSSurface: IDirectDrawSurface): HResult; stdcall;
     function GetMonitorFrequency(var lpdwFrequency: DWORD): HResult; stdcall;
     function GetScanLine(var lpdwScanLine: DWORD): HResult; stdcall;
     function GetVerticalBlankStatus(var lpbIsInVB: BOOL): HResult; stdcall;
@@ -899,9 +899,9 @@ type
     function CreatePalette(dwFlags: DWORD; lpColorTable: PPaletteEntry;
         out lplpDDPalette: IDirectDrawPalette; pUnkOuter: IUnknown): HResult; stdcall;
     function CreateSurface(const lpDDSurfaceDesc: TDDSurfaceDesc2;
-        out lplpDDSurface: SDL_surface4; pUnkOuter: IUnknown): HResult; stdcall;
-    function DuplicateSurface(lpDDSurface: SDL_surface4;
-        out lplpDupDDSurface: SDL_surface4): HResult; stdcall;
+        out lplpDDSurface: IDirectDrawSurface4; pUnkOuter: IUnknown): HResult; stdcall;
+    function DuplicateSurface(lpDDSurface: IDirectDrawSurface4;
+        out lplpDupDDSurface: IDirectDrawSurface4): HResult; stdcall;
     function EnumDisplayModes(dwFlags: DWORD;
         const lpDDSurfaceDesc: TDDSurfaceDesc2; lpContext: Pointer;
         lpEnumModesCallback: TDDEnumModesCallback2): HResult; stdcall;
@@ -911,7 +911,7 @@ type
     function GetCaps(var lpDDDriverCaps: TDDCaps; var lpDDHELCaps: TDDCaps): HResult; stdcall;
     function GetDisplayMode(var lpDDSurfaceDesc: TDDSurfaceDesc2): HResult; stdcall;
     function GetFourCCCodes(var lpNumCodes, lpCodes: DWORD): HResult; stdcall;
-    function GetGDISurface(out lplpGDIDDSSurface: SDL_surface2): HResult; stdcall;
+    function GetGDISurface(out lplpGDIDDSSurface: IDirectDrawSurface2): HResult; stdcall;
     function GetMonitorFrequency(var lpdwFrequency: DWORD): HResult; stdcall;
     function GetScanLine(var lpdwScanLine: DWORD): HResult; stdcall;
     function GetVerticalBlankStatus(var lpbIsInVB: BOOL): HResult; stdcall;
@@ -925,7 +925,7 @@ type
     function GetAvailableVidMem(var lpDDSCaps: TDDSCaps;
         var lpdwTotal, lpdwFree: DWORD): HResult; stdcall;
     // IDirectDraw4 methods
-    function GetSurfaceFromDC(hdc: HDC; lpDDS: SDL_surface4): HResult; stdcall;
+    function GetSurfaceFromDC(hdc: HDC; lpDDS: IDirectDrawSurface4): HResult; stdcall;
     function RestoreAllSurfaces: HResult; stdcall;
     function TestCooperativeLevel: HResult; stdcall;
     function GetDeviceIdentifier(var lpdddi: TDDDeviceIdentifier; dwFlags: DWORD): HResult; stdcall;
@@ -959,29 +959,29 @@ type
     function SetHWnd(dwFlags: DWORD; hWnd: HWND): HResult; stdcall;
   end;
 
-{ SDL_surface Interface }
+{ IDirectDrawSurface Interface }
 
-  SDL_surface = interface(IUnknown)
+  IDirectDrawSurface = interface(IUnknown)
     ['{6C14DB81-A733-11CE-A521-0020AF0BE560}']
-    // SDL_surface methods
-    function AddAttachedSurface(lpDDSAttachedSurface: SDL_surface): HResult; stdcall;
+    // IDirectDrawSurface methods
+    function AddAttachedSurface(lpDDSAttachedSurface: IDirectDrawSurface): HResult; stdcall;
     function AddOverlayDirtyRect(const lpRect: TRect): HResult; stdcall;
-    function Blt(const lpDestRect: TRect; lpDDSrcSurface: SDL_surface;
+    function Blt(const lpDestRect: TRect; lpDDSrcSurface: IDirectDrawSurface;
         const lpSrcRect: TRect; dwFlags: DWORD; const lpDDBltFx: TDDBltFX): HResult; stdcall;
     function BltBatch(const lpDDBltBatch: TDDBltBatch; dwCount: DWORD;
         dwFlags: DWORD): HResult; stdcall;
-    function BltFast(dwX, dwY: DWORD; lpDDSrcSurface: SDL_surface;
+    function BltFast(dwX, dwY: DWORD; lpDDSrcSurface: IDirectDrawSurface;
         const lpSrcRect: TRect; dwTrans: DWORD): HResult; stdcall;
     function DeleteAttachedSurface(dwFlags: DWORD;
-        lpDDSAttachedSurface: SDL_surface): HResult; stdcall;
+        lpDDSAttachedSurface: IDirectDrawSurface): HResult; stdcall;
     function EnumAttachedSurfaces(lpContext: Pointer;
         lpEnumSurfacesCallback: TDDEnumSurfacesCallback): HResult; stdcall;
     function EnumOverlayZOrders(dwFlags: DWORD; lpContext: Pointer;
         lpfnCallback: TDDEnumSurfacesCallback): HResult; stdcall;
-    function Flip(lpDDSurfaceTargetOverride: SDL_surface;
+    function Flip(lpDDSurfaceTargetOverride: IDirectDrawSurface;
         dwFlags: DWORD): HResult; stdcall;
     function GetAttachedSurface(var lpDDSCaps: TDDSCaps;
-        out lplpDDAttachedSurface: SDL_surface): HResult; stdcall;
+        out lplpDDAttachedSurface: IDirectDrawSurface): HResult; stdcall;
     function GetBltStatus(dwFlags: DWORD): HResult; stdcall;
     function GetCaps(var lpDDSCaps: TDDSCaps): HResult; stdcall;
     function GetClipper(out lplpDDClipper: IDirectDrawClipper): HResult; stdcall;
@@ -1005,36 +1005,36 @@ type
     function SetPalette(lpDDPalette: IDirectDrawPalette): HResult; stdcall;
     function Unlock(lpSurfaceData: Pointer): HResult; stdcall;
     function UpdateOverlay(const lpSrcRect: TRect;
-        lpDDDestSurface: SDL_surface; const lpDestRect: TRect;
+        lpDDDestSurface: IDirectDrawSurface; const lpDestRect: TRect;
         dwFlags: DWORD; const lpDDOverlayFx: DDOVERLAYFX ): HResult; stdcall;
     function UpdateOverlayDisplay(dwFlags: DWORD): HResult; stdcall;
     function UpdateOverlayZOrder(dwFlags: DWORD;
-        lpDDSReference: SDL_surface): HResult; stdcall;
+        lpDDSReference: IDirectDrawSurface): HResult; stdcall;
   end;
 
-{ SDL_surface2 Interface }
+{ IDirectDrawSurface2 Interface }
 
-  SDL_surface2 = interface(IUnknown)
+  IDirectDrawSurface2 = interface(IUnknown)
     ['{57805885-6EEC-11CF-9441-A82303C10E27}']
-    // SDL_surface methods
-    function AddAttachedSurface(lpDDSAttachedSurface: SDL_surface2): HResult; stdcall;
+    // IDirectDrawSurface methods
+    function AddAttachedSurface(lpDDSAttachedSurface: IDirectDrawSurface2): HResult; stdcall;
     function AddOverlayDirtyRect(const lpRect: TRect): HResult; stdcall;
-    function Blt(const lpDestRect: TRect; lpDDSrcSurface: SDL_surface2;
+    function Blt(const lpDestRect: TRect; lpDDSrcSurface: IDirectDrawSurface2;
         const lpSrcRect: TRect; dwFlags: DWORD; const lpDDBltFx: TDDBltFX): HResult; stdcall;
     function BltBatch(const lpDDBltBatch: TDDBltBatch; dwCount: DWORD;
         dwFlags: DWORD): HResult; stdcall;
-    function BltFast(dwX, dwY: DWORD; lpDDSrcSurface: SDL_surface2;
+    function BltFast(dwX, dwY: DWORD; lpDDSrcSurface: IDirectDrawSurface2;
         const lpSrcRect: TRect; dwTrans: DWORD): HResult; stdcall;
     function DeleteAttachedSurface(dwFlags: DWORD;
-        lpDDSAttachedSurface: SDL_surface2): HResult; stdcall;
+        lpDDSAttachedSurface: IDirectDrawSurface2): HResult; stdcall;
     function EnumAttachedSurfaces(lpContext: Pointer;
         lpEnumSurfacesCallback: TDDEnumSurfacesCallback): HResult; stdcall;
     function EnumOverlayZOrders(dwFlags: DWORD; lpContext: Pointer;
         lpfnCallback: TDDEnumSurfacesCallback): HResult; stdcall;
-    function Flip(lpDDSurfaceTargetOverride: SDL_surface2;
+    function Flip(lpDDSurfaceTargetOverride: IDirectDrawSurface2;
         dwFlags: DWORD): HResult; stdcall;
     function GetAttachedSurface(var lpDDSCaps: TDDSCaps;
-        out lplpDDAttachedSurface: SDL_surface2): HResult; stdcall;
+        out lplpDDAttachedSurface: IDirectDrawSurface2): HResult; stdcall;
     function GetBltStatus(dwFlags: DWORD): HResult; stdcall;
     function GetCaps(var lpDDSCaps: TDDSCaps): HResult; stdcall;
     function GetClipper(out lplpDDClipper: IDirectDrawClipper): HResult; stdcall;
@@ -1057,40 +1057,40 @@ type
     function SetPalette(lpDDPalette: IDirectDrawPalette): HResult; stdcall;
     function Unlock(lpSurfaceData: Pointer): HResult; stdcall;
     function UpdateOverlay(const lpSrcRect: TRect;
-        lpDDDestSurface: SDL_surface2; const lpDestRect: TRect;
+        lpDDDestSurface: IDirectDrawSurface2; const lpDestRect: TRect;
         dwFlags: DWORD; const lpDDOverlayFx: DDOVERLAYFX): HResult; stdcall;
     function UpdateOverlayDisplay(dwFlags: DWORD): HResult; stdcall;
     function UpdateOverlayZOrder(dwFlags: DWORD;
-        lpDDSReference: SDL_surface2): HResult; stdcall;
-    // SDL_surface2 methods
+        lpDDSReference: IDirectDrawSurface2): HResult; stdcall;
+    // IDirectDrawSurface2 methods
     function GetDDInterface(out lplpDD: IUnknown): HResult; stdcall;
     function PageLock(dwFlags: DWORD): HResult; stdcall;
     function PageUnlock(dwFlags: DWORD): HResult; stdcall;
   end;
 
-{ SDL_surface3 Interface }
+{ IDirectDrawSurface3 Interface }
 
-  SDL_surface3 = interface(IUnknown)
+  IDirectDrawSurface3 = interface(IUnknown)
     ['{DA044E00-69B2-11D0-A1D5-00AA00B8DFBB}']
-    // SDL_surface methods
-    function AddAttachedSurface(lpDDSAttachedSurface: SDL_surface3): HResult; stdcall;
+    // IDirectDrawSurface methods
+    function AddAttachedSurface(lpDDSAttachedSurface: IDirectDrawSurface3): HResult; stdcall;
     function AddOverlayDirtyRect(const lpRect: TRect): HResult; stdcall;
-    function Blt(const lpDestRect: TRect; lpDDSrcSurface: SDL_surface3;
+    function Blt(const lpDestRect: TRect; lpDDSrcSurface: IDirectDrawSurface3;
         const lpSrcRect: TRect; dwFlags: DWORD; const lpDDBltFx: TDDBltFX): HResult; stdcall;
     function BltBatch(const lpDDBltBatch: TDDBltBatch; dwCount: DWORD;
         dwFlags: DWORD): HResult; stdcall;
-    function BltFast(dwX, dwY: DWORD; lpDDSrcSurface: SDL_surface3;
+    function BltFast(dwX, dwY: DWORD; lpDDSrcSurface: IDirectDrawSurface3;
         const lpSrcRect: TRect; dwTrans: DWORD): HResult; stdcall;
     function DeleteAttachedSurface(dwFlags: DWORD;
-        lpDDSAttachedSurface: SDL_surface3): HResult; stdcall;
+        lpDDSAttachedSurface: IDirectDrawSurface3): HResult; stdcall;
     function EnumAttachedSurfaces(lpContext: Pointer;
         lpEnumSurfacesCallback: TDDEnumSurfacesCallback): HResult; stdcall;
     function EnumOverlayZOrders(dwFlags: DWORD; lpContext: Pointer;
         lpfnCallback: TDDEnumSurfacesCallback): HResult; stdcall;
-    function Flip(lpDDSurfaceTargetOverride: SDL_surface3;
+    function Flip(lpDDSurfaceTargetOverride: IDirectDrawSurface3;
         dwFlags: DWORD): HResult; stdcall;
     function GetAttachedSurface(var lpDDSCaps: TDDSCaps;
-        out lplpDDAttachedSurface: SDL_surface3): HResult; stdcall;
+        out lplpDDAttachedSurface: IDirectDrawSurface3): HResult; stdcall;
     function GetBltStatus(dwFlags: DWORD): HResult; stdcall;
     function GetCaps(var lpDDSCaps: TDDSCaps): HResult; stdcall;
     function GetClipper(out lplpDDClipper: IDirectDrawClipper): HResult; stdcall;
@@ -1113,42 +1113,42 @@ type
     function SetPalette(lpDDPalette: IDirectDrawPalette): HResult; stdcall;
     function Unlock(lpSurfaceData: Pointer): HResult; stdcall;
     function UpdateOverlay(const lpSrcRect: TRect;
-        lpDDDestSurface: SDL_surface3; const lpDestRect: TRect;
+        lpDDDestSurface: IDirectDrawSurface3; const lpDestRect: TRect;
         dwFlags: DWORD; const lpDDOverlayFx: DDOVERLAYFX): HResult; stdcall;
     function UpdateOverlayDisplay(dwFlags: DWORD): HResult; stdcall;
     function UpdateOverlayZOrder(dwFlags: DWORD;
-        lpDDSReference: SDL_surface3): HResult; stdcall;
-    // SDL_surface2 methods
+        lpDDSReference: IDirectDrawSurface3): HResult; stdcall;
+    // IDirectDrawSurface2 methods
     function GetDDInterface(out lplpDD: IUnknown): HResult; stdcall;
     function PageLock(dwFlags: DWORD): HResult; stdcall;
     function PageUnlock(dwFlags: DWORD): HResult; stdcall;
-    // SDL_surface3 methods
+    // IDirectDrawSurface3 methods
     function SetSurfaceDesc(const lpddsd: TDDSurfaceDesc; dwFlags: DWORD): HResult; stdcall;
   end;
 
-{ SDL_surface4 Interface }
+{ IDirectDrawSurface4 Interface }
 
-  SDL_surface4 = interface(IUnknown)
+  IDirectDrawSurface4 = interface(IUnknown)
     ['{0B2B8630-AD35-11D0-8EA6-00609797EA5B}']
-    // SDL_surface methods
-    function AddAttachedSurface(lpDDSAttachedSurface: SDL_surface4): HResult; stdcall;
+    // IDirectDrawSurface methods
+    function AddAttachedSurface(lpDDSAttachedSurface: IDirectDrawSurface4): HResult; stdcall;
     function AddOverlayDirtyRect(const lpRect: TRect): HResult; stdcall;
-    function Blt(const lpDestRect: TRect; lpDDSrcSurface: SDL_surface4;
+    function Blt(const lpDestRect: TRect; lpDDSrcSurface: IDirectDrawSurface4;
         const lpSrcRect: TRect; dwFlags: DWORD; const lpDDBltFx: TDDBltFX): HResult; stdcall;
     function BltBatch(const lpDDBltBatch: TDDBltBatch; dwCount: DWORD;
         dwFlags: DWORD): HResult; stdcall;
-    function BltFast(dwX, dwY: DWORD; lpDDSrcSurface: SDL_surface4;
+    function BltFast(dwX, dwY: DWORD; lpDDSrcSurface: IDirectDrawSurface4;
         const lpSrcRect: TRect; dwTrans: DWORD): HResult; stdcall;
     function DeleteAttachedSurface(dwFlags: DWORD;
-        lpDDSAttachedSurface: SDL_surface4): HResult; stdcall;
+        lpDDSAttachedSurface: IDirectDrawSurface4): HResult; stdcall;
     function EnumAttachedSurfaces(lpContext: Pointer;
         lpEnumSurfacesCallback: TDDEnumSurfacesCallback): HResult; stdcall;
     function EnumOverlayZOrders(dwFlags: DWORD; lpContext: Pointer;
         lpfnCallback: TDDEnumSurfacesCallback): HResult; stdcall;
-    function Flip(lpDDSurfaceTargetOverride: SDL_surface4;
+    function Flip(lpDDSurfaceTargetOverride: IDirectDrawSurface4;
         dwFlags: DWORD): HResult; stdcall;
     function GetAttachedSurface(var lpDDSCaps: TDDSCaps2;
-        out lplpDDAttachedSurface: SDL_surface4): HResult; stdcall;
+        out lplpDDAttachedSurface: IDirectDrawSurface4): HResult; stdcall;
     function GetBltStatus(dwFlags: DWORD): HResult; stdcall;
     function GetCaps(var lpDDSCaps: TDDSCaps2): HResult; stdcall;
     function GetClipper(out lplpDDClipper: IDirectDrawClipper): HResult; stdcall;
@@ -1170,17 +1170,17 @@ type
     function SetOverlayPosition(lX, lY: Longint): HResult; stdcall;
     function SetPalette(lpDDPalette: IDirectDrawPalette): HResult; stdcall;
     function Unlock(lpSurfaceData: Pointer): HResult; stdcall;
-    function UpdateOverlay(const lpSrcRect: TRect; lpDDDestSurface: SDL_surface4;
+    function UpdateOverlay(const lpSrcRect: TRect; lpDDDestSurface: IDirectDrawSurface4;
         const lpDestRect: TRect; dwFlags: DWORD; const lpDDOverlayFx: DDOVERLAYFX): HResult; stdcall;
     function UpdateOverlayDisplay(dwFlags: DWORD): HResult; stdcall;
-    function UpdateOverlayZOrder(dwFlags: DWORD; lpDDSReference: SDL_surface4): HResult; stdcall;
-    // SDL_surface2 methods
+    function UpdateOverlayZOrder(dwFlags: DWORD; lpDDSReference: IDirectDrawSurface4): HResult; stdcall;
+    // IDirectDrawSurface2 methods
     function GetDDInterface(out lplpDD: IUnknown): HResult; stdcall;
     function PageLock(dwFlags: DWORD): HResult; stdcall;
     function PageUnlock(dwFlags: DWORD): HResult; stdcall;
-    // SDL_surface3 methods
+    // IDirectDrawSurface3 methods
     function SetSurfaceDesc(const lpddsd: TDDSurfaceDesc2; dwFlags: DWORD): HResult; stdcall;
-    // SDL_surface4 methods
+    // IDirectDrawSurface4 methods
     function SetPrivateData(const guidTag: TGUID; lpData: Pointer;
       cbSize: DWORD; dwFlags: DWORD): HResult; stdcall;
     function GetPrivateData(const guidTag: TGUID; lpData: Pointer;
@@ -2023,7 +2023,7 @@ type
   IDirectDrawVideoPort = interface(IUnknown)
     ['{B36D93E0-2B43-11CF-A2DE-00AA00B93356}']
     // IDirectDrawVideoPort methods
-    function Flip(lpDDSurface: SDL_surface; dwFlags: DWORD): HResult; stdcall;
+    function Flip(lpDDSurface: IDirectDrawSurface; dwFlags: DWORD): HResult; stdcall;
     function GetBandwidthInfo(const lpddpfFormat: TDDPixelFormat; dwWidth: DWORD;
         dwHeight: DWORD; dwFlags: DWORD; var lpBandwidth: TDDVideoportBandWidth): HResult; stdcall;
     function GetColorControls(var lpColorControl: TDDColorControl): HResult; stdcall;
@@ -2035,7 +2035,7 @@ type
     function GetVideoLine(var lpdwLine: DWORD): HResult; stdcall;
     function GetVideoSignalStatus(varlpdwStatus: DWORD): HResult; stdcall;
     function SetColorControls(const lpColorControl: TDDColorControl): HResult; stdcall;
-    function SetTargetSurface(lpDDSurface: SDL_surface; dwFlags: DWORD): HResult; stdcall;
+    function SetTargetSurface(lpDDSurface: IDirectDrawSurface; dwFlags: DWORD): HResult; stdcall;
     function StartVideo(const lpVideoInfo: TDDVideoportInfo): HResult; stdcall;
     function StopVideo: HResult; stdcall;
     function UpdateVideo(const lpVideoInfo: TDDVideoportInfo): HResult; stdcall;
@@ -4249,7 +4249,7 @@ type
     function FindDevice(const lpD3DFDS: TD3DFindDeviceSearch;
         var lpD3DFDR: TD3DFindDeviceResult): HResult; stdcall;
     // IDirect3D2 methods
-    function CreateDevice(const rclsid: TGUID; lpDDS: SDL_surface;
+    function CreateDevice(const rclsid: TGUID; lpDDS: IDirectDrawSurface;
         out lplpD3DDevice2: IDirect3DDevice2): HResult; stdcall;
   end;
 
@@ -4267,7 +4267,7 @@ type
     function FindDevice(const lpD3DFDS: TD3DFindDeviceSearch;
         var lpD3DFDR: TD3DFindDeviceResult): HResult; stdcall;
     // IDirect3D2 methods
-    function CreateDevice(const rclsid: TGUID; lpDDS: SDL_surface4;
+    function CreateDevice(const rclsid: TGUID; lpDDS: IDirectDrawSurface4;
         out lplpD3DDevice2: IDirect3DDevice3): HResult; stdcall;
     // IDirect3D3 methods
     function EnumZBufferFormats(const riidDevice: TGUID; lpEnumCallback: TD3DEnumPixelFormatsCallback;
@@ -4331,8 +4331,8 @@ type
     function GetDirect3D(out lpD3D: IDirect3D2): HResult; stdcall;
     function SetCurrentViewport(lpd3dViewport2: IDirect3DViewport2): HResult; stdcall;
     function GetCurrentViewport(out lplpd3dViewport2: IDirect3DViewport2): HResult; stdcall;
-    function SetRenderTarget(lpNewRenderTarget: SDL_surface): HResult; stdcall;
-    function GetRenderTarget(out lplpNewRenderTarget: SDL_surface): HResult; stdcall;
+    function SetRenderTarget(lpNewRenderTarget: IDirectDrawSurface): HResult; stdcall;
+    function GetRenderTarget(out lplpNewRenderTarget: IDirectDrawSurface): HResult; stdcall;
     function Begin_(d3dpt: TD3DPrimitiveType; d3dvt: TD3DVertexType;
         dwFlags: DWORD): HResult; stdcall;
     function BeginIndexed(dptPrimitiveType: TD3DPrimitiveType; dvtVertexType:
@@ -4383,8 +4383,8 @@ type
     function GetDirect3D(out lpD3D: IDirect3D3): HResult; stdcall;
     function SetCurrentViewport(lpd3dViewport: IDirect3DViewport3): HResult; stdcall;
     function GetCurrentViewport(out lplpd3dViewport: IDirect3DViewport3): HResult; stdcall;
-    function SetRenderTarget(lpNewRenderTarget: SDL_surface4): HResult; stdcall;
-    function GetRenderTarget(out lplpNewRenderTarget: SDL_surface4): HResult; stdcall;
+    function SetRenderTarget(lpNewRenderTarget: IDirectDrawSurface4): HResult; stdcall;
+    function GetRenderTarget(out lplpNewRenderTarget: IDirectDrawSurface4): HResult; stdcall;
     function Begin_(d3dpt: TD3DPrimitiveType; d3dvt: TD3DVertexType;
         dwFlags: DWORD): HResult; stdcall;
     function BeginIndexed(dptPrimitiveType: TD3DPrimitiveType; dvtVertexType:
@@ -4495,7 +4495,7 @@ type
     ['{2CDCD9E0-25A0-11CF-A31A-00AA00B93356}']
     // IDirect3DTexture methods
     function Initialize(lpD3DDevice: IDirect3DDevice;
-        lpDDSurface: SDL_surface): HResult; stdcall;
+        lpDDSurface: IDirectDrawSurface): HResult; stdcall;
     function GetHandle(lpDirect3DDevice: IDirect3DDevice;
         var lpHandle: TD3DTextureHandle): HResult; stdcall;
     function PaletteChanged(dwStart: DWORD; dwCount: DWORD): HResult; stdcall;
@@ -4525,8 +4525,8 @@ type
         var lpData: TD3DLightData): HResult; stdcall;
     function SetBackground(hMat: TD3DMaterialHandle): HResult; stdcall;
     function GetBackground(hMat: TD3DMaterialHandle): HResult; stdcall;
-    function SetBackgroundDepth(lpDDSurface: SDL_surface): HResult; stdcall;
-    function GetBackgroundDepth(out lplpDDSurface: SDL_surface;
+    function SetBackgroundDepth(lpDDSurface: IDirectDrawSurface): HResult; stdcall;
+    function GetBackgroundDepth(out lplpDDSurface: IDirectDrawSurface;
         var lpValid: BOOL): HResult; stdcall;
     function Clear(dwCount: DWORD; const lpRects: TD3DRect; dwFlags: DWORD): HResult; stdcall;
     function AddLight(lpDirect3DLight: IDirect3DLight): HResult; stdcall;
@@ -4545,8 +4545,8 @@ type
   IDirect3DViewport3 = interface(IDirect3DViewport2)
     ['{B0AB3B61-33D7-11D1-A981-00C04FD7B174}']
     // IDirect3DViewport3 methods
-    function SetBackgroundDepth2(lpDDS: SDL_surface4): HResult; stdcall;
-    function GetBackgroundDepth2(out lplpDDS: SDL_surface4; var lpValid: BOOL): HResult; stdcall;
+    function SetBackgroundDepth2(lpDDS: IDirectDrawSurface4): HResult; stdcall;
+    function GetBackgroundDepth2(out lplpDDS: IDirectDrawSurface4; var lpValid: BOOL): HResult; stdcall;
     function Clear2(dwCount: DWORD; const lpRects: TD3DRect; dwFlags: DWORD;
         dwColor: DWORD; dvZ: TD3DValue; dwStencil: DWORD): HResult; stdcall;
   end;
@@ -5588,7 +5588,7 @@ type
   D3DRMLOADCALLBACK = TD3DRMLoadCallback;
 
   TD3DRMDownSampleCallback = function(lpDirect3DRMTexture: IDirect3DRMTexture3;
-    pArg: Pointer; pDDSSrc, pDDSDst: SDL_surface): HResult; cdecl;
+    pArg: Pointer; pDDSSrc, pDDSDst: IDirectDrawSurface): HResult; cdecl;
   D3DRMDOWNSAMPLECALLBACK = TD3DRMDownSampleCallback;
 
   TD3DRMValidationCallback = function(lpDirect3DRMTexture: IDirect3DRMTexture3;
@@ -5693,7 +5693,7 @@ type
     // IDirect3DRMDevice2 methods
     function InitFromD3D2(lpD3D: IDirect3D2; lpD3DIMDev: IDirect3DDevice2): HResult; stdcall;
     function InitFromSurface(const lpGUID: TGUID; lpDD: IDirectDraw;
-        lpDDSBack: SDL_surface): HResult; stdcall;
+        lpDDSBack: IDirectDrawSurface): HResult; stdcall;
     function SetRenderMode(dwFlags: DWORD): HResult; stdcall;
     function GetRenderMode: DWORD; stdcall;
     function GetDirect3DDevice2(out lplpD3DDevice: IDirect3DDevice2): HResult; stdcall;
@@ -5837,14 +5837,14 @@ type
         lpArg: Pointer): HResult; stdcall;
     function DeleteVisual(lpD3DRMVisual: IDirect3DRMVisual): HResult; stdcall;
     function GetSceneBackground: TD3DColor; stdcall;
-    function GetSceneBackgroundDepth(out lplpDDSurface: SDL_surface): HResult; stdcall;
+    function GetSceneBackgroundDepth(out lplpDDSurface: IDirectDrawSurface): HResult; stdcall;
     function GetSceneFogColor: TD3DColor; stdcall;
     function GetSceneFogEnable: BOOL; stdcall;
     function GetSceneFogMode: TD3DRMFogMode; stdcall;
     function GetSceneFogParams(var lprvStart, lprvEnd, lprvDensity: TD3DValue): HResult; stdcall;
     function SetSceneBackground(rcColor: TD3DColor): HResult; stdcall;
     function SetSceneBackgroundRGB(rvRed, rvGreen, rvBlue: TD3DValue): HResult; stdcall;
-    function SetSceneBackgroundDepth(lpImage: SDL_surface): HResult; stdcall;
+    function SetSceneBackgroundDepth(lpImage: IDirectDrawSurface): HResult; stdcall;
     function SetSceneBackgroundImage(lpTexture: IDirect3DRMTexture): HResult; stdcall;
     function SetSceneFogEnable(bEnable: BOOL): HResult; stdcall;
     function SetSceneFogColor(rcColor: TD3DColor): HResult; stdcall;
@@ -5938,14 +5938,14 @@ type
         lpArg: Pointer): HResult; stdcall;
     function DeleteVisual(lpD3DRMVisual: IDirect3DRMVisual): HResult; stdcall;
     function GetSceneBackground: TD3DColor; stdcall;
-    function GetSceneBackgroundDepth(out lplpDDSurface: SDL_surface): HResult; stdcall;
+    function GetSceneBackgroundDepth(out lplpDDSurface: IDirectDrawSurface): HResult; stdcall;
     function GetSceneFogColor: TD3DColor; stdcall;
     function GetSceneFogEnable: BOOL; stdcall;
     function GetSceneFogMode: TD3DRMFogMode; stdcall;
     function GetSceneFogParams(var lprvStart, lprvEnd, lprvDensity: TD3DValue): HResult; stdcall;
     function SetSceneBackground(rcColor: TD3DColor): HResult; stdcall;
     function SetSceneBackgroundRGB(rvRed, rvGreen, rvBlue: TD3DValue): HResult; stdcall;
-    function SetSceneBackgroundDepth(lpImage: SDL_surface): HResult; stdcall;
+    function SetSceneBackgroundDepth(lpImage: IDirectDrawSurface): HResult; stdcall;
     function SetSceneBackgroundImage(lpTexture: IDirect3DRMTexture3): HResult; stdcall;
     function SetSceneFogEnable(bEnable: BOOL): HResult; stdcall;
     function SetSceneFogColor(rcColor: TD3DColor): HResult; stdcall;
@@ -6281,7 +6281,7 @@ type
     ['{EB16CB09-D271-11CE-AC48-0000C03825A1}']
     // IDirect3DRMTexture methods
     function InitFromFile(filename: PChar): HResult; stdcall;
-    function InitFromSurface(lpDDS: SDL_surface): HResult; stdcall;
+    function InitFromSurface(lpDDS: IDirectDrawSurface): HResult; stdcall;
     function InitFromResource(rs: HRSRC): HResult; stdcall;
     function Changed(bPixels, bPalette: BOOL): HResult; stdcall;
     function SetColors(ulColors: DWORD): HResult; stdcall;
@@ -6312,7 +6312,7 @@ type
   IDirect3DRMTexture3 = interface(IDirect3DRMTexture2)
     ['{FF6B7F73-A40E-11D1-91F9-0000F8758E66}']
     // IDirect3DRMTexture3 methods
-    function GetSurface(dwFlags: DWORD; out lplpDDS: SDL_surface): HResult; stdcall;
+    function GetSurface(dwFlags: DWORD; out lplpDDS: IDirectDrawSurface): HResult; stdcall;
     function SetCacheOptions(lImportance: Longint; dwFlags: DWORD): HResult; stdcall;
     function GetCacheOptions(var lplImportance: Longint; var lpdwFlags: DWORD): HResult; stdcall;
     function SetDownsampleCallback(pCallback: TD3DRMDownSampleCallback; pArg: Pointer): HResult; stdcall;
@@ -6534,13 +6534,13 @@ type
     function CreateDevice(dwWidth, dwHeight: DWORD; out lplpD3DRMDevice:
         IDirect3DRMDevice): HResult; stdcall;
     function CreateDeviceFromSurface(const lpGUID: TGUID; lpDD: IDirectDraw;
-        lpDDSBack: SDL_surface; out lplpD3DRMDevice: IDirect3DRMDevice): HResult; stdcall;
+        lpDDSBack: IDirectDrawSurface; out lplpD3DRMDevice: IDirect3DRMDevice): HResult; stdcall;
     function CreateDeviceFromD3D(lpD3D: IDirect3D; lpD3DDev: IDirect3DDevice;
         out lplpD3DRMDevice: IDirect3DRMDevice): HResult; stdcall;
     function CreateDeviceFromClipper(lpDDClipper: IDirectDrawClipper;
         const lpGUID: TGUID; width, height: DWORD; out lplpD3DRMDevice:
         IDirect3DRMDevice): HResult; stdcall;
-    function CreateTextureFromSurface(lpDDS: SDL_surface;
+    function CreateTextureFromSurface(lpDDS: IDirectDrawSurface;
         out lplpD3DRMTexture: IDirect3DRMTexture): HResult; stdcall;
     function CreateShadow(lpVisual: IDirect3DRMVisual;
         lpLight: IDirect3DRMLight; px, py, pz, nx, ny, nz: TD3DValue;
@@ -6599,13 +6599,13 @@ type
     function CreateDevice(dwWidth, dwHeight: DWORD; out lplpD3DRMDevice:
         IDirect3DRMDevice2): HResult; stdcall;
     function CreateDeviceFromSurface(const lpGUID: TGUID; lpDD: IDirectDraw;
-        lpDDSBack: SDL_surface; out lplpD3DRMDevice: IDirect3DRMDevice2): HResult; stdcall;
+        lpDDSBack: IDirectDrawSurface; out lplpD3DRMDevice: IDirect3DRMDevice2): HResult; stdcall;
     function CreateDeviceFromD3D(lpD3D: IDirect3D2; lpD3DDev: IDirect3DDevice2;
         out lplpD3DRMDevice: IDirect3DRMDevice2): HResult; stdcall;
     function CreateDeviceFromClipper(lpDDClipper: IDirectDrawClipper;
         const lpGUID: TGUID; width, height: DWORD; out lplpD3DRMDevice:
         IDirect3DRMDevice2): HResult; stdcall;
-    function CreateTextureFromSurface( lpDDS: SDL_surface;
+    function CreateTextureFromSurface( lpDDS: IDirectDrawSurface;
         out lplpD3DRMTexture: IDirect3DRMTexture2): HResult; stdcall;
     function CreateShadow(lpVisual: IDirect3DRMVisual;
         lpLight: IDirect3DRMLight; px, py, pz, nx, ny, nz: TD3DValue;
@@ -6666,13 +6666,13 @@ type
     function CreateDevice(dwWidth, dwHeight: DWORD; out lplpD3DRMDevice:
         IDirect3DRMDevice3): HResult; stdcall;
     function CreateDeviceFromSurface(const lpGUID: TGUID; lpDD: IDirectDraw;
-        lpDDSBack: SDL_surface; out lplpD3DRMDevice: IDirect3DRMDevice3): HResult; stdcall;
+        lpDDSBack: IDirectDrawSurface; out lplpD3DRMDevice: IDirect3DRMDevice3): HResult; stdcall;
     function CreateDeviceFromD3D(lpD3D: IDirect3D2; lpD3DDev: IDirect3DDevice2;
         out lplpD3DRMDevice: IDirect3DRMDevice3): HResult; stdcall;
     function CreateDeviceFromClipper(lpDDClipper: IDirectDrawClipper;
         const lpGUID: TGUID; width, height: DWORD; out lplpD3DRMDevice:
         IDirect3DRMDevice3): HResult; stdcall;
-    function CreateTextureFromSurface( lpDDS: SDL_surface;
+    function CreateTextureFromSurface( lpDDS: IDirectDrawSurface;
         out lplpD3DRMTexture: IDirect3DRMTexture3): HResult; stdcall;
     function CreateShadow(lpVisual: IDirect3DRMVisual;
         lpLight: IDirect3DRMLight; px, py, pz, nx, ny, nz: TD3DValue;

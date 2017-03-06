@@ -71,9 +71,11 @@ interface
 uses
 {$IFDEF DirectX}
 {$IFnDEF FPC}
+  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
+  DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
@@ -108,9 +110,9 @@ type
     H : Integer;
     CharacterHadThisOnHim : boolean;
     WhoHasThis : integer; //whos got this item? Left guy(1), right guy(2) (or container) or ground(3)?
-    DXSurface : SDL_surface; //barbie graphic surface
-    DXSurfaceIcon : SDL_surface; //icon graphic surface
-    DXShadow : SDL_surface; //The shadow
+    DXSurface : IDirectDrawSurface; //barbie graphic surface
+    DXSurfaceIcon : IDirectDrawSurface; //icon graphic surface
+    DXShadow : IDirectDrawSurface; //The shadow
   end;
 
   TObjInventory = class( TDisplay )
@@ -124,14 +126,14 @@ type
     CurrentSelectedItem : Integer; //Current Item being dragged about
     Tx, Ty : Integer; // x and y locs used with the offset of the dragged item
 {$IFDEF DirectX}
-    DXBack : SDL_surface; //DD surface that holds the inventory screen before blit
-    DxDirty : SDL_surface; //DD for cleanup when dragging items
-    DXLeftArrow : SDL_surface; //Inventory left arrow
-    DXRightArrow : SDL_surface; //Inventory right arrow
-    DXBackToGame : SDL_surface; //Back To Game highlight
-    DXLeftAll : SDL_surface; //Move all from left to right arrow
-    DXRightAll : SDL_surface; //Move all form right ot left arrow
-    DXBrown : SDL_surface;
+    DXBack : IDirectDrawSurface; //DD surface that holds the inventory screen before blit
+    DxDirty : IDirectDrawSurface; //DD for cleanup when dragging items
+    DXLeftArrow : IDirectDrawSurface; //Inventory left arrow
+    DXRightArrow : IDirectDrawSurface; //Inventory right arrow
+    DXBackToGame : IDirectDrawSurface; //Back To Game highlight
+    DXLeftAll : IDirectDrawSurface; //Move all from left to right arrow
+    DXRightAll : IDirectDrawSurface; //Move all form right ot left arrow
+    DXBrown : IDirectDrawSurface;
 {$ENDIF}
     GroundOrderList : TList; //used to keep track of the order of items on the ground
     TopGroundIndex : Integer; //Index of the current top ground item
@@ -225,7 +227,7 @@ procedure TObjInventory.Init;
 var
   InvisColor : Integer; //Transparent color :RGB(0,255,255)
   i : Integer;
-  DXBorder : SDL_surface;
+  DXBorder : IDirectDrawSurface;
   GreatestWidth, GreatestHeight : integer; //used to create the dirty rect surface
 const
   FailName : string = 'TObjInventory.init';
@@ -1245,7 +1247,7 @@ procedure TObjInventory.BuildGrid;
 var
   i, j : integer;
   StartX, StartY : integer;
-  DXGrid : SDL_surface; //DD surface holding our chunk O' grid to draw right grid with
+  DXGrid : IDirectDrawSurface; //DD surface holding our chunk O' grid to draw right grid with
   BM : TBitmap;
 const
   FailName : string = 'TObjInventory.BuildGrid';

@@ -71,9 +71,11 @@ interface
 uses
 {$IFDEF DirectX}
 {$IFnDEF FPC}
+  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
+  DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
@@ -131,11 +133,11 @@ type
     Tx, Ty : integer;
     //Bitmap stuff
     BMBack : TBitmap;
-    DXBack : SDL_surface;
-    DXBackToGame : SDL_surface;
-    DXTarget : array[ 0..3 ] of SDL_surface;
-    DXIcons : SDL_surface;
-    DXDirty : SDL_surface;
+    DXBack : IDirectDrawSurface;
+    DXBackToGame : IDirectDrawSurface;
+    DXTarget : array[ 0..3 ] of IDirectDrawSurface;
+    DXIcons : IDirectDrawSurface;
+    DXDirty : IDirectDrawSurface;
     pTAIcon : pTA;
     ActList : TList; //locations and text for actions
     TargList : TList; //locationsand text for targets
@@ -156,7 +158,7 @@ type
       Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
   public
     CharAI : TPartyAI;
-    DXSpellIcons : SDL_surface;
+    DXSpellIcons : IDirectDrawSurface;
     constructor Create;
     destructor Destroy; override;
     procedure Paint; override;
@@ -181,7 +183,7 @@ end; //Destroy
 procedure TNPCBehavior.Init;
 var
   InvisColor : integer;
-  DXBorders : SDL_surface;
+  DXBorders : IDirectDrawSurface;
   BM : TBitmap;
 begin
   if Loaded then

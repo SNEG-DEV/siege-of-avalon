@@ -66,12 +66,14 @@ interface
 
 uses
 {$IFnDEF FPC}
+  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
   Classes,
   SysUtils,
   Anigrp30,
+  DirectX,
   DXUtil,
   DXEffects,
   digifx,

@@ -71,9 +71,11 @@ interface
 uses
 {$IFDEF DirectX}
 {$IFnDEF FPC}
+  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
+  DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
@@ -108,13 +110,13 @@ type
     BodySlot : integer;
     cRect : TRect; //collision rect ofr the box its in
     WhoHasThis : integer; //whos got this item? Left guy(1), right guy(2) (or container) or ground(3)?
-    //DXSurface: SDL_surface;      //barbie graphic surface
-    DXSurfaceIcon : SDL_surface; //icon graphic surface
+    //DXSurface: IDirectDrawSurface;      //barbie graphic surface
+    DXSurfaceIcon : IDirectDrawSurface; //icon graphic surface
   end;
 
   Arrow = record
     X, Y : integer; //upper left coordinate to plot, check for collision on scroll arrows
-    DX : SDL_surface;
+    DX : IDirectDrawSurface;
   end;
 
   TMerchant = class( TDisplay )
@@ -133,15 +135,15 @@ type
     CurrentSelectedItem : Integer; //Current Item being dragged about
     Tx, Ty : Integer; // x and y locs used with the offset of the dragged item
 {$IFDEF DirectX}
-    DXBackHighlight : SDL_surface; //so we know which item is selected for buy/sell
-    DXBack : SDL_surface; //DD surface that holds the inventory screen before blit
-    DxDirty : SDL_surface; //DD for cleanup when dragging items
-    DXLeftArrow : SDL_surface; //Inventory left arrow
-    DXRightArrow : SDL_surface; //Inventory right arrow
-    DXBuyItem : SDL_surface;
-    DXSellItem : SDL_surface;
-    DXBackToGame : SDL_surface; //Back To Game highlight
-    DXGroundBox : SDL_surface; //The Ground Box Itself
+    DXBackHighlight : IDirectDrawSurface; //so we know which item is selected for buy/sell
+    DXBack : IDirectDrawSurface; //DD surface that holds the inventory screen before blit
+    DxDirty : IDirectDrawSurface; //DD for cleanup when dragging items
+    DXLeftArrow : IDirectDrawSurface; //Inventory left arrow
+    DXRightArrow : IDirectDrawSurface; //Inventory right arrow
+    DXBuyItem : IDirectDrawSurface;
+    DXSellItem : IDirectDrawSurface;
+    DXBackToGame : IDirectDrawSurface; //Back To Game highlight
+    DXGroundBox : IDirectDrawSurface; //The Ground Box Itself
 {$ENDIF}
     GroundOrderList : TList; //used to keep track of the order of items on the ground
     TopGroundIndex : Integer; //Index of the current top ground item
@@ -239,7 +241,7 @@ procedure TMerchant.Init;
 var
   InvisColor : Integer; //Transparent color :RGB(0,255,255)
   i : Integer;
-  DXBorder : SDL_surface;
+  DXBorder : IDirectDrawSurface;
   t : TSlot;
 const
   FailName : string = 'TMerchant.init';
@@ -1350,7 +1352,7 @@ procedure TMerchant.BuildGrid;
 var
   i, j : integer;
   //StartX,StartY: integer;
-  DXGrid : SDL_surface; //DD surface holding our chunk O' grid to draw right grid with
+  DXGrid : IDirectDrawSurface; //DD surface holding our chunk O' grid to draw right grid with
   BM : TBitmap;
 const
   FailName : string = 'TMerchant.BuildGrid';

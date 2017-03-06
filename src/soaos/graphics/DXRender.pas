@@ -72,6 +72,7 @@ interface
 
 uses
 {$IFnDEF FPC}
+  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
@@ -279,10 +280,10 @@ procedure dxrMakeRGBSurface( var Surface : TDXR_Surface; Width, Height, BitCount
 function dxrScanLine( const Surface : TDXR_Surface; y : DWORD ) : Pointer;
 procedure dxrZBufferClear( const Surface : TDXR_Surface );
 
-function dxrDDSurfaceLock( DDSurface : SDL_surface; var Surface : TDXR_Surface ) : Boolean;
-function dxrDDSurfaceLock2( DDSurface : SDL_surface; var ddsd : DDSURFACEDESC;
+function dxrDDSurfaceLock( DDSurface : IDirectDrawSurface; var Surface : TDXR_Surface ) : Boolean;
+function dxrDDSurfaceLock2( DDSurface : IDirectDrawSurface; var ddsd : DDSURFACEDESC;
   var Surface : TDXR_Surface ) : Boolean;
-procedure dxrDDSurfaceUnLock( DDSurface : SDL_surface; const Surface : TDXR_Surface );
+procedure dxrDDSurfaceUnLock( DDSurface : IDirectDrawSurface; const Surface : TDXR_Surface );
 
 procedure dxrDefRenderStates( var States : TDXR_RenderStates );
 
@@ -690,14 +691,14 @@ begin
     Result := False;
 end;
 
-{function dxrDDSurfaceLock(DDSurface: SDL_surface; var Surface: TDXR_Surface): Boolean;
+{function dxrDDSurfaceLock(DDSurface: IDirectDrawSurface; var Surface: TDXR_Surface): Boolean;
 var
   ddsd: DDSURFACEDESC;
 begin
   Result := dxrDDSurfaceLock2(DDSurface, ddsd, Surface);
 end;  }
 
-function dxrDDSurfaceLock( DDSurface : SDL_surface; var Surface : TDXR_Surface ) : Boolean;
+function dxrDDSurfaceLock( DDSurface : IDirectDrawSurface; var Surface : TDXR_Surface ) : Boolean;
 var
   ddsd : DDSURFACEDESC;
 const
@@ -733,7 +734,7 @@ begin
   end;
 end;
 
-function dxrDDSurfaceLock2( DDSurface : SDL_surface; var ddsd : DDSURFACEDESC;
+function dxrDDSurfaceLock2( DDSurface : IDirectDrawSurface; var ddsd : DDSURFACEDESC;
   var Surface : TDXR_Surface ) : Boolean;
 const
   DDPF_PALETTEINDEXED = DDPF_PALETTEINDEXED1 or DDPF_PALETTEINDEXED2 or
@@ -768,7 +769,7 @@ begin
   end;
 end;
 
-procedure dxrDDSurfaceUnLock( DDSurface : SDL_surface; const Surface : TDXR_Surface );
+procedure dxrDDSurfaceUnLock( DDSurface : IDirectDrawSurface; const Surface : TDXR_Surface );
 begin
   DDSurface.Unlock( Surface.Bits );
 end;

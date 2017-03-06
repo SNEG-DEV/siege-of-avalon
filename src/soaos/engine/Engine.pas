@@ -70,6 +70,7 @@ interface
 
 uses
 {$IFnDEF FPC}
+  MMSystem, Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
@@ -80,6 +81,7 @@ uses
   Math,
   SysUtils,
   INIFiles,
+  DirectX,
   LogFile,
   Graphics,
   Resource,
@@ -109,7 +111,7 @@ var
   Sounds : TList;
   ActiveTriggers : TList;
   SayList : TList;
-  ShadowImage : SDL_surface;
+  ShadowImage : IDirectDrawSurface;
   GlowImage : TRLESprite;
   BaseLightType : longint;
   DefaultPath : string;

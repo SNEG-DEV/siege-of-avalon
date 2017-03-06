@@ -71,9 +71,11 @@ interface
 uses
 {$IFDEF DirectX}
 {$IFnDEF FPC}
+  jpeg, Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
+  DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
@@ -102,8 +104,8 @@ type
   private
     //Bitmap stuff
     BMBack : TBitmap;
-    DXBack : SDL_surface;
-    DXPic : SDL_surface;
+    DXBack : IDirectDrawSurface;
+    DXPic : IDirectDrawSurface;
     PicWidth : integer;
     PicHeight : integer;
     LogText : string;

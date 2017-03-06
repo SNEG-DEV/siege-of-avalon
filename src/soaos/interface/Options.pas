@@ -71,9 +71,11 @@ interface
 uses
 {$IFDEF DirectX}
 {$IFnDEF FPC}
+  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
+  DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
@@ -98,11 +100,11 @@ type
   private
     //Bitmap stuff
     BMBack : TBitmap; //The inventory screen bitmap used for loading
-    DXBack : SDL_surface; //DD surface that holds the statistics screen before blit
-    DXContinue : SDL_surface;
-    DXYellow : SDL_surface; //used to draw lines
-    DXVolumeSlider : SDL_surface;
-    DXVolumeShadow : SDL_surface;
+    DXBack : IDirectDrawSurface; //DD surface that holds the statistics screen before blit
+    DXContinue : IDirectDrawSurface;
+    DXYellow : IDirectDrawSurface; //used to draw lines
+    DXVolumeSlider : IDirectDrawSurface;
+    DXVolumeShadow : IDirectDrawSurface;
     XAdj, YAdj : integer; //adjust ments for placement of the sheet
     CurrentSelectedListItem : integer;
     StartSpell : integer;
@@ -125,7 +127,7 @@ type
     MusicVolume : integer;
     PlotShadows : boolean;
     Character : TCharacter;
-    IconDX : SDL_surface;
+    IconDX : IDirectDrawSurface;
     opContinueRect : TRect;
     constructor Create;
     destructor Destroy; override;

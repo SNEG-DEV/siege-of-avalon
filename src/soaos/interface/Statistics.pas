@@ -71,9 +71,11 @@ interface
 uses
 {$IFDEF DirectX}
 {$IFnDEF FPC}
+  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
+  DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
@@ -104,10 +106,10 @@ type
   TStatistics = class( TDisplay )
   private
     BMBack : TBitmap; //The inventory screen bitmap used for loading
-    DXBack : SDL_surface; //DD surface that holds the statistics screen before blit
-    DXRightArrow : SDL_surface;
-    DXLeftArrow : SDL_surface;
-    DXBackToGame : SDL_surface;
+    DXBack : IDirectDrawSurface; //DD surface that holds the statistics screen before blit
+    DXRightArrow : IDirectDrawSurface;
+    DXLeftArrow : IDirectDrawSurface;
+    DXBackToGame : IDirectDrawSurface;
     InfoRect : array[ 0..96 ] of InformationRect; //collision rects for information
     ArrowRect : array[ 0..15 ] of InformationRect; //collision rects for arrows
     StatAdjustments : array[ 0..7 ] of integer; //used to see if we've added points to a stat or not
@@ -198,7 +200,7 @@ end;
 procedure TStatistics.Init;
 var
   InvisColor : Integer; //Transparent color :RGB(0,255,255)
-  DXBorder : SDL_surface;
+  DXBorder : IDirectDrawSurface;
   i : integer;
 const
   FailName : string = 'TStatistics.init';

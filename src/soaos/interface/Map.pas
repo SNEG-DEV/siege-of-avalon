@@ -68,6 +68,7 @@ interface
 
 uses
 {$IFnDEF FPC}
+  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
@@ -77,6 +78,7 @@ uses
   Forms,
   GameText,
   Graphics,
+  DirectX,
   Anigrp30,
   AniDec30,
   Engine,
@@ -90,8 +92,8 @@ type
   TMap = class( TDisplay )
   private
     FOnClose : TNotifyEvent;
-    DXBack : SDL_surface;
-    DXDirty : SDL_surface;
+    DXBack : IDirectDrawSurface;
+    DXDirty : IDirectDrawSurface;
     MouseOverBack : boolean;
     ShowAll : boolean;
   protected
@@ -117,7 +119,7 @@ uses
 
 procedure TMap.Init;
 var
-  Image : SDL_surface;
+  Image : IDirectDrawSurface;
   BM : TBitmap;
   W, H : integer;
   OffsetX, OffsetY : integer;

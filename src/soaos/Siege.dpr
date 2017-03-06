@@ -96,6 +96,7 @@ uses
   Award in 'interface\Award.pas',
   Parts in 'engine\Parts.pas',
   digifx in 'graphics\digifx.pas',
+  DirectX in 'graphics\DirectX.pas',
   DXRender in 'graphics\DXRender.pas',
   Converse in 'interface\Converse.pas',
   Titles in 'engine\Titles.pas',

@@ -71,9 +71,11 @@ interface
 uses
 {$IFDEF DirectX}
 {$IFnDEF FPC}
+  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
+  DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
@@ -97,12 +99,12 @@ type
 
   TGameText = class( TObject )
   private
-    DXSurface : SDL_surface;
-    DXDarkSurface : SDL_surface;
-    DXTinySurface : SDL_surface;
-    DX13Surface : SDL_surface;
-    DXGoldSurface : SDL_surface;
-    DXMegaTinySurface : SDL_surface;
+    DXSurface : IDirectDrawSurface;
+    DXDarkSurface : IDirectDrawSurface;
+    DXTinySurface : IDirectDrawSurface;
+    DX13Surface : IDirectDrawSurface;
+    DXGoldSurface : IDirectDrawSurface;
+    DXMegaTinySurface : IDirectDrawSurface;
     Letter : array[ 32..255 ] of Alphabet;
     DarkLetter : array[ 32..255 ] of Alphabet;
     TinyLetter : array[ 32..255 ] of Alphabet;
@@ -113,26 +115,26 @@ type
     constructor Create;
     destructor Destroy; override;
     procedure PlotText( Sentence : string; X, Y, Alpha : integer );
-    procedure PlotText2( DX : SDL_surface; Sentence : string; X, Y, Alpha : integer );
+    procedure PlotText2( DX : IDirectDrawSurface; Sentence : string; X, Y, Alpha : integer );
     procedure PlotDarkText( Sentence : string; X, Y, Alpha : integer );
-    procedure PlotDarkText2( DX : SDL_surface; Sentence : string; X, Y, Alpha : integer );
+    procedure PlotDarkText2( DX : IDirectDrawSurface; Sentence : string; X, Y, Alpha : integer );
     procedure PlotTinyText( Sentence : string; X, Y, Alpha : integer );
-    procedure PlotTinyText2( DX : SDL_surface; Sentence : string; X, Y, Alpha : integer );
+    procedure PlotTinyText2( DX : IDirectDrawSurface; Sentence : string; X, Y, Alpha : integer );
     function PlotTinyTextBlock( Sentence : string; X, X2, Y, Alpha : integer ) : integer;
-    procedure PlotMegaTinyText( DX : SDL_surface; Sentence : string; X, Y, Alpha : integer );
-    procedure PlotF13Text( DX : SDL_surface; Sentence : string; X, Y, Alpha : integer );
-    procedure PlotF13TextCentered( DX : SDL_surface; Sentence : string; X, X2, Y, Alpha : integer );
+    procedure PlotMegaTinyText( DX : IDirectDrawSurface; Sentence : string; X, Y, Alpha : integer );
+    procedure PlotF13Text( DX : IDirectDrawSurface; Sentence : string; X, Y, Alpha : integer );
+    procedure PlotF13TextCentered( DX : IDirectDrawSurface; Sentence : string; X, X2, Y, Alpha : integer );
     function PlotTextCentered( Sentence : string; X, X2, Y, Alpha : integer ) : boolean;
-    function PlotTextCentered2( DX : SDL_surface; Sentence : string; X, X2, Y, Alpha : integer ) : boolean;
+    function PlotTextCentered2( DX : IDirectDrawSurface; Sentence : string; X, X2, Y, Alpha : integer ) : boolean;
     function PlotDarkTextCentered( Sentence : string; X, X2, Y, Alpha : integer ) : boolean;
-    function PlotDarkTextCentered2( DX : SDL_surface; Sentence : string; X, X2, Y, Alpha : integer ) : boolean;
+    function PlotDarkTextCentered2( DX : IDirectDrawSurface; Sentence : string; X, X2, Y, Alpha : integer ) : boolean;
     function PlotTextBlock( Sentence : string; X, X2, Y, Alpha : integer ) : integer;
-    procedure PlotGoldText( DX : SDL_surface; Sentence : string; X, Y, Alpha : integer );
-    function PlotGoldTextCentered( DX : SDL_surface; Sentence : string; X, X2, Y, Alpha : integer ) : boolean;
+    procedure PlotGoldText( DX : IDirectDrawSurface; Sentence : string; X, Y, Alpha : integer );
+    function PlotGoldTextCentered( DX : IDirectDrawSurface; Sentence : string; X, X2, Y, Alpha : integer ) : boolean;
     function PlotGoldTextBlock( Sentence : string; X, X2, Y, Alpha : integer ) : integer;
     function TextBlockHeight( Sentence : string; X, X2, Y : integer ) : integer;
     procedure BreakTextIntoAStringList( const Sentence : string; const daList : TStringList; x1, x2 : integer );
-    function PlotF13Block( DX : SDL_surface; Sentence : string; X, X2, Y, Alpha : integer ) : integer;
+    function PlotF13Block( DX : IDirectDrawSurface; Sentence : string; X, X2, Y, Alpha : integer ) : integer;
     procedure LoadFontGraphic( ScreenName : string );
     procedure LoadDarkFontGraphic( ScreenName : string );
     procedure LoadTinyFontGraphic;
@@ -447,7 +449,7 @@ begin
   end;
 end; //TGameText.LoadText
 
-procedure TGameText.PlotDarkText2( DX : SDL_surface; Sentence : string; X, Y, Alpha : integer );
+procedure TGameText.PlotDarkText2( DX : IDirectDrawSurface; Sentence : string; X, Y, Alpha : integer );
 var
   i : integer;
   j : integer;
@@ -481,7 +483,7 @@ begin
   end;
 end; //TGameText.PlotDarkText
 
-procedure TGameText.PlotTinyText2( DX : SDL_surface; Sentence : string; X, Y, Alpha : integer );
+procedure TGameText.PlotTinyText2( DX : IDirectDrawSurface; Sentence : string; X, Y, Alpha : integer );
 var
   i : integer;
   j : integer;
@@ -519,7 +521,7 @@ begin
   PlotTinyText2( lpDDSBack, Sentence, X, Y, Alpha );
 end;
 
-procedure TGameText.PlotMegaTinyText( DX : SDL_surface; Sentence : string; X, Y, Alpha : integer );
+procedure TGameText.PlotMegaTinyText( DX : IDirectDrawSurface; Sentence : string; X, Y, Alpha : integer );
 var
   i : integer;
   j : integer;
@@ -546,7 +548,7 @@ begin
   end;
 end; //TGameText.PlotMegaTinyText
 
-procedure TGameText.PlotF13Text( DX : SDL_surface; Sentence : string; X, Y, Alpha : integer );
+procedure TGameText.PlotF13Text( DX : IDirectDrawSurface; Sentence : string; X, Y, Alpha : integer );
 var
   i : integer;
   j : integer;
@@ -607,7 +609,7 @@ begin
   end;
 end; //TGameText.PlotText
 
-procedure TGameText.PlotText2( DX : SDL_surface; Sentence : string; X, Y, Alpha : integer );
+procedure TGameText.PlotText2( DX : IDirectDrawSurface; Sentence : string; X, Y, Alpha : integer );
 var
   i : integer;
   j : integer;
@@ -722,7 +724,7 @@ begin
 end; //TGameText.PlotTextCentered
 
 
-function TGameText.PlotTextCentered2( DX : SDL_surface; Sentence : string; X, X2, Y, Alpha : integer ) : boolean;
+function TGameText.PlotTextCentered2( DX : IDirectDrawSurface; Sentence : string; X, X2, Y, Alpha : integer ) : boolean;
 //Plots a line of text centered between X and X2
 var
   i : integer;
@@ -772,7 +774,7 @@ begin
   end;
 end; //TGameText.PlotTextCentered2
 
-function TGameText.PlotDarkTextCentered2( DX : SDL_surface; Sentence : string; X, X2, Y, Alpha : integer ) : boolean;
+function TGameText.PlotDarkTextCentered2( DX : IDirectDrawSurface; Sentence : string; X, X2, Y, Alpha : integer ) : boolean;
 //Plots a line of text centered between X and X2
 var
   i : integer;
@@ -1022,7 +1024,7 @@ begin
 end; //TGameText.TextBlockHeight
 
 
-function TGameText.PlotF13Block( DX : SDL_surface; Sentence : string; X, X2, Y, Alpha : integer ) : integer;
+function TGameText.PlotF13Block( DX : IDirectDrawSurface; Sentence : string; X, X2, Y, Alpha : integer ) : integer;
 //Plots a line of text centered between X and X2
 var
   i : integer;
@@ -1423,7 +1425,7 @@ begin
   PlotDarkText2( lpDDSBack, Sentence, X, Y, Alpha );
 end;
 
-procedure TGameText.PlotF13TextCentered( DX : SDL_surface;
+procedure TGameText.PlotF13TextCentered( DX : IDirectDrawSurface;
   Sentence : string; X, X2, Y, Alpha : integer );
 //Plots a line of text centered between X and X2
 var
@@ -1478,7 +1480,7 @@ begin
   BM.free;
 end;
 
-procedure TGameText.PlotGoldText( DX : SDL_surface; Sentence : string;
+procedure TGameText.PlotGoldText( DX : IDirectDrawSurface; Sentence : string;
   X, Y, Alpha : integer );
 var
   i : integer;
@@ -1609,7 +1611,7 @@ begin
   end;
 end;
 
-function TGameText.PlotGoldTextCentered( DX : SDL_surface;
+function TGameText.PlotGoldTextCentered( DX : IDirectDrawSurface;
   Sentence : string; X, X2, Y, Alpha : integer ) : boolean;
 //Plots a line of text centered between X and X2
 var

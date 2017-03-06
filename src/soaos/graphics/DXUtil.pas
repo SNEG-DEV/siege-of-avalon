@@ -69,23 +69,27 @@ unit DXUtil;
 interface
 
 uses
-  SDL2,
+{$IFnDEF FPC}
+  Windows,
+{$ELSE}
   LCLIntf, LCLType, LMessages,
+{$ENDIF}
   Classes,
+  DirectX,
   Graphics,
   Sysutils,
   LogFile;
 
-function SDLColorMatch( pdds : SDL_surface; Color : TColor ) : Longint;
-function DDGetImage( lpDD : IDirectDraw; BITMAP : TBitmap; Color : TColor; Video : Boolean ) : SDL_surface;
-function DDGetOverlay( lpDD : IDirectDraw; BITMAP : TBitmap; Color : TColor ) : SDL_surface;
-procedure GetSurfaceDims( var W, H : Integer; Surface : SDL_surface );
-function DDGetSurface( lpDD : IDirectDraw; W, H : integer; Color : TColor; Video : Boolean; var ColorMatch : integer ) : SDL_surface; overload;
-function DDGetSurface( lpDD : IDirectDraw; W, H : integer; Color : TColor; Video : Boolean ) : SDL_surface; overload;
+function DDColorMatch( pdds : IDirectDrawSurface; Color : TColor ) : Longint;
+function DDGetImage( lpDD : IDirectDraw; BITMAP : TBitmap; Color : TColor; Video : Boolean ) : IDirectDrawSurface;
+function DDGetOverlay( lpDD : IDirectDraw; BITMAP : TBitmap; Color : TColor ) : IDirectDrawSurface;
+procedure GetSurfaceDims( var W, H : Integer; Surface : IDirectDrawSurface );
+function DDGetSurface( lpDD : IDirectDraw; W, H : integer; Color : TColor; Video : Boolean; var ColorMatch : integer ) : IDirectDrawSurface; overload;
+function DDGetSurface( lpDD : IDirectDraw; W, H : integer; Color : TColor; Video : Boolean ) : IDirectDrawSurface; overload;
 
 implementation
 
-function SDLColorMatch( pdds : SDL_surface; Color : TColor ) : Longint;
+function DDColorMatch( pdds : IDirectDrawSurface; Color : TColor ) : Longint;
 var
   RGB, rgbT : COLORREF;
   DC : HDC;
@@ -93,7 +97,7 @@ var
   ddsd : DDSurfaceDesc;
   hres : HRESULT;
 const
-  FailName : string = 'DXUtil.SDLColorMatch';
+  FailName : string = 'DXUtil.DDColorMatch';
 begin
 {$IFDEF DODEBUG}
   if ( CurrDbgLvl >= DbgLvlSevere ) then
@@ -141,10 +145,10 @@ begin
   end;
 end;
 
-function DDGetImage( lpDD : IDirectDraw; BITMAP : TBitmap; Color : TColor; Video : Boolean ) : SDL_surface;
+function DDGetImage( lpDD : IDirectDraw; BITMAP : TBitmap; Color : TColor; Video : Boolean ) : IDirectDrawSurface;
 var
   ddsd : DDSurfaceDesc;
-  pdds : SDL_surface;
+  pdds : IDirectDrawSurface;
   DC : HDC;
   ddck : DDCOLORKEY;
 const
@@ -176,7 +180,7 @@ begin
     pdds.GetDC( DC );
     BitBlt( DC, 0, 0, BITMAP.width, BITMAP.Height, BITMAP.Canvas.Handle, 0, 0, SRCCOPY );
     pdds.ReleaseDC( DC );
-    ddck.dwColorSpaceLowValue := SDLColorMatch( pdds, Color );
+    ddck.dwColorSpaceLowValue := DDColorMatch( pdds, Color );
     ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
     pdds.SetColorKey( DDCKEY_SRCBLT, ddck );
     Result := pdds;
@@ -186,10 +190,10 @@ begin
   end;
 end;
 
-function DDGetOverlay( lpDD : IDirectDraw; BITMAP : TBitmap; Color : TColor ) : SDL_surface;
+function DDGetOverlay( lpDD : IDirectDraw; BITMAP : TBitmap; Color : TColor ) : IDirectDrawSurface;
 var
   ddsd : DDSurfaceDesc;
-  pdds : SDL_surface;
+  pdds : IDirectDrawSurface;
   DC : HDC;
   ddck : DDCOLORKEY;
 const
@@ -221,7 +225,7 @@ begin
     pdds.GetDC( DC );
     BitBlt( DC, 0, 0, BITMAP.width, BITMAP.Height, BITMAP.Canvas.Handle, 0, 0, SRCCOPY );
     pdds.ReleaseDC( DC );
-    ddck.dwColorSpaceLowValue := SDLColorMatch( pdds, Color );
+    ddck.dwColorSpaceLowValue := DDColorMatch( pdds, Color );
     ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
     pdds.SetColorKey( DDCKEY_SRCBLT, ddck );
     Result := pdds;
@@ -231,7 +235,7 @@ begin
   end;
 end;
 
-procedure GetSurfaceDims( var W, H : Integer; Surface : SDL_surface );
+procedure GetSurfaceDims( var W, H : Integer; Surface : IDirectDrawSurface );
 var
   lpDDSurfaceDesc : TDDSurfaceDesc;
 const
@@ -253,10 +257,10 @@ begin
   end;
 end;
 
-function DDGetSurface( lpDD : IDirectDraw; W, H : integer; Color : TColor; Video : Boolean; var ColorMatch : integer ) : SDL_surface;
+function DDGetSurface( lpDD : IDirectDraw; W, H : integer; Color : TColor; Video : Boolean; var ColorMatch : integer ) : IDirectDrawSurface;
 var
   ddsd : DDSurfaceDesc;
-  pdds : SDL_surface;
+  pdds : IDirectDrawSurface;
   ddck : DDCOLORKEY;
   BltFx : DDBLTFX;
 const
@@ -285,7 +289,7 @@ begin
         Exit;
     end;
 
-    ColorMatch := SDLColorMatch( pdds, ColorToRGB( Color ) );
+    ColorMatch := DDColorMatch( pdds, ColorToRGB( Color ) );
 
     ddck.dwColorSpaceLowValue := ColorMatch;
     ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
@@ -301,10 +305,10 @@ begin
   end;
 end;
 
-function DDGetSurface( lpDD : IDirectDraw; W, H : integer; Color : TColor; Video : Boolean ) : SDL_surface;
+function DDGetSurface( lpDD : IDirectDraw; W, H : integer; Color : TColor; Video : Boolean ) : IDirectDrawSurface;
 var
   ddsd : DDSurfaceDesc;
-  pdds : SDL_surface;
+  pdds : IDirectDrawSurface;
   ddck : DDCOLORKEY;
   BltFx : DDBLTFX;
   ColorMatch : integer;
@@ -334,7 +338,7 @@ begin
         Exit;
     end;
 
-    ColorMatch := SDLColorMatch( pdds, ColorToRGB( Color ) );
+    ColorMatch := DDColorMatch( pdds, ColorToRGB( Color ) );
 
     ddck.dwColorSpaceLowValue := ColorMatch;
     ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;

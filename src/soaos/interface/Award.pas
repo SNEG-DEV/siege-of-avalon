@@ -71,9 +71,11 @@ interface
 uses
 {$IFDEF DirectX}
 {$IFnDEF FPC}
+  Windows,
 {$ELSE}
   LCLIntf, LCLType, LMessages,
 {$ENDIF}
+  DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
@@ -98,14 +100,14 @@ type
   private
     //Bitmap stuff
     BMBack : TBitmap; //The inventory screen bitmap used for loading
-    DXBack : SDL_surface;
-    DXBackToGame : SDL_surface; //Back To Game highlight
-    DXLeftGeeble : SDL_surface;
-    DXRightGeeble : SDL_surface;
-    DXPrev : SDL_surface;
-    DXNext : SDL_surface;
-    DXPrev2 : SDL_surface;
-    DXNext2 : SDL_surface;
+    DXBack : IDirectDrawSurface;
+    DXBackToGame : IDirectDrawSurface; //Back To Game highlight
+    DXLeftGeeble : IDirectDrawSurface;
+    DXRightGeeble : IDirectDrawSurface;
+    DXPrev : IDirectDrawSurface;
+    DXNext : IDirectDrawSurface;
+    DXPrev2 : IDirectDrawSurface;
+    DXNext2 : IDirectDrawSurface;
     PageNumber : integer;
     TitleCount : integer;
     txtMessage : array[ 0..17 ] of string;
@@ -163,7 +165,7 @@ end; //Destroy
 
 procedure TAward.Init;
 var
-  DXBorder : SDL_surface;
+  DXBorder : IDirectDrawSurface;
   i : integer;
 const
   FailName : string = 'TAward.init';
