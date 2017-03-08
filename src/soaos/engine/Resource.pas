@@ -86,7 +86,7 @@ uses
   DXEffects,
 {$ENDIF}
   DFX,
-  digifx,
+  //digifx,
   LogFile;
 
 type

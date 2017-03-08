@@ -1,16 +1,11 @@
 unit DFX;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -64,16 +59,11 @@ unit DFX;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE ../engine/Anigrp30cfg.inc}
+{$INCLUDE Anigrp30cfg.inc}
 
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
   Messages,
   SysUtils,
   Classes,
@@ -81,18 +71,114 @@ uses
   Controls,
   Forms,
   Dialogs,
-  digifx,
+  //digifx,
 {$IFDEF DirectX}
   DirectX,
   DXUtil,
-  Anigrp30,
 {$ENDIF}
+  Anigrp30,
   StdCtrls,
   ExtCtrls,
   LogFile;
 
 const
+  BLITFX_NONE = 0;
+  BLITFX_LUT = 1;
+  BLITFX_MONO = 2;
+  BLITFX_BLEND = 4;
+  BLITFX_SOFTEN = 8;
+  BLITFX_TEXTURED = 16;
+  BLITFX_ZOOM = 32;
+  BLITFX_ROTATE = 64;
+  BLITFX_SKIN = 128;
+  BLITFX_MASK = 256;
+  BLITFX_HENDS = 512;
+  BLITFX_SUCKPIX = 1024;
+  BLITFX_COLORIZE = 2048;
+  BLITFX_COLORMASK = 4096;
+  BLITFX_OUTLINE = 8192;
+  BLITFX_CREATERLE = $80000000;
+
+  PIXFMT_8 = 0;
+  PIXFMT_555 = 1;
+  PIXFMT_565 = 2;
+  PIXFMT_888 = 3;
+  PIXFMT_BGR = 128;
+
+  DFX_DRAWRLE = 0;
+  DFX_DRAWBITPLANE = 1;
+  DFX_DRAWPIXELS = 2;
+  DFX_DRAWRECT = 3;
+  DFX_DRAWLINE = 4;
+
+  NOKEYCOLOR = $FFFFFFFF;
+
   pixelformats : array[ 0..2 ] of DWORD = ( PIXFMT_555, PIXFMT_565, PIXFMT_888 );
+
+type
+  PRLEHDR = ^RLEHDR;
+  RLEHDR = record
+    SrcX : integer;
+    SrcY : integer;
+    Wdh : DWORD;
+    Hgh : DWORD;
+    AdjX : integer;
+    AdjY : integer;
+    PixFmt : DWORD;
+    DataPtr : PChar;
+  end;
+
+  RGB = record
+    B : BYTE;
+    G : BYTE;
+    R : BYTE;
+    Unused : BYTE;
+  end;
+
+  PBITPLANE = ^BITPLANE;
+  BITPLANE = record
+    bitsPtr : PBYTE;
+    bitsWdh : DWORD;
+    bitsHgh : DWORD;
+    bitsFmt : DWORD;
+    bitsPitch : DWORD;
+    BaseX : integer;
+    BaseY : integer;
+  end;
+
+  PBLITFX = ^BLITFX;
+  BLITFX = record
+    FXType : DWORD;
+    BlendSrcFactor : DWORD;
+    BlendDstFactor : DWORD;
+    LUTPtr : Pointer;
+    Color : RGB;
+    TexturePtr : PBITPLANE;
+    SrcRFactor : DWORD;
+    SrcGFactor : DWORD;
+    SrcBFactor : DWORD;
+    DstRFactor : DWORD;
+    DstGFactor : DWORD;
+    DstBFactor : DWORD;
+    ColorMaskSet : RGB;
+    ColorMaskClr : RGB;
+    Angle : DWORD;
+    ZoomX : DWORD;
+    ZoomY : DWORD;
+  end;
+
+  PPIXEL = ^PIXEL;
+  PIXEL = record
+    StructSize : DWORD;
+    X : integer;
+    Y : integer;
+    Color : DWORD;
+  end;
+
+type
+  DFXHND = DWORD;
+  DFXENUMCALLBACK = function( const s : PChar ) : boolean;
+
 
 var
   dfx_pixelformat : DWORD = 0;
@@ -144,7 +230,7 @@ type
     FBits : BITPLANE;
     constructor Create( Width, Height : Integer );
     destructor Destroy; override;
-    procedure DrawToDC( DC : HDC; X, Y : Integer );
+    //procedure DrawToDC( DC : HDC; X, Y : Integer );
     procedure Clear;
     procedure Fill( Color : TColor );
     procedure Draw( X, Y : Integer; Bits : PBITPLANE );
@@ -160,7 +246,7 @@ type
     property KeyColor : TColor read FKeyColor write SetKeyColor;
   end;
 
-function DFXInit( Path : string ) : BOOL;
+function DFXInit( Path : string ) : BOOLEAN;
 procedure DFXShutdown;
 procedure DFXClearBitPlane( Plane : BITPLANE; Color : DWORD );
 
@@ -168,6 +254,8 @@ implementation
 
 procedure DFXClearBitPlane( Plane : BITPLANE; Color : DWORD );
 begin
+  {
+  // FIXME - This needs to be revisited.  Non ASM- shouldn't NEED it
   asm
     mov  ecx, Plane.bitsHgh
     mov  eax, Plane.bitsWdh
@@ -177,9 +265,10 @@ begin
     mov  edi, Plane.bitsPtr
     rep  stosw
   end;
+  }
 end;
 
-function DFXCheckSupport : BOOL;
+function DFXCheckSupport : BOOLEAN;
 var
   dfx_blitfx : BLITFX;
   rlehdr_temp : RLEHDR;
@@ -197,32 +286,38 @@ begin
   bitplane_temp.bitsPtr := nil;
 
   Result := False;
-
-  if ( not digifxCheckSupport( dfx_hnd, DFX_DRAWRLE, @dfx_blitfx, @rlehdr_temp, @my_bitplane ) ) then
+  {
+  // FIXME -- Need to properly handle exit point sttuf here...
+  if ( not //digifxCheckSupport( dfx_hnd, DFX_DRAWRLE, @dfx_blitfx, @rlehdr_temp, @my_bitplane ) ) then
     Exit;
-  if ( not digifxCheckSupport( dfx_hnd, DFX_DRAWBITPLANE, @dfx_blitfx, @bitplane_temp, @my_bitplane ) ) then
+  if ( not //digifxCheckSupport( dfx_hnd, DFX_DRAWBITPLANE, @dfx_blitfx, @bitplane_temp, @my_bitplane ) ) then
     Exit;
+  }
 
   dfx_blitfx.FXType := BLITFX_TEXTURED;
   rlehdr_temp.PixFmt := dfx_pixelformat;
   rlehdr_temp.DataPtr := nil;
 
-  if ( not digifxCheckSupport( dfx_hnd, DFX_DRAWRLE, @dfx_blitfx, @rlehdr_temp, @my_bitplane ) ) then
+  {
+  // FIXME -- Need to properly handle exit point sttuf here...
+  if ( not //digifxCheckSupport( dfx_hnd, DFX_DRAWRLE, @dfx_blitfx, @rlehdr_temp, @my_bitplane ) ) then
     Exit;
   dfx_blitfx.FXType := BLITFX_MONO;
-  if ( not digifxCheckSupport( dfx_hnd, DFX_DRAWRECT, @dfx_blitfx, @rlehdr_temp, @my_bitplane ) ) then
+  if ( not //digifxCheckSupport( dfx_hnd, DFX_DRAWRECT, @dfx_blitfx, @rlehdr_temp, @my_bitplane ) ) then
     Exit;
-  if ( not digifxCheckSupport( dfx_hnd, DFX_DRAWLINE, @dfx_blitfx, @rlehdr_temp, @my_bitplane ) ) then
+  if ( not //digifxCheckSupport( dfx_hnd, DFX_DRAWLINE, @dfx_blitfx, @rlehdr_temp, @my_bitplane ) ) then
     Exit;
+  }
 
   Result := True;
 end;
 
-function DFXEnumProc( driverinfo : PChar ) : BOOL;
+function DFXEnumProc( driverinfo : PChar ) : BOOLEAN;
 begin
   Result := False;
 
-  dfx_hnd := digifxLoadDriver( driverinfo, dfx_pixelformat );
+  //dfx_hnd := //digifxLoadDriver( driverinfo, dfx_pixelformat );
+  dfx_hnd := 0;
   if ( dfx_hnd <> 0 ) then
   begin
 {$IFDEF DirectX}
@@ -245,23 +340,25 @@ begin
 {$ENDIF}
   end;
 
-  digifxFreeDriver( dfx_hnd );
+  //digifxFreeDriver( dfx_hnd );
   dfx_hnd := 0;
 
   Result := True;
 end;
 
-function DFXInit( Path : string ) : BOOL;
+function DFXInit( Path : string ) : BOOLEAN;
 begin
   Result := False;
 
-  if not digifxInit( PChar( Path ) ) then
+  {
+  if not //digifxInit( PChar( Path ) ) then
     Exit;
+  }
 
   repeat
     dfx_pixelformat := pixelformats[ pf_index ];
     Inc( pf_index );
-    digifxEnumDrivers( @DFXEnumProc );
+    //digifxEnumDrivers( @DFXEnumProc );
   until ( dfx_hnd <> 0 ) or ( pf_index = High( pixelformats ) );
 
   if dfx_pixelformat = PIXFMT_555 then
@@ -276,8 +373,8 @@ end;
 
 procedure DFXShutdown;
 begin
-  digifxFreeDriver( dfx_hnd );
-  digifxDone( );
+  //digifxFreeDriver( dfx_hnd );
+  //digifxDone( );
 end;
 
 { TRLESprite }
@@ -290,35 +387,43 @@ var
   p : PRLEHDR;
 begin
   if Assigned( lpSpr ) then
-  begin
-    FreeMem( lpSpr.DataPtr );
-    FreeMem( lpSpr );
-    lpSpr := nil;
-  end;
+    begin
+      FreeMem( lpSpr.DataPtr );
+      FreeMem( lpSpr );
+      lpSpr := nil;
+    end;
 
-  TmpFile := FileCreate(PChar( FileName )); { *Converted from CreateFile* }
+  {
+    // FIXME -- Hack to get this to cowpile first.  Then we figure out how to fix...
+
+  TmpFile := CreateFile( PChar( FileName ), GENERIC_READ, 0, nil, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0 );
+  TmpFile := INVALID_HANDLE_VALUE;
   if ( TmpFile = INVALID_HANDLE_VALUE ) then
     raise Exception.CreateFmt( 'Could not load file %s.', [ FileName ] );
 
-  FileRead(TmpFile); { *Converted from ReadFile* }
-  FileRead(TmpFile); { *Converted from ReadFile* }
+  ReadFile( TmpFile, PicCnt, SizeOf( PicCnt ), BytesCnt, nil );
+  ReadFile( TmpFile, BuffSize, SizeOf( BuffSize ), BytesCnt, nil );
   Size := PicCnt * SizeOf( RLEHDR );
   GetMem( lpSpr, Size );
-  FileRead(TmpFile); { *Converted from ReadFile* }
+  ReadFile( TmpFile, lpSpr^, Size, BytesCnt, nil );
   GetMem( lpRLE, BuffSize );
-  FileRead(TmpFile); { *Converted from ReadFile* }
-  FileClose(TmpFile ); { *Converted from CloseHandle* }
+  ReadFile( TmpFile, lpRLE^, BuffSize, BytesCnt, nil );
+  CloseHandle( TmpFile );
 
   FMemSize := BuffSize;
 
   RelocOffset := PChar( lpRLE - lpSpr.DataPtr );
   p := lpSpr;
   for i := 1 to PicCnt do
-  begin
-    p.DataPtr := PChar( p.DataPtr + DWORD( RelocOffset ) );
-    digifxConvertRLE( dfx_hnd, p );
-    Inc( p );
+    begin
+      p.DataPtr := PChar( p.DataPtr + DWORD( RelocOffset ) );
+      //digifxConvertRLE( dfx_hnd, p );
+      Inc( p );
+    end;
+
   end;
+    }
+
 end;
 
 procedure TRLESprite.LoadFromBitmap( BITMAP : TBitmap; FrameWidth, FrameHeight : Integer; Color : TColor );
@@ -329,7 +434,7 @@ var
   Bits : BITPLANE;
   TempBitmap : TBitmap;
   ImageSize : Cardinal;
-  p : ^Byte;
+  p,sl : ^Byte;
   C : LongWord;
   R, G, B : Byte;
   Sizes, PSize : ^LongWord;
@@ -346,7 +451,7 @@ begin
   PicCnt := W * H;
   BuffSize := PicCnt * SizeOf( RLEHDR );
   GetMem( lpSpr, BuffSize );
-  ZeroMemory( lpSpr, BuffSize );
+  FillChar( lpSpr, BuffSize, #0 );
   lpRLE := lpSpr;
   GetMem( Sizes, PicCnt * SizeOf( LongWord ) );
 
@@ -354,7 +459,8 @@ begin
   R := ( C and $FF );
   G := ( C and $FF00 ) shr 8;
   B := ( C and $FF0000 ) shr 16;
-  C := digiFXConvertColor( dfx_hnd, R, G, B );
+  // FIXME -- Need to re-do this...sigh...
+  //C := //digifxConvertColor( dfx_hnd, R, G, B );
 
   PSize := Sizes;
   FMemSize := 0;
@@ -366,8 +472,11 @@ begin
       TempBitmap.width := FrameWidth;
       TempBitmap.Height := FrameHeight;
 
+      {
+      FIXME -- Blocking off to cowpile...
       BitBlt( TempBitmap.Canvas.Handle, 0, 0, FrameWidth, FrameHeight,
         BITMAP.Canvas.Handle, i * FrameWidth, j * FrameHeight, SRCCOPY );
+      }
       TempBitmap.PixelFormat := pf16bit;
 
       Bits.bitsWdh := FrameWidth;
@@ -379,18 +488,19 @@ begin
       p := Pointer( Bits.bitsPtr );
       for k := 0 to FrameHeight - 1 do
       begin
-        CopyMemory( p, TempBitmap.ScanLine[ k ], Bits.bitsPitch );
+        sl := TempBitmap.ScanLine[ k ];
+        Move( p, sl, Bits.bitsPitch );
         Inc( p, Bits.bitsPitch );
       end;
 
       TempBitmap.Free;
 
-      ImageSize := digifxCreateRLE( dfx_hnd, @Bits, C, lpRLE, nil, lpSpr );
+      ImageSize := 0; //digifxCreateRLE( dfx_hnd, @Bits, C, lpRLE, nil, lpSpr );
       PSize^ := ImageSize;
       Inc( FMemSize, ImageSize );
 
       GetMem( p, ImageSize );
-      digifxCreateRLE( dfx_hnd, @Bits, C, lpRLE, p, lpSpr );
+      //digifxCreateRLE( dfx_hnd, @Bits, C, lpRLE, p, lpSpr );
       lpRLE.AdjX := lpRLE.SrcX;
       lpRLE.AdjY := lpRLE.SrcY;
 
@@ -405,7 +515,7 @@ begin
   GetMem( p, FMemSize );
   for i := 1 to PicCnt do
   begin
-    CopyMemory( p, lpRLE.DataPtr, PSize^ );
+    Move( p, lpRLE.DataPtr, PSize^ );
     FreeMem( lpRLE.DataPtr );
     lpRLE.DataPtr := Pointer( p );
     Inc( p, PSize^ );
@@ -421,17 +531,26 @@ var
   TmpFile : THandle;
   BuffSize, BytesCnt : DWORD;
 begin
-  TmpFile := FileCreate(PChar( FileName )); { *Converted from CreateFile* }
+  // FIXME -- Hack to get to cowpile.  Need a "working" game engine to sort some of this out...
+  {
+  TmpFile := //CreateFile( PChar( FileName ), GENERIC_WRITE, 0, nil, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0 );
   if ( TmpFile = INVALID_HANDLE_VALUE ) then
     Exit;
+  }
 
   BuffSize := FMemSize;
 
+
+  // FIXME -- Hack to get to cowpile.  Need a "working" game engine to sort some of this out...
+  {
   WriteFile( TmpFile, PicCnt, SizeOf( PicCnt ), BytesCnt, nil );
   WriteFile( TmpFile, BuffSize, SizeOf( BuffSize ), BytesCnt, nil );
   WriteFile( TmpFile, lpSpr^, PicCnt * SizeOf( RLEHDR ), BytesCnt, nil );
   WriteFile( TmpFile, lpSpr.DataPtr^, BuffSize, BytesCnt, nil );
-  FileClose(TmpFile ); { *Converted from CloseHandle* }
+  CloseHandle( TmpFile );
+end;
+}
+
 end;
 
 constructor TRLESprite.Create;
@@ -467,7 +586,7 @@ begin
     exit;
   dfx_blitfx.FXType := BLITFX_NONE;
   try
-    digifxDrawRLE( dfx_hnd, Image[ Index ], X, Y, @dfx_blitfx, Bits );
+    //digifxDrawRLE( dfx_hnd, Image[ Index ], X, Y, @dfx_blitfx, Bits );
   except
     Log.Log( '*** Error drawing resource' );
   end;
@@ -483,7 +602,7 @@ begin
   dfx_blitfx.FXType := BLITFX_BLEND;
   dfx_blitfx.BlendSrcFactor := SrcBlend;
   dfx_blitfx.BlendDstFactor := DstBlend;
-  digifxDrawRLE( dfx_hnd, Image[ Index ], X, Y, @dfx_blitfx, Bits );
+  //digifxDrawRLE( dfx_hnd, Image[ Index ], X, Y, @dfx_blitfx, Bits );
 end;
 
 procedure TRLESprite.DrawMono( Index : LongWord; X, Y : Integer;
@@ -499,7 +618,7 @@ begin
   dfx_blitfx.Color.R := ( C and $FF );
   dfx_blitfx.Color.G := ( C and $FF00 ) shr 8;
   dfx_blitfx.Color.B := ( C and $FF0000 ) shr 16;
-  digifxDrawRLE( dfx_hnd, Image[ Index ], X, Y, @dfx_blitfx, Bits );
+  //digifxDrawRLE( dfx_hnd, Image[ Index ], X, Y, @dfx_blitfx, Bits );
 end;
 
 procedure TRLESprite.DrawColorize( Index : longword; X, Y : integer; Bits : PBITPLANE; R, G, B, SrcBlend, DstBlend : integer );
@@ -515,7 +634,7 @@ begin
   dfx_blitfx.DstGFactor := DstBlend;
   dfx_blitfx.DstBFactor := DstBlend;
   dfx_blitfx.FXType := BLITFX_COLORIZE;
-  digifxDrawRLE( dfx_hnd, Image[ Index ], X, Y, @dfx_blitfx, Bits );
+  //digifxDrawRLE( dfx_hnd, Image[ Index ], X, Y, @dfx_blitfx, Bits );
 end;
 
 procedure TRLESprite.DrawAntiAlias( Index : longword; X, Y : integer; Bits : PBITPLANE );
@@ -525,7 +644,7 @@ begin
   if Index >= PicCnt then
     exit;
   dfx_blitfx.FXType := BLITFX_HENDS + BLITFX_SOFTEN;
-  digifxDrawRLE( dfx_hnd, Image[ Index ], X, Y, @dfx_blitfx, Bits );
+  //digifxDrawRLE( dfx_hnd, Image[ Index ], X, Y, @dfx_blitfx, Bits );
 end;
 
 procedure TRLESprite.DrawSoften( Index : longword; X, Y : integer;
@@ -536,7 +655,7 @@ begin
   if Index >= PicCnt then
     exit;
   dfx_blitfx.FXType := BLITFX_SOFTEN;
-  digifxDrawRLE( dfx_hnd, Image[ Index ], X, Y, @dfx_blitfx, Bits );
+  //digifxDrawRLE( dfx_hnd, Image[ Index ], X, Y, @dfx_blitfx, Bits );
 end;
 
 procedure TRLESprite.LoadFromStream( Stream : TStream );
@@ -567,7 +686,7 @@ begin
   for i := 1 to PicCnt do
   begin
     p.DataPtr := PChar( p.DataPtr + DWORD( RelocOffset ) );
-    digifxConvertRLE( dfx_hnd, p );
+    //digifxConvertRLE( dfx_hnd, p );
     Inc( p );
   end;
 end;
@@ -602,12 +721,13 @@ begin
   ReallocMem( lpSpr, BuffSize );
   lpRLE := lpSpr;
   inc( lpRLE, PicCnt );
-  ZeroMemory( lpRLE, MoreCount * SizeOf( RLEHDR ) );
+  FillChar( lpRLE, MoreCount * SizeOf( RLEHDR ), #0 );
 
-  ImageSize := digifxCreateRLE( dfx_hnd, BitPlane.Bits, BitPlane.FKeyIndex, lpRLE, nil, lpSpr );
+  // FIXME -- Hack to get this to cowpile...
+  ImageSize := 0; //digifxCreateRLE( dfx_hnd, BitPlane.Bits, BitPlane.FKeyIndex, lpRLE, nil, lpSpr );
 
   GetMem( p, ImageSize );
-  digifxCreateRLE( dfx_hnd, BitPlane.Bits, BitPlane.FKeyIndex, lpRLE, p, lpSpr );
+  //digifxCreateRLE( dfx_hnd, BitPlane.Bits, BitPlane.FKeyIndex, lpRLE, p, lpSpr );
   lpRLE.AdjX := lpRLE.SrcX;
   lpRLE.AdjY := lpRLE.SrcY;
 
@@ -626,7 +746,7 @@ begin
   end;
 
   inc( p, OldMemSize );
-  CopyMemory( p, lpRLE.DataPtr, ImageSize );
+  Move( p, lpRLE.DataPtr, ImageSize );
   FreeMem( lpRLE.DataPtr );
   lpRLE.DataPtr := Pointer( p );
 
@@ -644,11 +764,12 @@ begin
 
   PicCnt := 1;
   GetMem( lpSpr, SizeOf( RLEHDR ) );
-  ZeroMemory( lpSpr, SizeOf( RLEHDR ) );
+  FillChar( lpSpr, SizeOf( RLEHDR ), #0 );
 
-  FMemSize := digifxCreateRLE( dfx_hnd, BitPlane.Bits, BitPlane.FKeyIndex, lpSpr, nil, lpSpr );
+  // FIXME - Hack to get this to cowpile...
+  FMemSize := 0; //digifxCreateRLE( dfx_hnd, BitPlane.Bits, BitPlane.FKeyIndex, lpSpr, nil, lpSpr );
   GetMem( lpSpr.DataPtr, FMemSize );
-  digifxCreateRLE( dfx_hnd, BitPlane.Bits, BitPlane.FKeyIndex, lpSpr, lpSpr.DataPtr, lpSpr );
+  //digifxCreateRLE( dfx_hnd, BitPlane.Bits, BitPlane.FKeyIndex, lpSpr, lpSpr.DataPtr, lpSpr );
   lpSpr.AdjX := lpSpr.SrcX;
   lpSpr.AdjY := lpSpr.SrcY;
 end;
@@ -666,17 +787,19 @@ begin
 
   PicCnt := 1;
   GetMem( lpSpr, SizeOf( RLEHDR ) );
-  ZeroMemory( lpSpr, SizeOf( RLEHDR ) );
+  FillChar( lpSpr, SizeOf( RLEHDR ), #0 );
 
   C := ColorToRGB( Color );
   R := ( C and $FF );
   G := ( C and $FF00 ) shr 8;
   B := ( C and $FF0000 ) shr 16;
-  KeyIndex := digiFXConvertColor( dfx_hnd, R, G, B );
+  // FIXME -- Trying to get this to cowpile first...
+  //KeyIndex := //digifxConvertColor( dfx_hnd, R, G, B );
 
-  FMemSize := digifxCreateRLE( dfx_hnd, Bits, KeyIndex, lpSpr, nil, lpSpr );
+  // FIXME -- Trying to get this to cowpile first...
+  FMemSize := 0; //digifxCreateRLE( dfx_hnd, Bits, KeyIndex, lpSpr, nil, lpSpr );
   GetMem( lpSpr.DataPtr, FMemSize );
-  digifxCreateRLE( dfx_hnd, Bits, KeyIndex, lpSpr, lpSpr.DataPtr, lpSpr );
+  //digifxCreateRLE( dfx_hnd, Bits, KeyIndex, lpSpr, lpSpr.DataPtr, lpSpr );
   lpSpr.AdjX := lpSpr.SrcX;
   lpSpr.AdjY := lpSpr.SrcY;
 end;
@@ -697,14 +820,15 @@ begin
   R := ( C and $FF );
   G := ( C and $FF00 ) shr 8;
   B := ( C and $FF0000 ) shr 16;
-  C := digiFXConvertColor( dfx_hnd, R, G, B );
+  // FIXME -- Trying to get to a cowpile of this file...
+  //C := //digifxConvertColor( dfx_hnd, R, G, B );
   DFXClearBitPlane( FBits, C );
 end;
 
 constructor TBitPlane.Create( Width, Height : Integer );
 begin
   inherited Create;
-  ZeroMemory( @FBits, SizeOf( BITPLANE ) );
+  //FillChar( @FBits, SizeOf( BITPLANE ), #0 );
   FBits.bitsWdh := Width;
   FBits.bitsPitch := FBits.bitsWdh * 2;
   FBits.bitsHgh := Height;
@@ -718,6 +842,7 @@ begin
   inherited;
 end;
 
+{
 procedure TBitPlane.DrawToDC( DC : HDC; X, Y : Integer );
 var
   BITMAPINFO : PBitmapInfo;
@@ -755,13 +880,14 @@ begin
     0, 0, 0, FBits.bitsHgh, FBits.bitsPtr, BITMAPINFO^, DIB_RGB_COLORS );
   FreeMem( BITMAPINFO );
 end;
+}
 
 procedure TBitPlane.Draw( X, Y : Integer; Bits : PBITPLANE );
 var
   dfx_blitfx : BLITFX;
 begin
   dfx_blitfx.FXType := BLITFX_NONE;
-  digifxDrawBitPlane( dfx_hnd, @FBits, X, Y, FKeyIndex, @dfx_blitfx, Bits );
+  //digifxDrawBitPlane( dfx_hnd, @FBits, X, Y, FKeyIndex, @dfx_blitfx, Bits );
 end;
 
 function TBitPlane.GetBits : PBITPLANE;
@@ -788,7 +914,8 @@ begin
   R := ( C and $FF );
   G := ( C and $FF00 ) shr 8;
   B := ( C and $FF0000 ) shr 16;
-  FKeyIndex := digiFXConvertColor( dfx_hnd, R, G, B );
+  // FIXME -- Trying to get a cowpile so we can sart determining what needs to be done
+  // FKeyIndex := //digifxConvertColor( dfx_hnd, R, G, B );
 end;
 
 procedure TBitPlane.DrawMono( X, Y : Integer; Bits : PBITPLANE; Color : TColor );
@@ -801,7 +928,7 @@ begin
   dfx_blitfx.Color.G := ( C and $FF00 ) shr 8;
   dfx_blitfx.Color.B := ( C and $FF0000 ) shr 16;
   dfx_blitfx.FXType := BLITFX_MONO;
-  digifxDrawBitPlane( dfx_hnd, @FBits, X, Y, FKeyIndex, @dfx_blitfx, Bits );
+  //digifxDrawBitPlane( dfx_hnd, @FBits, X, Y, FKeyIndex, @dfx_blitfx, Bits );
 end;
 
 procedure TBitPlane.DrawBlend( X, Y : Integer; Bits : PBITPLANE; SrcBlend,
@@ -812,7 +939,7 @@ begin
   dfx_blitfx.FXType := BLITFX_BLEND;
   dfx_blitfx.BlendSrcFactor := SrcBlend;
   dfx_blitfx.BlendDstFactor := DstBlend;
-  digifxDrawBitPlane( dfx_hnd, @FBits, X, Y, FKeyIndex, @dfx_blitfx, Bits );
+  //digifxDrawBitPlane( dfx_hnd, @FBits, X, Y, FKeyIndex, @dfx_blitfx, Bits );
 end;
 
 procedure TBitPlane.DrawOutline( X, Y : integer; Bits : PBITPLANE;
@@ -828,7 +955,7 @@ begin
   dfx_blitfx.FXType := BLITFX_OUTLINE;
   if not Copy then
     inc( dfx_blitfx.FXType, BLITFX_MONO );
-  digifxDrawBitPlane( dfx_hnd, @FBits, X, Y, FKeyIndex, @dfx_blitfx, Bits );
+  //digifxDrawBitPlane( dfx_hnd, @FBits, X, Y, FKeyIndex, @dfx_blitfx, Bits );
 end;
 
 procedure TBitPlane.DrawColorize( X, Y : integer; Bits : PBITPLANE;
@@ -843,7 +970,7 @@ begin
   dfx_blitfx.DstGFactor := DstBlend;
   dfx_blitfx.DstBFactor := DstBlend;
   dfx_blitfx.FXType := BLITFX_COLORIZE;
-  digifxDrawBitPlane( dfx_hnd, @FBits, X, Y, FKeyIndex, @dfx_blitfx, Bits );
+  //digifxDrawBitPlane( dfx_hnd, @FBits, X, Y, FKeyIndex, @dfx_blitfx, Bits );
 end;
 
 procedure TBitPlane.DrawShadow( X, Y : integer; Bits : PBITPLANE;
@@ -857,7 +984,7 @@ begin
   dfx_blitfx.Angle := Angle;
   dfx_blitfx.ZoomX := 100;
   dfx_blitfx.ZoomY := Height;
-  digifxDrawBitPlane( dfx_hnd, @FBits, X, Y, FKeyIndex, @dfx_blitfx, Bits );
+  //digifxDrawBitPlane( dfx_hnd, @FBits, X, Y, FKeyIndex, @dfx_blitfx, Bits );
 end;
 
 procedure TBitPlane.DrawAntiAlias( X, Y : integer; Bits : PBITPLANE );
@@ -865,7 +992,7 @@ var
   dfx_blitfx : BLITFX;
 begin
   dfx_blitfx.FXType := BLITFX_HENDS + BLITFX_SOFTEN;
-  digifxDrawBitPlane( dfx_hnd, @FBits, X, Y, FKeyIndex, @dfx_blitfx, Bits );
+  //digifxDrawBitPlane( dfx_hnd, @FBits, X, Y, FKeyIndex, @dfx_blitfx, Bits );
 end;
 
 end.

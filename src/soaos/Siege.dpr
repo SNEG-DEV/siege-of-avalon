@@ -1,8 +1,6 @@
 program Siege;
 
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
+{$MODE Delphi}
 
 {******************************************************************************}
 {                                                                              }
@@ -75,7 +73,6 @@ uses
   Resource in 'engine\Resource.pas',
   Engine in 'engine\Engine.pas',
   AdventureLog in 'engine\AdventureLog.pas',
-  DFX in 'graphics\DFX.pas',
   GameText in 'engine\GameText.pas',
   Character in 'ai\Character.pas',
   AI1 in 'ai\AI1.pas',
@@ -86,8 +83,6 @@ uses
   Anigrp30 in 'engine\Anigrp30.pas',
   AniDec30 in 'engine\AniDec30.pas',
   String32 in 'engine\string32.pas',
-  DXEffects in 'graphics\DXEffects.pas',
-  DXUtil in 'graphics\DXUtil.pas',
   LogFile in 'Engine\LogFile.pas',
   AStar in 'ai\AStar.pas',
   Inventory in 'interface\Inventory.pas',
@@ -96,8 +91,6 @@ uses
   Award in 'interface\Award.pas',
   Parts in 'engine\Parts.pas',
   digifx in 'graphics\digifx.pas',
-  DirectX in 'graphics\DirectX.pas',
-  DXRender in 'graphics\DXRender.pas',
   Converse in 'interface\Converse.pas',
   Titles in 'engine\Titles.pas',
   Map in 'interface\Map.pas',

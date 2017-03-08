@@ -69,11 +69,7 @@ unit Character;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType, LMessages,
-{$ENDIF}
   Classes,
   SysUtils,
   Anigrp30,
@@ -84,7 +80,7 @@ uses
   DXUtil,
   DXEffects,
 {$ENDIF}
-  digifx,
+  //digifx,
   DFX,
   Resource,
   LogFile;
