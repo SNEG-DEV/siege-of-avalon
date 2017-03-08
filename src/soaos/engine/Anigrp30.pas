@@ -79,7 +79,7 @@ uses
   Dialogs,
   AniDec30,
   AStar,
-  MMTimer,
+  //MMTimer,
 {$IFDEF DirectX}
   DirectX,
   DXUtil,
@@ -513,7 +513,11 @@ type
     procedure FreeResources; override;
     procedure Render( Figure : TAniFigure ); override;
     property Frames : Longint read GetFrames;
+{$IFDEF DirectX}
     property Image : IDirectDrawSurface write SetImage;
+{$ELSE}
+       property Image : TBitmap write SetImage;
+{$ENDIF}
   end;
 
   TAniView = class( TGraphicControl )
@@ -530,7 +534,7 @@ type
     FMapColumnCount : Longint;
     MapRows : HGLOBAL;
     PixelHeight : Longint;
-    Timer : TAniTimer;
+    //Timer : TAniTimer;
     FInterval : Word;
     FActive : Boolean;
     FMap : TAniMap;
