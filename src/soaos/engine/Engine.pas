@@ -69,11 +69,7 @@ unit Engine;
 interface
 
 uses
-{$IFnDEF FPC}
-  MMSystem, Windows,
-{$ELSE}
   LCLIntf, LCLType, LMessages,
-{$ENDIF}
   Classes,
   Anigrp30,
   AniDec30,
@@ -81,7 +77,6 @@ uses
   Math,
   SysUtils,
   INIFiles,
-  DirectX,
   LogFile,
   Graphics,
   Resource,
@@ -111,7 +106,7 @@ var
   Sounds : TList;
   ActiveTriggers : TList;
   SayList : TList;
-  ShadowImage : IDirectDrawSurface;
+  ShadowImage : TBitmap;
   GlowImage : TRLESprite;
   BaseLightType : longint;
   DefaultPath : string;

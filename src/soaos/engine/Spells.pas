@@ -73,11 +73,6 @@ uses
   Classes,
   SysUtils,
   Anigrp30,
-  DirectX,
-  DXUtil,
-  DXEffects,
-  digifx,
-  DFX,
   Engine,
   Character,
   Resource,
@@ -584,7 +579,7 @@ type
     destructor Destroy; override;
     procedure Refresh( NewEffect : TEffect ); override;
     procedure Adjust( Character : TCharacter ); override;
-    procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); override;
+    //procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); override;
     function DoFrame : boolean; override;
   end;
 

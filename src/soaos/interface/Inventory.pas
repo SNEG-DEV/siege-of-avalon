@@ -69,16 +69,8 @@ unit Inventory;
 interface
 
 uses
-{$IFDEF DirectX}
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType, LMessages,
-{$ENDIF}
-  DirectX,
-  DXUtil,
-  DXEffects,
-{$ENDIF}
+  SDL2, SDL2_image, SDL2_gfx,
   Messages,
   SysUtils,
   Classes,
@@ -118,9 +110,9 @@ type
     ItemType : string; //Inventory or Equipment
     BodySlot : Integer; //where on the body is this piece?
     CharacterHadThisOnHim : boolean; //Was this on the character when he arrived?
-    DXSurface : IDirectDrawSurface; //barbie graphic surface
-    DXSurfaceIcon : IDirectDrawSurface; //icon graphic surface
-    DXShadow : IDirectDrawSurface; //The shadow
+    DXSurface : TSDL_Surface; //barbie graphic surface
+    DXSurfaceIcon : TSDL_Surface; //icon graphic surface
+    DXShadow : TSDL_Surface; //The shadow
   end;
 
   TInventory = class( TDisplay )
@@ -132,13 +124,13 @@ type
     Tx, Ty : Integer; // x and y locs used with the offset of the dragged item
     DontPlotCurrentItem : boolean;
 {$IFDEF DirectX}
-    DXBack : IDirectDrawSurface; //DD surface that holds the inventory screen before blit
-    DxDirty : IDirectDrawSurface; //DD for cleanup when dragging items
-    DXCircle : IDirectDrawSurface; //circle used for outline
-    DXLeftArrow : IDirectDrawSurface; //Inventory left arrow
-    DXRightArrow : IDirectDrawSurface; //Inventory right arrow
-    DXBackToGame : IDirectDrawSurface; //Back To Game highlight
-    DXBrown : IDirectDrawSurface; //Show where we can drop item in inventory
+    DXBack : TSDL_Surface; //DD surface that holds the inventory screen before blit
+    DxDirty : TSDL_Surface; //DD for cleanup when dragging items
+    DXCircle : TSDL_Surface; //circle used for outline
+    DXLeftArrow : TSDL_Surface; //Inventory left arrow
+    DXRightArrow : TSDL_Surface; //Inventory right arrow
+    DXBackToGame : TSDL_Surface; //Back To Game highlight
+    DXBrown : TSDL_Surface; //Show where we can drop item in inventory
 {$ENDIF}
     SlotName : TStringList; //names of each slot we plot on screen
     SlotCoord : array[ 0..15 ] of BodySlotCoord; //coordinates used to generate rects
@@ -338,7 +330,7 @@ var
   InvisColor : Integer; //Transparent color :RGB(0,255,255)
   i : Integer;
   t : TSlot; //Index for Equipment loop
-  DXBorder : IDirectDrawSurface;
+  DXBorder : TSDL_Surface;
   WeHaveAWeaponAndThisIsTheIndex : integer; //for moving the weapon to a clear spot on barbie
   GreatestWidth, GreatestHeight : integer; //used to create the dirty rect surface
 const

@@ -67,23 +67,17 @@ unit Map;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType, LMessages,
-{$ENDIF}
+  SDL2, SDL2_image, SDL2_gfx,
   SysUtils,
   Classes,
   Controls,
   Forms,
   GameText,
   Graphics,
-  DirectX,
   Anigrp30,
   AniDec30,
   Engine,
-  DXEffects,
-  DXUtil,
   Character,
   Display,
   LogFile;
@@ -92,8 +86,8 @@ type
   TMap = class( TDisplay )
   private
     FOnClose : TNotifyEvent;
-    DXBack : IDirectDrawSurface;
-    DXDirty : IDirectDrawSurface;
+    DXBack : TSDL_Surface;
+    DXDirty : TSDL_Surface;
     MouseOverBack : boolean;
     ShowAll : boolean;
   protected
@@ -119,7 +113,7 @@ uses
 
 procedure TMap.Init;
 var
-  Image : IDirectDrawSurface;
+  Image : TSDL_Surface;
   BM : TBitmap;
   W, H : integer;
   OffsetX, OffsetY : integer;

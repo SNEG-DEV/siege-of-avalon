@@ -71,7 +71,6 @@ uses
   Resource,
   Character,
   Anigrp30,
-  digifx,
   Spells,
   LogFile;
 
@@ -86,7 +85,7 @@ type
     constructor Create;
     destructor Destroy; override;
     procedure Adjust( Character : TCharacter ); override;
-    procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); override;
+    //procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); override;
     function DoFrame : boolean; override;
   end;
 
@@ -97,7 +96,7 @@ type
   public
     constructor Create;
     procedure Adjust( Character : TCharacter ); override;
-    procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); override;
+    //procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); override;
     function DoFrame : boolean; override;
   end;
 
@@ -133,7 +132,7 @@ type
     constructor Create;
     destructor Destroy; override;
     procedure Adjust( Character : TCharacter ); override;
-    procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); override;
+    //procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); override;
     function DoFrame : boolean; override;
   end;
 
@@ -237,6 +236,7 @@ begin
   end;
 end;
 
+{
 procedure TSwirl.RenderLocked( Figure : TAniFigure; Bits : PBITPLANE );
 var
   i : integer;
@@ -253,6 +253,7 @@ begin
     inc( p );
   end;
 end;
+}
 
 { TSpirit }
 
@@ -278,6 +279,7 @@ begin
   end;
 end;
 
+{
 procedure TSpirit.RenderLocked( Figure : TAniFigure; Bits : PBITPLANE );
 begin
   if ( Figure.Resource is TCharacterResource ) and assigned( TCharacterResource( Figure.Resource ).NakedResource ) then
@@ -288,6 +290,7 @@ begin
       Bits, 50, 200, 100, Blend, 100 );
 
 end;
+}
 
 { TFadeAway }
 
@@ -402,6 +405,7 @@ begin
     Sound.SoundOn := false;
 end;
 
+{
 procedure TBurningRam.RenderLocked( Figure : TAniFigure; Bits : PBITPLANE );
 var
   R, G, B : integer;
@@ -469,6 +473,6 @@ begin
   end;
 
 end;
-
+}
 
 end.

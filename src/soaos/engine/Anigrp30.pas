@@ -65,11 +65,7 @@ unit Anigrp30;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType, LMessages,
-{$ENDIF}
   Classes,
   SysUtils,
   Forms,
@@ -79,12 +75,6 @@ uses
   Dialogs,
   AniDec30,
   AStar,
-  //MMTimer,
-{$IFDEF DirectX}
-  DirectX,
-  DXUtil,
-  DXEffects,
-{$ENDIF}
   LogFile;
 
 type

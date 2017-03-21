@@ -67,15 +67,9 @@ unit Titles;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType, LMessages,
-{$ENDIF}
   Classes,
   SysUtils,
-  DFX,
-  digifx,
   Character,
   ItemDatabase,
   LogFile;

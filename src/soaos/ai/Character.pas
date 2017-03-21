@@ -369,8 +369,7 @@ type
     MsgDuration : Integer;
 {$IFDEF DirectX}
     MsgImage : IDirectDrawSurface;
-{$ENDIF}
-{$IFNDEF DirectX}
+{$ELSE}
     MsgImage : HBITMAP;
     MsgMask : HBITMAP;
 {$ENDIF}
@@ -449,9 +448,15 @@ type
     function MeetsRequirements( Character : TCharacter ) : Boolean; virtual;
     procedure PickUp; virtual;
     procedure Drop; virtual;
+{$IFDEF DirectX}
     function GetInventoryImage : IDirectDrawSurface;
     function GetInventoryShadow : IDirectDrawSurface;
     function GetIconicImage : IDirectDrawSurface;
+{$ELSE}
+    function GetInventoryImage : TBitmap;
+    function GetInventoryShadow : TBitmap;
+    function GetIconicImage : TBitmap;
+{$ENDIF}
     procedure SaveProperties( List : TStringList ); override;
     procedure Init; override;
     function ShouldSave : boolean; override;

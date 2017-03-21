@@ -1,8 +1,6 @@
 unit Journal;
 
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
+{$MODE Delphi}
 
 {******************************************************************************}
 {                                                                              }
@@ -69,16 +67,8 @@ unit Journal;
 interface
 
 uses
-{$IFDEF DirectX}
-{$IFnDEF FPC}
-  jpeg, Windows,
-{$ELSE}
+  jpeg,
   LCLIntf, LCLType, LMessages,
-{$ENDIF}
-  DirectX,
-  DXUtil,
-  DXEffects,
-{$ENDIF}
   Messages,
   SysUtils,
   Classes,
@@ -95,7 +85,7 @@ uses
   GameText,
   Display,
   Anigrp30,
-  AdventureLog,
+  //AdventureLog,
   LogFile,
   Engine;
 type

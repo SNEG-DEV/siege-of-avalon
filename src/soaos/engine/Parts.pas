@@ -69,19 +69,13 @@ unit Parts;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType, LMessages,
-{$ENDIF}
   Classes,
   SysUtils,
   Graphics,
   Anigrp30,
   AniDec30,
   IniFiles,
-  DFX,
-  digifx,
   Resource,
   Character,
   ItemDatabase,

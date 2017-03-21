@@ -69,14 +69,8 @@ unit Converse;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType, LMessages,
-{$ENDIF}
-  DirectX,
-  DXUtil,
-  DXEffects,
+  SDL2, SDL2_image, SDL2_gfx,
   Messages,
   SysUtils,
   Classes,
@@ -113,7 +107,7 @@ type
     INI : TMemINIFile;
     procedure LoadConversation;
   protected
-    Image : IDirectDrawSurface;
+    Image : TSDL_Surface;
     procedure MouseDown( Sender : TAniView; Button : TMouseButton;
       Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
     procedure MouseMove( Sender : TAniView;
@@ -201,7 +195,7 @@ procedure TConverseBox.Init;
 var
   Filename : string;
   BM : TBitmap;
-  Shadow : IDirectDrawSurface;
+  Shadow : TSDL_Surface;
 const
   FailName : string = 'TConverseBox.Init';
 begin
