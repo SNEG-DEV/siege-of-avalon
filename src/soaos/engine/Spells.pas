@@ -65,15 +65,11 @@ unit Spells;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType, LMessages,
-{$ENDIF}
   Classes,
   SysUtils,
   Anigrp30,
-  Engine,
+  //Engine,
   Character,
   Resource,
   LogFile;

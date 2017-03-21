@@ -1,8 +1,6 @@
 unit AniDemo;
 
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
+{$MODE Delphi}
 
 {******************************************************************************}
 {                                                                              }
@@ -69,11 +67,7 @@ interface
 {$INCLUDE Anigrp30cfg.inc}
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType, LMessages,
-{$ENDIF}
   Messages,
   SysUtils,
   Classes,
@@ -87,11 +81,6 @@ uses
   IniFiles,
   LogFile,
   Spells,
-{$IFDEF DirectX}
-  DirectX,
-  DXUtil,
-  DXEffects,
-{$ENDIF}
   Anigrp30,
   AniDec30,
   Character,
@@ -139,8 +128,6 @@ const
 
 var
   DlgProgress : TLoaderBox;
-  InterfacePath : string;
-  MapPath : string;
   MaxPartyMembers : Integer;
   bPlayClosingMovie : Boolean;
   OpeningMovie : string;
@@ -232,17 +219,6 @@ type
     //    ResumeSound: boolean;
     Spinner : Integer;
     NewGame : Boolean;
-{$IFDEF DirectX}
-    OverlayB : IDirectDrawSurface;
-    OverlayR : IDirectDrawSurface;
-    ManaEmpty : IDirectDrawSurface;
-    LifeEmpty : IDirectDrawSurface;
-    SpellBar : IDirectDrawSurface;
-    SpellGlyphs : IDirectDrawSurface;
-    NoSpellIcon : IDirectDrawSurface;
-    HelpBox : IDirectDrawSurface;
-    PauseImage : IDirectDrawSurface;
-{$ENDIF}
     FCurrentTheme : string;
     ScreenShot : TBitmap;
     LastFileSaved : string;
@@ -376,11 +352,7 @@ uses
   MousePtr,
   SaveFile;
 
-{$IFnDEF FPC}
-  {$R *.dfm}
-{$ELSE}
   {$R *.lfm}
-{$ENDIF}
 
 var
   DlgConverse : TConverseBox;

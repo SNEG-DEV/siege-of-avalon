@@ -81,6 +81,7 @@ uses
   Character,
   StdCtrls,
   Anigrp30,
+  Resource,
   LogFile;
 
 type

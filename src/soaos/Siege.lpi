@@ -36,7 +36,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="51">
+    <Units Count="54">
       <Unit0>
         <Filename Value="Siege.dpr"/>
         <IsPartOfProject Value="True"/>
@@ -242,6 +242,20 @@
         <Filename Value="sdl2/sdlaudio.inc"/>
         <IsPartOfProject Value="True"/>
       </Unit50>
+      <Unit51>
+        <Filename Value="engine/AniDemo.pas"/>
+        <IsPartOfProject Value="True"/>
+        <HasResources Value="True"/>
+      </Unit51>
+      <Unit52>
+        <Filename Value="engine/AdventureLog.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit52>
+      <Unit53>
+        <Filename Value="engine/globals.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Globals"/>
+      </Unit53>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

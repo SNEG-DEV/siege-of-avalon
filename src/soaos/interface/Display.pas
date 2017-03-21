@@ -73,7 +73,7 @@ uses
   Forms,
   GameText,
   Anigrp30,
-  Engine,
+  //Engine,
   INIFiles,
   LogFile;
 

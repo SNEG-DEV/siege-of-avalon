@@ -69,11 +69,7 @@ unit AdventureLog;
 interface
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType, LMessages,
-{$ENDIF}
   Messages,
   SysUtils,
   Classes,
@@ -81,7 +77,7 @@ uses
   Controls,
   Forms,
   Dialogs,
-  dsgnIntf,
+  IDEintf,
   comctrls,
   LogFile;
 

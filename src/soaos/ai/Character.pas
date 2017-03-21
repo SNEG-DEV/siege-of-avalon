@@ -75,13 +75,6 @@ uses
   Anigrp30,
   AniDec30,
   Graphics,
-{$IFDEF DirectX}
-  DirectX,
-  DXUtil,
-  DXEffects,
-{$ENDIF}
-  //digifx,
-  DFX,
   Resource,
   LogFile;
 
@@ -203,7 +196,7 @@ type
     DisableWhenDone : boolean;
     procedure Refresh( NewEffect : TEffect ); virtual;
     procedure Adjust( Character : TCharacter ); virtual;
-    procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); virtual;
+    procedure RenderLocked( Figure : TAniFigure; Bits : PBitmap ); virtual;
     procedure DoAction( const Action, FacingString : string );
     function DoFrame : boolean; virtual;
     function Hit( Source : TAniFigure; Damage : PDamageProfile ) : boolean; virtual;
@@ -552,7 +545,7 @@ type
 
   TArrow = class( TProjectile )
   private
-    RLE : TRLESprite;
+    RLE : TBitmap;
     BM : TBitmap;
     PrevSlopeX : Double;
     PrevSlopeY : Double;
@@ -750,7 +743,7 @@ type
   public
     constructor Create;
     procedure Adjust( Character : TCharacter ); override;
-    procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); override;
+    procedure RenderLocked( Figure : TAniFigure; Bits : PBitmap ); override;
     function DoFrame : boolean; override;
   end;
 

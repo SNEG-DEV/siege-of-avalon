@@ -81,7 +81,6 @@ uses
   Graphics,
   Resource,
   Titles,
-  DFX,
   MousePtr;
 
 procedure CreateGlobals;

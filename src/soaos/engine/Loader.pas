@@ -69,11 +69,7 @@ interface
 {$INCLUDE Anigrp30cfg.inc}
 
 uses
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
   LCLIntf, LCLType, LMessages,
-{$ENDIF}
   Classes,
   Graphics,
   SysUtils,
@@ -81,13 +77,9 @@ uses
   INIFiles,
   Anigrp30,
   AniDec30,
-{$IFDEF DirectX}
-  DirectX,
-  DXUtil,
-{$ENDIF}
   Character,
   Resource,
-  Engine,
+  //Engine,
   ItemDatabase,
   LogFile;
 
