@@ -1,16 +1,11 @@
 unit Loader;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -69,17 +64,21 @@ interface
 {$INCLUDE Anigrp30cfg.inc}
 
 uses
-  LCLIntf, LCLType, LMessages,
   Classes,
+  Windows,
   Graphics,
   SysUtils,
   Forms,
   INIFiles,
   Anigrp30,
   AniDec30,
+{$IFDEF DirectX}
+  DirectX,
+  DXUtil,
+{$ENDIF}
   Character,
   Resource,
-  //Engine,
+  Engine,
   ItemDatabase,
   LogFile;
 
@@ -514,14 +513,17 @@ var
         Attributes.Text := cText;
 
         InScene := lowercase( Attributes.values[ 'InScene' ] ); //Check to see if object is in current scene
-        if ( InScene <> '' ) then
+        if (InScene <> '') then
         begin
-          if ( Pos( '[' + SceneName + ']', InScene ) = 0 ) then
-          begin
-            Attributes.free;
-            Log.Log( '  Object not in scene' );
-            exit;
-          end;
+             if ( InScene <> Scenename ) then   //Zusatz meinerseits, ging früher nicht.
+             begin
+                  if ( Pos( '[' + SceneName + ']', InScene ) = 0 ) then
+                  begin
+                  Attributes.free;
+                  Log.Log( '  Object not in scene' );
+                  exit;
+                  end;
+             end;
         end;
 
 //      for i:=0 to Attributes.Count-1 do begin
@@ -1309,7 +1311,8 @@ begin
                   for i := 1 to RNames.count - 1 do
                   begin
                     S := RNames.Strings[ i ] + '.gif';
-//                  Log.Log('  '+S);
+                  Log.Log('  '+S);
+                  Log.Log(IntToStr(RIndex[i]));
                     try
                       Resource := LoadResource( TilePath + S );
                       if assigned( Resource ) and ( Resource is TTileResource ) then
@@ -1348,7 +1351,8 @@ begin
                   for i := 0 to DNames.count - 1 do
                   begin
                     S := DNames.Strings[ i ] + '.gif';
-//                  Log.Log('  '+S);
+                 Log.Log('  '+S);
+                 Log.Log(IntToStr(DIndex[i]));
                     try
                       Resource := LoadResource( TilePath + S );
                       if assigned( Resource ) and ( Resource is TTileResource ) then

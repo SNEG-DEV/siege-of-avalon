@@ -1,16 +1,11 @@
 unit NPCBehavior;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -64,21 +59,17 @@ unit NPCBehavior;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE ../engine/Anigrp30cfg.inc}
+{$INCLUDE Anigrp30cfg.inc}
 
 interface
 
 uses
 {$IFDEF DirectX}
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
   DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
+  Windows,
   Messages,
   SysUtils,
   Classes,
@@ -1334,8 +1325,8 @@ begin
   end
   else
   begin //constrict to main inventory area
-    prRect.bottom := 600;
-    prRect.Right := 800;
+    prRect.bottom := 720; //600
+    prRect.Right := 1280; //800
   end;
   ClipCursor( prRect );
   Dispose( prRect );

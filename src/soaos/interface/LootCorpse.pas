@@ -1,16 +1,11 @@
 unit LootCorpse;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -64,21 +59,17 @@ unit LootCorpse;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE ../engine/Anigrp30cfg.inc}
+{$INCLUDE Anigrp30cfg.inc}
 
 interface
 
 uses
 {$IFDEF DirectX}
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
   DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
+  Windows,
   Messages,
   SysUtils,
   Classes,
@@ -97,7 +88,7 @@ uses
   Scroll,
   Anigrp30,
   Engine,
-  LogFile;
+  logfile;
 
 type
   pTempItems = ^TemItems;
@@ -453,7 +444,7 @@ begin
     end;
   //Whew! Now we flip it all to the screen
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 {$ENDIF}
   except
@@ -802,7 +793,7 @@ begin
       end;
     end; //endif
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do
@@ -849,7 +840,7 @@ begin
       DrawSub( lpDDSBack, rect( Tx, Ty, Tx + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, Ty + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ), Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ), pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXShadow, True, ShadowAlpha );
       lpDDSBack.BltFast( Tx, Ty, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXSurface, Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
       MouseCursor.PlotDirty := false;
     end
     else if Assigned( DXBack ) and ( DlgScroll.ScrollIsShowing = False ) then
@@ -985,7 +976,7 @@ begin
 
       CurrentSelectedItem := -1; //deassign it
       lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
       MouseCursor.PlotDirty := false;
     end;
 
@@ -1052,7 +1043,7 @@ begin
       pText.PlotTextCentered( TContainer( OtherOb ).name, 417, 633, 10, Alpha );
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do
@@ -1372,8 +1363,8 @@ begin
     end
     else
     begin //constrict to main inventory area
-      prRect.bottom := 600;
-      prRect.Right := 800;
+      prRect.bottom := 1080; //600
+      prRect.Right := 1920;  //800
       paint;
     end;
     ClipCursor( prRect );

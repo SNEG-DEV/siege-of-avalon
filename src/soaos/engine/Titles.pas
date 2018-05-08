@@ -1,16 +1,11 @@
 unit Titles;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -67,9 +62,11 @@ unit Titles;
 interface
 
 uses
-  LCLIntf, LCLType, LMessages,
   Classes,
+  Windows,
   SysUtils,
+  DFX,
+  digifx,
   Character,
   ItemDatabase,
   LogFile;

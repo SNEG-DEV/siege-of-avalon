@@ -1,16 +1,11 @@
 unit LoadGame;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -64,21 +59,17 @@ unit LoadGame;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE ../engine/Anigrp30cfg.inc}
+{$INCLUDE Anigrp30cfg.inc}
 
 interface
 
 uses
 {$IFDEF DirectX}
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
   DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
+  Windows,
   Messages,
   SysUtils,
   Classes,
@@ -93,7 +84,7 @@ uses
   Display,
   Anigrp30,
   Engine,
-  LogFile;
+  Logfile;
 type
 
   pItem = ^SelectableRect;
@@ -196,11 +187,11 @@ begin
 {$ENDIF}
   try
     inherited;
-    ldCancelRect := Rect( 101, 450, 101 + 300, 450 + 45 );
-    ldLoadDarkRect := Rect( 401, 450, 401 + 300, 450 + 45 );
-    ldSaveDarkRect := Rect( 401, 450, 401 + 300, 450 + 45 );
-    ldLoadUpperRect := Rect( 94, 19, 94 + 263, 19 + 45 );
-    ldSaveUpperRect := Rect( 94, 19, 94 + 263, 19 + 45 );
+    ldCancelRect := Rect( 95, 443, 95 + 165, 443 + 58 );
+    ldLoadDarkRect := Rect( 581, 445, 581 + 121, 445 + 54 );
+    ldSaveDarkRect := Rect( 581, 445, 581 + 121, 445 + 54 );
+    ldLoadUpperRect := Rect( 93, 12, 93 + 111, 12 + 53 );
+    ldSaveUpperRect := Rect( 93, 12, 93 + 111, 12 + 53 );
     ldLoadLightRect := ldLoadDarkRect;
     ldSaveLightRect := ldSaveDarkRect;
   except
@@ -370,7 +361,7 @@ begin
 
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do
@@ -660,7 +651,7 @@ begin
          //plot the Carat
       pText.PlotText( '|', CaratPosition + X1, Y1, 240 );
       lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
       MouseCursor.PlotDirty := false;
     end //endif
     else if key = 13 then
@@ -752,7 +743,7 @@ begin
         pText.PlotText( SavedFileName, X1, Y1, 240 );
 
         lpDDSFront.Flip( nil, DDFLIP_WAIT );
-        lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+        lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
         MouseCursor.PlotDirty := false;
       end;
     end;
@@ -1011,7 +1002,7 @@ begin
 
 //  if LoadFile then begin
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 //  end;
   except
@@ -1052,7 +1043,7 @@ begin
 {$ENDIF}
   try
 
-    lpDDSBack.BltFast( 0, 0, DXBack, Rect( 0, 0, 800, 600 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, DXBack, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     PlotMenu;
     ShowScreen;
     if CurrentSelectedListItem > -1 then
@@ -1069,7 +1060,7 @@ begin
     end;
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do
@@ -1269,7 +1260,7 @@ begin
 
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do

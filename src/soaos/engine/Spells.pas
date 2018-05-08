@@ -1,14 +1,11 @@
 unit Spells;
-
-{$MODE Delphi}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -65,11 +62,18 @@ unit Spells;
 interface
 
 uses
-  LCLIntf, LCLType, LMessages,
   Classes,
+  Windows,
   SysUtils,
   Anigrp30,
-  //Engine,
+{$IFDEF DirectX}
+  DirectX,
+  DXUtil,
+  DXEffects,
+{$ENDIF}
+  digifx,
+  DFX,
+  Engine,
   Character,
   Resource,
   LogFile;
@@ -78,10 +82,10 @@ var
   AllSpellList : TStringList;
   AllCastResourceList : TList;
   Fireball, Frostball, Lightning, Shrapnel, Push, Healing, Charge,
-    SummonRat, SummonWolf, ProtectionFire, ProtectionCold,
+    SummonRat, SummonWolf, SummonGolem, ProtectionFire, ProtectionCold,
     ProtectionElectricity, ProtectionPoison, ProtectionMagic,
-    ProtectionAll, AuraOfIron, AuraOfSteel, Shadow, Hold, DeathSpell,
-    Forget, ManaThief, GreatHand, GreatWolf, FlameStrike, Blizzard,
+    ProtectionAll, AuraOfIron, AuraOfSteel, Shadow, Bloodlust, Hold, DeathSpell,
+    Forget, ManaThief, GreatHand, GreatWolf, IceBlock, FlameStrike, Blizzard,
     Reflect, Firefly : TSpell;
 
   FireEffect : TResource;
@@ -90,6 +94,7 @@ var
   LightningEffect : TResource;
   HealEffect : TResource;
   ProtectionEffect : TResource;
+  Bloodlusteffect : TResource;
   ShrapnelEffect : TResource;
   ChargeEffect : TResource;
   SummonEffect : TResource;
@@ -294,6 +299,22 @@ type
     function GetInfo( Source : TCharacter ) : string; override;
   end;
 
+    TBloodlust= class( TSpell )
+    Resource : TResource;
+    ResourceOwner : boolean;
+    function GetLoaded : Boolean; override;
+  public
+    constructor Create; override;
+    destructor Destroy; override;
+    class function GetName : string; override;
+    function Range( Source : TCharacter ) : Integer; override;
+    function Recovery( Source : TCharacter ) : Integer; override;
+    function Drain( Source : TCharacter ) : Single; override;
+    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
+    function GetIconXY( Source : TCharacter ) : TPoint; override;
+    function GetInfo( Source : TCharacter ) : string; override;
+  end;
+
   THold = class( TSpell )
     Resource : TResource;
     function GetLoaded : Boolean; override;
@@ -423,6 +444,23 @@ type
     function GetInfo( Source : TCharacter ) : string; override;
   end;
 
+  TSummonGolem = class( TSpell )
+  private
+    Resource : TResource;
+  protected
+    function GetLoaded : Boolean; override;
+  public
+    constructor Create; override;
+    destructor Destroy; override;
+    class function GetName : string; override;
+    function Range( Source : TCharacter ) : Integer; override;
+    function Recovery( Source : TCharacter ) : Integer; override;
+    function Drain( Source : TCharacter ) : Single; override;
+    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
+    function GetIconXY( Source : TCharacter ) : TPoint; override;
+    function GetInfo( Source : TCharacter ) : string; override;
+  end;
+
   TDeathSpell = class( TSpell )
   private
     Resource : TResource;
@@ -508,6 +546,24 @@ type
     procedure Clear; override;
   end;
 
+  TIceBlock = class( TSpell )
+  private
+    Resource : TResource;
+  protected
+    function GetLoaded : Boolean; override;
+  public
+    constructor Create; override;
+    destructor Destroy; override;
+    class function GetName : string; override;
+    function Range( Source : TCharacter ) : Integer; override;
+    function Recovery( Source : TCharacter ) : Integer; override;
+    function Drain( Source : TCharacter ) : Single; override;
+    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
+    function GetIconXY( Source : TCharacter ) : TPoint; override;
+    function GetInfo( Source : TCharacter ) : string; override;
+    procedure Clear; override;
+  end;
+
   TFlameStrike = class( TSpell )
   private
     Resource : TResource;
@@ -575,7 +631,7 @@ type
     destructor Destroy; override;
     procedure Refresh( NewEffect : TEffect ); override;
     procedure Adjust( Character : TCharacter ); override;
-    //procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); override;
+    procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); override;
     function DoFrame : boolean; override;
   end;
 
@@ -719,6 +775,7 @@ uses
 
 var
   ProtectionResource : TResource;
+  Bloodlustresource : TResource;
 
 function MakeCastEffect( var CastEffect : TResource; const ResName : string ) : boolean;
 begin
@@ -832,7 +889,11 @@ begin
     exit;
   if not MakeSpell( SummonWolf, TSummonWolf ) then
     exit;
+  if not MakeSpell( SummonGolem, TSummonGolem ) then
+    exit;
   if not MakeSpell( Shadow, TShadow ) then
+    exit;
+    if not MakeSpell( Bloodlust, TBloodlust ) then
     exit;
   if not MakeSpell( Hold, THold ) then
     exit;
@@ -844,6 +905,7 @@ begin
   MakeSpell( ManaThief, TManaThief );
   MakeSpell( GreatHand, TGreatHand );
   MakeSpell( GreatWolf, TGreatWolf );
+  MakeSpell( IceBlock, TIceBlock );
   if not MakeSpell( FlameStrike, TFlameStrike ) then
     exit;
   if not MakeSpell( Blizzard, TBlizzard ) then
@@ -2703,7 +2765,18 @@ begin
     Log.LogEntry( FailName );
 {$ENDIF}
   try
-
+   {if Source.TitleExists( 'Forked lightning' ) then
+    begin
+    result.X := 9 * 32;
+    result.Y := 32;
+    end
+    else
+    if  Source.TitleExists( 'lightning' ) then
+    begin
+    result.X := 9 * 32;
+    result.Y := 32;
+    end
+    else}
     result.X := 11 * 32;
     result.Y := 32;
 
@@ -3777,9 +3850,13 @@ begin
     Log.LogEntry( FailName );
 {$ENDIF}
   try
-
     result.X := 10 * 32;
     result.Y := 0;
+    if Source.TitleExists( 'Infuse' ) then
+    begin
+    result.X := 9 * 32;
+    result.Y := 32;
+    end;
 
   except
     on E : Exception do
@@ -4168,8 +4245,8 @@ begin
         Master := Source;
         Duration := Source.Mysticism * 50;
         Name := 'Wolf';
-        BaseUnArmedDamage.Piercing.Min := 1;
-        BaseUnArmedDamage.Piercing.Max := 10;
+        BaseUnArmedDamage.Piercing.Min := 2 + Source.Mysticism / 15;
+        BaseUnArmedDamage.Piercing.Max := 8 + Source.Mysticism / 10;
         BaseUnArmedDamage.Cutting.Min := 0;
         BaseUnArmedDamage.Cutting.Max := 8;
         BaseResistance.Cutting.Invulnerability := 1;
@@ -4181,7 +4258,7 @@ begin
         Strength := 20;
         Coordination := 15;
         Alliance := Source.Alliance;
-        HitPoints := 10 + Source.Mysticism / 5;
+        HitPoints := 15 + Source.Mysticism / 5;
         Combat := 10 + Source.Mysticism div 5;
         addtitle( 'MeleeAgressive' );
         AI := TCompanion.Create;
@@ -4190,6 +4267,8 @@ begin
         FAIMode := aiIdle;
         NewAIMode := aiIdle;
         AddEffect( Effect );
+        painsound :='WolfPain';
+        Deathsound :='WolfDeath';
       end;
     end;
 
@@ -4281,11 +4360,11 @@ end;
 function TSummonWolf.GetInfo( Source : TCharacter ) : string;
 begin
   result := InfoText;
-  Replace( result, 'a', inttostr( 10 + round( Source.Mysticism / 5 ) ) );
-  Replace( result, 'b', '2-20' );
-  Replace( result, 'c', '0-16' );
-  result := 'Summons a ' + inttostr( 10 + round( Source.Mysticism / 5 ) ) + ' hit point wolf';
-  result := result + #13 + '2-20 Piercing, ' + '0-16 Cutting';
+  Replace( result, 'a', inttostr( 15 + round( Source.Mysticism / 5 ) ) );
+  Replace( result, 'b', inttostr( 2 + round( Source.Mysticism / 15 ) ) + '-' + inttostr( 8 + round( Source.Mysticism / 10 ) ) );
+  Replace( result, 'c', '0-8' );
+  result := 'Wolf mit ' + inttostr( 15 + round( Source.Mysticism / 5 ) ) + ' Leben';
+  result := result + ' ' + inttostr( 2 + round( Source.Mysticism / 15 ) ) + '-' + inttostr( 8 + round( Source.Mysticism / 10 ) ) + ' Stechen, '  + '0-8 Schneiden';
 end;
 
 function TSummonWolf.GetLoaded : Boolean;
@@ -4336,6 +4415,251 @@ end;
 function TSummonWolf.Recovery( Source : TCharacter ) : Integer;
 const
   FailName : string = 'TSummonWolf.Recovery';
+begin
+  result := 0;
+
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+    result := 20;
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+{Steingolem}
+
+function TSummonGolem.Cast( Source : TCharacter;
+  Target : TSpriteObject ) : Boolean;
+var
+  Effect : TEffect;
+  NewCharacter : TCompanionCharacter;
+  i, CompanionSlot : integer;
+const
+  FailName : string = 'TSummonGolem.Cast';
+begin
+  result := False;
+
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+
+    if assigned( Target ) then
+      exit;
+    if not Game.LineOfSight( Source.X, Source.Y, Source.TargetX, Source.TargetY ) then
+      exit;
+
+    CompanionSlot := 0;
+    for i := 3 to 5 do
+    begin
+      if not assigned( Source.Companion[ i ] ) then
+      begin
+        CompanionSlot := i;
+        break;
+      end;
+    end;
+    if CompanionSlot = 0 then
+      exit;
+
+    result := inherited Cast( Source, Target );
+    if not result then
+      Exit;
+
+    NewCharacter := TCompanionCharacter( Sprites.NewSprite( TCompanionCharacter, GolemResource, Source.TargetX, Source.TargetY, 0, 1 ) );
+    if assigned( NewCharacter ) then
+    begin
+      Source.Companion[ CompanionSlot ] := NewCharacter;
+
+      Effect := TEffect.Create;
+      Effect.Resource := Resource;
+      Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
+      Effect.Power := Source.Mysticism;
+      Effect.DoAction( 'Default', NewCharacter.FacingString );
+
+      with NewCharacter do
+      begin
+        Master := Source;
+        Duration :=10 + Source.Mysticism * 50;
+        Name := 'Steingolem';
+        BaseUnArmedDamage.Piercing.Min := 0;
+        BaseUnArmedDamage.Piercing.Max := 2;
+        BaseUnArmedDamage.Crushing.Min := 3 + Source.Mysticism / 12;
+        BaseUnArmedDamage.Crushing.Max := 10 + Source.Mysticism / 8;
+        BaseUnArmedDamage.Cutting.Min := 1;
+        BaseUnArmedDamage.Cutting.Max := 4;
+        BaseResistance.Cutting.Invulnerability := 10;
+        BaseResistance.Cutting.Resistance := 0.50;
+        BaseResistance.Crushing.Invulnerability := 0;
+        BaseResistance.Crushing.Resistance := 0.00;
+        BaseResistance.Cold.Invulnerability := 5;
+        BaseResistance.Cold.Resistance := 0.25;
+        Strength := 20;
+        Coordination := 20;
+        Alliance := Source.Alliance;
+        HitPoints := 15 + Source.Mysticism / 5;
+        Combat := 15 + Source.Mysticism div 5;
+        addtitle( 'MeleeAgressive' );
+        AI := TCompanion.Create;
+        TCompanion( AI ).Combative := true;
+        TCompanion( AI ).Leader := Source;
+        FAIMode := aiIdle;
+        NewAIMode := aiIdle;
+        AddEffect( Effect );
+        Painsound := 'RckMonpain,RckMonpain2';
+        Deathsound := 'RckMonDeath,RckMonDeath2,RockmonsterDearth';
+      end;
+    end;
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+constructor TSummonGolem.Create;
+const
+  FailName : string = 'TSummonGolem.Create';
+begin
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+    CastingType := ctSummoning;
+    TargetType := ttNone;
+    CastEffect := SummonEffect;
+    Resource := LoadArtResource( 'engine\spells\summonreceive.gif', true );
+    Resource.DrawShadow := false;
+    SoundInCast := false;
+    LoadCastSounds( 'SummonRockgolem' );
+    Interupted := false;
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+destructor TSummonGolem.Destroy;
+const
+  FailName : string = 'TSummonGolem.Destroy';
+begin
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+    Resource.Free;
+    inherited;
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+function TSummonGolem.Drain( Source : TCharacter ) : Single;
+const
+  FailName : string = 'TSummonGolem.Drain';
+begin
+  result := 0;
+
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+    result := 20 + round( Source.Restriction / 10 );
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+function TSummonGolem.GetIconXY( Source : TCharacter ) : TPoint;
+const
+  FailName : string = 'TSummonGolem.GetIconXY';
+begin
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+    result.X := 4 * 32;
+    result.Y := 32;
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+function TSummonGolem.GetInfo( Source : TCharacter ) : string;
+begin
+  result := InfoText;
+  Replace( result, 'a', inttostr( 15 + round( Source.Mysticism / 5 ) ) );
+  Replace( result, 'b', '0-2' );
+  Replace( result, 'c', '1-4' );
+  Replace( result, 'd', inttostr( 3 + round( Source.Mysticism / 12) ) + '-' + inttostr( 10 + round( Source.Mysticism / 8) ) );
+  result := 'Golem mit ' + inttostr( 15 + round( Source.Mysticism / 5 ) ) + ' Leben';
+  result := result + ' ' + '0-2 Stechen, ' + '1-4 Schneiden, ' + inttostr( 3 + round( Source.Mysticism / 12) ) + '-' + inttostr( 10 + round( Source.Mysticism / 8) ) + ' Quetschen';
+end;
+
+function TSummonGolem.GetLoaded : Boolean;
+const
+  FailName : string = 'TSummonGolem.GetLoaded';
+begin
+  result := False;
+
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+
+    if assigned( Resource ) then
+      result := Resource.Loaded;
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+class function TSummonGolem.GetName : string;
+begin
+  result := 'Summon Golem';
+end;
+
+function TSummonGolem.Range( Source : TCharacter ) : Integer;
+const
+  FailName : string = 'TSummonGolem.Range';
+begin
+  result := 0;
+
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+    result := 200;
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+function TSummonGolem.Recovery( Source : TCharacter ) : Integer;
+const
+  FailName : string = 'TSummonGolem.Recovery';
 begin
   result := 0;
 
@@ -4793,6 +5117,242 @@ begin
   end;
 end;
 
+{Bloodlust}
+function TBloodlust.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
+var
+  Effect : TEffect;
+  NewTarget : TCharacter;
+  i : integer;
+const
+  FailName : string = 'TBloodlust.Cast';
+begin
+  result := False;
+
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+
+    if assigned( Target ) then
+    begin
+      if not ( Target is TCharacter ) then
+        exit;
+      if TCharacter( Target ).Dead then
+        exit;
+      NewTarget := TCharacter( Target );
+    end
+    else
+      NewTarget := Source;
+
+    result := inherited Cast( Source, NewTarget );
+    if not result then
+      Exit;
+
+    Effect := TEffect.Create;
+    Effect.Resource := Resource;
+    Effect.ColorR := 75;
+    Effect.ColorG := -75;
+    Effect.ColorB := -75;
+    Effect.ApplyColor := true;
+    Effect.UseCustom := true;
+    Effect.EffectR := 50;
+    Effect.EffectG := 0;
+    Effect.EffectB := 0;
+    Effect.Alpha := Effect.Resource.Alpha;
+    Effect.SpecialEffect := seAdd;
+    Effect.StatModifier.combat := 15;
+    Effect.Duration := Source.Mysticism * 40;
+    Effect.AnimationDuration := Effect.duration * Resource.FrameMultiplier;
+    Effect.Power := Source.Mysticism;
+    Effect.tag := 30;
+    Effect.DoAction( 'Default', NewTarget.FacingString );
+
+    for i := 0 to FigureInstances.count - 1 do
+    begin
+      if ( FigureInstances.objects[ i ] is TCharacter ) and ( TCharacter( FigureInstances.objects[ i ] ).Track = Source ) then
+        TCharacter( FigureInstances.objects[ i ] ).Track := nil;
+    end;
+
+    with NewTarget do
+    begin
+      AddEffect( Effect );
+    end;
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+constructor TBloodlust.Create;
+const
+  FailName : string = 'TBloodlust.Create';
+begin
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+
+    inherited;
+    CastingType := ctIllusion;
+    TargetType := ttFriend;
+    CastEffect := ProtectionEffect;
+    if not assigned( BloodlustResource ) then
+    begin
+      BloodlustResource := LoadArtResource( 'engine\spells\Bloodlust.gif', true );
+      BloodlustResource.DrawShadow := false;
+      ResourceOwner := true;
+    end;
+    Resource := BloodlustResource;
+
+    SoundInCast := true;
+    LoadCastSounds( 'healspell' );
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+destructor TBloodlust.Destroy;
+const
+  FailName : string = 'TBloodlust.Destroy';
+begin
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+
+    if ResourceOwner then
+    begin
+      BloodlustResource.free;
+      BloodlustResource := nil;
+    end;
+    Resource := nil;
+    inherited;
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+function TBloodlust.Drain( Source : TCharacter ) : Single;
+const
+  FailName : string = 'TBloodlust.Drain';
+begin
+  result := 0;
+
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+
+    Drain := 12 + round( Source.Restriction / 5 );
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+function TBloodlust.GetIconXY( Source : TCharacter ) : TPoint;
+const
+  FailName : string = 'TBloodlust.GetIconXY';
+begin
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+
+    result.X := 24 * 32;
+    result.Y := 32;
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+function TBloodlust.GetInfo( Source : TCharacter ) : string;
+begin
+  result := InfoText;
+  Replace( result, 'a', '15' );
+end;
+
+function TBloodlust.GetLoaded : Boolean;
+const
+  FailName : string = 'TBloodlust.GetLoaded';
+begin
+  result := False;
+
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+
+    if assigned( Resource ) then
+      result := Resource.Loaded;
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+class function TBloodlust.GetName : string;
+begin
+  result := 'Bloodlust';
+end;
+
+function TBloodlust.Range( Source : TCharacter ) : Integer;
+const
+  FailName : string = 'TBloodlust.Range';
+begin
+  result := 0;
+
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+
+    result := Round( Source.Mysticism * 10 );
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+function TBloodlust.Recovery( Source : TCharacter ) : Integer;
+const
+  FailName : string = 'TBloodlust.Recovery';
+begin
+  result := 0;
+
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+
+    result := 25 - ( ( Source.Coordination + Source.Mysticism ) div 4 );
+    if result < 0 then
+      result := 0;
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
 { THold }
 
 function THold.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
@@ -4832,7 +5392,6 @@ begin
         Effect.Power := Source.Mysticism;
         Effect.tag := 50;
         Effect.DoAction( 'Run', Target.FacingString );
-
         Effect.AnimationDuration := TCharacter( Target ).TakeDamage( Source, 0, Duration, true );
         TCharacter( Target ).AddEffect( Effect );
       end;
@@ -7163,6 +7722,218 @@ begin
   try
 
     result := 40 - ( ( Source.Coordination + Source.Mysticism ) div 4 );
+    if result < 0 then
+      result := 0;
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+function TIceBlock.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
+var
+  Effect : TDamagingEffect;
+const
+  FailName : string = 'TIceBlock.Cast';
+begin
+  result := False;
+
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+
+    result := False;
+    if not assigned( Target ) then
+      exit;
+    if not ( Target is TCharacter ) then
+      exit;
+    if TCharacter( Target ).Dead then
+      exit;
+    if not Game.LineOfSight( Source.X, Source.Y, Target.X, Target.Y ) then
+      exit;
+
+    result := inherited Cast( Source, Target );
+    if not result then
+      Exit;
+
+    Effect := TDamagingEffect.Create;
+    Effect.Resource := Resource;
+    Effect.AnimationDuration := 16 * Resource.FrameMultiplier;
+    Effect.Power := Source.Mysticism;
+    Effect.DoAction( 'Default', Target.FacingString );
+    
+    Effect.Damage.Cold.Min := 5 * Source.Mysticism / 6;
+    Effect.Damage.Cold.Max := 2 * Source.Mysticism / 2;
+    Effect.Source := Source;
+    Effect.TriggerFrame := 20;
+    Effect.UseStealth := true;
+    TCharacter( Target ).AddEffect( Effect );
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+procedure TIceBlock.Clear;
+begin
+  Resource.RLE.free; Resource.RLE := nil;
+end;
+
+constructor TIceBlock.Create;
+const
+  FailName : string = 'TIceBlock.Create';
+begin
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+
+    CastingType := ctCombat;
+    TargetType := ttEnemy;
+    CastEffect := GreatWolfEffect;
+    Resource := LoadArtResource( 'engine\spells\Frostblock(lrg).gif', true );
+    if assigned( Resource ) then
+    begin
+      Resource.DrawShadow := false;
+    end;
+
+    LoadCastSounds( 'PushReceive' );
+    SoundInCast := false;
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+destructor TIceBlock.Destroy;
+const
+  FailName : string = 'TIceBlock.Destroy';
+begin
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+
+    Resource.Free;
+    inherited;
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+function TIceBlock.Drain( Source : TCharacter ) : Single;
+const
+  FailName : string = 'TIceBlock.Drain';
+begin
+  result := 0;
+
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+
+    result := 12 + round( Source.Restriction / 10 );
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+function TIceBlock.GetIconXY( Source : TCharacter ) : TPoint;
+const
+  FailName : string = 'TIceBlock.GetIconXY';
+begin
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+
+    result.X := 12 * 32;
+    result.Y := 0;
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+function TIceBlock.GetInfo( Source : TCharacter ) : string;
+begin
+  result := InfoText;
+  Replace( result, 'a', inttostr( round( 5 * Source.Mysticism / 6 ) ) + '-' + inttostr( round( 2 * Source.Mysticism / 2 ) ) );
+  end;
+
+function TIceBlock.GetLoaded : Boolean;
+const
+  FailName : string = 'TIceBlock.GetLoaded';
+begin
+  result := False;
+
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+
+    if assigned( Resource ) then
+      result := Resource.Loaded;
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+class function TIceBlock.GetName : string;
+begin
+  result := 'IceBlock';
+end;
+
+function TIceBlock.Range( Source : TCharacter ) : Integer;
+const
+  FailName : string = 'TGreatWolf.Range';
+begin
+  result := 0;
+
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+
+    result := Round( Source.Mysticism * 50 * ( 24 + Source.Mysticism / 10 ) );
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+function TIceBlock.Recovery( Source : TCharacter ) : Integer;
+const
+  FailName : string = 'TIceBlock.Recovery';
+begin
+  result := 0;
+
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  try
+
+    result := 30 - ( ( Source.Coordination + Source.Mysticism ) div 4 );
     if result < 0 then
       result := 0;
 

@@ -1,16 +1,11 @@
 unit Engine;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -69,18 +64,21 @@ unit Engine;
 interface
 
 uses
-  LCLIntf, LCLType, LMessages,
   Classes,
   Anigrp30,
   AniDec30,
   ExtCtrls,
+  Windows,
   Math,
   SysUtils,
   INIFiles,
+  DirectX,
   LogFile,
+  MMSystem,
   Graphics,
   Resource,
   Titles,
+  DFX,
   MousePtr;
 
 procedure CreateGlobals;
@@ -105,7 +103,7 @@ var
   Sounds : TList;
   ActiveTriggers : TList;
   SayList : TList;
-  ShadowImage : TBitmap;
+  ShadowImage : IDirectDrawSurface;
   GlowImage : TRLESprite;
   BaseLightType : longint;
   DefaultPath : string;
@@ -123,6 +121,8 @@ var
   ElfDefaultPants : TLayerResource;
   RatResource : TCharacterResource;
   WolfResource : TCharacterResource;
+  GolemResource : TCharacterResource;
+  SkeletonResource : TCharacterResource;
   GIFToPOX : boolean;
   AllSpells : boolean;
   Bikini : boolean;
@@ -157,7 +157,7 @@ uses
   Effects,
   Display,
   Spells1,
-  Music;
+  music;
 
 type
   TCacheInfo = record
@@ -940,7 +940,8 @@ begin
         begin
           if Assigned( MusicLib ) then
           begin
-            frmMain.SoundTimer.Enabled := false;
+          MusicLib.PauseThisSong;
+            frmMain.SoundTimer.Enabled := true;
           end;
         end
 
@@ -1235,7 +1236,7 @@ begin
               if TCharacter( ObjectRef ).FindFreeInventoryXY( NewItem ) then
               begin
                 TCharacter( ObjectRef ).Inventory.Add( NewItem );
-                NewItem.Enabled := False;
+                NewItem.Enabled := false;
               end
               else
               begin

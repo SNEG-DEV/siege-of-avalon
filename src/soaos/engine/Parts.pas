@@ -1,16 +1,11 @@
 unit Parts;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -69,13 +64,15 @@ unit Parts;
 interface
 
 uses
-  LCLIntf, LCLType, LMessages,
   Classes,
+  Windows,
   SysUtils,
   Graphics,
   Anigrp30,
   AniDec30,
   IniFiles,
+  DFX,
+  digifx,
   Resource,
   Character,
   ItemDatabase,
@@ -530,6 +527,8 @@ begin
         SlotsAllowed := SlotsAllowed + [ slWeapon ];
       if Pos( '[shield]', SlotString ) <> 0 then
         SlotsAllowed := SlotsAllowed + [ slShield ];
+      if Pos( '[tabar]', SlotString ) <> 0 then
+        SlotsAllowed := SlotsAllowed + [ sltabar ];
       if Pos( '[misc1]', SlotString ) <> 0 then
         SlotsAllowed := SlotsAllowed + [ slMisc1 ];
       if Pos( '[misc2]', SlotString ) <> 0 then
@@ -613,7 +612,7 @@ begin
       S := XRefDB.Fields[ XRefIndex ];
       while S <> '' do
       begin
-        if Pos( S1, lowercase( S ) ) > 0 then
+        if Pos( S1, lowercase( S ) ) >= 0 then
           break;
         inc( XRefIndex );
         S := XRefDB.Fields[ XRefIndex ];

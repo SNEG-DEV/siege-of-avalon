@@ -62,13 +62,9 @@ unit LogFile;
 interface
 
 uses
-  {$IFnDEF FPC}
-    Windows,
-  {$ELSE}
-    LCLIntf, LCLType, LMessages,
-  {$ENDIF}
   Classes,
-  SysUtils;
+  SysUtils,
+  Windows;
 
 type
   TLog = class( TFileStream )
@@ -87,9 +83,7 @@ type
   private
     RealCurrDbgLvl, // Set by Command Line Parser to current Debug Level of Detail
       RealCurrDbgGroup : Word; // Set by Command Line Parser to current Debug Interest Group
-    {$IFDEF WINDOWS}
     MEMORYSTATUS : TMemoryStatus;
-    {$ENDIF}
     procedure OutputLogHeader;
     procedure ParseCommandLine;
   end;

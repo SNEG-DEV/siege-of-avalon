@@ -1,14 +1,11 @@
 unit Anigrp30;
-
-{$MODE Delphi}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -62,10 +59,12 @@ unit Anigrp30;
 {                                                                              }
 {******************************************************************************}
 
+{$INCLUDE Anigrp30cfg.inc}
+
 interface
 
 uses
-  LCLIntf, LCLType, LMessages,
+  Windows,
   Classes,
   SysUtils,
   Forms,
@@ -75,6 +74,12 @@ uses
   Dialogs,
   AniDec30,
   AStar,
+  MMTimer,
+{$IFDEF DirectX}
+  DirectX,
+  DXUtil,
+  DXEffects,
+{$ENDIF}
   LogFile;
 
 type
@@ -503,11 +508,7 @@ type
     procedure FreeResources; override;
     procedure Render( Figure : TAniFigure ); override;
     property Frames : Longint read GetFrames;
-{$IFDEF DirectX}
     property Image : IDirectDrawSurface write SetImage;
-{$ELSE}
-       property Image : TBitmap write SetImage;
-{$ENDIF}
   end;
 
   TAniView = class( TGraphicControl )
@@ -524,7 +525,7 @@ type
     FMapColumnCount : Longint;
     MapRows : HGLOBAL;
     PixelHeight : Longint;
-    //Timer : TAniTimer;
+    Timer : TAniTimer;
     FInterval : Word;
     FActive : Boolean;
     FMap : TAniMap;
@@ -4653,8 +4654,8 @@ var
 begin
   if ( FMap = nil ) then
     Exit;
-//TZone(FMap.Zones[1]).ExportTiles('f:\zone1tiles.bmp');
-//TZone(FMap.Zones[2]).ExportTiles('f:\zone2tiles.bmp');
+{TZone(FMap.Zones[1]).ExportTiles('C:\Ashesofavalon\zone1tiles.bmp');
+TZone(FMap.Zones[2]).ExportTiles('C:\Ashesofavalon\zone2tiles.bmp');}
 {TZone(FMap.Zones[0]).ExportItems('f:\zone0items.bmp');
 TZone(FMap.Zones[1]).ExportItems('f:\zone1items.bmp');
 TZone(FMap.Zones[2]).ExportItems('f:\zone2items.bmp');
@@ -6428,7 +6429,24 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
     NextFigure, TempFigure : TAniFigure;
     RemX, RemY : integer;
     BitMask : word;
+    XRayOn : boolean;
   begin
+  //X gedrückthalten für XRayOn
+    if (GetKeystate ( 88 ) < 0) then
+          begin
+           XRayOn := true;
+           if Assigned( Current ) then
+           TCharacter( Current ).AutoTransparent := XRayOn;
+           //Log.log('XRayEin');
+           end;
+    if (GetKeystate ( 88 ) >= 0) then
+          begin
+           XRayOn := false;
+           if Assigned( Current ) then
+           TCharacter( Current ).AutoTransparent := XRayOn;
+           //Log.log('XRayAus');
+           end;
+     //X gedrückthalten für XRayOn
     Top := 0;
     Bottom := 0;
     Dx := Figure.DestX - Figure.StepX;
@@ -7934,11 +7952,17 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
     Cached := True;
   end;
 
+{$IFDEF DirectX}
   function TZone.DefineItem( Index : Word; Image : IDirectDrawSurface; const StripHeights,
     CollisionMasks, LineOfSightMasks, LightPoints : array of Word; Color : TColor; Slope : Single; Visible,
     AutoTransparent, Vertical : Boolean ) : PItemInfo;
-
-  var
+  {$ENDIF}
+  {$IFNDEF DirectX}
+    function TZone.DefineItem( Index : Word; Image : TBitmap; const StripHeights,
+      CollisionMasks, LineOfSightMasks, LightPoints : array of Word; Color : TColor; Slope : Single; Visible,
+      AutoTransparent, Vertical : Boolean ) : PItemInfo;
+    {$ENDIF}
+    var
       SrcDC : HDC;
       Picture, Mask : HBITMAP;
       NewBitWidth, NewBitHeight : Longint;
@@ -7946,12 +7970,19 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
       StripData, TileData : ^Word;
       Strips, Rows, Tiles : Integer;
       W, H : integer;
+    {$IFDEF DirectX}
       NewItemImages : IDirectDrawSurface;
       ddsd : DDSurfaceDesc;
       ddck : DDCOLORKEY;
 //  BltFx: DDBLTFX;
       SrcX1, SrcX2, SrcY1, SrcY2 : integer;
       Bitmap : TBitmap;
+    {$ENDIF}
+    {$IFNDEF DirectX}
+      ScreenDC, DestDC : HDC;
+      NewItemImages, NewItemMasks : HBITMAP;
+      OldSrcBM, OldDestBM : HBITMAP;
+    {$ENDIF}
       NewItem : ItemInfo;
     begin
       if Loaded then
@@ -7976,7 +8007,13 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
       end
       else
       begin
+  {$IFDEF DirectX}
         GetSurfaceDims( W, H, Image );
+  {$ENDIF}
+  {$IFNDEF DirectX}
+        W := Image.Width;
+        H := Image.Height;
+  {$ENDIF}
         NewItem.Width := W;
         NewItem.Height := H;
         NewItem.Strips := W div FMap.FTileWidth;
@@ -8006,10 +8043,15 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
         NewItem.Top := FItemColumnBitHeight;
         NewItem.Left := X;
 
+  {$IFNDEF DirectX}
+        CreateMask( Picture, Mask, Image, ColorToRGB( Color ) );
+  {$ENDIF}
+
     //Strip Height Data
         if ( High( StripHeights ) < 0 ) then
         begin
           Log.Log( 'Generating default depth anchors' );
+  {$IFDEF DirectX}
           Bitmap := TBitmap.create;
           Bitmap.width := W;
           Bitmap.height := H;
@@ -8018,9 +8060,12 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
           Image.ReleaseDC( SrcDC );
           CreateMask( Picture, Mask, Bitmap, ColorToRGB( Color ) );
           Bitmap.free;
+  {$ENDIF}
           GetStripHeights( NewItem.StripHeights, Mask, NewItem.Width, NewItem.Height, FMap.FStripWidth );
+  {$IFDEF DirectX}
           DeleteObject( Picture );
           DeleteObject( Mask );
+  {$ENDIF}
         end
         else
         begin
@@ -8088,6 +8133,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
         end;
         GlobalUnlock( NewItem.LightPoints );
 
+  {$IFDEF DirectX}
         if ( NewBitWidth > FItemBitWidth ) or ( NewBitHeight > FItemBitHeight ) then
         begin
 //Log.Log('Resize Zone Items: '+inttostr(FIndex));
@@ -8151,24 +8197,87 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
         end;
 
         FItemColumnBitHeight := FItemColumnBitHeight + NewItem.Strips * NewItem.Height;
+  {$ENDIF}
+  {$IFNDEF DirectX}
+        ScreenDC := GetDC( 0 );
+        SrcDC := CreateCompatibleDC( ScreenDC );
+        DestDC := CreateCompatibleDC( ScreenDC );
+        NewItemImages := CreateCompatibleBitmap( ScreenDC, NewBitWidth, NewBitHeight );
+        NewItemMasks := CreateCompatibleBitmap( DestDC, NewBitWidth, NewBitHeight );
+        OldDestBM := SelectObject( DestDC, NewItemImages );
+        if ( FItemImages <> 0 ) then
+        begin
+          OldSrcBM := SelectObject( SrcDC, FItemImages );
+          BitBlt( DestDC, 0, 0, FItemBitWidth, FItemBitHeight, SrcDC, 0, 0, SRCCOPY );
+          SelectObject( SrcDC, Picture );
+        end
+        else
+          OldSrcBM := SelectObject( SrcDC, Picture );
+        for i := 1 to NewItem.Strips do
+          BitBlt( DestDC, X, FItemColumnBitHeight + ( i - 1 ) * NewItem.Height,
+            FTileWidth, NewItem.Height, SrcDC, ( i - 1 ) * FTileWidth, 0, SRCCOPY );
+
+        SelectObject( DestDC, NewItemMasks );
+        if ( FItemMasks <> 0 ) then
+        begin
+          SelectObject( SrcDC, FItemMasks );
+          BitBlt( DestDC, 0, 0, FItemBitWidth, FItemBitHeight, SrcDC, 0, 0, SRCCOPY );
+        end;
+        SelectObject( SrcDC, Mask );
+        for i := 1 to NewItem.Strips do
+          BitBlt( DestDC, X, FItemColumnBitHeight + ( i - 1 ) * NewItem.Height,
+            FTileWidth, NewItem.Height, SrcDC, ( i - 1 ) * FTileWidth, 0, SRCCOPY );
+
+        SelectObject( SrcDC, OldSrcBM );
+        SelectObject( DestDC, OldDestBM );
+        DeleteObject( FItemImages );
+        DeleteObject( FItemMasks );
+        DeleteObject( Picture );
+        DeleteObject( Mask );
+        DeleteDC( SrcDC );
+        DeleteDC( DestDC );
+        ReleaseDC( 0, ScreenDC );
+        FItemImages := NewItemImages;
+        FItemMasks := NewItemMasks;
+
+        FItemBitWidth := NewBitWidth;
+        FItemColumnBitHeight := FItemColumnBitHeight + NewItem.Strips * NewItem.Height;
+        if NewBitHeight > FItemBitHeight then
+          FItemBitHeight := NewBitHeight;
+  {$ENDIF}
         Item[ Index ] := NewItem;
       end;
       Result := Pointer( FItemMem );
       Inc( Result, Index - 1 );
     end;
 
+  {$IFDEF DirectX}
     procedure TZone.DefineTile( Index : Word; Image : IDirectDrawSurface; Color : TColor );
+    {$ENDIF}
+    {$IFNDEF DirectX}
+      procedure TZone.DefineTile( Index : Word; Image, Mask : TBitmap; Color : TColor );
+      {$ENDIF}
       var
         NewMaxIndex : Word;
         NewBitWidth, NewBitHeight : Longint;
         i, j, X, Y : Integer;
         NewTile : TileInfo;
         W, H : integer;
+      {$IFDEF DirectX}
         NewTileImages : IDirectDrawSurface;
         ddsd : DDSurfaceDesc;
         ddck : DDCOLORKEY;
         BltFx : DDBLTFX;
         SrcX1, SrcX2, SrcY1, SrcY2 : integer;
+      {$ENDIF}
+      {$IFNDEF DirectX}
+        DestDC : HDC;
+        SrcDC : HDC;
+        Picture, Mask : HBITMAP;
+        ScreenDC : HDC;
+        OldSrcBM, OldDestBM : HBITMAP;
+        NewTileImages, NewTileMasks : HBITMAP;
+      {$ENDIF}
       begin
         if Loaded then
           exit;
@@ -8183,7 +8292,13 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
         end
         else
         begin
+    {$IFDEF DirectX}
           GetSurfaceDims( W, H, Image );
+    {$ENDIF}
+    {$IFNDEF DirectX}
+          W := Image.Width;
+          H := Image.Height;
+    {$ENDIF}
           NewTile.ImageIndex := FTileMaxIndex;
           NewTile.Columns := W div FMap.FTileWidth;
           if ( ( W mod FMap.FTileWidth ) <> 0 ) then
@@ -8196,17 +8311,18 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
           if NewBitWidth > FMap.FTileWidth then
             NewBitHeight := MaxZoneHeight
           else
-            NewBitHeight := NewMaxIndex * FMap.FTileHeight;
-          X := ( ( FTileMaxIndex - 1 ) div FTileMaxColumnIndex ) * FMap.FTileWidth;
+            NewBitHeight := (NewMaxIndex) * FMap.FTileHeight;
+          X := ( ( FTileMaxIndex  ) div FTileMaxColumnIndex ) * FMap.FTileWidth ;
           Y := ( FTileMaxIndex mod FTileMaxColumnIndex ) * FMap.FTileHeight;
-          if ( ( FTileMaxIndex mod FTileMaxColumnIndex ) = 0 ) and ( FTileMaxIndex > 0 ) then
+          if ( ( FTileMaxIndex mod FTileMaxColumnIndex ) < 0 ) and ( FTileMaxIndex > 0 ) then
             inc( X, FMap.FTileWidth );
           Tile[ Index ] := NewTile;
+    {$IFDEF DirectX}
           if ( NewBitWidth > FTileBitWidth ) or ( NewBitHeight > FTileBitHeight ) then
           begin
-//      Log.Log('Resize Zone Tiles');
-//Log.Log(inttostr(NewBitWidth)+' '+inttostr(FTileBitWidth));
-//Log.Log(inttostr(NewBitHeight)+' '+inttostr(FTileBitHeight));
+      //Log.Log('Resize Zone Tiles');
+//Log.Log(inttostr(NewBitWidth)+' x '+inttostr(FTileBitWidth));
+//Log.Log(inttostr(NewBitHeight)+' x '+inttostr(FTileBitHeight));
             ddsd.dwSize := SizeOf( ddsd );
             ddsd.dwFlags := DDSD_CAPS + DDSD_HEIGHT + DDSD_WIDTH;
             ddsd.dwWidth := NewBitWidth;
@@ -8272,6 +8388,64 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
             end;
           end;
 
+    {$ENDIF}
+    {$IFNDEF DirectX}
+          if Assigned( MaskBM ) then
+          begin
+            Picture := BITMAP.Handle;
+            Mask := MaskBM.Handle;
+          end
+          else
+            CreateMask( Picture, Mask, BITMAP, ColorToRGB( Color ) );
+          ScreenDC := GetDC( 0 );
+          SrcDC := CreateCompatibleDC( ScreenDC );
+          DestDC := CreateCompatibleDC( ScreenDC );
+          NewTileImages := CreateCompatibleBitmap( ScreenDC, FTileBitWidth, NewBitHeight );
+          NewTileMasks := CreateCompatibleBitmap( DestDC, FTileBitWidth, NewBitHeight );
+          OldDestBM := SelectObject( DestDC, NewTileImages );
+          if ( FTileImages <> 0 ) then
+          begin
+            OldSrcBM := SelectObject( SrcDC, FTileImages );
+            PatBlt( DestDC, 0, FTileBitHeight, FTileBitWidth, NewBitHeight - FTileBitHeight, BLACKNESS );
+            BitBlt( DestDC, 0, 0, FTileBitWidth, FTileBitHeight, SrcDC, 0, 0, SRCCOPY );
+            SelectObject( SrcDC, Picture );
+          end
+          else
+            OldSrcBM := SelectObject( SrcDC, Picture );
+    //This is now messed up  (GDI only)
+          for i := 1 to Tile[ Index ].Columns do
+            BitBlt( DestDC, 0, FTileBitHeight + ( ( i - 1 ) * Tile[ Index ].Rows ) * FTileHeight,
+              FTileBitWidth, Tile[ Index ].Rows * FTileHeight, SrcDC, ( i - 1 ) * FTileBitWidth, 0, SRCCOPY );
+
+          SelectObject( DestDC, NewTileMasks );
+          if ( FTileMasks <> 0 ) then
+          begin
+            SelectObject( SrcDC, FTileMasks );
+            PatBlt( DestDC, 0, FTileBitHeight, FTileBitWidth, NewBitHeight - FTileBitHeight, WHITENESS );
+            BitBlt( DestDC, 0, 0, FTileBitWidth, FTileBitHeight, SrcDC, 0, 0, SRCCOPY );
+          end;
+          SelectObject( SrcDC, Mask );
+          for i := 1 to Tile[ Index ].Columns do
+            BitBlt( DestDC, 0, FTileBitHeight + ( ( i - 1 ) * Tile[ Index ].Rows ) * FTileHeight,
+              FTileBitWidth, Tile[ Index ].Rows * FTileHeight, SrcDC, ( i - 1 ) * FTileBitWidth, 0, SRCCOPY );
+
+          SelectObject( SrcDC, OldSrcBM );
+          SelectObject( DestDC, OldDestBM );
+          DeleteObject( FTileImages );
+          DeleteObject( FTileMasks );
+          if not Assigned( MaskBM ) then
+          begin
+            DeleteObject( Picture );
+            DeleteObject( Mask );
+          end;
+          DeleteDC( SrcDC );
+          DeleteDC( DestDC );
+          ReleaseDC( 0, ScreenDC );
+          FTileImages := NewTileImages;
+          FTileMasks := NewTileMasks;
+          FTileBitWidth := NewBitWidth;
+          FTileBitHeight := NewBitHeight;
+    {$ENDIF}
           FTileMaxIndex := NewMaxIndex;
         end;
       end;
@@ -8573,6 +8747,8 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
         FullRefresh := TilesInVideo and ItemsInVideo;
       end;
 
+    {$IFDEF DirectX}
+
       procedure TZone.MoveToVideo;
       var
         NewTileImages : IDirectDrawSurface;
@@ -8686,6 +8862,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
             Log.Log( 'Zone ' + IntToStr( Index ) + ' tiles could not be moved to video' );
         end;
       end;
+    {$ENDIF}
 
 { TLightZone }
 
@@ -8695,18 +8872,36 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
         FItemBitWidth := Map.FStripWidth;
       end;
 
+    {$IFDEF DirectX}
       procedure TLightZone.AddStrip( Image : IDirectDrawSurface; var NewX, NewY : word );
+      {$ENDIF}
+      {$IFNDEF DirectX}
+        procedure TLightZone.AddStrip( Image, Mask : TBitmap; var NewX, NewY : word );
+        {$ENDIF}
         var
           NewBitWidth, NewBitHeight : Longint;
           W, H : integer;
+        {$IFDEF DirectX}
           NewItemImages : IDirectDrawSurface;
           ddsd : DDSurfaceDesc;
           ddck : DDCOLORKEY;
 //  BltFx: DDBLTFX;
+        {$ENDIF}
+        {$IFNDEF DirectX}
+          ScreenDC, SrcDC, DestDC : HDC;
+          NewItemImages, NewItemMasks : HBITMAP;
+          OldSrcBM, OldDestBM : HBITMAP;
+        {$ENDIF}
         begin
           if ( Image = nil ) then
             Exit;
+      {$IFDEF DirectX}
           GetSurfaceDims( W, H, Image );
+      {$ENDIF}
+      {$IFNDEF DirectX}
+          W := Image.Width;
+          H := Image.Height;
+      {$ENDIF}
           if AddColumn or ( FItemColumnBitHeight + H > MaxZoneHeight ) then
           begin
             AddColumn := false;
@@ -8728,6 +8923,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
           NewX := FItemColumn * FMap.FStripWidth;
           NewY := FItemColumnBitHeight;
 
+      {$IFDEF DirectX}
           if ( NewBitHeight > FItemBitHeight ) or ( NewBitWidth > FItemBitWidth ) then
           begin
             ddsd.dwSize := SizeOf( ddsd );
@@ -8762,6 +8958,42 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
           begin
             FItemImages.BltFast( NewX, NewY, Image, Rect( 0, 0, W, H ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
           end;
+      {$ENDIF}
+      {$IFNDEF DirectX}
+          ScreenDC := GetDC( 0 );
+          SrcDC := CreateCompatibleDC( ScreenDC );
+          DestDC := CreateCompatibleDC( ScreenDC );
+          NewItemImages := CreateCompatibleBitmap( ScreenDC, FItemBitWidth, NewBitHeight );
+          ReleaseDC( 0, ScreenDC );
+          NewItemMasks := CreateCompatibleBitmap( DestDC, FItemBitWidth, NewBitHeight );
+          OldDestBM := SelectObject( DestDC, NewItemImages );
+          if ( FItemImages <> 0 ) then
+          begin
+            OldSrcBM := SelectObject( SrcDC, FItemImages );
+            BitBlt( DestDC, 0, 0, FItemBitWidth, FItemBitHeight, SrcDC, 0, 0, SRCCOPY );
+            SelectObject( SrcDC, OldSrcBM );
+          end;
+          BitBlt( DestDC, NewX, NewY, FStripWidth, BITMAP.Height, BITMAP.Canvas.Handle, 0, 0, SRCCOPY );
+
+          SelectObject( DestDC, NewItemMasks );
+          if ( FItemMasks <> 0 ) then
+          begin
+            OldSrcBM := SelectObject( SrcDC, FItemMasks );
+            BitBlt( DestDC, 0, 0, FItemBitWidth, FItemBitHeight, SrcDC, 0, 0, SRCCOPY );
+            SelectObject( SrcDC, OldSrcBM );
+          end;
+          DeleteDC( SrcDC );
+          BitBlt( DestDC, NewX, NewY, FStripWidth, BITMAP.Height, Mask.Canvas.Handle, 0, 0, SRCCOPY );
+
+          SelectObject( DestDC, OldDestBM );
+          DeleteDC( DestDC );
+          DeleteObject( FItemImages );
+          DeleteObject( FItemMasks );
+          FItemImages := NewItemImages;
+          FItemMasks := NewItemMasks;
+          FItemBitWidth := NewBitWidth;
+          FItemBitHeight := NewBitHeight;
+      {$ENDIF}
 
           inc( FItemColumnBitHeight, H );
         end;
@@ -9293,7 +9525,15 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
 
         procedure TImageSheet.FreeResources;
         begin
+      {$IFDEF DirectX}
           Picture := nil;
+      {$ENDIF}
+      {$IFNDEF DirectX}
+          DeleteObject( Picture );
+          Picture := 0;
+          DeleteObject( Mask );
+          Mask := 0;
+      {$ENDIF}
         end;
 
         function TImageSheet.GetFrames : Longint;
@@ -9304,8 +9544,10 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
         procedure TImageSheet.Render( Figure : TAniFigure );
         var
           SrcX, SrcY : Longint;
+        {$IFDEF DirectX}
           SrcX1, SrcY1, SrcX2, SrcY2 : Integer;
           DstX1, DstY1, DstX2, DstY2 : Integer;
+        {$ENDIF}
         begin
           if ( Figure.Frame = 0 ) or not Figure.Visible then
             Exit;
@@ -9313,6 +9555,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
           SrcX := FrameWidth * ( ( Figure.Frame - 1 ) mod FramesWide );
           SrcY := FrameHeight * ( ( Figure.Frame - 1 ) div FramesWide );
 
+      {$IFDEF DirectX}
           SrcX1 := SrcX;
           SrcX2 := SrcX1 + Figure.Width;
           DstX1 := Figure.View.Left + Figure.PosX;
@@ -9325,13 +9568,43 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
           Clip( Figure.View.Top, Figure.View.Top + Figure.View.Height, DstY1, DstY2, SrcY1, SrcY2 );
           lpDDSBack.BltFast( DstX1, DstY1, Picture,
             Rect( SrcX1, SrcY1, SrcX2, SrcY2 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      {$ENDIF}
+      {$IFNDEF DirectX}
+          SelectObject( Figure.FView.TempDC, Mask );
+          BitBlt( Figure.FView.FrameBuffer.Canvas.Handle, Figure.PosX, Figure.PosY, Figure.Width, Figure.Height,
+            Figure.FView.TempDC, SrcX, SrcY, SRCAND );
+          SelectObject( Figure.FView.TempDC, Picture );
+          BitBlt( Figure.FView.FrameBuffer.Canvas.Handle, Figure.PosX, Figure.PosY, Figure.Width, Figure.Height,
+            Figure.FView.TempDC, SrcX, SrcY, SRCPAINT );
+          SelectObject( Figure.FView.TempDC, Figure.FView.OldTempBitmap );
+      {$ENDIF}
         end;
 
+      {$IFDEF DirectX}
 
         procedure TImageSheet.SetImage( const Value : IDirectDrawSurface );
+        {$ENDIF}
+        {$IFNDEF DirectX}
+          procedure TImageSheet.SetImage( const Value : TBitmap );
+          {$ENDIF}
           begin
+        {$IFDEF DirectX}
             Picture := nil;
             Picture := Value;
+        {$ENDIF}
+        {$IFNDEF DirectX}
+            if not Assigned( Value ) then
+            begin
+              DeleteObject( Picture );
+              Picture := 0;
+              DeleteObject( Mask );
+              Mask := 0;
+            end
+            else
+            begin
+              CreateMask( Picture, Mask, Value, ColorToRGB( TransparentColor ) );
+            end;
+        {$ENDIF}
           end;
 
 end.

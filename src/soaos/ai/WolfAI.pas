@@ -1,16 +1,11 @@
 unit WolfAI;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -814,6 +809,13 @@ begin
       begin
         i := StrToInt( s );
         if i >= 0 then
+                //Zusatz: Wegen höherer Auflösung sieht man Gegner früher, Fernangriff ohne Gegnreaktion
+        if not character.titleexists('Widescreen') then
+        begin
+        character.Vision := character.Vision + 400;
+          character.addtitle('Widescreen');
+          end;
+          //Zusatzende
         begin
           character.Mysticism := player.Mysticism + i;
           character.Stealth := player.Stealth + i;

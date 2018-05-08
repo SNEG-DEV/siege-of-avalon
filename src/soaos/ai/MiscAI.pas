@@ -1,16 +1,11 @@
 unit MiscAI;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -66,7 +61,7 @@ unit MiscAI;
 {*****************************************************************************}
 { Digital Tome Game Engine System                                             }
 {                                                                             }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA as an unpublished work.    }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA as an unpublished work.    }
 { STRICTLY CONFIDENTIAL AND PROPRIETARY PRIVATE PROPERTY                      }
 { Not for public release/use.                                                 }
 {                                                                             }
@@ -81,7 +76,7 @@ unit MiscAI;
 {                                                                             }
 {*****************************************************************************}
 
-{$INCLUDE ../engine/Anigrp30cfg.inc}
+{$INCLUDE Anigrp30cfg.inc}
 
 interface
 
@@ -96,7 +91,7 @@ uses
   Resource,
   Graphics,
   Math,
-  strFunctions;
+  strfunctions;
 
 type
   TIdleDuty = ( idStand, idMeander, idGuard, idbusy );
@@ -632,7 +627,7 @@ function GetFacing( SrcX, SrcY, TargetX, TargetY : Longint ) : Extended;
 
 implementation
 uses
-  AniDemo,
+  anidemo,
   BasicHumanoidAI;
 const
   PI = 3.1415926535;
@@ -1013,7 +1008,7 @@ begin
     Character.Vision := 0;
     character.Hearing := 0;
     Character.Smell := 0;
-    Character.MysticVision := 300;
+    Character.MysticVision := 750;
 
     SetMeleeRanged( character.TitleExists( 'MeleeRanged' ) );
     SetMeleeAggressive( character.TitleExists( 'MeleeAggressive' ) );

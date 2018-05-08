@@ -1,16 +1,11 @@
 unit MousePtr;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -69,7 +64,12 @@ unit MousePtr;
 interface
 
 uses
-  LCLIntf, LCLType, LMessages,
+{$IFDEF DirectX}
+  DirectX,
+  DXUtil,
+  DXEffects,
+{$ENDIF}
+  Windows,
   Messages,
   SysUtils,
   Classes,
@@ -81,15 +81,14 @@ uses
   Character,
   StdCtrls,
   Anigrp30,
-  Resource,
   LogFile;
 
 type
   TMousePtr = class( TObject )
   private
     BMBack : TBitmap;
-    DXMousePtr : TBitmap;
-    DXDirty : TBitmap;
+    DXMousePtr : IDirectDrawSurface;
+    DXDirty : IDirectDrawSurface;
     MouseTimer : TTimer;
     Mpt : TPoint;
     MouseCounter : integer;
@@ -109,7 +108,7 @@ type
     procedure SetEnabled( const Value : boolean );
   protected
   public
-    DxSurface : TBitmap; //surface to draw pointer to
+    DxSurface : IDirectDrawSurface; //surface to draw pointer to
     constructor Create;
     destructor Destroy; override;
     procedure SetAnim( Frame, Frames, Speed : integer );
@@ -121,6 +120,9 @@ type
   end;
 
 implementation
+
+uses
+  AniDemo;
 
 const
   PtrWidth = 32;
@@ -236,12 +238,20 @@ begin
   OldHAdj := HAdj;
   WAdj := 0;
   HAdj := 0;
-  if mPt.x + PtrWidth > 800 then
+  if mPt.x + PtrWidth > 1920 then
+    WAdj := ( mPt.x + PtrWidth ) - 1920;
+  if mPt.y + PtrHeight > 1080 then
+    HAdj := ( mPt.y + PtrHeight ) - 1080;
+  {if mPt.x + PtrWidth > 1280 then
+    WAdj := ( mPt.x + PtrWidth ) - 1280;
+  if mPt.y + PtrHeight > 720 then
+    HAdj := ( mPt.y + PtrHeight ) - 720;}
+      {if mPt.x + PtrWidth > 800 then
     WAdj := ( mPt.x + PtrWidth ) - 800;
       //mPt.x:=800-PtrWidth;
   if mPt.y + PtrHeight > 600 then
     HAdj := ( mPt.y + PtrHeight ) - 600;
-      //mPt.y:=600-PtrHeight;
+      //mPt.y:=600-PtrHeight;}
 
   if FPlotDirty then
   begin

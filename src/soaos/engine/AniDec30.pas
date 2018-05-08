@@ -1,14 +1,11 @@
 unit AniDec30;
-
-{$MODE Delphi}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -62,15 +59,17 @@ unit AniDec30;
 {                                                                              }
 {******************************************************************************}
 
+{$INCLUDE Anigrp30cfg.inc}
+
 interface
 
 uses
-  LCLIntf, LCLType,
+  Windows,
   Classes,
   Graphics,
   SysUtils,
-  Controls;
-
+  Controls,
+  LogFile;
 
 const
   MaxItems = 2047;
@@ -187,7 +186,11 @@ type
 
   TPixelFormat = ( pf555, pf565, pf888 );
 
-
+procedure CreateMask( var Picture, Mask : HBITMAP; BITMAP : TBitmap; Color : TColor );
+procedure CreateHighlightMask( Mask : HBITMAP; var HLMask : HBITMAP; W, H : Word );
+procedure CreateHighlight( HLMask : HBITMAP; var HLPicture : HBITMAP; HLColor : TColor );
+procedure GetStripHeights( var StripHeights : HGLOBAL; Mask : HBITMAP; W, H, StripWidth : Word );
+function CreateShadowBrush : HBRUSH;
 function Min( A, B : Single ) : Single;
 function ATan( X, Y : Single ) : Single;
 procedure Clip( ClipX1, ClipX2 : Integer; var DestX1, DestX2, SrcX1, SrcX2 : Integer );
@@ -196,12 +199,385 @@ procedure Clip2( ClipX1, ClipX2 : Integer; var DestX1, SrcX1, W : Integer );
 
 implementation
 
+procedure CreateMask( var Picture, Mask : HBITMAP; BITMAP : TBitmap; Color : TColor );
+var
+  TempBitmap : TBitmap;
+  DC, MaskDC : HDC;
+  OldPicture, OldMask : HBITMAP;
+  OldPalette : HPALETTE;
+  ScreenDC : HDC;
+begin
+  if ( Picture <> 0 ) then
+    DeleteObject( Picture );
+  Picture := 0;
+  if ( Mask <> 0 ) then
+    DeleteObject( Mask );
+  Mask := 0;
+
+  TempBitmap := TBitmap.Create;
+  TempBitmap.Assign( BITMAP );
+  TempBitmap.TRANSPARENT := True;
+  TempBitmap.TransparentMode := tmFixed;
+  TempBitmap.TransparentColor := Color;
+  TempBitmap.Canvas.Pen.Color := clBlack;
+  ScreenDC := GetDC( 0 );
+
+  DC := CreateCompatibleDC( ScreenDC );
+  OldPalette := SelectPalette( DC, TempBitmap.Palette, False );
+  MaskDC := CreateCompatibleDC( ScreenDC );
+  Picture := CreateCompatibleBitmap( ScreenDC, BITMAP.width, BITMAP.Height );
+  ReleaseDC( 0, ScreenDC );
+  Mask := TempBitmap.ReleaseMaskHandle;
+
+  OldMask := SelectObject( MaskDC, Mask );
+  OldPicture := SelectObject( DC, Picture );
+  BitBlt( DC, 0, 0, BITMAP.width, BITMAP.Height, BITMAP.Canvas.Handle, 0, 0, SRCCOPY );
+  PatBlt( MaskDC, 0, 0, BITMAP.width, BITMAP.Height, DSTINVERT );
+  BitBlt( DC, 0, 0, BITMAP.width, BITMAP.Height, MaskDC, 0, 0, SRCAND );
+  PatBlt( MaskDC, 0, 0, BITMAP.width, BITMAP.Height, DSTINVERT );
+
+  SelectPalette( DC, OldPalette, False );
+  SelectObject( MaskDC, OldMask );
+  SelectObject( DC, OldPicture );
+
+  TempBitmap.Free;
+
+  DeleteDC( MaskDC );
+  DeleteDC( DC );
+end;
+
+procedure CreateHighlight( HLMask : HBITMAP; var HLPicture : HBITMAP; HLColor : TColor );
+var
+  BITMAP, MaskBMP : TBitmap;
+begin
+  if ( HLPicture <> 0 ) then
+  begin
+    DeleteObject( HLPicture );
+    HLPicture := 0;
+  end;
+  MaskBMP := TBitmap.Create;
+  MaskBMP.Handle := HLMask;
+  BITMAP := TBitmap.Create;
+  BITMAP.width := MaskBMP.width;
+  BITMAP.Height := MaskBMP.Height;
+  BITMAP.Canvas.Brush.Color := ( ColorToRGB( HLColor ) xor $FFFFFF );
+  PatBlt( BITMAP.Canvas.Handle, 0, 0, BITMAP.width, BITMAP.Height, PATCOPY );
+  BITMAP.Canvas.Brush.Color := clWhite;
+  BitBlt( BITMAP.Canvas.Handle, 0, 0, BITMAP.width, BITMAP.Height, MaskBMP.Canvas.Handle, 0, 0, NOTSRCERASE );
+  MaskBMP.ReleaseHandle;
+  MaskBMP.Free;
+  HLPicture := BITMAP.ReleaseHandle;
+  BITMAP.Free;
+end;
+
 function Min( A, B : Single ) : Single;
 begin
   if ( A < B ) then
     Result := A
   else
     Result := B;
+end;
+
+function CreateShadowBrush : HBRUSH;
+var
+  DC, TempDC : HDC;
+  NewBitmap, OldBitmap : HBITMAP;
+  i, j : Word;
+  BitOn : Boolean;
+begin
+  TempDC := GetDC( 0 );
+  DC := CreateCompatibleDC( TempDC );
+  ReleaseDC( 0, TempDC );
+  NewBitmap := CreateCompatibleBitmap( DC, 8, 8 );
+  OldBitmap := SelectObject( DC, NewBitmap );
+
+  PatBlt( DC, 0, 0, 8, 8, BLACKNESS );
+  BitOn := False;
+  for j := 0 to 7 do
+  begin
+    for i := 0 to 7 do
+    begin
+      if BitOn then
+        SetPixelV( DC, i, j, clWhite );
+      BitOn := not BitOn;
+    end;
+    BitOn := not BitOn;
+  end;
+  SelectObject( DC, OldBitmap );
+  DeleteDC( DC );
+  Result := CreatePatternBrush( NewBitmap );
+  DeleteObject( NewBitmap );
+end;
+
+procedure GetStripHeights( var StripHeights : HGLOBAL; Mask : HBITMAP; W, H, StripWidth : Word );
+var
+  bmi : ^TBitmapInfo;
+  ghBitmapInfo : HGLOBAL;
+  DC : HDC;
+  RowSize : Longint;
+  hBits : HGLOBAL;
+  BitsBase, Bits : ^Byte;
+  BitOffset, ByteOffset : Integer;
+  Strips : Integer;
+  i, j, k : Integer;
+  BytesCovered : Integer;
+  BitMask, EndBits : Byte;
+  MaxBit : Word;
+  StripData : ^Word;
+const
+  FailName : string = 'AniDec30.GetStripHeights';
+begin
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    DbgLog.LogEntry( FailName );
+{$ENDIF}
+  try
+
+    RowSize := W div 8;
+    if ( ( W mod 8 ) <> 0 ) then
+      Inc( RowSize );
+    if ( ( RowSize mod 4 ) <> 0 ) then
+      Inc( RowSize, 4 - ( RowSize mod 4 ) );
+    Strips := W div StripWidth;
+    if ( ( W mod StripWidth ) <> 0 ) then
+      Inc( Strips );
+    StripHeights := GlobalAlloc( GHND, Strips * SizeOf( Word ) );
+    StripData := GlobalLock( StripHeights );
+    hBits := GlobalAlloc( GPTR, H * RowSize );
+    BitsBase := GlobalLock( hBits );
+    ghBitmapInfo := GlobalAlloc( GPTR, SizeOf( TBitmapInfoHeader ) + 1024 );
+    bmi := GlobalLock( ghBitmapInfo );
+    bmi^.bmiHeader.biSize := SizeOf( TBitmapInfoHeader );
+    bmi^.bmiHeader.biPlanes := 1;
+    bmi^.bmiHeader.biWidth := W;
+    bmi^.bmiHeader.biHeight := H;
+    bmi^.bmiHeader.biBitCount := 1;
+    bmi^.bmiHeader.biCompression := BI_RGB;
+    DC := GetDC( 0 );
+    GetDIBits( DC, Mask, 0, H, BitsBase, bmi^, DIB_RGB_COLORS );
+    ReleaseDC( 0, DC );
+
+    for i := 1 to Strips do
+    begin
+      ByteOffset := ( ( i - 1 ) * StripWidth ) div 8;
+      BitOffset := ( ( i - 1 ) * StripWidth ) mod 8;
+      BytesCovered := ( ( StripWidth + BitOffset ) div 8 );
+      if ( ( ( StripWidth + BitOffset ) mod 8 ) <> 0 ) then
+        Inc( BytesCovered );
+      MaxBit := 0;
+      for j := 1 to BytesCovered do
+      begin
+        BitMask := $FF;
+        if ( j = 1 ) then
+        begin
+          if ( StripWidth < 8 ) then
+          begin
+            BitMask := not ( ( 1 shl StripWidth ) - 1 );
+          end;
+          BitMask := BitMask shr BitOffset;
+        end;
+        if ( j = BytesCovered ) then
+        begin
+          if ( ( ( StripWidth + BitOffset ) mod 8 ) <> 0 ) then
+          begin
+            EndBits := not ( 1 shl ( 8 - ( ( StripWidth + BitOffset ) mod 8 ) ) - 1 );
+            BitMask := BitMask and EndBits;
+          end;
+        end;
+        if ( i = Strips ) then
+        begin
+          if ( ( ByteOffset + j ) * 8 > W ) then
+          begin
+            if ( ( ByteOffset + j ) * 8 > W + 8 ) then
+              BitMask := 0
+            else
+            begin
+              EndBits := not ( 1 shl ( 8 - ( W mod 8 ) ) - 1 );
+              BitMask := BitMask and EndBits;
+            end;
+          end;
+        end;
+        Bits := BitsBase;
+        Inc( Bits, ByteOffset + j - 1 );
+        for k := H downto 1 do
+        begin
+          if ( ( Bits^ and BitMask ) <> BitMask ) then
+          begin
+            if ( k > MaxBit ) then
+              MaxBit := k;
+            Break;
+          end;
+          Inc( Bits, RowSize );
+        end;
+      end;
+      StripData^ := MaxBit;
+      Inc( StripData );
+    end;
+
+    GlobalUnlock( hBits );
+    GlobalFree( hBits );
+    GlobalUnlock( ghBitmapInfo );
+    GlobalFree( ghBitmapInfo );
+    GlobalUnlock( StripHeights );
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+procedure CreateHighlightMask( Mask : HBITMAP; var HLMask : HBITMAP; W, H : Word );
+var
+  bmi : ^TBitmapInfo;
+  ghBitmapInfo : HGLOBAL;
+  hBitsIn, hBitsOut : HGLOBAL;
+  BitsBaseIn, BitsIn, BitsBaseOut, BitsOut : ^Byte;
+  DC, TempDC : HDC;
+  TempBitmap : HBITMAP;
+  RowSize : Longint;
+  i, j : Integer;
+  InByte, OutByte, BitMask : Byte;
+  C, CPrev : Boolean;
+begin
+  RowSize := W div 8;
+  if ( ( W mod 8 ) <> 0 ) then
+    Inc( RowSize );
+  if ( ( RowSize mod 4 ) <> 0 ) then
+    Inc( RowSize, 4 - ( RowSize mod 4 ) );
+  hBitsIn := GlobalAlloc( GPTR, H * RowSize );
+  BitsBaseIn := GlobalLock( hBitsIn );
+  ghBitmapInfo := GlobalAlloc( GPTR, SizeOf( TBitmapInfoHeader ) + 1024 );
+  bmi := GlobalLock( ghBitmapInfo );
+  bmi^.bmiHeader.biSize := SizeOf( TBitmapInfoHeader );
+  bmi^.bmiHeader.biPlanes := 1;
+  bmi^.bmiHeader.biWidth := W;
+  bmi^.bmiHeader.biHeight := H;
+  bmi^.bmiHeader.biBitCount := 1;
+  bmi^.bmiHeader.biCompression := BI_RGB;
+  DC := GetDC( 0 );
+  SetTextColor( DC, clBlack );
+  SetBkColor( DC, clWhite );
+  GetDIBits( DC, Mask, 0, H, BitsBaseIn, bmi^, DIB_RGB_COLORS );
+  ReleaseDC( 0, DC );
+
+  hBitsOut := GlobalAlloc( GPTR, H * RowSize );
+  BitsBaseOut := GlobalLock( hBitsOut );
+
+  //Scan horizontally for edges
+  for j := 1 to H do
+  begin
+    BitsOut := BitsBaseOut;
+    Inc( BitsOut, ( j - 1 ) * RowSize );
+    BitsIn := BitsBaseIn;
+    Inc( BitsIn, ( j - 1 ) * RowSize );
+    InByte := BitsIn^;
+    OutByte := $FF;
+    BitMask := $80;
+    CPrev := True;
+    for i := 1 to W do
+    begin
+      C := ( ( InByte and BitMask ) = BitMask );
+      if ( ( not C ) and CPrev ) then
+      begin
+        if ( BitMask = $80 ) then
+        begin
+          if ( i > 1 ) then
+          begin
+            OutByte := ( OutByte and $FE );
+            BitsOut^ := OutByte;
+            Inc( BitsOut );
+            OutByte := $FF;
+          end;
+        end
+        else
+          OutByte := ( OutByte and ( not ( BitMask shl 1 ) ) );
+      end
+      else if ( C and ( not CPrev ) ) then
+      begin
+        if ( BitMask = $80 ) then
+        begin
+          if ( i > 1 ) then
+          begin
+            BitsOut^ := OutByte;
+            Inc( BitsOut );
+            OutByte := $7F;
+          end;
+        end
+        else
+          OutByte := ( OutByte and ( not BitMask ) );
+      end
+      else
+      begin
+        if ( BitMask = $80 ) then
+        begin
+          if ( i > 1 ) then
+          begin
+            BitsOut^ := OutByte;
+            Inc( BitsOut );
+            OutByte := $FF;
+          end;
+        end
+      end;
+      CPrev := C;
+
+      BitMask := ( BitMask shr 1 );
+      if ( BitMask = 0 ) then
+      begin
+        Inc( BitsIn );
+        InByte := BitsIn^;
+        BitMask := $80;
+      end;
+    end;
+    BitsOut^ := OutByte;
+  end;
+
+  //Scan Vertically
+  for i := 1 to W do
+  begin
+    BitMask := ( $80 shr ( ( i - 1 ) mod 8 ) );
+    BitsIn := BitsBaseIn;
+    Inc( BitsIn, ( i - 1 ) div 8 );
+    BitsOut := BitsBaseOut;
+    Inc( BitsOut, ( i - 1 ) div 8 );
+    CPrev := True;
+    for j := 1 to H do
+    begin
+      C := ( ( BitsIn^ and BitMask ) = BitMask );
+      if ( ( not C ) and CPrev ) then
+      begin
+        if ( j > 1 ) then
+        begin
+          Dec( BitsOut, RowSize );
+          BitsOut^ := ( BitsOut^ and ( not BitMask ) );
+          Inc( BitsOut, RowSize );
+        end;
+      end
+      else if ( C and ( not CPrev ) ) then
+      begin
+        BitsOut^ := ( BitsOut^ and ( not BitMask ) );
+      end;
+      CPrev := C;
+
+      Inc( BitsIn, RowSize );
+      Inc( BitsOut, RowSize );
+    end;
+  end;
+
+  DC := GetDC( 0 );
+  TempDC := CreateCompatibleDC( DC );
+  ReleaseDC( 0, DC );
+  TempBitmap := SelectObject( TempDC, CreateCompatibleBitmap( TempDC, W, H ) );
+  SetDIBitsToDevice( TempDC, 0, 0, W, H, 0, 0, 0, H, BitsBaseOut, bmi^, DIB_RGB_COLORS );
+  HLMask := SelectObject( TempDC, TempBitmap );
+  DeleteDC( TempDC );
+
+  GlobalUnlock( hBitsIn );
+  GlobalFree( hBitsIn );
+  GlobalUnlock( hBitsOut );
+  GlobalFree( hBitsOut );
+  GlobalUnlock( ghBitmapInfo );
+  GlobalFree( ghBitmapInfo );
+
 end;
 
 function ATan( X, Y : Single ) : Single;

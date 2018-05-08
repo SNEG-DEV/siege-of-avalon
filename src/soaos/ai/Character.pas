@@ -1,16 +1,11 @@
 unit Character;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -64,17 +59,24 @@ unit Character;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE ../engine/Anigrp30cfg.inc}
+{$INCLUDE Anigrp30cfg.inc}
 
 interface
 
 uses
-  LCLIntf, LCLType, LMessages,
   Classes,
+  Windows,
   SysUtils,
   Anigrp30,
   AniDec30,
   Graphics,
+{$IFDEF DirectX}
+  DirectX,
+  DXUtil,
+  DXEffects,
+{$ENDIF}
+  digifx,
+  DFX,
   Resource,
   LogFile;
 
@@ -196,7 +198,7 @@ type
     DisableWhenDone : boolean;
     procedure Refresh( NewEffect : TEffect ); virtual;
     procedure Adjust( Character : TCharacter ); virtual;
-    procedure RenderLocked( Figure : TAniFigure; Bits : PBitmap ); virtual;
+    procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); virtual;
     procedure DoAction( const Action, FacingString : string );
     function DoFrame : boolean; virtual;
     function Hit( Source : TAniFigure; Damage : PDamageProfile ) : boolean; virtual;
@@ -362,7 +364,8 @@ type
     MsgDuration : Integer;
 {$IFDEF DirectX}
     MsgImage : IDirectDrawSurface;
-{$ELSE}
+{$ENDIF}
+{$IFNDEF DirectX}
     MsgImage : HBITMAP;
     MsgMask : HBITMAP;
 {$ENDIF}
@@ -441,15 +444,9 @@ type
     function MeetsRequirements( Character : TCharacter ) : Boolean; virtual;
     procedure PickUp; virtual;
     procedure Drop; virtual;
-{$IFDEF DirectX}
     function GetInventoryImage : IDirectDrawSurface;
     function GetInventoryShadow : IDirectDrawSurface;
     function GetIconicImage : IDirectDrawSurface;
-{$ELSE}
-    function GetInventoryImage : TBitmap;
-    function GetInventoryShadow : TBitmap;
-    function GetIconicImage : TBitmap;
-{$ENDIF}
     procedure SaveProperties( List : TStringList ); override;
     procedure Init; override;
     function ShouldSave : boolean; override;
@@ -545,7 +542,7 @@ type
 
   TArrow = class( TProjectile )
   private
-    RLE : TBitmap;
+    RLE : TRLESprite;
     BM : TBitmap;
     PrevSlopeX : Double;
     PrevSlopeY : Double;
@@ -743,7 +740,7 @@ type
   public
     constructor Create;
     procedure Adjust( Character : TCharacter ); override;
-    procedure RenderLocked( Figure : TAniFigure; Bits : PBitmap ); override;
+    procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); override;
     function DoFrame : boolean; override;
   end;
 
@@ -930,7 +927,7 @@ type
     Titles : TStringList;
     AutoFight : boolean;
     NextAction : TNextAction;
-    HotKey : array[ 1..8 ] of TSpell;
+    HotKey : array[ 1..10 ] of TSpell;
     Companion : array[ 1..MaxCompanions ] of TCompanionCharacter;
     NoItemPlacement : boolean;
     IntendToZone : boolean;
@@ -3371,7 +3368,7 @@ begin
       result := false;
     end;
   end;
-  for i := 1 to 8 do
+  for i := 1 to 10 do
   begin
     if assigned( HotKey[ i ] ) then
     begin
@@ -4494,6 +4491,14 @@ begin
     begin
       S := 'hotkey8=' + HotKey[ 8 ].Name; List.add( S );
     end;
+    if assigned( HotKey[ 9 ] ) then
+    begin
+      S := 'hotkey9=' + HotKey[ 9 ].Name; List.add( S );
+    end;
+    if assigned( HotKey[ 10 ] ) then
+    begin
+      S := 'hotkey10=' + HotKey[ 10 ].Name; List.add( S );
+    end;
     if assigned( CurrentSpell ) then
     begin
       S := 'currentspell=' + CurrentSpell.Name; List.add( S );
@@ -4568,6 +4573,10 @@ begin
     begin
       S := 'equipment.shield=' + Equipment[ slShield ].ItemName; List.add( S );
     end;
+    if assigned( Equipment[ sltabar ] ) then
+    begin
+      S := 'equipment.tabar=' + Equipment[ sltabar ].ItemName; List.add( S );
+    end;
     if assigned( Equipment[ slMisc1 ] ) then
     begin
       S := 'equipment.misc1=' + Equipment[ slMisc1 ].ItemName; List.add( S );
@@ -4607,6 +4616,8 @@ begin
       S := S + 'weapon,';
     if EquipmentLocked[ slShield ] then
       S := S + 'shield,';
+    if EquipmentLocked[ sltabar ] then
+      S := S + 'tabar,';
     if EquipmentLocked[ slMisc1 ] then
       S := S + 'misc1,';
     if EquipmentLocked[ slMisc2 ] then
@@ -4799,6 +4810,8 @@ begin
         result := result + 'weapon,';
       if EquipmentLocked[ slShield ] then
         result := result + 'shield,';
+      if EquipmentLocked[ sltabar ] then
+        result := result + 'tabar,';
       if EquipmentLocked[ slMisc1 ] then
         result := result + 'misc1,';
       if EquipmentLocked[ slMisc2 ] then
@@ -4834,6 +4847,8 @@ begin
       Result := Equipment[ slWeapon ].ItemName
     else if S = 'equipment.shield' then
       Result := Equipment[ slShield ].ItemName
+    else if S = 'equipment.tabar' then
+      Result := Equipment[ sltabar ].ItemName
     else if S = 'equipment.misc1' then
       Result := Equipment[ slMisc1 ].ItemName
     else if S = 'equipment.misc2' then
@@ -5012,6 +5027,14 @@ begin
             else
               HotKey[ 8 ] := TSpell( AllSpellList.Objects[ i ] );
           end
+          else if S = 'hotkey9' then
+          begin
+            i := AllSpellList.IndexOf( Value );
+            if i < 0 then
+              HotKey[ 9 ] := nil
+            else
+              HotKey[ 9 ] := TSpell( AllSpellList.Objects[ i ] );
+          end
           else
             NoProp := true;
         end;
@@ -5025,6 +5048,14 @@ begin
             Self.Alliance := Value
           else if S = 'diecount' then
             DieCount := StrToInt( Value )
+          else if S = 'hotkey10' then
+          begin
+            i := AllSpellList.IndexOf( Value );
+            if i < 0 then
+              HotKey[ 10 ] := nil
+            else
+              HotKey[ 10 ] := TSpell( AllSpellList.Objects[ i ] );
+          end
           else
             NoProp := true;
         end;
@@ -5173,6 +5204,10 @@ begin
           begin
             FEquipmentNames[ slOuter ] := Value
           end
+          else if S = 'equipment.tabar' then
+          begin
+            FEquipmentNames[ sltabar ] := Value
+          end
           else if S = 'equipment.misc1' then
           begin
             FEquipmentNames[ slMisc1 ] := Value
@@ -5216,6 +5251,8 @@ begin
               EquipmentLocked[ slWeapon ] := true;
             if pos( 'shield', S ) > 0 then
               EquipmentLocked[ slShield ] := true;
+            if pos( 'tabar', S ) > 0 then
+              EquipmentLocked[ sltabar ] := true;
             if pos( 'misc1', S ) > 0 then
               EquipmentLocked[ slMisc1 ] := true;
             if pos( 'misc2', S ) > 0 then
@@ -9307,6 +9344,8 @@ begin
         result := result + '[Weapon]';
       if slShield in SlotsAllowed then
         result := result + '[Shield]';
+      if sltabar in SlotsAllowed then
+        result := result + '[tabar]';
       if slMisc1 in SlotsAllowed then
         result := result + '[Misc1]';
       if slMisc2 in SlotsAllowed then
@@ -9454,6 +9493,8 @@ begin
       S := S + '[Weapon]';
     if slShield in SlotsAllowed then
       S := S + '[Shield]';
+    if sltabar in SlotsAllowed then
+      S := S + '[tabar]';
     if slMisc1 in SlotsAllowed then
       S := S + '[Misc1]';
     if slMisc2 in SlotsAllowed then
@@ -9527,6 +9568,8 @@ begin
               SlotsAllowed := SlotsAllowed + [ slWeapon ];
             if Pos( '[shield]', S ) > 0 then
               SlotsAllowed := SlotsAllowed + [ slShield ];
+            if Pos( '[tabar]', S ) > 0 then
+              SlotsAllowed := SlotsAllowed + [ sltabar ];
             if Pos( '[misc1]', S ) > 0 then
               SlotsAllowed := SlotsAllowed + [ slMisc1 ];
             if Pos( '[misc2]', S ) > 0 then
@@ -11182,7 +11225,9 @@ begin
     begin
       X0 := PosX + CenterX - MsgWidth div 2;
 {$IFDEF DirectX}
-      lpDDSBack.BltFast( X0, PosY - MsgHeight, MsgImage, Rect( 0, 0, MsgWidth, MsgHeight ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        //Drawalpha für dlls für Windows 8/10 Fix, UpdateSay Absturz bei Kartenrand
+      Drawalpha(lpddsback, rect(X0, PosY - MsgHeight, X0 + MsgWidth, PosY), rect( 0, 0, MsgWidth, MsgHeight ), MsgImage, True, 255);
+      //lpDDSBack.BltFast( X0, PosY - MsgHeight, MsgImage, Rect( 0, 0, MsgWidth, MsgHeight ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 {$ENDIF}
 {$IFNDEF DirectX}
       SelectObject( Game.TempDC, MsgMask );

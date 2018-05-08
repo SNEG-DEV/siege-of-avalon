@@ -12,7 +12,7 @@ unit MMTimer;
 interface
 
 uses
-  Classes, SysUtils;
+  Windows, Classes, SysUtils;
 
 type
   TAniTimer = class;

@@ -1,16 +1,11 @@
-unit Showgraphic;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
+unit ShowGraphic;
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -64,21 +59,17 @@ unit Showgraphic;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE ../engine/Anigrp30cfg.inc}
+{$INCLUDE Anigrp30cfg.inc}
 
 interface
 
 uses
 {$IFDEF DirectX}
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
   DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
+  Windows,
   Messages,
   SysUtils,
   Classes,
@@ -93,9 +84,9 @@ uses
   Anigrp30,
   math,
   Music,
-  Resource,
+  resource,
   Engine,
-  LogFile;
+  Logfile;
   
 type
   TShowGraphic = class( TDisplay )

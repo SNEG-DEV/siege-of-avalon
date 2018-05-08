@@ -1,16 +1,11 @@
 unit Merchant;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -64,13 +59,17 @@ unit Merchant;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE ../engine/Anigrp30cfg.inc}
+{$INCLUDE Anigrp30cfg.inc}
 
 interface
 
 uses
-  LCLIntf, LCLType, LMessages,
-  SDL2, SDL_image, SDL_gfx,
+{$IFDEF DirectX}
+  DirectX,
+  DXUtil,
+  DXEffects,
+{$ENDIF}
+  Windows,
   Messages,
   SysUtils,
   Classes,
@@ -102,13 +101,13 @@ type
     BodySlot : integer;
     cRect : TRect; //collision rect ofr the box its in
     WhoHasThis : integer; //whos got this item? Left guy(1), right guy(2) (or container) or ground(3)?
-    //DXSurface: TSDL_Surface;      //barbie graphic surface
-    DXSurfaceIcon : TSDL_Surface; //icon graphic surface
+    //DXSurface: IDirectDrawSurface;      //barbie graphic surface
+    DXSurfaceIcon : IDirectDrawSurface; //icon graphic surface
   end;
 
   Arrow = record
     X, Y : integer; //upper left coordinate to plot, check for collision on scroll arrows
-    DX : TSDL_Surface;
+    DX : IDirectDrawSurface;
   end;
 
   TMerchant = class( TDisplay )
@@ -127,15 +126,15 @@ type
     CurrentSelectedItem : Integer; //Current Item being dragged about
     Tx, Ty : Integer; // x and y locs used with the offset of the dragged item
 {$IFDEF DirectX}
-    DXBackHighlight : TSDL_Surface; //so we know which item is selected for buy/sell
-    DXBack : TSDL_Surface; //DD surface that holds the inventory screen before blit
-    DxDirty : TSDL_Surface; //DD for cleanup when dragging items
-    DXLeftArrow : TSDL_Surface; //Inventory left arrow
-    DXRightArrow : TSDL_Surface; //Inventory right arrow
-    DXBuyItem : TSDL_Surface;
-    DXSellItem : TSDL_Surface;
-    DXBackToGame : TSDL_Surface; //Back To Game highlight
-    DXGroundBox : TSDL_Surface; //The Ground Box Itself
+    DXBackHighlight : IDirectDrawSurface; //so we know which item is selected for buy/sell
+    DXBack : IDirectDrawSurface; //DD surface that holds the inventory screen before blit
+    DxDirty : IDirectDrawSurface; //DD for cleanup when dragging items
+    DXLeftArrow : IDirectDrawSurface; //Inventory left arrow
+    DXRightArrow : IDirectDrawSurface; //Inventory right arrow
+    DXBuyItem : IDirectDrawSurface;
+    DXSellItem : IDirectDrawSurface;
+    DXBackToGame : IDirectDrawSurface; //Back To Game highlight
+    DXGroundBox : IDirectDrawSurface; //The Ground Box Itself
 {$ENDIF}
     GroundOrderList : TList; //used to keep track of the order of items on the ground
     TopGroundIndex : Integer; //Index of the current top ground item
@@ -233,7 +232,7 @@ procedure TMerchant.Init;
 var
   InvisColor : Integer; //Transparent color :RGB(0,255,255)
   i : Integer;
-  DXBorder : TSDL_Surface;
+  DXBorder : IDirectDrawSurface;
   t : TSlot;
 const
   FailName : string = 'TMerchant.init';
@@ -452,7 +451,7 @@ begin
 
   //Whew! Now we flip it all to the screen
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 {$ENDIF}
   except
@@ -808,7 +807,7 @@ begin
     end; //endif
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do
@@ -850,7 +849,7 @@ begin
     //plot the item centered under the mouse pointer
       lpDDSBack.BltFast( Tx, Ty, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXSurfaceIcon, Rect( 0, 0, GroundListWidth, GroundListHeight ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
       MouseCursor.PlotDirty := false;
     end
     else if Assigned( DXBack ) and ( DlgScroll.ScrollIsShowing = False ) then
@@ -1013,7 +1012,7 @@ begin
 
       CurrentSelectedItem := -1; //deassign it
       lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
       MouseCursor.PlotDirty := false;
     end;
 
@@ -1069,7 +1068,7 @@ begin
     pText.PlotTextCentered( txtMessage[ 2 ], 355, 607, 362, BuySellAlpha );
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do
@@ -1328,8 +1327,8 @@ begin
     end
     else
     begin //constrict to main inventory area
-      prRect.bottom := 600;
-      prRect.Right := 800;
+      prRect.bottom := 1080; //600
+      prRect.Right := 1920; //800
     end;
     ClipCursor( prRect );
     Dispose( prRect );
@@ -1344,7 +1343,7 @@ procedure TMerchant.BuildGrid;
 var
   i, j : integer;
   //StartX,StartY: integer;
-  DXGrid : TSDL_Surface; //DD surface holding our chunk O' grid to draw right grid with
+  DXGrid : IDirectDrawSurface; //DD surface holding our chunk O' grid to draw right grid with
   BM : TBitmap;
 const
   FailName : string = 'TMerchant.BuildGrid';
@@ -1691,7 +1690,7 @@ begin
         else
           pText.PlotText( ( txtMessage[ 6 ] ), ClearLeft, LrgMsg, Alpha );
         lpDDSFront.Flip( nil, DDFLIP_WAIT );
-        lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+        lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
         MouseCursor.PlotDirty := false;
         break;
       end;
@@ -1748,7 +1747,7 @@ begin
           pText.PlotText( ( txtMessage[ 11 ] ), ClearLeft, LrgMsg, Alpha );
 
         lpDDSFront.Flip( nil, DDFLIP_WAIT );
-        lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+        lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
         MouseCursor.PlotDirty := false;
         break;
       end;

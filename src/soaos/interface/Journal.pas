@@ -1,14 +1,11 @@
 unit Journal;
-
-{$MODE Delphi}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -62,13 +59,17 @@ unit Journal;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE ../engine/Anigrp30cfg.inc}
+{$INCLUDE Anigrp30cfg.inc}
 
 interface
 
 uses
-  jpeg,
-  LCLIntf, LCLType, LMessages,
+{$IFDEF DirectX}
+  DirectX,
+  DXUtil,
+  DXEffects,
+{$ENDIF}
+  Windows,
   Messages,
   SysUtils,
   Classes,
@@ -76,6 +77,7 @@ uses
   Controls,
   Forms,
   Dialogs,
+  jpeg,
   iniFiles,
   FileCtrl,
   ExtCtrls,
@@ -85,7 +87,7 @@ uses
   GameText,
   Display,
   Anigrp30,
-  //AdventureLog,
+  AdventureLog,
   LogFile,
   Engine;
 type
@@ -230,7 +232,7 @@ begin
 
     ShowText;
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do
@@ -308,7 +310,35 @@ end; //FormMouseMove
 
 procedure TJournal.MouseDown( Sender : TAniview; Button : TMouseButton; Shift : TShiftState; X, Y, GridX, GridY : integer );
 begin
-
+   begin
+  try
+  //check for clicks
+    if ptinRect( rect( 582, 575, 659, 596 ), point( x, y ) ) then
+    begin //prev
+      if CurrentLogIndex > 0 then
+      begin
+        CurrentLogIndex := CurrentLogIndex - 1;
+        ShowText;
+      end;
+    end
+    else if ptinRect( rect( 681, 575, 721, 596 ), point( x, y ) ) then
+    begin //next
+      if CurrentLogIndex < JournalLog.LogFileList.count - 1 then
+      begin
+        CurrentLogIndex := CurrentLogIndex + 1;
+        ShowText;
+      end;
+    end
+    else if ptinRect( rect( 746, 575, 786, 596 ), point( x, y ) ) then
+    begin //exit
+      Close;
+      frmMain := nil;
+    end;
+  except
+    on E : Exception do
+     exit;
+  end;
+  end;
 end; //MouseDown
 
 procedure TJournal.MouseMove( Sender : TAniview; Shift : TShiftState; X, Y, GridX, GridY : integer );
@@ -361,7 +391,7 @@ begin
     if CurrentLogIndex > StartLogIndex then
       StartLogIndex := CurrentLogIndex;
   //clear screen
-    lpDDSBack.BltFast( 0, 0, DXBack, Rect( 0, 0, 800, 600 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, DXBack, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   //Plot buttons
   //pText.PlotText('Previous',300,570,240);
   //pText.PlotText('Next',450,570,240);
@@ -422,7 +452,7 @@ begin
     if not NoPageNumbers then
       pText.plotText( txtMessage[ 0 ] + intToStr( CurrentLogIndex + 1 ) + txtMessage[ 1 ] + IntToStr( JournalLog.LogFileList.count ), 81, 575, 255 );
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
     BM.Free;
     DXPic := nil;

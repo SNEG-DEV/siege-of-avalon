@@ -1,16 +1,11 @@
 unit AdventureLog;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -69,7 +64,7 @@ unit AdventureLog;
 interface
 
 uses
-  LCLIntf, LCLType, LMessages,
+  Windows,
   Messages,
   SysUtils,
   Classes,
@@ -77,7 +72,7 @@ uses
   Controls,
   Forms,
   Dialogs,
-  IDEintf,
+  dsgnIntf,
   comctrls,
   LogFile;
 

@@ -1,16 +1,11 @@
 unit Options;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -64,21 +59,17 @@ unit Options;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE ../engine/Anigrp30cfg.inc}
+{$INCLUDE Anigrp30cfg.inc}
 
 interface
 
 uses
 {$IFDEF DirectX}
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
   DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
+  Windows,
   Messages,
   SysUtils,
   Classes,
@@ -92,7 +83,7 @@ uses
   GameText,
   Display,
   Anigrp30,
-  LogFile,
+  Logfile,
   Engine;
 
 type
@@ -149,7 +140,7 @@ begin
 {$ENDIF}
   try
     inherited;
-    opContinueRect := Rect( 400, 450, 400 + 300, 450 + 45 );
+    opContinueRect := Rect( 502, 450, 502 + 202, 450 + 45 );
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -296,11 +287,11 @@ begin
         if ( i >= StartSpell ) and ( i < StartSpell + 5 ) then
         begin //only show 10 files
             //Show a hotkey if associated
-          for k := 1 to 8 do
+          for k := 0 to 10 do
           begin
             if TSpell( SpellList.objects[ i ] ) = Character.HotKey[ k ] then
             begin
-              pText.PlotText( 'F' + intToStr( k + 4 ), 611, 264 + j * 35, 240 );
+              pText.PlotText( intToStr( k - 1), 611, 264 + j * 35, 240 );
             end;
           end;
             //Plot The Spell Icons
@@ -317,7 +308,7 @@ begin
       end; //end for
     end;
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do
@@ -337,18 +328,18 @@ begin
 {$ENDIF}
   try
 
-   //function key f5 to f12
+   //function key 0 to 10
     if Character <> nil then
     begin
-      if ( key > 115 ) and ( key < 124 ) and ( CurrentSelectedListItem <> -1 ) then
+      if ( key > 47 ) and ( key < 58 ) and ( CurrentSelectedListItem <> -1 ) then
       begin
-        Character.HotKey[ key - 115 ] := TSpell( SpellList.objects[ CurrentSelectedListItem ] );
+        Character.HotKey[ key - 47 ] := TSpell( SpellList.objects[ CurrentSelectedListItem ] );
            //We dont want more than one key pointing at the same spell, so if allready assigned, change to nil.
-        for i := 1 to 8 do
+        for i := 1 to 10 do
         begin
-          if i <> key - 115 then
+          if i <> key - 47 then
           begin
-            if Character.HotKey[ key - 115 ] = Character.HotKey[ i ] then
+            if Character.HotKey[ key - 47 ] = Character.HotKey[ i ] then
               Character.HotKey[ i ] := nil;
           end
         end;
@@ -519,11 +510,11 @@ begin
         if ( i >= StartSpell ) and ( i < StartSpell + 5 ) then
         begin //only show 10 files
             //Show a hotkey if associated
-          for k := 1 to 8 do
+          for k := 1 to 10 do
           begin
             if TSpell( SpellList.objects[ i ] ) = Character.HotKey[ k ] then
             begin
-              pText.PlotText( 'F' + intToStr( k + 4 ), 611, 264 + j * 35, 240 );
+              pText.PlotText( intToStr( k - 1 ), 611, 264 + j * 35, 240 );
             end;
           end;
             //Plot The Spell Icons
@@ -577,7 +568,7 @@ begin
 
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do
@@ -643,11 +634,11 @@ procedure TOptions.TimerEvent( Sender : TObject );
         if ( i >= StartSpell ) and ( i < StartSpell + 5 ) then
         begin //only show 10 files
               //Show a hotkey if associated
-          for k := 1 to 8 do
+          for k := 1 to 10 do
           begin
             if TSpell( SpellList.objects[ i ] ) = Character.HotKey[ k ] then
             begin
-              pText.PlotText( 'F' + intToStr( k + 4 ), 611, 264 + j * 35, 240 );
+              pText.PlotText( intToStr( k - 1 ), 611, 264 + j * 35, 240 );
             end;
           end;
               //Plot The Spell Icons
@@ -658,7 +649,7 @@ procedure TOptions.TimerEvent( Sender : TObject );
         end
       end; //end for
       lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
       MouseCursor.PlotDirty := false;
     end;
   end;

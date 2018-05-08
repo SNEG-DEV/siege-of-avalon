@@ -1,16 +1,11 @@
 unit CharCreation;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -64,21 +59,17 @@ unit CharCreation;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE ../engine/Anigrp30cfg.inc}
+{$INCLUDE Anigrp30cfg.inc}
 
 interface
 
 uses
 {$IFDEF DirectX}
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
   DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
+  Windows,
   Messages,
   SysUtils,
   Classes,
@@ -94,7 +85,7 @@ uses
   Display,
   Anigrp30,
   Engine,
-  LogFile;
+  Logfile;
   
 type
   InformationRect = record
@@ -210,8 +201,8 @@ begin
 {$ENDIF}
   try
     inherited;
-    chaContinueRect := Rect( 400, 449, 0, 0 ); // left, top, right, bottom
-    chaCancelRect := Rect( 100, 449, 0, 0 );
+    chaContinueRect := Rect( 498, 450, 0, 0 ); // left, top, right, bottom
+    chaCancelRect := Rect( 102, 450, 0, 0 );
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -494,11 +485,11 @@ begin
           begin
             if ChosenTraining = 18 then
             begin
-              Character.Strength := Character.BaseStrength - 5;
+              Character.Strength := Character.BaseStrength - 4;
               Character.Coordination := Character.BaseCoordination - 2;
-              Character.Constitution := Character.BaseConstitution - 3;
+              Character.Constitution := Character.BaseConstitution - 2;
               Character.Perception := Character.BasePerception + 3;
-              Character.Charm := Character.BaseCharm + 3;
+              Character.Charm := Character.BaseCharm + 1;
               Character.Mysticism := Character.BaseMysticism + 3;
               Character.Combat := Character.BaseCombat - 10;
               Character.Stealth := Character.BaseStealth - 0;
@@ -537,11 +528,11 @@ begin
                 pText.PlotGoldTextCentered( lpDDSBack, txtMessage[ 5 ], 300, 448, 135, 250 )
               else
                 pText.PlotTextCentered( txtMessage[ 5 ], 300, 448, 135, 250 );
-              Character.Strength := Character.BaseStrength + 5;
+              Character.Strength := Character.BaseStrength + 4;
               Character.Coordination := Character.BaseCoordination + 2;
-              Character.Constitution := Character.BaseConstitution + 3;
+              Character.Constitution := Character.BaseConstitution + 2;
               Character.Perception := Character.BasePerception - 3;
-              Character.Charm := Character.BaseCharm - 3;
+              Character.Charm := Character.BaseCharm - 1;
               Character.Mysticism := Character.BaseMysticism - 3;
               Character.Combat := Character.BaseCombat + 10;
               Character.Stealth := Character.BaseStealth + 0;
@@ -818,13 +809,13 @@ begin
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
     if x > 600 then
-      lpDDSBack.BltFast( 500, 0, lpDDSFront, Rect( 500, 0, 800, 600 ), DDBLTFAST_WAIT )
+      lpDDSBack.BltFast( 500, 0, lpDDSFront, Rect( 500, 0, 1920, 1080 ), DDBLTFAST_WAIT )
     else if x > 400 then
-      lpDDSBack.BltFast( 300, 0, lpDDSFront, Rect( 300, 0, 700, 600 ), DDBLTFAST_WAIT )
+      lpDDSBack.BltFast( 300, 0, lpDDSFront, Rect( 300, 0, 1820, 1080 ), DDBLTFAST_WAIT )
     else if x > 200 then
-      lpDDSBack.BltFast( 100, 0, lpDDSFront, Rect( 100, 0, 500, 600 ), DDBLTFAST_WAIT )
+      lpDDSBack.BltFast( 100, 0, lpDDSFront, Rect( 100, 0, 1720, 1080 ), DDBLTFAST_WAIT )
     else
-      lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 300, 600 ), DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1420, 1080 ), DDBLTFAST_WAIT );
 
   //lpDDSBack.BltFast(101, 61, lpDDSFront, Rect(101, 61, 710, 600), DDBLTFAST_WAIT);
   //lpDDSBack.BltFast(101, 61, lpDDSFront, Rect(101, 61, 710, 600), DDBLTFAST_WAIT);
@@ -874,7 +865,7 @@ begin
     ShowStats;
     pText.PlotText( CharacterName, 310, 95, 240 );
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do
@@ -1450,7 +1441,7 @@ begin
      //plot the Carat
     pText.PlotText( '|', CaratPosition + 310, 95, 240 );
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do
@@ -1594,7 +1585,7 @@ begin
 
     BoxOpen := box;
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do
@@ -1620,7 +1611,7 @@ begin
     if assigned( OnDraw ) then
       OnDraw( self );
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do

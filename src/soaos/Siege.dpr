@@ -1,14 +1,11 @@
 program Siege;
-
-{$MODE Delphi}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -63,16 +60,17 @@ program Siege;
 {******************************************************************************}
 
 uses
-  LCLIntf, LCLType, LMessages,
   Forms,
+  Windows,
   SysUtils,
   IniFiles,
-  Controls, Interfaces,
+  Controls,
   AniDemo in 'engine\AniDemo.pas' {frmMain},
   Loader in 'engine\Loader.pas',
   Resource in 'engine\Resource.pas',
   Engine in 'engine\Engine.pas',
   AdventureLog in 'engine\AdventureLog.pas',
+  DFX in 'graphics\DFX.pas',
   GameText in 'engine\GameText.pas',
   Character in 'ai\Character.pas',
   AI1 in 'ai\AI1.pas',
@@ -83,6 +81,8 @@ uses
   Anigrp30 in 'engine\Anigrp30.pas',
   AniDec30 in 'engine\AniDec30.pas',
   String32 in 'engine\string32.pas',
+  DXEffects in 'graphics\DXEffects.pas',
+  DXUtil in 'graphics\DXUtil.pas',
   LogFile in 'Engine\LogFile.pas',
   AStar in 'ai\AStar.pas',
   Inventory in 'interface\Inventory.pas',
@@ -91,6 +91,8 @@ uses
   Award in 'interface\Award.pas',
   Parts in 'engine\Parts.pas',
   digifx in 'graphics\digifx.pas',
+  DirectX in 'graphics\DirectX.pas',
+  DXRender in 'graphics\DXRender.pas',
   Converse in 'interface\Converse.pas',
   Titles in 'engine\Titles.pas',
   Map in 'interface\Map.pas',
@@ -124,7 +126,7 @@ uses
   Transit in 'interface\Transit.pas';
 
 
-{$R *.res}
+{$R *.RES}
 
 const
   MUTEXNAME = 'DigitalTomeSiegeOfAvalon';
@@ -207,7 +209,7 @@ begin
   hMutex := OpenMutex( MUTEX_ALL_ACCESS, False, MUTEXNAME );
   if hMutex <> 0 then
   begin
-    FileClose(hMutex ); { *Converted from CloseHandle* }
+    CloseHandle( hMutex );
     Exit;
   end;
   hMutex := CreateMutex( nil, True, PChar( MUTEXNAME ) );
@@ -222,7 +224,7 @@ begin
   Application.Run;
 
   ReleaseMutex( hMutex );
-  FileClose(hMutex ); { *Converted from CloseHandle* }
+  CloseHandle( hMutex );
 
   PlayClosingMovie;
 

@@ -1,16 +1,11 @@
 unit LoaderBox;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -69,22 +64,18 @@ unit LoaderBox;
 interface
 uses
 {$IFDEF DirectX}
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
   DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
+  Windows,
   Forms,
   Classes,
   Graphics,
   SysUtils,
   Engine,
   Anigrp30,
-  LogFile;
+  logfile;
 
 type
   TLoaderBox = class( TObject )
@@ -117,8 +108,8 @@ begin
     Log.LogEntry( FailName );
 {$ENDIF}
   try
-    BltFx.dwSize := SizeOf( BltFx ); //RGB(244,164,4)
-    BltFx.dwFillColor := DDColorMatch( lpDDSFront, RGB( 32, 128, 16 ) );
+    BltFx.dwSize := SizeOf( BltFx ); //RGB(100,100,255) blau, RGB(244,164,4) gelb, RGB( 32, 128, 16 ) grün
+    BltFx.dwFillColor := DDColorMatch( lpDDSFront, RGB( 244, 164, 4 ) );
     inherited;
   except
     on E : Exception do

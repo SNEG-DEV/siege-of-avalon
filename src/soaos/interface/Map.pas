@@ -1,16 +1,11 @@
 unit Map;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -67,17 +62,19 @@ unit Map;
 interface
 
 uses
-  LCLIntf, LCLType, LMessages,
-  SDL2, SDL2_image, SDL2_gfx,
   SysUtils,
   Classes,
   Controls,
   Forms,
-  GameText,
+  Windows,
+  Gametext,
   Graphics,
+  DirectX,
   Anigrp30,
   AniDec30,
   Engine,
+  DXEffects,
+  DXUtil,
   Character,
   Display,
   LogFile;
@@ -86,8 +83,8 @@ type
   TMap = class( TDisplay )
   private
     FOnClose : TNotifyEvent;
-    DXBack : TSDL_Surface;
-    DXDirty : TSDL_Surface;
+    DXBack : IDirectDrawSurface;
+    DXDirty : IDirectDrawSurface;
     MouseOverBack : boolean;
     ShowAll : boolean;
   protected
@@ -113,7 +110,7 @@ uses
 
 procedure TMap.Init;
 var
-  Image : TSDL_Surface;
+  Image : IDirectDrawSurface;
   BM : TBitmap;
   W, H : integer;
   OffsetX, OffsetY : integer;
@@ -459,7 +456,7 @@ begin
       begin
         //lpDDSFront.Flip(nil, DDFLIP_WAIT);
         MouseCursor.Cleanup;
-        lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+        lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
         if assigned( DXBack ) then
           lpDDSBack.bltFast( 560, 378, DXBack, rect( 0, 0, 61, 45 ), DDBLTFAST_WAIT );
         lpDDSFront.Flip( nil, DDFLIP_WAIT );
@@ -473,7 +470,7 @@ begin
       begin
        //clean up
         MouseCursor.Cleanup;
-        lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+        lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
         if assigned( DXDirty ) then
           lpDDSBack.bltFast( 560, 378, DXDirty, rect( 0, 0, 61, 45 ), DDBLTFAST_WAIT );
         lpDDSFront.Flip( nil, DDFLIP_WAIT );

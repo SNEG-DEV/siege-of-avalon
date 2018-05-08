@@ -1,4 +1,4 @@
-//{$DEFINE DirectX}
+{$DEFINE DirectX}
 //{$DEFINE SHAREWARE}
 {$IFNDEF DirectX}
   //{$DEFINE DEBUG}

@@ -1,14 +1,11 @@
 unit AniDemo;
-
-{$MODE Delphi}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -67,7 +64,7 @@ interface
 {$INCLUDE Anigrp30cfg.inc}
 
 uses
-  LCLIntf, LCLType, LMessages,
+  Windows,
   Messages,
   SysUtils,
   Classes,
@@ -81,6 +78,11 @@ uses
   IniFiles,
   LogFile,
   Spells,
+{$IFDEF DirectX}
+  DirectX,
+  DXUtil,
+  DXEffects,
+{$ENDIF}
   Anigrp30,
   AniDec30,
   Character,
@@ -90,7 +92,7 @@ uses
   Display,
   Inventory,
   Converse,
-  GameText,
+  Gametext,
   Statistics,
   ObjInventory,
   Map,
@@ -128,6 +130,8 @@ const
 
 var
   DlgProgress : TLoaderBox;
+  InterfacePath : string;
+  MapPath : string;
   MaxPartyMembers : Integer;
   bPlayClosingMovie : Boolean;
   OpeningMovie : string;
@@ -219,6 +223,17 @@ type
     //    ResumeSound: boolean;
     Spinner : Integer;
     NewGame : Boolean;
+{$IFDEF DirectX}
+    OverlayB : IDirectDrawSurface;
+    OverlayR : IDirectDrawSurface;
+    ManaEmpty : IDirectDrawSurface;
+    LifeEmpty : IDirectDrawSurface;
+    SpellBar : IDirectDrawSurface;
+    SpellGlyphs : IDirectDrawSurface;
+    NoSpellIcon : IDirectDrawSurface;
+    HelpBox : IDirectDrawSurface;
+    PauseImage : IDirectDrawSurface;
+{$ENDIF}
     FCurrentTheme : string;
     ScreenShot : TBitmap;
     LastFileSaved : string;
@@ -352,7 +367,7 @@ uses
   MousePtr,
   SaveFile;
 
-  {$R *.lfm}
+{$R *.DFM}
 
 var
   DlgConverse : TConverseBox;
@@ -490,7 +505,7 @@ begin
     if DlgShow.Loaded then
       DlgShow.Release;
     if DlgTitles.Loaded then
-      DlgTitles.Release;
+    DlgTitles.Release;
     if DlgQuestLog.Loaded then
       DlgQuestLog.Release;
     if DlgAdvLog.Loaded then
@@ -726,15 +741,21 @@ begin
       if SelectedTraining = 18 then
       begin
         Player.AddTitle( 'Squire' );
+        Player.AddTitle( 'Siegeexe' );
+        Player.AddTitle( 'AoAFull' );
       end
       else if SelectedTraining = 19 then
       begin
         Player.AddTitle( 'Hunter' );
+        Player.AddTitle( 'Siegeexe' );
+        Player.AddTitle( 'AoAFull' );
       end
       else if SelectedTraining = 20 then
       begin
         Player.AddTitle( 'Apprentice' );
         Player.AddTitle( 'Charge' );
+        Player.AddTitle( 'Siegeexe' );
+        Player.AddTitle( 'AoAFull' );
       end;
 
       if AllSpells then
@@ -780,7 +801,7 @@ begin
 
     TransitionScreen := '';
     DeathScreen := '';
-    MaxPartyMembers := 2;
+    MaxPartyMembers := 4;
     if not LoadMapFile( True, False ) then
       Exit;
 
@@ -977,9 +998,11 @@ begin
 
     NewGame := True;
 
-    Log.Log( 'Set Bounds' );
+    Log.Log( 'Set Bounds' ); //Spielfenster
     Log.flush;
-    Game.SetBounds( 0, 0, 703, 511 );
+    Game.SetBounds( 0, 0, 1823, 991 );
+    //Game.SetBounds( 0, 0, 1183, 631 );
+    //Game.SetBounds( 0, 0, 703, 511 );
 
 {$IFDEF DirectX}
     Log.Log( 'Mode=DX' );
@@ -1235,8 +1258,12 @@ begin
 
     Log.Log( 'Initializing DX...' );
     Log.flush;
-    Game.InitDX( Handle, 800, 600, 16 );
-    Game.PreCreateMap( 768, 544 );
+    Game.InitDX( Handle, 1920, 1080, 16 );
+    Game.PreCreateMap( 1920, 1080 );
+    //Game.InitDX( Handle, 1280, 720, 16 );
+    //Game.PreCreateMap( 1280, 720 );
+    //Game.InitDX( Handle, 800, 600, 16 );
+    //Game.PreCreateMap( 768, 544 );
     Log.Log( 'DX initialization complete' );
     Log.flush;
     if PixelFormat = pf555 then
@@ -1291,7 +1318,7 @@ begin
       KeepTravelList := '';
       TransitionScreen := '';
       DeathScreen := '';
-      MaxPartyMembers := 2;
+      MaxPartyMembers := 4;
       if not LoadMapFile( False, True ) then
         Exit;
       DisableConsole := False;
@@ -1616,13 +1643,21 @@ begin
       if SpellBarActive then
         DrawSpellGlyphs;
     end
-    else if ( key = 88 ) then
+    (*else if ( key = 88 ) then
     begin //X
-      XRayOn := not XRayOn;
+    //if not XRayOn then
+          //begin
+               XRayOn := true;
+               if Assigned( Current ) then
+               TCharacter( Current ).AutoTransparent := XRayOn;
+               //Log.log('XRayEin');
+          //end;
+    end*)
+      {XRayOn := not XRayOn;
       if Assigned( Current ) then
         TCharacter( Current ).AutoTransparent := XRayOn;
-    end
-    else if ( key = 80 ) then
+    end}
+    (*else if ( key = 80 ) then
     begin //P - Pause
       if Active xor Paused then
       begin
@@ -1634,7 +1669,7 @@ begin
           MouseMessage := '';
           if Assigned( HLFigure ) then
           begin
-            HLFigure.Highlighted := False;
+            HLFigure.Highlighted := false;
             HLFigure := nil;
           end;
           OverlayB.GetDC( DC );
@@ -1643,9 +1678,9 @@ begin
           finally
             OverlayB.ReleaseDC( DC );
           end;
-          DrawAlpha( OverlayB, Rect( 456, 53, 456 + imgPaused.width, 53 + imgPaused.Height ),
-            Rect( 0, 0, imgPaused.width, imgPaused.Height ), PauseImage, True, 170 );
-          lpDDSFront.BltFast( 0, 486, OverlayB, Rect( 0, 0, 800, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          //Overlayb.bltfast (456,53,PauseImage,rect (0, 0, imgPaused.width, imgPaused.Height),DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          {DrawAlpha( OverlayB, Rect( 456, 53, 456 + imgPaused.width, 53 + imgPaused.Height ), Rect( 0, 0, imgPaused.width, imgPaused.Height ), PauseImage, True, 170 );
+          lpDDsback.BltFast( 0, 486, OverlayB, Rect( 0, 0, 800, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );}
 
           for i := 1 to NPCList.Count - 1 do
           begin
@@ -1664,11 +1699,23 @@ begin
             HPDistance := HPDistance * ( 66 / TCharacter( NPCList[ i ] ).HitPoints );
             ManaDistance := ManaDistance * ( 66 / TCharacter( NPCList[ i ] ).Mana );
 
-            lpDDSFront.Blt( Rect( NPCBarXCoord[ i ], 581 - Round( HPDistance ), NPCBarXCoord[ i ] + 5, 581 ),
+            lpDDSBack.Blt( Rect( NPCBarXCoord[ i ], 1061 - Round( HPDistance ), NPCBarXCoord[ i ] + 5, 1061 ),
+          nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCHealthBltFx );
+
+      lpDDSBack.Blt( Rect( NPCBarXCoord[ i ] + 7, 1061 - Round( ManaDistance ), NPCBarXCoord[ i ]
+      + 7 + 5, 1061 ), nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCManaBltFx );
+
+            {lpDDSFront.Blt( Rect( NPCBarXCoord[ i ], 701 - Round( HPDistance ), NPCBarXCoord[ i ] + 5, 701 ),
+              nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCHealthBltFx );
+
+            lpDDSFront.Blt( Rect( NPCBarXCoord[ i ] + 7, 701 - Round( ManaDistance ), NPCBarXCoord[ i ]
+              + 7 + 5, 701 ), nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCManaBltFx );}
+
+            {lpDDSFront.Blt( Rect( NPCBarXCoord[ i ], 581 - Round( HPDistance ), NPCBarXCoord[ i ] + 5, 581 ),
               nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCHealthBltFx );
 
             lpDDSFront.Blt( Rect( NPCBarXCoord[ i ] + 7, 581 - Round( ManaDistance ), NPCBarXCoord[ i ]
-              + 7 + 5, 581 ), nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCManaBltFx );
+              + 7 + 5, 581 ), nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCManaBltFx );}
           end;
         end
         else
@@ -1676,7 +1723,7 @@ begin
           Active := True;
         end;
       end;
-    end
+    end*)
     else if ( key = 77 ) then
     begin //M
       if DlgMap.Loaded then
@@ -1688,9 +1735,250 @@ begin
         BeginMap( Current );
       end;
     end
-    else if ( key = 68 ) then
-    begin //D
-      // player.hitpoints := -1;
+    else if (key = 90) then
+    begin //Z Zweischwerterstilfunktion
+         if player.titleexists('geschicklichkeit1') then
+          begin
+               if player.titleexists('Dagger') then
+                  begin
+                  RunScript(Player,'player.additem(DaggerShield)');
+                  RunScript(Player,'player.removeitem(Dagger)');
+                  end;
+               if player.titleexists('Daggershield') then
+                  begin
+                  RunScript(Player,'player.additem(Dagger)');
+                  RunScript(Player,'player.removeitem(DaggerShield)');
+                  end;
+               if player.titleexists('Daggerworn') then
+                  begin
+                  RunScript(Player,'player.additem(DaggerwornShield)');
+                  RunScript(Player,'player.removeitem(Daggerworn)');
+                  end;
+               if player.titleexists('Daggershieldworn') then
+                  begin
+                  RunScript(Player,'player.additem(Daggerworn)');
+                  RunScript(Player,'player.removeitem(DaggerwornShield)');
+                  end;
+               if player.titleexists('DaggerFine') then
+                  begin
+                  RunScript(Player,'player.additem(DaggerFineShield)');
+                  RunScript(Player,'player.removeitem(DaggerFine)');
+                  end;
+               if player.titleexists('DaggershieldFine') then
+                  begin
+                  RunScript(Player,'player.additem(DaggerFine)');
+                  RunScript(Player,'player.removeitem(DaggerFineShield)');
+                  end;
+               if player.titleexists('Axe') then
+                  begin
+                  RunScript(Player,'player.additem(Axeshield)');
+                  RunScript(Player,'player.removeitem(Axe)');
+                  end;
+               if player.titleexists('Axeshield') then
+                  begin
+                  RunScript(Player,'player.additem(Axe)');
+                  RunScript(Player,'player.removeitem(Axeshield)');
+                  end;
+               if player.titleexists('AxeFine') then
+                  begin
+                  RunScript(Player,'player.additem(AxeFineshield)');
+                  RunScript(Player,'player.removeitem(AxeFine)');
+                  end;
+               if player.titleexists('AxeshieldFine') then
+                  begin
+                  RunScript(Player,'player.additem(AxeFine)');
+                  RunScript(Player,'player.removeitem(AxeFineshield)');
+                  end;
+               if player.titleexists('AxeWorn') then
+                  begin
+                  RunScript(Player,'player.additem(AxeWornshield)');
+                  RunScript(Player,'player.removeitem(AxeWorn)');
+                  end;
+               if player.titleexists('AxeshieldWorn') then
+                  begin
+                  RunScript(Player,'player.additem(AxeWorn)');
+                  RunScript(Player,'player.removeitem(AxeWornshield)');
+                  end;
+               if player.titleexists('Shortsword') then
+                  begin
+                  if (player.strength > 6) and (player.coordination > 11) then
+                     begin
+                     RunScript(Player,'player.additem(ShortswordShield)');
+                     RunScript(Player,'player.removeitem(Shortsword)');
+                     end;
+                  end;
+               if player.titleexists('ShortswordShield') then
+                  begin
+                  RunScript(Player,'player.additem(Shortsword)');
+                  RunScript(Player,'player.removeitem(ShortswordShield)');
+                  end;
+               if player.titleexists('Shortswordworn') then
+                  begin
+                  if (player.strength > 6) and (player.coordination > 11) then
+                     begin
+                     RunScript(Player,'player.additem(ShortswordwornShield)');
+                     RunScript(Player,'player.removeitem(Shortswordworn)');
+                     end;
+                  end;
+               if player.titleexists('ShortswordShieldworn') then
+                  begin
+                  RunScript(Player,'player.additem(Shortswordworn)');
+                  RunScript(Player,'player.removeitem(ShortswordwornShield)');
+                  end;
+          end;
+    if player.titleexists('geschicklichkeit2') then
+    begin
+         if (player.strength > 11) and (player.coordination > 15) then
+         begin
+         if player.titleexists('Gladius') then
+            begin
+            RunScript(Player,'player.additem(GladiusswordShield)');
+            RunScript(Player,'player.removeitem(Gladiussword)');
+            end;
+         if player.titleexists('gladiusworn') then
+            begin
+            RunScript(Player,'player.additem(GladiusswordwornShield)');
+            RunScript(Player,'player.removeitem(Gladiusswordworn)');
+            end;
+         if player.titleexists('GladiusFine') then
+            begin
+            RunScript(Player,'player.additem(gladiusswordFineShield)');
+            RunScript(Player,'player.removeitem(gladiusswordFine)');
+            end;
+         end;
+    if player.titleexists('gladiusshield') then
+       begin
+       RunScript(Player,'player.additem(gladiussword)');
+       RunScript(Player,'player.removeitem(gladiusswordShield)');
+       end;
+    if player.titleexists('gladiusshieldworn') then
+       begin
+       RunScript(Player,'player.additem(gladiusswordworn)');
+       RunScript(Player,'player.removeitem(gladiusswordwornShield)');
+       end;
+    if player.titleexists('gladiusshieldFine') then
+       begin
+       RunScript(Player,'player.additem(gladiusswordFine)');
+       RunScript(Player,'player.removeitem(gladiusswordFineShield)');
+       end;
+       if (player.strength > 12) and (player.coordination > 15) then
+         begin
+         if player.titleexists('Scimitar') then
+            begin
+            RunScript(Player,'player.additem(scimitarShield)');
+            RunScript(Player,'player.removeitem(scimitar)');
+            end;
+         if player.titleexists('scimitarworn') then
+            begin
+            RunScript(Player,'player.additem(scimitarwornShield)');
+            RunScript(Player,'player.removeitem(scimitarworn)');
+            end;
+         if player.titleexists('scimitarFine') then
+            begin
+            RunScript(Player,'player.additem(scimitarFineShield)');
+            RunScript(Player,'player.removeitem(scimitarFine)');
+            end;
+         end;
+    if player.titleexists('scimitarshield') then
+       begin
+       RunScript(Player,'player.additem(scimitar)');
+       RunScript(Player,'player.removeitem(scimitarShield)');
+       end;
+    if player.titleexists('scimitarshieldworn') then
+       begin
+       RunScript(Player,'player.additem(scimitarworn)');
+       RunScript(Player,'player.removeitem(scimitarwornShield)');
+       end;
+    if player.titleexists('scimitarshieldFine') then
+       begin
+       RunScript(Player,'player.additem(scimitarFine)');
+       RunScript(Player,'player.removeitem(scimitarFineShield)');
+       end;
+    end;
+    if player.titleexists('geschicklichkeit3') then
+    begin
+    if (player.strength > 14) and (player.coordination > 17) then
+         begin
+         if player.titleexists('Bastardsword') then
+            begin
+            RunScript(Player,'player.additem(BastardswordShield)');
+            RunScript(Player,'player.removeitem(Bastardsword)');
+            end;
+         if player.titleexists('Bastardswordworn') then
+            begin
+            RunScript(Player,'player.additem(BastardswordwornShield)');
+            RunScript(Player,'player.removeitem(Bastardswordworn)');
+            end;
+         if player.titleexists('BastardswordFine') then
+            begin
+            RunScript(Player,'player.additem(BastardswordFineShield)');
+            RunScript(Player,'player.removeitem(BastardswordFine)');
+            end;
+         end;
+    if player.titleexists('Bastardswordshield') then
+       begin
+       RunScript(Player,'player.additem(Bastardsword)');
+       RunScript(Player,'player.removeitem(BastardswordShield)');
+       end;
+    if player.titleexists('Bastardswordshieldworn') then
+       begin
+       RunScript(Player,'player.additem(Bastardswordworn)');
+       RunScript(Player,'player.removeitem(BastardswordwornShield)');
+       end;
+    if player.titleexists('BastardswordshieldFine') then
+       begin
+       RunScript(Player,'player.additem(BastardswordFine)');
+       RunScript(Player,'player.removeitem(BastardswordFineShield)');
+       end;
+        if (player.strength > 15) and (player.coordination > 19) then
+         begin
+         if player.titleexists('Officersword') then
+            begin
+            RunScript(Player,'player.additem(OfficerswordShield)');
+            RunScript(Player,'player.removeitem(Officersword)');
+            end;
+         end;
+    if player.titleexists('Officerswordshield') then
+       begin
+       RunScript(Player,'player.additem(OfficerswordFine)');
+       RunScript(Player,'player.removeitem(OfficerswordFineShield)');
+       end;
+    end;
+    end
+        else if ( key = 84 ) then
+    begin //T
+    if not player.titleexists('Schnellerwechselaus') then
+    begin
+    if player.titleexists('chapter04') then
+    begin
+        runscript(player,'Loadmap(03Wald1,default,forst,Wald|#Schnellreise.Fall3#)');
+    end;
+    if player.titleexists('chapter03') then
+    begin
+        if not player.titleexists('chapter04') then
+        begin
+             runscript(player,'Loadmap(03Wald1,default,forst,Wald|#Schnellreise.Fall2#)');
+        end;
+    end;
+    if player.titleexists('chapter02') then
+    begin
+         if not player.titleexists('chapter03') then
+         begin
+              if player.titleexists('ImForst') then
+                 runscript(player,'Loadmap(Wald1,default,forst,Wald|#Schnellreise.Fall1#)')
+              else
+                  runscript(player,'Loadmap(southgate1b,default,Levelpoint4|#Schnellreise.Fall1#)');
+         end;
+    end;
+    if not player.titleexists('chapter02') then
+    begin
+         runscript(player,'Loadmap(southgate1b,default,Levelpoint4|#Schnellreise.Fall1#)');
+    end;
+    end;
+    end
+    {else if ( key = 76 ) then
+    begin //L
+       //player.hitpoints := -1;
 
       // for i := 0 to  Npclist.Count -1 do
       // TCharacter(npclist.Items[i]).hitpoints := -1;
@@ -1698,7 +1986,7 @@ begin
  //  Player.AddTitle('Firefly');
  //  Player.Frozen:=false;
  //  ShowQuickMessage('EmHmImKmXmYm0123456789',8000);
- //  ShowQuickMessage('AÃ„OÃ–UÃœBÃŸaÃ¤oÃ¶uÃ¼O',8000);
+ //  ShowQuickMessage('AÄOÖUÜBßaäoöuüO',8000);
  //  ShowQuickMessage('Ab Kb Lb Qb Rb Xb Yb',8000);
  //  ShowQuickMessage('m0m1m2m3m4m5m6m78m9m',8000);
  //  Player.Mysticism:=100;
@@ -1714,8 +2002,9 @@ begin
  //  RunScript(Player,'SaveGame(baba)');
  //Player.AddEffect(GetNamedEffect('deathpulse'));
  //  Player.AddEffect(TBurningRam.create);
- //  RunScript(Player,'doaction(death);doeffect(spirit)');
-    end
+   RunScript(Player,'doaction(death);doeffect(spirit)');
+   ShowQuickmessage( 'Suizid ist auch eine Lösung',300);
+    end}
       {  for i:=0 to FigureInstances.count-1 do begin
           if FigureInstances.objects[i] is tcharacter then begin
             if pos('88620',tcharacter(FigureInstances.objects[i]).guid)>0 then begin
@@ -1846,11 +2135,11 @@ begin
         end;
       end;
     end
-    else if ( key >= 116 ) and ( key < 124 ) then
+    else if ( key >= 48 ) and ( key < 58 ) then
     begin
-      if Assigned( Current.HotKey[ key - 115 ] ) then
+      if Assigned( Current.HotKey[ key - 47 ] ) then
       begin
-        Current.CurrentSpell := Current.HotKey[ key - 115 ];
+        Current.CurrentSpell := Current.HotKey[ key - 47 ];
         DrawCurrentSpell;
       end;
       if SpellbarActive then
@@ -1913,16 +2202,16 @@ begin
         Active := True;
       end;
     end
-      {else if (Key=114) or (Key=115) then begin
+      else if (Key=71) then begin      //G
         if CurrDbgLvl=0 then begin
           CurrDbgLvl:=3;
-          ShowQuickMessage('Debug On',150);
+          ShowQuickMessage('Debug On, bringt aber nix',150);
         end
         else begin
           CurrDbgLvl:=0;
           ShowQuickMessage('Debug Off',150);
         end;
-      end  }
+      end
     else if ( key = 27 ) then
     begin
       Active := False;
@@ -2160,8 +2449,9 @@ begin
       i := 80
     else if i < 0 then
       i := 0;
-    lpDDSBack.BltFast( 699, 134, ManaEmpty, Rect( 0, 0, 78, i ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
-
+      lpDDSBack.BltFast( 1819, 134, ManaEmpty, Rect( 0, 0, 78, i ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+    //lpDDSBack.BltFast( 1179, 134, ManaEmpty, Rect( 0, 0, 78, i ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+    //lpDDSBack.BltFast( 699, 134, ManaEmpty, Rect( 0, 0, 78, i ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
     if Life > 0 then
       i := Round( 107 * ( Wounds / Life ) )
     else
@@ -2170,8 +2460,9 @@ begin
       i := 107
     else if i < 0 then
       i := 0;
-    lpDDSBack.BltFast( 709, 248, LifeEmpty, Rect( 0, 0, 52, i ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
-
+      lpDDSBack.BltFast( 1829, 248, LifeEmpty, Rect( 0, 0, 52, i ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+    //lpDDSBack.BltFast( 1189, 248, LifeEmpty, Rect( 0, 0, 52, i ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+    //lpDDSBack.BltFast( 709, 248, LifeEmpty, Rect( 0, 0, 52, i ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
     if not SpellbarActive then
     begin
       for i := 1 to NPCList.Count - 1 do
@@ -2191,11 +2482,23 @@ begin
         HPDistance := HPDistance * ( 66 / TCharacter( NPCList[ i ] ).HitPoints );
         ManaDistance := ManaDistance * ( 66 / TCharacter( NPCList[ i ] ).Mana );
 
-        lpDDSBack.Blt( Rect( NPCBarXCoord[ i ], 581 - Round( HPDistance ), NPCBarXCoord[ i ] + 5, 581 ),
+        lpDDSBack.Blt( Rect( NPCBarXCoord[ i ], 1061 - Round( HPDistance ), NPCBarXCoord[ i ] + 5, 1061 ),
           nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCHealthBltFx );
 
-        lpDDSBack.Blt( Rect( NPCBarXCoord[ i ] + 7, 581 - Round( ManaDistance ), NPCBarXCoord[ i ]
-          + 7 + 5, 581 ), nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCManaBltFx );
+      lpDDSBack.Blt( Rect( NPCBarXCoord[ i ] + 7, 1061 - Round( ManaDistance ), NPCBarXCoord[ i ]
+      + 7 + 5, 1061 ), nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCManaBltFx );
+
+        {lpDDSBack.Blt( Rect( NPCBarXCoord[ i ], 701 - Round( HPDistance ), NPCBarXCoord[ i ] + 5, 701 ),
+          nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCHealthBltFx );
+
+      lpDDSBack.Blt( Rect( NPCBarXCoord[ i ] + 7, 701 - Round( ManaDistance ), NPCBarXCoord[ i ]
+      + 7 + 5, 701 ), nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCManaBltFx );}
+
+      {lpDDSBack.Blt( Rect( NPCBarXCoord[ i ], 581 - Round( HPDistance ), NPCBarXCoord[ i ] + 5, 581 ),
+          nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCHealthBltFx );
+
+      lpDDSBack.Blt( Rect( NPCBarXCoord[ i ] + 7, 581 - Round( ManaDistance ), NPCBarXCoord[ i ]
+          + 7 + 5, 581 ), nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCManaBltFx );}
       end;
     end;
 
@@ -2205,7 +2508,7 @@ begin
   end;
 end;
 
-procedure TfrmMain.AniView1BeforeDisplay( Sender : TObject );
+procedure TfrmMain.AniView1BeforeDisplay( Sender : TObject );  //Interface im Spiel
 var
   i : Integer;
 const
@@ -2223,8 +2526,8 @@ begin
 {$IFDEF DirectX}
     if SpellBarActive then
     begin
-      lpDDSBack.BltFast( 0, 486, SpellBar, Rect( 0, 0, 800, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-      lpDDSBack.BltFast( 250, 455, HelpBox, Rect( 0, 0, 195, 59 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 0, 966, SpellBar, Rect( 0, 0, 1920, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 250, 935, HelpBox, Rect( 0, 0, 195, 59 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     end
     else
     begin
@@ -2232,9 +2535,9 @@ begin
         ShowMouseMessage( TSpriteObject( HLFigure ).Name )
       else
         ShowMouseMessage( '' );
-      lpDDSBack.BltFast( 0, 486, OverlayB, Rect( 0, 0, 800, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 0, 966, OverlayB, Rect( 0, 0, 1920, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     end;
-    lpDDSBack.BltFast( 683, 0, OverlayR, Rect( 0, 0, 117, 486 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 1803, 0, OverlayR, Rect( 0, 0, 117, 966 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
     if Assigned( Player ) then
     begin
@@ -2328,11 +2631,11 @@ begin
 
   Game := TAniView.Create( frmMain );
   Game.Parent := frmMain;
-  Game.Height := 511;
+  Game.Height := 997;
   Game.Left := 0;
   Game.LMouseButton := False;
   Game.ShowRepaint := False;
-  Game.Width := 703;
+  Game.Width := 1823;
   Game.OnAfterDisplay := AniView1AfterDisplay;
   Game.OnBeforeDisplay := AniView1BeforeDisplay;
   Game.OnMouseDown := AniView1MouseDown;
@@ -2875,7 +3178,7 @@ begin
 end;
 
 procedure TfrmMain.FormMouseDown( Sender : TObject; Button : TMouseButton;
-  Shift : TShiftState; X, Y : Integer );
+  Shift : TShiftState; X, Y : Integer );   //Interface aufrufen (Inventar, Karte, etc.)
 var
   i : Integer;
 const
@@ -2889,11 +3192,13 @@ begin
     begin
       if SpellBarActive then
       begin
-        if ( X >= 0 ) and ( X < 696 ) and ( Y >= 486 ) and ( Y < 595 ) then
+        if ( X >= 0 ) and ( X < 696 ) and ( Y >= 966 ) and ( Y < 1075 ) then
+        //if ( X >= 0 ) and ( X < 696 ) and ( Y >= 486 ) and ( Y < 595 ) then
         begin
-          if ( X >= 9 ) and ( X < 693 ) and ( Y >= 519 ) and ( Y < 595 ) then
+          if ( X >= 9 ) and ( X < 693 ) and ( Y >= 999 ) and ( Y < 1075 ) then
+          //if ( X >= 9 ) and ( X < 693 ) and ( Y >= 519 ) and ( Y < 595 ) then
           begin
-            i := ( X - 9 ) div 37 + 18 * ( ( Y - 520 ) div 36 );
+            i := ( X - 9 ) div 37 + 18 * ( ( Y - 1000 ) div 36 );
             if ( i >= 0 ) and ( i < 36 ) then
             begin
               if Assigned( Spells[ i ] ) then
@@ -2908,7 +3213,8 @@ begin
         end
         else
         begin
-          if ( X >= 714 ) and ( X < 782 ) and ( Y >= 9 ) and ( Y < 107 ) then
+          if ( X >= 1834 ) and ( X < 1902 ) and ( Y >= 9 ) and ( Y < 107 ) then
+          //if ( X >= 714 ) and ( X < 782 ) and ( Y >= 9 ) and ( Y < 107 ) then
           begin
             i := 0;
             if i < NPCList.Count then
@@ -2933,7 +3239,8 @@ begin
                     DoNotRestartTimer := True;
                     CloseAllDialogs( DlgStatistics );
                     ChangeFocus( NPCList.Items[ i ] );
-                    lpDDSFront.BltFast( 699, 0, OverlayR, Rect( 16, 0, 117, 120 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                    lpDDSFront.BltFast( 1819, 0, OverlayR, Rect( 16, 0, 117, 120 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                    //lpDDSFront.BltFast( 699, 0, OverlayR, Rect( 16, 0, 117, 120 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                     BeginStatistics( Current );
                   end
                   else if DlgInventory.Loaded then
@@ -2941,7 +3248,8 @@ begin
                     DoNotRestartTimer := True;
                     CloseAllDialogs( DlgStatistics );
                     ChangeFocus( NPCList.Items[ i ] );
-                    lpDDSFront.BltFast( 699, 0, OverlayR, Rect( 16, 0, 117, 120 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                    lpDDSFront.BltFast( 1819, 0, OverlayR, Rect( 16, 0, 117, 120 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                    //lpDDSFront.BltFast( 699, 0, OverlayR, Rect( 16, 0, 117, 120 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                     BeginInventory( Current );
                   end
                   else if Active then
@@ -2958,23 +3266,30 @@ begin
         end;
       end
       else
-      begin
+      begin      //Teamkameraden
         i := -1;
-        if ( X >= 0 ) and ( X < 66 ) and ( Y >= 518 ) and ( Y < 580 ) then
+        if ( X >= 0 ) and ( X < 66 ) and ( Y >= 998 ) and ( Y < 1060 ) then
+        //if ( X >= 0 ) and ( X < 66 ) and ( Y >= 518 ) and ( Y < 580 ) then
         begin
           i := 1;
         end
-        else if ( X >= 80 ) and ( X < 152 ) and ( Y >= 518 ) and ( Y < 580 ) then
+        else if ( X >= 80 ) and ( X < 152 ) and ( Y >= 998 ) and ( Y < 1060 ) then
+        //else if ( X >= 80 ) and ( X < 152 ) and ( Y >= 518 ) and ( Y < 580 ) then
         begin
           i := 2;
         end
-          {      else if (X>=166) and (X<234) and (Y>=518) and (Y<580) then begin
-                  i:=3;
-                end
-                else if (X>=248) and (X<311) and (Y>=518) and (Y<580) then begin
-                  i:=4;
-                end  }
-        else if ( X >= 716 ) and ( X < 778 ) and ( Y >= 11 ) and ( Y < 104 ) then
+        else if (X>=166) and (X<234) and ( Y >= 998 ) and ( Y < 1060 ) then
+        //else if (X>=166) and (X<234) and (Y>=518) and (Y<580) then
+        begin
+        i:=3;
+        end
+        else if (X>=248) and (X<311) and ( Y >= 998 ) and ( Y < 1060 ) then
+        //else if (X>=248) and (X<311) and (Y>=518) and (Y<580) then
+        begin
+        i:=4;
+        end
+        else if ( X >= 1834 ) and ( X < 1902 ) and ( Y >= 9 ) and ( Y < 107 ) then
+        //else if ( X >= 716 ) and ( X < 778 ) and ( Y >= 11 ) and ( Y < 104 ) then
         begin
           i := 0;
         end;
@@ -3016,8 +3331,10 @@ begin
                   DoNotRestartTimer := True;
                   CloseAllDialogs( DlgStatistics );
                   ChangeFocus( NPCList.Items[ i ] );
-                  lpDDSFront.BltFast( 0, 498, OverlayB, Rect( 0, 12, 326, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-                  lpDDSFront.BltFast( 699, 0, OverlayR, Rect( 16, 0, 117, 120 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                  lpDDSFront.BltFast( 0, 966, OverlayB, Rect( 0, 0, 326, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                  lpDDSFront.BltFast( 1803, 0, OverlayR, Rect( 0, 0, 117, 120 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                  //lpDDSFront.BltFast( 0, 498, OverlayB, Rect( 0, 12, 326, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                  //lpDDSFront.BltFast( 699, 0, OverlayR, Rect( 16, 0, 117, 120 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                   BeginStatistics( Current );
                 end
                 else if DlgInventory.Loaded then
@@ -3025,8 +3342,10 @@ begin
                   DoNotRestartTimer := True;
                   CloseAllDialogs( DlgStatistics );
                   ChangeFocus( NPCList.Items[ i ] );
-                  lpDDSFront.BltFast( 0, 498, OverlayB, Rect( 0, 12, 326, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-                  lpDDSFront.BltFast( 699, 0, OverlayR, Rect( 16, 0, 117, 120 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                  lpDDSFront.BltFast( 0, 966, OverlayB, Rect( 0, 0, 326, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                  lpDDSFront.BltFast( 1803, 0, OverlayR, Rect( 0, 0, 117, 120 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                  //lpDDSFront.BltFast( 0, 498, OverlayB, Rect( 0, 12, 326, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                  //lpDDSFront.BltFast( 699, 0, OverlayR, Rect( 16, 0, 117, 120 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                   BeginInventory( Current );
                 end
                 else if Active then
@@ -3044,7 +3363,7 @@ begin
 
       if Assigned( Current ) then
       begin
-        if ( X >= 725 ) and ( X < 773 ) and ( Y >= 430 ) and ( Y < 475 ) then
+        if ( X >= 1846 ) and ( X < 1895 ) and ( Y >= 886 ) and ( Y < 930 ) then
         begin
           if DlgInventory.Loaded then
             CloseAllDialogs( DlgInventory )
@@ -3055,7 +3374,8 @@ begin
             BeginInventory( Current );
           end;
         end
-        else if ( X >= 724 ) and ( X < 772 ) and ( Y >= 511 ) and ( Y < 559 ) then
+        else if ( X >= 1846 ) and ( X < 1892 ) and ( Y >= 991 ) and ( Y < 1039 ) then
+        //else if ( X >= 724 ) and ( X < 772 ) and ( Y >= 511 ) and ( Y < 559 ) then
         begin
           if DlgMap.Loaded then
             CloseAllDialogs( DlgMap )
@@ -3066,7 +3386,8 @@ begin
             BeginMap( Current );
           end;
         end
-        else if ( X >= 658 ) and ( X < 728 ) and ( Y >= 559 ) and ( Y < 584 ) then
+        else if ( X >= 1138 ) and ( X < 1202 ) and ( Y >= 1039 ) and ( Y < 1064 ) then
+        //else if ( X >= 658 ) and ( X < 728 ) and ( Y >= 559 ) and ( Y < 584 ) then
         begin
           if DlgJournal.Loaded then
             CloseAllDialogs( DlgJournal )
@@ -3077,7 +3398,8 @@ begin
             BeginJournal;
           end;
         end
-        else if ( X >= 658 ) and ( X < 728 ) and ( Y >= 533 ) and ( Y < 559 ) then
+        else if ( X >= 1138 ) and ( X < 1202 ) and ( Y >= 1016 ) and ( Y < 1039 ) then
+        //else if ( X >= 658 ) and ( X < 728 ) and ( Y >= 533 ) and ( Y < 559 ) then
         begin
           if DlgAdvLog.Loaded then
             CloseAllDialogs( DlgAdvLog )
@@ -3088,7 +3410,8 @@ begin
             BeginAdvLog;
           end;
         end
-        else if ( X >= 658 ) and ( X < 728 ) and ( Y >= 511 ) and ( Y < 533 ) then
+        else if ( X >= 1138 ) and ( X < 1202 ) and ( Y >= 998 ) and ( Y < 1013 ) then
+        //else if ( X >= 658 ) and ( X < 728 ) and ( Y >= 511 ) and ( Y < 533 ) then
         begin
           if DlgQuestLog.Loaded then
             CloseAllDialogs( DlgQuestLog )
@@ -3099,7 +3422,8 @@ begin
             BeginQuestLog;
           end;
         end
-        else if ( X >= 608 ) and ( X < 648 ) and ( Y >= 542 ) and ( Y < 584 ) then
+        else if ( X >= 1088 ) and ( X < 1128 ) and ( Y >= 1022 ) and ( Y < 1064 ) then
+        //else if ( X >= 608 ) and ( X < 648 ) and ( Y >= 542 ) and ( Y < 584 ) then
         begin
           if DlgTitles.Loaded then
             CloseAllDialogs( DlgTitles )
@@ -3110,7 +3434,8 @@ begin
             BeginTitles( Current );
           end;
         end
-        else if ( X >= 175 ) and ( X < 256 ) and ( Y >= 539 ) and ( Y < 571 ) then
+        else if ( X >= 345 ) and ( X < 425 ) and ( Y >= 1020 ) and ( Y < 1050 ) then
+        //else if ( X >= 175 ) and ( X < 256 ) and ( Y >= 539 ) and ( Y < 571 ) then
         begin
           if DlgRoster.Loaded then
             CloseAllDialogs( DlgRoster )
@@ -3123,7 +3448,8 @@ begin
           end;
           Exit;
         end
-        else if ( X >= 324 ) and ( X < 385 ) and ( Y >= 512 ) and ( Y < 588 ) and not SpellBarActive then
+        else if ( X >= 507 ) and ( X < 541 ) and ( Y >= 992 ) and ( Y < 1068 ) and not SpellBarActive then
+        //else if ( X >= 324 ) and ( X < 385 ) and ( Y >= 512 ) and ( Y < 588 ) and not SpellBarActive then
         begin
           SpellBarActive := not SpellBarActive;
           if SpellBarActive then
@@ -3152,12 +3478,18 @@ begin
     if SpellBarActive then
     begin
       S := '';
-      Info := '';
-      if ( X >= 0 ) and ( X < 696 ) and ( Y >= 486 ) and ( Y < 595 ) then
+      Info := ''; //Bereich für Spellinfo
+      if ( X >= 0 ) and ( X < 696 ) and ( Y >= 966 ) and ( Y < 1075 ) then
+      //if ( X >= 0 ) and ( X < 696 ) and ( Y >= 606 ) and ( Y < 715 ) then
+      //if ( X >= 0 ) and ( X < 696 ) and ( Y >= 486 ) and ( Y < 595 ) then
       begin
-        if ( X >= 9 ) and ( X < 693 ) and ( Y >= 519 ) and ( Y < 595 ) then
+      if ( X >= 9 ) and ( X < 693 ) and ( Y >= 999 ) and ( Y < 1075 ) then
+        //if ( X >= 9 ) and ( X < 693 ) and ( Y >= 639 ) and ( Y < 715 ) then
+        //if ( X >= 9 ) and ( X < 693 ) and ( Y >= 519 ) and ( Y < 595 ) then
         begin
-          i := ( X - 9 ) div 37 + 18 * ( ( Y - 520 ) div 36 );
+          i := ( X - 9 ) div 37 + 18 * ( ( Y - 1000 ) div 36 );
+          //i := ( X - 9 ) div 37 + 18 * ( ( Y - 640 ) div 36 );
+          //i := ( X - 9 ) div 37 + 18 * ( ( Y - 520 ) div 36 );
           if ( i >= 0 ) and ( i < 36 ) then
           begin
             if Assigned( Spells[ i ] ) then
@@ -3574,10 +3906,10 @@ begin
         BM.Free;
       end;
       Image6.Picture.BITMAP.LoadFromFile( InterfacePath + 'combat.bmp' );
-      Image4.Picture.BITMAP.LoadFromFile( InterfacePath + 'bottombar.bmp' );
+      Image4.Picture.BITMAP.LoadFromFile( InterfacePath + 'bottombarFULLHD.bmp' );
       OverlayB := DDGetImage( lpDD, Image4.Picture.BITMAP,
         ColorToRGB( clFuchsia ), True );
-      Image2.Picture.BITMAP.LoadFromFile( InterfacePath + 'sidebar.bmp' );
+      Image2.Picture.BITMAP.LoadFromFile( InterfacePath + 'sidebarFULLHD.bmp' );
       OverlayR := DDGetImage( lpDD, Image2.Picture.BITMAP,
         ColorToRGB( clFuchsia ), True );
       imgMana.Picture.BITMAP.LoadFromFile( InterfacePath + 'mana.bmp' );
@@ -3586,7 +3918,7 @@ begin
       imgLife.Picture.BITMAP.LoadFromFile( InterfacePath + 'health.bmp' );
 
       LifeEmpty := DDGetImage( lpDD, imgLife.Picture.BITMAP, ColorToRGB( clBlack ), True );
-      imgSpellBar.Picture.BITMAP.LoadFromFile( InterfacePath + 'spellbar.bmp' );
+      imgSpellBar.Picture.BITMAP.LoadFromFile( InterfacePath + 'spellbarFULLHD.bmp' );
       SpellBar := DDGetImage( lpDD, imgSpellBar.Picture.BITMAP,
         ColorToRGB( clFuchsia ), True );
       ShadowImage := DDGetImage( lpDD, Image3.Picture.BITMAP,
@@ -4120,6 +4452,7 @@ begin
         //Stuff for summoning spells
         RatResource := TCharacterResource( PartManager.GetOnDemandResource( 'SpriteObject\Character\Animals\Rat' ) );
         WolfResource := TCharacterResource( PartManager.GetOnDemandResource( 'SpriteObject\Character\Animals\Wolf1' ) );
+        GolemResource := TCharacterResource( PartManager.GetOnDemandResource( 'SpriteObject\Character\Monsters\Golem\Rockgolem' ) );
 
         for i := 0 to NPCList.Count - 1 do
         begin
@@ -5168,7 +5501,7 @@ begin
     NewScene := SceneName;
     NewStartingPoint := StartingPoint;
     LoadNewLevel := 1;
-    DisableConsole := True;
+    DisableConsole := true;
     Timer2.Enabled := True;
 
   except
@@ -5193,14 +5526,22 @@ begin
       FillRectSub( lpDDSBack, Rect( 0, 0, 703, 511 ), $202020 );
       if SpellBarActive then
       begin
-        lpDDSBack.BltFast( 0, 486, SpellBar, Rect( 0, 0, 800, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-        lpDDSBack.BltFast( 250, 455, HelpBox, Rect( 0, 0, 195, 59 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+              lpDDSBack.BltFast( 0, 966, SpellBar, Rect( 0, 0, 1920, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 250, 935, HelpBox, Rect( 0, 0, 195, 59 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        //lpDDSBack.BltFast( 0, 606, SpellBar, Rect( 0, 0, 1280, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        //lpDDSBack.BltFast( 250, 475, HelpBox, Rect( 0, 0, 195, 59 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      //lpDDSBack.BltFast( 0, 486, SpellBar, Rect( 0, 0, 800, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      //lpDDSBack.BltFast( 250, 455, HelpBox, Rect( 0, 0, 195, 59 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       end
       else
       begin
-        lpDDSBack.BltFast( 0, 486, OverlayB, Rect( 0, 0, 800, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 0, 966, OverlayB, Rect( 0, 0, 1920, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        //lpDDSBack.BltFast( 0, 606, OverlayB, Rect( 0, 0, 1280, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        //lpDDSBack.BltFast( 0, 486, OverlayB, Rect( 0, 0, 800, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       end;
-      lpDDSBack.BltFast( 683, 0, OverlayR, Rect( 0, 0, 117, 486 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 1803, 0, OverlayR, Rect( 0, 0, 117, 966 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      //lpDDSBack.BltFast( 1163, 0, OverlayR, Rect( 0, 0, 117, 606 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      //lpDDSBack.BltFast( 683, 0, OverlayR, Rect( 0, 0, 117, 486 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       DrawHealthBars;
       lpDDSFront.Flip( nil, DDFLIP_WAIT );
       MouseCursor.PlotDirty := False;
@@ -5238,7 +5579,7 @@ begin
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
-  end;
+  end; 
 end;
 
 procedure TfrmMain.PlaceNPCList;
@@ -5303,15 +5644,14 @@ begin
 {$ENDIF}
   try
 
-    OverlayB.BltFast( 339, 64, NoSpellIcon, Rect( 0, 0, 32, 32 ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
-
+    //OverlayB.BltFast( 339, 64, NoSpellIcon, Rect( 0, 0, 32, 32 ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+    OverlayB.BltFast( 508, 64, NoSpellIcon, Rect( 0, 0, 32, 32 ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
     if Assigned( Current ) and Assigned( Current.CurrentSpell ) then
     begin
       Point := Current.CurrentSpell.GetIconXY( Current );
-      DrawAlpha( OverlayB, Rect( 339, 64, 339 + 32, 64 + 32 ),
-        Rect( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), SpellGlyphs, False, 200 );
-    end;
-
+      //DrawAlpha( OverlayB, Rect( 339, 64, 339 + 32, 64 + 32 ),Rect( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), SpellGlyphs, False, 200 );
+      DrawAlpha( OverlayB, Rect( 508, 64, 508 + 32, 64 + 32 ),Rect( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), SpellGlyphs, False, 200 );
+     end;
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -5327,6 +5667,7 @@ var
   X, Y : Integer;
 const
   FailName : string = 'Main.DrawSpellGlyphs';
+  FailName2 : string = 'Main.DrawHelpbox';
 begin
 {$IFDEF DODEBUG}
   if ( CurrDbgLvl >= DbgLvlSevere ) then
@@ -5336,9 +5677,9 @@ begin
 
     SpellBar.GetDC( DC );
     try
-      BitBlt( DC, 0, 0, imgSpellBar.width, imgSpellBar.Height, imgSpellBar.Canvas.Handle, 0, 0, SRCCOPY );
+      bitBlt( DC, 0, 0, imgSpellBar.width, imgSpellBar.Height, imgSpellBar.Canvas.Handle, 0, 0, SRCCOPY );
     finally
-      SpellBar.ReleaseDC( DC );
+     SpellBar.ReleaseDC( DC );
     end;
 
     for i := 0 to 35 do
@@ -5355,16 +5696,16 @@ begin
             Spells[ i ] := TSpell( SpellList.Objects[ i ] );
             Point := TSpell( SpellList.Objects[ i ] ).GetIconXY( Current );
             X := 9 + ( i mod 18 ) * 37;
-            Y := 31 + ( i div 18 ) * 36;
+            Y := 33 + ( i div 18 ) * 36;
             if SpellList.Objects[ i ] = Current.CurrentSpell then
             begin
               FillRectAlpha( SpellBar, Rect( X - 2, Y - 2, X + 34, Y + 34 ), clMaroon, 200 );
-              DrawAlpha( SpellBar, Rect( X, Y, X + 32, Y + 32 ),
-                Rect( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), SpellGlyphs, False, 160 );
+              //SpellBar.bltfast(X, Y,Spellglyphs, Rect ( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+              DrawAlpha( SpellBar, Rect( X, Y, X + 32, Y + 32 ), Rect( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), SpellGlyphs, False, 160 );
             end
             else
-              DrawAlpha( SpellBar, Rect( X, Y, X + 32, Y + 32 ),
-                Rect( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), SpellGlyphs, False, 200 );
+            //SpellBar.bltfast(X, Y,Spellglyphs, Rect ( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+              DrawAlpha( SpellBar, Rect( X, Y, X + 32, Y + 32 ), Rect( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), SpellGlyphs, False, 200 );
           end;
         end;
       finally
@@ -5379,12 +5720,12 @@ begin
     finally
       HelpBox.ReleaseDC( DC );
     end;
-
-  except
+     except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
   end;
 end;
+
 
 procedure TfrmMain.CueTune( const FileList : string; Instant : Boolean );
 var
@@ -5651,7 +5992,7 @@ begin
     NewGame := True;
 
     Player := TCharacter.Create( 400, 400, 0, 1, True );
-    Player.TrainingPoints := 20;
+    Player.TrainingPoints := 10;
 
     AdventureLog1.Clear;
     DlgJournal.StartLogIndex := -1;
@@ -5850,7 +6191,7 @@ begin
       Hair[ 4, 3, 2 ] := PartManager.GetLayerResource( LayeredImage );
       Hair[ 4, 4, 2 ] := nil;
 
-  {    Hair[1, 1, 1] := PartManager.GetLayerResource(S + 'ShortHairBeardLight');
+      Hair[1, 1, 1] := PartManager.GetLayerResource(S + 'ShortHairBeardLight');
       Hair[1, 2, 1] := PartManager.GetLayerResource(S + 'LongHairBeardLight');
       Hair[1, 3, 1] := PartManager.GetLayerResource(S + 'PonyBeardLight');
       Hair[1, 4, 1] := PartManager.GetLayerResource(S + 'BeardLight');
@@ -5872,7 +6213,20 @@ begin
 
       Hair[1, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairLight');
       Hair[1, 2, 2] := PartManager.GetLayerResource(S + 'LongHairLight');
-      if Female then
+      Hair[1, 3, 2] := PartManager.GetLayerResource(S + 'PonyTailLight');
+
+      Hair[2, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairDark');
+      Hair[2, 2, 2] := PartManager.GetLayerResource(S + 'LongHairDark');
+      Hair[2, 3, 2] := PartManager.GetLayerResource(S + 'PonyTailDark');
+
+      Hair[3, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairRed');
+      Hair[3, 2, 2] := PartManager.GetLayerResource(S + 'LongHairRed');
+      Hair[3, 3, 2] := PartManager.GetLayerResource(S + 'PonyTailRed');
+
+      Hair[4, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairGrey');
+      Hair[4, 2, 2] := PartManager.GetLayerResource(S + 'LongHairGrey');
+      Hair[4, 3, 2] := PartManager.GetLayerResource(S + 'PonyTailGrey');
+      {if Female then
         Hair[1, 3, 2] := PartManager.GetLayerResource(S + 'FemHiPonytailLight')
       else
         Hair[1, 3, 2] := PartManager.GetLayerResource(S + 'PonytailLight');
@@ -5900,7 +6254,7 @@ begin
         Hair[4, 3, 2] := PartManager.GetLayerResource(S + 'FemHiPonytailGrey')
       else
         Hair[4, 3, 2] := PartManager.GetLayerResource(S + 'PonytailGrey');
-      Hair[4, 4, 2] := nil;   }
+      Hair[4, 4, 2] := nil;}
 
       Spinner := 0;
       OnDraw := CharCreationDraw;
@@ -6032,7 +6386,7 @@ begin
 
         TransitionScreen := '';
         DeathScreen := '';
-        MaxPartyMembers := 2;
+        MaxPartyMembers := 4;
         if not LoadMapFile( False, True ) then
           Exit;
         LastFileSaved := GameName;
@@ -6260,13 +6614,18 @@ begin
   end;
 end;
 
-procedure TfrmMain.ShowMouseMessage( const Msg : string );
+procedure TfrmMain.ShowMouseMessage( const Msg : string ); //Showmessage, Textbox
 const
-  tX1 = 394;
+  tX1 = 566;
+  tY1 = 33;
+  tX2 = 566;
+  tX3 = tx2 + 196;
+  tY2 = 55;
+  {tX1 = 394;
   tY1 = 33;
   tX2 = 394;
   tX3 = tx2 + 196;
-  tY2 = 55;
+  tY2 = 55;}
 var
   NewMessage : Boolean;
   DC : HDC;
@@ -6313,13 +6672,14 @@ begin
     begin
       OverlayB.GetDC( DC );
       try
-        BitBlt( DC, 391, 30, 202, 68, Image4.Canvas.Handle, 391, 30, SRCCOPY );
+        BitBlt( DC, 564, 30, 202, 68, Image4.Canvas.Handle, 564, 30, SRCCOPY );
+        //BitBlt( DC, 391, 30, 202, 68, Image4.Canvas.Handle, 391, 30, SRCCOPY ); //Aktualisieren Textbox
       finally
         OverlayB.ReleaseDC( DC );
       end;
       DlgText.PlotF13Text( OverlayB, MouseMessage, tX1, tY1, 170 );
       DlgText.PlotF13Block( OverlayB, QuickMessage, tX2, tx3, tY2, 170 );
-      //    DlgText.PlotText2(OverlayB,QuickMessage,tx2,ty2,170);
+      //DlgText.PlotText2(OverlayB,QuickMessage,tx2,ty2,170);
       //    DlgText.LoadTinyFontGraphic;
       //    DlgText.PlotTinyText2(OverlayB,QuickMessage,tx2,ty2,170);
       //    DlgText.LoadMegaTinyFontGraphic;
@@ -6371,14 +6731,18 @@ begin
     if i = 0 then
     begin
       PaintCharacterOnBorder( TSpriteObject( Sender ), i );
-      lpDDSBack.BltFast( 683, 0, OverlayR, Rect( 0, 0, 117, 133 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 1803, 0, OverlayR, Rect( 0, 0, 117, 133 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      //lpDDSBack.BltFast( 1163, 0, OverlayR, Rect( 0, 0, 117, 133 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      //lpDDSBack.BltFast( 683, 0, OverlayR, Rect( 0, 0, 117, 133 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     end
     else if i >= 1 then
     begin
       if not SpellBarActive then
       begin
         PaintCharacterOnBorder( Current, i );
-        lpDDSBack.BltFast( 0, 486, OverlayB, Rect( 0, 0, 800, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        lpDDSBack.BltFast( 0, 966, OverlayB, Rect( 0, 0, 1280, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        //lpDDSBack.BltFast( 0, 606, OverlayB, Rect( 0, 0, 1280, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        //lpDDSBack.BltFast( 0, 486, OverlayB, Rect( 0, 0, 800, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       end;
 
       for i := 1 to NPCList.Count - 1 do
@@ -6398,11 +6762,23 @@ begin
         HPDistance := HPDistance * ( 66 / TCharacter( NPCList[ i ] ).HitPoints );
         ManaDistance := ManaDistance * ( 66 / TCharacter( NPCList[ i ] ).Mana );
 
-        lpDDSBack.Blt( Rect( NPCBarXCoord[ i ], 581 - Round( HPDistance ), NPCBarXCoord[ i ] + 5, 581 ),
+        lpDDSBack.Blt( Rect( NPCBarXCoord[ i ], 1061 - Round( HPDistance ), NPCBarXCoord[ i ] + 5, 1061 ),
+          nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCHealthBltFx );
+
+      lpDDSBack.Blt( Rect( NPCBarXCoord[ i ] + 7, 1061 - Round( ManaDistance ), NPCBarXCoord[ i ]
+      + 7 + 5, 1061 ), nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCManaBltFx );
+
+        {lpDDSBack.Blt( Rect( NPCBarXCoord[ i ], 701 - Round( HPDistance ), NPCBarXCoord[ i ] + 5, 701 ),
+          nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCHealthBltFx );
+
+        lpDDSBack.Blt( Rect( NPCBarXCoord[ i ] + 7, 701 - Round( ManaDistance ), NPCBarXCoord[ i ]
+          + 7 + 5, 701 ), nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCManaBltFx );}
+
+          {lpDDSBack.Blt( Rect( NPCBarXCoord[ i ], 581 - Round( HPDistance ), NPCBarXCoord[ i ] + 5, 581 ),
           nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCHealthBltFx );
 
         lpDDSBack.Blt( Rect( NPCBarXCoord[ i ] + 7, 581 - Round( ManaDistance ), NPCBarXCoord[ i ]
-          + 7 + 5, 581 ), nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCManaBltFx );
+          + 7 + 5, 581 ), nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCManaBltFx );}
       end;
 
     end;
@@ -6477,9 +6853,11 @@ begin
     Log.Log( 'App Activate' );
     if Initialized then
     begin
-      WindowState := wsNormal;
-      SetBounds( 0, 0, 800, 600 );
-      Game.Enabled := True;
+      WindowState := wsnormal;
+      SetBounds( 0, 0, 1920, 1080 );
+      //SetBounds( 0, 0, 1280, 720 );      //Mausbindung Fenster
+      //SetBounds( 0, 0, 800, 600 );
+      Game.Enabled := true;
       FormShow( Self );
     end
     else
@@ -6847,12 +7225,15 @@ begin
     begin
       OverlayB.GetDC( DC );
       try
-        BitBlt( DC, 659, 74, 68, 24, Image4.Canvas.Handle, 659, 74, SRCCOPY );
+        BitBlt( DC, 1139, 74, 68, 24, Image4.Canvas.Handle, 1139, 74, SRCCOPY );
+        //BitBlt( DC, 659, 74, 68, 24, Image4.Canvas.Handle, 659, 74, SRCCOPY );
       finally
         OverlayB.ReleaseDC( DC );
       end;
-      FillRectAlpha( OverlayB, Rect( 660, 75, 659 + 67, 74 + 23 ), $80, 32 );
-      FillRectAlpha( OverlayB, Rect( 659, 74, 659 + 68, 74 + 24 ), $80, 96 );
+      FillRectAlpha( OverlayB, Rect( 1139, 75, 1139 + 67, 74 + 23 ), $80, 32 );
+      FillRectAlpha( OverlayB, Rect( 1139, 74, 1139 + 68, 74 + 24 ), $80, 96 );
+      //FillRectAlpha( OverlayB, Rect( 659, 75, 659 + 67, 74 + 23 ), $80, 32 );
+      //FillRectAlpha( OverlayB, Rect( 659, 74, 659 + 68, 74 + 24 ), $80, 96 );
     end;
   except
     on E : Exception do
@@ -6873,12 +7254,15 @@ begin
 
   OverlayB.GetDC( DC );
   try
-    BitBlt( DC, 659, 50, 68, 24, Image4.Canvas.Handle, 659, 50, SRCCOPY );
+    BitBlt( DC, 1139, 50, 68, 24, Image4.Canvas.Handle, 1139, 50, SRCCOPY );
+    //BitBlt( DC, 659, 50, 68, 24, Image4.Canvas.Handle, 659, 50, SRCCOPY );
   finally
     OverlayB.ReleaseDC( DC );
   end;
-  FillRectAlpha( OverlayB, Rect( 660, 51, 659 + 67, 50 + 23 ), $80, 32 );
-  FillRectAlpha( OverlayB, Rect( 659, 50, 659 + 68, 50 + 24 ), $80, 96 );
+  FillRectAlpha( OverlayB, Rect( 1139, 51, 1139 + 67, 50 + 23 ), $80, 32 );
+  FillRectAlpha( OverlayB, Rect( 1139, 50, 1139 + 68, 50 + 24 ), $80, 96 );
+  //FillRectAlpha( OverlayB, Rect( 660, 51, 659 + 67, 50 + 23 ), $80, 32 );
+  //FillRectAlpha( OverlayB, Rect( 659, 50, 659 + 68, 50 + 24 ), $80, 96 );
 end;
 
 procedure TfrmMain.AddQuest( const Entry : string );
@@ -6893,12 +7277,15 @@ begin
 
   OverlayB.GetDC( DC );
   try
-    BitBlt( DC, 659, 26, 68, 24, Image4.Canvas.Handle, 659, 26, SRCCOPY );
+    BitBlt( DC, 1139, 26, 68, 24, Image4.Canvas.Handle, 1139, 26, SRCCOPY );
+    //BitBlt( DC, 659, 26, 68, 24, Image4.Canvas.Handle, 659, 26, SRCCOPY );
   finally
     OverlayB.ReleaseDC( DC );
   end;
-  FillRectAlpha( OverlayB, Rect( 660, 27, 659 + 67, 26 + 23 ), $80, 32 );
-  FillRectAlpha( OverlayB, Rect( 659, 26, 659 + 68, 26 + 24 ), $80, 96 );
+  FillRectAlpha( OverlayB, Rect( 1139, 27, 1139 + 67, 26 + 23 ), $80, 32 );
+  FillRectAlpha( OverlayB, Rect( 1139, 26, 1139 + 68, 26 + 24 ), $80, 96 );
+  //FillRectAlpha( OverlayB, Rect( 660, 27, 659 + 67, 26 + 23 ), $80, 32 );
+  //FillRectAlpha( OverlayB, Rect( 659, 26, 659 + 68, 26 + 24 ), $80, 96 );
 end;
 
 procedure TfrmMain.ClearAdventureGraphic;
@@ -6907,14 +7294,17 @@ var
 begin
   OverlayB.GetDC( DC );
   try
-    BitBlt( DC, 659, 50, 68, 24, Image4.Canvas.Handle, 659, 50, SRCCOPY );
+BitBlt( DC, 1139, 50, 68, 24, Image4.Canvas.Handle, 1139, 50, SRCCOPY );
+    //BitBlt( DC, 659, 50, 68, 24, Image4.Canvas.Handle, 659, 50, SRCCOPY );
   finally
     OverlayB.ReleaseDC( DC );
   end;
   if not SpellBarActive then
   begin
     MouseCursor.cleanup;
-    lpDDSFront.BltFast( 659, 486 + 50, OverlayB, Rect( 659, 50, 659 + 68, 50 + 24 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    lpDDSFront.BltFast( 1139, 966 + 50, OverlayB, Rect( 1139, 50, 1139 + 68, 50 + 24 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    //lpDDSFront.BltFast( 1139, 606 + 50, OverlayB, Rect( 1139, 50, 1139 + 68, 50 + 24 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    //lpDDSFront.BltFast( 659, 486 + 50, OverlayB, Rect( 659, 50, 659 + 68, 50 + 24 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   end;
 end;
 
@@ -6924,7 +7314,8 @@ var
 begin
   OverlayB.GetDC( DC );
   try
-    BitBlt( DC, 659, 74, 68, 24, Image4.Canvas.Handle, 659, 74, SRCCOPY );
+  BitBlt( DC, 1139, 74, 68, 24, Image4.Canvas.Handle, 1139, 74, SRCCOPY );
+    //BitBlt( DC, 659, 74, 68, 24, Image4.Canvas.Handle, 659, 74, SRCCOPY );
   finally
     OverlayB.ReleaseDC( DC );
   end;
@@ -6936,14 +7327,17 @@ var
 begin
   OverlayB.GetDC( DC );
   try
-    BitBlt( DC, 659, 26, 68, 24, Image4.Canvas.Handle, 659, 26, SRCCOPY );
+  BitBlt( DC, 1139, 26, 68, 24, Image4.Canvas.Handle, 1139, 26, SRCCOPY );
+    //BitBlt( DC, 659, 26, 68, 24, Image4.Canvas.Handle, 659, 26, SRCCOPY );
   finally
     OverlayB.ReleaseDC( DC );
   end;
   if not SpellBarActive then
   begin
     MouseCursor.cleanup;
-    lpDDSFront.BltFast( 659, 486 + 26, OverlayB, Rect( 659, 26, 659 + 68, 26 + 24 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    lpDDSFront.BltFast( 1139, 966 + 26, OverlayB, Rect( 1139, 26, 1139 + 68, 26 + 24 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    //lpDDSFront.BltFast( 1139, 606 + 26, OverlayB, Rect( 1139, 26, 1139 + 68, 26 + 24 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    //lpDDSFront.BltFast( 659, 486 + 26, OverlayB, Rect( 659, 26, 659 + 68, 26 + 24 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   end;
 end;
 
@@ -7683,14 +8077,22 @@ begin
         FillRectSub( lpDDSBack, Rect( 0, 0, 703, 511 ), $202020 );
         if SpellBarActive then
         begin
-          lpDDSBack.BltFast( 0, 486, SpellBar, Rect( 0, 0, 800, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-          lpDDSBack.BltFast( 250, 455, HelpBox, Rect( 0, 0, 195, 59 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+              lpDDSBack.BltFast( 0, 966, SpellBar, Rect( 0, 0, 1920, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 250, 935, HelpBox, Rect( 0, 0, 195, 59 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          //lpDDSBack.BltFast( 0, 606, SpellBar, Rect( 0, 0, 1280, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          //lpDDSBack.BltFast( 250, 575, HelpBox, Rect( 0, 0, 195, 59 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          //lpDDSBack.BltFast( 0, 486, SpellBar, Rect( 0, 0, 800, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          //lpDDSBack.BltFast( 250, 455, HelpBox, Rect( 0, 0, 195, 59 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         end
         else
         begin
-          lpDDSBack.BltFast( 0, 486, OverlayB, Rect( 0, 0, 800, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        lpDDSBack.BltFast( 0, 966, OverlayB, Rect( 0, 0, 1920, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          //lpDDSBack.BltFast( 0, 606, OverlayB, Rect( 0, 0, 1280, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          //lpDDSBack.BltFast( 0, 486, OverlayB, Rect( 0, 0, 800, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         end;
-        lpDDSBack.BltFast( 683, 0, OverlayR, Rect( 0, 0, 117, 486 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        lpDDSBack.BltFast( 1803, 0, OverlayR, Rect( 0, 0, 117, 966 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        //lpDDSBack.BltFast( 1163, 0, OverlayR, Rect( 0, 0, 117, 606 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        //lpDDSBack.BltFast( 683, 0, OverlayR, Rect( 0, 0, 117, 486 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         DrawHealthBars;
         lpDDSFront.Flip( nil, DDFLIP_WAIT );
         MouseCursor.PlotDirty := False;
@@ -7875,7 +8277,7 @@ begin
   begin
     Count := 0;
     GetCursorPos( P );
-    if PtInRect( Rect( 726, 429, 772, 473 ), P ) then
+    {if PtInRect( Rect( 1206, 429, 1052, 473 ), P ) then
       MsgID := 1 //Inventory
     else if PtInRect( Rect( 732, 511, 781, 555 ), P ) then
       MsgID := 2 //Map
@@ -7904,7 +8306,7 @@ begin
     else if PtInRect( Rect( 80, 510, 151, 586 ), P ) and not frmMain.SpellBarActive then
       MsgID := 14 //Party Member 2
     else
-      MsgID := 0;
+      MsgID := 0;}
     if MsgID = 0 then
     begin
       if FMsgID > 0 then

@@ -1,14 +1,11 @@
 unit AStar;
-
-{$MODE Delphi}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -65,9 +62,10 @@ unit AStar;
 interface
 
 uses
-  LCLIntf, LCLType,
   Classes,
-  SysUtils;
+  Windows,
+  SysUtils,
+  LogFile;
 
 const
   MinSearch = -128;
@@ -92,7 +90,6 @@ type
 
 type
   TMoveTest = function( SrcX, SrcY, DestX, DestY : Smallint ) : boolean of object;
-  PTPtr = ^TPoint;
 
 type
   TAStar = class( TObject )
@@ -112,15 +109,15 @@ type
     Deviance : integer;
     CanMove : TMoveTest;
     constructor Create;
-    function FindPath( SrcX, SrcY, DestX, DestY : Smallint; var Handle : PTPtr ) : word;
-    function FindJaggedPath( SrcX, SrcY, DestX, DestY : Smallint; var Handle : PTPtr ) : word;
+    function FindPath( SrcX, SrcY, DestX, DestY : Smallint; var Handle : HGLOBAL ) : word;
+    function FindJaggedPath( SrcX, SrcY, DestX, DestY : Smallint; var Handle : HGLOBAL ) : word;
   end;
 
 implementation
 
 function iabs( I : integer ) : integer;
-//const
-  //FailName : string = 'AStar.iabs';
+const
+  FailName : string = 'AStar.iabs';
 begin
   if ( I < 0 ) then
     result := -I
@@ -129,8 +126,8 @@ begin
 end;
 
 procedure TAStar.OpenCell( CurrentX, CurrentY, X, Y : Smallint );
-//const
-//  FailName : string = 'AStar.TAStar';
+const
+  FailName : string = 'AStar.TAStar';
 var
   D, D0, D1 : word;
   dX, dY : word;
@@ -204,9 +201,9 @@ begin
   end;
 end;
 
-function TAStar.FindPath( SrcX, SrcY, DestX, DestY : Smallint; var Handle : PTPtr ) : word;
-//const
-//  FailName : string = 'TAStar.FindPath';
+function TAStar.FindPath( SrcX, SrcY, DestX, DestY : Smallint; var Handle : HGLOBAL ) : word;
+const
+  FailName : string = 'TAStar.FindPath';
 var
   X, Y : Smallint;
   X1, Y1 : Smallint;
@@ -396,8 +393,8 @@ begin
               inc( result );
             until ( X = SrcX ) and ( Y = SrcY );
 
-            Handle := GetMem( result * sizeof( TPoint ) );
-            p := Handle;
+            Handle := GlobalAlloc( GMEM_MOVEABLE, result * sizeof( TPoint ) );
+            p := GlobalLock( Handle );
             inc( p, result );
             X := ClosestX;
             Y := ClosestY;
@@ -410,6 +407,8 @@ begin
               X := X1;
               Y := Y1;
             until ( X = SrcX ) and ( Y = SrcY );
+            GlobalUnlock( Handle );
+
             exit;
           end;
         until ( InitD[ D ].Iteration = Iteration );
@@ -432,7 +431,8 @@ begin
     inc( result );
   until ( X = SrcX ) and ( Y = SrcY );
 
-  p := Handle;
+  Handle := GlobalAlloc( GMEM_MOVEABLE, result * sizeof( TPoint ) );
+  p := GlobalLock( Handle );
   inc( p, result );
   X := DestX;
   Y := DestY;
@@ -445,11 +445,13 @@ begin
     X := X1;
     Y := Y1;
   until ( X = SrcX ) and ( Y = SrcY );
+  GlobalUnlock( Handle );
+
 end;
 
-function TAStar.FindJaggedPath( SrcX, SrcY, DestX, DestY : Smallint; var Handle : PTPtr ) : word;
-//const
-//  FailName : string = 'TAStar.FindJaggedPath';
+function TAStar.FindJaggedPath( SrcX, SrcY, DestX, DestY : Smallint; var Handle : HGLOBAL ) : word;
+const
+  FailName : string = 'TAStar.FindJaggedPath';
 var
   X, Y : Smallint;
   X1, Y1 : Smallint;
@@ -607,8 +609,8 @@ begin
               inc( result );
             until ( X = SrcX ) and ( Y = SrcY );
 
-            Handle := GetMem( result * sizeof( TPoint ) );
-            p := Handle;
+            Handle := GlobalAlloc( GMEM_MOVEABLE, result * sizeof( TPoint ) );
+            p := GlobalLock( Handle );
             inc( p, result );
             X := ClosestX;
             Y := ClosestY;
@@ -621,6 +623,8 @@ begin
               X := X1;
               Y := Y1;
             until ( X = SrcX ) and ( Y = SrcY );
+            GlobalUnlock( Handle );
+
             exit;
           end;
         until ( InitD[ D ].Iteration = Iteration );
@@ -642,8 +646,8 @@ begin
     inc( result );
   until ( X = SrcX ) and ( Y = SrcY );
 
-  Handle := GetMem( result * sizeof( TPoint ) );
-  p := Handle;
+  Handle := GlobalAlloc( GMEM_MOVEABLE, result * sizeof( TPoint ) );
+  p := GlobalLock( Handle );
   inc( p, result );
   X := DestX;
   Y := DestY;
@@ -656,12 +660,13 @@ begin
     X := X1;
     Y := Y1;
   until ( X = SrcX ) and ( Y = SrcY );
+  GlobalUnlock( Handle );
 
 end;
 
 constructor TAStar.Create;
-//const
-//  FailName : string = 'TAStar.Create';
+const
+  FailName : string = 'TAStar.Create';
 var
   i, j : integer;
 begin

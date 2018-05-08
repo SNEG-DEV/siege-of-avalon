@@ -1,14 +1,11 @@
 unit Resource;
-
-{$MODE Delphi}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -67,13 +64,20 @@ interface
 {$INCLUDE Anigrp30cfg.inc}
 
 uses
-  LCLIntf, LCLType, LMessages,
   Classes,
+  Windows,
   SysUtils,
   Graphics,
   Anigrp30,
   AniDec30,
   IniFiles,
+{$IFDEF DirectX}
+  DirectX,
+  DXUtil,
+  DXEffects,
+{$ENDIF}
+  DFX,
+  digifx,
   LogFile;
 
 type
@@ -83,7 +87,7 @@ type
   TFacing = ( fNW, fNN, fNE, fEE, fSE, fSS, fSW, fWW );
 
   TSlot = ( slLeg1, slBoot, slLeg2, slChest1, slChest2, slArm, slBelt, slChest3,
-    slGauntlet, slOuter, slHelmet, slWeapon, slShield, slMisc1, slMisc2, slMisc3 );
+    slGauntlet, slOuter, slHelmet, slWeapon, slShield, sltabar, slMisc1, slMisc2, slMisc3 );
 
   TSlotAllowed = set of TSlot;
 
@@ -120,7 +124,7 @@ type
   TResource = class( TAniResource )
   private
     FScriptMax : Integer;
-    Picture : TBitmap;
+    Picture : TBitPlane;
     Lights : array[ 1..8 ] of TLightSource;
     LightCount : integer;
     FReload : boolean;
@@ -148,7 +152,7 @@ type
     DrawShadow : boolean;
     ComplexShadow : boolean;
     ShadowColor : TColor;
-    RLE : TBitmap;
+    RLE : TRLESprite;
     OnDemand : boolean;
     Filename : string;
     procedure EnumLightSource( Figure : TAniFigure; Index, X, Y, Z : longint; Intensity : double; Radius : integer ); override;
@@ -156,7 +160,7 @@ type
     procedure Draw( Canvas : TCanvas; X, Y : Integer; Frame : Word ); override;
     procedure FreeResources; override;
     procedure Render( Figure : TAniFigure ); override;
-    procedure RenderLocked( Figure : TAniFigure; Bits : PBitmap ); virtual;
+    procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); virtual;
     function MemSize : longint; virtual;
     procedure LoadGraphic;
     property ScriptMax : Integer read FScriptMax;
@@ -172,20 +176,20 @@ type
     ItemFrame : integer;
     LinkedResource : TResource;
     BackLayer : array[ 0..383 ] of boolean;
-    procedure RenderLocked( Figure : TAniFigure; Bits : PBitmap ); override;
+    procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); override;
     procedure LoadData( INI : TStringINIFile ); override;
   end;
 
   TInventoryResource = class( TResource )
   public
     procedure LoadData( INI : TStringINIFile ); override;
-    procedure RenderLocked( Figure : TAniFigure; Bits : PBitmap ); override;
-    procedure RenderShadowLocked( Figure : TAniFigure; Bits : PBitmap );
+    procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); override;
+    procedure RenderShadowLocked( Figure : TAniFigure; Bits : PBITPLANE );
   end;
 
   TCastResource = class( TResource )
   public
-    procedure RenderLocked( Figure : TAniFigure; Bits : PBitmap ); override;
+    procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); override;
   end;
 
   TCharacterResource = class( TResource )
@@ -209,7 +213,7 @@ type
     constructor Create;
     destructor Destroy; override;
     procedure Render( Figure : TAniFigure ); override;
-    procedure RenderLocked( Figure : TAniFigure; Bits : PBitmap ); override;
+    procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); override;
     procedure LoadData( INI : TStringINIFile ); override;
     procedure FreeResources; override;
     property ContactFrame : Integer read FContactFrame;
@@ -255,7 +259,7 @@ type
     CacheLoaded : boolean;
     procedure LoadData( INI : TStringINIFile ); override;
     function Define( Map : TAniMap; Zone : byte; Index : Word ) : integer; override;
-    procedure RenderLocked( Figure : TAniFigure; Bits : PBitmap ); override;
+    procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); override;
   end;
 
   TTileResource = class( TStaticResource )
@@ -277,8 +281,6 @@ const
   InventoryPath = 'engine\inventoryimages\';
 
 var
-  InterfacePath : string;
-  MapPath : string;
   ArtPath : string;
   TilePath : string;
   SoundPath : string;
@@ -1065,7 +1067,7 @@ begin
   end;
 end;
 
-procedure TResource.RenderLocked( Figure : TAniFigure; Bits : PBitmap );
+procedure TResource.RenderLocked( Figure : TAniFigure; Bits : PBITPLANE );
 var
   SrcBlend, DstBlend : integer;
   i, j, A : integer;
@@ -1294,6 +1296,7 @@ begin
     Equipment[ slHelmet ] := INI.ReadString( 'Layers', 'helmet', '' );
     Equipment[ slWeapon ] := INI.ReadString( 'Layers', 'weapon', '' );
     Equipment[ slShield ] := INI.ReadString( 'Layers', 'shield', '' );
+    Equipment[ sltabar ] := INI.ReadString( 'Layers', 'tabar', '' );
     Equipment[ slMisc1 ] := INI.ReadString( 'Layers', 'misc1', '' );
     Equipment[ slMisc2 ] := INI.ReadString( 'Layers', 'misc2', '' );
     Equipment[ slMisc3 ] := INI.ReadString( 'Layers', 'misc3', '' );
@@ -1426,7 +1429,7 @@ begin
 end;
 
 procedure TCharacterResource.RenderLocked( Figure : TAniFigure;
-  Bits : PBitmap );
+  Bits : PBITPLANE );
 var
   SrcBlend, DstBlend : integer;
   RFactor, GFactor, BFactor : integer;
@@ -1437,7 +1440,7 @@ var
   D, D1, D2 : single;
   p : pointer;
 
-  procedure DrawParts( MyBits : PBitmap );
+  procedure DrawParts( MyBits : PBITPLANE );
   var
     i : integer;
     R, G, B : integer;
@@ -1483,6 +1486,14 @@ var
           TResource( TCharacter( Figure ).FEquipment[ slWeapon ].Resource ).RLE.DrawColorize( i, 0, 0, MyBits, RFactor, GFactor, BFactor, 100, 0 );
         if assigned( TLayerResource( TCharacter( Figure ).FEquipment[ slWeapon ].Resource ).LinkedResource ) then
           TLayerResource( TCharacter( Figure ).FEquipment[ slWeapon ].Resource ).LinkedResource.RLE.DrawColorize( i, 0, 0, MyBits, RFactor, GFactor, BFactor, 100, 0 );
+      end;
+      if assigned( TCharacter( Figure ).FEquipment[ sltabar ] ) and
+        assigned( TCharacter( Figure ).FEquipment[ sltabar ].Resource ) then
+      begin
+        if TLayerResource( TCharacter( Figure ).FEquipment[ sltabar ].Resource ).BackLayer[ i ] then
+          TResource( TCharacter( Figure ).FEquipment[ sltabar ].Resource ).RLE.DrawColorize( i, 0, 0, MyBits, RFactor, GFactor, BFactor, 100, 0 );
+        if assigned( TLayerResource( TCharacter( Figure ).FEquipment[ sltabar ].Resource ).LinkedResource ) then
+          TLayerResource( TCharacter( Figure ).FEquipment[ sltabar ].Resource ).LinkedResource.RLE.DrawColorize( i, 0, 0, MyBits, RFactor, GFactor, BFactor, 100, 0 );
       end;
       if assigned( TCharacter( Figure ).FEquipment[ slHelmet ] ) and
         assigned( TCharacter( Figure ).FEquipment[ slHelmet ].Resource ) then
@@ -1581,6 +1592,15 @@ var
         end;
       end;
       p := TCharacter( Figure ).FEquipment[ slHelmet ];
+      if assigned( p ) and assigned( TItem( p ).Resource ) then
+      begin
+        P := TItem( p ).Resource;
+        if TLayerResource( p ).BackLayer[ i ] then
+          TResource( p ).RLE.DrawColorize( i, 0, 0, MyBits, RFactor, GFactor, BFactor, 100, 0 );
+        if assigned( TLayerResource( p ).LinkedResource ) then
+          TLayerResource( p ).LinkedResource.RLE.DrawColorize( i, 0, 0, MyBits, RFactor, GFactor, BFactor, 100, 0 );
+      end;
+      p := TCharacter( Figure ).FEquipment[ sltabar ];
       if assigned( p ) and assigned( TItem( p ).Resource ) then
       begin
         P := TItem( p ).Resource;
@@ -1729,7 +1749,11 @@ var
         assigned( TCharacter( Figure ).FEquipment[ slOuter ].Resource ) and
         not TLayerResource( TCharacter( Figure ).FEquipment[ slOuter ].Resource ).BackLayer[ i ] then
         TResource( TCharacter( Figure ).FEquipment[ slOuter ].Resource ).RLE.DrawColorize( i, 0, 0, MyBits, RFactor, GFactor, BFactor, 100, 0 );
-
+      if assigned( TCharacter( Figure ).FEquipment[ sltabar ] ) and
+        assigned( TCharacter( Figure ).FEquipment[ sltabar ].Resource ) and
+        not TLayerResource( TCharacter( Figure ).FEquipment[ sltabar ].Resource ).BackLayer[ i ] then
+        TResource( TCharacter( Figure ).FEquipment[ sltabar ].Resource ).RLE.DrawColorize( i, 0, 0, MyBits, RFactor, GFactor, BFactor, 100, 0 );
+      
       if assigned( HeadResource ) then
         HeadResource.RLE.DrawColorize( i, 0, 0, MyBits, RFactor, GFactor, BFactor, 100, 0 );
 
@@ -1773,6 +1797,12 @@ begin
               if assigned( TLayerResource( Equipment[ slOuter ].Resource ).LinkedResource ) then
                 TLayerResource( Equipment[ slOuter ].Resource ).LinkedResource.RLE.DrawMono( ShadowFrame, 0, 0, Picture.Bits, ShadowColor );
             end;
+                        if assigned( Equipment[ sltabar ] ) and assigned( Equipment[ sltabar ].Resource ) then
+            begin
+              TResource( Equipment[ sltabar ].Resource ).RLE.DrawMono( ShadowFrame, 0, 0, Picture.Bits, ShadowColor );
+              if assigned( TLayerResource( Equipment[ sltabar ].Resource ).LinkedResource ) then
+                TLayerResource( Equipment[ sltabar ].Resource ).LinkedResource.RLE.DrawMono( ShadowFrame, 0, 0, Picture.Bits, ShadowColor );
+            end;
           end;
           Picture.Bits.BaseX := Figure.CenterX - Bits.BaseX;
           Picture.Bits.BaseY := Figure.CenterY + Figure.Z - Bits.BaseY;
@@ -1796,6 +1826,12 @@ begin
               if assigned( TLayerResource( Equipment[ slOuter ].Resource ).LinkedResource ) then
                 TLayerResource( Equipment[ slOuter ].Resource ).LinkedResource.RLE.DrawMono( ShadowFrame, 0, 0, Picture.Bits, ShadowColor );
             end;
+            if assigned( Equipment[ sltabar ] ) and assigned( Equipment[ sltabar ].Resource ) then
+            begin
+              TResource( Equipment[ sltabar ].Resource ).RLE.DrawMono( ShadowFrame, 0, 0, Picture.Bits, ShadowColor );
+              if assigned( TLayerResource( Equipment[ sltabar ].Resource ).LinkedResource ) then
+                TLayerResource( Equipment[ sltabar ].Resource ).LinkedResource.RLE.DrawMono( ShadowFrame, 0, 0, Picture.Bits, ShadowColor );
+            end;
           end;
           Picture.Bits.BaseX := Figure.CenterX - Bits.BaseX;
           Picture.Bits.BaseY := Figure.CenterY + Figure.Z - Bits.BaseY;
@@ -1818,6 +1854,12 @@ begin
               TResource( Equipment[ slOuter ].Resource ).RLE.DrawMono( ShadowFrame, 0, 0, Picture.Bits, ShadowColor );
               if assigned( TLayerResource( Equipment[ slOuter ].Resource ).LinkedResource ) then
                 TLayerResource( Equipment[ slOuter ].Resource ).LinkedResource.RLE.DrawMono( ShadowFrame, 0, 0, Picture.Bits, ShadowColor );
+            end;
+            if assigned( Equipment[ sltabar ] ) and assigned( Equipment[ sltabar ].Resource ) then
+            begin
+              TResource( Equipment[ sltabar ].Resource ).RLE.DrawMono( ShadowFrame, 0, 0, Picture.Bits, ShadowColor );
+              if assigned( TLayerResource( Equipment[ sltabar ].Resource ).LinkedResource ) then
+                TLayerResource( Equipment[ sltabar ].Resource ).LinkedResource.RLE.DrawMono( ShadowFrame, 0, 0, Picture.Bits, ShadowColor );
             end;
           end;
           Picture.Bits.BaseX := Figure.CenterX - Bits.BaseX;
@@ -1874,6 +1916,12 @@ begin
                   TResource( Equipment[ slOuter ].Resource ).RLE.DrawMono( ShadowFrame, 0, 0, Picture.Bits, ShadowColor );
                   if assigned( TLayerResource( Equipment[ slOuter ].Resource ).LinkedResource ) then
                     TLayerResource( Equipment[ slOuter ].Resource ).LinkedResource.RLE.DrawMono( ShadowFrame, 0, 0, Picture.Bits, ShadowColor );
+                end;
+                if assigned( Equipment[ sltabar ] ) and assigned( Equipment[ sltabar ].Resource ) then
+                begin
+                  TResource( Equipment[ sltabar ].Resource ).RLE.DrawMono( ShadowFrame, 0, 0, Picture.Bits, ShadowColor );
+                  if assigned( TLayerResource( Equipment[ sltabar ].Resource ).LinkedResource ) then
+                    TLayerResource( Equipment[ sltabar ].Resource ).LinkedResource.RLE.DrawMono( ShadowFrame, 0, 0, Picture.Bits, ShadowColor );
                 end;
               end;
 
@@ -2353,7 +2401,7 @@ begin
   end;
 end;
 
-procedure TDoorResource.RenderLocked( Figure : TAniFigure; Bits : PBitmap );
+procedure TDoorResource.RenderLocked( Figure : TAniFigure; Bits : PBITPLANE );
 begin
   if Figure.Highlighted and assigned( Picture ) then
   begin
@@ -2631,7 +2679,7 @@ end;
 
 { TCastResource }
 
-procedure TCastResource.RenderLocked( Figure : TAniFigure; Bits : PBitmap );
+procedure TCastResource.RenderLocked( Figure : TAniFigure; Bits : PBITPLANE );
 var
   Frame : integer;
 begin
@@ -2760,7 +2808,7 @@ begin
   end;
 end;
 
-procedure TLayerResource.RenderLocked( Figure : TAniFigure; Bits : PBitmap );
+procedure TLayerResource.RenderLocked( Figure : TAniFigure; Bits : PBITPLANE );
 begin
   if not assigned( RLE ) then
   begin
@@ -2859,12 +2907,12 @@ begin
   end;
 end;
 
-procedure TInventoryResource.RenderLocked( Figure : TAniFigure; Bits : PBitmap );
+procedure TInventoryResource.RenderLocked( Figure : TAniFigure; Bits : PBITPLANE );
 begin
   RLE.Draw( 0, 0, 0, Bits );
 end;
 
-procedure TInventoryResource.RenderShadowLocked( Figure : TAniFigure; Bits : PBitmap );
+procedure TInventoryResource.RenderShadowLocked( Figure : TAniFigure; Bits : PBITPLANE );
 begin
   RLE.Draw( 1, 0, 0, Bits );
 end;

@@ -1,16 +1,11 @@
 unit strFunctions;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -67,11 +62,7 @@ unit strFunctions;
 interface
 
 uses
-{$IFnDEF FPC}
   Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
   SysUtils,
   classes,
   IniFiles;
@@ -194,7 +185,7 @@ begin
     hs2 := copy( s, 1, j );
     delete( s, 1, j );
     if ( not ( srWord in Options ) )
-      or ( pos( s[ 1 ], ' .,:;-#''+*?=)(/&%$Â§"!{[]}\~<>|' ) > 0 ) then
+      or ( pos( s[ 1 ], ' .,:;-#''+*?=)(/&%$§"!{[]}\~<>|' ) > 0 ) then
     begin
 
       hs1 := hs1 + dest;

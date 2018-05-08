@@ -1,16 +1,11 @@
 unit Security;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -66,7 +61,7 @@ unit Security;
 {*****************************************************************************
  Digital Tome Game Engine
 
- Copyright Â©1999-2001 Digital Tome L.P. Texas USA
+ Copyright ©1999-2001 Digital Tome L.P. Texas USA
  Not for public release/use.
 
  This WAS a "dirty little stop-gap" solution to pretending that we have a
@@ -86,11 +81,7 @@ unit Security;
 interface
 
 uses
-{$IFnDEF FPC}
   Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
   SysUtils,
   Forms,
   Classes,

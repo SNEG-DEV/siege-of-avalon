@@ -1,16 +1,11 @@
 unit Scroll;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -69,8 +64,12 @@ unit Scroll;
 interface
 
 uses
-  LCLIntf, LCLType, LMessages,
-  SDL2, SDL2_image, SDL2_gfx,
+{$IFDEF DirectX}
+  DirectX,
+  DXUtil,
+  DXEffects,
+{$ENDIF}
+  Windows,
   Forms,
   Classes,
   Graphics,
@@ -79,16 +78,16 @@ uses
   GameText,
   Anigrp30,
   Engine,
-  LogFile,
+  Logfile,
   Display;
 
 type
   TScroll = class( TObject )
   private
     DescList : TStringList;
-    DxSheet : TSDL_Surface; //Surface used for statistics
-    DxFrame : TSDL_Surface; //Nifty roller thing for statistics
-    DxDirty : TSDL_Surface;
+    DxSheet : IDirectDrawSurface; //Surface used for statistics
+    DxFrame : IDirectDrawSurface; //Nifty roller thing for statistics
+    DxDirty : IDirectDrawSurface;
     ScrollFactor : integer; //How far we've scrolled
     StatsScrollItem : TItem; //Index for scroll item
     MaxScroll : integer; //max Scroll YCoord

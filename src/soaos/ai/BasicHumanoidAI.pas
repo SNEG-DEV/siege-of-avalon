@@ -1683,6 +1683,13 @@ begin
         i := StrToInt( s );
         if i >= 0 then
         begin
+        //Zusatz: Wegen höherer Auflösung sieht man Gegner früher, Fernangriff ohne Gegnreaktion
+        if not character.titleexists('Widescreen') then
+        begin
+        character.Vision := character.Vision + 400;
+          character.addtitle('Widescreen');
+          end;
+          //Zusatzende
           if player.TitleExists( 'Apprentice' ) then
           begin
             character.Wounds := 0;
@@ -1702,6 +1709,7 @@ begin
               character.Resistance.Poison.Invulnerability := ( player.mysticism div 10 );
             if character.Resistance.Mental.Invulnerability < ( player.mysticism div 10 ) then
               character.Resistance.Mental.Invulnerability := ( player.mysticism div 10 );
+
 
           end;
           if player.TitleExists( 'Hunter' ) then
@@ -1760,6 +1768,7 @@ begin
             character.Resistance.Mental.Resistance := ( player.mysticism / 200 );
         end;
       end;
+
     except
     end;
 
@@ -3141,6 +3150,13 @@ begin
         i := StrToInt( s );
         if i >= 0 then
         begin
+                //Zusatz: Wegen höherer Auflösung sieht man Gegner früher, Fernangriff ohne Gegnreaktion
+        if not character.titleexists('Widescreen') then
+        begin
+        character.Vision := character.Vision + 400;
+          character.addtitle('Widescreen');
+          end;
+          //Zusatzende
           if player.TitleExists( 'Apprentice' ) then
           begin
             character.Wounds := 0;
@@ -3148,8 +3164,12 @@ begin
             character.Combat := ( ( ( player.Mysticism * 3 ) div 4 ) + i );
             character.strength := ( ( player.perception * 3 ) div 4 ) + i;
             if not ( Character.TitleExists( 'NoHP' ) ) then
-              if character.BaseHitPoints > 0 then
-                character.HitPoints := ( ( player.Perception * 2 ) * NPCList.Count );
+            if character.BaseHitPoints > 0 then
+            //character.HitPoints := ( ( player.Perception * 2 ) {* NPCList.Count} );
+               if NPCList.Count > 1 then
+               character.HitPoints := ( ( player.Perception * 2 ) * ( NPCList.Count / 2 ) )
+               else
+               character.HitPoints := ( ( player.Perception * 2 ) );
 
             character.Coordination := ( ( player.Coordination * 2 ) div 3 ) + i;
             Character.AttackRecovery := Character.AttackRecovery + ( player.attackRecovery div i );
@@ -3188,7 +3208,12 @@ begin
             character.strength := ( ( player.Coordination * 3 ) div 4 ) + i;
             if not ( Character.TitleExists( 'NoHP' ) ) then
               if character.BaseHitPoints > 0 then
-                character.HitPoints := ( ( player.Coordination * 2 ) * NPCList.Count );
+              //character.HitPoints := ( ( player.coordination * 2 ) {* NPCList.Count} );
+              if NPCList.Count > 1 then
+               character.HitPoints := ( ( player.Coordination * 2 ) * ( NPCList.Count / 2 ) )
+               else
+               character.HitPoints := ( ( player.Coordination * 2 ) );
+
             character.Coordination := ( ( player.Coordination * 3 ) div 4 ) + i;
             Character.AttackRecovery := Character.AttackRecovery + ( player.attackRecovery div i );
 
@@ -3221,7 +3246,11 @@ begin
             Character.AttackRecovery := Character.AttackRecovery + ( player.attackRecovery div i );
             if not ( Character.TitleExists( 'NoHP' ) ) then
               if character.BaseHitPoints > 0 then
-                character.HitPoints := ( ( player.strength * 2 ) * NPCList.Count );
+              //character.HitPoints := ( ( player.strength * 2 ) {* NPCList.Count} );
+              if NPCList.Count > 1 then
+               character.HitPoints := ( ( player.strength * 2 ) * ( NPCList.Count / 2 ) )
+               else
+               character.HitPoints := ( ( player.strength * 2 ) );
 
             if character.Resistance.Heat.Invulnerability < ( player.combat div 20 ) then
               character.Resistance.Heat.Invulnerability := ( player.combat div 20 );
@@ -3986,6 +4015,13 @@ begin
         i := StrToInt( s );
         if i >= 0 then
         begin
+        //Zusatz: Wegen höherer Auflösung sieht man Gegner früher, Fernangriff ohne Gegnreaktion
+        if not character.titleexists('Widescreen') then
+        begin
+        character.Vision := character.Vision + 400;
+          character.addtitle('Widescreen');
+          end;
+          //Zusatzende
           if player.TitleExists( 'Apprentice' ) then
           begin
             character.Wounds := 0;
@@ -3996,7 +4032,12 @@ begin
             character.Stealth := player.Mysticism + i;
             if not ( Character.TitleExists( 'NoHP' ) ) then
               if character.BaseHitPoints > 0 then
-                character.HitPoints := ( ( player.Perception * 2 ) * NPCList.Count );
+              //character.HitPoints := ( ( player.Perception * 2 ) {* NPCList.Count} );
+              if NPCList.Count > 1 then
+               character.HitPoints := ( ( player.Perception * 2 ) * ( NPCList.Count / 2 ) )
+               else
+               character.HitPoints := ( ( player.Perception * 2 ) );
+
           end;
           if player.TitleExists( 'Hunter' ) then
           begin
@@ -4008,7 +4049,11 @@ begin
             character.Stealth := player.Stealth + i;
             if not ( Character.TitleExists( 'NoHP' ) ) then
               if character.BaseHitPoints > 0 then
-                character.HitPoints := ( ( player.Coordination * 2 ) * NPCList.Count );
+              //character.HitPoints := ( ( player.Coordination * 2 ) {* NPCList.Count} );
+              if NPCList.Count > 1 then
+               character.HitPoints := ( ( player.Coordination * 2 ) * ( NPCList.Count / 2 ) )
+               else
+               character.HitPoints := ( ( player.Coordination * 2 ) );
           end;
           if player.TitleExists( 'Squire' ) then
           begin
@@ -4020,7 +4065,11 @@ begin
             character.Stealth := player.Combat + i;
             if not ( Character.TitleExists( 'NoHP' ) ) then
               if character.BaseHitPoints > 0 then
-                character.HitPoints := ( ( player.strength * 2 ) * NPCList.Count );
+              //character.HitPoints := ( ( player.strength * 2 ) {* NPCList.Count} );
+              if NPCList.Count > 1 then
+               character.HitPoints := ( ( player.strength * 2 ) * ( NPCList.Count / 2 ) )
+               else
+               character.HitPoints := ( ( player.strength * 2 ) );
           end;
 
 
@@ -5601,6 +5650,13 @@ begin
         i := StrToInt( s );
         if i >= 0 then
         begin
+        //Zusatz: Wegen höherer Auflösung sieht man Gegner früher, Fernangriff ohne Gegnreaktion
+        if not character.titleexists('Widescreen') then
+        begin
+        character.Vision := character.Vision + 400;
+          character.addtitle('Widescreen');
+          end;
+          //Zusatzende
           if player.TitleExists( 'Apprentice' ) then
           begin
             character.Wounds := 0;
@@ -5612,7 +5668,11 @@ begin
             begin
               if character.BaseHitPoints > 0 then
                 if character.HitPoints > ( ( player.Perception * 2 ) ) then
-                  character.HitPoints := ( ( player.Perception * 2 ) * NPCList.Count );
+                //character.HitPoints := ( ( player.Perception * 2 ) {* NPCList.Count} );
+                if NPCList.Count > 1 then
+                character.HitPoints := ( ( player.perception * 2 ) * ( NPCList.Count / 2 ) )
+                else
+                character.HitPoints := ( ( player.perception * 2 ) );
             end;
 
             character.combat := ( ( player.combat * 3 ) div 4 );
@@ -5630,7 +5690,11 @@ begin
             if not ( Character.TitleExists( 'NoHP' ) ) then
             begin
               if character.BaseHitPoints > 0 then
-                character.HitPoints := ( ( player.strength * 2 ) * NPCList.Count );
+              //character.HitPoints := ( ( player.coordination * 2 ) {* NPCList.Count} );
+                if NPCList.Count > 1 then
+               character.HitPoints := ( ( player.coordination * 2 ) * ( NPCList.Count / 2 ) )
+               else
+               character.HitPoints := ( ( player.coordination * 2 ) );
             end;
 
             character.combat := ( ( player.combat * 3 ) div 4 );
@@ -5648,7 +5712,11 @@ begin
             if not ( Character.TitleExists( 'NoHP' ) ) then
             begin
               if character.BaseHitPoints > 0 then
-                character.HitPoints := ( ( player.Coordination * 2 ) * NPCList.Count );
+              //character.HitPoints := ( ( player.strength * 2 ) {* NPCList.Count} );
+                if NPCList.Count > 1 then
+               character.HitPoints := ( ( player.strength * 2 ) * ( NPCList.Count / 2 ) )
+               else
+               character.HitPoints := ( ( player.strength * 2 ) );
             end;
           end;
 
@@ -6624,6 +6692,13 @@ begin
       begin
         i := StrToInt( s );
         if i >= 0 then
+        //Zusatz: Wegen höherer Auflösung sieht man Gegner früher, Fernangriff ohne Gegnreaktion
+        if not character.titleexists('Widescreen') then
+        begin
+        character.Vision := character.Vision + 400;
+          character.addtitle('Widescreen');
+          end;
+          //Zusatzende
         begin
           if player.TitleExists( 'Apprentice' ) then
           begin
@@ -7374,6 +7449,13 @@ begin
       begin
         i := StrToInt( s );
         if i >= 0 then
+        //Zusatz: Wegen höherer Auflösung sieht man Gegner früher, Fernangriff ohne Gegnreaktion
+        if not character.titleexists('Widescreen') then
+        begin
+        character.Vision := character.Vision + 400;
+          character.addtitle('Widescreen');
+          end;
+          //Zusatzende
         begin
           if player.TitleExists( 'Apprentice' ) then
           begin

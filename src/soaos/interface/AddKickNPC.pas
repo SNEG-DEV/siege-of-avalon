@@ -1,16 +1,11 @@
 unit AddKickNPC;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -64,21 +59,17 @@ unit AddKickNPC;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE ../engine/Anigrp30cfg.inc}
+{$INCLUDE Anigrp30cfg.inc}
 
 interface
 
 uses
 {$IFDEF DirectX}
-{$IFnDEF FPC}
-  Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
   DirectX,
   DXUtil,
   DXEffects,
 {$ENDIF}
+  Windows,
   Messages,
   SysUtils,
   Classes,
@@ -93,8 +84,8 @@ uses
   Display,
   Anigrp30,
   Engine,
-  LogFile,
-  Resource,
+  Logfile,
+  resource,
   MiscAI;
   
 type
@@ -201,7 +192,7 @@ begin
   if ( CurrDbgLvl >= DbgLvlSevere ) then
     Log.LogEntry( FailName );
 {$ENDIF}
-  try
+           try
 
     if Loaded then
       Exit;
@@ -290,7 +281,7 @@ begin
     ShowChars;
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do
@@ -328,7 +319,7 @@ begin
             lpDDSBack.BltFast( 40, 174, DXBack, rect( 40, 174, 590, 245 ), DDBLTFAST_WAIT );
           ShowChars;
           lpDDSFront.Flip( nil, DDFLIP_WAIT );
-          lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+          lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
           MouseCursor.PlotDirty := false;
         end;
       end;
@@ -352,7 +343,7 @@ begin
             lpDDSBack.BltFast( 40, 174, DXBack, rect( 40, 174, 590, 245 ), DDBLTFAST_WAIT );
           ShowChars;
           lpDDSFront.Flip( nil, DDFLIP_WAIT );
-          lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+          lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
           MouseCursor.PlotDirty := false;
         end; //endif
       end; //end if
@@ -374,7 +365,7 @@ begin
             lpDDSBack.BltFast( 40, 174, DXBack, rect( 40, 174, 590, 245 ), DDBLTFAST_WAIT );
           ShowChars;
           lpDDSFront.Flip( nil, DDFLIP_WAIT );
-          lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+          lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
           MouseCursor.PlotDirty := false;
         end; //endif
       end; //end if
@@ -396,7 +387,7 @@ begin
             lpDDSBack.BltFast( 40, 174, DXBack, rect( 40, 174, 590, 245 ), DDBLTFAST_WAIT );
           ShowChars;
           lpDDSFront.Flip( nil, DDFLIP_WAIT );
-          lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+          lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
           MouseCursor.PlotDirty := false;
         end; //endif
       end; //end if
@@ -418,7 +409,7 @@ begin
             lpDDSBack.BltFast( 40, 174, DXBack, rect( 40, 174, 590, 245 ), DDBLTFAST_WAIT );
           ShowChars;
           lpDDSFront.Flip( nil, DDFLIP_WAIT );
-          lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+          lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
           MouseCursor.PlotDirty := false;
         end; //endif
       end; //end if
@@ -432,7 +423,7 @@ begin
         TAIOptions( AIBoxList.items[ i ] ).Click( X, Y );
         ShowChars;
         lpDDSFront.Flip( nil, DDFLIP_WAIT );
-        lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+        lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
         MouseCursor.PlotDirty := false;
         break;
       end;
@@ -443,7 +434,7 @@ begin
       Close;
     end
     else if PtinRect( rect( 120, 499, 178, 508 ), point( X, Y ) ) then
-    begin //over wierd region used by Steven as cancel
+    begin //over wierd region used by Steven as cancel --- Altes Interface, Einsatzplan bei 4 Leuten
       for i := 0 to 4 do
       begin
         CheckBox[ i ] := false;
@@ -497,7 +488,7 @@ begin
     ShowChars;
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do
@@ -557,7 +548,11 @@ begin
 
 
 //clear checkboxes
+  if NPCList.count >3 then
+  lpDDSBack.BltFast( 40, vOffset + VAdj1 - 120, DXBack, Rect( 40, vOffset + VAdj1 - 120, 550, vOffset + VAdj1 -100 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT)
+  else
   lpDDSBack.BltFast( 40, vOffset + VAdj1, DXBack, Rect( 40, vOffset + VAdj1, 550, vOffset + VAdj1 + 24 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+
 
   if assigned( character ) and assigned( OnDraw ) then
   begin
@@ -612,6 +607,89 @@ begin
 
     end
     else if NPCList.count = 4 then
+    begin
+      CharX := cOffset + ( 463 div 4 ) - cWidth div 2;
+      i := pText.TinyTextLength( TCharacter( NPCList.items[ 1 ] ).name );
+      pText.PlotTinyText( TCharacter( NPCList.items[ 1 ] ).name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset - 124, 240 );
+      OnDraw( TCharacter( NPCList.items[ 1 ] ), CharX, vOffset - 128 );
+      pText.PlotTinyText( txtMessage[ 11 ], CharX + 65, vOffset + VAdj2 - 120, 240 );
+      if CheckBox[ 1 ] then
+        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1- 120, DXBox2, Rect( 0, 0, 15, 15 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
+      else
+        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1- 120, DXBox, Rect( 0, 0, 15, 15 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+
+
+      CharX := cOffset + ( 463 div 2 ) - cWidth div 2;
+      i := pText.TinyTextLength( TCharacter( NPCList.items[ 2 ] ).name );
+      pText.PlotTinyText( TCharacter( NPCList.items[ 2 ] ).name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset - 124, 240 );
+      OnDraw( TCharacter( NPCList.items[ 2 ] ), CharX, vOffset- 128 );
+      pText.PlotTinyText( txtMessage[ 11 ], CharX + 65, vOffset + VAdj2 - 120, 240 );
+      if CheckBox[ 2 ] then
+        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1- 120, DXBox2, Rect( 0, 0, 15, 15 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
+      else
+        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1- 120, DXBox, Rect( 0, 0, 15, 15 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+
+
+      CharX := cOffset + ( 463 div 4 ) * 3 - cWidth div 2;
+      i := pText.TinyTextLength( TCharacter( NPCList.items[ 3 ] ).name );
+      pText.PlotTinyText( TCharacter( NPCList.items[ 3 ] ).name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset - 124, 240 );
+      OnDraw( TCharacter( NPCList.items[ 3 ] ), CharX, vOffset- 128 );
+      pText.PlotTinyText( txtMessage[ 11 ], CharX + 65, vOffset + VAdj2 - 120, 240 );
+      if CheckBox[ 3 ] then
+        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1- 120, DXBox2, Rect( 0, 0, 15, 15 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
+      else
+        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1- 120, DXBox, Rect( 0, 0, 15, 15 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+
+    end
+    else if NPCList.count = 5 then
+    begin
+      cOffset := cOffset - 50;
+      CharX := cOffset + ( 563 div 5 ) - cWidth div 2;
+      i := pText.TinyTextLength( TCharacter( NPCList.items[ 1 ] ).name );
+      pText.PlotTinyText( TCharacter( NPCList.items[ 1 ] ).name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset - 124, 240 );
+      OnDraw( TCharacter( NPCList.items[ 1 ] ), CharX, vOffset- 128 );
+      pText.PlotTinyText( txtMessage[ 11 ], CharX + 65, vOffset + VAdj2- 120, 240 );
+
+      if CheckBox[ 1 ] then
+        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1- 120, DXBox2, Rect( 0, 0, 15, 15 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
+      else
+        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1- 120, DXBox, Rect( 0, 0, 15, 15 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+
+
+      CharX := cOffset + ( 563 div 5 ) * 2 - cWidth div 2;
+      i := pText.TinyTextLength( TCharacter( NPCList.items[ 2 ] ).name );
+      pText.PlotTinyText( TCharacter( NPCList.items[ 2 ] ).name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset - 124, 240 );
+      OnDraw( TCharacter( NPCList.items[ 2 ] ), CharX, vOffset- 128 );
+      pText.PlotTinyText( txtMessage[ 11 ], CharX + 65, vOffset + VAdj2 - 120, 240 );
+      if CheckBox[ 2 ] then
+        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1- 120, DXBox2, Rect( 0, 0, 15, 15 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
+      else
+        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1- 120, DXBox, Rect( 0, 0, 15, 15 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+
+
+      CharX := cOffset + ( 563 div 5 ) * 3 - cWidth div 2;
+      i := pText.TinyTextLength( TCharacter( NPCList.items[ 3 ] ).name );
+      pText.PlotTinyText( TCharacter( NPCList.items[ 3 ] ).name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset - 124, 240 );
+      OnDraw( TCharacter( NPCList.items[ 3 ] ), CharX, vOffset- 128 );
+      pText.PlotTinyText( txtMessage[ 11 ], CharX + 65, vOffset + VAdj2 - 120, 240 );
+      if CheckBox[ 3 ] then
+        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1- 120, DXBox2, Rect( 0, 0, 15, 15 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
+      else
+        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1- 120, DXBox, Rect( 0, 0, 15, 15 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+
+
+      CharX := cOffset + ( 563 div 5 ) * 4 - cWidth div 2;
+      i := pText.TinyTextLength( TCharacter( NPCList.items[ 4 ] ).name );
+      pText.PlotTinyText( TCharacter( NPCList.items[ 4 ] ).name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset - 124, 240 );
+      OnDraw( TCharacter( NPCList.items[ 4 ] ), CharX, vOffset- 128 );
+      pText.PlotTinyText( txtMessage[ 11 ], CharX + 65, vOffset + VAdj2 - 120, 240 );
+      if CheckBox[ 4 ] then
+        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1- 120, DXBox2, Rect( 0, 0, 15, 15 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
+      else
+        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1- 120, DXBox, Rect( 0, 0, 15, 15 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    end;
+
+    {else if NPCList.count = 4 then
     begin
       CharX := cOffset + ( 463 div 4 ) - cWidth div 2;
       i := pText.TinyTextLength( TCharacter( NPCList.items[ 1 ] ).name );
@@ -692,7 +770,7 @@ begin
         lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1, DXBox2, Rect( 0, 0, 15, 15 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
       else
         lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1, DXBox, Rect( 0, 0, 15, 15 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-    end;
+    end;}
 
     for i := 0 to AIBoxList.count - 1 do
     begin
@@ -769,7 +847,81 @@ begin
   else if NPCList.count = 4 then
   begin
     CharX := cOffset + ( 463 div 4 ) - cWidth div 2;
-    Selectrect[ 1 ].rect := rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 + 20 );
+    Selectrect[ 1 ].rect := rect( CharX + 45, vOffset + VAdj1-120, CharX + 125, vOffset + VAdj1 -100  );
+    SelectRect[ 1 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 1 ] ).name + txtMessage[ 15 ];
+    SelectRect[ 1 ].Enabled := true;
+    if not assigned( Character ) then
+    begin
+      NewAIBox := TAIOptions.create( TCharacter( NPCList.items[ 1 ] ), AIImage, DXBox2, CharX + 25, vOffset + 10 );
+      AIBoxList.Add( NewAIBox );
+    end;
+
+    CharX := cOffset + ( 463 div 2 ) - cWidth div 2;
+    Selectrect[ 2 ].rect := rect( CharX + 45, vOffset + VAdj1-120, CharX + 125, vOffset + VAdj1 -100  );
+    SelectRect[ 2 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 2 ] ).name + txtMessage[ 15 ];
+    SelectRect[ 2 ].Enabled := true;
+    if not assigned( Character ) then
+    begin
+      NewAIBox := TAIOptions.create( TCharacter( NPCList.items[ 2 ] ), AIImage, DXBox2, CharX + 25, vOffset + 10 );
+      AIBoxList.Add( NewAIBox );
+    end;
+
+    CharX := cOffset + ( 463 div 4 ) * 3 - cWidth div 2;
+    Selectrect[ 3 ].rect := rect( CharX + 45, vOffset + VAdj1-120, CharX + 125, vOffset + VAdj1 -100 );
+    SelectRect[ 3 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 3 ] ).name + txtMessage[ 15 ];
+    SelectRect[ 3 ].Enabled := true;
+    if not assigned( Character ) then
+    begin
+      NewAIBox := TAIOptions.create( TCharacter( NPCList.items[ 3 ] ), AIImage, DXBox2, CharX + 25, vOffset + 10 );
+      AIBoxList.Add( NewAIBox );
+    end;
+
+  end
+  else if NPCList.count = 5 then
+  begin
+    cOffset := cOffset - 50;
+    CharX := cOffset + ( 563 div 5 ) - cWidth div 2;
+    Selectrect[ 1 ].rect := rect( CharX + 45, vOffset + VAdj1-120, CharX + 125, vOffset + VAdj1 -100  );
+    SelectRect[ 1 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 1 ] ).name + txtMessage[ 15 ];
+    SelectRect[ 1 ].Enabled := true;
+    if not assigned( Character ) then
+    begin
+      NewAIBox := TAIOptions.create( TCharacter( NPCList.items[ 1 ] ), AIImage, DXBox2, CharX + 25, vOffset + 10 );
+      AIBoxList.Add( NewAIBox );
+    end;
+
+    CharX := cOffset + ( 563 div 5 ) * 2 - cWidth div 2;
+    Selectrect[ 2 ].rect := rect( CharX + 45, vOffset + VAdj1-120, CharX + 125, vOffset + VAdj1 -100  );
+    SelectRect[ 2 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 2 ] ).name + txtMessage[ 15 ];
+    SelectRect[ 2 ].Enabled := true;
+    if not assigned( Character ) then
+    begin
+      NewAIBox := TAIOptions.create( TCharacter( NPCList.items[ 2 ] ), AIImage, DXBox2, CharX + 25, vOffset + 10 );
+      AIBoxList.Add( NewAIBox );
+    end;
+    CharX := cOffset + ( 563 div 5 ) * 3 - cWidth div 2;
+    Selectrect[ 3 ].rect := rect( CharX + 45, vOffset + VAdj1-120, CharX + 125, vOffset + VAdj1 -100  );
+    SelectRect[ 3 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 3 ] ).name + txtMessage[ 15 ];
+    SelectRect[ 3 ].Enabled := true;
+    if not assigned( Character ) then
+    begin
+      NewAIBox := TAIOptions.create( TCharacter( NPCList.items[ 3 ] ), AIImage, DXBox2, CharX + 25, vOffset + 10 );
+      AIBoxList.Add( NewAIBox );
+    end;
+    CharX := cOffset + ( 563 div 5 ) * 4 - cWidth div 2;
+    Selectrect[ 4 ].rect := rect( CharX + 45, vOffset + VAdj1-120, CharX + 125, vOffset + VAdj1 -100  );
+    SelectRect[ 4 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 4 ] ).name + txtMessage[ 15 ];
+    SelectRect[ 4 ].Enabled := true;
+    if not assigned( Character ) then
+    begin
+      NewAIBox := TAIOptions.create( TCharacter( NPCList.items[ 4 ] ), AIImage, DXBox2, CharX + 25, vOffset + 10 );
+      AIBoxList.Add( NewAIBox );
+    end;
+    end;
+    {else if NPCList.count = 4 then
+  begin
+    CharX := cOffset + ( 463 div 4 ) - cWidth div 2;
+    Selectrect[ 1 ].rect := rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 - 20 );
     SelectRect[ 1 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 1 ] ).name + txtMessage[ 15 ];
     SelectRect[ 1 ].Enabled := true;
 
@@ -782,6 +934,11 @@ begin
     Selectrect[ 3 ].rect := rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 + 20 );
     SelectRect[ 3 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 3 ] ).name + txtMessage[ 15 ];
     SelectRect[ 3 ].Enabled := true;
+        if not assigned( Character ) then
+    begin
+      NewAIBox := TAIOptions.create( TCharacter( NPCList.items[ 3 ] ), AIImage, DXBox2, CharX + cWidth, vOffset );
+      AIBoxList.Add( NewAIBox );
+    end;
 
   end
   else if NPCList.count = 5 then
@@ -806,10 +963,10 @@ begin
     Selectrect[ 4 ].rect := rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 + 20 );
     SelectRect[ 4 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 4 ] ).name + txtMessage[ 15 ];
     SelectRect[ 4 ].Enabled := true;
-  end;
+  end;}
 
   j := 5;
-  for i := 0 to AIBoxList.count - 1 do
+  for i := 0 to AIBoxList.count -1 do
   begin
     if i > 1 then
       break;
@@ -818,6 +975,9 @@ begin
       with TAIOptions( AIBoxList.items[ i ] ) do
       begin
         Selectrect[ j ].rect := CheckBox[ k ];
+        if NPCList.count = 5 then
+        inc( Selectrect[ j ].rect.Right, 230 )
+        else
         inc( Selectrect[ j ].rect.Right, 170 );
         SelectRect[ j ].info := txtMessage[ 16 + k ];
         SelectRect[ j ].Enabled := true;

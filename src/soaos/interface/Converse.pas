@@ -1,16 +1,11 @@
 unit Converse;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -64,13 +59,15 @@ unit Converse;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE ../engine/Anigrp30cfg.inc}
+{$INCLUDE Anigrp30cfg.inc}
 
 interface
 
 uses
-  LCLIntf, LCLType, LMessages,
-  SDL2, SDL2_image, SDL2_gfx,
+  DirectX,
+  DXUtil,
+  DXEffects,
+  Windows,
   Messages,
   SysUtils,
   Classes,
@@ -107,7 +104,7 @@ type
     INI : TMemINIFile;
     procedure LoadConversation;
   protected
-    Image : TSDL_Surface;
+    Image : IDirectDrawSurface;
     procedure MouseDown( Sender : TAniView; Button : TMouseButton;
       Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
     procedure MouseMove( Sender : TAniView;
@@ -195,7 +192,7 @@ procedure TConverseBox.Init;
 var
   Filename : string;
   BM : TBitmap;
-  Shadow : TSDL_Surface;
+  Shadow : IDirectDrawSurface;
 const
   FailName : string = 'TConverseBox.Init';
 begin
@@ -247,7 +244,7 @@ begin
       BM.free;
     end;
     MouseCursor.Cleanup;
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
     pText.LoadTinyFontGraphic;
 
@@ -717,7 +714,7 @@ begin
       Inc( j, 10 );
     end;
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do

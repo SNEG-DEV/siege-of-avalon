@@ -1,16 +1,11 @@
 unit String32;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -67,13 +62,8 @@ unit String32;
 interface
 
 uses
-{$IFnDEF FPC}
   Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
   SysUtils,
-  fileinfo,
   Classes;
 
 //function IsNormal(cTex: string): boolean;  //
@@ -321,21 +311,35 @@ begin
   Result := S;
 end;
 
+procedure GetBuildInfo( var V1, V2, V3, V4 : Word );
+var
+  VerInfoSize : DWORD;
+  VerInfo : Pointer;
+  VerValueSize : DWORD;
+  VerValue : PVSFixedFileInfo;
+  Dummy : DWORD;
+begin
+  VerInfoSize := GetFileVersionInfoSize( PChar( ParamStr( 0 ) ), Dummy );
+  GetMem( VerInfo, VerInfoSize );
+  GetFileVersionInfo( PChar( ParamStr( 0 ) ), 0, VerInfoSize, VerInfo );
+  VerQueryValue( VerInfo, '\', Pointer( VerValue ), VerValueSize );
+  with VerValue^ do
+  begin
+    V1 := dwFileVersionMS shr 16;
+    V2 := dwFileVersionMS and $FFFF;
+    V3 := dwFileVersionLS shr 16;
+    V4 := dwFileVersionLS and $FFFF;
+  end;
+  FreeMem( VerInfo, VerInfoSize );
+end;
+
 function GetBuildInfoString : string;
 var
-  FileVerInfo : TFileVerInfo;
-  BuildInfoVer : string := 'Unknown';
-
+  V1, V2, V3, V4 : Word;
 begin
-  FileVerInfo := TFileVersionInfo.Create(Nil);
-  try
-     FileVerInfo.FileName := ParamStr(0);
-     FileVerInfo.ReadFileInfo;
-     BuildInfoVer := FileVerInfo.VersionStrings.Values['FileVersion'];
-  finally
-     FileVerInfo.Free;
-  end;
-  Result := BuildInfoVer;
+  GetBuildInfo( V1, V2, V3, V4 );
+  //Result := Format('%d.%d.%d.%d', [V1, V2, V3, V4]);
+  Result := Format( '%d.%d.%d', [ V1, V2, V3 ] );
 end;
 
 function BooleanToYesNo( b : Boolean ) : string;

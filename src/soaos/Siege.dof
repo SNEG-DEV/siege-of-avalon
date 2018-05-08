@@ -39,7 +39,7 @@ MaxStackSize=8388608
 ImageBase=8388608
 ExeDescription=
 [Directories]
-OutputDir=../../../game
+OutputDir=C:/Win32
 UnitOutputDir=dcu
 PackageDLLOutputDir=
 PackageDCPOutputDir=
@@ -56,8 +56,8 @@ IncludeVerInfo=1
 AutoIncBuild=0
 MajorVer=1
 MinorVer=1
-Release=2001
-Build=409
+Release=2
+Build=410
 Debug=0
 PreRelease=0
 Special=0
@@ -68,7 +68,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=Digital Tome, Texas USA
 FileDescription=Siege Of Avalon
-FileVersion=1.1.2001.409
+FileVersion=1.1.2.410
 InternalName=DTMain1
 LegalCopyright=Copyright (c) 1999-2001 Digital Tome
 LegalTrademarks=Siege of Avalon(tm), Episodic Computer Game Novel(tm), Digital Tome(tm)
@@ -76,6 +76,8 @@ OriginalFilename=Siege
 ProductName=Siege of Avalon(tm)
 ProductVersion=1.1.2001.0409
 Comments=Siege of Avalon, an Episodic Computer Game Novel from Digital Tome
+[Excluded Packages]
+$(DELPHI)\Lib\dclusr40.bpl=Borland User
 [HistoryLists\hlConditionals]
 Count=1
 Item0=DirectX
@@ -91,7 +93,8 @@ Item2=../engine
 Count=1
 Item0=dcu
 [HistoryLists\hlOutputDirectorry]
-Count=3
-Item0=../../../game
-Item1=../../game
-Item2=E:\Games\SOAOS
+Count=4
+Item0=C:/Win32
+Item1=../../../game
+Item2=../../game
+Item3=E:\Games\SOAOS

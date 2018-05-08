@@ -1,16 +1,11 @@
 unit Inventory;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -64,13 +59,17 @@ unit Inventory;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE ../engine/Anigrp30cfg.inc}
+{$INCLUDE Anigrp30cfg.inc}
 
 interface
 
 uses
-  LCLIntf, LCLType, LMessages,
-  SDL2, SDL2_image, SDL2_gfx,
+{$IFDEF DirectX}
+  DirectX,
+  DXUtil,
+  DXEffects,
+{$ENDIF}
+  Windows,
   Messages,
   SysUtils,
   Classes,
@@ -88,7 +87,7 @@ uses
   Scroll,
   Anigrp30,
   Engine,
-  LogFile;
+  Logfile;
 
 type
   BodySlotCoord = record
@@ -110,9 +109,9 @@ type
     ItemType : string; //Inventory or Equipment
     BodySlot : Integer; //where on the body is this piece?
     CharacterHadThisOnHim : boolean; //Was this on the character when he arrived?
-    DXSurface : TSDL_Surface; //barbie graphic surface
-    DXSurfaceIcon : TSDL_Surface; //icon graphic surface
-    DXShadow : TSDL_Surface; //The shadow
+    DXSurface : IDirectDrawSurface; //barbie graphic surface
+    DXSurfaceIcon : IDirectDrawSurface; //icon graphic surface
+    DXShadow : IDirectDrawSurface; //The shadow
   end;
 
   TInventory = class( TDisplay )
@@ -124,16 +123,16 @@ type
     Tx, Ty : Integer; // x and y locs used with the offset of the dragged item
     DontPlotCurrentItem : boolean;
 {$IFDEF DirectX}
-    DXBack : TSDL_Surface; //DD surface that holds the inventory screen before blit
-    DxDirty : TSDL_Surface; //DD for cleanup when dragging items
-    DXCircle : TSDL_Surface; //circle used for outline
-    DXLeftArrow : TSDL_Surface; //Inventory left arrow
-    DXRightArrow : TSDL_Surface; //Inventory right arrow
-    DXBackToGame : TSDL_Surface; //Back To Game highlight
-    DXBrown : TSDL_Surface; //Show where we can drop item in inventory
+    DXBack : IDirectDrawSurface; //DD surface that holds the inventory screen before blit
+    DxDirty : IDirectDrawSurface; //DD for cleanup when dragging items
+    DXCircle : IDirectDrawSurface; //circle used for outline
+    DXLeftArrow : IDirectDrawSurface; //Inventory left arrow
+    DXRightArrow : IDirectDrawSurface; //Inventory right arrow
+    DXBackToGame : IDirectDrawSurface; //Back To Game highlight
+    DXBrown : IDirectDrawSurface; //Show where we can drop item in inventory
 {$ENDIF}
     SlotName : TStringList; //names of each slot we plot on screen
-    SlotCoord : array[ 0..15 ] of BodySlotCoord; //coordinates used to generate rects
+    SlotCoord : array[ 0..16 ] of BodySlotCoord; //coordinates used to generate rects
     //GroundList: TList;
     GroundOrderList : TList; //used to keep track of the order of items on the ground
     TopGroundIndex : Integer; //Index of the current top ground item
@@ -271,22 +270,27 @@ begin
     SlotCoord[ 12 ].cy := 194;
     SlotCoord[ 12 ].cr := 200;
 
-    SlotName.Add( 'Misc1' );
-    SlotCoord[ 13 ].cx := 343;
-    SlotCoord[ 13 ].cy := 103;
-    SlotCoord[ 13 ].cr := 21;
+    SlotName.Add( 'tabar' );
+    SlotCoord[ 13 ].cx := 450;
+    SlotCoord[ 13 ].cy := 125;
+    SlotCoord[ 13 ].cr := 40;
 
-    SlotName.Add( 'Misc2' );
-    SlotCoord[ 14 ].cx := 321;
-    SlotCoord[ 14 ].cy := 138;
+    SlotName.Add( 'Misc1' );
+    SlotCoord[ 14 ].cx := 343;
+    SlotCoord[ 14 ].cy := 103;
     SlotCoord[ 14 ].cr := 21;
 
-    SlotName.Add( 'Misc3' );
-    SlotCoord[ 15 ].cx := 363;
+    SlotName.Add( 'Misc2' );
+    SlotCoord[ 15 ].cx := 321;
     SlotCoord[ 15 ].cy := 138;
     SlotCoord[ 15 ].cr := 21;
 
-    for i := 0 to 15 do
+    SlotName.Add( 'Misc3' );
+    SlotCoord[ 16 ].cx := 363;
+    SlotCoord[ 16 ].cy := 138;
+    SlotCoord[ 16 ].cr := 21;
+
+    for i := 0 to 16 do
     begin //set up the collision rects
       SlotCoord[ i ].Rect.Left := SlotCoord[ i ].cx - SlotCoord[ i ].cr;
       SlotCoord[ i ].Rect.Right := SlotCoord[ i ].cx + SlotCoord[ i ].cr;
@@ -330,7 +334,7 @@ var
   InvisColor : Integer; //Transparent color :RGB(0,255,255)
   i : Integer;
   t : TSlot; //Index for Equipment loop
-  DXBorder : TSDL_Surface;
+  DXBorder : IDirectDrawSurface;
   WeHaveAWeaponAndThisIsTheIndex : integer; //for moving the weapon to a clear spot on barbie
   GreatestWidth, GreatestHeight : integer; //used to create the dirty rect surface
 const
@@ -607,7 +611,7 @@ begin
   //Whew! Now we flip it all to the screen
     MouseCursor.Cleanup;
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 {$ENDIF}
   except
@@ -1043,7 +1047,7 @@ begin
     begin
       WriteTheInventoryData;
       lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
       MouseCursor.PlotDirty := false;
     end;
   except
@@ -1087,7 +1091,7 @@ begin
       DrawSub( lpDDSBack, rect( Tx, Ty, Tx + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, Ty + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ), Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ), pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXShadow, True, ShadowAlpha );
       lpDDSBack.BltFast( Tx, Ty, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXSurface, Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
       MouseCursor.PlotDirty := false;
     end
     else if Assigned( DXBack ) and ( DlgScroll.ScrollIsShowing = False ) then
@@ -1185,7 +1189,7 @@ begin
       end; //endif CurrentSelectedItem
       CurrentSelectedItem := -1; //deassign it
       lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
       MouseCursor.PlotDirty := false;
     end;
   except
@@ -1256,7 +1260,7 @@ begin
     end;
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 1920, 1080 ), DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do
@@ -1333,7 +1337,7 @@ begin
     R1.Right := R1.Left + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W;
     R1.Top := Integer( Y - ( pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H div 2 ) );
     R1.Bottom := R1.Top + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H;
-    for i := 0 to 15 do
+    for i := 0 to 16 do
     begin //check where we will land vs all other inv items for collision
       k := IntersectRect( R3, SlotCoord[ i ].Rect, R1 );
       if k then
@@ -1578,8 +1582,8 @@ begin
     end
     else
     begin //resote to fullscreen
-      prRect.bottom := 600;
-      prRect.Right := 800;
+      prRect.bottom := 1080; //600
+      prRect.Right := 1920; //800
     end;
     ClipCursor( prRect );
     Dispose( prRect );

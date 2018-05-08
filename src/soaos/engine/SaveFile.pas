@@ -1,16 +1,11 @@
 unit SaveFile;
-
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 {******************************************************************************}
 {                                                                              }
 {               Siege Of Avalon : Open Source Edition                          }
 {               -------------------------------------                          }
 {                                                                              }
 { Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright Â©1999-2000 Digital Tome L.P. Texas USA                             }
+{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
 { All Rights Reserved.                                                         }
 {                                                                              }
 { Portions created by Team SOAOS are                                           }
@@ -67,11 +62,7 @@ unit SaveFile;
 interface
 
 uses
-{$IFnDEF FPC}
   Windows,
-{$ELSE}
-  LCLIntf, LCLType, LMessages,
-{$ENDIF}
   SysUtils,
   Classes,
   LogFile;
@@ -431,7 +422,7 @@ begin
     FProperties := nil;
     CreatedProperties := false;
   end;
-  MaxPartyMembers := 2;
+  MaxPartyMembers := 4;
 
   for i := 0 to MapIndex.count - 1 do
   begin
