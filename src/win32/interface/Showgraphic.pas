@@ -148,7 +148,7 @@ end; //Destroy
 procedure TShowGraphic.Init;
 var
   InvisColor : integer;
-
+  pr : TRect;
 const
   FailName : string = 'TShowGraphic.init';
 begin
@@ -161,7 +161,8 @@ begin
       Exit;
     inherited;
     MouseCursor.Cleanup;
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, ResWidth, ResHeight ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, ResWidth, ResHeight );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 
 
@@ -173,12 +174,14 @@ begin
 
     BMBack.LoadFromFile( InterfacePath + FileName );
     DXBack := DDGetImage( lpDD, BMBack, InvisColor, False );
-    lpDDSBack.BltFast( 0, 0, DXBack, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 800, 600 );
+    lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_WAIT );
 
     BMBack.Free;
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 800, 600 );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 
     if assigned( pMusic ) then

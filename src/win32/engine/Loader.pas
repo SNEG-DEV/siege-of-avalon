@@ -109,7 +109,8 @@ implementation
 
 uses
   Parts,
-  AniDemo;
+  AniDemo,
+  Variants;
 
 function LoadMap( var Map : TAniMap; const Filename, Scene : string; IgnoreDefaultSprites, IgnoreSceneSprites : boolean ) : boolean;
 var

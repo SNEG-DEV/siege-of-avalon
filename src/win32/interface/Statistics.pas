@@ -193,6 +193,7 @@ var
   InvisColor : Integer; //Transparent color :RGB(0,255,255)
   DXBorder : IDirectDrawSurface;
   i : integer;
+  pr : TRect;
 const
   FailName : string = 'TStatistics.init';
 begin
@@ -206,7 +207,8 @@ begin
       Exit;
     inherited;
     MouseCursor.Cleanup;
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, ResWidth, ResHeight ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, ResWidth, ResHeight );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 
     ExText.Open( 'Statistics' );
@@ -246,7 +248,8 @@ begin
         //DXBack.BltFast(ArrowRect[i].rect.left-4, ArrowRect[i].rect.top, DXRightArrow, Rect(0, 0, 20, 15), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT); //plot the highlight
     end; //end for
 
-    lpDDSBack.BltFast( 0, 0, DXBack, Rect( 0, 0, BMBack.width, BMBack.Height ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, BMBack.width, BMBack.Height );
+    lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   //Now for the Alpha'ed edges
     BMBack.LoadFromFile( InterfacePath + 'staRightshad.bmp' );
     DXBorder := DDGetImage( lpDD, BMBack, InvisColor, False );
@@ -267,7 +270,8 @@ begin
     ShowStats;
   //Whew! Now we flip it all to the screen
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 800, 600 );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 {$ENDIF}
   except
@@ -574,6 +578,7 @@ var
     ManaMinMsg,
     ManaHrMsg : string;
   Rate : double;
+  pr : TRect;
 const
   FailName : string = 'TStatistics.MouseMove';
 begin
@@ -584,11 +589,15 @@ begin
   try
 
      //Clean up arrows and back to game
-    lpDDSBack.BltFast( 103, 105, DXBack, Rect( 103, 105, 123, 321 ), DDBLTFAST_WAIT );
-    lpDDSBack.BltFast( 188, 105, DXBack, Rect( 188, 105, 210, 315 ), DDBLTFAST_WAIT );
-    lpDDSBack.BltFast( 581, 414, DXBack, Rect( 581, 414, 581 + 81, 414 + 57 ), DDBLTFAST_WAIT );
+    pr := Rect( 103, 105, 123, 321 );
+    lpDDSBack.BltFast( 103, 105, DXBack, @pr, DDBLTFAST_WAIT );
+    pr := Rect( 188, 105, 210, 315 );
+    lpDDSBack.BltFast( 188, 105, DXBack, @pr, DDBLTFAST_WAIT );
+    pr := Rect( 581, 414, 581 + 81, 414 + 57 );
+    lpDDSBack.BltFast( 581, 414, DXBack, @pr, DDBLTFAST_WAIT );
    //clear text
-    lpDDSBack.BltFast( 10, 338, DXBack, Rect( 10, 338, 587, 470 ), DDBLTFAST_WAIT );
+    pr := Rect( 10, 338, 587, 470 );
+    lpDDSBack.BltFast( 10, 338, DXBack, @pr, DDBLTFAST_WAIT );
     i := 0;
     j := 0;
     while i < 16 do
@@ -596,10 +605,11 @@ begin
       if ptInRect( ArrowRect[ i ].rect, point( X, Y ) ) then
       begin //if over an Arrow
         ArrowInfo( i );
+        pr := Rect( 0, 0, 20, 15 );
         if i < 8 then
-          lpDDSBack.BltFast( ArrowRect[ i ].rect.left, ArrowRect[ i ].rect.top, DXLeftArrow, Rect( 0, 0, 20, 15 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ) //plot the highlight
+          lpDDSBack.BltFast( ArrowRect[ i ].rect.left, ArrowRect[ i ].rect.top, DXLeftArrow, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ) //plot the highlight
         else
-          lpDDSBack.BltFast( ArrowRect[ i ].rect.left - 4, ArrowRect[ i ].rect.top, DXRightArrow, Rect( 0, 0, 20, 15 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //plot the highlight
+          lpDDSBack.BltFast( ArrowRect[ i ].rect.left - 4, ArrowRect[ i ].rect.top, DXRightArrow, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //plot the highlight
         if UseSmallFont then
           pText.PlotTinyTextBlock( ArrowRect[ i ].Info, 10, 587, 376, 240 )
         else
@@ -682,12 +692,14 @@ begin
       if PtinRect( rect( 581, 414, 581 + 81, 414 + 57 ), point( X, Y ) ) then
       begin //over back button
          //plot highlighted back to game
-        lpDDSBack.BltFast( 581, 414, DXBackToGame, Rect( 0, 0, 81, 57 ), DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, 81, 57 );
+        lpDDSBack.BltFast( 581, 414, DXBackToGame, @pr, DDBLTFAST_WAIT );
       end;
     end;
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 800, 600 );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do
@@ -717,6 +729,8 @@ end;
 procedure TStatistics.Paint;
 const
   FailName : string = 'TStatistics.paint';
+var
+  pr : TRect;
 begin
 {$IFDEF DODEBUG}
   if ( CurrDbgLvl >= DbgLvlSevere ) then
@@ -725,11 +739,13 @@ begin
   try
 
   //clear the back down to the text - but dont clear the info block
-    lpDDSBack.BltFast( 0, 0, DXBack, Rect( 0, 0, 677, 367 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 677, 367 );
+    lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   //replot the entire screen statistics
     ShowStats;
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 800, 600 );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do

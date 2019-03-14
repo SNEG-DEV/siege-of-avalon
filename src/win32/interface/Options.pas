@@ -168,6 +168,7 @@ procedure TOptions.Init;
 var
   InvisColor : integer;
   i : integer;
+  pr : TRect;
 const
   FailName : string = 'TOptions.init';
 begin
@@ -181,7 +182,8 @@ begin
       Exit;
     inherited;
     MouseCursor.Cleanup;
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, ResWidth, ResHeight ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, ResWidth, ResHeight );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 
     ExText.Open( 'Options' );
@@ -221,7 +223,8 @@ begin
 
 
   //now we blit the screen to the backbuffer
-    lpDDSBack.BltFast( 0, 0, DXBack, Rect( 0, 0, BMBack.width, BMBack.Height ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, BMBack.width, BMBack.Height );
+    lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
     BMBack.Free;
 
@@ -244,6 +247,7 @@ procedure TOptions.PlotMenu;
 var
   i, j, k : integer;
   pt : Tpoint;
+  pr : TRect;
 const
   FailName : string = 'TOptions.PlotMenu';
 begin
@@ -254,12 +258,16 @@ begin
   try
 
   //clear Volume bars
-    lpDDSBack.BltFast( 116, 92, DXBack, Rect( 116, 92, 315, 105 ), DDBLTFAST_WAIT );
-    lpDDSBack.BltFast( 116, 175, DXBack, Rect( 116, 175, 315, 188 ), DDBLTFAST_WAIT );
+    pr := Rect( 116, 92, 315, 105 );
+    lpDDSBack.BltFast( 116, 92, DXBack, @pr, DDBLTFAST_WAIT );
+    pr := Rect( 116, 175, 315, 188 );
+    lpDDSBack.BltFast( 116, 175, DXBack, @pr, DDBLTFAST_WAIT );
   //clear menu
-    lpDDSBack.BltFast( 114, 259, DXBack, rect( 114, 259, 663, 431 ), DDBLTFAST_WAIT );
+    pr := Rect( 114, 259, 663, 431 );
+    lpDDSBack.BltFast( 114, 259, DXBack, @pr, DDBLTFAST_WAIT );
   //clear Yes/no
-    lpDDSBack.BltFast( 556, 70, DXBack, rect( 556, 70, 650, 90 ), DDBLTFAST_WAIT );
+    pr := Rect( 556, 70, 650, 90 );
+    lpDDSBack.BltFast( 556, 70, DXBack, @pr, DDBLTFAST_WAIT );
 
     if PlotShadows then
       DrawAlpha( lpDDSBack, rect( 560, 75, 573, 86 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 )
@@ -268,11 +276,13 @@ begin
   //Put in the volume
   //Sound FX
     DrawAlpha( lpDDSBack, rect( 116, 92, SoundVolume * 2 + 116, 105 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
-    lpDDSBack.BltFast( SoundVolume * 2 + 116 - 20, 103, DXVolumeSlider, rect( 0, 0, 40, 30 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 40, 30 );
+    lpDDSBack.BltFast( SoundVolume * 2 + 116 - 20, 103, DXVolumeSlider, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     DrawSub( lpDDSBack, rect( SoundVolume * 2 + 116 - 20, 103, SoundVolume * 2 + 116 + 20, 103 + 30 ), rect( 0, 0, 40, 30 ), DXVolumeShadow, True, 200 );
   //Music
     DrawAlpha( lpDDSBack, rect( 116, 175, MusicVolume * 2 + 116, 188 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
-    lpDDSBack.BltFast( MusicVolume * 2 + 116 - 20, 184, DXVolumeSlider, rect( 0, 0, 40, 30 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 40, 30 );
+    lpDDSBack.BltFast( MusicVolume * 2 + 116 - 20, 184, DXVolumeSlider, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     DrawSub( lpDDSBack, rect( MusicVolume * 2 + 116 - 20, 184, MusicVolume * 2 + 116 + 20, 184 + 30 ), rect( 0, 0, 40, 30 ), DXVolumeShadow, True, 200 );
 
   //Plot Text HighLight
@@ -308,7 +318,8 @@ begin
       end; //end for
     end;
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 800, 600 );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do
@@ -441,7 +452,7 @@ procedure TOptions.MouseMove( Sender : TAniview; Shift : TShiftState; X, Y, Grid
 var
   i, j, k : integer;
   pt : Tpoint;
-
+  pr : TRect;
 const
   FailName : string = 'TOptions.MouseMove';
 begin
@@ -452,16 +463,22 @@ begin
   try
 
   //Clear rollover text area
-    lpDDSBack.Bltfast( 351, 113, DXBack, Rect( 351, 113, 684, 206 ), DDBLTFAST_WAIT );
+    pr := Rect( 351, 113, 684, 206 );
+    lpDDSBack.Bltfast( 351, 113, DXBack, @pr, DDBLTFAST_WAIT );
   //clear Volume bars
-    lpDDSBack.BltFast( 100, 92, DXBack, Rect( 100, 92, 336, 155 ), DDBLTFAST_WAIT );
-    lpDDSBack.BltFast( 100, 175, DXBack, Rect( 100, 175, 336, 230 ), DDBLTFAST_WAIT );
+    pr := Rect( 100, 92, 336, 155 );
+    lpDDSBack.BltFast( 100, 92, DXBack, @pr, DDBLTFAST_WAIT );
+    pr := Rect( 100, 175, 336, 230 );
+    lpDDSBack.BltFast( 100, 175, DXBack, @pr, DDBLTFAST_WAIT );
   //clear menu
-    lpDDSBack.BltFast( 114, 259, DXBack, rect( 114, 259, 663, 434 ), DDBLTFAST_WAIT );
+    pr := Rect( 114, 259, 663, 434 );
+    lpDDSBack.BltFast( 114, 259, DXBack, @pr, DDBLTFAST_WAIT );
   //clear Yes/no
-    lpDDSBack.BltFast( 556, 70, DXBack, rect( 556, 70, 650, 90 ), DDBLTFAST_WAIT );
+    pr := Rect( 556, 70, 650, 90 );
+    lpDDSBack.BltFast( 556, 70, DXBack, @pr, DDBLTFAST_WAIT );
   //clear back To Game
-    lpDDSBack.BltFast( opContinueRect.Left, opContinueRect.Top, DXBack, Rect( opContinueRect.Left, opContinueRect.Top, opContinueRect.Left + opContinueRect.Right, opContinueRect.Top + opContinueRect.Bottom ), DDBLTFAST_WAIT );
+    pr := Rect( opContinueRect.Left, opContinueRect.Top, opContinueRect.Left + opContinueRect.Right, opContinueRect.Top + opContinueRect.Bottom );
+    lpDDSBack.BltFast( opContinueRect.Left, opContinueRect.Top, DXBack, @pr, DDBLTFAST_WAIT );
 
     if PlotShadows then
       DrawAlpha( lpDDSBack, rect( 560, 75, 573, 86 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 )
@@ -490,11 +507,13 @@ begin
 
   //Sound FX
     DrawAlpha( lpDDSBack, rect( 116, 92, SoundVolume * 2 + 116, 105 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
-    lpDDSBack.BltFast( SoundVolume * 2 + 116 - 20, 103, DXVolumeSlider, rect( 0, 0, 40, 30 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 40, 30 );
+    lpDDSBack.BltFast( SoundVolume * 2 + 116 - 20, 103, DXVolumeSlider, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     DrawSub( lpDDSBack, rect( SoundVolume * 2 + 116 - 20, 103, SoundVolume * 2 + 116 + 20, 103 + 30 ), rect( 0, 0, 40, 30 ), DXVolumeShadow, True, 200 );
   //Music
     DrawAlpha( lpDDSBack, rect( 116, 175, MusicVolume * 2 + 116, 188 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
-    lpDDSBack.BltFast( MusicVolume * 2 + 116 - 20, 184, DXVolumeSlider, rect( 0, 0, 40, 30 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 40, 30 );
+    lpDDSBack.BltFast( MusicVolume * 2 + 116 - 20, 184, DXVolumeSlider, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     DrawSub( lpDDSBack, rect( MusicVolume * 2 + 116 - 20, 184, MusicVolume * 2 + 116 + 20, 184 + 30 ), rect( 0, 0, 40, 30 ), DXVolumeShadow, True, 200 );
 
   //Plot Text HighLight
@@ -532,7 +551,8 @@ begin
 
     if PtinRect( rect( opContinueRect.Left, opContinueRect.Top, opContinueRect.Left + opContinueRect.Right, opContinueRect.Top + opContinueRect.Bottom ), point( X, Y ) ) then
     begin //over continue
-      lpDDSBack.BltFast( opContinueRect.Left, opContinueRect.Top, DXContinue, Rect( 0, 0, opContinueRect.Right, opContinueRect.Bottom ), DDBLTFAST_WAIT );
+      pr := Rect( 0, 0, opContinueRect.Right, opContinueRect.Bottom );
+      lpDDSBack.BltFast( opContinueRect.Left, opContinueRect.Top, DXContinue, @pr, DDBLTFAST_WAIT );
     end
     else
     begin
@@ -568,7 +588,8 @@ begin
 
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 800, 600 );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do
@@ -620,6 +641,7 @@ procedure TOptions.TimerEvent( Sender : TObject );
   var
     i, j, k : integer;
     pt : TPoint;
+    pr : TRect;
   begin
     if CurrentSelectedListItem <> -1 then
     begin
@@ -627,7 +649,8 @@ procedure TOptions.TimerEvent( Sender : TObject );
     end;
     if Character <> nil then
     begin
-      lpDDSBack.BltFast( 114, 259, DXBack, rect( 114, 259, 663, 434 ), DDBLTFAST_WAIT );
+      pr := Rect( 114, 259, 663, 434 );
+      lpDDSBack.BltFast( 114, 259, DXBack, @pr, DDBLTFAST_WAIT );
       j := 0;
       for i := 0 to SpellList.count - 1 do
       begin
@@ -649,7 +672,8 @@ procedure TOptions.TimerEvent( Sender : TObject );
         end
       end; //end for
       lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+      pr := Rect( 0, 0, 800, 600 );
+      lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
       MouseCursor.PlotDirty := false;
     end;
   end;

@@ -5615,9 +5615,10 @@ const
   Height = 6;
 var
   X, Y : longint;
-  BltFx : DDBLTFX;
+  BltFx : TDDBLTFX;
   Ratio : single;
   BarWidth : integer;
+  pr, pr0 : TRect;
 begin
   inherited;
   if Highlighted and not FDead and assigned( AI ) and Current.IsEnemy( self ) then
@@ -5626,7 +5627,9 @@ begin
     Y := View.Top + PosY - Height;
     BltFx.dwSize := SizeOf( BltFx );
     BltFx.dwFillColor := 0;
-    lpDDSBack.Blt( rect( X, Y, X + Width, Y + Height ), nil, rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, BltFx );
+    pr := Rect( X, Y, X + Width, Y + Height );
+    pr0 := Rect( 0, 0, 0, 0 );
+    lpDDSBack.Blt( @pr, nil, @pr0, DDBLT_COLORFILL + DDBLT_WAIT, @BltFx );
     if ( BaseHitPoints > 0 ) and ( HitPoints > 0 ) then
     begin
       Ratio := ( HitPoints - Wounds ) / HitPoints;
@@ -5640,7 +5643,9 @@ begin
       BltFx.dwFillColor := trunc( $18 * ( 1 - Ratio ) ) shl 10 + trunc( $F * Ratio ) shl 5
     else
       BltFx.dwFillColor := trunc( $18 * ( 1 - Ratio ) ) shl 11 + trunc( $1F * Ratio ) shl 5;
-    lpDDSBack.Blt( rect( X + 1, Y + 1, X + BarWidth, Y + Height - 1 ), nil, rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, BltFx );
+    pr := Rect( X + 1, Y + 1, X + BarWidth, Y + Height - 1 );
+    pr0 := Rect( 0, 0, 0, 0 );
+    lpDDSBack.Blt( @pr, nil, @pr0, DDBLT_COLORFILL + DDBLT_WAIT, @BltFx );
   end;
 end;
 
@@ -11165,6 +11170,7 @@ end;
 procedure TSpriteObject.UpdateSay;
 var
   X0, i : integer;
+  pr : TRect;
 const
   FailName : string = 'TSpriteObject.UpdateSay';
 begin
@@ -11179,7 +11185,8 @@ begin
     begin
       X0 := PosX + CenterX - MsgWidth div 2;
 {$IFDEF DirectX}
-      lpDDSBack.BltFast( X0, PosY - MsgHeight, MsgImage, Rect( 0, 0, MsgWidth, MsgHeight ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      pr := Rect( 0, 0, MsgWidth, MsgHeight );
+      lpDDSBack.BltFast( X0, PosY - MsgHeight, MsgImage, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 {$ENDIF}
 {$IFNDEF DirectX}
       SelectObject( Game.TempDC, MsgMask );
@@ -11918,7 +11925,7 @@ begin
   end;
 end;
 
-procedure TTrigger.Execute;
+function TTrigger.Execute;
 var
   event : string;
 const

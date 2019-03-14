@@ -252,8 +252,8 @@ type
     Paused : Boolean;
     PrevTriggerID : Smallint;
     Zonable : Boolean;
-    NPCHealthBltFx : DDBLTFX;
-    NPCManaBltFx : DDBLTFX;
+    NPCHealthBltFx : TDDBLTFX;
+    NPCManaBltFx : TDDBLTFX;
     NPCBarXCoord : array[ 1..4 ] of Integer;
     FActive : Boolean;
     InTimerLoop : Boolean;
@@ -1283,10 +1283,10 @@ begin
       Exit;
     end;
 
-    NPCHealthBltFx.dwSize := SizeOf( DDBLTFX );
+    NPCHealthBltFx.dwSize := SizeOf( TDDBLTFX );
     NPCHealthBltFx.dwFillColor := DDColorMatch( lpDDSFront, $1F1F5F );
 
-    NPCManaBltFx.dwSize := SizeOf( DDBLTFX );
+    NPCManaBltFx.dwSize := SizeOf( TDDBLTFX );
     NPCManaBltFx.dwFillColor := DDColorMatch( lpDDSFront, $B09730 );
 
     NPCBarXCoord[ 1 ] := 67;
@@ -1614,6 +1614,7 @@ var
   BM : TBitmap;
   S, {S1,S2,} TempName : string;
   HpDistance, ManaDistance : Double;
+  pr, pr0: TRect;
 const
   FailName : string = 'Main.FormKeyDown';
 begin
@@ -1660,7 +1661,8 @@ begin
           end;
           DrawAlpha( OverlayB, Rect( 456, 53, 456 + imgPaused.width, 53 + imgPaused.Height ),
             Rect( 0, 0, imgPaused.width, imgPaused.Height ), PauseImage, True, 170 );
-          lpDDSFront.BltFast( 0, 486, OverlayB, Rect( 0, 0, 800, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          pr := Rect( 0, 0, 800, 114 );
+          lpDDSFront.BltFast( 0, 486, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
           for i := 1 to NPCList.Count - 1 do
           begin
@@ -1678,12 +1680,11 @@ begin
 
             HPDistance := HPDistance * ( 66 / TCharacter( NPCList[ i ] ).HitPoints );
             ManaDistance := ManaDistance * ( 66 / TCharacter( NPCList[ i ] ).Mana );
-
-            lpDDSFront.Blt( Rect( NPCBarXCoord[ i ], 581 - Round( HPDistance ), NPCBarXCoord[ i ] + 5, 581 ),
-              nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCHealthBltFx );
-
-            lpDDSFront.Blt( Rect( NPCBarXCoord[ i ] + 7, 581 - Round( ManaDistance ), NPCBarXCoord[ i ]
-              + 7 + 5, 581 ), nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCManaBltFx );
+            pr := Rect( NPCBarXCoord[ i ], 581 - Round( HPDistance ), NPCBarXCoord[ i ] + 5, 581 );
+            pr0 := Rect( 0, 0, 0, 0 );
+            lpDDSFront.Blt( @pr, nil, @pr0, DDBLT_COLORFILL + DDBLT_WAIT, @NPCHealthBltFx );
+            pr := Rect( NPCBarXCoord[ i ] + 7, 581 - Round( ManaDistance ), NPCBarXCoord[ i ] + 7 + 5, 581 );
+            lpDDSFront.Blt( @pr, nil, @pr0, DDBLT_COLORFILL + DDBLT_WAIT, @NPCManaBltFx );
           end;
         end
         else
@@ -2158,6 +2159,7 @@ procedure TfrmMain.DrawHealthBars;
 var
   i : Integer;
   HpDistance, ManaDistance : Double;
+  pr, pr0 : TRect;
 const
   FailName : string = 'Main.DrawHealthBars';
 begin
@@ -2175,7 +2177,8 @@ begin
       i := 80
     else if i < 0 then
       i := 0;
-    lpDDSBack.BltFast( 699, 134, ManaEmpty, Rect( 0, 0, 78, i ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 78, i );
+    lpDDSBack.BltFast( 699, 134, ManaEmpty, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
 
     if Life > 0 then
       i := Round( 107 * ( Wounds / Life ) )
@@ -2185,7 +2188,8 @@ begin
       i := 107
     else if i < 0 then
       i := 0;
-    lpDDSBack.BltFast( 709, 248, LifeEmpty, Rect( 0, 0, 52, i ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 52, i );
+    lpDDSBack.BltFast( 709, 248, LifeEmpty, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
 
     if not SpellbarActive then
     begin
@@ -2206,11 +2210,11 @@ begin
         HPDistance := HPDistance * ( 66 / TCharacter( NPCList[ i ] ).HitPoints );
         ManaDistance := ManaDistance * ( 66 / TCharacter( NPCList[ i ] ).Mana );
 
-        lpDDSBack.Blt( Rect( NPCBarXCoord[ i ], 581 - Round( HPDistance ), NPCBarXCoord[ i ] + 5, 581 ),
-          nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCHealthBltFx );
-
-        lpDDSBack.Blt( Rect( NPCBarXCoord[ i ] + 7, 581 - Round( ManaDistance ), NPCBarXCoord[ i ]
-          + 7 + 5, 581 ), nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCManaBltFx );
+        pr := Rect( NPCBarXCoord[ i ], 581 - Round( HPDistance ), NPCBarXCoord[ i ] + 5, 581 );
+        pr0 := Rect( 0, 0, 0, 0 );
+        lpDDSBack.Blt( @pr, nil, @pr0, DDBLT_COLORFILL + DDBLT_WAIT, @NPCHealthBltFx );
+        pr := Rect( NPCBarXCoord[ i ] + 7, 581 - Round( ManaDistance ), NPCBarXCoord[ i ] + 7 + 5, 581 );
+        lpDDSBack.Blt( @pr, nil, @pr0, DDBLT_COLORFILL + DDBLT_WAIT, @NPCManaBltFx );
       end;
     end;
 
@@ -2223,6 +2227,7 @@ end;
 procedure TfrmMain.AniView1BeforeDisplay( Sender : TObject );
 var
   i : Integer;
+  pr : TRect;
 const
   FailName : string = 'Main.AniView1BeforeDisplay';
 begin
@@ -2238,8 +2243,10 @@ begin
 {$IFDEF DirectX}
     if SpellBarActive then
     begin
-      lpDDSBack.BltFast( 0, 486, SpellBar, Rect( 0, 0, 800, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-      lpDDSBack.BltFast( 250, 455, HelpBox, Rect( 0, 0, 195, 59 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      pr := Rect( 0, 0, 800, 114 );
+      lpDDSBack.BltFast( 0, 486, SpellBar, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      pr := Rect( 0, 0, 195, 59 );
+      lpDDSBack.BltFast( 250, 455, HelpBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     end
     else
     begin
@@ -2247,9 +2254,11 @@ begin
         ShowMouseMessage( TSpriteObject( HLFigure ).Name )
       else
         ShowMouseMessage( '' );
-      lpDDSBack.BltFast( 0, 486, OverlayB, Rect( 0, 0, 800, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      pr := Rect( 0, 0, 800, 114 );
+      lpDDSBack.BltFast( 0, 486, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     end;
-    lpDDSBack.BltFast( 683, 0, OverlayR, Rect( 0, 0, 117, 486 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 117, 486 );
+    lpDDSBack.BltFast( 683, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
     if Assigned( Player ) then
     begin
@@ -2893,6 +2902,7 @@ procedure TfrmMain.FormMouseDown( Sender : TObject; Button : TMouseButton;
   Shift : TShiftState; X, Y : Integer );
 var
   i : Integer;
+  pr : TRect;
 const
   FailName : string = 'Main.FormMouseDown';
 begin
@@ -2948,7 +2958,8 @@ begin
                     DoNotRestartTimer := True;
                     CloseAllDialogs( DlgStatistics );
                     ChangeFocus( NPCList.Items[ i ] );
-                    lpDDSFront.BltFast( 699, 0, OverlayR, Rect( 16, 0, 117, 120 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                    pr := Rect( 16, 0, 117, 120 );
+                    lpDDSFront.BltFast( 699, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                     BeginStatistics( Current );
                   end
                   else if DlgInventory.Loaded then
@@ -2956,7 +2967,8 @@ begin
                     DoNotRestartTimer := True;
                     CloseAllDialogs( DlgStatistics );
                     ChangeFocus( NPCList.Items[ i ] );
-                    lpDDSFront.BltFast( 699, 0, OverlayR, Rect( 16, 0, 117, 120 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                    pr := Rect( 16, 0, 117, 120 );
+                    lpDDSFront.BltFast( 699, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                     BeginInventory( Current );
                   end
                   else if Active then
@@ -3031,8 +3043,10 @@ begin
                   DoNotRestartTimer := True;
                   CloseAllDialogs( DlgStatistics );
                   ChangeFocus( NPCList.Items[ i ] );
-                  lpDDSFront.BltFast( 0, 498, OverlayB, Rect( 0, 12, 326, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-                  lpDDSFront.BltFast( 699, 0, OverlayR, Rect( 16, 0, 117, 120 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                  pr := Rect( 0, 12, 326, 114 );
+                  lpDDSFront.BltFast( 0, 498, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                  pr := Rect( 16, 0, 117, 120 );
+                  lpDDSFront.BltFast( 699, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                   BeginStatistics( Current );
                 end
                 else if DlgInventory.Loaded then
@@ -3040,8 +3054,10 @@ begin
                   DoNotRestartTimer := True;
                   CloseAllDialogs( DlgStatistics );
                   ChangeFocus( NPCList.Items[ i ] );
-                  lpDDSFront.BltFast( 0, 498, OverlayB, Rect( 0, 12, 326, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-                  lpDDSFront.BltFast( 699, 0, OverlayR, Rect( 16, 0, 117, 120 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                  pr := Rect( 0, 12, 326, 114 );
+                  lpDDSFront.BltFast( 0, 498, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                  pr := Rect( 16, 0, 117, 120 );
+                  lpDDSFront.BltFast( 699, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                   BeginInventory( Current );
                 end
                 else if Active then
@@ -3568,6 +3584,7 @@ end;
 function TfrmMain.LoadResources : Boolean;
 var
   BM : TBitmap;
+  pr : TRect;
 const
   FailName : string = 'Main.LoadResources';
 begin
@@ -3609,7 +3626,8 @@ begin
       Game.AutoTransparentMask := Image1.Picture.BITMAP;
       NoSpellIcon := DDGetSurface( lpDD, 32, 32, clBlack, False );
 
-      NoSpellIcon.BltFast( 0, 0, OverlayB, Rect( 456, 64, 456 + 32, 64 + 32 ), DDBLTFAST_NOCOLORKEY
+      pr := Rect( 456, 64, 456 + 32, 64 + 32 );
+      NoSpellIcon.BltFast( 0, 0, OverlayB, @pr, DDBLTFAST_NOCOLORKEY
         or DDBLTFAST_WAIT );
       imgHelp.Picture.BITMAP.LoadFromFile( InterfacePath + 'spellinfo.bmp' );
       HelpBox := DDGetImage( lpDD, imgHelp.Picture.BITMAP,
@@ -3905,7 +3923,7 @@ var
   Brightness : Longint;
   SceneName : string;
   TimeStamp : TDateTime;
-  ValidationCode : Int64;
+///  ValidationCode : Int64;
   INI : TIniFile;
 const
   FailName : string = 'Main.LoadMapFile';
@@ -4349,7 +4367,7 @@ begin
       SaveAGame( SOLName );
     end;
 
-    ValidationCode := GetlevelCode( LVLFile );
+///    ValidationCode := GetlevelCode( LVLFile );
   {  if ValidationCode <> 0 then begin
       if (ValidationCode and ChapterAuthorizeMask) = 0 then begin
         Log.Log('*** Authorization failed ' + IntToStr(ValidationCode)); //jrs
@@ -5195,6 +5213,8 @@ end;
 procedure TfrmMain.Timer2Timer( Sender : TObject );
 const
   FailName : string = 'Main.Timer2Timer';
+var
+  pr: TRect;
 begin
 {$IFDEF DODEBUG}
   if ( CurrDbgLvl >= DbgLvlSevere ) then
@@ -5204,18 +5224,23 @@ begin
 
     if LoadNewLevel > 0 then
     begin
-      lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, ResWidth, ResHeight ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+      pr := Rect( 0, 0, ResWidth, ResHeight );
+      lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
       FillRectSub( lpDDSBack, Rect( 0, 0, 703, 511 ), $202020 );
       if SpellBarActive then
       begin
-        lpDDSBack.BltFast( 0, 486, SpellBar, Rect( 0, 0, 800, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-        lpDDSBack.BltFast( 250, 455, HelpBox, Rect( 0, 0, 195, 59 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, 800, 114 );
+        lpDDSBack.BltFast( 0, 486, SpellBar, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, 195, 59 );
+        lpDDSBack.BltFast( 250, 455, HelpBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       end
       else
       begin
-        lpDDSBack.BltFast( 0, 486, OverlayB, Rect( 0, 0, 800, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, 800, 114 );
+        lpDDSBack.BltFast( 0, 486, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       end;
-      lpDDSBack.BltFast( 683, 0, OverlayR, Rect( 0, 0, 117, 486 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      pr := Rect( 0, 0, 117, 486 );
+      lpDDSBack.BltFast( 683, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       DrawHealthBars;
       lpDDSFront.Flip( nil, DDFLIP_WAIT );
       MouseCursor.PlotDirty := False;
@@ -5309,6 +5334,7 @@ end;
 procedure TfrmMain.DrawCurrentSpell;
 var
   Point : TPoint;
+  pr : TRect;
 const
   FailName : string = 'Main.DrawCurrentSpell';
 begin
@@ -5318,7 +5344,8 @@ begin
 {$ENDIF}
   try
 
-    OverlayB.BltFast( 339, 64, NoSpellIcon, Rect( 0, 0, 32, 32 ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 32, 32 );
+    OverlayB.BltFast( 339, 64, NoSpellIcon, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
 
     if Assigned( Current ) and Assigned( Current.CurrentSpell ) then
     begin
@@ -6371,6 +6398,7 @@ procedure TfrmMain.InventoryDraw( Sender : TObject );
 var
   i : Integer;
   HpDistance, ManaDistance : Double;
+  pr, pr0 : TRect;
 const
   FailName : string = 'Main.InventoryDraw';
 begin
@@ -6386,14 +6414,16 @@ begin
     if i = 0 then
     begin
       PaintCharacterOnBorder( TSpriteObject( Sender ), i );
-      lpDDSBack.BltFast( 683, 0, OverlayR, Rect( 0, 0, 117, 133 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      pr := Rect( 0, 0, 117, 133 );
+      lpDDSBack.BltFast( 683, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     end
     else if i >= 1 then
     begin
       if not SpellBarActive then
       begin
         PaintCharacterOnBorder( Current, i );
-        lpDDSBack.BltFast( 0, 486, OverlayB, Rect( 0, 0, 800, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, 800, 114 );
+        lpDDSBack.BltFast( 0, 486, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       end;
 
       for i := 1 to NPCList.Count - 1 do
@@ -6413,11 +6443,13 @@ begin
         HPDistance := HPDistance * ( 66 / TCharacter( NPCList[ i ] ).HitPoints );
         ManaDistance := ManaDistance * ( 66 / TCharacter( NPCList[ i ] ).Mana );
 
-        lpDDSBack.Blt( Rect( NPCBarXCoord[ i ], 581 - Round( HPDistance ), NPCBarXCoord[ i ] + 5, 581 ),
-          nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCHealthBltFx );
+        pr := Rect( NPCBarXCoord[ i ], 581 - Round( HPDistance ), NPCBarXCoord[ i ] + 5, 581 );
+        pr0 := Rect( 0, 0, 0, 0 );
+        lpDDSBack.Blt( @pr, nil, @pr0, DDBLT_COLORFILL + DDBLT_WAIT, @NPCHealthBltFx );
 
-        lpDDSBack.Blt( Rect( NPCBarXCoord[ i ] + 7, 581 - Round( ManaDistance ), NPCBarXCoord[ i ]
-          + 7 + 5, 581 ), nil, Rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, NPCManaBltFx );
+        pr := Rect( NPCBarXCoord[ i ] + 7, 581 - Round( ManaDistance ), NPCBarXCoord[ i ] + 7 + 5, 581 );
+        pr0 := Rect( 0, 0, 0, 0 );
+        lpDDSBack.Blt( @pr, nil, @pr0, DDBLT_COLORFILL + DDBLT_WAIT, @NPCManaBltFx );
       end;
 
     end;
@@ -6919,6 +6951,7 @@ end;
 procedure TfrmMain.ClearAdventureGraphic;
 var
   DC : HDC;
+  pr : TRect;
 begin
   OverlayB.GetDC( DC );
   try
@@ -6929,7 +6962,8 @@ begin
   if not SpellBarActive then
   begin
     MouseCursor.cleanup;
-    lpDDSFront.BltFast( 659, 486 + 50, OverlayB, Rect( 659, 50, 659 + 68, 50 + 24 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 659, 50, 659 + 68, 50 + 24 );
+    lpDDSFront.BltFast( 659, 486 + 50, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   end;
 end;
 
@@ -6948,6 +6982,7 @@ end;
 procedure TfrmMain.ClearQuestGraphic;
 var
   DC : HDC;
+  pr : TRect;
 begin
   OverlayB.GetDC( DC );
   try
@@ -6958,7 +6993,8 @@ begin
   if not SpellBarActive then
   begin
     MouseCursor.cleanup;
-    lpDDSFront.BltFast( 659, 486 + 26, OverlayB, Rect( 659, 26, 659 + 68, 26 + 24 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 659, 26, 659 + 68, 26 + 24 );
+    lpDDSFront.BltFast( 659, 486 + 26, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   end;
 end;
 
@@ -7684,6 +7720,8 @@ end;
 procedure TfrmMain.Timer3Timer( Sender : TObject );
 const
   FailName : string = 'Main.Timer3Timer';
+var
+  pr : TRect;
 begin
 {$IFDEF DODEBUG}
   if ( CurrDbgLvl >= DbgLvlSevere ) then
@@ -7694,18 +7732,23 @@ begin
       Active := False;
       if Timer3.Tag > 0 then
       begin
-        lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, ResWidth, ResHeight ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, ResWidth, ResHeight );
+        lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
         FillRectSub( lpDDSBack, Rect( 0, 0, 703, 511 ), $202020 );
         if SpellBarActive then
         begin
-          lpDDSBack.BltFast( 0, 486, SpellBar, Rect( 0, 0, 800, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-          lpDDSBack.BltFast( 250, 455, HelpBox, Rect( 0, 0, 195, 59 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          pr := Rect( 0, 0, 800, 114 );
+          lpDDSBack.BltFast( 0, 486, SpellBar, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          pr := Rect( 0, 0, 195, 59 );
+          lpDDSBack.BltFast( 250, 455, HelpBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         end
         else
         begin
-          lpDDSBack.BltFast( 0, 486, OverlayB, Rect( 0, 0, 800, 114 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          pr := Rect( 0, 0, 800, 114 );
+          lpDDSBack.BltFast( 0, 486, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         end;
-        lpDDSBack.BltFast( 683, 0, OverlayR, Rect( 0, 0, 117, 486 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, 117, 486 );
+        lpDDSBack.BltFast( 683, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         DrawHealthBars;
         lpDDSFront.Flip( nil, DDFLIP_WAIT );
         MouseCursor.PlotDirty := False;
@@ -7880,7 +7923,7 @@ var
   P : TPoint;
   MsgID : Integer;
   Msg : string;
-  R : TRect;
+  R, pr : TRect;
   BM : TBitmap;
 const
   Height = 20;
@@ -7997,7 +8040,10 @@ begin
   end;
 
   if ( FMsgID > 0 ) and Assigned( Surface ) then
-    lpDDSBack.BltFast( FX, FY, Surface, Rect( 0, 0, FWidth, Height ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+  begin
+    pr := Rect( 0, 0, FWidth, Height );
+    lpDDSBack.BltFast( FX, FY, Surface, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+  end;
 
 end;
 

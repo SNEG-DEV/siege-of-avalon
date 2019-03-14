@@ -96,7 +96,7 @@ procedure DrawAdd( Dest : IDirectDrawSurface; const DestRect, SrcRect : TRect; S
 const
   FailName : string = 'DXEffects.DrawAdd';
 var
-  Src_ddsd : DDSURFACEDESC;
+  Src_ddsd : TDDSURFACEDESC;
   DestSurface, SrcSurface : TDXR_Surface;
   Blend : TDXR_Blend;
 begin
@@ -136,7 +136,7 @@ procedure DrawAlpha( Dest : IDirectDrawSurface; const DestRect, SrcRect : TRect;
 const
   FailName : string = 'DXEffects.DrawAlpha';
 var
-  Src_ddsd : DDSURFACEDESC;
+  Src_ddsd : TDDSURFACEDESC;
   DestSurface, SrcSurface : TDXR_Surface;
   Blend : TDXR_Blend;
 begin
@@ -176,7 +176,7 @@ procedure DrawMult( Dest : IDirectDrawSurface; const DestRect, SrcRect : TRect; 
 const
   FailName : string = 'DXEffects.DrawMult';
 var
-  Src_ddsd : DDSURFACEDESC;
+  Src_ddsd : TDDSURFACEDESC;
   DestSurface, SrcSurface : TDXR_Surface;
   Blend : TDXR_Blend;
 begin
@@ -216,7 +216,7 @@ procedure DrawSub( Dest : IDirectDrawSurface; const DestRect, SrcRect : TRect; S
 const
   FailName : string = 'DXEffects.DrawSub';
 var
-  Src_ddsd : DDSURFACEDESC;
+  Src_ddsd : TDDSURFACEDESC;
   DestSurface, SrcSurface : TDXR_Surface;
   Blend : TDXR_Blend;
 begin
@@ -256,7 +256,7 @@ procedure DrawInvSub( Dest : IDirectDrawSurface; const DestRect, SrcRect : TRect
 const
   FailName : string = 'DXEffects.DrawInvSub';
 var
-  Src_ddsd : DDSURFACEDESC;
+  Src_ddsd : TDDSURFACEDESC;
   DestSurface, SrcSurface : TDXR_Surface;
   Blend : TDXR_Blend;
 begin

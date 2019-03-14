@@ -2245,14 +2245,15 @@ var
   ImageIndex : integer;
 {$IFDEF DirectX}
   BM : IDirectDrawSurface;
-  ddck : DDCOLORKEY;
-  BltFx : DDBLTFX;
+  ddck : TDDCOLORKEY;
+  BltFx : TDDBLTFX;
 {$ENDIF}
 {$IFNDEF DirectX}
   BM : TBitmap;
 {$ENDIF}
   W : integer;
   ColorMatch : integer;
+  pr : TRect;
 const
   FailName : string = 'TDoorResource.Define';
 begin
@@ -2325,7 +2326,10 @@ begin
         end;
       end;
       if ImageIndex > 0 then
-        BM.Blt( Rect( 0, 0, W, FrameHeight ), nil, Rect( 0, 0, W, FrameHeight ), DDBLT_COLORFILL + DDBLT_WAIT, BltFx );
+      begin
+        pr := Rect( 0, 0, W, FrameHeight );
+        BM.Blt( @pr, nil, @pr, DDBLT_COLORFILL + DDBLT_WAIT, @BltFx );
+      end;
       GetImage1( ImageIndex, BM, W );
       inc( Index );
       pItem := Map.DefineItem( Zone, Index, BM, DepthAnchors, CollisionMask, LineOfSightMask, LightPoints, Slope, False, AutoTransparent, Vertical );
@@ -2376,8 +2380,8 @@ var
   ImageIndex : integer;
 {$IFDEF DirectX}
   BM : IDirectDrawSurface;
-  ddck : DDCOLORKEY;
-  BltFx : DDBLTFX;
+  ddck : TDDCOLORKEY;
+  BltFx : TDDBLTFX;
 {$ENDIF}
 {$IFNDEF DirectX}
   BM : TBitmap;
@@ -2386,6 +2390,7 @@ var
   MultiImage : boolean;
   W : integer;
   ColorMatch : integer;
+  pr : TRect;
 const
   FailName : string = 'TStaticResource.Define';
 begin
@@ -2470,7 +2475,10 @@ begin
         end;
       end;
       if ImageIndex > 0 then
-        BM.Blt( Rect( 0, 0, W, FrameHeight ), nil, Rect( 0, 0, W, FrameHeight ), DDBLT_COLORFILL + DDBLT_WAIT, BltFx );
+      begin
+        pr := Rect( 0, 0, W, FrameHeight );
+        BM.Blt( @pr, nil, @pr, DDBLT_COLORFILL + DDBLT_WAIT, @BltFx );
+      end;
       GetImage1( ImageIndex, BM, W );
       inc( Index );
       Map.DefineItem( Zone, Index, BM, DepthAnchors, CollisionMask, LineOfSightMask, LightPoints, Slope, True, AutoTransparent, Vertical );
@@ -2659,8 +2667,8 @@ function TTileResource.Define( Map : TAniMap; Zone : byte; Index : word ) : inte
 var
 {$IFDEF DirectX}
   TileBM : IDirectDrawSurface;
-  ddck : DDCOLORKEY;
-  BltFx : DDBLTFX;
+  ddck : TDDCOLORKEY;
+  BltFx : TDDBLTFX;
 {$ENDIF}
 {$IFNDEF DirectX}
   TileBM : TBitmap;
@@ -2668,6 +2676,7 @@ var
   i : Integer;
   W : integer;
   ColorMatch : integer;
+  pr: TRect;
 const
   FailName : string = 'TTileResource.Define';
 begin
@@ -2695,7 +2704,10 @@ begin
     for i := 0 to FrameCount - 1 do
     begin
       if i > 0 then
-        TileBM.Blt( Rect( 0, 0, W, FrameHeight ), nil, Rect( 0, 0, W, FrameHeight ), DDBLT_COLORFILL + DDBLT_WAIT, BltFx );
+      begin
+        pr := Rect( 0, 0, W, FrameHeight );
+        TileBM.Blt( @pr, nil, @pr, DDBLT_COLORFILL + DDBLT_WAIT, @BltFx );
+      end;
       GetImage1( i, TileBM, W );
       Map.DefineTile( Zone, Index + i, TileBM );
     end;

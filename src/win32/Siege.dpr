@@ -125,7 +125,6 @@ uses
   strFunctions in 'engine\strFunctions.pas',
   Transit in 'interface\Transit.pas';
 
-
 {$R *.RES}
 
 const

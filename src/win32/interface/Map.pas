@@ -128,6 +128,7 @@ var
   GDark, GLight : integer;
   Edge, Edge1 : boolean;
   Seen : boolean;
+  pr : TRect;
 const
   FailName : string = 'TMap.Init';
 begin
@@ -144,7 +145,8 @@ begin
 
     MouseOverBack := false;
     MouseCursor.Cleanup;
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, ResWidth, ResHeight ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, ResWidth, ResHeight );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 
     BM := TBitmap.create;
@@ -168,8 +170,10 @@ begin
     try
       if assigned( Image ) then
       begin
-        lpDDSBack.BltFast( 0, 0, Image, Rect( 0, 0, BM.width, BM.height ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-        DXDirty.BltFast( 0, 0, lpDDSBack, rect( 560, 378, 560 + 61, 378 + 45 ), DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, BM.width, BM.height );
+        lpDDSBack.BltFast( 0, 0, Image, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        pr := Rect( 560, 378, 560 + 61, 378 + 45 );
+        DXDirty.BltFast( 0, 0, lpDDSBack, @pr, DDBLTFAST_WAIT );
       end;
     finally
       Image := nil;
@@ -413,7 +417,8 @@ begin
     pText.PlotTextCentered( MapName, 60, 623, 5, 128 );
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, ResWidth, ResHeight ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, ResWidth, ResHeight );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do
@@ -447,6 +452,8 @@ procedure TMap.MouseMove( Sender : TAniview; Shift : TShiftState; X, Y, GridX,
   GridY : integer );
 const
   FailName : string = 'TMap.MouseMove';
+var
+  pr : TRect;
 begin
   try
 
@@ -456,9 +463,13 @@ begin
       begin
         //lpDDSFront.Flip(nil, DDFLIP_WAIT);
         MouseCursor.Cleanup;
-        lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, 800, 600 );
+        lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
         if assigned( DXBack ) then
-          lpDDSBack.bltFast( 560, 378, DXBack, rect( 0, 0, 61, 45 ), DDBLTFAST_WAIT );
+        begin
+          pr := Rect( 0, 0, 61, 45 );
+          lpDDSBack.bltFast( 560, 378, DXBack, @pr, DDBLTFAST_WAIT );
+        end;
         lpDDSFront.Flip( nil, DDFLIP_WAIT );
         MouseCursor.PlotDirty := false;
         MouseOverBack := true;
@@ -470,9 +481,13 @@ begin
       begin
        //clean up
         MouseCursor.Cleanup;
-        lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, 800, 600 );
+        lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
         if assigned( DXDirty ) then
-          lpDDSBack.bltFast( 560, 378, DXDirty, rect( 0, 0, 61, 45 ), DDBLTFAST_WAIT );
+        begin
+          pr := Rect( 0, 0, 61, 45 );
+          lpDDSBack.bltFast( 560, 378, DXDirty, @pr, DDBLTFAST_WAIT );
+        end;
         lpDDSFront.Flip( nil, DDFLIP_WAIT );
         MouseCursor.PlotDirty := false;
         MouseOverBack := false;

@@ -185,6 +185,7 @@ const
 var
   BM : TBitmap;
   NewHotspot : THotspot;
+  pr : TRect;
 begin
 {$IFDEF DODEBUG}
   if ( CurrDbgLvl >= DbgLvlSevere ) then
@@ -322,8 +323,8 @@ begin
       try
         if assigned( Background ) then
         begin
-          DXBack.BltFast( 0, 0, Background, DirtyRect, DDBLTFAST_WAIT );
-          DXDirty.BltFast( 0, 0, Background, DirtyRect, DDBLTFAST_WAIT );
+          DXBack.BltFast( 0, 0, Background, @DirtyRect, DDBLTFAST_WAIT );
+          DXDirty.BltFast( 0, 0, Background, @DirtyRect, DDBLTFAST_WAIT );
         end;
       except
       end;
@@ -337,7 +338,8 @@ begin
 
     Paint;
     MouseCursor.Cleanup;
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 800, 600 );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -374,6 +376,7 @@ const
 var
   LastSelected : THotspot;
   i : integer;
+  pr : TRect;
 begin
 {$IFDEF DODEBUG}
   if ( CurrDbgLvl >= DbgLvlSevere ) then
@@ -417,7 +420,8 @@ begin
               end;
               Paint;
               MouseCursor.Cleanup;
-              lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+              pr := Rect( 0, 0, 800, 600 );
+              lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
               Timer.tag := 0;
               Timer.enabled := true;
             end
@@ -445,7 +449,8 @@ begin
         DefaultTransit.ShowInRed;
         MouseCursor.Cleanup;
         lpDDSFront.Flip( nil, DDFLIP_WAIT );
-        lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, 800, 600 );
+        lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
         MouseCursor.PlotDirty := false;
         Locked := true;
         Timer.enabled := false;
@@ -468,7 +473,8 @@ begin
               TTransitPoint( Selected.Dest.items[ i ] ).ShowInRed;
               MouseCursor.Cleanup;
               lpDDSFront.Flip( nil, DDFLIP_WAIT );
-              lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+              pr := Rect( 0, 0, 800, 600 );
+              lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
               MouseCursor.PlotDirty := false;
               Locked := true;
               Timer.enabled := false;
@@ -492,6 +498,8 @@ procedure TTransit.MouseMove( Sender : TAniview; Shift : TShiftState; X, Y, Grid
   GridY : integer );
 const
   FailName : string = 'TTransit.MouseMove';
+var
+  pr : TRect;
 begin
 {$IFDEF DODEBUG}
   if ( CurrDbgLvl >= DbgLvlSevere ) then
@@ -507,9 +515,13 @@ begin
       begin
       //lpDDSFront.Flip(nil, DDFLIP_WAIT);
         MouseCursor.Cleanup;
-        lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, 800, 600 );
+        lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
         if assigned( DXBack ) then
-          lpDDSBack.bltFast( DirtyRect.Left, DirtyRect.Top, DXBack, rect( 0, 0, DirtyRect.Right - DirtyRect.Left, DirtYrect.Bottom - DirtyRect.Top ), DDBLTFAST_WAIT );
+        begin
+          pr := Rect( 0, 0, DirtyRect.Right - DirtyRect.Left, DirtYrect.Bottom - DirtyRect.Top );
+          lpDDSBack.bltFast( DirtyRect.Left, DirtyRect.Top, DXBack, @pr, DDBLTFAST_WAIT );
+        end;
         lpDDSFront.Flip( nil, DDFLIP_WAIT );
         MouseCursor.PlotDirty := false;
         MouseOverBack := true;
@@ -521,9 +533,13 @@ begin
       begin
      //clean up
         MouseCursor.Cleanup;
-        lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, 800, 600 );
+        lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
         if assigned( DXDirty ) then
-          lpDDSBack.bltFast( DirtyRect.Left, DirtyRect.Top, DXDirty, rect( 0, 0, DirtyRect.Right - DirtyRect.Left, DirtYrect.Bottom - DirtyRect.Top ), DDBLTFAST_WAIT );
+        begin
+          pr := Rect( 0, 0, DirtyRect.Right - DirtyRect.Left, DirtYrect.Bottom - DirtyRect.Top );
+          lpDDSBack.bltFast( DirtyRect.Left, DirtyRect.Top, DXDirty, @pr, DDBLTFAST_WAIT );
+        end;
         lpDDSFront.Flip( nil, DDFLIP_WAIT );
         MouseCursor.PlotDirty := false;
         MouseOverBack := false;
@@ -539,25 +555,28 @@ end; //MouseMove
 procedure TTransit.Paint;
 var
   i : integer;
+  pr : TRect;
 begin
-  lpDDSBack.BltFast( 0, 0, Background, Rect( 0, 0, 800, 600 ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+  pr := Rect( 0, 0, 800, 600 );
+  lpDDSBack.BltFast( 0, 0, Background, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
   if assigned( DXDirty ) then
-    lpDDSBack.bltFast( DirtyRect.Left, DirtyRect.Top, DXDirty, rect( 0, 0, DirtyRect.Right - DirtyRect.Left, DirtYrect.Bottom - DirtyRect.Top ), DDBLTFAST_WAIT );
+  begin
+    pr := Rect( 0, 0, DirtyRect.Right - DirtyRect.Left, DirtYrect.Bottom - DirtyRect.Top );
+    lpDDSBack.bltFast( DirtyRect.Left, DirtyRect.Top, DXDirty, @pr, DDBLTFAST_WAIT );
+  end;
   for i := 0 to HotspotList.count - 1 do
   begin
     with THotspot( HotspotList.items[ i ] ) do
     begin
       if assigned( FRedImage ) and ( HotspotList.items[ i ] = Selected ) then
       begin
-        lpDDSBack.BltFast( Region.Left, Region.Top, FRedImage,
-          Rect( 0, 0, Region.Right - Region.Left, Region.Bottom - Region.Top ),
-          DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, Region.Right - Region.Left, Region.Bottom - Region.Top );
+        lpDDSBack.BltFast( Region.Left, Region.Top, FRedImage, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       end
       else if assigned( FGrayImage ) and not Enabled then
       begin
-        lpDDSBack.BltFast( Region.Left, Region.Top, FGrayImage,
-          Rect( 0, 0, Region.Right - Region.Left, Region.Bottom - Region.Top ),
-          DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, Region.Right - Region.Left, Region.Bottom - Region.Top );
+        lpDDSBack.BltFast( Region.Left, Region.Top, FGrayImage, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       end
     end;
   end;
@@ -571,7 +590,7 @@ begin
         with TTransitPoint( Selected.Dest.items[ i ] ) do
         begin
           lpDDSBack.BltFast( Region.Left, Region.Top, Background,
-            Region, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+            @Region, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
           DrawAlpha( lpDDSBack, Region, Rect( 0, 0, Region.Right - Region.Left, Region.Bottom - Region.Top ),
             FImage, true, Blend );
         end;
@@ -603,7 +622,7 @@ begin
         with TTransitPoint( Selected.Dest.items[ i ] ) do
         begin
           lpDDSBack.BltFast( Region.Left, Region.Top, Background,
-            Region, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+            @Region, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
           TTransitPoint( Selected.Dest.items[ i ] ).Update;
         end;
       end;
