@@ -64,8 +64,8 @@ unit AdventureLog;
 interface
 
 uses
-  Windows,
-  Messages,
+  Winapi.Windows,
+  Winapi.Messages,
   SysUtils,
   Classes,
   Graphics,
@@ -181,7 +181,7 @@ function TAdventureLog.ReadLogByName( LogFile : string ) : string;
 var
   MyStream : TFileStream;
   iSize : integer;
-  MyString : string;
+  MyString : AnsiString;
 const
   FailName : string = 'TAdventureLog.ReadLogByName';
 begin
@@ -213,7 +213,7 @@ function TAdventureLog.ReadLogByIndex( LogIndex : integer ) : string;
 var
   MyStream : TFileStream;
   iSize : integer;
-  MyString : string;
+  MyString : AnsiString;
 const
   FailName : string = 'TAdventureLog.ReadLogByIndex';
 begin

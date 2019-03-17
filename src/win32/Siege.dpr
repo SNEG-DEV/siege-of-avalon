@@ -60,8 +60,8 @@ program Siege;
 {******************************************************************************}
 
 uses
-  Forms,
-  Windows,
+  Vcl.Forms,
+  Winapi.Windows,
   SysUtils,
   IniFiles,
   Controls,
@@ -80,7 +80,7 @@ uses
   WolfAI in 'ai\WolfAI.pas',
   Anigrp30 in 'engine\Anigrp30.pas',
   AniDec30 in 'engine\AniDec30.pas',
-  String32 in 'engine\string32.pas',
+  string32 in 'engine\string32.pas',
   DXEffects in 'graphics\DXEffects.pas',
   DXUtil in 'graphics\DXUtil.pas',
   LogFile in 'Engine\LogFile.pas',
@@ -115,7 +115,7 @@ uses
   MP3 in 'sound\MP3.pas',
   Music in 'sound\Music.pas',
   NPCBehavior in 'interface\NPCBehavior.pas',
-  ShowGraphic in 'interface\Showgraphic.pas',
+  Showgraphic in 'interface\Showgraphic.pas',
   MousePtr in 'engine\MousePtr.pas',
   ObjInventory in 'interface\ObjInventory.pas',
   OpenAnim in 'interface\OpenAnim.pas',

@@ -63,7 +63,7 @@ interface
 
 uses
   Classes,
-  Windows,
+  Winapi.Windows,
   SysUtils,
   LogFile;
 

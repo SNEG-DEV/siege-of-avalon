@@ -81,7 +81,7 @@ unit Security;
 interface
 
 uses
-  Windows,
+  Winapi.Windows,
   SysUtils,
   Forms,
   Classes,
@@ -97,7 +97,7 @@ const
 function GetChapterAuthorizeMask( INIFilename : string ) : Boolean;
 function StringToCRC( CRCString : AnsiString ) : LongWord;
 function IsDTRegSystem( sNumber : string ) : Boolean;
-function CharVal( const C : Char ) : Integer;
+function CharVal( const C : AnsiChar ) : Integer;
 function CleanSerialNumber( SerialNumber : string ) : string;
 function ComputeAuthValue( key, ID : string ) : string;
 function ExtractChapterNumber( const sNumber : string ) : Integer;
@@ -159,7 +159,7 @@ begin
   Result := sNumber[ 2 ] in [ '0'..'9' ]; // old-style "fake" registration number
 end;
 
-function CharVal( const C : Char ) : Integer;
+function CharVal( const C : AnsiChar ) : Integer;
 begin
   CharVal := Ord( C ) - Ord( '0' );
 end;
@@ -270,8 +270,8 @@ begin
     // Normalize and validate extra checksum of newer version numbers
     if not IsDTRegSystem( SerialNumber ) then
     begin // new version for Blackstar
-      SerialNumber[ 5 ] := Char( Ord( SerialNumber[ 5 ] ) - Ord( 'Q' ) + Ord( '0' ) ); // remove ASCII offset
-      SerialNumber[ 6 ] := Char( Ord( SerialNumber[ 6 ] ) - Ord( 'Q' ) + Ord( '0' ) );
+      SerialNumber[ 5 ] := AnsiChar( Ord( SerialNumber[ 5 ] ) - Ord( 'Q' ) + Ord( '0' ) ); // remove ASCII offset
+      SerialNumber[ 6 ] := AnsiChar( Ord( SerialNumber[ 6 ] ) - Ord( 'Q' ) + Ord( '0' ) );
       i := ( CharVal( SerialNumber[ 3 ] ) + CharVal( SerialNumber[ 4 ] )
         + CharVal( SerialNumber[ 5 ] ) + CharVal( SerialNumber[ 6 ] ) ) mod ( 10 );
       if i <> CharVal( SerialNumber[ 15 ] ) then

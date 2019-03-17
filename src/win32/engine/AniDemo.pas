@@ -64,18 +64,18 @@ interface
 {$INCLUDE Anigrp30cfg.inc}
 
 uses
-  Windows,
-  Messages,
-  SysUtils,
-  Classes,
-  Graphics,
-  Controls,
-  Forms,
-  Dialogs,
-  ExtCtrls,
-  StdCtrls,
-  Buttons,
-  IniFiles,
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.ExtCtrls,
+  Vcl.StdCtrls,
+  Vcl.Buttons,
+  System.IniFiles,
   LogFile,
   Spells,
 {$IFDEF DirectX}
@@ -101,7 +101,7 @@ uses
   Journal,
   CharCreation,
   Intro,
-  FileCtrl,
+  Vcl.FileCtrl,
   Options,
   NPCBehavior,
   LoaderBox,
@@ -4744,7 +4744,7 @@ var
     List : TStringList;
     Block : TSavBlocks;
     L, P : Longint;
-    S, S1 : string;
+    S, S1 : AnsiString;
     i, j : Integer;
   begin
     if not Assigned( Stream ) then
@@ -4915,7 +4915,7 @@ var
     List : TStringList;
     Block : TSavBlocks;
     L, L1, P : Longint;
-    S, S1 : string;
+    S, S1 : AnsiString;
     i, j : Integer;
     Flag : Boolean;
     GUID : string;
@@ -7267,7 +7267,7 @@ var
   var
     Block : TSavBlocks;
     L, L1, P : Longint;
-    S, S0, S1 : string;
+    S, S0, S1 : AnsiString;
     List : TStringList;
     BB : Word;
   begin

@@ -50,7 +50,7 @@ Interface
 {$ALIGN ON}
 
 uses
-  Windows, MMSystem;
+  Winapi.Windows, Winapi.MMSystem;
 //DirectDraw file
 (*==========================================================================;
  *
@@ -1060,7 +1060,7 @@ type
     function GetAvailableVidMem (const lpDDSCaps: TDDSCaps2;
         out lpdwTotal, lpdwFree: DWORD) : HResult; stdcall;
     (*** Added in the V4 Interface ***)
-    function GetSurfaceFromDC (hdc : Windows.HDC;
+    function GetSurfaceFromDC (hdc : HDC;
         out lpDDS4: IDirectDrawSurface4) : HResult; stdcall;
     function RestoreAllSurfaces : HResult; stdcall;
     function TestCooperativeLevel : HResult; stdcall;
@@ -1109,7 +1109,7 @@ type
     function GetAvailableVidMem (const lpDDSCaps: TDDSCaps2;
         out lpdwTotal, lpdwFree: DWORD) : HResult; stdcall;
     (*** Added in the V4 Interface ***)
-    function GetSurfaceFromDC (hdc : Windows.HDC;
+    function GetSurfaceFromDC (hdc : HDC;
         out lpDDS: IDirectDrawSurface7) : HResult; stdcall;
     function RestoreAllSurfaces : HResult; stdcall;
     function TestCooperativeLevel : HResult; stdcall;
@@ -1197,7 +1197,7 @@ type
     function IsLost: HResult; stdcall;
     function Lock (lpDestRect: PRect; out lpDDSurfaceDesc:
         TDDSurfaceDesc; dwFlags: DWORD; hEvent: THandle) : HResult; stdcall;
-    function ReleaseDC (hDC: Windows.HDC) : HResult; stdcall;
+    function ReleaseDC (hDC: HDC) : HResult; stdcall;
     function _Restore: HResult; stdcall;
     function SetClipper (lpDDClipper: IDirectDrawClipper) : HResult; stdcall;
     function SetColorKey (dwFlags: DWORD; lpDDColorKey: PDDColorKey) :
@@ -1258,7 +1258,7 @@ type
     function Lock (lpDestRect: PRect;
         out lpDDSurfaceDesc: TDDSurfaceDesc; dwFlags: DWORD;
         hEvent: THandle) : HResult; stdcall;
-    function ReleaseDC (hDC: Windows.HDC) : HResult; stdcall;
+    function ReleaseDC (hDC: HDC) : HResult; stdcall;
     function _Restore: HResult; stdcall;
     function SetClipper (lpDDClipper: IDirectDrawClipper) : HResult; stdcall;
     function SetColorKey (dwFlags: DWORD; lpDDColorKey: PDDColorKey) :
@@ -1319,7 +1319,7 @@ type
     function Lock (lpDestRect: PRect;
         out lpDDSurfaceDesc: TDDSurfaceDesc; dwFlags: DWORD;
         hEvent: THandle) : HResult; stdcall;
-    function ReleaseDC (hDC: Windows.HDC) : HResult; stdcall;
+    function ReleaseDC (hDC: HDC) : HResult; stdcall;
     function _Restore: HResult; stdcall;
     function SetClipper (lpDDClipper: IDirectDrawClipper) : HResult; stdcall;
     function SetColorKey (dwFlags: DWORD; lpDDColorKey: PDDColorKey) :
@@ -1385,7 +1385,7 @@ type
     function Lock (lpDestRect: PRect;
         out lpDDSurfaceDesc: TDDSurfaceDesc2; dwFlags: DWORD;
         hEvent: THandle) : HResult; stdcall;
-    function ReleaseDC (hDC: Windows.HDC) : HResult; stdcall;
+    function ReleaseDC (hDC: HDC) : HResult; stdcall;
     function _Restore: HResult; stdcall;
     function SetClipper (lpDDClipper: IDirectDrawClipper) : HResult; stdcall;
     function SetColorKey (dwFlags: DWORD; lpDDColorKey: PDDColorKey) :
@@ -1456,7 +1456,7 @@ type
     function Lock (lpDestRect: PRect;
         out lpDDSurfaceDesc: TDDSurfaceDesc2; dwFlags: DWORD;
         hEvent: THandle) : HResult; stdcall;
-    function ReleaseDC (hDC: Windows.HDC) : HResult; stdcall;
+    function ReleaseDC (hDC: HDC) : HResult; stdcall;
     function _Restore: HResult; stdcall;
     function SetClipper (lpDDClipper: IDirectDrawClipper) : HResult; stdcall;
     function SetColorKey (dwFlags: DWORD; lpDDColorKey: PDDColorKey) :

@@ -62,8 +62,8 @@ unit Midi;
 interface
 
 uses
-  Windows,
-  Messages,
+  Winapi.Windows,
+  Winapi.Messages,
   SysUtils,
   Classes,
   Controls,

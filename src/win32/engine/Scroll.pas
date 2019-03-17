@@ -69,7 +69,7 @@ uses
   DXUtil,
   DXEffects,
 {$ENDIF}
-  Windows,
+  Winapi.Windows,
   Forms,
   Classes,
   Graphics,

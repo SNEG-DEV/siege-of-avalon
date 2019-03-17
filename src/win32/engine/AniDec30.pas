@@ -64,7 +64,7 @@ unit AniDec30;
 interface
 
 uses
-  Windows,
+  Winapi.Windows,
   Classes,
   Graphics,
   SysUtils,

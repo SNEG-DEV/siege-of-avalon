@@ -65,7 +65,7 @@ interface
 
 uses
   Classes,
-  Windows,
+  Winapi.Windows,
   SysUtils,
   Graphics,
   Anigrp30,
@@ -100,12 +100,12 @@ type
   TStringIniFile = class( TCustomIniFile )
   private
     FSections : TStringList;
-    FData : string;
+    FData : AnsiString;
     function AddSection( const Section : string ) : TStrings;
     procedure LoadValues;
   public
     FileName : string;
-    constructor Create( const Data : string );
+    constructor Create( const Data : AnsiString );
     destructor Destroy; override;
     procedure Clear;
     procedure DeleteKey( const Section, Ident : string ); override;
@@ -118,7 +118,7 @@ type
     procedure SetStrings( List : TStrings );
     procedure UpdateFile; override;
     procedure WriteString( const Section, Ident, Value : string ); override;
-    property Data : string read FData;
+    property Data : AnsiString read FData;
   end;
 
   TResource = class( TAniResource )
@@ -128,8 +128,8 @@ type
     Lights : array[ 1..8 ] of TLightSource;
     LightCount : integer;
     FReload : boolean;
-    procedure LoadAction( INI : TStringIniFile; const Action : string );
-    procedure LoadScript( const S, Name : string; Multiplier : Word );
+    procedure LoadAction( INI : TStringIniFile; const Action : AnsiString );
+    procedure LoadScript( const S, Name : AnsiString; Multiplier : Word );
     procedure SetReload( Value : boolean ); virtual;
     function GetFrameCount : integer;
   public
@@ -202,14 +202,14 @@ type
   public
     Defaults : TStringList;
     Layered : boolean;
-    NakedName : string;
-    HeadName : string;
+    NakedName : AnsiString;
+    HeadName : AnsiString;
     NakedResource : TLayerResource;
     HeadResource : TLayerResource;
     UseCastAnimation : Boolean;
     UseDefaultPants : ^TLayerResource;
     Female : boolean;
-    Equipment : array[ slLeg1..slMisc3 ] of string;
+    Equipment : array[ slLeg1..slMisc3 ] of AnsiString;
     constructor Create;
     destructor Destroy; override;
     procedure Render( Figure : TAniFigure ); override;
@@ -232,7 +232,7 @@ type
 
   TStaticResource = class( TResource )
   private
-    Data : string;
+    Data : AnsiString;
 {$IFDEF DirectX}
     function GetImage( ImageIndex : Integer ) : IDirectDrawSurface;
     procedure GetImage1( ImageIndex : Integer; Surface : IDirectDrawSurface; W : integer );
@@ -289,7 +289,7 @@ var
   TitlesDB : string;
 
 
-function Parse( const S : string; Index : integer; ParseChar : Char ) : string;
+function Parse( const S : AnsiString; Index : integer; ParseChar : AnsiChar ) : string;
 function GetFile( const FileName : string; var BM : TBitmap; var INI : TStringIniFile; var FrameCount : Integer ) : Boolean;
 function LoadResource( const Filename : string ) : TResource; overload;
 function LoadResource( const Filename : string; OnDemand : boolean ) : TResource; overload;
@@ -304,7 +304,7 @@ uses
   Engine,
   Parts;
 
-function Parse( const S : string; Index : integer; ParseChar : Char ) : string;
+function Parse( const S : AnsiString; Index : integer; ParseChar : AnsiChar ) : string;
 var
   i, j, k : integer;
 begin
@@ -405,10 +405,10 @@ var
   FrameCount : integer;
   Stream : TMemoryStream;
   BM : TBitmap;
-  S : string;
+  S : AnsiString;
   TextOnly : boolean;
   L : longword;
-  M : array[ 1..2 ] of Char;
+  M : array[ 1..2 ] of AnsiChar;
   EOB, BB : word;
   C : TColor;
   Convert : boolean;
@@ -662,7 +662,7 @@ end;
 
 procedure LoadArray( S : string; var A : TDynamicWordArray );
 var
-  C : string;
+  C : AnsiString;
   i : Integer;
 begin
   i := 0;
@@ -722,7 +722,7 @@ end;
 
 { TResource }
 
-procedure TResource.LoadScript( const S, Name : string; Multiplier : Word );
+procedure TResource.LoadScript( const S, Name : AnsiString; Multiplier : Word );
 var
   NewScript : TScript;
   i, j, k, L : Integer;
@@ -800,7 +800,7 @@ begin
   end;
 end;
 
-procedure TResource.LoadAction( INI : TStringIniFile; const Action : string );
+procedure TResource.LoadAction( INI : TStringIniFile; const Action : AnsiString );
 var
   S0, S1, S2, S3, S4, S5, S6, S7, S8 : string;
   Group : string;
@@ -1956,7 +1956,7 @@ end;
 
 { TStringINIFile }
 
-constructor TStringIniFile.Create( const Data : string );
+constructor TStringIniFile.Create( const Data : AnsiString );
 begin
   FSections := TStringList.Create;
   FData := Data;

@@ -69,8 +69,8 @@ uses
   DXUtil,
   DXEffects,
 {$ENDIF}
-  Windows,
-  Messages,
+  Winapi.Windows,
+  Winapi.Messages,
   SysUtils,
   Classes,
   Graphics,
@@ -86,7 +86,7 @@ uses
   Anigrp30,
   Engine,
   Logfile;
-  
+
 type
   InformationRect = record
     rect : TRect;

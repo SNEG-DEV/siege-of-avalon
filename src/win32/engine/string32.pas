@@ -62,7 +62,7 @@ unit String32;
 interface
 
 uses
-  Windows,
+  Winapi.Windows,
   SysUtils,
   Classes;
 
@@ -102,19 +102,19 @@ implementation
 
 function IsDigit( ch : Char ) : Boolean;
 begin
-  Result := ch in [ '0'..'9' ];
+  Result := CharInSet( ch, [ '0'..'9' ] );
 end;
 
 function IsUpper( ch : Char ) : Boolean;
 // To determine if the character is an uppercase letter.
 begin
-  Result := ch in [ 'A'..'Z' ];
+  Result := CharInSet( ch, [ 'A'..'Z' ] );
 end;
 
 function IsLower( ch : Char ) : Boolean;
 // To determine if the character is an lowercase letter.
 begin
-  Result := ch in [ 'a'..'z' ];
+  Result := CharInSet( ch, [ 'a'..'z' ] );
 end;
 
 function ToUpper( ch : Char ) : Char;

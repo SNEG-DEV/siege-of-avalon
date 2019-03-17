@@ -64,7 +64,7 @@ unit Anigrp30;
 interface
 
 uses
-  Windows,
+  Winapi.Windows,
   Classes,
   SysUtils,
   Forms,

@@ -64,7 +64,7 @@ unit DXUtil;
 interface
 
 uses
-  Windows,
+  Winapi.Windows,
   Classes,
   DirectX,
   Graphics,

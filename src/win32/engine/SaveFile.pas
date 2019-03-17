@@ -62,7 +62,7 @@ unit SaveFile;
 interface
 
 uses
-  Windows,
+  Winapi.Windows,
   SysUtils,
   Classes,
   LogFile;

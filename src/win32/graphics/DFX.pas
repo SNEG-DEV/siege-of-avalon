@@ -64,22 +64,22 @@ unit DFX;
 interface
 
 uses
-  Windows,
-  Messages,
-  SysUtils,
-  Classes,
-  Graphics,
-  Controls,
-  Forms,
-  Dialogs,
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
   digifx,
 {$IFDEF DirectX}
   DirectX,
   DXUtil,
   Anigrp30,
 {$ENDIF}
-  StdCtrls,
-  ExtCtrls,
+  Vcl.StdCtrls,
+  Vcl.ExtCtrls,
   LogFile;
 
 const
@@ -246,7 +246,7 @@ function DFXInit( Path : string ) : BOOL;
 begin
   Result := False;
 
-  if not digifxInit( PChar( Path ) ) then
+  if not digifxInit( Path ) then
     Exit;
 
   repeat

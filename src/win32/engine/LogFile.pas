@@ -64,7 +64,7 @@ interface
 uses
   Classes,
   SysUtils,
-  Windows;
+  Winapi.Windows;
 
 type
   TLog = class( TFileStream )
@@ -165,27 +165,34 @@ end;
 procedure TLog.OutputLogHeader;
 var
   S : string;
+  B : TBytes;
 begin
 
   S := ExtractFileName( Application.ExeName ) + #13#10
     + 'Copyright ©1999-2000 Digital Tome L.P. Texas USA' + #13#10
     + 'Portions Copyright ©1999-2000 Digital Tome, Inc. ' + #13#10
     + 'All Rights Reserved' + #13#10 + #13#10;
-  Write( S[ 1 ], Length( S ) );
+  b := TEncoding.UTF8.GetBytes(s);
+// S := TEncoding.UTF8.GetString(b);
+  Write( b, Length( b ) );
 
   if RealCurrDbgLvl > 0 then
   begin
     S := 'FileVersion: ' + VersionInfo( 'FileVersion', 'VersionError' ) + #13#10;
-    Write( S[ 1 ], Length( S ) );
+    b := TEncoding.UTF8.GetBytes(s);
+    Write( b, Length( b ) );
 
     S := 'ProductVersion: ' + VersionInfo( 'ProductVersion', 'VersionError' ) + #13#10;
-    Write( S[ 1 ], Length( S ) );
+    b := TEncoding.UTF8.GetBytes(s);
+    Write( b, Length( b ) );
 
     S := 'Comments: ' + VersionInfo( 'Comments', 'No Comments' ) + #13#10 + #13#10;
-    Write( S[ 1 ], Length( S ) );
+    b := TEncoding.UTF8.GetBytes(s);
+    Write( b, Length( b ) );
 
     S := 'Commandline: ' + #13#10 + CmdLine + #13#10 + #13#10;
-    Write( S[ 1 ], Length( S ) );
+    b := TEncoding.UTF8.GetBytes(s);
+    Write( b, Length( b ) );
   end;
 
   MEMORYSTATUS.dwLength := SizeOf( MEMORYSTATUS );
@@ -218,7 +225,8 @@ begin
 
     // Nice little block seperator
     S := S + #13#10 + ' ===== End Of Header =====' + #13#10 + #13#10;
-    Write( S[ 1 ], Length( S ) );
+    b := TEncoding.UTF8.GetBytes(s);
+    Write( b, Length( b ) );
   end; { with }
 end;
 
@@ -292,11 +300,13 @@ end;
 procedure TLog.Log( const FailName : string; const Msg : string; const Args : array of const );
 var
   S : string;
+  b : TBytes;
 begin
   CurrDbgLvl := RealCurrDbgLvl;
   CurrDbgGroup := RealCurrDbgGroup;
   S := TimeToStr( Time ) + ' ' + Format( '%8.8d', [ Game.FrameCount ] ) + ': ' + FailName + ' ' + Format( Msg, Args ) + #13#10;
-  Write( S[ 1 ], Length( S ) );
+  b := TEncoding.UTF8.GetBytes(s);
+  Write( b, Length( b ) );
   if ( RealCurrDbgGroup and DbgFlushLog ) <> 0 then
     FlushFileBuffers( Handle );
 end;
@@ -304,11 +314,13 @@ end;
 procedure TLog.Msg( const FailName : string; const Msg : string; const Args : array of const );
 var
   S : string;
+  b : TBytes;
 begin
   CurrDbgLvl := RealCurrDbgLvl;
   CurrDbgGroup := RealCurrDbgGroup;
   S := FailName + ' ' + Format( Msg, Args ) + #13#10;
-  Write( S[ 1 ], Length( S ) );
+  b := TEncoding.UTF8.GetBytes(s);
+  Write( b, Length( b ) );
   if ( RealCurrDbgGroup and DbgFlushLog ) <> 0 then
     FlushFileBuffers( Handle );
 end;
@@ -316,11 +328,13 @@ end;
 procedure TLog.LogEntry( const FailName : string );
 var
   S : string;
+  b : TBytes;
 begin
   CurrDbgLvl := RealCurrDbgLvl;
   CurrDbgGroup := RealCurrDbgGroup;
   S := TimeToStr( Time ) + ' ' + Format( '%8.8d', [ Game.FrameCount ] ) + ': === ' + FailName + ' ===' + #13#10;
-  Write( S[ 1 ], Length( S ) );
+  b := TEncoding.UTF8.GetBytes(s);
+  Write( b, Length( b ) );
   if ( RealCurrDbgGroup and DbgFlushLog ) <> 0 then
     FlushFileBuffers( Handle );
 end;
@@ -328,11 +342,13 @@ end;
 procedure TLog.Log( const Msg : string );
 var
   S : string;
+  b : TBytes;
 begin
   CurrDbgLvl := RealCurrDbgLvl;
   CurrDbgGroup := RealCurrDbgGroup;
   S := TimeToStr( Time ) + ' ' + Format( '%8.8d', [ Game.FrameCount ] ) + ': ' + Msg + #13#10;
-  Write( S[ 1 ], Length( S ) );
+  b := TEncoding.UTF8.GetBytes(s);
+  Write( b, Length( b ) );
   if ( RealCurrDbgGroup and DbgFlushLog ) <> 0 then
     FlushFileBuffers( Handle );
 end;
@@ -340,11 +356,13 @@ end;
 procedure TLog.Comment( const Msg : string );
 var
   S : string;
+  B : TBytes;
 begin
   if length( Msg ) > 0 then
   begin
     S := Msg + #13#10;
-    Write( S[ 1 ], Length( S ) );
+    b := TEncoding.UTF8.GetBytes(s);
+    Write( b, Length( b ) );
   end;
   if ( RealCurrDbgGroup and DbgFlushLog ) <> 0 then
     FlushFileBuffers( Handle );

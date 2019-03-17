@@ -69,8 +69,8 @@ uses
   DXUtil,
   DXEffects,
 {$ENDIF}
-  Windows,
-  Messages,
+  Winapi.Windows,
+  Winapi.Messages,
   SysUtils,
   Classes,
   Graphics,
@@ -1460,7 +1460,7 @@ end; //TInventory.TryToDropOnBody
 
 function TInventory.GetSlotText : string;
 var
-  Sentence : string;
+  Sentence : AnsiString;
   dl : integer;
   LoopCount : integer;
 const
