@@ -1,8 +1,8 @@
-#Siege of Avalon : Open Source#
+# Siege of Avalon : Open Source #
 
 _"Siege of Avalon : Open Source is an attempt to keep this great isometric RPG game alive by continuing development on it. Our aim is to create a SDL version of the engine that will work on Win32, Linux and where ever Pascal compilers and SDL are supported."_
 
-This is a fork from the **gondur/Siege-of-Avalon-Open-Source** (https://github.com/gondur/Siege-of-Avalon-Open-Source) repository.
+This is a fork from the [**gondur/Siege-of-Avalon-Open-Source**](https://github.com/gondur/Siege-of-Avalon-Open-Source) repository.
 
 The main focus of this fork: 
 
@@ -23,7 +23,7 @@ all found in the original free playable 1. chapter/demo - http://soaos.sourcefor
 
 ---
 
-###Status as of Mar 14th, 2019###
+### Status as of Mar 14th, 2019 ###
 
 - Replaced 3 "corrupt/missing" assets
 
@@ -31,5 +31,13 @@ New branch (win32_d7onwards):
 
 - Replaced and updated DX files - using files from unDelphiX (http://www.micrel.cz/Dx/)
 - Converted source to compilable in Delphi 7, being fully playable.
+
+### Status as of Mar 17th, 2019 ###
+
+In win32_d7onwards branch:
+
+- Compiles and runs in DX 10.2.3 - non-playable yet
+- Character screen has glitches, but works
+- Loading 90% - missing lightning/tiles
 
 ...moving towards Delphi 10.3 Rio - in small steps :)
