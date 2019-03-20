@@ -40,4 +40,8 @@ In win32_d7onwards branch:
 - Character screen has glitches, but works
 - Loading 90% - missing lightning/tiles
 
+### Status as of Mar 20th, 2019 ###
+
+- Stepped back. Now playable in Delphi 2007
+
 ...moving towards Delphi 10.3 Rio - in small steps :)
