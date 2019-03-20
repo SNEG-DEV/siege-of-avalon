@@ -63,7 +63,7 @@ interface
 
 uses
   Classes,
-  Winapi.Windows,
+  Windows,
   SysUtils,
   Anigrp30,
 {$IFDEF DirectX}

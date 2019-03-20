@@ -70,8 +70,8 @@ unit digifx;
 interface
 
 uses
-  Winapi.Windows,
-  System.SysUtils;
+  Windows,
+  SysUtils;
 
 const
   BLITFX_NONE = 0;
@@ -376,7 +376,7 @@ begin
   result := 0;
   for i := 0 to DriversCnt - 1 do
   begin
-    if ( StrComp( lpDrvNamePtr, PWideChar(DrvFilesTab[ i ].Info) ) = 0 ) then
+    if ( StrComp( lpDrvNamePtr, PChar(DrvFilesTab[ i ].Info) ) = 0 ) then
     begin
       hDFX := i or ( DF_ID shl 16 );
       if ( DrvFilesTab[ i ].RefCnt = 0 ) then

@@ -62,7 +62,7 @@ unit MP3;
 interface
 
 uses
-  Winapi.Windows,
+  Windows,
   classes,
   logfile,
   sysutils,

@@ -83,7 +83,7 @@ interface
 {$INCLUDE Anigrp30cfg.inc}
 
 uses
-  Winapi.Windows,
+  Windows,
   Classes,
   SysUtils,
   Graphics,

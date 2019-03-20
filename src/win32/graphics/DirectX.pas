@@ -50,7 +50,8 @@ Interface
 {$ALIGN ON}
 
 uses
-  Winapi.Windows, Winapi.MMSystem;
+  Windows,
+  MMSystem;
 //DirectDraw file
 (*==========================================================================;
  *

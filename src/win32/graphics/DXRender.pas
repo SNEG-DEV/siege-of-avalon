@@ -5,7 +5,7 @@ interface
 {$INCLUDE DelphiXcfg.inc}
 
 uses
-  Winapi.Windows,
+  Windows,
 {$IfDef StandardDX}
   DirectDraw,
   {$ifdef DX7}

@@ -60,8 +60,8 @@ program Siege;
 {******************************************************************************}
 
 uses
-  Vcl.Forms,
-  Winapi.Windows,
+  Forms,
+  Windows,
   SysUtils,
   IniFiles,
   Controls,

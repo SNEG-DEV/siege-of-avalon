@@ -64,8 +64,8 @@ unit AdventureLog;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
+  Windows,
+  Messages,
   SysUtils,
   Classes,
   Graphics,
@@ -102,7 +102,7 @@ type
     function ReadLogByIndex( LogIndex : integer ) : string;
     procedure DeleteLogEntry( LogFile : string );
     procedure Clear;
-  published
+//  published
 //    property About : TAboutAdventureLogProperty read FAbout write FAbout;
     property LogFileList : TStringList read FLogDateList write FLogDateList;
     property LogDirectory : string read FLogDirectory write FLogDirectory;

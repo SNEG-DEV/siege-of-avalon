@@ -64,7 +64,7 @@ unit Sound;
 interface
 
 uses
-  Winapi.Windows,
+  Windows,
   Classes,
   SysUtils,
   Resource,

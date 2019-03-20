@@ -62,7 +62,7 @@ unit ItemDatabase;
 interface
 
 uses
-  Winapi.Windows,
+  Windows,
   SysUtils,
   classes,
   forms,

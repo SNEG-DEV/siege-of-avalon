@@ -69,9 +69,9 @@ uses
   DXUtil,
   DXEffects,
 {$ENDIF}
-  Winapi.Windows,
-  Winapi.MMSystem,
-  Winapi.Messages,
+  Windows,
+  MMSystem,
+  Messages,
   SysUtils,
   Classes,
   Graphics,

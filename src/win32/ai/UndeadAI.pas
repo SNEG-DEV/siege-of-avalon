@@ -102,7 +102,7 @@ type
     procedure Follow( Source, Target : TAniFigure ); override;
     procedure Execute; override;
     function OnCollideFigure( Target : TAniFigure ) : boolean; override;
-    procedure ReGroup( Source : TAniFigure; NewX, NewY : Integer ); override;
+    procedure Regroup( Source : TAniFigure; NewX, NewY : Integer ); override;
   end;
 
   TUndeadMeleeCombat = class( TAI )

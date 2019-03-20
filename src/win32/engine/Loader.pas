@@ -65,7 +65,7 @@ interface
 
 uses
   Classes,
-  Winapi.Windows,
+  Windows,
   Graphics,
   SysUtils,
   Forms,

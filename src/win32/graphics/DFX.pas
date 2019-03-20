@@ -64,22 +64,22 @@ unit DFX;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  System.SysUtils,
-  System.Classes,
-  Vcl.Graphics,
-  Vcl.Controls,
-  Vcl.Forms,
-  Vcl.Dialogs,
+  Windows,
+  Messages,
+  SysUtils,
+  Classes,
+  Graphics,
+  Controls,
+  Forms,
+  Dialogs,
   digifx,
 {$IFDEF DirectX}
   DirectX,
   DXUtil,
   Anigrp30,
 {$ENDIF}
-  Vcl.StdCtrls,
-  Vcl.ExtCtrls,
+  StdCtrls,
+  ExtCtrls,
   LogFile;
 
 const

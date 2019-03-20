@@ -66,7 +66,7 @@ uses
   Classes,
   Controls,
   Forms,
-  Winapi.Windows,
+  Windows,
   Gametext,
   Graphics,
   DirectX,

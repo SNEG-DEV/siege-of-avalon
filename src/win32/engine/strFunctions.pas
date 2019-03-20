@@ -62,7 +62,7 @@ unit strFunctions;
 interface
 
 uses
-  Winapi.Windows,
+  Windows,
   SysUtils,
   classes,
   IniFiles;

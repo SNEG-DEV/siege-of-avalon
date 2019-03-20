@@ -67,7 +67,7 @@ uses
   Controls,
   extctrls,
   Forms,
-  Winapi.Windows,
+  Windows,
   Gametext,
   Graphics,
   DirectX,

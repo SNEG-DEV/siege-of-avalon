@@ -81,7 +81,7 @@ unit Security;
 interface
 
 uses
-  Winapi.Windows,
+  Windows,
   SysUtils,
   Forms,
   Classes,

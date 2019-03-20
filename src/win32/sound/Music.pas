@@ -64,8 +64,8 @@ unit Music;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
+  Windows,
+  Messages,
   SysUtils,
   Classes,
   Controls,

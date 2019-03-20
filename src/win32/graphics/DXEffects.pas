@@ -62,7 +62,8 @@ unit DXEffects;
 interface
 
 uses
-  Winapi.Windows,
+  Windows,
+  Types,
   DirectX,
   DXRender,
   Graphics;
