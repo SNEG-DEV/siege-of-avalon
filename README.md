@@ -11,7 +11,7 @@ The main focus of this fork:
 3. Include HD/FullHD support like already done by gondur.
 4. Possibly replace DX with either SDL2/Vulkan/other to gain crossplatform support, but since the DX is maintain for latest Delphi versions - this has lower priority.
 
-Also check out the gondur fork for changes, and the thread on SOAAmigos (in german), where Raptor/Rucksacksepp (http://soamigos.de/wbb4/index.php/Thread/4458-Siege-exe-aus-Source-Code-Delphi-4/?postID=91558#post91558) fixed building with Delphi 4 amoung other things.
+Also check out the gondur fork for changes, and the thread on SOAAmigos (in german), where Raptor/Rucksacksepp (http://soamigos.de/wbb5/forum/index.php?thread/4458-hd-und-fullhd-version-zu-siege-of-avalon-aus-dem-source-code-mit-delphi-4/&postID=91286#post91286) fixed building with Delphi 4 amoung other things.
 
 To play the game your need additional files in the assets folder:
 - soundlib.dll
