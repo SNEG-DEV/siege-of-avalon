@@ -70,8 +70,7 @@ unit digifx;
 interface
 
 uses
-  Windows,
-  SysUtils;
+  Windows;
 
 const
   BLITFX_NONE = 0;
@@ -189,6 +188,9 @@ function digifxCheckSupport( hDFX : DFXHND; ProcNo : DWORD; FXPtr : PBLITFX; Src
 function digifxGetErrorText : PCHAR;
 
 implementation
+
+uses
+  SysUtils;
 
 type
   DFXSTARTUPLIB = function : PDWORD; stdcall;

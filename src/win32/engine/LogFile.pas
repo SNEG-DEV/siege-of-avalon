@@ -113,7 +113,8 @@ var
 
 implementation
 
-uses String32,
+uses
+  String32,
   Forms,
   Engine,
   IniFiles;

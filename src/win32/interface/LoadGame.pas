@@ -70,16 +70,12 @@ uses
   DXEffects,
 {$ENDIF}
   Windows,
-  Messages,
   SysUtils,
   Classes,
   Graphics,
   Controls,
   Forms,
-  Dialogs,
   ExtCtrls,
-  Character,
-  StdCtrls,
   GameText,
   Display,
   Anigrp30,
@@ -383,6 +379,7 @@ var
   fDay, fYear, fMonth : word;
   fHour, fMin, fSec, fMsec : word;
   pTempItem : pointer;
+  dt : TDateTime;
 const
   FailName : string = 'TLoadGame.LoadText ';
 begin
@@ -405,9 +402,10 @@ begin
         new( pTextItem );
         pTextItem.text := TheFileName;
           //Get the last time this file was accessed
-        pTextitem.time := FileAge( ExtractFilePath( Application.ExeName ) + 'Games\' + FileData.Name );
-        DecodeDate( FileDateToDateTime( pTextitem.time ), fYear, fMonth, fDay );
-        DecodeTime( FileDateToDateTime( pTextitem.time ), fHour, fMin, fSec, fMsec );
+        FileAge( ExtractFilePath( Application.ExeName ) + 'Games\' + FileData.Name, dt );
+        pTextitem.time := DateTimeToFileDate( dt ); //INVESTIGATE: Not sure if pTextitem.time makes any sense anymore
+        DecodeDate( dt, fYear, fMonth, fDay );
+        DecodeTime( dt, fHour, fMin, fSec, fMsec );
         if fMin > 10 then
           pTextItem.Date := intToStr( fMonth ) + '/' + intToStr( fDay ) + ' ' + intToStr( fHour ) + ':' + intToStr( fMin ) //'/'+intToStr(fYear);
         else

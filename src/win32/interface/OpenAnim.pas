@@ -70,24 +70,17 @@ uses
   DXEffects,
 {$ENDIF}
   Windows,
-  MMSystem,
-  Messages,
   SysUtils,
   Classes,
   Graphics,
   Controls,
   Forms,
-  Dialogs,
-  ExtCtrls,
-  Character,
-  StdCtrls,
   Display,
   Anigrp30,
-  math,
   Music,
   Resource,
-  logfile;
-  
+  LogFile;
+
 type
   TOpenAnim = class( TDisplay )
   private

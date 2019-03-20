@@ -64,19 +64,7 @@ unit AdventureLog;
 interface
 
 uses
-  Windows,
-  Messages,
-  SysUtils,
-  Classes,
-  Graphics,
-  Controls,
-  Forms,
-  Dialogs,
-  //dsgnIntf,
-//  DesignIntf,
-//  DesignEditors,
-  comctrls,
-  LogFile;
+  Classes;
 
 type
 //  TAboutAdventureLogProperty = class( TPropertyEditor )
@@ -109,6 +97,10 @@ type
   end;
 
 implementation
+
+uses
+  SysUtils,
+  LogFile;
 
 //procedure TAboutAdventureLogProperty.Edit;
 //begin

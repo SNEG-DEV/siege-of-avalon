@@ -68,18 +68,11 @@ uses
   Windows,
   Graphics,
   SysUtils,
-  Forms,
-  INIFiles,
   Anigrp30,
   AniDec30,
-{$IFDEF DirectX}
-  DirectX,
-  DXUtil,
-{$ENDIF}
   Character,
   Resource,
   Engine,
-  ItemDatabase,
   LogFile;
 
 type

@@ -66,13 +66,7 @@ uses
   Windows,
   SysUtils,
   Anigrp30,
-{$IFDEF DirectX}
-  DirectX,
-  DXUtil,
-  DXEffects,
-{$ENDIF}
   digifx,
-  DFX,
   Engine,
   Character,
   Resource,

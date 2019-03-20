@@ -62,11 +62,7 @@ unit Titles;
 interface
 
 uses
-  Classes,
-  Windows,
   SysUtils,
-  DFX,
-  digifx,
   Character,
   ItemDatabase,
   LogFile;

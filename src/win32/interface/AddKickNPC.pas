@@ -66,28 +66,16 @@ interface
 uses
 {$IFDEF DirectX}
   DirectX,
-  DXUtil,
-  DXEffects,
 {$ENDIF}
   Windows,
-  Messages,
-  SysUtils,
   Classes,
   Graphics,
   Controls,
-  Forms,
-  Dialogs,
-  ExtCtrls,
   Character,
-  StdCtrls,
-  GameText,
   Display,
   Anigrp30,
-  Engine,
-  Logfile,
-  resource,
   MiscAI;
-  
+
 type
   TInforect = record
     rect : TRect;
@@ -142,9 +130,21 @@ type
     procedure Init; override;
     procedure Release; override;
   end;
+
 implementation
+
 uses
+  SysUtils,
+{$IFDEF DirectX}
+  DXUtil,
+  DXEffects,
+{$ENDIF}
+  Engine,
+  Resource,
+  Logfile,
+  GameText,
   AniDemo;
+
 { TAddKickNPC }
 
 constructor TAddKickNPC.Create;

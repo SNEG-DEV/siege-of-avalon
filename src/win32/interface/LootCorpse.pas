@@ -70,25 +70,19 @@ uses
   DXEffects,
 {$ENDIF}
   Windows,
-  Messages,
   SysUtils,
   Classes,
   Graphics,
   Controls,
-  Forms,
-  Dialogs,
-  ExtCtrls,
   Character,
-  StdCtrls,
   Resource,
   GameText,
   Display,
-  Statistics,
   Parts,
   Scroll,
   Anigrp30,
   Engine,
-  logfile;
+  Logfile;
 
 type
   pTempItems = ^TemItems;

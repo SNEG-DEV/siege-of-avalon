@@ -65,25 +65,14 @@ interface
 
 uses
   DirectX,
-  DXUtil,
-  DXEffects,
   Windows,
-  Messages,
-  SysUtils,
   Classes,
-  Graphics,
   Controls,
-  Forms,
-  Dialogs,
-  ExtCtrls,
   Character,
-  StdCtrls,
   Display,
   Anigrp30,
-  Engine,
-  LogFile,
-  INIFiles,
-  strFunctions;
+  INIFiles;
+
 
 type
   TTextRect = class( TObject )
@@ -145,6 +134,13 @@ function CheckPartyOne( sTmp : string ) : boolean;
 implementation
 
 uses
+  SysUtils,
+  Graphics,
+  DXUtil,
+  DXEffects,
+  Engine,
+  LogFile,
+  strFunctions,
   AniDemo,
   Resource;
 

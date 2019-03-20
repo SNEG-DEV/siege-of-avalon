@@ -66,19 +66,15 @@ interface
 uses
   Classes,
   Windows,
-  SysUtils,
   Anigrp30,
   AniDec30,
   Graphics,
 {$IFDEF DirectX}
   DirectX,
-  DXUtil,
-  DXEffects,
 {$ENDIF}
   digifx,
   DFX,
-  Resource,
-  LogFile;
+  Resource;
 
 const
   MaxCompanions = 5;
@@ -1102,10 +1098,13 @@ var
 implementation
 
 uses
+  SysUtils,
+{$IFDEF DirectX}
+  DXUtil,
+{$ENDIF}
+  LogFile,
   Engine,
-  ItemDatabase,
   Titles,
-  Loader,
   Display,
   Parts,
   Sound,
@@ -1116,7 +1115,6 @@ uses
   WolfAI,
   MiscAI,
   AniDemo,
-  Effects,
   Spells;
 
 //fix for bad character names

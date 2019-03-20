@@ -67,8 +67,7 @@ uses
   Character,
   Anigrp30,
   digifx,
-  Spells,
-  LogFile;
+  Spells;
 
 type
   TSwirl = class( TEffect )

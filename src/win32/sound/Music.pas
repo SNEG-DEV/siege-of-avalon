@@ -63,19 +63,6 @@ unit Music;
 
 interface
 
-uses
-  Windows,
-  Messages,
-  SysUtils,
-  Classes,
-  Controls,
-  StdCtrls,
-  ExtCtrls,
-  forms,
-  Midi,
-  MP3,
-  LogFile;
-
 type
   rSong = record
     Length : integer;
@@ -118,7 +105,11 @@ var
 implementation
 
 uses
-  Sound;
+  SysUtils,
+  Midi,
+  MP3,
+  Sound,
+  LogFile;
 
 { TMusic }
 

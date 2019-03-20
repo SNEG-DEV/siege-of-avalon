@@ -65,22 +65,9 @@ interface
 
 uses
   Windows,
-  Messages,
-  SysUtils,
   Classes,
   Graphics,
-  Controls,
-  Forms,
-  Dialogs,
-  digifx,
-{$IFDEF DirectX}
-  DirectX,
-  DXUtil,
-  Anigrp30,
-{$ENDIF}
-  StdCtrls,
-  ExtCtrls,
-  LogFile;
+  digifx;
 
 const
   pixelformats : array[ 0..2 ] of DWORD = ( PIXFMT_555, PIXFMT_565, PIXFMT_888 );
@@ -156,6 +143,12 @@ procedure DFXShutdown;
 procedure DFXClearBitPlane( Plane : BITPLANE; Color : DWORD );
 
 implementation
+
+uses
+  SysUtils,
+  DXUtil,
+  Anigrp30,
+  LogFile;
 
 procedure DFXClearBitPlane( Plane : BITPLANE; Color : DWORD );
 begin

@@ -80,13 +80,6 @@ unit Security;
 
 interface
 
-uses
-  Windows,
-  SysUtils,
-  Forms,
-  Classes,
-  IniFiles;
-
 var
   ChapterAuthorizeMask : Int64;
 
@@ -107,8 +100,12 @@ function IsSerialValid( SerialNumber : AnsiString ) : Boolean;
 implementation
 
 uses
-  String32;
-
+  Windows,
+  SysUtils,
+  Forms,
+  Classes,
+  IniFiles;
+  
 var
   VolSerial : DWORD;
   VolSerialString : AnsiString;

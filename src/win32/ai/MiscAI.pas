@@ -87,11 +87,9 @@ uses
   Engine,
   Anigrp30,
   LogFile,
-  Dialogs,
   Resource,
   Graphics,
-  Math,
-  strfunctions;
+  strFunctions;
 
 type
   TIdleDuty = ( idStand, idMeander, idGuard, idbusy );
@@ -626,9 +624,11 @@ function RangeTest( Target, Source : TAniFigure; iDist : Integer ) : Boolean;
 function GetFacing( SrcX, SrcY, TargetX, TargetY : Longint ) : Extended;
 
 implementation
+
 uses
   anidemo,
   BasicHumanoidAI;
+  
 const
   PI = 3.1415926535;
   pi2 = 2 * PI;

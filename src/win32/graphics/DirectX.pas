@@ -42,6 +42,10 @@ Unit DirectX;
 
 Interface
 
+uses
+  Windows,
+  MMSystem;
+
 {Delphi version marks}
 
 {$I DelphiXcfg.inc}
@@ -49,9 +53,6 @@ Interface
 {$MINENUMSIZE 4}
 {$ALIGN ON}
 
-uses
-  Windows,
-  MMSystem;
 //DirectDraw file
 (*==========================================================================;
  *

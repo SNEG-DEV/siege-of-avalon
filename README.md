@@ -43,5 +43,6 @@ In win32_d7onwards branch:
 ### Status as of Mar 20th, 2019 ###
 
 - Stepped back. Now playable in Delphi 2007
+- Unused uses clean + a bit strfunc remove - 0 Hints, 0 Warnings in Delphi 2007
 
 ...moving towards Delphi 10.3 Rio - in small steps :)

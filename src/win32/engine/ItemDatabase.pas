@@ -62,10 +62,8 @@ unit ItemDatabase;
 interface
 
 uses
-  Windows,
   SysUtils,
-  classes,
-  forms,
+  Classes,
   Resource,
   LogFile;
 

@@ -62,7 +62,6 @@ unit strFunctions;
 interface
 
 uses
-  Windows,
   SysUtils,
   classes,
   IniFiles;

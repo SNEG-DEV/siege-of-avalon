@@ -65,7 +65,6 @@ uses
   SysUtils,
   Classes,
   Controls,
-  extctrls,
   Forms,
   Windows,
   Gametext,

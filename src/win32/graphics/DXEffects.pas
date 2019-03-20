@@ -62,10 +62,8 @@ unit DXEffects;
 interface
 
 uses
-  Windows,
   Types,
   DirectX,
-  DXRender,
   Graphics;
 
 procedure DrawAdd( Dest : IDirectDrawSurface; const DestRect, SrcRect : TRect; Source : IDirectDrawSurface;
@@ -91,6 +89,9 @@ procedure FillRectAlpha( Dest : IDirectDrawSurface; const DestRect : TRect; RGBC
 procedure FillRectSub( Dest : IDirectDrawSurface; const DestRect : TRect; RGBCol : TColor );
 
 implementation
+
+uses
+  DXRender;
 
 procedure DrawAdd( Dest : IDirectDrawSurface; const DestRect, SrcRect : TRect; Source : IDirectDrawSurface;
   TRANSPARENT : Boolean; Alpha : Integer );

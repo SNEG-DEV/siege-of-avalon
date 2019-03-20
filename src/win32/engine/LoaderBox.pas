@@ -69,13 +69,11 @@ uses
   DXEffects,
 {$ENDIF}
   Windows,
-  Forms,
   Classes,
   Graphics,
   SysUtils,
-  Engine,
   Anigrp30,
-  logfile;
+  Logfile;
 
 type
   TLoaderBox = class( TObject )
@@ -95,8 +93,7 @@ type
   end;
 
 implementation
-uses
-  AniDemo;
+
 { TLoaderBox }
 
 constructor TLoaderBox.Create;

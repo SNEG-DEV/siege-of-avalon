@@ -62,11 +62,7 @@ unit MP3;
 interface
 
 uses
-  Windows,
-  classes,
-  logfile,
-  sysutils,
-  engine;
+  Windows;
 
 type
   pFSOUND_STREAM = ^FSOUND_STREAM;
@@ -173,6 +169,11 @@ var
   SongStream : PFSOUND_STREAM;
 
 implementation
+
+uses
+  Logfile,
+  Engine;
+
 var
   OriginalSound : array[ 0..1000 ] of GAMESOUNDFILEDATA;
   SoundList : array[ 0..5000 ] of GAMESOUNDDATA;

@@ -67,12 +67,10 @@ uses
   Classes,
   SysUtils,
   Character,
-  Resource,
   Engine,
   Anigrp30,
   LogFile,
-  Graphics,
-  Math;
+  Graphics;
 
 type
   TUndeadType = ( utSkeleton, utLich, utGhoul, utGhost );

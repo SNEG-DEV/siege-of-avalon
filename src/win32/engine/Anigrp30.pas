@@ -66,21 +66,14 @@ interface
 uses
   Windows,
   Classes,
-  SysUtils,
-  Forms,
   Graphics,
   Controls,
-  ExtCtrls,
-  Dialogs,
   AniDec30,
   AStar,
-  MMTimer,
 {$IFDEF DirectX}
   DirectX,
-  DXUtil,
-  DXEffects,
 {$ENDIF}
-  LogFile;
+  MMTimer;
 
 type
   TAniMap = class;
@@ -683,7 +676,12 @@ var
 implementation
 
 uses
-  Character;
+  SysUtils,
+  Forms,
+{$IFDEF DirectX}
+  DXUtil,
+{$ENDIF}
+  LogFile;
 
 function MakeScript( const Frames : array of Word ) : ScriptInfo;
 var

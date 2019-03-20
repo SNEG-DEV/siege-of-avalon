@@ -66,26 +66,17 @@ interface
 uses
 {$IFDEF DirectX}
   DirectX,
-  DXUtil,
-  DXEffects,
 {$ENDIF}
   Windows,
-  Messages,
-  SysUtils,
   Classes,
   Graphics,
   Controls,
   Forms,
-  Dialogs,
   ExtCtrls,
   Character,
   Resource,
-  StdCtrls,
-  GameText,
   Display,
-  Anigrp30,
-  Engine,
-  Logfile;
+  Anigrp30;
 
 type
   InformationRect = record
@@ -186,9 +177,20 @@ type
     procedure Init; override;
     procedure Release; override;
   end;
+
 implementation
+
 uses
+  SysUtils,
+{$IFDEF DirectX}
+  DXUtil,
+  DXEffects,
+{$ENDIF}
+  Engine,
+  Logfile,
+  GameText,
   AniDemo;
+
 { TCreation }
 
 constructor TCreation.Create;
