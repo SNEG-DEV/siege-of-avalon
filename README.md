@@ -21,6 +21,8 @@ To play the game your need additional files in the assets folder:
 
 all found in the original free playable 1. chapter/demo - http://soaos.sourceforge.net/FreePage.htm
 
+Also for Win7 and above: use either compatibility mode as XP (I might update the registry later on) - and/or include ddraw.dll from [**DDrawCompat**](https://github.com/narzoul/DDrawCompat) - binary can be downloaded under releases.
+
 ---
 
 ### Status as of Mar 14th, 2019 ###
@@ -44,5 +46,9 @@ In win32_d7onwards branch:
 
 - Stepped back. Now playable in Delphi 2007
 - Unused uses clean + a bit strfunc remove - 0 Hints, 0 Warnings in Delphi 2007
+
+### Status as of Mar 21th, 2019 ###
+
+- Updated readme and merge win32_d7onwards branch with master, so now Delphi 2007 is minimum.
 
 ...moving towards Delphi 10.3 Rio - in small steps :)

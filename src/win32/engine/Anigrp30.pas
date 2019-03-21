@@ -3498,6 +3498,7 @@ var
   BltFx : TDDBLTFX;
   C : longint;
   pr : TRect;
+  tmpDD : IDirectDraw;
 {$ENDIF}
 begin
 {$IFDEF DirectX}
@@ -3509,7 +3510,12 @@ begin
 //Log.Log('3');
   ResHeight := ResH;
 //Log.Log('4');
-  DirectDrawCreate( nil, lpDD, nil );
+  DirectDrawCreate( nil, tmpDD, nil );  // Prepare for DirectX 7 or newer
+  try
+    tmpDD.QueryInterface(IID_IDirectDraw, lpDD);
+  finally
+    tmpDD := nil;
+  end;
 //Log.Log('5');
   lpDD.SetCooperativeLevel( Handle, DDSCL_EXCLUSIVE or DDSCL_FULLSCREEN );
 //Log.Log('6');

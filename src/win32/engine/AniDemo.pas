@@ -2333,6 +2333,10 @@ procedure TfrmMain.FormCreate( Sender : TObject );
 var
   ExStyle : Integer;
 begin
+  BorderStyle := bsNone;
+  BorderIcons := [];
+  FormStyle := fsStayOnTop;
+
   Application.OnException := AppException;
   Application.OnActivate := AppActivate;
   Application.OnDeactivate := AppDeactivate;
