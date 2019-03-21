@@ -64,13 +64,8 @@ interface
 {$INCLUDE Anigrp30cfg.inc}
 
 uses
-  Classes,
-  SysUtils,
   Character,
-  Resource,
-  Engine,
-  Anigrp30,
-  LogFile;
+  Anigrp30;
 
 type
   TMeander = class( TAI )
@@ -126,6 +121,11 @@ type
 function AssignAI1( AIName : string ) : TAI;
 
 implementation
+
+uses
+  Classes,
+  SysUtils,
+  LogFile;
 
 const
   PI = 3.1415926535;

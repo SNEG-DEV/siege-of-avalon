@@ -70,24 +70,17 @@ uses
   DXEffects,
 {$ENDIF}
   Windows,
-  MMSystem,
-  Messages,
   SysUtils,
   Classes,
   Graphics,
   Controls,
   Forms,
-  Dialogs,
-  ExtCtrls,
-  Character,
-  StdCtrls,
   Display,
   Anigrp30,
-  math,
   Music,
   Resource,
-  logfile;
-  
+  LogFile;
+
 type
   TOpenAnim = class( TDisplay )
   private
@@ -155,7 +148,7 @@ end; //Destroy
 procedure TOpenAnim.Init;
 var
   InvisColor : integer;
-
+  pr : TRect;
 const
   FailName : string = 'TOpenAnim.init';
 begin
@@ -193,14 +186,16 @@ begin
 
     BMBack.LoadFromFile( InterfacePath + 'aniBack.bmp' );
     DXBack := DDGetImage( lpDD, BMBack, InvisColor, true );
-    lpDDSBack.BltFast( 0, 0, DXBack, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 800, 600 );
+    lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_WAIT );
 
     BMBack.Free;
 
   //DrawAlpha(lpDDSBack,rect(0,0,800,600),rect(0,0,25,25),DXSiege,false,255);
   //DrawSub(lpDDSBack,rect(0,0,800,600),rect(0,0,25,25),DXSiege,false,255);
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 800, 600 );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
 
     KeepOnPlaying := true;
     PlayAnim;
@@ -271,6 +266,7 @@ var
   MusicStartTime : Longword;
   StartFinalCount : Longword;
   i : integer;
+  pr : TRect;
 const
   FailName : string = 'TOpenAnim.PlayAnim';
 begin
@@ -280,7 +276,8 @@ begin
 {$ENDIF}
   try
     StartFinalCount := 0;
-    lpDDSBack.BltFast( 0, 0, DXBack, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 800, 600 );
+    lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_WAIT );
     MusicStillPlaying := true;
     MusicStartTime := GetTickCount;
     OldTime := GetTickCount;
@@ -335,7 +332,8 @@ begin
           application.ProcessMessages;
           lpDDSFront.Flip( nil, DDFLIP_WAIT );
           application.ProcessMessages;
-          lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+          pr := Rect( 0, 0, 800, 600 );
+          lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
           application.ProcessMessages;
         end;
         if Alpha >= 254 then
@@ -361,7 +359,8 @@ begin
           if Alpha < 0 then
             Alpha := 0;
           application.ProcessMessages;
-          lpDDSBack.BltFast( 0, 250, DXBack, Rect( 0, 250, 800, 250 + 228 ), DDBLTFAST_WAIT );
+          pr := Rect( 0, 250, 800, 250 + 228 );
+          lpDDSBack.BltFast( 0, 250, DXBack, @pr, DDBLTFAST_WAIT );
           application.ProcessMessages;
           if Alpha > 0 then
           begin
@@ -377,7 +376,8 @@ begin
           Adj := Adj - Trunc( Adj );
           lpDDSFront.Flip( nil, DDFLIP_WAIT );
           application.ProcessMessages;
-          lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+          pr := Rect( 0, 0, 800, 600 );
+          lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
           application.ProcessMessages;
         end;
         if Alpha <= 0 then
@@ -427,7 +427,8 @@ begin
           application.ProcessMessages;
           lpDDSFront.Flip( nil, DDFLIP_WAIT );
           application.ProcessMessages;
-          lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+          pr := Rect( 0, 0, 800, 600 );
+          lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
           application.ProcessMessages;
         end;
         if GetTickCount - StartFinalCount > 9000 then

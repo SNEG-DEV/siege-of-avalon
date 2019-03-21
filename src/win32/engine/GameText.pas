@@ -70,7 +70,6 @@ uses
   DXEffects,
 {$ENDIF}
   Windows,
-  Forms,
   Classes,
   Graphics,
   SysUtils,
@@ -572,6 +571,7 @@ var
   i : integer;
   j : integer;
   XStart : integer;
+  pr : TRect;
 const
   FailName : string = 'TGameText.Plottext';
 begin
@@ -590,7 +590,10 @@ begin
       if Alpha > 0 then
         DrawAlpha( lpDDSBack, Rect( X + XStart + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop, X + XStart + Letter[ j ].sw + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop + Letter[ j ].sh ), Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh ), DXSurface, true, Alpha )
       else
-        lpDDSBack.BltFast( X + XStart + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop, DXSurface, Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      begin
+        pr := Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh );
+        lpDDSBack.BltFast( X + XStart + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop, DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      end;
       XStart := XStart + Letter[ j ].sw + Letter[ j ].AdjPrev + Letter[ j ].AdjNext;
      //i=i+1;
     end; //wend
@@ -605,6 +608,7 @@ var
   i : integer;
   j : integer;
   XStart : integer;
+  pr : TRect;
 const
   FailName : string = 'TGameText.PlotText2';
 begin
@@ -621,7 +625,10 @@ begin
       if Alpha > 0 then
         DrawAlpha( DX, Rect( X + XStart + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop, X + XStart + Letter[ j ].sw + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop + Letter[ j ].sh ), Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh ), DXSurface, true, Alpha )
       else
-        DX.BltFast( X + XStart + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop, DXSurface, Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      begin
+        pr := Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh );
+        DX.BltFast( X + XStart + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop, DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      end;
       XStart := XStart + Letter[ j ].sw + Letter[ j ].AdjPrev + Letter[ j ].AdjNext;
     end; //wend
   except
@@ -635,6 +642,7 @@ var
   i : integer;
   j : integer;
   XStart : integer;
+  pr : TRect;
 const
   FailName : string = 'TGameText.PlotSquishedText';
 begin
@@ -653,7 +661,10 @@ begin
       if Alpha > 0 then
         DrawAlpha( lpDDSBack, Rect( X + XStart + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop, X + XStart + Letter[ j ].sw + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop + Letter[ j ].sh ), Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh ), DXSurface, true, Alpha )
       else
-        lpDDSBack.BltFast( X + XStart + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop, DXSurface, Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      begin
+        pr := Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh );
+        lpDDSBack.BltFast( X + XStart + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop, DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      end;
       XStart := XStart + Letter[ j ].sw + Letter[ j ].AdjPrev + Letter[ j ].AdjNext - 1;
      //i=i+1;
     end; //wend
@@ -672,6 +683,7 @@ var
   XStart : integer;
   TheLength : integer;
   ThereWasRoom : boolean;
+  pr : TRect;
 const
   FailName : string = 'TGameText.PlotTextCentered';
 begin
@@ -703,7 +715,10 @@ begin
       if Alpha > 0 then
         DrawAlpha( lpDDSBack, Rect( X + XStart + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop, X + XStart + Letter[ j ].sw + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop + Letter[ j ].sh ), Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh ), DXSurface, true, Alpha )
       else
-        lpDDSBack.BltFast( X + XStart + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop, DXSurface, Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      begin
+        pr := Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh );
+        lpDDSBack.BltFast( X + XStart + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop, DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      end;
       XStart := XStart + Letter[ j ].sw + Letter[ j ].AdjPrev + Letter[ j ].AdjNext;
     end; //wend
 
@@ -723,6 +738,7 @@ var
   XStart : integer;
   TheLength : integer;
   ThereWasRoom : boolean;
+  pr : TRect;
 const
   FailName : string = 'TGameText.PlotTextCentered2';
 begin
@@ -754,7 +770,10 @@ begin
       if Alpha > 0 then
         DrawAlpha( DX, Rect( X + XStart + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop, X + XStart + Letter[ j ].sw + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop + Letter[ j ].sh ), Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh ), DXSurface, true, Alpha )
       else
-        DX.BltFast( X + XStart + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop, DXSurface, Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      begin
+        pr := Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh );
+        DX.BltFast( X + XStart + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop, DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      end;
       XStart := XStart + Letter[ j ].sw + Letter[ j ].AdjPrev + Letter[ j ].AdjNext;
     end; //wend
 
@@ -773,6 +792,7 @@ var
   XStart : integer;
   TheLength : integer;
   ThereWasRoom : boolean;
+  pr : TRect;
 const
   FailName : string = 'TGameText.PlotDarktextCentered2';
 begin
@@ -804,7 +824,10 @@ begin
       if Alpha > 0 then
         DrawAlpha( DX, Rect( X + XStart + DarkLetter[ j ].AdjPrev, Y + DarkLetter[ j ].AdjTop, X + XStart + DarkLetter[ j ].sw + DarkLetter[ j ].AdjPrev, Y + DarkLetter[ j ].AdjTop + DarkLetter[ j ].sh ), Rect( DarkLetter[ j ].sx, DarkLetter[ j ].sy, DarkLetter[ j ].sx + DarkLetter[ j ].sw, DarkLetter[ j ].sy + DarkLetter[ j ].sh ), DXDarkSurface, true, Alpha )
       else
-        DX.BltFast( X + XStart + DarkLetter[ j ].AdjPrev, Y + DarkLetter[ j ].AdjTop, DXDarkSurface, Rect( DarkLetter[ j ].sx, DarkLetter[ j ].sy, DarkLetter[ j ].sx + DarkLetter[ j ].sw, DarkLetter[ j ].sy + DarkLetter[ j ].sh ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      begin
+        pr := Rect( DarkLetter[ j ].sx, DarkLetter[ j ].sy, DarkLetter[ j ].sx + DarkLetter[ j ].sw, DarkLetter[ j ].sy + DarkLetter[ j ].sh );
+        DX.BltFast( X + XStart + DarkLetter[ j ].AdjPrev, Y + DarkLetter[ j ].AdjTop, DXDarkSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      end;
       XStart := XStart + DarkLetter[ j ].sw + DarkLetter[ j ].AdjPrev + DarkLetter[ j ].AdjNext - 1;
     end; //wend
 
@@ -826,6 +849,7 @@ var
   TheLength : integer;
   LastSpace, PrevLastSpace : integer;
   LineBreak : array[ 0..50 ] of integer;
+  pr : TRect;
 const
   FailName : string = 'TGameText.PlotTextBlock';
 begin
@@ -902,7 +926,10 @@ begin
         if Alpha > 0 then
           DrawAlpha( lpDDSBack, Rect( X + XStart + Letter[ j ].AdjPrev, Y + k * 22 + NL * 22 + Letter[ j ].AdjTop, X + XStart + Letter[ j ].sw + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop + Letter[ j ].sh + k * 22 + NL * 22 ), Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh ), DXSurface, true, Alpha )
         else
-          lpDDSBack.BltFast( X + XStart + Letter[ j ].AdjPrev, Y + k * 22 + Letter[ j ].AdjTop, DXSurface, Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        begin
+          pr := Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh );
+          lpDDSBack.BltFast( X + XStart + Letter[ j ].AdjPrev, Y + k * 22 + Letter[ j ].AdjTop, DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        end;
         XStart := XStart + Letter[ j ].sw + Letter[ j ].AdjPrev + Letter[ j ].AdjNext;
       end;
     end; //endfor
@@ -1026,6 +1053,7 @@ var
   TheLength : integer;
   LastSpace, PrevLastSpace : integer;
   LineBreak : array[ 0..50 ] of integer;
+  pr : TRect;
 const
   FailName : string = 'TGameText.Plotf13block';
 begin
@@ -1103,7 +1131,10 @@ begin
         if Alpha > 0 then
           DrawAlpha( DX, Rect( X + XStart + F13Letter[ j ].AdjPrev, Y + k * 13 + NL * 13 + F13Letter[ j ].AdjTop, X + XStart + F13Letter[ j ].sw + F13Letter[ j ].AdjPrev, Y + F13Letter[ j ].AdjTop + F13Letter[ j ].sh + k * 13 + NL * 13 ), Rect( F13Letter[ j ].sx, F13Letter[ j ].sy, F13Letter[ j ].sx + F13Letter[ j ].sw, F13Letter[ j ].sy + F13Letter[ j ].sh ), DX13Surface, true, Alpha )
         else
-          DX.BltFast( X + XStart + F13Letter[ j ].AdjPrev, Y + k * 13 + F13Letter[ j ].AdjTop, DX13Surface, Rect( F13Letter[ j ].sx, F13Letter[ j ].sy, F13Letter[ j ].sx + F13Letter[ j ].sw, F13Letter[ j ].sy + F13Letter[ j ].sh ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        begin
+          pr := Rect( F13Letter[ j ].sx, F13Letter[ j ].sy, F13Letter[ j ].sx + F13Letter[ j ].sw, F13Letter[ j ].sy + F13Letter[ j ].sh );
+          DX.BltFast( X + XStart + F13Letter[ j ].AdjPrev, Y + k * 13 + F13Letter[ j ].AdjTop, DX13Surface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        end;
         XStart := XStart + F13Letter[ j ].sw + F13Letter[ j ].AdjPrev + F13Letter[ j ].AdjNext;
       end;
     end; //endfor
@@ -1127,6 +1158,7 @@ var
   LastSpace : integer;
   LineBreak : array[ 0..500 ] of integer;
   rRect : TRect;
+  pr : TRect;
 const
   FailName : string = 'TGameText.PlotTextAroundBlock';
 begin
@@ -1224,7 +1256,10 @@ begin
         if Alpha > 0 then
           DrawAlpha( lpDDSBack, Rect( X + XStart + Letter[ j ].AdjPrev, Y + k * 22 + NL * 22 + Letter[ j ].AdjTop, X + XStart + Letter[ j ].sw + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop + Letter[ j ].sh + k * 22 + NL * 22 ), Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh ), DXSurface, true, Alpha )
         else
-          lpDDSBack.BltFast( X + XStart + Letter[ j ].AdjPrev, Y + k * 22 + Letter[ j ].AdjTop, DXSurface, Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        begin
+          pr := Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh );
+          lpDDSBack.BltFast( X + XStart + Letter[ j ].AdjPrev, Y + k * 22 + Letter[ j ].AdjTop, DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        end;
         XStart := XStart + Letter[ j ].sw + Letter[ j ].AdjPrev + Letter[ j ].AdjNext;
       end;
     end; //endfor
@@ -1424,6 +1459,7 @@ var
   j : integer;
   XStart : integer;
   TheLength : integer;
+  pr : TRect;
 const
   FailName : string = 'TGameText.PlotTextCentered2';
 begin
@@ -1449,7 +1485,10 @@ begin
       if Alpha > 0 then
         DrawAlpha( DX, Rect( X + XStart + F13Letter[ j ].AdjPrev, Y + F13Letter[ j ].AdjTop, X + XStart + F13Letter[ j ].sw + F13Letter[ j ].AdjPrev, Y + F13Letter[ j ].AdjTop + F13Letter[ j ].sh ), Rect( F13Letter[ j ].sx, F13Letter[ j ].sy, F13Letter[ j ].sx + F13Letter[ j ].sw, F13Letter[ j ].sy + F13Letter[ j ].sh ), DX13Surface, true, Alpha )
       else
-        DX.BltFast( X + XStart + F13Letter[ j ].AdjPrev, Y + F13Letter[ j ].AdjTop, DXSurface, Rect( F13Letter[ j ].sx, F13Letter[ j ].sy, F13Letter[ j ].sx + F13Letter[ j ].sw, F13Letter[ j ].sy + F13Letter[ j ].sh ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      begin
+        pr := Rect( F13Letter[ j ].sx, F13Letter[ j ].sy, F13Letter[ j ].sx + F13Letter[ j ].sw, F13Letter[ j ].sy + F13Letter[ j ].sh );
+        DX.BltFast( X + XStart + F13Letter[ j ].AdjPrev, Y + F13Letter[ j ].AdjTop, DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      end;
       XStart := XStart + F13Letter[ j ].sw + F13Letter[ j ].AdjPrev + F13Letter[ j ].AdjNext;
     end; //wend
 
@@ -1477,6 +1516,7 @@ var
   i : integer;
   j : integer;
   XStart : integer;
+  pr : TRect;
 const
   FailName : string = 'TGameText.PlotText2';
 begin
@@ -1493,7 +1533,10 @@ begin
       if Alpha > 0 then
         DrawAlpha( DX, Rect( X + XStart + TinyLetter[ j ].AdjPrev, Y + TinyLetter[ j ].AdjTop, X + XStart + TinyLetter[ j ].sw + TinyLetter[ j ].AdjPrev, Y + TinyLetter[ j ].AdjTop + TinyLetter[ j ].sh ), Rect( TinyLetter[ j ].sx, TinyLetter[ j ].sy, TinyLetter[ j ].sx + TinyLetter[ j ].sw, TinyLetter[ j ].sy + TinyLetter[ j ].sh ), DXGoldSurface, true, Alpha )
       else
-        DX.BltFast( X + XStart + TinyLetter[ j ].AdjPrev, Y + TinyLetter[ j ].AdjTop, DXGoldSurface, Rect( TinyLetter[ j ].sx, TinyLetter[ j ].sy, TinyLetter[ j ].sx + TinyLetter[ j ].sw, TinyLetter[ j ].sy + TinyLetter[ j ].sh ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      begin
+        pr := Rect( TinyLetter[ j ].sx, TinyLetter[ j ].sy, TinyLetter[ j ].sx + TinyLetter[ j ].sw, TinyLetter[ j ].sy + TinyLetter[ j ].sh );
+        DX.BltFast( X + XStart + TinyLetter[ j ].AdjPrev, Y + TinyLetter[ j ].AdjTop, DXGoldSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      end;
       XStart := XStart + TinyLetter[ j ].sw + TinyLetter[ j ].AdjPrev + TinyLetter[ j ].AdjNext;
     end; //wend
   except
@@ -1514,6 +1557,7 @@ var
   TheLength : integer;
   LastSpace, PrevLastSpace : integer;
   LineBreak : array[ 0..50 ] of integer;
+  pr : TRect;
 const
   FailName : string = 'TGameText.PlotTextBlock';
 begin
@@ -1590,7 +1634,10 @@ begin
         if Alpha > 0 then
           DrawAlpha( lpDDSBack, Rect( X + XStart + TinyLetter[ j ].AdjPrev, Y + k * 22 + NL * 22 + TinyLetter[ j ].AdjTop, X + XStart + TinyLetter[ j ].sw + TinyLetter[ j ].AdjPrev, Y + TinyLetter[ j ].AdjTop + TinyLetter[ j ].sh + k * 22 + NL * 22 ), Rect( TinyLetter[ j ].sx, TinyLetter[ j ].sy, TinyLetter[ j ].sx + TinyLetter[ j ].sw, TinyLetter[ j ].sy + TinyLetter[ j ].sh ), DXGoldSurface, true, Alpha )
         else
-          lpDDSBack.BltFast( X + XStart + TinyLetter[ j ].AdjPrev, Y + k * 22 + TinyLetter[ j ].AdjTop, DXGoldSurface, Rect( TinyLetter[ j ].sx, TinyLetter[ j ].sy, TinyLetter[ j ].sx + TinyLetter[ j ].sw, TinyLetter[ j ].sy + TinyLetter[ j ].sh ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        begin
+          pr := Rect( TinyLetter[ j ].sx, TinyLetter[ j ].sy, TinyLetter[ j ].sx + TinyLetter[ j ].sw, TinyLetter[ j ].sy + TinyLetter[ j ].sh );
+          lpDDSBack.BltFast( X + XStart + TinyLetter[ j ].AdjPrev, Y + k * 22 + TinyLetter[ j ].AdjTop, DXGoldSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        end;
         XStart := XStart + TinyLetter[ j ].sw + TinyLetter[ j ].AdjPrev + TinyLetter[ j ].AdjNext;
       end;
     end; //endfor
@@ -1611,6 +1658,7 @@ var
   XStart : integer;
   TheLength : integer;
   ThereWasRoom : boolean;
+  pr : TRect;
 const
   FailName : string = 'TGameText.PlotTextCentered2';
 begin
@@ -1642,7 +1690,10 @@ begin
       if Alpha > 0 then
         DrawAlpha( DX, Rect( X + XStart + TinyLetter[ j ].AdjPrev, Y + TinyLetter[ j ].AdjTop, X + XStart + TinyLetter[ j ].sw + TinyLetter[ j ].AdjPrev, Y + TinyLetter[ j ].AdjTop + TinyLetter[ j ].sh ), Rect( TinyLetter[ j ].sx, TinyLetter[ j ].sy, TinyLetter[ j ].sx + TinyLetter[ j ].sw, TinyLetter[ j ].sy + TinyLetter[ j ].sh ), DXGoldSurface, true, Alpha )
       else
-        DX.BltFast( X + XStart + TinyLetter[ j ].AdjPrev, Y + TinyLetter[ j ].AdjTop, DXGoldSurface, Rect( TinyLetter[ j ].sx, TinyLetter[ j ].sy, TinyLetter[ j ].sx + TinyLetter[ j ].sw, TinyLetter[ j ].sy + TinyLetter[ j ].sh ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      begin
+        pr := Rect( TinyLetter[ j ].sx, TinyLetter[ j ].sy, TinyLetter[ j ].sx + TinyLetter[ j ].sw, TinyLetter[ j ].sy + TinyLetter[ j ].sh );
+        DX.BltFast( X + XStart + TinyLetter[ j ].AdjPrev, Y + TinyLetter[ j ].AdjTop, DXGoldSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      end;
       XStart := XStart + TinyLetter[ j ].sw + TinyLetter[ j ].AdjPrev + TinyLetter[ j ].AdjNext;
     end; //wend
 
@@ -1671,6 +1722,7 @@ var
   TheLength : integer;
   LastSpace, PrevLastSpace : integer;
   LineBreak : array[ 0..50 ] of integer;
+  pr : TRect;
 const
   FailName : string = 'TGameText.PlotTextBlock';
 begin
@@ -1747,7 +1799,10 @@ begin
         if Alpha > 0 then
           DrawAlpha( lpDDSBack, Rect( X + XStart + TinyLetter[ j ].AdjPrev, Y + k * 18 + NL * 18 + TinyLetter[ j ].AdjTop, X + XStart + TinyLetter[ j ].sw + TinyLetter[ j ].AdjPrev, Y + TinyLetter[ j ].AdjTop + TinyLetter[ j ].sh + k * 18 + NL * 18 ), Rect( TinyLetter[ j ].sx, TinyLetter[ j ].sy, TinyLetter[ j ].sx + TinyLetter[ j ].sw, TinyLetter[ j ].sy + TinyLetter[ j ].sh ), DXTinySurface, true, Alpha )
         else
-          lpDDSBack.BltFast( X + XStart + TinyLetter[ j ].AdjPrev, Y + k * 18 + TinyLetter[ j ].AdjTop, DXTinySurface, Rect( TinyLetter[ j ].sx, TinyLetter[ j ].sy, TinyLetter[ j ].sx + TinyLetter[ j ].sw, TinyLetter[ j ].sy + TinyLetter[ j ].sh ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        begin
+          pr := Rect( TinyLetter[ j ].sx, TinyLetter[ j ].sy, TinyLetter[ j ].sx + TinyLetter[ j ].sw, TinyLetter[ j ].sy + TinyLetter[ j ].sh );
+          lpDDSBack.BltFast( X + XStart + TinyLetter[ j ].AdjPrev, Y + k * 18 + TinyLetter[ j ].AdjTop, DXTinySurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        end;
         XStart := XStart + TinyLetter[ j ].sw + TinyLetter[ j ].AdjPrev + TinyLetter[ j ].AdjNext;
       end;
     end; //endfor

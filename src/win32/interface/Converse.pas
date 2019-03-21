@@ -65,25 +65,14 @@ interface
 
 uses
   DirectX,
-  DXUtil,
-  DXEffects,
   Windows,
-  Messages,
-  SysUtils,
   Classes,
-  Graphics,
   Controls,
-  Forms,
-  Dialogs,
-  ExtCtrls,
   Character,
-  StdCtrls,
   Display,
   Anigrp30,
-  Engine,
-  LogFile,
-  INIFiles,
-  strFunctions;
+  INIFiles;
+
 
 type
   TTextRect = class( TObject )
@@ -145,6 +134,13 @@ function CheckPartyOne( sTmp : string ) : boolean;
 implementation
 
 uses
+  SysUtils,
+  Graphics,
+  DXUtil,
+  DXEffects,
+  Engine,
+  LogFile,
+  strFunctions,
   AniDemo,
   Resource;
 
@@ -193,6 +189,7 @@ var
   Filename : string;
   BM : TBitmap;
   Shadow : IDirectDrawSurface;
+  pr : TRect;
 const
   FailName : string = 'TConverseBox.Init';
 begin
@@ -244,7 +241,8 @@ begin
       BM.free;
     end;
     MouseCursor.Cleanup;
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 800, 600 );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
     pText.LoadTinyFontGraphic;
 
@@ -654,6 +652,7 @@ var
   R : TRect;
   i, j : Integer;
   W, H : integer;
+  pr : TRect;
 const
   FailName : string = 'TConverseBox.Paint';
 begin
@@ -666,7 +665,8 @@ begin
     if assigned( Image ) then
     begin
       GetSurfaceDims( W, H, Image );
-      lpDDSback.BltFast( X1, Y1, Image, Rect( 0, 0, W, H ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      pr := Rect( 0, 0, W, H );
+      lpDDSback.BltFast( X1, Y1, Image, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     end
     else
     begin
@@ -714,7 +714,8 @@ begin
       Inc( j, 10 );
     end;
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 800, 600 );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do

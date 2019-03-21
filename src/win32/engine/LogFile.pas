@@ -113,7 +113,8 @@ var
 
 implementation
 
-uses String32,
+uses
+  String32,
   Forms,
   Engine,
   IniFiles;
@@ -164,28 +165,35 @@ end;
 
 procedure TLog.OutputLogHeader;
 var
-  S : string;
+  S : AnsiString;
+//  B : TBytes;
 begin
 
   S := ExtractFileName( Application.ExeName ) + #13#10
     + 'Copyright ©1999-2000 Digital Tome L.P. Texas USA' + #13#10
     + 'Portions Copyright ©1999-2000 Digital Tome, Inc. ' + #13#10
     + 'All Rights Reserved' + #13#10 + #13#10;
-  Write( S[ 1 ], Length( S ) );
+//  b := TEncoding.UTF8.GetBytes(s);
+// S := TEncoding.UTF8.GetString(b);
+  Write( S[1], Length( S ) );
 
   if RealCurrDbgLvl > 0 then
   begin
     S := 'FileVersion: ' + VersionInfo( 'FileVersion', 'VersionError' ) + #13#10;
-    Write( S[ 1 ], Length( S ) );
+//    b := TEncoding.UTF8.GetBytes(s);
+    Write( S[1], Length( S ) );
 
     S := 'ProductVersion: ' + VersionInfo( 'ProductVersion', 'VersionError' ) + #13#10;
-    Write( S[ 1 ], Length( S ) );
+//    b := TEncoding.UTF8.GetBytes(s);
+    Write( S[1], Length( S ) );
 
     S := 'Comments: ' + VersionInfo( 'Comments', 'No Comments' ) + #13#10 + #13#10;
-    Write( S[ 1 ], Length( S ) );
+//    b := TEncoding.UTF8.GetBytes(s);
+    Write( S[1], Length( S ) );
 
     S := 'Commandline: ' + #13#10 + CmdLine + #13#10 + #13#10;
-    Write( S[ 1 ], Length( S ) );
+//    b := TEncoding.UTF8.GetBytes(s);
+    Write( S[1], Length( S ) );
   end;
 
   MEMORYSTATUS.dwLength := SizeOf( MEMORYSTATUS );
@@ -218,7 +226,8 @@ begin
 
     // Nice little block seperator
     S := S + #13#10 + ' ===== End Of Header =====' + #13#10 + #13#10;
-    Write( S[ 1 ], Length( S ) );
+//    b := TEncoding.UTF8.GetBytes(s);
+    Write( S[1], Length( S ) );
   end; { with }
 end;
 
@@ -291,60 +300,70 @@ end;
 
 procedure TLog.Log( const FailName : string; const Msg : string; const Args : array of const );
 var
-  S : string;
+  S : AnsiString;
+//  b : UTF8String; // TBytes;
 begin
   CurrDbgLvl := RealCurrDbgLvl;
   CurrDbgGroup := RealCurrDbgGroup;
   S := TimeToStr( Time ) + ' ' + Format( '%8.8d', [ Game.FrameCount ] ) + ': ' + FailName + ' ' + Format( Msg, Args ) + #13#10;
-  Write( S[ 1 ], Length( S ) );
+//  b := TEncoding.UTF8.GetBytes(s);
+  Write( S[1], Length( S ) );
   if ( RealCurrDbgGroup and DbgFlushLog ) <> 0 then
     FlushFileBuffers( Handle );
 end;
 
 procedure TLog.Msg( const FailName : string; const Msg : string; const Args : array of const );
 var
-  S : string;
+  S : AnsiString;
+//  b : TBytes;
 begin
   CurrDbgLvl := RealCurrDbgLvl;
   CurrDbgGroup := RealCurrDbgGroup;
   S := FailName + ' ' + Format( Msg, Args ) + #13#10;
-  Write( S[ 1 ], Length( S ) );
+//  b := TEncoding.UTF8.GetBytes(s);
+  Write( S[1], Length( S ) );
   if ( RealCurrDbgGroup and DbgFlushLog ) <> 0 then
     FlushFileBuffers( Handle );
 end;
 
 procedure TLog.LogEntry( const FailName : string );
 var
-  S : string;
+  S : AnsiString;
+//  b : TBytes;
 begin
   CurrDbgLvl := RealCurrDbgLvl;
   CurrDbgGroup := RealCurrDbgGroup;
   S := TimeToStr( Time ) + ' ' + Format( '%8.8d', [ Game.FrameCount ] ) + ': === ' + FailName + ' ===' + #13#10;
-  Write( S[ 1 ], Length( S ) );
+//  b := TEncoding.UTF8.GetBytes(s);
+  Write( S[1], Length( S ) );
   if ( RealCurrDbgGroup and DbgFlushLog ) <> 0 then
     FlushFileBuffers( Handle );
 end;
 
 procedure TLog.Log( const Msg : string );
 var
-  S : string;
+  S : AnsiString;
+//  b : TBytes;
 begin
   CurrDbgLvl := RealCurrDbgLvl;
   CurrDbgGroup := RealCurrDbgGroup;
   S := TimeToStr( Time ) + ' ' + Format( '%8.8d', [ Game.FrameCount ] ) + ': ' + Msg + #13#10;
-  Write( S[ 1 ], Length( S ) );
+//  b := TEncoding.UTF8.GetBytes(s);
+  Write( S[1], Length( S ) );
   if ( RealCurrDbgGroup and DbgFlushLog ) <> 0 then
     FlushFileBuffers( Handle );
 end;
 
 procedure TLog.Comment( const Msg : string );
 var
-  S : string;
+  S : AnsiString;
+//  B : TBytes;
 begin
   if length( Msg ) > 0 then
   begin
     S := Msg + #13#10;
-    Write( S[ 1 ], Length( S ) );
+//    b := TEncoding.UTF8.GetBytes(s);
+    Write( S[1], Length( S ) );
   end;
   if ( RealCurrDbgGroup and DbgFlushLog ) <> 0 then
     FlushFileBuffers( Handle );

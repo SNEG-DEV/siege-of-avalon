@@ -64,29 +64,19 @@ unit AdventureLog;
 interface
 
 uses
-  Windows,
-  Messages,
-  SysUtils,
-  Classes,
-  Graphics,
-  Controls,
-  Forms,
-  Dialogs,
-  dsgnIntf,
-  comctrls,
-  LogFile;
+  Classes;
 
 type
-  TAboutAdventureLogProperty = class( TPropertyEditor )
-  public
-    procedure Edit; override;
-    function GetAttributes : TPropertyAttributes; override;
-    function GetValue : string; override;
-  end;
+//  TAboutAdventureLogProperty = class( TPropertyEditor )
+//  public
+//    procedure Edit; override;
+//    function GetAttributes : TPropertyAttributes; override;
+//    function GetValue : string; override;
+//  end;
 
   TAdventureLog = class( TObject )
   private
-    FAbout : TAboutAdventureLogProperty;
+//    FAbout : TAboutAdventureLogProperty;
     FAdventureLog : TStrings;
     FLogDateList : TStringList;
     FLogDirectory : string;
@@ -100,29 +90,33 @@ type
     function ReadLogByIndex( LogIndex : integer ) : string;
     procedure DeleteLogEntry( LogFile : string );
     procedure Clear;
-  published
-    property About : TAboutAdventureLogProperty read FAbout write FAbout;
+//  published
+//    property About : TAboutAdventureLogProperty read FAbout write FAbout;
     property LogFileList : TStringList read FLogDateList write FLogDateList;
     property LogDirectory : string read FLogDirectory write FLogDirectory;
   end;
 
 implementation
 
-procedure TAboutAdventureLogProperty.Edit;
-begin
-  Application.MessageBox( 'Adventure Log for The Game Master' + #39 + 's Table. (c) 1999 Random Features, Inc.',
-    'TAdventureLog component version 1.0', MB_OK + MB_ICONINFORMATION );
-end;
+uses
+  SysUtils,
+  LogFile;
 
-function TAboutAdventureLogProperty.GetAttributes : TPropertyAttributes;
-begin
-  Result := [ paMultiSelect, paDialog, paReadOnly ];
-end;
+//procedure TAboutAdventureLogProperty.Edit;
+//begin
+//  Application.MessageBox( 'Adventure Log for The Game Master' + #39 + 's Table. (c) 1999 Random Features, Inc.',
+//    'TAdventureLog component version 1.0', MB_OK + MB_ICONINFORMATION );
+//end;
 
-function TAboutAdventureLogProperty.GetValue : string;
-begin
-  Result := '(about)';
-end;
+//function TAboutAdventureLogProperty.GetAttributes : TPropertyAttributes;
+//begin
+//  Result := [ paMultiSelect, paDialog, paReadOnly ];
+//end;
+
+//function TAboutAdventureLogProperty.GetValue : string;
+//begin
+//  Result := '(about)';
+//end;
 
 
 constructor TAdventureLog.Create;
@@ -179,7 +173,7 @@ function TAdventureLog.ReadLogByName( LogFile : string ) : string;
 var
   MyStream : TFileStream;
   iSize : integer;
-  MyString : string;
+  MyString : AnsiString;
 const
   FailName : string = 'TAdventureLog.ReadLogByName';
 begin
@@ -211,7 +205,7 @@ function TAdventureLog.ReadLogByIndex( LogIndex : integer ) : string;
 var
   MyStream : TFileStream;
   iSize : integer;
-  MyString : string;
+  MyString : AnsiString;
 const
   FailName : string = 'TAdventureLog.ReadLogByIndex';
 begin

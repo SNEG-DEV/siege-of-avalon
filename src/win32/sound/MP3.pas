@@ -62,11 +62,7 @@ unit MP3;
 interface
 
 uses
-  windows,
-  classes,
-  logfile,
-  sysutils,
-  engine;
+  Windows;
 
 type
   pFSOUND_STREAM = ^FSOUND_STREAM;
@@ -80,7 +76,7 @@ type
   end;
 
   GAMESOUNDFILEDATA = record
-    FileName : string;
+    FileName : AnsiString;
     Count : integer;
     pWav : pFSOUND_SAMPLE;
   end;
@@ -125,7 +121,7 @@ function FSOUND_SetOutput( outputtype : FSOUND_OUTPUTTYPES ) : ByteBool; stdcall
 function FSOUND_SetDriver( driver : DWORD ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_SetDriver@4';
 function FSOUND_Init( mixrate, maxchannels, vcmmode : DWORD ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_Init@12';
 procedure FSOUND_Close; stdcall; external 'fmod.dll' name '_FSOUND_Close@0';
-function FSOUND_Stream_OpenMpeg( filename : pChar; mode : ULong ) : pFSOUND_STREAM; stdcall; external 'fmod.dll' name '_FSOUND_Stream_OpenMpeg@8';
+function FSOUND_Stream_OpenMpeg( filename : pAnsiChar; mode : ULong ) : pFSOUND_STREAM; stdcall; external 'fmod.dll' name '_FSOUND_Stream_OpenMpeg@8';
 function FSOUND_Stream_Play( channel : DWORD; stream : pFSOUND_STREAM ) : DWORD; stdcall; external 'fmod.dll' name '_FSOUND_Stream_Play@8';
 function FSOUND_Stream_Stop( stream : pFSOUND_STREAM ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_Stream_Stop@4';
 function FSOUND_Stream_Close( stream : pFSOUND_STREAM ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_Stream_Close@4';
@@ -133,7 +129,7 @@ function FSOUND_Stream_SetPaused( stream : pFSOUND_STREAM; paused : ByteBool ) :
 function FSOUND_SetVolume( channel : DWORD; vol : DWORD ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_SetVolume@8';
 
 function FSOUND_SetMixer( mixer : FSOUND_MIXERTYPES ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_SetMixer@4';
-function FSOUND_Sample_LoadWav( index : DWORD; filename : pChar; mode : ULong ) : pFSOUND_SAMPLE; stdcall; external 'fmod.dll' name '_FSOUND_Sample_LoadWav@12';
+function FSOUND_Sample_LoadWav( index : DWORD; filename : pAnsiChar; mode : ULong ) : pFSOUND_SAMPLE; stdcall; external 'fmod.dll' name '_FSOUND_Sample_LoadWav@12';
 procedure FSOUND_SetSFXMasterVolume( volume : DWORD ); stdcall; external 'fmod.dll' name '_FSOUND_SetSFXMasterVolume@4';
 procedure FSOUND_Sample_Free( sptr : pFSOUND_SAMPLE ); stdcall; external 'fmod.dll' name '_FSOUND_Sample_Free@4';
 function FSOUND_Sample_SetDefaults( sptr : pFSOUND_SAMPLE; deffreq, defvol, defpan, defpri : DWORD ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_Sample_SetDefaults@20';
@@ -147,17 +143,17 @@ function FSOUND_Sample_SetLoopMode( sptr : pFSOUND_SAMPLE; loopmode : ULong ) : 
 function FSOUND_StopSound( channel : DWORD ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_StopSound@4';
 function FSOUND_SetHWND( HWND : pointer ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_SetHWND@4';
 function FSOUND_SetBufferSize( Len_ns : DWORD ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_SetBufferSize@4';
-function FSOUND_GetDriverName( id : DWORD ) : pChar; stdcall; external 'fmod.dll' name '_FSOUND_GetDriverName@4';
+function FSOUND_GetDriverName( id : DWORD ) : pAnsiChar; stdcall; external 'fmod.dll' name '_FSOUND_GetDriverName@4';
 
 function CreateDirectSound( WindowHandle : integer ) : boolean;
 procedure DestroyDirectSound;
 //Music functions
-function OpenMP3Song( TheSong : string; Looping : boolean ) : boolean;
+function OpenMP3Song( TheSong : AnsiString; Looping : boolean ) : boolean;
 function PlayMP3Song : boolean;
 procedure PauseMP3Song( PauseIt : boolean );
 procedure SetMP3Volume( Volume : integer );
 //Sound FX functions
-function LoadWavSound( WavFileName : string ) : integer;
+function LoadWavSound( WavFileName : AnsiString ) : integer;
 function PlayWavSound( Index, Looping : integer ) : integer;
 procedure StopWavSound( Index : integer );
 function GetSampleRate( index : integer ) : integer;
@@ -165,7 +161,7 @@ procedure SetSoundValues( Index, Frequency, Volume, Pan : integer );
 procedure DumpAllWavSounds;
 procedure DumpWavSound( Index : integer );
 
-procedure DebugPrint( S : string );
+procedure DebugPrint( S : AnsiString );
 
 var
   MP3PlayerAvailable : boolean;
@@ -173,6 +169,11 @@ var
   SongStream : PFSOUND_STREAM;
 
 implementation
+
+uses
+  Logfile,
+  Engine;
+
 var
   OriginalSound : array[ 0..1000 ] of GAMESOUNDFILEDATA;
   SoundList : array[ 0..5000 ] of GAMESOUNDDATA;
@@ -251,16 +252,16 @@ begin
   end;
 end;
 
-function OpenMP3Song( TheSong : string; Looping : boolean ) : boolean;
+function OpenMP3Song( TheSong : AnsiString; Looping : boolean ) : boolean;
 begin
   MP3SongOpen := false;
   Result := false;
   if MP3PlayerAvailable = true then
   begin
     if Looping then
-      SongStream := FSOUND_Stream_OpenMpeg( pchar( TheSong ), FSOUND_LOOP_NORMAL ) //FSOUND_LOOP_NORMAL or FSOUND_NORMAL)
+      SongStream := FSOUND_Stream_OpenMpeg( pAnsiChar( TheSong ), FSOUND_LOOP_NORMAL ) //FSOUND_LOOP_NORMAL or FSOUND_NORMAL)
     else
-      SongStream := FSOUND_Stream_OpenMpeg( pchar( TheSong ), 0 ); //FSOUND_NORMAL);
+      SongStream := FSOUND_Stream_OpenMpeg( pAnsiChar( TheSong ), 0 ); //FSOUND_NORMAL);
     if SongStream = nil then
     begin
       Log.log( 'MP3 SongOpen ' + theSong + ' failed' );
@@ -309,7 +310,7 @@ end; //SetMP3Volume
 
 //DirectSound SupportFunctions
 
-function LoadWavSound( WavFileName : string ) : integer;
+function LoadWavSound( WavFileName : AnsiString ) : integer;
 var
   i, j, SoundIndex : integer;
   ThisIsANewSound : boolean;
@@ -340,7 +341,7 @@ begin
     end; //wend
     if i < 999 then
     begin //load the new wav, put it in slot i
-      pSound := FSOUND_Sample_LoadWav( i, PChar( WavFileName ), FSOUND_LOOP_OFF );
+      pSound := FSOUND_Sample_LoadWav( i, PAnsiChar( WavFileName ), FSOUND_LOOP_OFF );
       if pSound = nil then
       begin
         Log.log( 'Error in LoadWavSound: Unable to loadwavfile ' + WavFileName );
@@ -551,7 +552,7 @@ begin
 
 end; //DumpAllWavSounds
 
-procedure DebugPrint( S : string );
+procedure DebugPrint( S : AnsiString );
 var
   F : TextFile;
 begin

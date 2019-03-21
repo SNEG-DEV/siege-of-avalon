@@ -67,23 +67,17 @@ uses
 {$IFDEF DirectX}
   DirectX,
   DXUtil,
-  DXEffects,
 {$ENDIF}
   Windows,
-  Messages,
   SysUtils,
   Classes,
   Graphics,
   Controls,
   Forms,
-  Dialogs,
   jpeg,
   iniFiles,
   FileCtrl,
-  ExtCtrls,
-  Character,
   Resource,
-  StdCtrls,
   GameText,
   Display,
   Anigrp30,
@@ -168,6 +162,7 @@ var
   InvisColor : integer;
   i : integer;
   Ini : TIniFile;
+  pr : TRect;
 const
   FailName : string = 'TJournal.init';
 begin
@@ -185,7 +180,8 @@ begin
       txtMessage[ i ] := ExText.GetText( 'Message' + inttostr( i ) );
 
     MouseCursor.Cleanup;
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, ResWidth, ResHeight ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, ResWidth, ResHeight );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
     if JournalLog.LogFileList.count - 1 > StartLogIndex then
       inc( StartLogIndex );
@@ -232,7 +228,8 @@ begin
 
     ShowText;
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 800, 600 );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
     on E : Exception do
@@ -350,7 +347,7 @@ var
   BM : TBitmap;
   PicName : string;
   jpg : TJPEGImage;
-
+  pr : TRect;
 const
   FailName : string = 'TJournal.showtext';
 begin
@@ -363,7 +360,8 @@ begin
     if CurrentLogIndex > StartLogIndex then
       StartLogIndex := CurrentLogIndex;
   //clear screen
-    lpDDSBack.BltFast( 0, 0, DXBack, Rect( 0, 0, 800, 600 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 800, 600 );
+    lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   //Plot buttons
   //pText.PlotText('Previous',300,570,240);
   //pText.PlotText('Next',450,570,240);
@@ -387,7 +385,8 @@ begin
         DXPic := DDGetImage( lpDD, BM, $00FFFF00, False );
         PicWidth := BM.width;
         PicHeight := BM.height;
-        lpDDSBack.BltFast( PicXY.X, PicXY.Y, DXPic, Rect( 0, 0, BM.width, BM.Height ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, BM.width, BM.Height );
+        lpDDSBack.BltFast( PicXY.X, PicXY.Y, DXPic, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         if LogText <> '' then
           pText.PlotTextBlockAroundBox( Logtext, 50, 750, 50, 240, rect( PicXY.X, PicXY.Y, PicXY.X + PicWidth + 20, PicXY.Y + PicHeight + 20 ) );
       end
@@ -411,7 +410,8 @@ begin
         DXPic := DDGetImage( lpDD, BM, $00FFFF00, False );
         PicWidth := BM.width;
         PicHeight := BM.height;
-        lpDDSBack.BltFast( PicXY.X, PicXY.Y, DXPic, Rect( 0, 0, BM.width, BM.Height ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, BM.width, BM.Height );
+        lpDDSBack.BltFast( PicXY.X, PicXY.Y, DXPic, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         if LogText <> '' then
           pText.PlotTextBlockAroundBox( Logtext, 50, 750, 50, 240, rect( PicXY.X, PicXY.Y, PicXY.X + PicWidth + 20, PicXY.Y + PicHeight + 20 ) );
       end
@@ -424,7 +424,8 @@ begin
     if not NoPageNumbers then
       pText.plotText( txtMessage[ 0 ] + intToStr( CurrentLogIndex + 1 ) + txtMessage[ 1 ] + IntToStr( JournalLog.LogFileList.count ), 81, 575, 255 );
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 800, 600 );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
     BM.Free;
     DXPic := nil;

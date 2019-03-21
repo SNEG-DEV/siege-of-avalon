@@ -85,7 +85,7 @@ var
   RGB, rgbT : COLORREF;
   DC : HDC;
   dw : Longint;
-  ddsd : DDSurfaceDesc;
+  ddsd : TDDSurfaceDesc;
   hres : HRESULT;
 const
   FailName : string = 'DXUtil.DDColorMatch';
@@ -138,10 +138,10 @@ end;
 
 function DDGetImage( lpDD : IDirectDraw; BITMAP : TBitmap; Color : TColor; Video : Boolean ) : IDirectDrawSurface;
 var
-  ddsd : DDSurfaceDesc;
+  ddsd : TDDSurfaceDesc;
   pdds : IDirectDrawSurface;
   DC : HDC;
-  ddck : DDCOLORKEY;
+  ddck : TDDCOLORKEY;
 const
   FailName : string = 'DXUtil.DDGetImage';
 begin
@@ -158,22 +158,19 @@ begin
       ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_SYSTEMMEMORY;
     ddsd.dwWidth := BITMAP.Width;
     ddsd.dwHeight := BITMAP.Height;
-
     Result := nil;
-
     if ( lpdd.CreateSurface( ddsd, pdds, nil ) <> DD_OK ) then
     begin
       ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_SYSTEMMEMORY;
       if ( lpdd.CreateSurface( ddsd, pdds, nil ) <> DD_OK ) then
         Exit;
     end;
-
     pdds.GetDC( DC );
     BitBlt( DC, 0, 0, BITMAP.width, BITMAP.Height, BITMAP.Canvas.Handle, 0, 0, SRCCOPY );
     pdds.ReleaseDC( DC );
     ddck.dwColorSpaceLowValue := DDColorMatch( pdds, Color );
     ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
-    pdds.SetColorKey( DDCKEY_SRCBLT, ddck );
+    pdds.SetColorKey( DDCKEY_SRCBLT, @ddck );
     Result := pdds;
   except
     on E : Exception do
@@ -183,10 +180,10 @@ end;
 
 function DDGetOverlay( lpDD : IDirectDraw; BITMAP : TBitmap; Color : TColor ) : IDirectDrawSurface;
 var
-  ddsd : DDSurfaceDesc;
+  ddsd : TDDSurfaceDesc;
   pdds : IDirectDrawSurface;
   DC : HDC;
-  ddck : DDCOLORKEY;
+  ddck : TDDCOLORKEY;
 const
   FailName : string = 'DXUtil.DDGetOverlay';
 begin
@@ -201,7 +198,7 @@ begin
     ddsd.ddsCaps.dwCaps := DDSCAPS_VIDEOMEMORY or DDSCAPS_OVERLAY;
     ddsd.dwWidth := BITMAP.Width;
     ddsd.dwHeight := BITMAP.Height;
-    ddsd.ddpfPixelFormat.dwSize := SizeOf( DDPIXELFORMAT );
+    ddsd.ddpfPixelFormat.dwSize := SizeOf( TDDPIXELFORMAT );
     ddsd.ddpfPixelFormat.dwFlags := DDPF_RGB;
     ddsd.ddpfPixelFormat.dwRGBBitCount := 16;
     ddsd.ddpfPixelFormat.dwRBitMask := $0000F800;
@@ -218,7 +215,7 @@ begin
     pdds.ReleaseDC( DC );
     ddck.dwColorSpaceLowValue := DDColorMatch( pdds, Color );
     ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
-    pdds.SetColorKey( DDCKEY_SRCBLT, ddck );
+    pdds.SetColorKey( DDCKEY_SRCBLT, @ddck );
     Result := pdds;
   except
     on E : Exception do
@@ -250,10 +247,11 @@ end;
 
 function DDGetSurface( lpDD : IDirectDraw; W, H : integer; Color : TColor; Video : Boolean; var ColorMatch : integer ) : IDirectDrawSurface;
 var
-  ddsd : DDSurfaceDesc;
+  ddsd : TDDSurfaceDesc;
   pdds : IDirectDrawSurface;
-  ddck : DDCOLORKEY;
-  BltFx : DDBLTFX;
+  ddck : TDDCOLORKEY;
+  BltFx : TDDBLTFX;
+  pr: TRect;
 const
   FailName : string = 'DXUtil.DDGetSurface2';
 begin
@@ -284,11 +282,12 @@ begin
 
     ddck.dwColorSpaceLowValue := ColorMatch;
     ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
-    pdds.SetColorKey( DDCKEY_SRCBLT, ddck );
+    pdds.SetColorKey( DDCKEY_SRCBLT, @ddck );
 
     BltFx.dwSize := SizeOf( BltFx );
     BltFx.dwFillColor := ColorMatch;
-    pdds.Blt( Rect( 0, 0, W, H ), nil, Rect( 0, 0, W, H ), DDBLT_COLORFILL + DDBLT_WAIT, BltFx );
+    pr := Rect( 0, 0, W, H );
+    pdds.Blt(@pr, nil, @pr, DDBLT_COLORFILL + DDBLT_WAIT, @BltFx );
     Result := pdds;
   except
     on E : Exception do
@@ -298,11 +297,12 @@ end;
 
 function DDGetSurface( lpDD : IDirectDraw; W, H : integer; Color : TColor; Video : Boolean ) : IDirectDrawSurface;
 var
-  ddsd : DDSurfaceDesc;
+  ddsd : TDDSurfaceDesc;
   pdds : IDirectDrawSurface;
-  ddck : DDCOLORKEY;
-  BltFx : DDBLTFX;
+  ddck : TDDCOLORKEY;
+  BltFx : TDDBLTFX;
   ColorMatch : integer;
+  pr: TRect;
 const
   FailName : string = 'DXUtil.DDGetSurface1';
 begin
@@ -321,30 +321,27 @@ begin
     ddsd.dwHeight := H;
 
     Result := nil;
-
     if ( lpdd.CreateSurface( ddsd, pdds, nil ) <> DD_OK ) then
     begin
       ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_SYSTEMMEMORY;
       if ( lpdd.CreateSurface( ddsd, pdds, nil ) <> DD_OK ) then
         Exit;
     end;
-
     ColorMatch := DDColorMatch( pdds, ColorToRGB( Color ) );
-
     ddck.dwColorSpaceLowValue := ColorMatch;
     ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
-    pdds.SetColorKey( DDCKEY_SRCBLT, ddck );
+    pdds.SetColorKey( DDCKEY_SRCBLT, @ddck );
 
     BltFx.dwSize := SizeOf( BltFx );
     BltFx.dwFillColor := ColorMatch;
-    pdds.Blt( Rect( 0, 0, W, H ), nil, Rect( 0, 0, W, H ), DDBLT_COLORFILL + DDBLT_WAIT, BltFx );
+    pr := Rect( 0, 0, W, H );
+    pdds.Blt(@pr, nil, @pr, DDBLT_COLORFILL + DDBLT_WAIT, @BltFx );
     Result := pdds;
   except
     on E : Exception do
       Log.log( FailName + E.Message );
   end;
 end;
-
 
 end.
 

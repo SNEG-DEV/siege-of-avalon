@@ -87,11 +87,9 @@ uses
   Engine,
   Anigrp30,
   LogFile,
-  Dialogs,
   Resource,
   Graphics,
-  Math,
-  strfunctions;
+  strFunctions;
 
 type
   TIdleDuty = ( idStand, idMeander, idGuard, idbusy );
@@ -107,8 +105,8 @@ type
     MaxShots : integer;
     BlockedShot : integer;
 
-    AttackFrame : integer;
-    GuardFrame : integer;
+    AttackFrame : cardinal;
+    GuardFrame : cardinal;
     FCombative : Boolean;
     Fighting : Boolean;
     FFighter : Boolean;
@@ -131,7 +129,7 @@ type
     ReadyToAttack : Boolean;
 //    FCaster: Boolean;
     bMove : Boolean;
-    NewFrame : Integer;
+    NewFrame : cardinal;
     CirclePoint : Integer;
     NukeCounter : Integer;
   //  RunOrFight: Boolean;
@@ -269,7 +267,7 @@ type
 
   TRunScript = class( TAI )
   private
-    Interval : integer;
+    Interval : cardinal;
     NewFrame : integer;
     strScript : string;
   protected
@@ -626,9 +624,11 @@ function RangeTest( Target, Source : TAniFigure; iDist : Integer ) : Boolean;
 function GetFacing( SrcX, SrcY, TargetX, TargetY : Longint ) : Extended;
 
 implementation
+
 uses
   anidemo,
   BasicHumanoidAI;
+  
 const
   PI = 3.1415926535;
   pi2 = 2 * PI;
@@ -2218,7 +2218,7 @@ begin
  //   if assigned(character.track) then
  //   character.say('Tracking '+ character.track.GUID, clblue);
     if StandInterval > 10 then
-      if ( FrameCount mod StandInterval ) = 0 then
+      if ( FrameCount mod cardinal(StandInterval) ) = 0 then
       begin
         case Random( 2 ) of
           0 : Character.StandAction := newStand;
@@ -7710,7 +7710,7 @@ var
   iLoop : integer;
 begin
   inherited;
-  if ( frameCount mod Interval ) = 0 then
+  if ( frameCount mod cardinal(Interval) ) = 0 then
   begin
     for iLoop := 0 to NPCList.Count - 1 do
     begin
@@ -7776,7 +7776,7 @@ begin
     if NewFrame = 0 then
       NewFrame := FrameCount + Interval;
 
-    if ( frameCount > NewFrame ) then
+    if ( frameCount > cardinal(NewFrame) ) then
     begin
       NewFrame := 0;
 //        log.log('RunScript: ' + strScript);

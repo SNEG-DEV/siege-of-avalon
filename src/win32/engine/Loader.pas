@@ -68,18 +68,11 @@ uses
   Windows,
   Graphics,
   SysUtils,
-  Forms,
-  INIFiles,
   Anigrp30,
   AniDec30,
-{$IFDEF DirectX}
-  DirectX,
-  DXUtil,
-{$ENDIF}
   Character,
   Resource,
   Engine,
-  ItemDatabase,
   LogFile;
 
 type
@@ -109,7 +102,8 @@ implementation
 
 uses
   Parts,
-  AniDemo;
+  AniDemo,
+  Variants;
 
 function LoadMap( var Map : TAniMap; const Filename, Scene : string; IgnoreDefaultSprites, IgnoreSceneSprites : boolean ) : boolean;
 var
@@ -123,7 +117,7 @@ var
   FillVarLimit : longint;
   Width, Height : longint;
   Position : longint;
-  S : string;
+  S : AnsiString;
   RNames : TStringList;
   DNames : TStringList;
   ONames : TStringList;
@@ -210,7 +204,7 @@ var
 
   procedure ReadResourceList( FResources : TStringList );
   var
-    cText : string;
+    cText : AnsiString;
     L : longint;
   const
     FailName : string = 'Loader.ReadResourcesList';
@@ -386,7 +380,7 @@ var
     L : longint;
     X, Y, Z : longint;
     Index, ImageIndex : longint;
-    cText : string;
+    cText : AnsiString;
     i, j, k : integer;
     Attributes : TStringList;
     NewResource : TResource;
@@ -996,10 +990,10 @@ var
 
   procedure ReadThemeBlock;
   var
-    S : string;
+    S : AnsiString;
     i, L : longint;
     List : TStringList;
-    ThemeName : string;
+    ThemeName : AnsiString;
 
   const
     FailName : string = 'Loader.readThemeBlock';
@@ -1051,7 +1045,7 @@ var
   procedure ReadZonesBlock;
   var
     i, Count, L, MaxZone : longint;
-    S : string;
+    S : AnsiString;
     z : word;
     ZoneStream : TFileStream;
     P : longint;

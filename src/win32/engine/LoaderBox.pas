@@ -69,20 +69,18 @@ uses
   DXEffects,
 {$ENDIF}
   Windows,
-  Forms,
   Classes,
   Graphics,
   SysUtils,
-  Engine,
   Anigrp30,
-  logfile;
+  Logfile;
 
 type
   TLoaderBox = class( TObject )
   private
     DxBox : IDirectDrawSurface;
     OldValue : integer;
-    BltFx : DDBLTFX;
+    BltFx : TDDBLTFX;
   public
     Loaded : Boolean;
     MaxValue : integer;
@@ -95,8 +93,7 @@ type
   end;
 
 implementation
-uses
-  AniDemo;
+
 { TLoaderBox }
 
 constructor TLoaderBox.Create;
@@ -136,8 +133,9 @@ end;
 procedure TLoaderBox.Init;
 var
   BMBack : TBitmap;
-  BltFx : DDBLTFX;
+  BltFx : TDDBLTFX;
   i : integer;
+  pr : TRect;
 const
   FailName : string = 'TLoaderBox.init';
 begin
@@ -161,8 +159,8 @@ begin
     BltFx.dwSize := SizeOf( BltFx );
     BltFx.dwFillColor := DDColorMatch( DXBox, RGB( 205, 205, 205 ) );
   //DXBox.Blt(rect(50+i-5,500+i-5,750,500+i+1-5),nil,rect(50+i-5,500+i-5,750,500+i+1-5),DDBLT_COLORFILL + DDBLT_WAIT, BltFx);
-
-    lpDDSBack.BltFast( 0, 0, DXBox, Rect( 0, 0, BMBack.width, BMBack.Height ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, BMBack.width, BMBack.Height );
+    lpDDSBack.BltFast( 0, 0, DXBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
  { for i:=0 to 9 do begin
      DrawSub(lpDDSBack,rect(50+i-5,500+i-5,750,500+i+1-5),rect(50+i-5,500+i-5,750,500+i+1-5),DXBox,False,150-i*10);
      DrawSub(lpDDSBack,rect(50+i-5,500+i-5,50+i-5+1,550),rect(50+i-5,500+i-5,50+i-5+1,550),DXBox,False,150-i*10);
@@ -178,7 +176,8 @@ begin
     BMBack.free;
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 800, 600 );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -206,6 +205,7 @@ end;
 procedure TLoaderBox.SetBar( CurrentValue : integer );
 var
   Value : integer;
+  pr, pr0 : TRect;
 const
   FailName : string = 'TLoaderBox.setbar';
 begin
@@ -221,7 +221,9 @@ begin
     begin
      //lpDDSFront.Blt(rect(47+250,194+169,Value+47+250,212+169),nil,rect(47+250,194+169,Value+47+250,212+169),DDBLT_COLORFILL + DDBLT_WAIT, BltFx);
 //     lpDDSFront.Blt(rect(60,510,Value+60,525),nil,rect(50,510,Value+60,525),DDBLT_COLORFILL + DDBLT_WAIT, BltFx);
-      lpDDSFront.Blt( rect( OldValue + 60, 510, Value + 60, 525 ), nil, rect( 0, 0, 0, 0 ), DDBLT_COLORFILL + DDBLT_WAIT, BltFx );
+      pr := Rect( OldValue + 60, 510, Value + 60, 525 );
+      pr0 := Rect( 0, 0, 0, 0 );
+      lpDDSFront.Blt( @pr, nil, @pr0, DDBLT_COLORFILL + DDBLT_WAIT, @BltFx );
       OldValue := Value;
     end;
   except

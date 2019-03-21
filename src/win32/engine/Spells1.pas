@@ -66,7 +66,6 @@ uses
   Windows,
   SysUtils,
   Engine,
-  MiscAI,
   Character,
   Resource,
   Spells,
@@ -178,9 +177,6 @@ type
 function LoadSpells1 : boolean;
 
 implementation
-
-uses
-  BasicHumanoidAI;
 
 function LoadSpells1 : boolean;
 begin
@@ -483,7 +479,7 @@ begin
     for i := 0 to 2 do
     begin
       NewCharacter := nil;
-      Effect := nil;
+///      Effect := nil;
 
       Source.Clone( TObject( NewCharacter ), 'PMI' + IntToStr( Random( 25 ) * Random( 10 ) ) );
 

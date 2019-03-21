@@ -67,19 +67,12 @@ uses
 {$IFDEF DirectX}
   DirectX,
   DXUtil,
-  DXEffects,
 {$ENDIF}
   Windows,
-  Messages,
   SysUtils,
   Classes,
   Graphics,
-  Controls,
-  Forms,
-  Dialogs,
   ExtCtrls,
-  Character,
-  StdCtrls,
   Anigrp30,
   LogFile;
 
@@ -133,6 +126,7 @@ const
 constructor TMousePtr.Create;
 var
   InvisColor : integer;
+  pr : TRect;
 const
   FailName : string = 'TMousePtr.Create';
 begin
@@ -151,17 +145,14 @@ begin
   //lpDDSBack.BltFast(0, 0, DXMousePtr, Rect(0, 0, PtrWidth, PtrHeight), DDBLTFAST_WAIT);
 
     BMBack.Free;
-
     DXDirty := DDGetSurface( lpDD, PtrWidth, PtrHeight, InvisColor, true );
   //pre-load Dirty
 
     FPlotDirty := false;
     DXSurface := lpDDSFront;
-
     GetCursorPos( mPt );
-    DXDirty.BltFast( 0, 0, DXSurface, Rect( mPt.x, mPt.y, mPt.x + PtrWidth, mPt.y + PtrHeight ), DDBLTFAST_WAIT );
-
-
+    pr := Rect( mPt.x, mPt.y, mPt.x + PtrWidth, mPt.y + PtrHeight );
+    DXDirty.BltFast( 0, 0, DXSurface, @pr, DDBLTFAST_WAIT );
 
     MouseTimer := TTimer.create( nil );
 //  MouseTimer:=TAniTimer.create(nil);
@@ -204,6 +195,7 @@ procedure TMousePtr.MouseTimerEvent( Sender : TObject );
 var
   PrevPt : TPoint;
   X, Y : longint;
+  pr : TRect;
 begin
   if not FEnabled then
     exit;
@@ -249,18 +241,22 @@ begin
   begin
     if ( mPt.x <> PrevPt.x ) or ( mPt.y <> PrevPt.y ) then
     begin
-      DXSurface.BltFast( PrevPt.x, PrevPt.y, DXDirty, Rect( 0, 0, PtrWidth - OldWAdj, PtrHeight - OldHAdj ), DDBLTFAST_WAIT );
-      DXDirty.BltFast( 0, 0, DXSurface, Rect( mPt.x, mPt.y, mPt.x + PtrWidth - WAdj, mPt.y + PtrHeight - HAdj ), DDBLTFAST_WAIT );
+      pr := Rect( 0, 0, PtrWidth - OldWAdj, PtrHeight - OldHAdj );
+      DXSurface.BltFast( PrevPt.x, PrevPt.y, DXDirty, @pr, DDBLTFAST_WAIT );
+      pr := Rect( mPt.x, mPt.y, mPt.x + PtrWidth - WAdj, mPt.y + PtrHeight - HAdj );
+      DXDirty.BltFast( 0, 0, DXSurface, @pr, DDBLTFAST_WAIT );
     end;
   end
   else
   begin
-    DXDirty.BltFast( 0, 0, DXSurface, Rect( mPt.x, mPt.y, mPt.x + PtrWidth - WAdj, mPt.y + PtrHeight - HAdj ), DDBLTFAST_WAIT );
+    pr := Rect( mPt.x, mPt.y, mPt.x + PtrWidth - WAdj, mPt.y + PtrHeight - HAdj );
+    DXDirty.BltFast( 0, 0, DXSurface, @pr, DDBLTFAST_WAIT );
   end;
 
   X := ( MouseFrame mod SheetWidth ) * PtrWidth;
   Y := ( MouseFrame div SheetWidth ) * PtrHeight;
-  DXSurface.BltFast( mPt.x, mPt.y, DXMousePtr, Rect( X, Y, X + PtrWidth - WAdj, Y + PtrHeight - HAdj ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+  pr := Rect( X, Y, X + PtrWidth - WAdj, Y + PtrHeight - HAdj );
+  DXSurface.BltFast( mPt.x, mPt.y, DXMousePtr, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   FPlotDirty := true;
 end; //MouseTimerEvent
 
@@ -338,6 +334,8 @@ end;
 procedure TMousePtr.Cleanup;
 const
   FailName : string = 'TMousePtr.Cleanup';
+var
+  pr : TRect;
 begin
 {$IFDEF DODEBUG}
   if ( CurrDbgLvl >= DbgLvlSevere ) then
@@ -346,7 +344,8 @@ begin
   try
     if FPlotDirty then
     begin
-      DXSurface.BltFast( mPt.x, mPt.y, DXDirty, Rect( 0, 0, PtrWidth - WAdj, PtrHeight - HAdj ), DDBLTFAST_WAIT );
+      pr := Rect( 0, 0, PtrWidth - WAdj, PtrHeight - HAdj );
+      DXSurface.BltFast( mPt.x, mPt.y, DXDirty, @pr, DDBLTFAST_WAIT );
       FPlotDirty := false;
     end;
   except

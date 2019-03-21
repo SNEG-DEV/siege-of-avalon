@@ -62,10 +62,7 @@ unit AStar;
 interface
 
 uses
-  Classes,
-  Windows,
-  SysUtils,
-  LogFile;
+  Windows;
 
 const
   MinSearch = -128;

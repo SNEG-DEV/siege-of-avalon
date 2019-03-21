@@ -83,7 +83,6 @@ interface
 {$INCLUDE Anigrp30cfg.inc}
 
 uses
-  Windows,
   Classes,
   SysUtils,
   Graphics,
@@ -702,7 +701,7 @@ begin
   //      Character.SpecialEffect:=seNone;
 
     if StandInterval > 10 then
-      if ( FrameCount mod StandInterval ) = 0 then
+      if ( FrameCount mod cardinal(StandInterval) ) = 0 then
       begin
         case Random( 2 ) of
           0 : Character.StandAction := newStand;
@@ -1642,7 +1641,7 @@ begin
       Effect.Duration := 0;
       Effect.AnimationDuration := Effect.Resource.FrameCount * Effect.Resource.FrameMultiplier;
       Character.AddEffect( Effect );
-      Effect := nil;
+///      Effect := nil;
 
     end;
 
@@ -1657,7 +1656,7 @@ begin
         TPulse( Effect ).RedMaster := StrToInt( Character.Properties[ 'ColorRed' ] );
         Character.AddTitle( 'cancelspelleffect' );
         Character.AddEffect( Effect );
-        Effect := nil;
+///        Effect := nil;
       end
       else
       begin
@@ -1668,7 +1667,7 @@ begin
         Effect.Duration := 0;
         Effect.AnimationDuration := Effect.Resource.FrameCount * Effect.Resource.FrameMultiplier;
         Character.AddEffect( Effect );
-        Effect := nil;
+///        Effect := nil;
       end;
     end;
 
@@ -2532,7 +2531,7 @@ begin
         TPulse( Effect ).GreenMaster := StrToInt( Character.Properties[ 'ColorGreen' ] );
         TPulse( Effect ).RedMaster := StrToInt( Character.Properties[ 'ColorRed' ] );
         Character.AddEffect( Effect );
-        Effect := nil;
+///        Effect := nil;
       end
       else
       begin
@@ -2544,7 +2543,7 @@ begin
         Effect.AnimationDuration := Effect.Resource.FrameCount * Effect.Resource.FrameMultiplier;
         Effect.DoAction( 'Default', Character.FacingString );
         Character.AddEffect( Effect );
-        Effect := nil;
+///        Effect := nil;
 
       end;
     end;
@@ -3506,7 +3505,7 @@ begin
         TPulse( Effect ).GreenMaster := StrToInt( Character.Properties[ 'ColorGreen' ] );
         TPulse( Effect ).RedMaster := StrToInt( Character.Properties[ 'ColorRed' ] );
         Character.AddEffect( Effect );
-        Effect := nil;
+///        Effect := nil;
       end
       else
       begin
@@ -3518,7 +3517,7 @@ begin
         Effect.AnimationDuration := Effect.Resource.FrameCount * Effect.Resource.FrameMultiplier;
         Effect.DoAction( 'Default', Character.FacingString );
         Character.AddEffect( Effect );
-        Effect := nil;
+///        Effect := nil;
 
       end;
     end;
@@ -4797,7 +4796,7 @@ begin
     NewSummon.AddEffect( Effect2 );
 
     MySummons.Add( NewSummon );
-    NewSummon := nil;
+///    NewSummon := nil;
 
 
   except
@@ -5563,7 +5562,7 @@ begin
         TPulse( Effect ).RedMaster := StrToInt( Character.Properties[ 'ColorRed' ] );
         Character.AddTitle( 'cancelspelleffect' );
         Character.AddEffect( Effect );
-        Effect := nil;
+///        Effect := nil;
       end
       else
       begin
@@ -5574,7 +5573,7 @@ begin
         Effect.Duration := 0;
         Effect.AnimationDuration := Effect.Resource.FrameCount * Effect.Resource.FrameMultiplier;
         Character.AddEffect( Effect );
-        Effect := nil;
+///        Effect := nil;
       end;
     end;
 
@@ -6221,7 +6220,7 @@ begin
         TPulse( Effect ).GreenMaster := StrToInt( Character.Properties[ 'ColorGreen' ] );
         TPulse( Effect ).RedMaster := StrToInt( Character.Properties[ 'ColorRed' ] );
         Character.AddEffect( Effect );
-        Effect := nil;
+///        Effect := nil;
       end
       else
       begin
@@ -6233,7 +6232,7 @@ begin
         Effect.AnimationDuration := Effect.Resource.FrameCount * Effect.Resource.FrameMultiplier;
         Effect.DoAction( 'Default', Character.FacingString );
         Character.AddEffect( Effect );
-        Effect := nil;
+///        Effect := nil;
 
       end;
     end;

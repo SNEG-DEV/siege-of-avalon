@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{42665656-d36b-450b-b8fc-f2a4d723c321}</ProjectGuid>
+    <MainSource>Siege.dpr</MainSource>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+    <DCC_DependencyCheckOutputName>..\..\assets\Siege.exe</DCC_DependencyCheckOutputName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_Alignment>1</DCC_Alignment>
+    <DCC_AssertionsAtRuntime>False</DCC_AssertionsAtRuntime>
+    <DCC_DebugInformation>False</DCC_DebugInformation>
+    <DCC_WriteableConstants>True</DCC_WriteableConstants>
+    <DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
+    <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+    <DCC_StackSize>16384,8388608</DCC_StackSize>
+    <DCC_ImageBase>800000</DCC_ImageBase>
+    <DCC_ExeOutput>../../assets</DCC_ExeOutput>
+    <DCC_DcuOutput>dcu</DCC_DcuOutput>
+    <DCC_ObjOutput>dcu</DCC_ObjOutput>
+    <DCC_HppOutput>dcu</DCC_HppOutput>
+    <DCC_UnitSearchPath>ai;engine;graphics;interface;sound</DCC_UnitSearchPath>
+    <DCC_ResourcePath>ai;engine;graphics;interface;sound</DCC_ResourcePath>
+    <DCC_ObjPath>ai;engine;graphics;interface;sound</DCC_ObjPath>
+    <DCC_IncludePath>ai;engine;graphics;interface;sound</DCC_IncludePath>
+    <DCC_Define>DirectX</DCC_Define>
+    <DCC_SYMBOL_PLATFORM>False</DCC_SYMBOL_PLATFORM>
+    <DCC_UNIT_PLATFORM>False</DCC_UNIT_PLATFORM>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_Alignment>1</DCC_Alignment>
+    <DCC_AssertionsAtRuntime>False</DCC_AssertionsAtRuntime>
+    <DCC_DebugInformation>False</DCC_DebugInformation>
+    <DCC_WriteableConstants>True</DCC_WriteableConstants>
+    <DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
+    <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+    <DCC_StackSize>16384,8388608</DCC_StackSize>
+    <DCC_ImageBase>800000</DCC_ImageBase>
+    <DCC_ExeOutput>../../assets</DCC_ExeOutput>
+    <DCC_DcuOutput>dcu</DCC_DcuOutput>
+    <DCC_ObjOutput>dcu</DCC_ObjOutput>
+    <DCC_HppOutput>dcu</DCC_HppOutput>
+    <DCC_UnitSearchPath>ai;engine;graphics;interface;sound</DCC_UnitSearchPath>
+    <DCC_ResourcePath>ai;engine;graphics;interface;sound</DCC_ResourcePath>
+    <DCC_ObjPath>ai;engine;graphics;interface;sound</DCC_ObjPath>
+    <DCC_IncludePath>ai;engine;graphics;interface;sound</DCC_IncludePath>
+    <DCC_Define>DirectX</DCC_Define>
+    <DCC_SYMBOL_PLATFORM>False</DCC_SYMBOL_PLATFORM>
+    <DCC_UNIT_PLATFORM>False</DCC_UNIT_PLATFORM>
+  </PropertyGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Delphi.Personality</Borland.Personality>
+    <Borland.ProjectType>VCLApplication</Borland.ProjectType>
+    <BorlandProject>
+<BorlandProject><Delphi.Personality><Parameters><Parameters Name="UseLauncher">False</Parameters><Parameters Name="LoadAllSymbols">True</Parameters><Parameters Name="LoadUnspecifiedSymbols">False</Parameters></Parameters><VersionInfo><VersionInfo Name="IncludeVerInfo">True</VersionInfo><VersionInfo Name="AutoIncBuild">False</VersionInfo><VersionInfo Name="MajorVer">1</VersionInfo><VersionInfo Name="MinorVer">1</VersionInfo><VersionInfo Name="Release">2001</VersionInfo><VersionInfo Name="Build">409</VersionInfo><VersionInfo Name="Debug">False</VersionInfo><VersionInfo Name="PreRelease">False</VersionInfo><VersionInfo Name="Special">False</VersionInfo><VersionInfo Name="Private">False</VersionInfo><VersionInfo Name="DLL">False</VersionInfo><VersionInfo Name="Locale">1033</VersionInfo><VersionInfo Name="CodePage">1252</VersionInfo></VersionInfo><VersionInfoKeys><VersionInfoKeys Name="CompanyName">Digital Tome, Texas USA</VersionInfoKeys><VersionInfoKeys Name="FileDescription">Siege Of Avalon</VersionInfoKeys><VersionInfoKeys Name="FileVersion">1.1.2001.409</VersionInfoKeys><VersionInfoKeys Name="InternalName">DTMain1</VersionInfoKeys><VersionInfoKeys Name="LegalCopyright">Copyright (c) 1999-2001 Digital Tome</VersionInfoKeys><VersionInfoKeys Name="LegalTrademarks">Siege of Avalon(tm), Episodic Computer Game Novel(tm), Digital Tome(tm)</VersionInfoKeys><VersionInfoKeys Name="OriginalFilename">Siege</VersionInfoKeys><VersionInfoKeys Name="ProductName">Siege of Avalon(tm)</VersionInfoKeys><VersionInfoKeys Name="ProductVersion">1.1.2001.409</VersionInfoKeys><VersionInfoKeys Name="Comments">Siege of Avalon, an Episodic Computer Game Novel from Digital Tome</VersionInfoKeys></VersionInfoKeys><Source><Source Name="MainSource">Siege.dpr</Source></Source></Delphi.Personality></BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Import Project="$(MSBuildBinPath)\Borland.Delphi.Targets" />
+  <ItemGroup>
+    <DelphiCompile Include="Siege.dpr">
+      <MainSource>MainSource</MainSource>
+    </DelphiCompile>
+    <DCCReference Include="ai\AI1.pas" />
+    <DCCReference Include="ai\AStar.pas" />
+    <DCCReference Include="AI\BasicHumanoidAI.pas" />
+    <DCCReference Include="ai\Character.pas" />
+    <DCCReference Include="ai\MiscAI.pas" />
+    <DCCReference Include="ai\UndeadAI.pas" />
+    <DCCReference Include="ai\WolfAI.pas" />
+    <DCCReference Include="engine\AdventureLog.pas" />
+    <DCCReference Include="engine\AniDec30.pas" />
+    <DCCReference Include="engine\AniDemo.pas">
+      <Form>frmMain</Form>
+    </DCCReference>
+    <DCCReference Include="engine\Anigrp30.pas" />
+    <DCCReference Include="engine\Effects.pas" />
+    <DCCReference Include="engine\Engine.pas" />
+    <DCCReference Include="engine\GameText.pas" />
+    <DCCReference Include="engine\ItemDatabase.pas" />
+    <DCCReference Include="engine\Loader.pas" />
+    <DCCReference Include="engine\LoaderBox.pas" />
+    <DCCReference Include="Engine\LogFile.pas" />
+    <DCCReference Include="engine\MousePtr.pas" />
+    <DCCReference Include="engine\Parts.pas" />
+    <DCCReference Include="engine\Resource.pas" />
+    <DCCReference Include="engine\SaveFile.pas" />
+    <DCCReference Include="engine\Scroll.pas" />
+    <DCCReference Include="engine\Security.pas" />
+    <DCCReference Include="engine\Spells.pas" />
+    <DCCReference Include="engine\Spells1.pas" />
+    <DCCReference Include="engine\strFunctions.pas" />
+    <DCCReference Include="engine\string32.pas" />
+    <DCCReference Include="engine\Titles.pas" />
+    <DCCReference Include="graphics\DFX.pas" />
+    <DCCReference Include="graphics\digifx.pas" />
+    <DCCReference Include="graphics\DirectX.pas" />
+    <DCCReference Include="graphics\DXEffects.pas" />
+    <DCCReference Include="graphics\DXRender.pas" />
+    <DCCReference Include="graphics\DXUtil.pas" />
+    <DCCReference Include="interface\AddKickNPC.pas" />
+    <DCCReference Include="interface\Award.pas" />
+    <DCCReference Include="interface\CharCreation.pas" />
+    <DCCReference Include="interface\Converse.pas" />
+    <DCCReference Include="interface\Display.pas" />
+    <DCCReference Include="interface\Intro.pas" />
+    <DCCReference Include="interface\Inventory.pas" />
+    <DCCReference Include="interface\Journal.pas" />
+    <DCCReference Include="interface\LoadGame.pas" />
+    <DCCReference Include="interface\LogScreen.pas" />
+    <DCCReference Include="interface\LootCorpse.pas" />
+    <DCCReference Include="interface\Map.pas" />
+    <DCCReference Include="interface\Merchant.pas" />
+    <DCCReference Include="interface\NPCBehavior.pas" />
+    <DCCReference Include="interface\ObjInventory.pas" />
+    <DCCReference Include="interface\OpenAnim.pas" />
+    <DCCReference Include="interface\Options.pas" />
+    <DCCReference Include="interface\Showgraphic.pas" />
+    <DCCReference Include="interface\Statistics.pas" />
+    <DCCReference Include="interface\Transit.pas" />
+    <DCCReference Include="sound\Midi.pas" />
+    <DCCReference Include="sound\MP3.pas" />
+    <DCCReference Include="sound\Music.pas" />
+    <DCCReference Include="sound\Sound.pas" />
+  </ItemGroup>
+</Project>

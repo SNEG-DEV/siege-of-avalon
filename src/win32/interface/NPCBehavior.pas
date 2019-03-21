@@ -70,16 +70,11 @@ uses
   DXEffects,
 {$ENDIF}
   Windows,
-  Messages,
-  SysUtils,
   Classes,
   Graphics,
   Controls,
-  Forms,
-  Dialogs,
   ExtCtrls,
   Character,
-  StdCtrls,
   GameText,
   Display,
   Anigrp30,
@@ -176,12 +171,14 @@ var
   InvisColor : integer;
   DXBorders : IDirectDrawSurface;
   BM : TBitmap;
+  pr : TRect;
 begin
   if Loaded then
     Exit;
   inherited;
   MouseCursor.Cleanup;
-  lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, ResWidth, ResHeight ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+  pr := Rect( 0, 0, ResWidth, ResHeight );
+  lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
   MouseCursor.PlotDirty := false;
 
   FadeTimer := TTimer.create( nil );
@@ -231,7 +228,8 @@ begin
   BM.Free;
 
   LoadTargetActionIcons;
-  lpDDSBack.BltFast( 0, 0, DXBack, Rect( 0, 0, BMBack.width, BMBack.Height ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+  pr := Rect( 0, 0, BMBack.width, BMBack.Height );
+  lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   LoadAIData;
   //Now for the Alpha'ed edges
   //BMBack.LoadFromFile(ExtractFilePath(Application.ExeName) + 'Dialog\DialogueBoxShadowMap.bmp');
@@ -244,7 +242,8 @@ begin
   pText.PlotText( CharAI.character.name, 9, 41, 240 );
   PlotMenu;
   lpDDSFront.Flip( nil, DDFLIP_WAIT );
-  lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+  pr := Rect( 0, 0, 800, 600 );
+  lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
   MouseCursor.PlotDirty := false;
 end; //Init
 
@@ -695,15 +694,15 @@ begin
    //Now plot them
   for i := 0 to TargList.count - 1 do
   begin
-    DXBack.BltFast( pTA( TargList.items[ i ] ).dx, pTA( TargList.items[ i ] ).dy, DXIcons, pTA( TargList.items[ i ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    DXBack.BltFast( pTA( TargList.items[ i ] ).dx, pTA( TargList.items[ i ] ).dy, DXIcons, @pTA( TargList.items[ i ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   end;
   for i := 0 to ActList.count - 1 do
   begin
-    DXBack.BltFast( pTA( ActList.items[ i ] ).dx, pTA( ActList.items[ i ] ).dy, DXIcons, pTA( ActList.items[ i ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    DXBack.BltFast( pTA( ActList.items[ i ] ).dx, pTA( ActList.items[ i ] ).dy, DXIcons, @pTA( ActList.items[ i ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   end;
   for i := 0 to SpellList.count - 1 do
   begin
-    DXBack.BltFast( pSP( SpellList.items[ i ] ).dx, pSP( SpellList.items[ i ] ).dy, DXSpellIcons, pSP( SpellList.items[ i ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    DXBack.BltFast( pSP( SpellList.items[ i ] ).dx, pSP( SpellList.items[ i ] ).dy, DXSpellIcons, @pSP( SpellList.items[ i ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   end;
 
    //now we load the destination list
@@ -762,6 +761,7 @@ var
   i : integer;
   tempx, tempy, ti : integer;
   rRect : TRect;
+  pr : TRect;
 begin
   if CurrentSelectedItem = -1 then
   begin
@@ -779,11 +779,13 @@ begin
           Tx := X - 17;
           Ty := Y - 17;
               //clear text
-          lpDDSBack.BltFast( 24, 365, DXBack, Rect( 24, 365, 550, 469 ), DDBLTFAST_WAIT );
+          pr := Rect( 24, 365, 550, 469 );
+          lpDDSBack.BltFast( 24, 365, DXBack, @pr, DDBLTFAST_WAIT );
           pText.PlotText( pTA( ActList.items[ CurrentSelectedItem ] ).text, 25, 365, 240 );
           pText.PlotTextBlock( 'You may drag this Action Icon to any of the four Command Priority slots.  After selecting an Action, you will be prompted for a Target, if necessary.', 25, 550, 395, 240 );
-          DXDirty.BltFast( 0, 0, lpDDSBack, rect( Tx, Ty, Tx + 35, Ty + 35 ), DDBLTFAST_WAIT ); //save dirty
-          lpDDSBack.BltFast( Tx, Ty, DXIcons, pTA( ActList.items[ CurrentSelectedItem ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
+          pr := Rect( Tx, Ty, Tx + 35, Ty + 35 );
+          DXDirty.BltFast( 0, 0, lpDDSBack, @pr, DDBLTFAST_WAIT ); //save dirty
+          lpDDSBack.BltFast( Tx, Ty, DXIcons, @pTA( ActList.items[ CurrentSelectedItem ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
           ContainCursor( 1 );
         end;
         inc( i );
@@ -820,11 +822,13 @@ begin
         Tx := X - 17;
         Ty := Y - 17;
               //clear text
-        lpDDSBack.BltFast( 24, 365, DXBack, Rect( 24, 365, 550, 469 ), DDBLTFAST_WAIT );
+        pr := Rect( 24, 365, 550, 469 );
+        lpDDSBack.BltFast( 24, 365, DXBack, @pr, DDBLTFAST_WAIT );
         pText.PlotText( pTA( TargList.items[ CurrentSelectedItem ] ).text, 25, 365, 240 );
         pText.PlotTextBlock( 'You may drag this Target Icon to any available Target slot.  You may not choose a target until you have dragged an Action Icon or a Spell Icon to a Command Priority slot.', 25, 550, 395, 240 );
-        DXDirty.BltFast( 0, 0, lpDDSBack, rect( Tx, Ty, Tx + 35, Ty + 35 ), DDBLTFAST_WAIT ); //save dirty
-        lpDDSBack.BltFast( Tx, Ty, DXIcons, pTA( TargList.items[ CurrentSelectedItem ] ).sr, DDBLTFAST_WAIT ); //PlotIcon
+        pr := Rect( Tx, Ty, Tx + 35, Ty + 35 );
+        DXDirty.BltFast( 0, 0, lpDDSBack, @pr, DDBLTFAST_WAIT ); //save dirty
+        lpDDSBack.BltFast( Tx, Ty, DXIcons, @pTA( TargList.items[ CurrentSelectedItem ] ).sr, DDBLTFAST_WAIT ); //PlotIcon
         ContainCursor( 1 );
       end;
     end //end target
@@ -859,11 +863,13 @@ begin
         Tx := X - 17;
         Ty := Y - 17;
               //clear text
-        lpDDSBack.BltFast( 24, 365, DXBack, Rect( 24, 365, 550, 469 ), DDBLTFAST_WAIT );
+        pr := Rect( 24, 365, 550, 469 );
+        lpDDSBack.BltFast( 24, 365, DXBack, @pr, DDBLTFAST_WAIT );
         pText.PlotText( CharSpellList[ pSP( SpellList.items[ CurrentSelectedItem ] ).SpellIndex ], 25, 365, 240 );
         pText.PlotTextBlock( 'You may drag this Spell Icon to any of the four Command Priority slots.  After selecting a Spell, you will be prompted for a Target, if necessary.', 25, 550, 395, 240 );
-        DXDirty.BltFast( 0, 0, lpDDSBack, rect( Tx, Ty, Tx + 35, Ty + 35 ), DDBLTFAST_WAIT ); //save dirty
-        lpDDSBack.BltFast( Tx, Ty, DXSpellIcons, pSP( SpellList.items[ CurrentSelectedItem ] ).sr, DDBLTFAST_WAIT ); //PlotIcon
+        pr := Rect( Tx, Ty, Tx + 35, Ty + 35 );
+        DXDirty.BltFast( 0, 0, lpDDSBack, @pr, DDBLTFAST_WAIT ); //save dirty
+        lpDDSBack.BltFast( Tx, Ty, DXSpellIcons, @pSP( SpellList.items[ CurrentSelectedItem ] ).sr, DDBLTFAST_WAIT ); //PlotIcon
         ContainCursor( 1 );
       end;
     end //end spell region check
@@ -879,12 +885,12 @@ begin
         begin //if a click in DestRect clear it
           if i < 4 then
           begin //command box
-            lpDDSBack.BltFast( DestRect[ i ].rect.left, DestRect[ i ].rect.top, DXBack, DestRect[ i ].rect, DDBLTFAST_WAIT ); //clear box
+            lpDDSBack.BltFast( DestRect[ i ].rect.left, DestRect[ i ].rect.top, DXBack, @DestRect[ i ].rect, DDBLTFAST_WAIT ); //clear box
                     //lpDDSBack.BltFast(24,365,DXBack,Rect(24,365,550,469),DDBLTFAST_WAIT); //clear text
             DestRect[ i ].CommandIndex := -1;
             DestRect[ i ].CommandType := -1;
                     //if DestRect[i+4].CommandIndex <> -1 then begin //if there is a target, then clear this
-            lpDDSBack.BltFast( DestRect[ i + 4 ].dr.left, DestRect[ i + 4 ].dr.top, DXBack, DestRect[ i + 4 ].dr, DDBLTFAST_WAIT ); //clear box
+            lpDDSBack.BltFast( DestRect[ i + 4 ].dr.left, DestRect[ i + 4 ].dr.top, DXBack, @DestRect[ i + 4 ].dr, DDBLTFAST_WAIT ); //clear box
                        //lpDDSBack.BltFast(24,365,DXBack,Rect(24,365,550,469),DDBLTFAST_WAIT); //clear text
             DestRect[ i + 4 ].CommandIndex := -1;
             DestRect[ i + 4 ].CommandType := -1;
@@ -895,8 +901,8 @@ begin
           begin //targets
             if DestRect[ i ].CommandIndex <> -1 then
             begin //if there is a target, then clear this
-              lpDDSBack.BltFast( DestRect[ i ].dr.left, DestRect[ i ].dr.top, DXBack, DestRect[ i ].dr, DDBLTFAST_WAIT ); //clear box
-              lpDDSBack.BltFast( DestRect[ i ].dr.left, DestRect[ i ].dr.top, DXTarget[ i - 4 ], DestRect[ i ].sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //clear box
+              lpDDSBack.BltFast( DestRect[ i ].dr.left, DestRect[ i ].dr.top, DXBack, @DestRect[ i ].dr, DDBLTFAST_WAIT ); //clear box
+              lpDDSBack.BltFast( DestRect[ i ].dr.left, DestRect[ i ].dr.top, DXTarget[ i - 4 ], @DestRect[ i ].sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //clear box
                        //lpDDSBack.BltFast(24,365,DXBack,Rect(24,365,550,469),DDBLTFAST_WAIT); //clear text
               DestRect[ i ].CommandIndex := -1;
               DestRect[ i ].CommandType := -1;
@@ -938,9 +944,11 @@ begin
         begin //if its a command slot
           if CurrentSelectedType <> 2 then
           begin
-            lpDDSBack.BltFast( Tx, Ty, DXDirty, rect( 0, 0, 35, 35 ), DDBLTFAST_WAIT ); //clean up dirty
-            lpDDSBack.BltFast( DestRect[ ti ].rect.left, DestRect[ ti ].rect.top, DXBack, DestRect[ ti ].rect, DDBLTFAST_WAIT ); //clear box
-            lpDDSBack.BltFast( 24, 365, DXBack, Rect( 24, 365, 550, 469 ), DDBLTFAST_WAIT ); //clear text
+            pr := Rect( 0, 0, 35, 35 );
+            lpDDSBack.BltFast( Tx, Ty, DXDirty, @pr, DDBLTFAST_WAIT ); //clean up dirty
+            lpDDSBack.BltFast( DestRect[ ti ].rect.left, DestRect[ ti ].rect.top, DXBack, @DestRect[ ti ].rect, DDBLTFAST_WAIT ); //clear box
+            pr := Rect( 24, 365, 550, 469 );
+            lpDDSBack.BltFast( 24, 365, DXBack, @pr, DDBLTFAST_WAIT ); //clear text
             DestRect[ ti ].CommandIndex := CurrentSelectedItem;
             DestRect[ ti ].CommandType := CurrentSelectedType;
             if CurrentSelectedType = 1 then
@@ -956,8 +964,8 @@ begin
               begin
                 if DestRect[ ti ].Target <> DestRect[ ti + 4 ].Target then
                 begin //if old target not = erase
-                  lpDDSBack.BltFast( DestRect[ ti + 4 ].dr.left, DestRect[ ti + 4 ].dr.top, DXBack, DestRect[ ti + 4 ].dr, DDBLTFAST_WAIT ); //clear box
-                  lpDDSBack.BltFast( DestRect[ ti + 4 ].dr.left, DestRect[ ti + 4 ].dr.top, DXTarget[ ti ], DestRect[ ti + 4 ].sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //clear box
+                  lpDDSBack.BltFast( DestRect[ ti + 4 ].dr.left, DestRect[ ti + 4 ].dr.top, DXBack, @DestRect[ ti + 4 ].dr, DDBLTFAST_WAIT ); //clear box
+                  lpDDSBack.BltFast( DestRect[ ti + 4 ].dr.left, DestRect[ ti + 4 ].dr.top, DXTarget[ ti ], @DestRect[ ti + 4 ].sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //clear box
                   DestRect[ ti + 4 ].CommandIndex := -1;
                   DestRect[ ti + 4 ].CommandType := -1;
                 end;
@@ -972,7 +980,7 @@ begin
             end
             else
             begin
-              lpDDSBack.BltFast( DestRect[ ti + 4 ].dr.left, DestRect[ ti + 4 ].dr.top, DXBack, DestRect[ ti + 4 ].dr, DDBLTFAST_WAIT ); //clear box
+              lpDDSBack.BltFast( DestRect[ ti + 4 ].dr.left, DestRect[ ti + 4 ].dr.top, DXBack, @DestRect[ ti + 4 ].dr, DDBLTFAST_WAIT ); //clear box
               DestRect[ ti + 4 ].CommandIndex := -1;
               DestRect[ ti + 4 ].CommandType := -1;
               DestRect[ ti + 4 ].visible := false;
@@ -982,20 +990,21 @@ begin
             begin //if Action
               Tx := DestRect[ ti ].rect.left + ( ( DestRect[ ti ].rect.right - DestRect[ ti ].rect.left ) div 2 ) - 16;
               Ty := DestRect[ ti ].rect.top + ( ( DestRect[ ti ].rect.bottom - DestRect[ ti ].rect.top ) div 2 ) - 17;
-              lpDDSBack.BltFast( Tx, Ty, DXIcons, pTA( ActList.items[ CurrentSelectedItem ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
+              lpDDSBack.BltFast( Tx, Ty, DXIcons, @pTA( ActList.items[ CurrentSelectedItem ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
             end
             else if CurrentSelectedType = 3 then
             begin //if spell
               Tx := DestRect[ ti ].rect.left + ( ( DestRect[ ti ].rect.right - DestRect[ ti ].rect.left ) div 2 ) - 15;
               Ty := DestRect[ ti ].rect.top + ( ( DestRect[ ti ].rect.bottom - DestRect[ ti ].rect.top ) div 2 ) - 15;
-              lpDDSBack.BltFast( Tx, Ty, DXSpellIcons, pSP( SpellList.items[ CurrentSelectedItem ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
+              lpDDSBack.BltFast( Tx, Ty, DXSpellIcons, @pSP( SpellList.items[ CurrentSelectedItem ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
             end;
             CurrentSelectedItem := -1;
             ContainCursor( 0 );
           end
           else
           begin //tried to drop target icon in command slot
-            lpDDSBack.BltFast( 24, 365, DXBack, Rect( 24, 365, 550, 469 ), DDBLTFAST_WAIT ); //clear text
+            pr := Rect( 24, 365, 550, 469 );
+            lpDDSBack.BltFast( 24, 365, DXBack, @pr, DDBLTFAST_WAIT ); //clear text
             pText.PlotTextBlock( 'You can only place Action Icons or Spell Icons in this slot.', 25, 550, 395, 240 );
           end; //endif CurrentSelectedType <> 2
         end
@@ -1008,20 +1017,23 @@ begin
                      //if this is the correct target type
               if DestRect[ ti - 4 ].Target = pTA( TargList.items[ CurrentSelectedItem ] ).Target then
               begin
-                lpDDSBack.BltFast( Tx, Ty, DXDirty, rect( 0, 0, 35, 35 ), DDBLTFAST_WAIT ); //clean up dirty
-                lpDDSBack.BltFast( 24, 365, DXBack, Rect( 24, 365, 550, 469 ), DDBLTFAST_WAIT ); //clear text
+                pr := Rect( 0, 0, 35, 35 );
+                lpDDSBack.BltFast( Tx, Ty, DXDirty, @pr, DDBLTFAST_WAIT ); //clean up dirty
+                pr := Rect( 24, 365, 550, 469 );
+                lpDDSBack.BltFast( 24, 365, DXBack, @pr, DDBLTFAST_WAIT ); //clear text
                 DestRect[ ti ].CommandIndex := CurrentSelectedItem;
                 DestRect[ ti ].CommandType := CurrentSelectedType;
                 DestRect[ ti ].Target := pTA( TargList.items[ CurrentSelectedItem ] ).Target;
                 Tx := DestRect[ ti ].rect.left + ( ( DestRect[ ti ].rect.right - DestRect[ ti ].rect.left ) div 2 ) - 16;
                 Ty := DestRect[ ti ].rect.top + ( ( DestRect[ ti ].rect.bottom - DestRect[ ti ].rect.top ) div 2 ) - 17;
-                lpDDSBack.BltFast( Tx, Ty, DXIcons, pTA( TargList.items[ CurrentSelectedItem ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
+                lpDDSBack.BltFast( Tx, Ty, DXIcons, @pTA( TargList.items[ CurrentSelectedItem ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
                 CurrentSelectedItem := -1;
                 ContainCursor( 0 );
               end
               else
               begin //diff target type
-                lpDDSBack.BltFast( 24, 365, DXBack, Rect( 24, 365, 550, 469 ), DDBLTFAST_WAIT ); //clear text
+                pr := Rect( 24, 365, 550, 469 );
+                lpDDSBack.BltFast( 24, 365, DXBack, @pr, DDBLTFAST_WAIT ); //clear text
                 if DestRect[ ti - 4 ].Target = TTFriend then
                   pText.PlotTextBlock( 'You can only place party member Target Icons in this slot.  The party member icons are the round numbered icons on the right side of the screen.', 25, 550, 395, 240 )
                 else
@@ -1030,14 +1042,17 @@ begin
             end
             else
             begin //otherwise tell them they cant drop it here
-              lpDDSBack.BltFast( 24, 365, DXBack, Rect( 24, 365, 550, 469 ), DDBLTFAST_WAIT ); //clear text
+              pr := Rect( 24, 365, 550, 469 );
+              lpDDSBack.BltFast( 24, 365, DXBack, @pr, DDBLTFAST_WAIT ); //clear text
               pText.PlotTextBlock( 'You can only place Target Icons in this slot.', 25, 550, 395, 240 );
             end;
           end
           else
           begin //no icon in command box, so treat this as dropped icon
-            lpDDSBack.BltFast( 24, 365, DXBack, Rect( 24, 365, 550, 469 ), DDBLTFAST_WAIT ); //clear text
-            lpDDSBack.BltFast( Tx, Ty, DXDirty, rect( 0, 0, 35, 35 ), DDBLTFAST_WAIT ); //clean up dirty
+            pr := Rect( 24, 365, 550, 469 );
+            lpDDSBack.BltFast( 24, 365, DXBack, @pr, DDBLTFAST_WAIT ); //clear text
+            pr := Rect( 0, 0, 35, 35 );
+            lpDDSBack.BltFast( Tx, Ty, DXDirty, @pr, DDBLTFAST_WAIT ); //clean up dirty
             CurrentSelectedItem := -1;
             ContainCursor( 0 );
           end; //enid commandindex check
@@ -1045,14 +1060,16 @@ begin
       end
       else
       begin //just drop the icon
-        lpDDSBack.BltFast( Tx, Ty, DXDirty, rect( 0, 0, 35, 35 ), DDBLTFAST_WAIT ); //clean up dirty
+        pr := Rect( 0, 0, 35, 35 );
+        lpDDSBack.BltFast( Tx, Ty, DXDirty, @pr, DDBLTFAST_WAIT ); //clean up dirty
         CurrentSelectedItem := -1;
         ContainCursor( 0 );
       end; //endif ti
     end
     else
     begin //drop it
-      lpDDSBack.BltFast( Tx, Ty, DXDirty, rect( 0, 0, 35, 35 ), DDBLTFAST_WAIT ); //clean up dirty
+      pr := Rect( 0, 0, 35, 35 );
+      lpDDSBack.BltFast( Tx, Ty, DXDirty, @pr, DDBLTFAST_WAIT ); //clean up dirty
       CurrentSelectedItem := -1;
       ContainCursor( 0 );
     end; //endif CommandPriority box region check
@@ -1065,14 +1082,17 @@ procedure TNPCBehavior.MouseMove( Sender : TAniview; Shift : TShiftState; X, Y, 
 var
   i : integer;
   tempx, tempy, ti : integer;
+  pr : TRect;
 begin
 
   if CurrentSelectedItem = -1 then
   begin //no icon begin dragged
       //clear text
-    lpDDSBack.BltFast( 24, 365, DXBack, Rect( 24, 365, 550, 499 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 24, 365, 550, 499 );
+    lpDDSBack.BltFast( 24, 365, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       //Clear backbutton highlight
-    lpDDSBack.BltFast( 576, 415, DXBack, rect( 576, 415, 576 + 74, 415 + 45 ), DDBLTFAST_WAIT );
+    pr := Rect( 576, 415, 576 + 74, 415 + 45 );
+    lpDDSBack.BltFast( 576, 415, DXBack, @pr, DDBLTFAST_WAIT );
 
       //plot rollover if any for Actions
     if PtInRect( rect( 490, 50, 607, 127 ), point( x, y ) ) then
@@ -1204,42 +1224,46 @@ begin
     end; //endif CommandPriority box region check
     if PtInRect( rect( 576, 415, 576 + 74, 415 + 45 ), point( x, y ) ) then
     begin //plot back highlight
-      lpDDSBack.BltFast( 576, 415, DXBackToGame, rect( 0, 0, 74, 45 ), DDBLTFAST_WAIT );
+      pr := Rect( 0, 0, 74, 45 );
+      lpDDSBack.BltFast( 576, 415, DXBackToGame, @pr, DDBLTFAST_WAIT );
     end;
   end
   else
   begin //theres an icon being dragged
-    lpDDSBack.BltFast( Tx, Ty, DXDirty, rect( 0, 0, 35, 35 ), DDBLTFAST_WAIT ); //clean up dirty
+    pr := Rect( 0, 0, 35, 35 );
+    lpDDSBack.BltFast( Tx, Ty, DXDirty, @pr, DDBLTFAST_WAIT ); //clean up dirty
     Tx := X - 17;
     if Tx < 0 then
       Tx := 0;
     Ty := Y - 17;
     if Ty < 0 then
       Ty := 0;
-    DXDirty.BltFast( 0, 0, lpDDSBack, rect( Tx, Ty, Tx + 35, Ty + 35 ), DDBLTFAST_WAIT ); //save dirty
+    pr := Rect( Tx, Ty, Tx + 35, Ty + 35 );
+    DXDirty.BltFast( 0, 0, lpDDSBack, @pr, DDBLTFAST_WAIT ); //save dirty
     if CurrentSelectedType = 1 then
     begin //dragging an action icon
         //pText.PlotText(pTA(ActList.items[CurrentSelectedItem]).text,25,365,240);
         //pText.PlotTextBlock('You may drag this Action Icon to any of the four Command Priotity slots.  After selecting an Action, you will be prompted for a Target, if necessary.',25,550,395,240);
-      lpDDSBack.BltFast( Tx, Ty, DXIcons, pTA( ActList.items[ CurrentSelectedItem ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
+      lpDDSBack.BltFast( Tx, Ty, DXIcons, @pTA( ActList.items[ CurrentSelectedItem ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
     end
     else if CurrentSelectedType = 2 then
     begin //dragging a target Icon
         //pText.PlotText(pTA(TargList.items[CurrentSelectedItem]).text,25,365,240);
         //pText.PlotTextBlock('You may drag this Target Icon to any available Target slot.  You may not choose a target until you have dragged an Action Icon or a Spell Icon to a Command Priority slot.',25,550,395,240);
-      lpDDSBack.BltFast( Tx, Ty, DXIcons, pTA( TargList.items[ CurrentSelectedItem ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
+      lpDDSBack.BltFast( Tx, Ty, DXIcons, @pTA( TargList.items[ CurrentSelectedItem ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
     end
     else
     begin //dragging a spell icon
         //pText.PlotText(CharSpellList[pSP(SpellList.items[CurrentSelectedItem]).SpellIndex],25,365,240);
         //pText.PlotTextBlock('You may drag this Spell Icon to any available Target slot.  You may not choose a target until you have dragged an Action Icon or a Spell Icon to a Command Priority slot.',25,550,395,240);
-      lpDDSBack.BltFast( Tx, Ty, DXSpellIcons, pSP( SpellList.items[ CurrentSelectedItem ] ).sr, DDBLTFAST_WAIT ); //PlotIcon
+      lpDDSBack.BltFast( Tx, Ty, DXSpellIcons, @pSP( SpellList.items[ CurrentSelectedItem ] ).sr, DDBLTFAST_WAIT ); //PlotIcon
     end; //endif
 
   end; //endif CurrentSelectedItem
 
   lpDDSFront.Flip( nil, DDFLIP_WAIT );
-  lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+  pr := Rect( 0, 0, 800, 600 );
+  lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
   MouseCursor.PlotDirty := false;
 end; //MouseMove
 
@@ -1293,6 +1317,8 @@ begin
 end;
 
 procedure TNPCBehavior.FadeTimerEvent( Sender : TObject );
+var
+  pr : TRect;
 begin
   if FadeAlpha < 115 then
   begin
@@ -1302,11 +1328,12 @@ begin
   else
   begin
         //This is done so there isnt a color difference when clearing later
-    lpDDSBack.BltFast( DestRect[ FadeIn + 4 ].dr.left, DestRect[ FadeIn + 4 ].dr.top, DXTarget[ FadeIn ], DestRect[ FadeIn + 4 ].sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( DestRect[ FadeIn + 4 ].dr.left, DestRect[ FadeIn + 4 ].dr.top, DXTarget[ FadeIn ], @DestRect[ FadeIn + 4 ].sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     FadeTimer.enabled := false;
   end;
   lpDDSFront.Flip( nil, DDFLIP_WAIT );
-  lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+  pr := Rect( 0, 0, 800, 600 );
+  lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
   MouseCursor.PlotDirty := false;
 end; //FadeTimerEvent
 
@@ -1408,10 +1435,10 @@ begin
         DestRect[ i - 1 ].Target := pTA( ActList.items[ ti ] ).Target;
         Tx := DestRect[ i - 1 ].rect.left + ( ( DestRect[ i - 1 ].rect.right - DestRect[ i - 1 ].rect.left ) div 2 ) - 16;
         Ty := DestRect[ i - 1 ].rect.top + ( ( DestRect[ i - 1 ].rect.bottom - DestRect[ i - 1 ].rect.top ) div 2 ) - 17;
-        lpDDSBack.BltFast( Tx, Ty, DXIcons, pTA( ActList.items[ ti ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
+        lpDDSBack.BltFast( Tx, Ty, DXIcons, @pTA( ActList.items[ ti ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
         if DestRect[ i - 1 ].Target <> ttNone then
         begin //if we have a target, plot it
-          lpDDSBack.BltFast( DestRect[ i + 3 ].dr.left, DestRect[ i + 3 ].dr.top, DXTarget[ i - 1 ], DestRect[ i + 3 ].sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          lpDDSBack.BltFast( DestRect[ i + 3 ].dr.left, DestRect[ i + 3 ].dr.top, DXTarget[ i - 1 ], @DestRect[ i + 3 ].sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
           if DestRect[ i - 1 ].Target = ttFriend then
           begin
             if CharAI.Parameter[ i ] = paSpecificPartyMember then
@@ -1450,7 +1477,7 @@ begin
             begin
               Tx := DestRect[ i + 3 ].rect.left + ( ( DestRect[ i + 3 ].rect.right - DestRect[ i + 3 ].rect.left ) div 2 ) - 16;
               Ty := DestRect[ i + 3 ].rect.top + ( ( DestRect[ i + 3 ].rect.bottom - DestRect[ i + 3 ].rect.top ) div 2 ) - 17;
-              lpDDSBack.BltFast( Tx, Ty, DXIcons, pTA( TargList.items[ j ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
+              lpDDSBack.BltFast( Tx, Ty, DXIcons, @pTA( TargList.items[ j ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
               DestRect[ i + 3 ].CommandIndex := j;
               DestRect[ i + 3 ].Target := pTA( TargList.items[ j ] ).Target;
               DestRect[ i + 3 ].visible := true;
@@ -1481,7 +1508,7 @@ begin
             end; //end case
             Tx := DestRect[ i + 3 ].rect.left + ( ( DestRect[ i + 3 ].rect.right - DestRect[ i + 3 ].rect.left ) div 2 ) - 16;
             Ty := DestRect[ i + 3 ].rect.top + ( ( DestRect[ i + 3 ].rect.bottom - DestRect[ i + 3 ].rect.top ) div 2 ) - 17;
-            lpDDSBack.BltFast( Tx, Ty, DXIcons, pTA( TargList.items[ ti ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
+            lpDDSBack.BltFast( Tx, Ty, DXIcons, @pTA( TargList.items[ ti ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
             DestRect[ i + 3 ].CommandIndex := ti;
             DestRect[ i + 3 ].Target := pTA( TargList.items[ ti ] ).Target;
             DestRect[ i + 3 ].visible := true;
@@ -1520,11 +1547,11 @@ begin
           DestRect[ i - 1 ].Target := TSpell( CharSpellList.objects[ pSP( SpellList.items[ ti ] ).SpellIndex ] ).TargetType;
           Tx := DestRect[ i - 1 ].rect.left + ( ( DestRect[ i - 1 ].rect.right - DestRect[ i - 1 ].rect.left ) div 2 ) - 15;
           Ty := DestRect[ i - 1 ].rect.top + ( ( DestRect[ i - 1 ].rect.bottom - DestRect[ i - 1 ].rect.top ) div 2 ) - 15;
-          lpDDSBack.BltFast( Tx, Ty, DXSpellIcons, pSP( SpellList.items[ ti ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
+          lpDDSBack.BltFast( Tx, Ty, DXSpellIcons, @pSP( SpellList.items[ ti ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
              //now for Targets of spells
           if DestRect[ i - 1 ].Target <> ttNone then
           begin //if we have a target, plot it
-            lpDDSBack.BltFast( DestRect[ i + 3 ].dr.left, DestRect[ i + 3 ].dr.top, DXTarget[ i - 1 ], DestRect[ i + 3 ].sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+            lpDDSBack.BltFast( DestRect[ i + 3 ].dr.left, DestRect[ i + 3 ].dr.top, DXTarget[ i - 1 ], @DestRect[ i + 3 ].sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
             if DestRect[ i - 1 ].Target = ttFriend then
             begin
               j := NPCList.indexof( CharAI.PartyMember[ i ] ); //find the friend in the NPCList
@@ -1532,7 +1559,7 @@ begin
               begin
                 Tx := DestRect[ i + 3 ].rect.left + ( ( DestRect[ i + 3 ].rect.right - DestRect[ i + 3 ].rect.left ) div 2 ) - 16;
                 Ty := DestRect[ i + 3 ].rect.top + ( ( DestRect[ i + 3 ].rect.bottom - DestRect[ i + 3 ].rect.top ) div 2 ) - 17;
-                lpDDSBack.BltFast( Tx, Ty, DXIcons, pTA( TargList.items[ j ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
+                lpDDSBack.BltFast( Tx, Ty, DXIcons, @pTA( TargList.items[ j ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
                 DestRect[ i + 3 ].CommandIndex := j;
                 DestRect[ i + 3 ].Target := pTA( TargList.items[ j ] ).Target;
                 DestRect[ i + 3 ].visible := true;
@@ -1563,7 +1590,7 @@ begin
               end; //end case
               Tx := DestRect[ i + 3 ].rect.left + ( ( DestRect[ i + 3 ].rect.right - DestRect[ i + 3 ].rect.left ) div 2 ) - 16;
               Ty := DestRect[ i + 3 ].rect.top + ( ( DestRect[ i + 3 ].rect.bottom - DestRect[ i + 3 ].rect.top ) div 2 ) - 17;
-              lpDDSBack.BltFast( Tx, Ty, DXIcons, pTA( TargList.items[ ti ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
+              lpDDSBack.BltFast( Tx, Ty, DXIcons, @pTA( TargList.items[ ti ] ).sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //PlotIcon
               DestRect[ i + 3 ].CommandIndex := ti;
               DestRect[ i + 3 ].Target := pTA( TargList.items[ ti ] ).Target;
               DestRect[ i + 3 ].visible := true;

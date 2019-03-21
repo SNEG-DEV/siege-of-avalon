@@ -1,73 +1,22 @@
 unit DXRender;
-{******************************************************************************}
-{                                                                              }
-{               Siege Of Avalon : Open Source Edition                          }
-{               -------------------------------------                          }
-{                                                                              }
-{ Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
-{ All Rights Reserved.                                                         }
-{                                                                              }
-{ Portions created by Team SOAOS are                                           }
-{ Copyright (C) 2003 - Team SOAOS.                                             }
-{                                                                              }
-{                                                                              }
-{ Contributor(s)                                                               }
-{ --------------                                                               }
-{ Dominique Louis <Dominique@SavageSoftware.com.au>                            }
-{                                                                              }
-{                                                                              }
-{                                                                              }
-{ You may retrieve the latest version of this file at the SOAOS project page : }
-{   http://www.sourceforge.com/projects/soaos                                  }
-{                                                                              }
-{ The contents of this file maybe used with permission, subject to             }
-{ the GNU Lesser General Public License Version 2.1 (the "License"); you may   }
-{ not use this file except in compliance with the License. You may             }
-{ obtain a copy of the License at                                              }
-{ http://www.opensource.org/licenses/lgpl-license.php                          }
-{                                                                              }
-{ Software distributed under the License is distributed on an                  }
-{ "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or               }
-{ implied. See the License for the specific language governing                 }
-{ rights and limitations under the License.                                    }
-{                                                                              }
-{ Description                                                                  }
-{ -----------                                                                  }
-{                                                                              }
-{                                                                              }
-{                                                                              }
-{                                                                              }
-{                                                                              }
-{                                                                              }
-{                                                                              }
-{ Requires                                                                     }
-{ --------                                                                     }
-{   DirectX Runtime libraris on Win32                                          }
-{   They are available from...                                                 }
-{   http://www.microsoft.com.                                                  }
-{                                                                              }
-{ Programming Notes                                                            }
-{ -----------------                                                            }
-{                                                                              }
-{                                                                              }
-{                                                                              }
-{                                                                              }
-{ Revision History                                                             }
-{ ----------------                                                             }
-{   July    13 2003 - DL : Initial Upload to CVS                               }
-{                                                                              }
-{******************************************************************************}
 
 interface
 
-{$B-,J+,Q-,R-,T-,X+}
-
-{$DEFINE DelphiX_Delphi4}
+{$INCLUDE DelphiXcfg.inc}
 
 uses
   Windows,
+{$IfDef StandardDX}
+  DirectDraw,
+  {$ifdef DX7}
+  Direct3D;
+  {$endif}
+  {$IfDef DX9}
+  Direct3D9, Direct3D, D3DX9, {Direct3D8,} DX7toDX8;
+  {$EndIf}
+{$Else}
   DirectX;
+{$EndIf}
 
 const
   DXR_MAXTEXTURE = 4;
@@ -85,37 +34,38 @@ type
     DXR_OPTION_VERSION,
     DXR_OPTION_MMXENABLE,
     DXR_OPTION_RENDERPRIMITIVES
-    );
+  );                            
 
   {  TDXR_ShadeMode  }
 
   TDXR_ShadeMode = (
     DXR_SHADEMODE_FLAT,
     DXR_SHADEMODE_GOURAUD
-    );
+  );
 
   {  TDXR_Blend  }
 
   TDXR_Blend = (
     // for blending
-    DXR_BLEND_ZERO, // r=0
-    DXR_BLEND_ONE1, // r=c1
-    DXR_BLEND_ONE2, // r=c2
-    DXR_BLEND_ONE1_ADD_ONE2, // r=c1+c2
-    DXR_BLEND_ONE2_SUB_ONE1, // r=c2-c1
-    DXR_BLEND_ONE1_SUB_ONE2, // r=c1-c2
-    DXR_BLEND_SRCALPHA1, // r=c1*a1
-    DXR_BLEND_SRCALPHA1_ADD_ONE2, // r=c1*a1+c2
-    DXR_BLEND_ONE2_SUB_SRCALPHA1, // r=c2-c1*a1
-    DXR_BLEND_SRCALPHA1_ADD_INVSRCALPHA2, // r=c1*a1+c2*(1-a2)
-    DXR_BLEND_INVSRCALPHA1_ADD_SRCALPHA2, // r=c1*(1-a1)+c2*a2
+    DXR_BLEND_ZERO,                        // r=0
+    DXR_BLEND_ONE1,                        // r=c1
+    DXR_BLEND_ONE2,                        // r=c2
+    DXR_BLEND_ONE1_ADD_ONE2,               // r=c1+c2
+    DXR_BLEND_ONE1_SUB_ONE2,               // r=c1-c2
+    DXR_BLEND_ONE2_SUB_ONE1,               // r=c2-c1
+    DXR_BLEND_ONE1_MUL_ONE2,               // r=c1*c2
+    DXR_BLEND_SRCALPHA1,                   // r=c1*a1
+    DXR_BLEND_SRCALPHA1_ADD_ONE2,          // r=c1*a1+c2
+    DXR_BLEND_ONE2_SUB_SRCALPHA1,          // r=c2-c1*a1
+    DXR_BLEND_SRCALPHA1_ADD_INVSRCALPHA2,  // r=c1*a1+c2*(1-a2)
+    DXR_BLEND_INVSRCALPHA1_ADD_SRCALPHA2,  // r=c1*(1-a1)+c2*a2
     // for lighting
-    DXR_BLEND_DECAL, // r=c1
-    DXR_BLEND_DECALALPHA, // r=c1    ra=a2
-    DXR_BLEND_MODULATE, // r=c1*c2 ra=a2
-    DXR_BLEND_MODULATEALPHA, // r=c1*c2
-    DXR_BLEND_ADD // r=c1+c2 ra=a2
-    );
+    DXR_BLEND_DECAL,                       // r=c1
+    DXR_BLEND_DECALALPHA,                  // r=c1    ra=a2
+    DXR_BLEND_MODULATE,                    // r=c1*c2 ra=a2
+    DXR_BLEND_MODULATEALPHA,               // r=c1*c2
+    DXR_BLEND_ADD                          // r=c1+c2 ra=a2
+  );
 
   {  TDXR_TextureFilter  }
 
@@ -124,14 +74,14 @@ type
     DXR_TEXTUREFILTER_LINEAR,
     DXR_TEXTUREFILTER_MIPMAP_NEAREST,
     DXR_TEXTUREFILTER_MIPMAP_LINEAR
-    );
+  );
 
   {  TDXR_TextureAddress  }
 
   TDXR_TextureAddress = (
-    DXR_TEXTUREADDRESS_TILE, // tx=tx and WidthMask ty=ty and HeightMask
-    DXR_TEXTUREADDRESS_DONOTCLIP // tx=tx               ty=ty
-    );
+    DXR_TEXTUREADDRESS_TILE,           // tx=tx and WidthMask ty=ty and HeightMask
+    DXR_TEXTUREADDRESS_DONOTCLIP       // tx=tx               ty=ty
+  );
 
   {  TDXR_CmpFunc  }
 
@@ -144,66 +94,66 @@ type
     DXR_CMPFUNC_NOTEQUAL,
     DXR_CMPFUNC_GREATEREQUAL,
     DXR_CMPFUNC_ALWAYS
-    );
+  );
 
   {  TDXR_ColorType  }
 
   TDXR_ColorType = (
-    DXR_COLORTYPE_INDEXED, // Palette indexed color
-    DXR_COLORTYPE_RGB // RGB color
-    );
+    DXR_COLORTYPE_INDEXED,     // Palette indexed color
+    DXR_COLORTYPE_RGB          // RGB color
+  );
 
   {  TDXR_ColorChannel  }
 
   TDXR_ColorChannel = record
-    Mask : DWORD; // Bit Mask
-    BitCount : DWORD; // Number of bit
-    rshift : DWORD;
-    lshift : DWORD;
+    Mask: DWORD;                // Bit Mask
+    BitCount: DWORD;            // Number of bit
+    rshift: DWORD;
+    lshift: DWORD;
   end;
 
   {  TDXR_Surface  }
 
   PDXR_Surface = ^TDXR_Surface;
   TDXR_Surface = record
-    ColorType : TDXR_ColorType; // Color type
-    Width, Height : DWORD; // Size of surface
-    WidthBit, HeightBit : DWORD; // Size of surface (Number of bit)
-    Width2, Height2 : DWORD; // 1 shl WidthBit, 1 shl HeightBit
-    WidthMask, HeightMask : DWORD; // Bit Mask of size of surface
-    BitCount : DWORD; // BitCount per Pixel(1, 2, 4, 8, 16, 24, 32 only)
-    Bits : Pointer; // Pointer to pixeldata(x:0 y:0)
-    Pitch : Integer; // Offset of next scanline
-    PitchBit : Integer; // Offset of next scanline (Number of bit)
-    MipmapChain : PDXR_Surface;
+    ColorType: TDXR_ColorType;   // Color type
+    Width, Height: DWORD;        // Size of surface
+    WidthBit, HeightBit: DWORD;  // Size of surface (Number of bit)
+    Width2, Height2: DWORD;      // 1 shl WidthBit, 1 shl HeightBit
+    WidthMask, HeightMask: DWORD;// Bit Mask of size of surface
+    BitCount: DWORD;             // BitCount per Pixel(1, 2, 4, 8, 16, 24, 32 only)
+    Bits: Pointer;               // Pointer to pixeldata(x:0 y:0)
+    Pitch: Integer;              // Offset of next scanline
+    PitchBit: Integer;           // Offset of next scanline (Number of bit)
+    MipmapChain: PDXR_Surface;
     case Integer of
-      0 : (
+      0: (
         { Indexed color }
-        idx_index : TDXR_ColorChannel; // Index channel
-        idx_alpha : TDXR_ColorChannel; // Alpha channel
-        idx_palette : array[ 0..255 ] of TPaletteEntry;
+        idx_index: TDXR_ColorChannel;  // Index channel
+        idx_alpha: TDXR_ColorChannel;  // Alpha channel
+        idx_palette: array[0..255] of TPaletteEntry;
                                        // Palette
-        );
-      1 : (
+      );
+      1: (
         { RGB color }
-        rgb_red : TDXR_ColorChannel; // Red channel
-        rgb_green : TDXR_ColorChannel; // Green channel
-        rgb_blue : TDXR_ColorChannel; // Blue channel
-        rgb_alpha : TDXR_ColorChannel; // Alpha channel
-        );
+        rgb_red: TDXR_ColorChannel;    // Red channel
+        rgb_green: TDXR_ColorChannel;  // Green channel
+        rgb_blue: TDXR_ColorChannel;   // Blue channel
+        rgb_alpha: TDXR_ColorChannel;  // Alpha channel
+      );
   end;
 
   {  TDXR_Vertex  }
 
   PDXR_Vertex = ^TDXR_Vertex;
   TDXR_Vertex = record
-    sx : TDXR_Value; // Screen coordinates
-    sy : TDXR_Value;
-    sz : TDXR_Value;
-    rhw : TDXR_Value; // 1/sz
-    color : TDXR_Color;
-    specular : TDXR_Color;
-    tu, tv : array[ 0..DXR_MAXTEXTURE - 1 ] of TDXR_Value;
+    sx: TDXR_Value;            // Screen coordinates
+    sy: TDXR_Value;
+    sz: TDXR_Value;
+    rhw: TDXR_Value;           // 1/sz
+    color: TDXR_Color;
+    specular: TDXR_Color;
+    tu, tv: array[0..DXR_MAXTEXTURE-1] of TDXR_Value;
   end;
 
   PPDXR_Vertex = ^PDXR_Vertex;
@@ -213,7 +163,7 @@ type
   TDXR_PrimitiveType = (
     DXR_PRIMITIVETYPE_TRIANGLELIST,
     DXR_PRIMITIVETYPE_TRIANGLESTRIP
-    );
+  );
 
   {  TDXR_TextureLayerBlend  }
 
@@ -221,19 +171,19 @@ type
     DXR_TEXTURELAYERBLEND_TEXTURE,
     DXR_TEXTURELAYERBLEND_LAST,
     DXR_TEXTURELAYERBLEND_NOBLEND
-    );
+  );
 
   {  TDXR_TextureLayer  }
 
   PDXR_TextureLayer = ^TDXR_TextureLayer;
   TDXR_TextureLayer = record
-    Surface : PDXR_Surface;
-    LayerBlend : TDXR_TextureLayerBlend;
-    Blend : TDXR_Blend;
-    ColorKeyEnable : Boolean;
-    ColorKey : TDXR_SurfaceColor;
-    TextureAddress : TDXR_TextureAddress;
-    BumpTexture : Integer;
+    Surface: PDXR_Surface;
+    LayerBlend: TDXR_TextureLayerBlend;
+    Blend: TDXR_Blend;
+    ColorKeyEnable: Boolean;
+    ColorKey: TDXR_SurfaceColor;
+    TextureAddress: TDXR_TextureAddress;
+    BumpTexture: Integer;
   end;
 
   {  TDXR_Cull  }
@@ -242,65 +192,66 @@ type
     DXR_CULL_NONE,
     DXR_CULL_CW,
     DXR_CULL_CCW
-    );
+  );
 
   {  TDXR_RenderStates  }
 
   TDXR_RenderStates = record
-    DitherEnable : Boolean;
-    SpecularEnable : Boolean;
-    CullMode : TDXR_Cull;
-    Shade : TDXR_ShadeMode;
-    TexBlend : TDXR_Blend;
-    Blend : TDXR_Blend;
-    TextureEnable : Boolean;
-    TextureList : array[ 0..DXR_MAXTEXTURE - 1 ] of TDXR_TextureLayer;
-    TextureFilter : TDXR_TextureFilter;
-    ZBuffer : PDXR_Surface;
-    ZFunc : TDXR_CmpFunc;
-    ZWriteEnable : Boolean;
+    DitherEnable: Boolean;
+    SpecularEnable: Boolean;
+    CullMode: TDXR_Cull;
+    Shade: TDXR_ShadeMode;
+    TexBlend: TDXR_Blend;
+    Blend: TDXR_Blend;
+    TextureEnable: Boolean;
+    TextureList: array[0..DXR_MAXTEXTURE-1] of TDXR_TextureLayer;
+    TextureFilter: TDXR_TextureFilter;
+    ZBuffer: PDXR_Surface;
+    ZFunc: TDXR_CmpFunc;
+    ZWriteEnable: Boolean;
+    EnableDrawLine: Integer;
   end;
 
-function dxrGetOption( Option : TDXR_Option ) : DWORD;
-procedure dxrSetOption( Option : TDXR_Option; Value : DWORD );
+function dxrGetOption(Option: TDXR_Option): DWORD;
+procedure dxrSetOption(Option: TDXR_Option; Value: DWORD);
 
-procedure dxrMakeIndexedSurface( var Surface : TDXR_Surface; Width, Height, BitCount : DWORD;
-  Bits : Pointer; pitch : Integer; idx_index, idx_alpha : DWORD );
-procedure dxrMakeRGBSurface( var Surface : TDXR_Surface; Width, Height, BitCount : DWORD;
-  Bits : Pointer; pitch : Integer; rgb_red, rgb_green, rgb_blue, rgb_alpha : DWORD );
-function dxrScanLine( const Surface : TDXR_Surface; y : DWORD ) : Pointer;
-procedure dxrZBufferClear( const Surface : TDXR_Surface );
+procedure dxrMakeIndexedSurface(var Surface: TDXR_Surface; Width, Height, BitCount: DWORD;
+  Bits: Pointer; pitch: Integer; idx_index, idx_alpha: DWORD);
+procedure dxrMakeRGBSurface(var Surface: TDXR_Surface; Width, Height, BitCount: DWORD;
+  Bits: Pointer; pitch: Integer; rgb_red, rgb_green, rgb_blue, rgb_alpha: DWORD);
+function dxrScanLine(const Surface: TDXR_Surface; y: DWORD): Pointer;
+procedure dxrZBufferClear(const Surface: TDXR_Surface);
 
-function dxrDDSurfaceLock( DDSurface : IDirectDrawSurface; var Surface : TDXR_Surface ) : Boolean;
-function dxrDDSurfaceLock2( DDSurface : IDirectDrawSurface; var ddsd : DDSURFACEDESC;
-  var Surface : TDXR_Surface ) : Boolean;
-procedure dxrDDSurfaceUnLock( DDSurface : IDirectDrawSurface; const Surface : TDXR_Surface );
+function dxrDDSurfaceLock(DDSurface: {$IFDEF D3D_deprecated}IDirectDrawSurface{$ELSE}IDirectDrawSurface7{$ENDIF}; var Surface: TDXR_Surface): Boolean; {$IFDEF VER9UP}inline;{$ENDIF}
+function dxrDDSurfaceLock2(DDSurface: {$IFDEF D3D_deprecated}IDirectDrawSurface{$ELSE}IDirectDrawSurface7{$ENDIF}; var ddsd: {$IFDEF D3D_deprecated}TDDSurfaceDesc{$ELSE}TDDSurfaceDesc2{$ENDIF};
+  var Surface: TDXR_Surface): Boolean; {$IFDEF VER9UP}inline;{$ENDIF}
+procedure dxrDDSurfaceUnLock(DDSurface: {$IFDEF D3D_deprecated}IDirectDrawSurface{$ELSE}IDirectDrawSurface7{$ENDIF}; const Surface: TDXR_Surface); {$IFDEF VER9UP}inline;{$ENDIF}
 
-procedure dxrDefRenderStates( var States : TDXR_RenderStates );
+procedure dxrDefRenderStates(var States: TDXR_RenderStates);
 
-procedure dxrDrawPrimitive( const Dest : TDXR_Surface; const States : TDXR_RenderStates; PrimitiveType : TDXR_PrimitiveType;
-  VertexList : PDXR_Vertex; VertexCount : DWORD );
-procedure dxrDrawPointeredPrimitive( const Dest : TDXR_Surface; const States : TDXR_RenderStates; PrimitiveType : TDXR_PrimitiveType;
-  VertexList : PPDXR_Vertex; VertexCount : DWORD );
-procedure dxrDrawIndexedPrimitive( const Dest : TDXR_Surface; const States : TDXR_RenderStates; PrimitiveType : TDXR_PrimitiveType;
-  VertexList : PDXR_Vertex; VertexCount : DWORD; IndexList : PDWORD; IndexCount : DWORD );
+procedure dxrDrawPrimitive(const Dest: TDXR_Surface; const States: TDXR_RenderStates; PrimitiveType: TDXR_PrimitiveType;
+  VertexList: PDXR_Vertex; VertexCount: DWORD);
+procedure dxrDrawPointeredPrimitive(const Dest: TDXR_Surface; const States: TDXR_RenderStates; PrimitiveType: TDXR_PrimitiveType;
+  VertexList: PPDXR_Vertex; VertexCount: DWORD);
+procedure dxrDrawIndexedPrimitive(const Dest: TDXR_Surface; const States: TDXR_RenderStates; PrimitiveType: TDXR_PrimitiveType;
+  VertexList: PDXR_Vertex; VertexCount: DWORD; IndexList: PDWORD; IndexCount: DWORD);
 
-procedure dxrCopyRectBlend( const Dest, Src : TDXR_Surface;
-  const DestRect, SrcRect : TRect; Blend : TDXR_Blend; Alpha : Integer;
-  ColorKeyEnable : Boolean; ColorKey : DWORD );
+procedure dxrCopyRectBlend(const Dest, Src: TDXR_Surface;
+  const DestRect, SrcRect: TRect; Blend: TDXR_Blend; Alpha: Integer;
+  ColorKeyEnable: Boolean; ColorKey: DWORD);
 
-procedure dxrFillRectColorBlend( const Dest : TDXR_Surface;
-  const DestRect : TRect; Blend : TDXR_Blend; Col : COLORREF );
+procedure dxrFillRectColorBlend(const Dest: TDXR_Surface;
+  const DestRect: TRect; Blend: TDXR_Blend; Col: COLORREF);
 
-procedure dxrDrawWaveXBlend( const Dest, Src : TDXR_Surface;
-  X, Y, Width, Height : Integer; const SrcRect : TRect; amp, Len, ph : Integer;
-  Blend : TDXR_Blend; Alpha : Integer;
-  ColorKeyEnable : Boolean; ColorKey : DWORD );
+procedure dxrDrawWaveXBlend(const Dest, Src: TDXR_Surface;
+  X, Y, Width, Height: Integer; const SrcRect: TRect; amp, Len, ph: Integer;
+  Blend: TDXR_Blend; Alpha: Integer;
+  ColorKeyEnable: Boolean; ColorKey: DWORD);
 
-procedure dxrDrawRotateBlend( const Dest, Src : TDXR_Surface;
-  X, Y, Width, Height : Integer; const SrcRect : TRect; CenterX, CenterY : Double;
-  Angle : Integer; Blend : TDXR_Blend; Alpha : Integer;
-  ColorKeyEnable : Boolean; ColorKey : DWORD );
+procedure dxrDrawRotateBlend(const Dest, Src: TDXR_Surface;
+  X, Y, Width, Height: Integer; const SrcRect: TRect; CenterX, CenterY: Double;
+  Angle: Integer; Blend: TDXR_Blend; Alpha: Integer;
+  ColorKeyEnable: Boolean; ColorKey: DWORD);
 
 implementation
 
@@ -310,7 +261,7 @@ const
 
   ColorFloatBit = 8;
   ColorFloat = 1 shl ColorFloatBit;
-
+               
 type
 
   PInteger = ^Integer;
@@ -318,28 +269,28 @@ type
   {  TDXRMachine  }
 
   TDXRMachine_TreeType = (
-    DXR_TREETYPE_LOADBLACK, // Load black color
-    DXR_TREETYPE_LOADCOLOR, // Load vertex color
+    DXR_TREETYPE_LOADBLACK,      // Load black color
+    DXR_TREETYPE_LOADCOLOR,      // Load vertex color
     DXR_TREETYPE_LOADCONSTCOLOR, // Load constant color
-    DXR_TREETYPE_LOADTEXTURE, // Load texel
-    DXR_TREETYPE_LOADBUMPTEXTURE, // Load texel with Bump mapping
+    DXR_TREETYPE_LOADTEXTURE,    // Load texel
+    DXR_TREETYPE_LOADBUMPTEXTURE,// Load texel with Bump mapping
                                  //   dx := nx + (BumpTexture[nx-1, ny]-BumpTexture[nx+1, ny]);
                                  //   dy := ny + (BumpTexture[nx, ny-1]-BumpTexture[nx, ny+1]);
-    DXR_TREETYPE_LOADDESTPIXEL, // Load dest pixel
-    DXR_TREETYPE_BLEND // Blend color
-    );
+    DXR_TREETYPE_LOADDESTPIXEL,  // Load dest pixel
+    DXR_TREETYPE_BLEND           // Blend color
+  );
 
-  TDXRColorChannel = ( chRed, chGreen, chBlue, chAlpha );
+  TDXRColorChannel = (chRed, chGreen, chBlue, chAlpha);
   TDXRColorChannels = set of TDXRColorChannel;
 
   PDXRMachine_Color = ^TDXRMachine_Color;
   TDXRMachine_Color = packed record
-    R, G, B, A : WORD;
+    R, G, B, A: WORD;
   end;
 
   PDXRMachine_Axis = ^TDXRMachine_Axis;
   TDXRMachine_Axis = packed record
-    X, Y : Integer;
+    X, Y: Integer;
   end;
 
   PDXRMachine_Int64 = ^TDXRMachine_Int64;
@@ -347,435 +298,393 @@ type
 
   PDXRMachine_Reg_Color = ^TDXRMachine_Reg_Color;
   TDXRMachine_Reg_Color = record
-    Enable : Boolean;
-    nColor : TDXRMachine_Color;
-    iColor : TDXRMachine_Color;
-    Gouraud : Boolean;
-    Channels : TDXRColorChannels;
+    Enable: Boolean;
+    nColor: TDXRMachine_Color;
+    iColor: TDXRMachine_Color;
+    Gouraud: Boolean;
+    Channels: TDXRColorChannels;
   end;
 
   PDXRMachine_Reg_Texture = ^TDXRMachine_Reg_Texture;
   TDXRMachine_Reg_Texture = record
-    Enable : Boolean;
-    Surface : PDXR_Surface;
-    nAxis : TDXRMachine_Axis;
-    iAxis : TDXRMachine_Axis;
-    iAxisConstant : Boolean;
-    Filter : TDXR_TextureFilter;
-    ColorKeyEnable : Boolean;
-    ColorKey : TDXR_SurfaceColor;
-    EnableChannels : TDXRColorChannels;
-    TextureAddress : TDXR_TextureAddress;
-    DefaultColor : TDXRMachine_Color;
+    Enable: Boolean;
+    Surface: PDXR_Surface;
+    nAxis: TDXRMachine_Axis;
+    iAxis: TDXRMachine_Axis;
+    iAxisConstant: Boolean;
+    Filter: TDXR_TextureFilter;
+    ColorKeyEnable: Boolean;
+    ColorKey: TDXR_SurfaceColor;
+    EnableChannels: TDXRColorChannels;
+    TextureAddress: TDXR_TextureAddress;
+    DefaultColor: TDXRMachine_Color;
   end;
 
   TDXRMachine_Reg_RHW = record
-    Enable : Boolean;
-    nRHW : TDXRMachine_Int64;
-    iRHW : TDXRMachine_Int64;
+    Enable: Boolean;
+    nRHW: TDXRMachine_Int64;
+    iRHW: TDXRMachine_Int64;
   end;
 
   TDXRMachine_Reg_Dither = record
-    Enable : Boolean;
+    Enable: Boolean;
   end;
 
   TDXRMachine_Reg_ZBuffer = record
-    Enable : Boolean;
-    Surface : PDXR_Surface;
-    CmpFunc : TDXR_CmpFunc;
-    WriteEnable : Boolean;
+    Enable: Boolean;
+    Surface: PDXR_Surface;
+    CmpFunc: TDXR_CmpFunc;
+    WriteEnable: Boolean;
   end;
 
   TDXRMachine_Reg_Axis = record
-    Axis : TDXRMachine_Axis;
-    IncEnable : Boolean;
+    Axis: TDXRMachine_Axis;
+    IncEnable: Boolean;
   end;
 
   PDXRMachine_Tree = ^TDXRMachine_Tree;
   TDXRMachine_Tree = record
-    Typ : TDXRMachine_TreeType;
-    Channels : TDXRColorChannels;
+    Typ: TDXRMachine_TreeType;
+    Channels: TDXRColorChannels;
     case TDXRMachine_TreeType of
-      DXR_TREETYPE_LOADBLACK : (
+      DXR_TREETYPE_LOADBLACK: (
         );
-      DXR_TREETYPE_LOADCOLOR : (
-        Color : Integer
+      DXR_TREETYPE_LOADCOLOR: (
+        Color: Integer
         );
-      DXR_TREETYPE_LOADCONSTCOLOR : (
-        ConstColor : TDXRMachine_Color;
+      DXR_TREETYPE_LOADCONSTCOLOR: (
+        ConstColor: TDXRMachine_Color;
         );
-      DXR_TREETYPE_LOADTEXTURE : (
-        Texture : Integer
+      DXR_TREETYPE_LOADTEXTURE: (
+        Texture: Integer
         );
-      DXR_TREETYPE_LOADBUMPTEXTURE : (
-        _Texture : Integer;
-        BumpTexture : Integer;
+      DXR_TREETYPE_LOADBUMPTEXTURE: (
+        _Texture: Integer;
+        BumpTexture: Integer;
         );
-      DXR_TREETYPE_LOADDESTPIXEL : (
+      DXR_TREETYPE_LOADDESTPIXEL: (
         );
-      DXR_TREETYPE_BLEND : (
-        Blend : TDXR_Blend;
-        BlendTree1 : PDXRMachine_Tree;
-        BlendTree2 : PDXRMachine_Tree;
+      DXR_TREETYPE_BLEND: (
+        Blend: TDXR_Blend;
+        BlendTree1: PDXRMachine_Tree;
+        BlendTree2: PDXRMachine_Tree;
         );
   end;
 
   TDXRMachine = class
   private
-    FBuf : Pointer;
-    FCall : Pointer;
-    FCompiled : Boolean;
-    FTreeCount : Integer;
-    FTreeList : array[ 0..127 ] of TDXRMachine_Tree;
-    FMMXUsed : Boolean;
-    F_ZBuf : Pointer;
-    F_BiLinearAxis : TDXRMachine_Axis;
-    F_BiLinearCol1 : TDXRMachine_Color;
-    F_BiLinearCol2 : TDXRMachine_Color;
-    F_BiLinearCol3 : TDXRMachine_Color;
-    F_BiLinearCol4 : TDXRMachine_Color;
-    F_BumpAxis : TDXRMachine_Axis;
-    F_BumpAxis2 : TDXRMachine_Axis;
-    F_BumpTempCol : DWORD;
-    FStack : array[ 0..255 ] of TDXRMachine_Color;
-    procedure GenerateCode( var Code : Pointer; Tree : PDXRMachine_Tree );
+    FBuf: Pointer;
+    FCall: Pointer;
+    FCompiled: Boolean;
+    FTreeCount: Integer;
+    FTreeList: array[0..127] of TDXRMachine_Tree;
+    FMMXUsed: Boolean;
+    F_ZBuf: Pointer;
+    F_BiLinearAxis: TDXRMachine_Axis;
+    F_BiLinearCol1: TDXRMachine_Color;
+    F_BiLinearCol2: TDXRMachine_Color;
+    F_BiLinearCol3: TDXRMachine_Color;
+    F_BiLinearCol4: TDXRMachine_Color;
+    F_BumpAxis: TDXRMachine_Axis;
+    F_BumpAxis2: TDXRMachine_Axis;
+    F_BumpTempCol: DWORD;
+    FStack: array[0..255] of TDXRMachine_Color;
+    procedure GenerateCode(var Code: Pointer; Tree: PDXRMachine_Tree);
   public
-    Dest : PDXR_Surface;
-    ColorList : array[ 0..7 ] of TDXRMachine_Reg_Color;
-    ColorIndex : array[ 0..7 ] of Integer;
-    ColorIndexCount : Integer;
-    TextureList : array[ 0..7 ] of TDXRMachine_Reg_Texture;
-    TextureIndex : array[ 0..7 ] of Integer;
-    TextureIndexCount : Integer;
-    Dither : TDXRMachine_Reg_Dither;
-    ZBuffer : TDXRMachine_Reg_ZBuffer;
-    Axis : TDXRMachine_Reg_Axis;
-    RHW : TDXRMachine_Reg_RHW;
+    Dest: PDXR_Surface;
+    ColorList: array[0..7] of TDXRMachine_Reg_Color;
+    ColorIndex: array[0..7] of Integer;
+    ColorIndexCount: Integer;
+    TextureList: array[0..7] of TDXRMachine_Reg_Texture;
+    TextureIndex: array[0..7] of Integer;
+    TextureIndexCount: Integer;
+    Dither: TDXRMachine_Reg_Dither;
+    ZBuffer: TDXRMachine_Reg_ZBuffer;
+    Axis: TDXRMachine_Reg_Axis;
+    RHW: TDXRMachine_Reg_RHW;
     constructor Create;
     destructor Destroy; override;
-    function CreateTree : PDXRMachine_Tree;
-    function CreateTree2( Typ : TDXRMachine_TreeType ) : PDXRMachine_Tree;
-    function CreateTree_LoadColor( Color : DWORD ) : PDXRMachine_Tree;
-    function CreateTree_LoadConstColor( R, G, B, A : Byte ) : PDXRMachine_Tree;
-    function CreateTree_LoadTexture( Texture : DWORD ) : PDXRMachine_Tree;
-    function CreateTree_LoadBumpTexture( Texture, BumpTexture : DWORD ) : PDXRMachine_Tree;
-    function CreateTree_Blend( Blend : TDXR_Blend; BlendTree1, BlendTree2 : PDXRMachine_Tree ) : PDXRMachine_Tree;
-    procedure Initialize;
-    procedure Compile( Tree : PDXRMachine_Tree );
-    procedure Run( Count : Integer );
-    property Compiled : Boolean read FCompiled write FCompiled;
+    function CreateTree: PDXRMachine_Tree; {$IFDEF VER9UP}inline;{$ENDIF}
+    function CreateTree2(Typ: TDXRMachine_TreeType): PDXRMachine_Tree; {$IFDEF VER9UP}inline;{$ENDIF}
+    function CreateTree_LoadColor(Color: DWORD): PDXRMachine_Tree; {$IFDEF VER9UP}inline;{$ENDIF}
+    function CreateTree_LoadConstColor(R, G, B, A: Byte): PDXRMachine_Tree; {$IFDEF VER9UP}inline;{$ENDIF}
+    function CreateTree_LoadTexture(Texture: DWORD): PDXRMachine_Tree; {$IFDEF VER9UP}inline;{$ENDIF}
+    function CreateTree_LoadBumpTexture(Texture, BumpTexture: DWORD): PDXRMachine_Tree; {$IFDEF VER9UP}inline;{$ENDIF}
+    function CreateTree_Blend(Blend: TDXR_Blend; BlendTree1, BlendTree2: PDXRMachine_Tree): PDXRMachine_Tree; {$IFDEF VER9UP}inline;{$ENDIF}
+    procedure Initialize; {$IFDEF VER9UP}inline;{$ENDIF}
+    procedure Compile(Tree: PDXRMachine_Tree);
+    procedure Run(Count: Integer);
+    property Compiled: Boolean read FCompiled write FCompiled;
   end;
 
 const
-  CPUIDF_FPU = 1 shl 0; {  Floating-point unit on-chip  }
-  CPUIDF_VME = 1 shl 1; {  Virtual Mode Extension  }
-  CPUIDF_DE = 1 shl 2; {  Debugging Extension  }
-  CPUIDF_PSE = 1 shl 3; {  Page Size Extension  }
-  CPUIDF_TSC = 1 shl 4; {  Time Stamp Counter  }
-  CPUIDF_MSR = 1 shl 5; {  Mode Spacific Registers  }
-  CPUIDF_PAE = 1 shl 6; {  Physical Address Extension  }
-  CPUIDF_MCE = 1 shl 7; {  Machine Check Exception  }
-  CPUIDF_CX8 = 1 shl 8; {  CMPXCHG8 Instruction Supported  }
-  CPUIDF_APIC = 1 shl 9; {  On-chip APIC Hardware Supported }
+  CPUIDF_FPU  = 1 shl 0;  {  Floating-point unit on-chip  }
+  CPUIDF_VME  = 1 shl 1;  {  Virtual Mode Extension  }
+  CPUIDF_DE   = 1 shl 2;  {  Debugging Extension  }
+  CPUIDF_PSE  = 1 shl 3;  {  Page Size Extension  }
+  CPUIDF_TSC  = 1 shl 4;  {  Time Stamp Counter  }
+  CPUIDF_MSR  = 1 shl 5;  {  Mode Spacific Registers  }
+  CPUIDF_PAE  = 1 shl 6;  {  Physical Address Extension  }
+  CPUIDF_MCE  = 1 shl 7;  {  Machine Check Exception  }
+  CPUIDF_CX8  = 1 shl 8;  {  CMPXCHG8 Instruction Supported  }
+  CPUIDF_APIC = 1 shl 9;  {  On-chip APIC Hardware Supported }
   CPUIDF_MTRR = 1 shl 12; {  Memory Type Range Registers  }
-  CPUIDF_PGE = 1 shl 13; {  Page Global Enable  }
-  CPUIDF_MCA = 1 shl 14; {  Machine Check Architecture  }
+  CPUIDF_PGE  = 1 shl 13; {  Page Global Enable  }
+  CPUIDF_MCA  = 1 shl 14; {  Machine Check Architecture  }
   CPUIDF_CMOV = 1 shl 15; {  Conditional Move Instruction Supported  }
-  CPUIDF_MMX = 1 shl 23; {  Intel Architecture MMX Technology supported  }
+  CPUIDF_MMX  = 1 shl 23; {  Intel Architecture MMX Technology supported  }
 
 var
-  CPUIDVendor : array[ 0..11 ] of Char;
-  CPUIDSignature : Integer;
-  CPUIDFeatures : Integer;
-  UseMMX : Boolean;
+  CPUIDVendor: array[0..11] of Char;
+  CPUIDSignature: Integer;
+  CPUIDFeatures: Integer;
+  UseMMX: Boolean;
 
-  RenderPrimitiveCount : Integer;
+  RenderPrimitiveCount: Integer;
 
-procedure ReadCPUID; assembler;
-asm
-  push ebx
+procedure ReadCPUID; 
+begin
+  asm
+    push ebx
 
-  pushfd
-  pop eax
-  mov ecx,eax
-  xor eax,$200000
-  push eax
-  popfd
-  pushfd
-  pop eax
-  xor eax,ecx
-  jz @@exit
+    pushfd
+    pop eax
+    mov ecx,eax
+    xor eax,$200000
+    push eax
+    popfd
+    pushfd
+    pop eax
+    xor eax,ecx
+    jz @@exit
 
-  mov eax,0
-  db $0F,$A2                  ///cpuid
-  cmp eax,1
-  jl @@exit
+    mov eax,0
+    db $0F,$A2                  ///cpuid
+    cmp eax,1
+    jl @@exit
 
-  {  Vendor ID  }
-  mov eax,0
-  db $0F,$A2                  ///cpuid
-  mov dword ptr [CPUIDVendor], ebx
-  mov dword ptr [CPUIDVendor+4], edx
-  mov dword ptr [CPUIDVendor+8], ecx
+    {  Vendor ID  }
+    mov eax,0
+    db $0F,$A2                  ///cpuid
+    mov dword ptr [CPUIDVendor], ebx
+    mov dword ptr [CPUIDVendor+4], edx
+    mov dword ptr [CPUIDVendor+8], ecx
 
-  {  Features, Signature  }
-  mov eax,1
-  db $0F,$A2                  ///cpuid
-  mov CPUIDSignature,eax
-  mov CPUIDFeatures,edx
-@@exit:
-  pop ebx
+    {  Features, Signature  }
+    mov eax,1
+    db $0F,$A2                  ///cpuid
+    mov CPUIDSignature,eax
+    mov CPUIDFeatures,edx
+  @@exit:
+    pop ebx
+  end;
+  UseMMX := CPUIDFeatures and CPUIDF_MMX<>0;
 end;
 
-function dxrGetOption( Option : TDXR_Option ) : DWORD;
+function dxrGetOption(Option: TDXR_Option): DWORD;
 begin
   Result := 0;
   case Option of
-    DXR_OPTION_VERSION :
-      begin
-        Result := 1 * 100 + 0;
-      end;
-    DXR_OPTION_MMXENABLE :
-      begin
-        Result := DWORD( LongBool( UseMMX ) );
-      end;
-    DXR_OPTION_RENDERPRIMITIVES :
-      begin
-        Result := RenderPrimitiveCount;
-      end;
+    DXR_OPTION_VERSION:
+        begin
+          Result := 1*100 + 0;
+        end;
+    DXR_OPTION_MMXENABLE:
+        begin
+          Result := DWORD(LongBool(UseMMX));
+        end;
+    DXR_OPTION_RENDERPRIMITIVES:
+        begin
+          Result := RenderPrimitiveCount;
+        end;
   end;
 end;
 
-procedure dxrSetOption( Option : TDXR_Option; Value : DWORD );
+procedure dxrSetOption(Option: TDXR_Option; Value: DWORD);
 begin
   case Option of
-    DXR_OPTION_MMXENABLE :
-      begin
-        UseMMX := False; //LongBool(Value) and (CPUIDFeatures and CPUIDF_MMX<>0);
-      end;
-    DXR_OPTION_RENDERPRIMITIVES :
-      begin
-        RenderPrimitiveCount := Value;
-      end;
+    DXR_OPTION_MMXENABLE:
+        begin
+          UseMMX := LongBool(Value) and (CPUIDFeatures and CPUIDF_MMX<>0);
+        end;
+    DXR_OPTION_RENDERPRIMITIVES:
+        begin
+          RenderPrimitiveCount := Value;
+        end;
   end;
 end;
 
-function GetBitCount( B : Integer ) : DWORD;
+function GetBitCount(B: Integer): DWORD;
 begin
   Result := 31;
-  while ( Result > 0 ) and ( ( ( 1 shl Result ) and B ) = 0 ) do
-    Dec( Result );
+  while (Result>0) and (((1 shl Result) and B)=0) do Dec(Result);
 end;
 
-function GetFirstZeroBitCount( B : Integer ) : DWORD;
+function GetFirstZeroBitCount(B: Integer): DWORD;
 begin
   Result := 0;
-  while ( Result < 31 ) and ( ( ( 1 shl Result ) and B ) = 0 ) do
-    Inc( Result );
+  while (Result<31) and (((1 shl Result) and B)=0) do Inc(Result);
 end;
 
-function GetOneBitCount( B : Integer ) : DWORD;
+function GetOneBitCount(B: Integer): DWORD;
 var
-  i : Integer;
+  i: Integer;
 begin
   Result := 0;
-  for i := 0 to 31 do
-    Inc( Result, Ord( b and ( 1 shl i ) <> 0 ) );
+  for i:=0 to 31 do
+    Inc(Result, Ord(b and (1 shl i)<>0));
 end;
 
-function dxrMakeColorChannel( Mask : DWORD; indexed : Boolean ) : TDXR_ColorChannel;
+function dxrMakeColorChannel(Mask: DWORD; indexed: Boolean): TDXR_ColorChannel;
 var
-  i : Integer;
+  i: Integer;
 begin
-  Result.BitCount := GetOneBitCount( Mask shr ( GetFirstZeroBitCount( Mask ) ) );
+  Result.BitCount := GetOneBitCount(Mask shr (GetFirstZeroBitCount(Mask)));
   Result.Mask := Mask;
 
   if indexed then
   begin
-    Result.rshift := GetFirstZeroBitCount( Mask );
+    Result.rshift := GetFirstZeroBitCount(Mask);
     Result.lshift := 0;
-  end
-  else
+  end else
   begin
-    i := GetFirstZeroBitCount( Mask ) - ( 8 - Result.BitCount );
+    i :=  GetFirstZeroBitCount(Mask)-(8-Result.BitCount);
 
-    if i < 0 then
+    if i<0 then
     begin
       Result.lshift := -i;
       Result.rshift := 0;
-    end
-    else
+    end else
     begin
       Result.lshift := 0;
-      Result.rshift := DWORD( i );
+      Result.rshift := DWORD(i);
     end;
   end;
 end;
 
-procedure dxrMakeIndexedSurface( var Surface : TDXR_Surface; Width, Height, BitCount : DWORD;
-  Bits : Pointer; pitch : Integer; idx_index, idx_alpha : DWORD );
+procedure dxrMakeIndexedSurface(var Surface: TDXR_Surface; Width, Height, BitCount: DWORD;
+  Bits: Pointer; pitch: Integer; idx_index, idx_alpha: DWORD);
 begin
-  FillChar( Surface, SizeOf( Surface ), 0 );
+  FillChar(Surface, SizeOf(Surface), 0);
 
   Surface.ColorType := DXR_COLORTYPE_INDEXED;
   Surface.Width := Width;
   Surface.Height := Height;
-  Surface.WidthBit := GetBitCount( Width );
-  Surface.HeightBit := GetBitCount( Height );
+  Surface.WidthBit := GetBitCount(Width);
+  Surface.HeightBit := GetBitCount(Height);
   Surface.Width2 := 1 shl Surface.WidthBit;
   Surface.Height2 := 1 shl Surface.HeightBit;
-  Surface.WidthMask := Surface.Width - 1;
-  Surface.HeightMask := Surface.Height2 - 1;
+  Surface.WidthMask := Surface.Width-1;
+  Surface.HeightMask := Surface.Height2-1;
 
   Surface.BitCount := BitCount;
   Surface.Bits := Bits;
   Surface.Pitch := Pitch;
-  Surface.PitchBit := GetBitCount( Abs( Pitch ) );
+  Surface.PitchBit := GetBitCount(Abs(Pitch));
 
-  Surface.idx_index := dxrMakeColorChannel( idx_index, True );
-  Surface.idx_alpha := dxrMakeColorChannel( idx_alpha, False );
+  Surface.idx_index := dxrMakeColorChannel(idx_index, True);
+  Surface.idx_alpha := dxrMakeColorChannel(idx_alpha, False);
 end;
 
-procedure dxrMakeRGBSurface( var Surface : TDXR_Surface; Width, Height, BitCount : DWORD;
-  Bits : Pointer; pitch : Integer; rgb_red, rgb_green, rgb_blue, rgb_alpha : DWORD );
+procedure dxrMakeRGBSurface(var Surface: TDXR_Surface; Width, Height, BitCount: DWORD;
+  Bits: Pointer; pitch: Integer; rgb_red, rgb_green, rgb_blue, rgb_alpha: DWORD);
 begin
-  FillChar( Surface, SizeOf( Surface ), 0 );
+  FillChar(Surface, SizeOf(Surface), 0);
 
   Surface.ColorType := DXR_COLORTYPE_RGB;
   Surface.Width := Width;
   Surface.Height := Height;
-  Surface.WidthBit := GetBitCount( Width );
-  Surface.HeightBit := GetBitCount( Height );
+  Surface.WidthBit := GetBitCount(Width);
+  Surface.HeightBit := GetBitCount(Height);
   Surface.Width2 := 1 shl Surface.WidthBit;
   Surface.Height2 := 1 shl Surface.HeightBit;
-  Surface.WidthMask := Surface.Width - 1;
-  Surface.HeightMask := Surface.Height2 - 1;
+  Surface.WidthMask := Surface.Width-1;
+  Surface.HeightMask := Surface.Height2-1;
 
   Surface.BitCount := BitCount;
   Surface.Bits := Bits;
   Surface.Pitch := Pitch;
-  Surface.PitchBit := GetBitCount( Abs( Pitch ) );
+  Surface.PitchBit := GetBitCount(Abs(Pitch));
 
-  Surface.rgb_red := dxrMakeColorChannel( rgb_red, False );
-  Surface.rgb_green := dxrMakeColorChannel( rgb_green, False );
-  Surface.rgb_blue := dxrMakeColorChannel( rgb_blue, False );
-  Surface.rgb_alpha := dxrMakeColorChannel( rgb_alpha, False );
+  Surface.rgb_red := dxrMakeColorChannel(rgb_red, False);
+  Surface.rgb_green := dxrMakeColorChannel(rgb_green, False);
+  Surface.rgb_blue := dxrMakeColorChannel(rgb_blue, False);
+  Surface.rgb_alpha := dxrMakeColorChannel(rgb_alpha, False);
 end;
 
-function dxrCompareSurface( const Surface1, Surface2 : TDXR_Surface ) : Boolean;
+function dxrCompareSurface(const Surface1, Surface2: TDXR_Surface): Boolean;
 begin
-  if Surface1.ColorType = DXR_COLORTYPE_INDEXED then
+  if Surface1.ColorType=DXR_COLORTYPE_INDEXED then
   begin
-    Result := ( Surface2.ColorType = DXR_COLORTYPE_INDEXED ) and
-      ( Surface1.idx_index.Mask = Surface2.idx_index.Mask ) and
-      ( Surface1.idx_alpha.Mask = Surface2.idx_alpha.Mask );
-  end
-  else if Surface1.ColorType = DXR_COLORTYPE_RGB then
+    Result := (Surface2.ColorType=DXR_COLORTYPE_INDEXED) and
+      (Surface1.idx_index.Mask=Surface2.idx_index.Mask) and
+      (Surface1.idx_alpha.Mask=Surface2.idx_alpha.Mask);
+  end else if Surface1.ColorType=DXR_COLORTYPE_RGB then
   begin
-    Result := ( Surface2.ColorType = DXR_COLORTYPE_RGB ) and
-      ( Surface1.rgb_red.Mask = Surface2.rgb_red.Mask ) and
-      ( Surface1.rgb_green.Mask = Surface2.rgb_green.Mask ) and
-      ( Surface1.rgb_blue.Mask = Surface2.rgb_blue.Mask ) and
-      ( Surface1.rgb_alpha.Mask = Surface2.rgb_alpha.Mask );
-  end
-  else
+    Result := (Surface2.ColorType=DXR_COLORTYPE_RGB) and
+      (Surface1.rgb_red.Mask=Surface2.rgb_red.Mask) and
+      (Surface1.rgb_green.Mask=Surface2.rgb_green.Mask) and
+      (Surface1.rgb_blue.Mask=Surface2.rgb_blue.Mask) and
+      (Surface1.rgb_alpha.Mask=Surface2.rgb_alpha.Mask);
+  end else
     Result := False;
 end;
 
-{function dxrDDSurfaceLock(DDSurface: IDirectDrawSurface; var Surface: TDXR_Surface): Boolean;
+function dxrDDSurfaceLock(DDSurface: {$IFDEF D3D_deprecated}IDirectDrawSurface{$ELSE}IDirectDrawSurface7{$ENDIF}; var Surface: TDXR_Surface): Boolean;
 var
-  ddsd: DDSURFACEDESC;
+  ddsd: {$IFDEF D3D_deprecated}TDDSurfaceDesc{$ELSE}TDDSurfaceDesc2{$ENDIF};
 begin
   Result := dxrDDSurfaceLock2(DDSurface, ddsd, Surface);
-end;  }
-
-function dxrDDSurfaceLock( DDSurface : IDirectDrawSurface; var Surface : TDXR_Surface ) : Boolean;
-var
-  ddsd : DDSURFACEDESC;
+end;
+                                                                                    
+function dxrDDSurfaceLock2(DDSurface: {$IFDEF D3D_deprecated}IDirectDrawSurface{$ELSE}IDirectDrawSurface7{$ENDIF}; var ddsd: {$IFDEF D3D_deprecated}TDDSurfaceDesc{$ELSE}TDDSurfaceDesc2{$ENDIF};
+  var Surface: TDXR_Surface): Boolean;
 const
   DDPF_PALETTEINDEXED = DDPF_PALETTEINDEXED1 or DDPF_PALETTEINDEXED2 or
     DDPF_PALETTEINDEXED4 or DDPF_PALETTEINDEXED8;
 begin
-  ddsd.dwSize := SizeOf( ddsd );
-  Result := DDSurface.Lock( nil, ddsd, DDLOCK_WAIT, 0 ) = DD_OK;
+  ddsd.dwSize := SizeOf(ddsd);
+  Result := DDSurface.Lock(nil, ddsd, DDLOCK_WAIT, 0)=DD_OK;
   if Result then
   begin
-//    FillChar(Surface, SizeOf(Surface), 0);
-    ZeroMemory( @Surface, SizeOf( TDXR_Surface ) );
-    if ddsd.ddpfPixelFormat.dwFlags and DDPF_PALETTEINDEXED <> 0 then
+    FillChar(Surface, SizeOf(Surface), 0);
+    if ddsd.ddpfPixelFormat.dwFlags and DDPF_PALETTEINDEXED<>0 then
     begin
-      dxrMakeIndexedSurface( Surface, ddsd.dwWidth, ddsd.dwHeight, ddsd.ddpfPixelFormat.dwRGBBitCount,
-        ddsd.lpSurface, ddsd.lPitch, ( 1 shl ddsd.ddpfPixelFormat.dwRGBBitCount ) - 1, 0 );
-    end
-    else
+      dxrMakeIndexedSurface(Surface, ddsd.dwWidth, ddsd.dwHeight, ddsd.ddpfPixelFormat.dwRGBBitCount,
+        ddsd.lpSurface, ddsd.lPitch, (1 shl ddsd.ddpfPixelFormat.dwRGBBitCount)-1, 0);
+    end else
     begin
-      if ddsd.ddpfPixelFormat.dwFlags and DDPF_ALPHAPIXELS <> 0 then
+      if ddsd.ddpfPixelFormat.dwFlags and DDPF_ALPHAPIXELS<>0 then
       begin
-        dxrMakeRGBSurface( Surface, ddsd.dwWidth, ddsd.dwHeight, ddsd.ddpfPixelFormat.dwRGBBitCount,
+        dxrMakeRGBSurface(Surface, ddsd.dwWidth, ddsd.dwHeight, ddsd.ddpfPixelFormat.dwRGBBitCount,
           ddsd.lpSurface, ddsd.lPitch, ddsd.ddpfPixelFormat.dwRBitMask, ddsd.ddpfPixelFormat.dwGBitMask,
-          ddsd.ddpfPixelFormat.dwBBitMask, ddsd.ddpfPixelFormat.dwRGBAlphaBitMask );
-      end
-      else
+          ddsd.ddpfPixelFormat.dwBBitMask, ddsd.ddpfPixelFormat.dwRGBAlphaBitMask);
+      end else
       begin
-        dxrMakeRGBSurface( Surface, ddsd.dwWidth, ddsd.dwHeight, ddsd.ddpfPixelFormat.dwRGBBitCount,
+        dxrMakeRGBSurface(Surface, ddsd.dwWidth, ddsd.dwHeight, ddsd.ddpfPixelFormat.dwRGBBitCount,
           ddsd.lpSurface, ddsd.lPitch, ddsd.ddpfPixelFormat.dwRBitMask, ddsd.ddpfPixelFormat.dwGBitMask,
-          ddsd.ddpfPixelFormat.dwBBitMask, 0 );
-      end;
+          ddsd.ddpfPixelFormat.dwBBitMask, 0);
+      end;                          
     end;
   end;
 end;
 
-function dxrDDSurfaceLock2( DDSurface : IDirectDrawSurface; var ddsd : DDSURFACEDESC;
-  var Surface : TDXR_Surface ) : Boolean;
-const
-  DDPF_PALETTEINDEXED = DDPF_PALETTEINDEXED1 or DDPF_PALETTEINDEXED2 or
-    DDPF_PALETTEINDEXED4 or DDPF_PALETTEINDEXED8;
+procedure dxrDDSurfaceUnLock(DDSurface: {$IFDEF D3D_deprecated}IDirectDrawSurface{$ELSE}IDirectDrawSurface7{$ENDIF}; const Surface: TDXR_Surface);
 begin
-  ddsd.dwSize := SizeOf( ddsd );
-  Result := DDSurface.Lock( nil, ddsd, DDLOCK_WAIT, 0 ) = DD_OK;
-  if Result then
-  begin
-//    FillChar(Surface, SizeOf(Surface), 0);
-    ZeroMemory( @Surface, SizeOf( TDXR_Surface ) );
-    if ddsd.ddpfPixelFormat.dwFlags and DDPF_PALETTEINDEXED <> 0 then
-    begin
-      dxrMakeIndexedSurface( Surface, ddsd.dwWidth, ddsd.dwHeight, ddsd.ddpfPixelFormat.dwRGBBitCount,
-        ddsd.lpSurface, ddsd.lPitch, ( 1 shl ddsd.ddpfPixelFormat.dwRGBBitCount ) - 1, 0 );
-    end
-    else
-    begin
-      if ddsd.ddpfPixelFormat.dwFlags and DDPF_ALPHAPIXELS <> 0 then
-      begin
-        dxrMakeRGBSurface( Surface, ddsd.dwWidth, ddsd.dwHeight, ddsd.ddpfPixelFormat.dwRGBBitCount,
-          ddsd.lpSurface, ddsd.lPitch, ddsd.ddpfPixelFormat.dwRBitMask, ddsd.ddpfPixelFormat.dwGBitMask,
-          ddsd.ddpfPixelFormat.dwBBitMask, ddsd.ddpfPixelFormat.dwRGBAlphaBitMask );
-      end
-      else
-      begin
-        dxrMakeRGBSurface( Surface, ddsd.dwWidth, ddsd.dwHeight, ddsd.ddpfPixelFormat.dwRGBBitCount,
-          ddsd.lpSurface, ddsd.lPitch, ddsd.ddpfPixelFormat.dwRBitMask, ddsd.ddpfPixelFormat.dwGBitMask,
-          ddsd.ddpfPixelFormat.dwBBitMask, 0 );
-      end;
-    end;
-  end;
+  DDSurface.Unlock(Surface.Bits);
 end;
 
-procedure dxrDDSurfaceUnLock( DDSurface : IDirectDrawSurface; const Surface : TDXR_Surface );
+function dxrScanLine(const Surface: TDXR_Surface; y: DWORD): Pointer;
 begin
-  DDSurface.Unlock( Surface.Bits );
+  Result := Pointer(Integer(Surface.Bits)+Surface.Pitch*Integer(y));
 end;
 
-function dxrScanLine( const Surface : TDXR_Surface; y : DWORD ) : Pointer;
-begin
-  Result := Pointer( Integer( Surface.Bits ) + Surface.Pitch * Integer( y ) );
-end;
-
-procedure dxrZBufferClear( const Surface : TDXR_Surface );
+procedure dxrZBufferClear(const Surface: TDXR_Surface);
 var
-  i : Integer;
+  i: Integer;
 begin
-  for i := 0 to Surface.Height - 1 do
-    FillChar( dxrScanLine( Surface, i )^, Abs( Surface.Pitch ), $FF );
+  for i:=0 to Surface.Height-1 do
+    FillChar(dxrScanLine(Surface, i)^, Abs(Surface.Pitch), $FF);
 end;
 
 {  TDXRMachine  }
@@ -783,12 +692,12 @@ end;
 constructor TDXRMachine.Create;
 begin
   inherited Create;
-  FBuf := VirtualAlloc( nil, 2048, MEM_COMMIT, PAGE_EXECUTE_READWRITE );
+  FBuf := VirtualAlloc(nil, 2048, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 end;
 
 destructor TDXRMachine.Destroy;
 begin
-  VirtualFree( FBuf, 0, MEM_RELEASE );
+  VirtualFree(FBuf, 0, MEM_RELEASE);
   inherited Destroy;
 end;
 
@@ -804,35 +713,35 @@ begin
   FCompiled := False;
   FMMXUsed := False;
 
-  FillChar( ColorList, SizeOf( ColorList ), 0 );
-  FillChar( TextureList, SizeOf( TextureList ), 0 );
-  FillChar( Dither, SizeOf( Dither ), 0 );
-  FillChar( ZBuffer, SizeOf( ZBuffer ), 0 );
-  FillChar( Axis, SizeOf( Axis ), 0 );
-  FillChar( RHW, SizeOf( RHW ), 0 );
+  FillChar(ColorList, SizeOf(ColorList), 0);
+  FillChar(TextureList, SizeOf(TextureList), 0);
+  FillChar(Dither, SizeOf(Dither), 0);
+  FillChar(ZBuffer, SizeOf(ZBuffer), 0);
+  FillChar(Axis, SizeOf(Axis), 0);
+  FillChar(RHW, SizeOf(RHW), 0);
 end;
 
-function TDXRMachine.CreateTree : PDXRMachine_Tree;
+function TDXRMachine.CreateTree: PDXRMachine_Tree;
 begin
-  Result := @FTreeList[ FTreeCount ];
-  FillChar( Result^, SizeOf( Result^ ), 0 );
-  Inc( FTreeCount );
+  Result := @FTreeList[FTreeCount];
+  FillChar(Result^, SizeOf(Result^), 0);
+  Inc(FTreeCount);
 end;
 
-function TDXRMachine.CreateTree2( Typ : TDXRMachine_TreeType ) : PDXRMachine_Tree;
+function TDXRMachine.CreateTree2(Typ: TDXRMachine_TreeType): PDXRMachine_Tree;
 begin
   Result := CreateTree;
   Result.Typ := Typ;
 end;
 
-function TDXRMachine.CreateTree_LoadColor( Color : DWORD ) : PDXRMachine_Tree;
+function TDXRMachine.CreateTree_LoadColor(Color: DWORD): PDXRMachine_Tree;
 begin
   Result := CreateTree;
   Result.Typ := DXR_TREETYPE_LOADCOLOR;
   Result.Color := Color;
 end;
 
-function TDXRMachine.CreateTree_LoadConstColor( R, G, B, A : Byte ) : PDXRMachine_Tree;
+function TDXRMachine.CreateTree_LoadConstColor(R, G, B, A: Byte): PDXRMachine_Tree;
 begin
   Result := CreateTree;
   Result.Typ := DXR_TREETYPE_LOADCONSTCOLOR;
@@ -842,14 +751,14 @@ begin
   Result.ConstColor.A := A shl 8;
 end;
 
-function TDXRMachine.CreateTree_LoadTexture( Texture : DWORD ) : PDXRMachine_Tree;
+function TDXRMachine.CreateTree_LoadTexture(Texture: DWORD): PDXRMachine_Tree;
 begin
   Result := CreateTree;
   Result.Typ := DXR_TREETYPE_LOADTEXTURE;
   Result.Texture := Texture;
 end;
 
-function TDXRMachine.CreateTree_LoadBumpTexture( Texture, BumpTexture : DWORD ) : PDXRMachine_Tree;
+function TDXRMachine.CreateTree_LoadBumpTexture(Texture, BumpTexture: DWORD): PDXRMachine_Tree;
 begin
   Result := CreateTree;
   Result.Typ := DXR_TREETYPE_LOADBUMPTEXTURE;
@@ -857,7 +766,7 @@ begin
   Result.BumpTexture := BumpTexture;
 end;
 
-function TDXRMachine.CreateTree_Blend( Blend : TDXR_Blend; BlendTree1, BlendTree2 : PDXRMachine_Tree ) : PDXRMachine_Tree;
+function TDXRMachine.CreateTree_Blend(Blend: TDXR_Blend; BlendTree1, BlendTree2: PDXRMachine_Tree): PDXRMachine_Tree;
 begin
   Result := CreateTree;
   Result.Typ := DXR_TREETYPE_BLEND;
@@ -868,477 +777,458 @@ end;
 
 procedure TDXRMachine.Compile;
 
-  function GetSurfaceChannels( const Surface : TDXR_Surface ) : TDXRColorChannels;
+  function GetSurfaceChannels(const Surface: TDXR_Surface): TDXRColorChannels;
   begin
-    Result := [ ];
+    Result := [];
 
-    if Surface.ColorType = DXR_COLORTYPE_INDEXED then
+    if Surface.ColorType=DXR_COLORTYPE_INDEXED then
     begin
-      if Surface.idx_index.Mask <> 0 then
-        Result := Result + [ chRed, chGreen, chBlue ];
-      if Surface.idx_alpha.Mask <> 0 then
-        Result := Result + [ chAlpha ];
-    end
-    else
+      if Surface.idx_index.Mask<>0 then Result := Result + [chRed, chGreen, chBlue];
+      if Surface.idx_alpha.Mask<>0 then Result := Result + [chAlpha];
+    end else
     begin
-      if Surface.rgb_red.Mask <> 0 then
-        Result := Result + [ chRed ];
-      if Surface.rgb_green.Mask <> 0 then
-        Result := Result + [ chGreen ];
-      if Surface.rgb_blue.Mask <> 0 then
-        Result := Result + [ chBlue ];
-      if Surface.rgb_alpha.Mask <> 0 then
-        Result := Result + [ chAlpha ];
+      if Surface.rgb_red.Mask<>0 then Result := Result + [chRed];
+      if Surface.rgb_green.Mask<>0 then Result := Result + [chGreen];
+      if Surface.rgb_blue.Mask<>0 then Result := Result + [chBlue];
+      if Surface.rgb_alpha.Mask<>0 then Result := Result + [chAlpha];
     end;
   end;
 
-  procedure OptimizeTree( var Tree : PDXRMachine_Tree );
+  procedure OptimizeTree(var Tree: PDXRMachine_Tree);
 
-    procedure GetBlendChannels( Blend : TDXR_Blend; var Col1_1, Col1_2, Col2_1, Col2_2 : TDXRColorChannels );
+    procedure GetBlendChannels(Blend: TDXR_Blend; var Col1_1, Col1_2, Col2_1, Col2_2: TDXRColorChannels);
     begin
       case Blend of
-        DXR_BLEND_ZERO :
+        DXR_BLEND_ZERO:
           begin
-            Col1_1 := [ ];
-            Col1_2 := [ ];
-            Col2_1 := [ ];
-            Col2_2 := [ ];
+            Col1_1 := [];
+            Col1_2 := [];
+            Col2_1 := [];
+            Col2_2 := [];
           end;
-        DXR_BLEND_ONE1 :
+        DXR_BLEND_ONE1:
           begin
-            Col1_1 := [ chRed, chGreen, chBlue, chAlpha ];
-            Col1_2 := [ ];
-            Col2_1 := [ ];
-            Col2_2 := [ ];
+            Col1_1 := [chRed, chGreen, chBlue, chAlpha];
+            Col1_2 := [];
+            Col2_1 := [];
+            Col2_2 := [];
           end;
-        DXR_BLEND_ONE2 :
+        DXR_BLEND_ONE2:
           begin
-            Col1_1 := [ ];
-            Col1_2 := [ ];
-            Col2_1 := [ chRed, chGreen, chBlue, chAlpha ];
-            Col2_2 := [ ];
+            Col1_1 := [];
+            Col1_2 := [];
+            Col2_1 := [chRed, chGreen, chBlue, chAlpha];
+            Col2_2 := [];
           end;
-        DXR_BLEND_ONE1_ADD_ONE2 :
+        DXR_BLEND_ONE1_ADD_ONE2, DXR_BLEND_ONE1_SUB_ONE2:
           begin
-            Col1_1 := [ chRed, chGreen, chBlue, chAlpha ];
-            Col1_2 := [ ];
-            Col2_1 := [ chRed, chGreen, chBlue, chAlpha ];
-            Col2_2 := [ ];
+            Col1_1 := [chRed, chGreen, chBlue, chAlpha];
+            Col1_2 := [];
+            Col2_1 := [chRed, chGreen, chBlue, chAlpha];
+            Col2_2 := [];
           end;
-        DXR_BLEND_ONE2_SUB_ONE1 :
+        DXR_BLEND_ONE2_SUB_ONE1, DXR_BLEND_ONE1_MUL_ONE2:
           begin
-            Col1_1 := [ chRed, chGreen, chBlue, chAlpha ];
-            Col1_2 := [ ];
-            Col2_1 := [ chRed, chGreen, chBlue, chAlpha ];
-            Col2_2 := [ ];
+            Col1_1 := [chRed, chGreen, chBlue, chAlpha];
+            Col1_2 := [];
+            Col2_1 := [chRed, chGreen, chBlue, chAlpha];
+            Col2_2 := [];
           end;
-        DXR_BLEND_ONE1_SUB_ONE2 :
+        DXR_BLEND_SRCALPHA1:
           begin
-            Col1_1 := [ chRed, chGreen, chBlue, chAlpha ];
-            Col1_2 := [ ];
-            Col2_1 := [ chRed, chGreen, chBlue, chAlpha ];
-            Col2_2 := [ ];
+            Col1_1 := [chRed, chGreen, chBlue];
+            Col1_2 := [chAlpha];
+            Col2_1 := [];
+            Col2_2 := [];
           end;
-        DXR_BLEND_SRCALPHA1 :
+        DXR_BLEND_SRCALPHA1_ADD_ONE2:
           begin
-            Col1_1 := [ chRed, chGreen, chBlue ];
-            Col1_2 := [ chAlpha ];
-            Col2_1 := [ ];
-            Col2_2 := [ ];
+            Col1_1 := [chRed, chGreen, chBlue];
+            Col1_2 := [chAlpha];
+            Col2_1 := [chRed, chGreen, chBlue, chAlpha];
+            Col2_2 := [];
           end;
-        DXR_BLEND_SRCALPHA1_ADD_ONE2 :
+        DXR_BLEND_ONE2_SUB_SRCALPHA1:
           begin
-            Col1_1 := [ chRed, chGreen, chBlue ];
-            Col1_2 := [ chAlpha ];
-            Col2_1 := [ chRed, chGreen, chBlue, chAlpha ];
-            Col2_2 := [ ];
+            Col1_1 := [chRed, chGreen, chBlue];
+            Col1_2 := [chAlpha];
+            Col2_1 := [chRed, chGreen, chBlue, chAlpha];
+            Col2_2 := [];
           end;
-        DXR_BLEND_ONE2_SUB_SRCALPHA1 :
+        DXR_BLEND_SRCALPHA1_ADD_INVSRCALPHA2:
           begin
-            Col1_1 := [ chRed, chGreen, chBlue ];
-            Col1_2 := [ chAlpha ];
-            Col2_1 := [ chRed, chGreen, chBlue, chAlpha ];
-            Col2_2 := [ ];
+            Col1_1 := [chRed, chGreen, chBlue];
+            Col1_2 := [chAlpha];
+            Col2_1 := [chRed, chGreen, chBlue, chAlpha];
+            Col2_2 := [];
           end;
-        DXR_BLEND_SRCALPHA1_ADD_INVSRCALPHA2 :
+        DXR_BLEND_INVSRCALPHA1_ADD_SRCALPHA2:
           begin
-            Col1_1 := [ chRed, chGreen, chBlue ];
-            Col1_2 := [ chAlpha ];
-            Col2_1 := [ chRed, chGreen, chBlue, chAlpha ];
-            Col2_2 := [ ];
-          end;
-        DXR_BLEND_INVSRCALPHA1_ADD_SRCALPHA2 :
-          begin
-            Col1_1 := [ chRed, chGreen, chBlue ];
-            Col1_2 := [ chAlpha ];
-            Col2_1 := [ chRed, chGreen, chBlue, chAlpha ];
-            Col2_2 := [ ];
+            Col1_1 := [chRed, chGreen, chBlue];
+            Col1_2 := [chAlpha];
+            Col2_1 := [chRed, chGreen, chBlue, chAlpha];
+            Col2_2 := [];
           end;
 
-        DXR_BLEND_DECAL :
+        DXR_BLEND_DECAL:
           begin
-            Col1_1 := [ chRed, chGreen, chBlue, chAlpha ];
-            Col1_2 := [ ];
-            Col2_1 := [ ];
-            Col2_2 := [ ];
+            Col1_1 := [chRed, chGreen, chBlue, chAlpha];
+            Col1_2 := [];
+            Col2_1 := [];
+            Col2_2 := [];
           end;
-        DXR_BLEND_DECALALPHA :
+        DXR_BLEND_DECALALPHA:
           begin
-            Col1_1 := [ chRed, chGreen, chBlue ];
-            Col1_2 := [ ];
-            Col2_1 := [ ];
-            Col2_2 := [ chAlpha ];
+            Col1_1 := [chRed, chGreen, chBlue];
+            Col1_2 := [];
+            Col2_1 := [];
+            Col2_2 := [chAlpha];
           end;
-        DXR_BLEND_MODULATE :
+        DXR_BLEND_MODULATE:
           begin
-            Col1_1 := [ chRed, chGreen, chBlue, chAlpha ];
-            Col1_2 := [ ];
-            Col2_1 := [ chRed, chGreen, chBlue, chAlpha ];
-            Col2_2 := [ ];
+            Col1_1 := [chRed, chGreen, chBlue, chAlpha];
+            Col1_2 := [];
+            Col2_1 := [chRed, chGreen, chBlue, chAlpha];
+            Col2_2 := [];
           end;
-        DXR_BLEND_MODULATEALPHA :
+        DXR_BLEND_MODULATEALPHA:
           begin
-            Col1_1 := [ chRed, chGreen, chBlue ];
-            Col1_2 := [ chAlpha ];
-            Col2_1 := [ chRed, chGreen, chBlue ];
-            Col2_2 := [ chAlpha ];
+            Col1_1 := [chRed, chGreen, chBlue];
+            Col1_2 := [chAlpha];
+            Col2_1 := [chRed, chGreen, chBlue];
+            Col2_2 := [chAlpha];
           end;
-        DXR_BLEND_ADD :
+        DXR_BLEND_ADD:
           begin
-            Col1_1 := [ chRed, chGreen, chBlue, chAlpha ];
-            Col1_2 := [ ];
-            Col2_1 := [ chRed, chGreen, chBlue, chAlpha ];
-            Col2_2 := [ ];
+            Col1_1 := [chRed, chGreen, chBlue, chAlpha];
+            Col1_2 := [];
+            Col2_1 := [chRed, chGreen, chBlue, chAlpha];
+            Col2_2 := [];
           end;
       end;
     end;
 
   var
-    c : TDXRColorChannels;
-    Col1_1, Col1_2, Col2_1, Col2_2 : TDXRColorChannels;
+    c: TDXRColorChannels;
+    Col1_1, Col1_2, Col2_1, Col2_2: TDXRColorChannels;
   begin
     case Tree.Typ of
-      DXR_TREETYPE_LOADBLACK :
-        begin
+      DXR_TREETYPE_LOADBLACK:
+          begin
             // Load black color
-        end;
-      DXR_TREETYPE_LOADCOLOR :
-        begin
-            // Load color
-        end;
-      DXR_TREETYPE_LOADTEXTURE :
-        begin
-            // Load texel
-        end;
-      DXR_TREETYPE_LOADBUMPTEXTURE :
-        begin
-            // Load texel with Bump mapping
-        end;
-      DXR_TREETYPE_LOADDESTPIXEL :
-        begin
-            // Load dest pixel
-        end;
-      DXR_TREETYPE_BLEND :
-        begin
-            // Blend color
-          GetBlendChannels( Tree.Blend, Col1_1, Col1_2, Col2_1, Col2_2 );
-
-          Tree.BlendTree1.Channels := Tree.Channels * Col1_1 + Col1_2;
-          Tree.BlendTree2.Channels := Tree.Channels * Col2_1 + Col2_2;
-
-          OptimizeTree( Tree.BlendTree1 );
-          OptimizeTree( Tree.BlendTree2 );
-
-          if ( Tree.Blend = DXR_BLEND_ZERO ) then
-          begin
-            c := Tree.Channels; Tree^.Typ := DXR_TREETYPE_LOADBLACK; Tree.Channels := c;
-          end
-          else if ( Tree.Blend in [ DXR_BLEND_ONE1, DXR_BLEND_DECAL ] ) then
-          begin
-            c := Tree.Channels; Tree := Tree.BlendTree1; Tree.Channels := c;
-          end
-          else if ( Tree.Blend = DXR_BLEND_ONE2 ) then
-          begin
-            c := Tree.Channels; Tree := Tree.BlendTree2; Tree.Channels := c;
-          end
-          else if ( Tree.Blend in [ DXR_BLEND_ONE1_ADD_ONE2, DXR_BLEND_ONE2_SUB_ONE1, DXR_BLEND_ONE1_SUB_ONE2 ] ) and
-            ( Tree.BlendTree2.Typ = DXR_TREETYPE_LOADBLACK ) then
-          begin
-            c := Tree.Channels; Tree := Tree.BlendTree1; Tree.Channels := c;
-          end
-          else if ( Tree.Blend in [ DXR_BLEND_ONE1_ADD_ONE2, DXR_BLEND_ONE2_SUB_ONE1, DXR_BLEND_ONE1_SUB_ONE2 ] ) and
-            ( Tree.BlendTree1.Typ = DXR_TREETYPE_LOADBLACK ) then
-          begin
-            c := Tree.Channels; Tree := Tree.BlendTree2; Tree.Channels := c;
-          end
-          else
-          begin
-            if ( Col1_1 = [ ] ) and ( Col1_2 = [ ] ) then
-              Tree.BlendTree1 := nil;
-            if ( Col2_1 = [ ] ) and ( Col2_2 = [ ] ) then
-              Tree.BlendTree2 := nil;
           end;
-        end;
+      DXR_TREETYPE_LOADCOLOR:
+          begin
+            // Load color
+          end;
+      DXR_TREETYPE_LOADTEXTURE:
+          begin
+            // Load texel
+          end;
+      DXR_TREETYPE_LOADBUMPTEXTURE:
+          begin
+            // Load texel with Bump mapping
+          end;
+      DXR_TREETYPE_LOADDESTPIXEL:
+          begin
+            // Load dest pixel
+          end;
+      DXR_TREETYPE_BLEND:
+          begin
+            // Blend color
+            GetBlendChannels(Tree.Blend, Col1_1, Col1_2, Col2_1, Col2_2);
+
+            Tree.BlendTree1.Channels := Tree.Channels*Col1_1+Col1_2;
+            Tree.BlendTree2.Channels := Tree.Channels*Col2_1+Col2_2;
+
+            OptimizeTree(Tree.BlendTree1);
+            OptimizeTree(Tree.BlendTree2);
+
+            if (Tree.Blend=DXR_BLEND_ZERO) then
+            begin
+              c := Tree.Channels; Tree^.Typ := DXR_TREETYPE_LOADBLACK; Tree.Channels := c;
+            end else
+            if (Tree.Blend in [DXR_BLEND_ONE1, DXR_BLEND_DECAL]) then
+            begin
+              c := Tree.Channels; Tree := Tree.BlendTree1; Tree.Channels := c;
+            end else
+            if (Tree.Blend=DXR_BLEND_ONE2) then
+            begin
+              c := Tree.Channels; Tree := Tree.BlendTree2; Tree.Channels := c;
+            end else
+            if (Tree.Blend in [DXR_BLEND_ONE1_ADD_ONE2, DXR_BLEND_ONE2_SUB_ONE1]) and
+              (Tree.BlendTree2.Typ=DXR_TREETYPE_LOADBLACK) then
+            begin
+              c := Tree.Channels; Tree := Tree.BlendTree1; Tree.Channels := c;
+            end else
+            if (Tree.Blend in [DXR_BLEND_ONE1_ADD_ONE2, DXR_BLEND_ONE2_SUB_ONE1]) and
+              (Tree.BlendTree1.Typ=DXR_TREETYPE_LOADBLACK) then
+            begin
+              c := Tree.Channels; Tree := Tree.BlendTree2; Tree.Channels := c;
+            end else
+            begin
+              if (Col1_1=[]) and (Col1_2=[]) then Tree.BlendTree1 := nil;
+              if (Col2_1=[]) and (Col2_2=[]) then Tree.BlendTree2 := nil;
+            end;
+          end;
     end;
   end;
 
-  procedure GetEnableChannels( Tree : PDXRMachine_Tree );
+  procedure GetEnableChannels(Tree: PDXRMachine_Tree);
   begin
     case Tree.Typ of
-      DXR_TREETYPE_LOADBLACK :
-        begin
+      DXR_TREETYPE_LOADBLACK:
+          begin
             // Load black color
-        end;
-      DXR_TREETYPE_LOADCOLOR :
-        begin
+          end;
+      DXR_TREETYPE_LOADCOLOR:
+          begin
             // Load color
-          ColorList[ Tree.Color ].Channels := ColorList[ Tree.Color ].Channels + Tree.Channels;
-          ColorList[ Tree.Color ].Enable := ColorList[ Tree.Color ].Channels <> [ ];
-        end;
-      DXR_TREETYPE_LOADTEXTURE :
-        begin
+            ColorList[Tree.Color].Channels := ColorList[Tree.Color].Channels + Tree.Channels;
+            ColorList[Tree.Color].Enable := ColorList[Tree.Color].Channels<>[];
+          end;
+      DXR_TREETYPE_LOADTEXTURE:
+          begin
             // Load texel
-          TextureList[ Tree.Texture ].EnableChannels := TextureList[ Tree.Texture ].EnableChannels +
-            Tree.Channels * GetSurfaceChannels( TextureList[ Tree.Texture ].Surface^ );
-          TextureList[ Tree.Texture ].Enable := TextureList[ Tree.Texture ].EnableChannels <> [ ];
-        end;
-      DXR_TREETYPE_LOADBUMPTEXTURE :
-        begin
+            TextureList[Tree.Texture].EnableChannels := TextureList[Tree.Texture].EnableChannels +
+              Tree.Channels*GetSurfaceChannels(TextureList[Tree.Texture].Surface^);
+            TextureList[Tree.Texture].Enable := TextureList[Tree.Texture].EnableChannels<>[];
+          end;
+      DXR_TREETYPE_LOADBUMPTEXTURE:
+          begin
             // Load texel with Bump mapping
-          TextureList[ Tree.Texture ].EnableChannels := TextureList[ Tree.Texture ].EnableChannels +
-            Tree.Channels * GetSurfaceChannels( TextureList[ Tree.Texture ].Surface^ );
-          TextureList[ Tree.Texture ].Enable := TextureList[ Tree.Texture ].EnableChannels <> [ ];
-          TextureList[ Tree.BumpTexture ].Enable := True;
-        end;
-      DXR_TREETYPE_LOADDESTPIXEL :
-        begin
+            TextureList[Tree.Texture].EnableChannels := TextureList[Tree.Texture].EnableChannels +
+              Tree.Channels*GetSurfaceChannels(TextureList[Tree.Texture].Surface^);
+            TextureList[Tree.Texture].Enable := TextureList[Tree.Texture].EnableChannels<>[];
+            TextureList[Tree.BumpTexture].Enable := True;
+          end;
+      DXR_TREETYPE_LOADDESTPIXEL:
+          begin
             // Load dest pixel
-        end;
-      DXR_TREETYPE_BLEND :
-        begin
+          end;
+      DXR_TREETYPE_BLEND:
+          begin
             // Blend color
-          if Tree.BlendTree1 <> nil then
-            GetEnableChannels( Tree.BlendTree1 );
-          if Tree.BlendTree2 <> nil then
-            GetEnableChannels( Tree.BlendTree2 );
-        end;
+            if Tree.BlendTree1<>nil then GetEnableChannels(Tree.BlendTree1);
+            if Tree.BlendTree2<>nil then GetEnableChannels(Tree.BlendTree2);
+          end;
     end;
   end;
 
 var
-  Code : Pointer;
-  i : Integer;
+  Code: Pointer;
+  i: Integer;
 begin
   {  Optimize tree  }
-  Tree.Channels := GetSurfaceChannels( Dest^ );
-  OptimizeTree( Tree );
+  Tree.Channels := GetSurfaceChannels(Dest^);
+  OptimizeTree(Tree);
 
   {  Get enable channels  }
-  GetEnableChannels( Tree );
+  GetEnableChannels(Tree);
 
-  for i := Low( ColorList ) to High( ColorList ) do
-    if ColorList[ i ].Enable then
+  for i:=Low(ColorList) to High(ColorList) do
+    if ColorList[i].Enable then
     begin
-      ColorIndex[ ColorIndexCount ] := i;
-      Inc( ColorIndexCount );
+      ColorIndex[ColorIndexCount] := i;
+      Inc(ColorIndexCount);
     end;
 
-  for i := Low( TextureList ) to High( TextureList ) do
-    if TextureList[ i ].Enable then
+  for i:=Low(TextureList) to High(TextureList) do
+    if TextureList[i].Enable then
     begin
-      TextureIndex[ TextureIndexCount ] := i;
-      Inc( TextureIndexCount );
+      TextureIndex[TextureIndexCount] := i;
+      Inc(TextureIndexCount);
     end;
 
-  ZBuffer.Enable := ZBuffer.Surface <> nil;
+  ZBuffer.Enable := ZBuffer.Surface<>nil;
 
   RHW.Enable := ZBuffer.Enable;
   Axis.IncEnable := Dither.Enable;
 
   {  Generate X86 code  }
-  Code := FBuf; GenerateCode( Code, Tree );
+  Code := FBuf; GenerateCode(Code, Tree);
 
   FCompiled := True;
 end;
 
 const
-  Mask1 : array[ 0..7 ] of DWORD = ( $80, $40, $20, $10, $08, $04, $02, $01 );
-  Mask2 : array[ 0..3 ] of DWORD = ( $C0, $30, $0C, $03 );
-  Mask4 : array[ 0..1 ] of DWORD = ( $F0, $0F );
+  Mask1: array[0..7] of DWORD= ($80, $40, $20, $10, $08, $04, $02, $01);
+  Mask2: array[0..3] of DWORD= ($C0, $30, $0C, $03);
+  Mask4: array[0..1] of DWORD= ($F0, $0F);
 
-  Shift1 : array[ 0..7 ] of DWORD = ( 7, 6, 5, 4, 3, 2, 1, 0 );
-  Shift2 : array[ 0..3 ] of DWORD = ( 6, 4, 2, 0 );
-  Shift4 : array[ 0..1 ] of DWORD = ( 4, 0 );
+  Shift1: array[0..7] of DWORD= (7, 6, 5, 4, 3, 2, 1, 0);
+  Shift2: array[0..3] of DWORD= (6, 4, 2, 0);
+  Shift4: array[0..1] of DWORD= (4, 0);
 
 var
-  _null : Byte;
+  _null: Byte;
 
   // Saturation addition table
   //   Result := Min(n+j, 255)
-  _AddTable : array[ 0..256 * 2 - 1 ] of Byte;
-  _SubTable : array[ -255..255 ] of Byte;
+  _AddTable: array[0..256*2-1] of Byte;
+  _SubTable: array[-255..255] of Byte;
 
   // Byte to QWORD convert table
   //   Result := (n shl 56)+(n shl 48)+(n shl 32)+(n shl 24)+(n shl 16)+(n shl 8)+n
-  _ByteToQWORDTable : array[ 0..255, 0..3 ] of WORD;
+  _ByteToQWORDTable: array[0..255, 0..3] of WORD;
 
-  _BlackColor : TDXRMachine_Color = ( R : 0; G : 0; B : 0; A : 0 );
+  _BlackColor: TDXRMachine_Color = (R: 0; G: 0; B: 0; A: 0);
 
 procedure Init;
 var
-  i : Integer;
+  i: Integer;
 begin
-  for i := Low( _AddTable ) to High( _AddTable ) do
+  for i:=Low(_AddTable) to High(_AddTable) do
   begin
-    if i > 255 then
-      _AddTable[ i ] := 255
+    if i>255 then
+      _AddTable[i] := 255
     else
-      _AddTable[ i ] := i;
+      _AddTable[i] := i;
   end;
 
-  for i := Low( _SubTable ) to High( _SubTable ) do
+  for i:=Low(_SubTable) to High(_SubTable) do
   begin
-    if i < 0 then
-      _SubTable[ i ] := 0
+    if i<0 then
+      _SubTable[i] := 0
     else
-      _SubTable[ i ] := i;
+      _SubTable[i] := i;
   end;
 
-  for i := 0 to 255 do
+  for i:=0 to 255 do
   begin
-    _ByteToQWORDTable[ i, 0 ] := i;
-    _ByteToQWORDTable[ i, 1 ] := i;
-    _ByteToQWORDTable[ i, 2 ] := i;
-    _ByteToQWORDTable[ i, 3 ] := i;
+    _ByteToQWORDTable[i, 0] := i;
+    _ByteToQWORDTable[i, 1] := i;
+    _ByteToQWORDTable[i, 2] := i;
+    _ByteToQWORDTable[i, 3] := i;
   end;
 end;
 
-procedure TDXRMachine.GenerateCode( var Code : Pointer; Tree : PDXRMachine_Tree );
+procedure TDXRMachine.GenerateCode(var Code: Pointer; Tree: PDXRMachine_Tree);
 var
-  SkipAddress : Pointer;
+  SkipAddress: Pointer;
 
-  procedure genCmpFunc( var Code : Pointer; Func : TDXR_CmpFunc; JmpAdress : Pointer );
+  procedure genCmpFunc(var Code: Pointer; Func: TDXR_CmpFunc; JmpAdress: Pointer);
 
-    procedure genShortJmp( var Code : Pointer; JmpCode : Pointer; sC : Byte );
+    procedure genShortJmp(var Code: Pointer; JmpCode: Pointer; sC: Byte);
     type
       PShortJmp = ^TShortJmp;
       TShortJmp = packed record
-        c : Byte;
-        A : ShortInt;
+        c: Byte;
+        A: ShortInt;
       end;
     begin
-      with PShortJmp( Code )^ do
+      with PShortJmp(Code)^ do
       begin
         c := sC;
-        A := Integer( JmpCode ) - ( Integer( Code ) + 2 );
+        A := Integer(JmpCode)-(Integer(Code)+2);
       end;
-      Inc( Integer( Code ), 2 );
+      Inc(Integer(Code), 2);
     end;
 
-    procedure genNearJmp( var Code : Pointer; JmpCode : Pointer; nC : Byte );
+    procedure genNearJmp(var Code: Pointer; JmpCode: Pointer; nC: Byte);
     type
       PNearJmp = ^TNearJmp;
       TNearJmp = packed record
-        c : Byte;
-        A : Integer;
+        c: Byte;
+        A: Integer;
       end;
     begin
-      with PNearJmp( Code )^ do
+      with PNearJmp(Code)^ do
       begin
         c := nC;
-        A := Integer( JmpCode ) - ( Integer( Code ) + 5 );
+        A := Integer(JmpCode)-(Integer(Code)+5);
       end;
-      Inc( Integer( Code ), 5 );
+      Inc(Integer(Code), 5);
     end;
 
-    procedure genNearJmp2( var Code : Pointer; JmpCode : Pointer; nC1, nC2 : Byte );
+    procedure genNearJmp2(var Code: Pointer; JmpCode: Pointer; nC1, nC2: Byte);
     type
       PNearJmp2 = ^TNearJmp2;
       TNearJmp2 = packed record
-        c1, c2 : Byte;
-        A : Integer;
+        c1, c2: Byte;
+        A: Integer;
       end;
     begin
-      with PNearJmp2( Code )^ do
+      with PNearJmp2(Code)^ do
       begin
         c1 := nC1;
         c2 := nC2;
-        A := Integer( JmpCode ) - ( Integer( Code ) + 6 );
+        A := Integer(JmpCode)-(Integer(Code)+6);
       end;
-      Inc( Integer( Code ), 6 );
+      Inc(Integer(Code), 6);
     end;
 
-    procedure genFlagJmp( var Code : Pointer; JmpCode : Pointer; sC, nC1, nC2 : Byte );
+    procedure genFlagJmp(var Code: Pointer; JmpCode: Pointer; sC, nC1, nC2: Byte);
     var
-      i : Integer;
+      i: Integer;
     begin
-      i := Integer( JmpCode ) - ( Integer( Code ) + 2 );
-      if abs( i ) < 128 then
-        genShortJmp( Code, JmpCode, sC )
+      i := Integer(JmpCode)-(Integer(Code)+2);
+      if abs(i)<128 then
+        genShortJmp(Code, JmpCode, sC)
       else
-        genNearJmp2( Code, JmpCode, nC1, nC2 );
+        genNearJmp2(Code, JmpCode, nC1, nC2);
     end;
 
-    procedure genJmp( var Code : Pointer; JmpCode : Pointer );
+    procedure genJmp(var Code: Pointer; JmpCode: Pointer);
     var
-      i : Integer;
+      i: Integer;
     begin
-      i := Integer( JmpCode ) - ( Integer( Code ) + 2 );
-      if abs( i ) < 128 then
-        genShortJmp( Code, JmpCode, $EB )
+      i := Integer(JmpCode)-(Integer(Code)+2);
+      if abs(i)<128 then
+        genShortJmp(Code, JmpCode, $EB)
       else
-        genNearJmp( Code, JmpCode, $E9 );
+        genNearJmp(Code, JmpCode, $E9);
     end;
 
   begin
     case Func of
-      DXR_CMPFUNC_NEVER :
-        begin
+      DXR_CMPFUNC_NEVER:
+          begin
             {  if (False) then Jump }
-        end;
-      DXR_CMPFUNC_LESS :
-        begin
+          end;
+      DXR_CMPFUNC_LESS:
+          begin
             {  if (New<Old) then Jump  }
-          genFlagJmp( Code, JmpAdress, $7C, $0F, $8C );
-        end;
-      DXR_CMPFUNC_EQUAL :
-        begin
+            genFlagJmp(Code, JmpAdress, $7C, $0F, $8C);
+          end;
+      DXR_CMPFUNC_EQUAL:
+          begin
             {  if (New=Old) then Jump  }
-          genFlagJmp( Code, JmpAdress, $74, $0F, $84 );
-        end;
-      DXR_CMPFUNC_LESSEQUAL :
-        begin
+            genFlagJmp(Code, JmpAdress, $74, $0F, $84);
+          end;
+      DXR_CMPFUNC_LESSEQUAL:
+          begin
             {  if (New<=Old) then Jump  }
-          genFlagJmp( Code, JmpAdress, $7E, $0F, $8E );
-        end;
-      DXR_CMPFUNC_GREATER :
-        begin
+            genFlagJmp(Code, JmpAdress, $7E, $0F, $8E);
+          end;
+      DXR_CMPFUNC_GREATER:
+          begin
             {  if (New>Old) then Jump  }
-          genFlagJmp( Code, JmpAdress, $7F, $0F, $8F );
-        end;
-      DXR_CMPFUNC_NOTEQUAL :
-        begin
+            genFlagJmp(Code, JmpAdress, $7F, $0F, $8F);
+          end;
+      DXR_CMPFUNC_NOTEQUAL:
+          begin
             {  if (New<>Old) then Jump  }
-          genFlagJmp( Code, JmpAdress, $75, $0F, $85 );
-        end;
-      DXR_CMPFUNC_GREATEREQUAL :
-        begin
+            genFlagJmp(Code, JmpAdress, $75, $0F, $85);
+          end;
+      DXR_CMPFUNC_GREATEREQUAL:
+          begin
             {  if (New>=Old) then Jump  }
-          genFlagJmp( Code, JmpAdress, $7D, $0F, $8D );
-        end;
-      DXR_CMPFUNC_ALWAYS :
-        begin
+            genFlagJmp(Code, JmpAdress, $7D, $0F, $8D);
+          end;
+      DXR_CMPFUNC_ALWAYS:
+          begin
             {  if (True) then Break }
-          genJmp( Code, JmpAdress );
-        end;
+            genJmp(Code, JmpAdress);
+          end;
     end;
   end;
 
-  procedure genInitDestAddress( var Code : Pointer );
+  procedure genInitDestAddress(var Code: Pointer);
   var
-    _Axis : Pointer;
-    ByteCount, Pitch : DWORD;
-    Bits : Pointer;
+    _Axis: Pointer;
+    ByteCount, Pitch: DWORD;
+    Bits: Pointer;
   begin
     _Axis := @Axis.Axis;
 
@@ -1389,14 +1279,13 @@ var
     end;
   end;
 
-  procedure genInitZBuffer( var Code : Pointer );
+  procedure genInitZBuffer(var Code: Pointer);
   var
-    _Axis : Pointer;
-    ByteCount, Pitch : DWORD;
-    Bits, _ZBuf : Pointer;
+    _Axis: Pointer;
+    ByteCount, Pitch: DWORD;
+    Bits, _ZBuf: Pointer;
   begin
-    if not ZBuffer.Enable then
-      Exit;
+    if not ZBuffer.Enable then Exit;
 
     _Axis := @Axis.Axis;
 
@@ -1456,12 +1345,11 @@ var
     end;
   end;
 
-  procedure genZBufferTest( var Code : Pointer );
+  procedure genZBufferTest(var Code: Pointer);
   var
-    _ZBuf, _RHW : Pointer;
+    _ZBuf, _RHW: Pointer;
   begin
-    if not ZBuffer.Enable then
-      Exit;
+    if not ZBuffer.Enable then Exit;
 
     _ZBuf := @F_ZBuf;
     _RHW := @RHW.nRHW;
@@ -1486,32 +1374,29 @@ var
       mov dword ptr [ecx+edx],eax
     end;
 
-    if ZBuffer.CmpFunc <> DXR_CMPFUNC_ALWAYS then
+    if ZBuffer.CmpFunc<>DXR_CMPFUNC_ALWAYS then
     begin
       case ZBuffer.Surface.BitCount of
-        8 :
-          begin
-            asm
+        8: begin
+             asm
                jmp @@EndCode
              @@StartCode:
                movzx eax,byte ptr [edx]
              @@EndCode:
                {$I DXRender.inc}
-            end;
-          end;
-        16 :
-          begin
-            asm
+             end;
+           end;
+       16: begin
+             asm
                jmp @@EndCode
              @@StartCode:
                movzx eax,word ptr [edx]
              @@EndCode:
                {$I DXRender.inc}
-            end;
-          end;
-        24 :
-          begin
-            asm
+             end;
+           end;
+       24: begin
+             asm
                jmp @@EndCode
              @@StartCode:
                movzx ax,byte ptr [edx+2]
@@ -1519,18 +1404,17 @@ var
                mov ax,word ptr [edx]
              @@EndCode:
                {$I DXRender.inc}
-            end;
-          end;
-        32 :
-          begin
-            asm
+             end;
+           end;
+       32: begin
+             asm
                jmp @@EndCode
              @@StartCode:
                mov eax,dword ptr [edx]
              @@EndCode:
                {$I DXRender.inc}
-            end;
-          end;
+             end;
+           end;
       end;
 
       asm
@@ -1540,35 +1424,32 @@ var
       @@EndCode:
         {$I DXRender.inc}
       end;
-      genCmpFunc( Code, ZBuffer.CmpFunc, SkipAddress );
+      genCmpFunc(Code, ZBuffer.CmpFunc, SkipAddress);
     end;
 
     if ZBuffer.WriteEnable then
     begin
       case ZBuffer.Surface.BitCount of
-        8 :
-          begin
-            asm
+        8: begin
+             asm
                jmp @@EndCode
              @@StartCode:
                mov byte ptr [edx],bl
              @@EndCode:
                {$I DXRender.inc}
-            end;
-          end;
-        16 :
-          begin
-            asm
+             end;
+           end;
+       16: begin
+             asm
                jmp @@EndCode
              @@StartCode:
                mov word ptr [edx],bx
              @@EndCode:
                {$I DXRender.inc}
-            end;
-          end;
-        24 :
-          begin
-            asm
+             end;
+           end;
+       24: begin
+             asm
                jmp @@EndCode
              @@StartCode:
                mov word ptr [edx],bx
@@ -1576,29 +1457,27 @@ var
                mov byte ptr [edx+2],bh
              @@EndCode:
                {$I DXRender.inc}
-            end;
-          end;
-        32 :
-          begin
-            asm
+             end;
+           end;
+       32: begin
+             asm
                jmp @@EndCode
              @@StartCode:
                mov dword ptr [edx],ebx
              @@EndCode:
                {$I DXRender.inc}
-            end;
-          end;
+             end;
+           end;
       end;
     end;
   end;
 
-  procedure genUpdateZBufferAddress( var Code : Pointer );
+  procedure genUpdateZBufferAddress(var Code: Pointer);
   var
-    ByteCount : DWORD;
-    _ZBuf : Pointer;
+    ByteCount: DWORD;
+    _ZBuf: Pointer;
   begin
-    if not ZBuffer.Enable then
-      Exit;
+    if not ZBuffer.Enable then Exit;
 
     ByteCount := ZBuffer.Surface.BitCount shr 3;
 
@@ -1624,32 +1503,29 @@ var
     end;
   end;
 
-  procedure genReadDestPixel( var Code : Pointer );
+  procedure genReadDestPixel(var Code: Pointer);
   begin
     case Dest.BitCount of
-      8 :
-        begin
-          asm
+      8: begin
+           asm
              jmp @@EndCode
            @@StartCode:
              movzx eax,byte ptr [edi]
            @@EndCode:
              {$I DXRender.inc}
-          end;
-        end;
-      16 :
-        begin
-          asm
+           end;
+         end;
+     16: begin
+           asm
              jmp @@EndCode
            @@StartCode:
              movzx eax,word ptr [edi]
            @@EndCode:
              {$I DXRender.inc}
-          end;
-        end;
-      24 :
-        begin
-          asm
+           end;
+         end;
+     24: begin
+           asm
              jmp @@EndCode
            @@StartCode:
              movzx eax,byte ptr [edi+2]
@@ -1657,47 +1533,43 @@ var
              mov ax,word ptr [edi]
            @@EndCode:
              {$I DXRender.inc}
-          end;
-        end;
-      32 :
-        begin
-          asm
+           end;
+         end;
+     32: begin
+           asm
              jmp @@EndCode
            @@StartCode:
              mov eax,dword ptr [edi]
            @@EndCode:
              {$I DXRender.inc}
-          end;
-        end;
+           end;
+         end;
     end;
   end;
 
-  procedure genWriteDestPixel( var Code : Pointer );
+  procedure genWriteDestPixel(var Code: Pointer);
   begin
     case Dest.BitCount of
-      8 :
-        begin
-          asm
+      8: begin
+           asm
              jmp @@EndCode
            @@StartCode:
              mov byte ptr [edi],al
            @@EndCode:
              {$I DXRender.inc}
-          end;
-        end;
-      16 :
-        begin
-          asm
+           end;
+         end;
+     16: begin
+           asm
              jmp @@EndCode
            @@StartCode:
              mov word ptr [edi],ax
            @@EndCode:
              {$I DXRender.inc}
-          end;
-        end;
-      24 :
-        begin
-          asm
+           end;
+         end;
+     24: begin
+           asm
              jmp @@EndCode
            @@StartCode:
              mov word ptr [edi],ax
@@ -1705,28 +1577,27 @@ var
              mov byte ptr [edi+2],ah
            @@EndCode:
              {$I DXRender.inc}
-          end;
-        end;
-      32 :
-        begin
-          asm
+           end;
+         end;
+     32: begin
+           asm
              jmp @@EndCode
            @@StartCode:
              mov dword ptr [edi],eax
            @@EndCode:
              {$I DXRender.inc}
-          end;
-        end;
+           end;
+         end;
     end;
   end;
 
-  procedure genUpdateDestAddress( var Code : Pointer );
+  procedure genUpdateDestAddress(var Code: Pointer);
   var
-    ByteCount : DWORD;
+    ByteCount: DWORD;
   begin
     ByteCount := Dest.BitCount shr 3;
 
-    if ByteCount = 1 then
+    if ByteCount=1 then
     begin
       asm
         jmp @@EndCode
@@ -1735,8 +1606,7 @@ var
       @@EndCode:
         {$I DXRender.inc}
       end;
-    end
-    else
+    end else
     begin
       asm
         jmp @@EndCode
@@ -1753,12 +1623,11 @@ var
     end;
   end;
 
-  procedure genReadSurfacePixel_Tile( var Code : Pointer; const Source : TDXR_Surface; Axis : PDXRMachine_Axis );
+  procedure genReadSurfacePixel_Tile(var Code: Pointer; const Source: TDXR_Surface; Axis: PDXRMachine_Axis);
   begin
     case Source.BitCount of
-      1 :
-        begin
-          asm
+      1: begin
+           asm
              jmp @@EndCode
            @@StartCode:
              mov esi,dword ptr [offset _null]{}//TexY
@@ -1817,11 +1686,10 @@ var
              mov edx,offset @@Bits-4
              sub edx,offset @@StartCode
              mov dword ptr [ecx+edx],eax
-          end;
-        end;
-      2 :
-        begin
-          asm
+           end;
+         end;
+      2: begin
+           asm
              jmp @@EndCode
            @@StartCode:
              mov esi,dword ptr [offset _null]{}//TexY
@@ -1879,11 +1747,10 @@ var
              mov edx,offset @@Bits-4
              sub edx,offset @@StartCode
              mov dword ptr [ecx+edx],eax
-          end;
-        end;
-      4 :
-        begin
-          asm
+           end;
+         end;
+      4: begin
+           asm
              jmp @@EndCode
            @@StartCode:
              mov esi,dword ptr [offset _null]{}//TexY
@@ -1942,13 +1809,12 @@ var
              mov edx,offset @@Bits-4
              sub edx,offset @@StartCode
              mov dword ptr [ecx+edx],eax
-          end;
-        end;
-      8 :
-        begin
-          if Source.pitch = ( 1 shl Source.PitchBit ) then
-          begin
-            asm
+           end;
+         end;
+      8: begin
+           if Source.pitch=(1 shl Source.PitchBit) then
+           begin
+             asm
                jmp @@EndCode
              @@StartCode:
                mov esi,dword ptr [offset _null]{}@@TexY: //TexY
@@ -2003,11 +1869,11 @@ var
                mov edx,offset @@Bits-4
                sub edx,offset @@StartCode
                mov dword ptr [ecx+edx],eax
-            end;
-          end
-          else if - Source.pitch = ( 1 shl Source.PitchBit ) then
-          begin
-            asm
+             end;
+           end else
+           if -Source.pitch=(1 shl Source.PitchBit) then
+           begin
+             asm
                jmp @@EndCode
              @@StartCode:
                mov esi,dword ptr [offset _null]{}@@TexY: //TexY
@@ -2063,11 +1929,10 @@ var
                mov edx,offset @@Bits-4
                sub edx,offset @@StartCode
                mov dword ptr [ecx+edx],eax
-            end;
-          end
-          else
-          begin
-            asm
+             end;
+           end else
+           begin
+             asm
                jmp @@EndCode
              @@StartCode:
                mov esi,dword ptr [offset _null]{}@@TexY: //TexY
@@ -2116,14 +1981,13 @@ var
                mov edx,offset @@Bits-4
                sub edx,offset @@StartCode
                mov dword ptr [ecx+edx],eax
-            end;
-          end;
-        end;
-      16 :
-        begin
-          if Source.pitch = ( 1 shl Source.PitchBit ) then
-          begin
-            asm
+             end;
+           end;
+         end;
+     16: begin
+           if Source.pitch=(1 shl Source.PitchBit) then
+           begin
+             asm
                jmp @@EndCode
              @@StartCode:
                mov esi,dword ptr [offset _null]{}@@TexY: //TexY
@@ -2178,11 +2042,11 @@ var
                mov edx,offset @@Bits-4
                sub edx,offset @@StartCode
                mov dword ptr [ecx+edx],eax
-            end;
-          end
-          else if - Source.pitch = ( 1 shl Source.PitchBit ) then
-          begin
-            asm
+             end;
+           end else
+           if -Source.pitch=(1 shl Source.PitchBit) then
+           begin
+             asm
                jmp @@EndCode
              @@StartCode:
                mov esi,dword ptr [offset _null]{}@@TexY: //TexY
@@ -2238,11 +2102,10 @@ var
                mov edx,offset @@Bits-4
                sub edx,offset @@StartCode
                mov dword ptr [ecx+edx],eax
-            end;
-          end
-          else
-          begin
-            asm
+             end;
+           end else
+           begin
+             asm
                jmp @@EndCode
              @@StartCode:
                mov esi,dword ptr [offset _null]{}@@TexY: //TexY
@@ -2291,12 +2154,11 @@ var
                mov edx,offset @@Bits-4
                sub edx,offset @@StartCode
                mov dword ptr [ecx+edx],eax
-            end;
-          end;
-        end;
-      24 :
-        begin
-          asm
+             end;
+           end;
+         end;
+     24: begin
+           asm
              jmp @@EndCode
            @@StartCode:
              mov esi,dword ptr [offset _null]{}//TexY
@@ -2350,13 +2212,12 @@ var
              mov edx,offset @@Bits-4
              sub edx,offset @@StartCode
              mov dword ptr [ecx+edx],eax
-          end;
-        end;
-      32 :
-        begin
-          if Source.pitch = ( 1 shl Source.PitchBit ) then
-          begin
-            asm
+           end;
+         end;
+     32: begin
+           if Source.pitch=(1 shl Source.PitchBit) then
+           begin
+             asm
                jmp @@EndCode
              @@StartCode:
                mov esi,dword ptr [offset _null]{}@@TexY: //TexY
@@ -2411,11 +2272,11 @@ var
                mov edx,offset @@Bits-4
                sub edx,offset @@StartCode
                mov dword ptr [ecx+edx],eax
-            end;
-          end
-          else if - Source.pitch = ( 1 shl Source.PitchBit ) then
-          begin
-            asm
+             end;
+           end else
+           if -Source.pitch=(1 shl Source.PitchBit) then
+           begin
+             asm
                jmp @@EndCode
              @@StartCode:
                mov esi,dword ptr [offset _null]{}@@TexY: //TexY
@@ -2471,11 +2332,10 @@ var
                mov edx,offset @@Bits-4
                sub edx,offset @@StartCode
                mov dword ptr [ecx+edx],eax
-            end;
-          end
-          else
-          begin
-            asm
+             end;
+           end else
+           begin
+             asm
                jmp @@EndCode
              @@StartCode:
                mov esi,dword ptr [offset _null]{}@@TexY: //TexY
@@ -2524,18 +2384,17 @@ var
                mov edx,offset @@Bits-4
                sub edx,offset @@StartCode
                mov dword ptr [ecx+edx],eax
-            end;
-          end;
-        end;
+             end;
+           end;
+         end;
     end;
   end;
 
-  procedure genReadSurfacePixel_DoNotClip( var Code : Pointer; const Source : TDXR_Surface; Axis : PDXRMachine_Axis );
+  procedure genReadSurfacePixel_DoNotClip(var Code: Pointer; const Source: TDXR_Surface; Axis: PDXRMachine_Axis);
   begin
     case Source.BitCount of
-      1 :
-        begin
-          asm
+      1: begin
+           asm
              jmp @@EndCode
            @@StartCode:
              mov esi,dword ptr [offset _null]{}//TexY
@@ -2580,11 +2439,10 @@ var
              mov edx,offset @@Bits-4
              sub edx,offset @@StartCode
              mov dword ptr [ecx+edx],eax
-          end;
-        end;
-      2 :
-        begin
-          asm
+           end;
+         end;
+      2: begin
+           asm
              jmp @@EndCode
            @@StartCode:
              mov esi,dword ptr [offset _null]{}//TexY
@@ -2629,11 +2487,10 @@ var
              mov edx,offset @@Bits-4
              sub edx,offset @@StartCode
              mov dword ptr [ecx+edx],eax
-          end;
-        end;
-      4 :
-        begin
-          asm
+           end;
+         end;
+      4: begin
+           asm
              jmp @@EndCode
            @@StartCode:
              mov esi,dword ptr [offset _null]{}//TexY
@@ -2678,13 +2535,12 @@ var
              mov edx,offset @@Bits-4
              sub edx,offset @@StartCode
              mov dword ptr [ecx+edx],eax
-          end;
-        end;
-      8 :
-        begin
-          if Source.pitch = ( 1 shl Source.PitchBit ) then
-          begin
-            asm
+           end;
+         end;
+      8: begin
+           if Source.pitch=(1 shl Source.PitchBit) then
+           begin
+             asm
                jmp @@EndCode
              @@StartCode:
                mov esi,dword ptr [offset _null]{}@@TexY: //TexY
@@ -2719,11 +2575,11 @@ var
                mov edx,offset @@Bits-4
                sub edx,offset @@StartCode
                mov dword ptr [ecx+edx],eax
-            end;
-          end
-          else if - Source.pitch = ( 1 shl Source.PitchBit ) then
-          begin
-            asm
+             end;
+           end else
+           if -Source.pitch=(1 shl Source.PitchBit) then
+           begin
+             asm
                jmp @@EndCode
              @@StartCode:
                mov esi,dword ptr [offset _null]{}@@TexY: //TexY
@@ -2759,11 +2615,10 @@ var
                mov edx,offset @@Bits-4
                sub edx,offset @@StartCode
                mov dword ptr [ecx+edx],eax
-            end;
-          end
-          else
-          begin
-            asm
+             end;
+           end else
+           begin
+             asm
                jmp @@EndCode
              @@StartCode:
                mov esi,dword ptr [offset _null]{}@@TexY: //TexY
@@ -2798,14 +2653,13 @@ var
                mov edx,offset @@Bits-4
                sub edx,offset @@StartCode
                mov dword ptr [ecx+edx],eax
-            end;
-          end;
-        end;
-      16 :
-        begin
-          if Source.pitch = ( 1 shl Source.PitchBit ) then
-          begin
-            asm
+             end;
+           end;
+         end;
+     16: begin
+           if Source.pitch=(1 shl Source.PitchBit) then
+           begin
+             asm
                jmp @@EndCode
              @@StartCode:
                mov esi,dword ptr [offset _null]{}@@TexY: //TexY
@@ -2840,11 +2694,11 @@ var
                mov edx,offset @@Bits-4
                sub edx,offset @@StartCode
                mov dword ptr [ecx+edx],eax
-            end;
-          end
-          else if - Source.pitch = ( 1 shl Source.PitchBit ) then
-          begin
-            asm
+             end;
+           end else
+           if -Source.pitch=(1 shl Source.PitchBit) then
+           begin
+             asm
                jmp @@EndCode
              @@StartCode:
                mov esi,dword ptr [offset _null]{}@@TexY: //TexY
@@ -2880,11 +2734,10 @@ var
                mov edx,offset @@Bits-4
                sub edx,offset @@StartCode
                mov dword ptr [ecx+edx],eax
-            end;
-          end
-          else
-          begin
-            asm
+             end;
+           end else
+           begin
+             asm
                jmp @@EndCode
              @@StartCode:
                mov esi,dword ptr [offset _null]{}@@TexY: //TexY
@@ -2919,12 +2772,11 @@ var
                mov edx,offset @@Bits-4
                sub edx,offset @@StartCode
                mov dword ptr [ecx+edx],eax
-            end;
-          end;
-        end;
-      24 :
-        begin
-          asm
+             end;
+           end;
+         end;
+     24: begin
+           asm
              jmp @@EndCode
            @@StartCode:
              mov esi,dword ptr [offset _null]{}//TexY
@@ -2964,13 +2816,12 @@ var
              mov edx,offset @@Bits-4
              sub edx,offset @@StartCode
              mov dword ptr [ecx+edx],eax
-          end;
-        end;
-      32 :
-        begin
-          if Source.pitch = ( 1 shl Source.PitchBit ) then
-          begin
-            asm
+           end;
+         end;
+     32: begin
+           if Source.pitch=(1 shl Source.PitchBit) then
+           begin
+             asm
                jmp @@EndCode
              @@StartCode:
                mov esi,dword ptr [offset _null]{}@@TexY: //TexY
@@ -3005,11 +2856,11 @@ var
                mov edx,offset @@Bits-4
                sub edx,offset @@StartCode
                mov dword ptr [ecx+edx],eax
-            end;
-          end
-          else if - Source.pitch = ( 1 shl Source.PitchBit ) then
-          begin
-            asm
+             end;
+           end else
+           if -Source.pitch=(1 shl Source.PitchBit) then
+           begin
+             asm
                jmp @@EndCode
              @@StartCode:
                mov esi,dword ptr [offset _null]{}@@TexY: //TexY
@@ -3045,11 +2896,10 @@ var
                mov edx,offset @@Bits-4
                sub edx,offset @@StartCode
                mov dword ptr [ecx+edx],eax
-            end;
-          end
-          else
-          begin
-            asm
+             end;
+           end else
+           begin
+             asm
                jmp @@EndCode
              @@StartCode:
                mov esi,dword ptr [offset _null]{}@@TexY: //TexY
@@ -3084,42 +2934,41 @@ var
                mov edx,offset @@Bits-4
                sub edx,offset @@StartCode
                mov dword ptr [ecx+edx],eax
-            end;
-          end;
-        end;
+             end;
+           end;
+         end;
     end;
   end;
 
-  procedure genReadSurfacePixel( var Code : Pointer; const Texture : TDXRMachine_Reg_Texture; Axis : PDXRMachine_Axis );
+  procedure genReadSurfacePixel(var Code: Pointer; const Texture: TDXRMachine_Reg_Texture; Axis: PDXRMachine_Axis);
   begin
     case Texture.TextureAddress of
-      DXR_TEXTUREADDRESS_TILE : genReadSurfacePixel_Tile( Code, Texture.Surface^, Axis );
-      DXR_TEXTUREADDRESS_DONOTCLIP : genReadSurfacePixel_DoNotClip( Code, Texture.Surface^, Axis );
+      DXR_TEXTUREADDRESS_TILE     : genReadSurfacePixel_Tile(Code, Texture.Surface^, Axis);
+      DXR_TEXTUREADDRESS_DONOTCLIP: genReadSurfacePixel_DoNotClip(Code, Texture.Surface^, Axis);
     end;
   end;
 
-  procedure genDecodeColor( var Code : Pointer; const Surface : TDXR_Surface; Dest : PDXRMachine_Color;
-    EnableChannels : TDXRColorChannels; DefaultColor : TDXRMachine_Color );
+  procedure genDecodeColor(var Code: Pointer; const Surface: TDXR_Surface; Dest: PDXRMachine_Color;
+    EnableChannels: TDXRColorChannels; DefaultColor: TDXRMachine_Color);
   var
-    dcR, dcG, dcB, dcA : Word;
+    dcR, dcG, dcB, dcA: Word;
   begin
-    if EnableChannels = [ ] then
-      Exit;
+    if EnableChannels=[] then Exit;
 
     dcR := DefaultColor.R;
     dcG := DefaultColor.G;
     dcB := DefaultColor.B;
     dcA := DefaultColor.A;
 
-    if Surface.ColorType = DXR_COLORTYPE_INDEXED then
+    if Surface.ColorType=DXR_COLORTYPE_INDEXED then
     begin
       {  Index Channel  }
-      if EnableChannels * [ chRed, chGreen, chBlue ] <> [ ] then
+      if EnableChannels*[chRed, chGreen, chBlue]<>[] then
       begin
-        if Surface.idx_index.Mask <> 0 then
+        if Surface.idx_index.Mask<>0 then
         begin
-          if ( Surface.idx_index.rshift = 0 ) and ( Surface.idx_index.lshift = 0 ) and
-            ( Surface.idx_index.Mask = DWORD( ( 1 shl Surface.BitCount ) - 1 ) ) and ( Surface.idx_alpha.Mask = 0 ) then
+          if (Surface.idx_index.rshift=0) and (Surface.idx_index.lshift=0) and
+            (Surface.idx_index.Mask=DWORD((1 shl Surface.BitCount)-1)) and (Surface.idx_alpha.Mask=0) then
           begin
             asm
               jmp @@EndCode
@@ -3141,25 +2990,25 @@ var
               mov dword ptr [ecx+edx],eax
 
               {  @@DestR  }
-              mov eax,Dest; add eax,TDXRMachine_Color.R+1
+              mov eax,Dest; add eax,Byte(TDXRMachine_Color.R+1)
               mov edx,offset @@DestR-4
               sub edx,offset @@StartCode
               mov dword ptr [ecx+edx],eax
 
               {  @@DestG  }
-              mov eax,Dest; add eax,TDXRMachine_Color.G+1
+              mov eax,Dest; add eax,Byte(TDXRMachine_Color.G+1)
               mov edx,offset @@DestG-4
               sub edx,offset @@StartCode
               mov dword ptr [ecx+edx],eax
 
               {  @@DestB  }
-              mov eax,Dest; add eax,TDXRMachine_Color.B+1
+              mov eax,Dest; add eax,Byte(TDXRMachine_Color.B+1)
               mov edx,offset @@DestB-4
               sub edx,offset @@StartCode
               mov dword ptr [ecx+edx],eax
             end;
-          end
-          else if Surface.idx_index.rshift <> 0 then
+          end else
+          if Surface.idx_index.rshift<>0 then
           begin
             asm
               jmp @@EndCode
@@ -3196,25 +3045,24 @@ var
               mov dword ptr [ecx+edx],eax
 
               {  @@DestR  }
-              mov eax,Dest; add eax,TDXRMachine_Color.R+1
+              mov eax,Dest; add eax,Byte(TDXRMachine_Color.R+1)
               mov edx,offset @@DestR-4
               sub edx,offset @@StartCode
               mov dword ptr [ecx+edx],eax
 
               {  @@DestG  }
-              mov eax,Dest; add eax,TDXRMachine_Color.G+1
+              mov eax,Dest; add eax,Byte(TDXRMachine_Color.G+1)
               mov edx,offset @@DestG-4
               sub edx,offset @@StartCode
               mov dword ptr [ecx+edx],eax
 
               {  @@DestB  }
-              mov eax,Dest; add eax,TDXRMachine_Color.B+1
+              mov eax,Dest; add eax,Byte(TDXRMachine_Color.B+1)
               mov edx,offset @@DestB-4
               sub edx,offset @@StartCode
               mov dword ptr [ecx+edx],eax
             end;
-          end
-          else
+          end else
           begin
             asm
               jmp @@EndCode
@@ -3251,26 +3099,25 @@ var
               mov dword ptr [ecx+edx],eax
 
               {  @@DestR  }
-              mov eax,Dest; add eax,TDXRMachine_Color.R+1
+              mov eax,Dest; add eax,Byte(TDXRMachine_Color.R+1)
               mov edx,offset @@DestR-4
               sub edx,offset @@StartCode
               mov dword ptr [ecx+edx],eax
 
               {  @@DestG  }
-              mov eax,Dest; add eax,TDXRMachine_Color.G+1
+              mov eax,Dest; add eax,Byte(TDXRMachine_Color.G+1)
               mov edx,offset @@DestG-4
               sub edx,offset @@StartCode
               mov dword ptr [ecx+edx],eax
 
               {  @@DestB  }
-              mov eax,Dest; add eax,TDXRMachine_Color.B+1
+              mov eax,Dest; add eax,Byte(TDXRMachine_Color.B+1)
               mov edx,offset @@DestB-4
               sub edx,offset @@StartCode
               mov dword ptr [ecx+edx],eax
             end;
           end;
-        end
-        else
+        end else
         begin
           asm
             jmp @@EndCode
@@ -3281,7 +3128,7 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@DestR  }
-            mov eax,Dest; add eax,TDXRMachine_Color.R
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.R)
             mov edx,offset @@DestR-6
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -3292,7 +3139,7 @@ var
             mov word ptr [ecx+edx],ax
 
             {  @@DestG  }
-            mov eax,Dest; add eax,TDXRMachine_Color.G
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.G)
             mov edx,offset @@DestG-6
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -3303,7 +3150,7 @@ var
             mov word ptr [ecx+edx],ax
 
             {  @@DestB  }
-            mov eax,Dest; add eax,TDXRMachine_Color.B
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.B)
             mov edx,offset @@DestB-6
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -3319,9 +3166,9 @@ var
       {  Alpha Channel  }
       if chAlpha in EnableChannels then
       begin
-        if Surface.idx_alpha.Mask <> 0 then
+        if Surface.idx_alpha.Mask<>0 then
         begin
-          if Surface.idx_alpha.rshift <> 0 then
+          if Surface.idx_alpha.rshift<>0 then
           begin
             asm
               jmp @@EndCode
@@ -3345,13 +3192,12 @@ var
               mov byte ptr [ecx+edx],al
 
               {  @@Dest  }
-              mov eax,Dest; add eax,TDXRMachine_Color.A+1
+              mov eax,Dest; add eax,Byte(TDXRMachine_Color.A+1)
               mov edx,offset @@Dest-4
               sub edx,offset @@StartCode
               mov dword ptr [ecx+edx],eax
             end;
-          end
-          else
+          end else
           begin
             asm
               jmp @@EndCode
@@ -3375,14 +3221,13 @@ var
               mov byte ptr [ecx+edx],al
 
               {  @@Dest  }
-              mov eax,Dest; add eax,TDXRMachine_Color.A+1
+              mov eax,Dest; add eax,Byte(TDXRMachine_Color.A+1)
               mov edx,offset @@Dest-4
               sub edx,offset @@StartCode
               mov dword ptr [ecx+edx],eax
             end;
           end;
-        end
-        else
+        end else
         begin
           asm
             jmp @@EndCode
@@ -3391,7 +3236,7 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@Dest  }
-            mov eax,Dest; add eax,TDXRMachine_Color.A
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.A)
             mov edx,offset @@Dest-6
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -3403,15 +3248,14 @@ var
           end;
         end;
       end;
-    end
-    else if Surface.ColorType = DXR_COLORTYPE_RGB then
+    end else if Surface.ColorType=DXR_COLORTYPE_RGB then
     begin
       {  Red Channel  }
       if chRed in EnableChannels then
       begin
-        if Surface.rgb_red.Mask <> 0 then
+        if Surface.rgb_red.Mask<>0 then
         begin
-          if Surface.rgb_red.rshift <> 0 then
+          if Surface.rgb_red.rshift<>0 then
           begin
             asm
               jmp @@EndCode
@@ -3435,13 +3279,12 @@ var
               mov byte ptr [ecx+edx],al
 
               {  @@Dest  }
-              mov eax,Dest; add eax,TDXRMachine_Color.R+1
+              mov eax,Dest; add eax,Byte(TDXRMachine_Color.R+1)
               mov edx,offset @@Dest-4
               sub edx,offset @@StartCode
               mov dword ptr [ecx+edx],eax
             end;
-          end
-          else
+          end else
           begin
             asm
               jmp @@EndCode
@@ -3465,14 +3308,13 @@ var
               mov byte ptr [ecx+edx],al
 
               {  @@Dest  }
-              mov eax,Dest; add eax,TDXRMachine_Color.R+1
+              mov eax,Dest; add eax,Byte(TDXRMachine_Color.R+1)
               mov edx,offset @@Dest-4
               sub edx,offset @@StartCode
               mov dword ptr [ecx+edx],eax
             end;
           end;
-        end
-        else
+        end else
         begin
           asm
             jmp @@EndCode
@@ -3481,7 +3323,7 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@Dest  }
-            mov eax,Dest; add eax,TDXRMachine_Color.R
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.R)
             mov edx,offset @@Dest-6
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -3497,9 +3339,9 @@ var
       {  Green Channel  }
       if chGreen in EnableChannels then
       begin
-        if Surface.rgb_green.Mask <> 0 then
+        if Surface.rgb_green.Mask<>0 then
         begin
-          if Surface.rgb_green.rshift <> 0 then
+          if Surface.rgb_green.rshift<>0 then
           begin
             asm
               jmp @@EndCode
@@ -3523,13 +3365,12 @@ var
               mov byte ptr [ecx+edx],al
 
               {  @@Dest  }
-              mov eax,Dest; add eax,TDXRMachine_Color.G+1
+              mov eax,Dest; add eax,Byte(TDXRMachine_Color.G+1)
               mov edx,offset @@Dest-4
               sub edx,offset @@StartCode
               mov dword ptr [ecx+edx],eax
             end;
-          end
-          else
+          end else
           begin
             asm
               jmp @@EndCode
@@ -3553,14 +3394,13 @@ var
               mov byte ptr [ecx+edx],al
 
               {  @@Dest  }
-              mov eax,Dest; add eax,TDXRMachine_Color.G+1
+              mov eax,Dest; add eax,Byte(TDXRMachine_Color.G+1)
               mov edx,offset @@Dest-4
               sub edx,offset @@StartCode
               mov dword ptr [ecx+edx],eax
             end;
           end;
-        end
-        else
+        end else
         begin
           asm
             jmp @@EndCode
@@ -3569,7 +3409,7 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@Dest  }
-            mov eax,Dest; add eax,TDXRMachine_Color.G
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.G)
             mov edx,offset @@Dest-6
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -3585,9 +3425,9 @@ var
       {  Blue Channel  }
       if chBlue in EnableChannels then
       begin
-        if Surface.rgb_blue.Mask <> 0 then
+        if Surface.rgb_blue.Mask<>0 then
         begin
-          if Surface.rgb_blue.rshift <> 0 then
+          if Surface.rgb_blue.rshift<>0 then
           begin
             asm
               jmp @@EndCode
@@ -3611,13 +3451,12 @@ var
               mov byte ptr [ecx+edx],al
 
               {  @@Dest  }
-              mov eax,Dest; add eax,TDXRMachine_Color.B+1
+              mov eax,Dest; add eax,Byte(TDXRMachine_Color.B+1)
               mov edx,offset @@Dest-4
               sub edx,offset @@StartCode
               mov dword ptr [ecx+edx],eax
             end;
-          end
-          else
+          end else
           begin
             asm
               jmp @@EndCode
@@ -3641,14 +3480,13 @@ var
               mov byte ptr [ecx+edx],al
 
               {  @@Dest  }
-              mov eax,Dest; add eax,TDXRMachine_Color.B+1
+              mov eax,Dest; add eax,Byte(TDXRMachine_Color.B+1)
               mov edx,offset @@Dest-4
               sub edx,offset @@StartCode
               mov dword ptr [ecx+edx],eax
             end;
           end;
-        end
-        else
+        end else
         begin
           asm
             jmp @@EndCode
@@ -3657,7 +3495,7 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@Dest  }
-            mov eax,Dest; add eax,TDXRMachine_Color.B
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.B)
             mov edx,offset @@Dest-6
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -3673,9 +3511,9 @@ var
       {  Alpha Channel  }
       if chAlpha in EnableChannels then
       begin
-        if Surface.rgb_alpha.Mask <> 0 then
+        if Surface.rgb_alpha.Mask<>0 then
         begin
-          if Surface.rgb_alpha.rshift <> 0 then
+          if Surface.rgb_alpha.rshift<>0 then
           begin
             asm
               jmp @@EndCode
@@ -3699,13 +3537,12 @@ var
               mov byte ptr [ecx+edx],al
 
               {  @@Dest  }
-              mov eax,Dest; add eax,TDXRMachine_Color.A+1
+              mov eax,Dest; add eax,Byte(TDXRMachine_Color.A+1)
               mov edx,offset @@Dest-4
               sub edx,offset @@StartCode
               mov dword ptr [ecx+edx],eax
             end;
-          end
-          else
+          end else
           begin
             asm
               jmp @@EndCode
@@ -3729,14 +3566,13 @@ var
               mov byte ptr [ecx+edx],al
 
               {  @@Dest  }
-              mov eax,Dest; add eax,TDXRMachine_Color.A+1
+              mov eax,Dest; add eax,Byte(TDXRMachine_Color.A+1)
               mov edx,offset @@Dest-4
               sub edx,offset @@StartCode
               mov dword ptr [ecx+edx],eax
             end;
           end;
-        end
-        else
+        end else
         begin
           asm
             jmp @@EndCode
@@ -3745,7 +3581,7 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@Dest  }
-            mov eax,Dest; add eax,TDXRMachine_Color.A
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.A)
             mov edx,offset @@Dest-6
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -3760,7 +3596,7 @@ var
     end;
   end;
 
-  procedure genEncodeColor( var Code : Pointer; const Surface : TDXR_Surface; Src : PDXRMachine_Color; EnableChannels : TDXRColorChannels );
+  procedure genEncodeColor(var Code: Pointer; const Surface: TDXR_Surface; Src: PDXRMachine_Color; EnableChannels: TDXRColorChannels);
   begin
     asm
       jmp @@EndCode
@@ -3773,7 +3609,7 @@ var
     {  Red channel  }
     if chRed in EnableChannels then
     begin
-      if Surface.rgb_red.rshift <> 0 then
+      if Surface.rgb_red.rshift<>0 then
       begin
         asm
           jmp @@EndCode
@@ -3785,7 +3621,7 @@ var
         @@EndCode:
           {$I DXRender.inc}
           {  @@Src  }
-          mov eax,Src; add eax,TDXRMachine_Color.R+1
+          mov eax,Src; add eax,Byte(TDXRMachine_Color.R+1)
           mov edx,offset @@Src-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -3802,8 +3638,7 @@ var
           sub edx,offset @@StartCode
           mov byte ptr [ecx+edx],al
         end;
-      end
-      else
+      end else
       begin
         asm
           jmp @@EndCode
@@ -3815,7 +3650,7 @@ var
         @@EndCode:
           {$I DXRender.inc}
           {  @@Src  }
-          mov eax,Src; add eax,TDXRMachine_Color.R+1
+          mov eax,Src; add eax,Byte(TDXRMachine_Color.R+1)
           mov edx,offset @@Src-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -3838,7 +3673,7 @@ var
     {  Green channel  }
     if chGreen in EnableChannels then
     begin
-      if Surface.rgb_green.rshift <> 0 then
+      if Surface.rgb_green.rshift<>0 then
       begin
         asm
           jmp @@EndCode
@@ -3850,7 +3685,7 @@ var
         @@EndCode:
           {$I DXRender.inc}
           {  @@Src  }
-          mov eax,Src; add eax,TDXRMachine_Color.G+1
+          mov eax,Src; add eax,Byte(TDXRMachine_Color.G+1)
           mov edx,offset @@Src-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -3867,8 +3702,7 @@ var
           sub edx,offset @@StartCode
           mov byte ptr [ecx+edx],al
         end;
-      end
-      else
+      end else
       begin
         asm
           jmp @@EndCode
@@ -3880,7 +3714,7 @@ var
         @@EndCode:
           {$I DXRender.inc}
           {  @@Src  }
-          mov eax,Src; add eax,TDXRMachine_Color.G+1
+          mov eax,Src; add eax,Byte(TDXRMachine_Color.G+1)
           mov edx,offset @@Src-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -3903,7 +3737,7 @@ var
     {  Blue channel  }
     if chBlue in EnableChannels then
     begin
-      if Surface.rgb_blue.rshift <> 0 then
+      if Surface.rgb_blue.rshift<>0 then
       begin
         asm
           jmp @@EndCode
@@ -3915,7 +3749,7 @@ var
         @@EndCode:
           {$I DXRender.inc}
           {  @@Src  }
-          mov eax,Src; add eax,TDXRMachine_Color.B+1
+          mov eax,Src; add eax,Byte(TDXRMachine_Color.B+1)
           mov edx,offset @@Src-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -3932,8 +3766,7 @@ var
           sub edx,offset @@StartCode
           mov byte ptr [ecx+edx],al
         end;
-      end
-      else
+      end else
       begin
         asm
           jmp @@EndCode
@@ -3945,7 +3778,7 @@ var
         @@EndCode:
           {$I DXRender.inc}
           {  @@Src  }
-          mov eax,Src; add eax,TDXRMachine_Color.B+1
+          mov eax,Src; add eax,Byte(TDXRMachine_Color.B+1)
           mov edx,offset @@Src-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -3968,7 +3801,7 @@ var
     {  Alpha channel  }
     if chAlpha in EnableChannels then
     begin
-      if Surface.rgb_alpha.rshift <> 0 then
+      if Surface.rgb_alpha.rshift<>0 then
       begin
         asm
           jmp @@EndCode
@@ -3980,7 +3813,7 @@ var
         @@EndCode:
           {$I DXRender.inc}
           {  @@Src  }
-          mov eax,Src; add eax,TDXRMachine_Color.A+1
+          mov eax,Src; add eax,Byte(TDXRMachine_Color.A+1)
           mov edx,offset @@Src-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -3997,8 +3830,7 @@ var
           sub edx,offset @@StartCode
           mov byte ptr [ecx+edx],al
         end;
-      end
-      else
+      end else
       begin
         asm
           jmp @@EndCode
@@ -4010,7 +3842,7 @@ var
         @@EndCode:
           {$I DXRender.inc}
           {  @@Src  }
-          mov eax,Src; add eax,TDXRMachine_Color.A+1
+          mov eax,Src; add eax,Byte(TDXRMachine_Color.A+1)
           mov edx,offset @@Src-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -4031,10 +3863,10 @@ var
     end;
   end;
 
-  procedure genEncodeColor_with_Dither( var Code : Pointer; const Surface : TDXR_Surface; Src : PDXRMachine_Color;
-    Axis : PDXRMachine_Axis; EnableChannels : TDXRColorChannels );
+  procedure genEncodeColor_with_Dither(var Code: Pointer; const Surface: TDXR_Surface; Src: PDXRMachine_Color;
+    Axis: PDXRMachine_Axis; EnableChannels: TDXRColorChannels);
   const
-    m : array[ 0..3, 0..3 ] of Byte = ( ( 0, 0, 0, 0 ), ( 1, 0, 0, 0 ), ( 1, 0, 0, 1 ), ( 1, 1, 1, 0 ) );
+    m: array[0..3, 0..3] of Byte = ((0, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 1), (1, 1, 1, 0));
   begin
     asm
       jmp @@EndCode
@@ -4070,13 +3902,13 @@ var
       @@EndCode:
         {$I DXRender.inc}
         {  @@Src  }
-        mov eax,Src; add eax,TDXRMachine_Color.R+1
+        mov eax,Src; add eax,Byte(TDXRMachine_Color.R+1)
         mov edx,offset @@Src-4
         sub edx,offset @@StartCode
         mov dword ptr [ecx+edx],eax
       end;
 
-      if Surface.rgb_red.Bitcount < 7 then
+      if Surface.rgb_red.Bitcount<7 then
       begin
         asm
           jmp @@EndCode
@@ -4086,7 +3918,7 @@ var
           and ebx,3
           movzx ebx,byte ptr [ebp+ebx*4]
           shl ebx,$11       {}@@BitCount2: // 8-bitcount
-          movzx edx,byte [offset _AddTable+edx+ebx]
+          movzx edx,byte [offset (_AddTable+edx+ebx)]
         @@EndCode:
           {$I DXRender.inc}
           {  @@BitCount  }
@@ -4103,7 +3935,7 @@ var
         end;
       end;
 
-      if Surface.rgb_red.rshift <> 0 then
+      if Surface.rgb_red.rshift<>0 then
       begin
         asm
           jmp @@EndCode
@@ -4125,8 +3957,7 @@ var
           sub edx,offset @@StartCode
           mov byte ptr [ecx+edx],al
         end;
-      end
-      else
+      end else
       begin
         asm
           jmp @@EndCode
@@ -4161,13 +3992,13 @@ var
       @@EndCode:
         {$I DXRender.inc}
         {  @@Src  }
-        mov eax,Src; add eax,TDXRMachine_Color.G+1
+        mov eax,Src; add eax,Byte(TDXRMachine_Color.G+1)
         mov edx,offset @@Src-4
         sub edx,offset @@StartCode
         mov dword ptr [ecx+edx],eax
       end;
 
-      if Surface.rgb_green.Bitcount < 7 then
+      if Surface.rgb_green.Bitcount<7 then
       begin
         asm
           jmp @@EndCode
@@ -4177,7 +4008,7 @@ var
           and ebx,3
           movzx ebx,byte ptr [ebp+ebx*4]
           shl ebx,$11       {}@@BitCount2: // 8-bitcount
-          movzx edx,byte [offset _AddTable+edx+ebx]
+          movzx edx,byte [offset (_AddTable+edx+ebx)]
         @@EndCode:
           {$I DXRender.inc}
           {  @@BitCount  }
@@ -4194,7 +4025,7 @@ var
         end;
       end;
 
-      if Surface.rgb_green.rshift <> 0 then
+      if Surface.rgb_green.rshift<>0 then
       begin
         asm
           jmp @@EndCode
@@ -4216,8 +4047,7 @@ var
           sub edx,offset @@StartCode
           mov byte ptr [ecx+edx],al
         end;
-      end
-      else
+      end else
       begin
         asm
           jmp @@EndCode
@@ -4252,13 +4082,13 @@ var
       @@EndCode:
         {$I DXRender.inc}
         {  @@Src  }
-        mov eax,Src; add eax,TDXRMachine_Color.B+1
+        mov eax,Src; add eax,Byte(TDXRMachine_Color.B+1)
         mov edx,offset @@Src-4
         sub edx,offset @@StartCode
         mov dword ptr [ecx+edx],eax
       end;
 
-      if Surface.rgb_blue.Bitcount < 7 then
+      if Surface.rgb_blue.Bitcount<7 then
       begin
         asm
           jmp @@EndCode
@@ -4268,7 +4098,7 @@ var
           and ebx,3
           movzx ebx,byte ptr [ebp+ebx*4]
           shl ebx,$11       {}@@BitCount2: // 8-bitcount
-          movzx edx,byte [offset _AddTable+edx+ebx]
+          movzx edx,byte [offset (_AddTable+edx+ebx)]
         @@EndCode:
           {$I DXRender.inc}
           {  @@BitCount  }
@@ -4285,7 +4115,7 @@ var
         end;
       end;
 
-      if Surface.rgb_blue.rshift <> 0 then
+      if Surface.rgb_blue.rshift<>0 then
       begin
         asm
           jmp @@EndCode
@@ -4307,8 +4137,7 @@ var
           sub edx,offset @@StartCode
           mov byte ptr [ecx+edx],al
         end;
-      end
-      else
+      end else
       begin
         asm
           jmp @@EndCode
@@ -4343,13 +4172,13 @@ var
       @@EndCode:
         {$I DXRender.inc}
         {  @@Src  }
-        mov eax,Src; add eax,TDXRMachine_Color.A+1
+        mov eax,Src; add eax,Byte(TDXRMachine_Color.A+1)
         mov edx,offset @@Src-4
         sub edx,offset @@StartCode
         mov dword ptr [ecx+edx],eax
       end;
 
-      if Surface.rgb_alpha.Bitcount < 7 then
+      if Surface.rgb_alpha.Bitcount<7 then
       begin
         asm
           jmp @@EndCode
@@ -4359,7 +4188,7 @@ var
           and ebx,3
           movzx ebx,byte ptr [ebp+ebx]
           shl ebx,$11       {}@@BitCount2: // 8-bitcount
-          movzx edx,byte [offset _AddTable+edx+ebx]
+          movzx edx,byte [offset (_AddTable+edx+ebx)]
         @@EndCode:
           {$I DXRender.inc}
           {  @@BitCount  }
@@ -4376,7 +4205,7 @@ var
         end;
       end;
 
-      if Surface.rgb_alpha.rshift <> 0 then
+      if Surface.rgb_alpha.rshift<>0 then
       begin
         asm
           jmp @@EndCode
@@ -4398,8 +4227,7 @@ var
           sub edx,offset @@StartCode
           mov byte ptr [ecx+edx],al
         end;
-      end
-      else
+      end else
       begin
         asm
           jmp @@EndCode
@@ -4425,66 +4253,94 @@ var
     end;
   end;
 
-  procedure genEncodeColor2( var Code : Pointer; const Surface : TDXR_Surface; Src : PDXRMachine_Color; EnableChannels : TDXRColorChannels );
+  procedure genEncodeColor2(var Code: Pointer; const Surface: TDXR_Surface; Src: PDXRMachine_Color; EnableChannels: TDXRColorChannels);
   begin
     if Dither.Enable then
     begin
-      genEncodeColor_with_Dither( Code, Surface, Src, @Axis.Axis, EnableChannels )
-    end
-    else
+      genEncodeColor_with_Dither(Code, Surface, Src, @Axis.Axis, EnableChannels)
+    end else
     begin
-      genEncodeColor( Code, Surface, Src, EnableChannels );
+      genEncodeColor(Code, Surface, Src, EnableChannels);
     end;
   end;
 
-  procedure genColorKey( var Code : Pointer; const Texture : TDXRMachine_Reg_Texture );
+  procedure genColorKey(var Code: Pointer; const Texture: TDXRMachine_Reg_Texture);
   var
-    TransparentMask, TransparentColor : DWORD;
+    TransparentMask, TransparentColor: DWORD;
   begin
-    if not Texture.ColorKeyEnable then
-      Exit;
+    if not Texture.ColorKeyEnable then Exit;
 
-    if Texture.Surface.ColorType = DXR_COLORTYPE_INDEXED then
+    if Texture.Surface.ColorType=DXR_COLORTYPE_INDEXED then
     begin
       TransparentMask := not Texture.Surface.idx_alpha.Mask;
-    end
-    else if Texture.Surface.ColorType = DXR_COLORTYPE_RGB then
+    end else if Texture.Surface.ColorType=DXR_COLORTYPE_RGB then
     begin
       TransparentMask := not Texture.Surface.rgb_alpha.Mask;
     end;
 
     TransparentColor := Texture.ColorKey;
 
-    if TransparentMask = $FFFFFFFF then
+    if TransparentMask=$FFFFFFFF then
     begin
-      if TransparentColor = 0 then
+      if Texture.Surface.BitCount=32 then
       begin
-        asm
-          jmp @@EndCode
-        @@StartCode:
-          test eax,eax
-        @@EndCode:
-          {$I DXRender.inc}
+        if TransparentColor=0 then
+        begin
+          asm
+            jmp @@EndCode
+          @@StartCode:
+            and eax,$FFFFFF
+          @@EndCode:
+            {$I DXRender.inc}
+          end;
+        end else
+        begin
+          asm
+            jmp @@EndCode
+          @@StartCode:
+            and eax,$FFFFFF
+            cmp eax,$11111111{}@@TransColor: // Process.Texture.TransparentColor
+          @@EndCode:
+            {$I DXRender.inc}
+            {  @@TransColor  }
+            mov eax,TransparentColor
+            mov edx,offset @@TransColor-4
+            sub edx,offset @@StartCode
+            mov dword ptr [ecx+edx],eax
+          end;
         end;
-      end
-      else
+      end else
       begin
-        asm
-          jmp @@EndCode
-        @@StartCode:
-          cmp eax,$11111111{}@@TransColor: // Process.Texture.TransparentColor
-        @@EndCode:
-          {$I DXRender.inc}
-          {  @@TransColor  }
-          mov eax,TransparentColor
-          mov edx,offset @@TransColor-4
-          sub edx,offset @@StartCode
-          mov dword ptr [ecx+edx],eax
+        if TransparentColor=0 then
+        begin
+          asm
+            jmp @@EndCode
+          @@StartCode:
+            test eax,eax
+          @@EndCode:
+            {$I DXRender.inc}
+          end;
+        end else
+        begin
+          asm
+            jmp @@EndCode
+          @@StartCode:
+            cmp eax,$11111111{}@@TransColor: // Process.Texture.TransparentColor
+          @@EndCode:
+            {$I DXRender.inc}
+            {  @@TransColor  }
+            mov eax,TransparentColor
+            mov edx,offset @@TransColor-4
+            sub edx,offset @@StartCode
+            mov dword ptr [ecx+edx],eax
+          end;
         end;
       end;
-    end
-    else
+    end else
     begin
+      if Texture.Surface.BitCount=32 then
+        TransparentMask := TransparentMask and $FFFFFF;
+
       asm
         jmp @@EndCode
       @@StartCode:
@@ -4507,27 +4363,25 @@ var
       end;
     end;
 
-    genCmpFunc( Code, DXR_CMPFUNC_EQUAL, SkipAddress );
+    genCmpFunc(Code, DXR_CMPFUNC_EQUAL, SkipAddress);
   end;
 
-  procedure genReadTexture_Nearest( var Code : Pointer; Dest : PDXRMachine_Color;
-    const Texture : TDXRMachine_Reg_Texture; const Axis : TDXRMachine_Axis; EnableChannels : TDXRColorChannels );
+  procedure genReadTexture_Nearest(var Code: Pointer; Dest: PDXRMachine_Color;
+    const Texture: TDXRMachine_Reg_Texture; const Axis: TDXRMachine_Axis; EnableChannels: TDXRColorChannels);
   begin
-    if EnableChannels = [ ] then
-      Exit;
+    if EnableChannels=[] then Exit;
 
-    genReadSurfacePixel( Code, Texture, @Axis );
-    genColorKey( Code, Texture );
-    genDecodeColor( Code, Texture.Surface^, Dest, EnableChannels, Texture.DefaultColor );
+    genReadSurfacePixel(Code, Texture, @Axis);
+    genColorKey(Code, Texture);
+    genDecodeColor(Code, Texture.Surface^, Dest, EnableChannels, Texture.DefaultColor);
   end;
 
-  procedure genReadTexture_BiLinear( var Code : Pointer; Dest : PDXRMachine_Color;
-    const Texture : TDXRMachine_Reg_Texture; const Axis : TDXRMachine_Axis; EnableChannels : TDXRColorChannels );
+  procedure genReadTexture_BiLinear(var Code: Pointer; Dest: PDXRMachine_Color;
+    const Texture: TDXRMachine_Reg_Texture; const Axis: TDXRMachine_Axis; EnableChannels: TDXRColorChannels);
   var
-    _Axis, _BiLinearAxis, _BiLinearCol1, _BiLinearCol2, _BiLinearCol3, _BiLinearCol4 : Pointer;
+    _Axis, _BiLinearAxis, _BiLinearCol1, _BiLinearCol2, _BiLinearCol3, _BiLinearCol4: Pointer;
   begin
-    if EnableChannels = [ ] then
-      Exit;
+    if EnableChannels=[] then Exit;
 
     _Axis := @Axis;
     _BiLinearAxis := @F_BiLinearAxis;
@@ -4536,9 +4390,9 @@ var
     _BiLinearCol3 := @F_BiLinearCol3;
     _BiLinearCol4 := @F_BiLinearCol4;
 
-    genReadSurfacePixel( Code, Texture, _Axis );
-    genColorKey( Code, Texture );
-    genDecodeColor( Code, Texture.Surface^, _BiLinearCol1, EnableChannels, Texture.DefaultColor );
+    genReadSurfacePixel(Code, Texture, _Axis);
+    genColorKey(Code, Texture);
+    genDecodeColor(Code, Texture.Surface^, _BiLinearCol1, EnableChannels, Texture.DefaultColor);
 
     asm
       jmp @@EndCode
@@ -4574,8 +4428,8 @@ var
       sub edx,offset @@StartCode
       mov dword ptr [ecx+edx],eax
     end;
-    genReadSurfacePixel( Code, Texture, _BiLinearAxis );
-    genDecodeColor( Code, Texture.Surface^, _BiLinearCol2, EnableChannels, Texture.DefaultColor );
+    genReadSurfacePixel(Code, Texture, _BiLinearAxis);
+    genDecodeColor(Code, Texture.Surface^, _BiLinearCol2, EnableChannels, Texture.DefaultColor);
 
     asm
       jmp @@EndCode
@@ -4589,8 +4443,8 @@ var
       sub edx,offset @@StartCode
       mov dword ptr [ecx+edx],eax
     end;
-    genReadSurfacePixel( Code, Texture, _BiLinearAxis );
-    genDecodeColor( Code, Texture.Surface^, _BiLinearCol4, EnableChannels, Texture.DefaultColor );
+    genReadSurfacePixel(Code, Texture, _BiLinearAxis);
+    genDecodeColor(Code, Texture.Surface^, _BiLinearCol4, EnableChannels, Texture.DefaultColor);
 
     asm
       jmp @@EndCode
@@ -4604,8 +4458,8 @@ var
       sub edx,offset @@StartCode
       mov dword ptr [ecx+edx],eax
     end;
-    genReadSurfacePixel( Code, Texture, _BiLinearAxis );
-    genDecodeColor( Code, Texture.Surface^, _BiLinearCol3, EnableChannels, Texture.DefaultColor );
+    genReadSurfacePixel(Code, Texture, _BiLinearAxis);
+    genDecodeColor(Code, Texture.Surface^, _BiLinearCol3, EnableChannels, Texture.DefaultColor);
                  (*
     if UseMMX then
     begin
@@ -4754,25 +4608,25 @@ var
         @@EndCode:
           {$I DXRender.inc}
           {  @@_BiLinearCol1  }
-          mov eax,_BiLinearCol1; add eax,TDXRMachine_Color.R+1
+          mov eax,_BiLinearCol1; add eax,Byte(TDXRMachine_Color.R+1)
           mov edx,offset @@_BiLinearCol1-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@_BiLinearCol2  }
-          mov eax,_BiLinearCol2; add eax,TDXRMachine_Color.R+1
+          mov eax,_BiLinearCol2; add eax,Byte(TDXRMachine_Color.R+1)
           mov edx,offset @@_BiLinearCol2-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@_BiLinearCol3  }
-          mov eax,_BiLinearCol3; add eax,TDXRMachine_Color.R+1
+          mov eax,_BiLinearCol3; add eax,Byte(TDXRMachine_Color.R+1)
           mov edx,offset @@_BiLinearCol3-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@_BiLinearCol4  }
-          mov eax,_BiLinearCol4; add eax,TDXRMachine_Color.R+1
+          mov eax,_BiLinearCol4; add eax,Byte(TDXRMachine_Color.R+1)
           mov edx,offset @@_BiLinearCol4-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -4790,7 +4644,7 @@ var
           mov dword ptr [ecx+edx],eax
 
           {  @@Dest  }
-          mov eax,Dest; add eax,TDXRMachine_Color.R+1
+          mov eax,Dest; add eax,Byte(TDXRMachine_Color.R+1)
           mov edx,offset @@Dest-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -4830,25 +4684,25 @@ var
         @@EndCode:
           {$I DXRender.inc}
           {  @@_BiLinearCol1  }
-          mov eax,_BiLinearCol1; add eax,TDXRMachine_Color.G+1
+          mov eax,_BiLinearCol1; add eax,Byte(TDXRMachine_Color.G+1)
           mov edx,offset @@_BiLinearCol1-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@_BiLinearCol2  }
-          mov eax,_BiLinearCol2; add eax,TDXRMachine_Color.G+1
+          mov eax,_BiLinearCol2; add eax,Byte(TDXRMachine_Color.G+1)
           mov edx,offset @@_BiLinearCol2-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@_BiLinearCol3  }
-          mov eax,_BiLinearCol3; add eax,TDXRMachine_Color.G+1
+          mov eax,_BiLinearCol3; add eax,Byte(TDXRMachine_Color.G+1)
           mov edx,offset @@_BiLinearCol3-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@_BiLinearCol4  }
-          mov eax,_BiLinearCol4; add eax,TDXRMachine_Color.G+1
+          mov eax,_BiLinearCol4; add eax,Byte(TDXRMachine_Color.G+1)
           mov edx,offset @@_BiLinearCol4-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -4866,7 +4720,7 @@ var
           mov dword ptr [ecx+edx],eax
 
           {  @@Dest  }
-          mov eax,Dest; add eax,TDXRMachine_Color.G+1
+          mov eax,Dest; add eax,Byte(TDXRMachine_Color.G+1)
           mov edx,offset @@Dest-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -4906,25 +4760,25 @@ var
         @@EndCode:
           {$I DXRender.inc}
           {  @@_BiLinearCol1  }
-          mov eax,_BiLinearCol1; add eax,TDXRMachine_Color.B+1
+          mov eax,_BiLinearCol1; add eax,Byte(TDXRMachine_Color.B+1)
           mov edx,offset @@_BiLinearCol1-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@_BiLinearCol2  }
-          mov eax,_BiLinearCol2; add eax,TDXRMachine_Color.B+1
+          mov eax,_BiLinearCol2; add eax,Byte(TDXRMachine_Color.B+1)
           mov edx,offset @@_BiLinearCol2-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@_BiLinearCol3  }
-          mov eax,_BiLinearCol3; add eax,TDXRMachine_Color.B+1
+          mov eax,_BiLinearCol3; add eax,Byte(TDXRMachine_Color.B+1)
           mov edx,offset @@_BiLinearCol3-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@_BiLinearCol4  }
-          mov eax,_BiLinearCol4; add eax,TDXRMachine_Color.B+1
+          mov eax,_BiLinearCol4; add eax,Byte(TDXRMachine_Color.B+1)
           mov edx,offset @@_BiLinearCol4-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -4942,7 +4796,7 @@ var
           mov dword ptr [ecx+edx],eax
 
           {  @@Dest  }
-          mov eax,Dest; add eax,TDXRMachine_Color.B+1
+          mov eax,Dest; add eax,Byte(TDXRMachine_Color.B+1)
           mov edx,offset @@Dest-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -4982,25 +4836,25 @@ var
         @@EndCode:
           {$I DXRender.inc}
           {  @@_BiLinearCol1  }
-          mov eax,_BiLinearCol1; add eax,TDXRMachine_Color.A+1
+          mov eax,_BiLinearCol1; add eax,Byte(TDXRMachine_Color.A+1)
           mov edx,offset @@_BiLinearCol1-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@_BiLinearCol2  }
-          mov eax,_BiLinearCol2; add eax,TDXRMachine_Color.A+1
+          mov eax,_BiLinearCol2; add eax,Byte(TDXRMachine_Color.A+1)
           mov edx,offset @@_BiLinearCol2-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@_BiLinearCol3  }
-          mov eax,_BiLinearCol3; add eax,TDXRMachine_Color.A+1
+          mov eax,_BiLinearCol3; add eax,Byte(TDXRMachine_Color.A+1)
           mov edx,offset @@_BiLinearCol3-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@_BiLinearCol4  }
-          mov eax,_BiLinearCol4; add eax,TDXRMachine_Color.A+1
+          mov eax,_BiLinearCol4; add eax,Byte(TDXRMachine_Color.A+1)
           mov edx,offset @@_BiLinearCol4-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -5018,7 +4872,7 @@ var
           mov dword ptr [ecx+edx],eax
 
           {  @@Dest  }
-          mov eax,Dest; add eax,TDXRMachine_Color.A+1
+          mov eax,Dest; add eax,Byte(TDXRMachine_Color.A+1)
           mov edx,offset @@Dest-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -5027,23 +4881,22 @@ var
     end;
   end;
 
-  procedure genReadTexture( var Code : Pointer; Dest : PDXRMachine_Color;
-    const Texture : TDXRMachine_Reg_Texture; EnableChannels : TDXRColorChannels );
+  procedure genReadTexture(var Code: Pointer; Dest: PDXRMachine_Color;
+    const Texture: TDXRMachine_Reg_Texture; EnableChannels: TDXRColorChannels);
   begin
-    if Texture.Filter in [ DXR_TEXTUREFILTER_LINEAR, DXR_TEXTUREFILTER_MIPMAP_LINEAR ] then
-      genReadTexture_BiLinear( Code, Dest, Texture, Texture.nAxis, EnableChannels )
+    if Texture.Filter in [DXR_TEXTUREFILTER_LINEAR, DXR_TEXTUREFILTER_MIPMAP_LINEAR] then
+      genReadTexture_BiLinear(Code, Dest, Texture, Texture.nAxis, EnableChannels)
     else
-      genReadTexture_Nearest( Code, Dest, Texture, Texture.nAxis, EnableChannels );
+      genReadTexture_Nearest(Code, Dest, Texture, Texture.nAxis, EnableChannels);
   end;
 
-  procedure genReadBumpTexture_Nearest( var Code : Pointer; Dest : PDXRMachine_Color;
-    const Texture, BumpTexture : TDXRMachine_Reg_Texture; EnableChannels : TDXRColorChannels );
+  procedure genReadBumpTexture_Nearest(var Code: Pointer; Dest: PDXRMachine_Color;
+    const Texture, BumpTexture: TDXRMachine_Reg_Texture; EnableChannels: TDXRColorChannels);
   var
-    _Axis, _Axis2, _iAxis, _BumpAxis, _BumpAxis2 : PDXRMachine_Axis;
-    _BumpTempCol : Pointer;
+    _Axis, _Axis2, _iAxis, _BumpAxis, _BumpAxis2: PDXRMachine_Axis;
+    _BumpTempCol: Pointer;
   begin
-    if EnableChannels = [ ] then
-      Exit;
+    if EnableChannels=[] then Exit;
 
     _Axis := @BumpTexture.nAxis;
     _Axis2 := @Texture.nAxis;
@@ -5052,7 +4905,7 @@ var
     _BumpAxis2 := @F_BumpAxis2;
     _BumpTempCol := @F_BumpTempCol;
 
-    {  X  }
+    {  X  } 
     asm
       jmp @@EndCode
     @@StartCode:
@@ -5093,7 +4946,7 @@ var
       sub edx,offset @@StartCode
       mov dword ptr [ecx+edx],eax
     end;
-    genReadSurfacePixel( Code, BumpTexture, _BumpAxis );
+    genReadSurfacePixel(Code, BumpTexture, _BumpAxis);
 
     asm
       jmp @@EndCode
@@ -5128,7 +4981,7 @@ var
       mov dword ptr [ecx+edx],eax
     end;
 
-    genReadSurfacePixel( Code, BumpTexture, _BumpAxis );
+    genReadSurfacePixel(Code, BumpTexture, _BumpAxis);
 
     asm
       jmp @@EndCode
@@ -5199,7 +5052,7 @@ var
       sub edx,offset @@StartCode
       mov dword ptr [ecx+edx],eax
     end;
-    genReadSurfacePixel( Code, BumpTexture, _BumpTempCol );
+    genReadSurfacePixel(Code, BumpTexture, _BumpTempCol);
 
     asm
       jmp @@EndCode
@@ -5235,7 +5088,7 @@ var
       mov dword ptr [ecx+edx],eax
     end;
 
-    genReadSurfacePixel( Code, BumpTexture, _BumpAxis );
+    genReadSurfacePixel(Code, BumpTexture, _BumpAxis);
 
     asm
       jmp @@EndCode
@@ -5265,24 +5118,23 @@ var
       mov dword ptr [ecx+edx],eax
     end;
 
-    genReadTexture_Nearest( Code, Dest, Texture, _BumpAxis2^, EnableChannels );
+    genReadTexture_Nearest(Code, Dest, Texture, _BumpAxis2^, EnableChannels);
   end;
 
-  procedure genReadBumpTexture( var Code : Pointer; Dest : PDXRMachine_Color;
-    const Texture, BumpTexture : TDXRMachine_Reg_Texture; EnableChannels : TDXRColorChannels );
+  procedure genReadBumpTexture(var Code: Pointer; Dest: PDXRMachine_Color;
+    const Texture, BumpTexture: TDXRMachine_Reg_Texture; EnableChannels: TDXRColorChannels);
   begin
     {if Texture.Filter in [DXR_TEXTUREFILTER_LINEAR, DXR_TEXTUREFILTER_MIPMAP_LINEAR] then
       genReadBumpTexture_BiLinear(Code, Dest, Texture, BumpTexture, EnableChannels)
     else }
-    genReadBumpTexture_Nearest( Code, Dest, Texture, BumpTexture, EnableChannels );
+      genReadBumpTexture_Nearest(Code, Dest, Texture, BumpTexture, EnableChannels);
   end;
 
-  procedure genUpdateAxis( var Code : Pointer );
+  procedure genUpdateAxis(var Code: Pointer);
   var
-    _Axis : Pointer;
+    _Axis: Pointer;
   begin
-    if not Axis.IncEnable then
-      Exit;
+    if not Axis.IncEnable then Exit;
 
     _Axis := @Axis.Axis;
 
@@ -5300,15 +5152,15 @@ var
     end;
   end;
 
-  procedure genUpdateColor( var Code : Pointer );
+  procedure genUpdateColor(var Code: Pointer);
   var
-    i : Integer;
-    Color : PDXRMachine_Reg_Color;
-    nColor, iColor : Pointer;
+    i: Integer;
+    Color: PDXRMachine_Reg_Color;
+    nColor, iColor: Pointer;
   begin
-    for i := 0 to ColorIndexCount - 1 do
+    for i:=0 to ColorIndexCount-1 do
     begin
-      Color := @ColorList[ ColorIndex[ i ] ];
+      Color := @ColorList[ColorIndex[i]];
       if Color.Gouraud then
       begin
         nColor := @Color.nColor;
@@ -5346,8 +5198,7 @@ var
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
           end;
-        end
-        else
+        end else
         begin
           asm
             jmp @@EndCode
@@ -5402,15 +5253,15 @@ var
     end;
   end;
 
-  procedure genUpdateTextureAxis( var Code : Pointer );
+  procedure genUpdateTextureAxis(var Code: Pointer);
   var
-    i : Integer;
-    Texture : PDXRMachine_Reg_Texture;
-    nTex, iTex : Pointer;
+    i: Integer;
+    Texture: PDXRMachine_Reg_Texture;
+    nTex, iTex: Pointer;
   begin
-    for i := 0 to TextureIndexCount - 1 do
+    for i:=0 to TextureIndexCount-1 do
     begin
-      Texture := @TextureList[ TextureIndex[ i ] ];
+      Texture := @TextureList[TextureIndex[i]];
 
       nTex := @Texture.nAxis;
       iTex := @Texture.iAxis;
@@ -5447,12 +5298,11 @@ var
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
         end;
-      end
-      else
+      end else
       begin
         if Texture.iAxisConstant then
         begin
-          if Texture.iAxis.X <> 0 then
+          if Texture.iAxis.X<>0 then
           begin
             asm
               jmp @@EndCode
@@ -5473,7 +5323,7 @@ var
             end;
           end;
 
-          if Texture.iAxis.Y <> 0 then
+          if Texture.iAxis.Y<>0 then
           begin
             asm
               jmp @@EndCode
@@ -5486,16 +5336,50 @@ var
               mov edx,offset @@nTexY-4
               sub edx,offset @@StartCode
               mov dword ptr [ecx+edx],eax
-
+                                         
               mov eax,nTex; add eax,TDXRMachine_Axis.Y
               mov edx,offset @@nTexY-8
               sub edx,offset @@StartCode
               mov dword ptr [ecx+edx],eax
             end;
           end;
-        end
-        else
-        begin
+        end else
+        //begin
+         if UseMMX then
+         begin
+          FMMXUsed := True;
+          asm
+            jmp @@EndCode
+          @@StartCode:
+            db $0F,$6F,$05,$11,$11,$11,$11///movq mm0,qword ptr [$11111111]
+                                   @@nTex:
+            db $0F,$FE,$05,$11,$11,$11,$11///paddd mm0,qword ptr [$11111111]
+                                   @@iTex:
+            db $0F,$7F,$05,$11,$11,$11,$11///movq qword ptr [$11111111],mm0
+                                   @@nTex2:
+          @@EndCode:
+            {$I DXRender.inc}
+            {  @@nTex  }
+            mov eax,nTex
+            mov edx,offset @@nTex-4
+            sub edx,offset @@StartCode
+            mov dword ptr [ecx+edx],eax
+
+            {  @@nTex2  }
+            mov eax,nTex
+            mov edx,offset @@nTex2-4
+            sub edx,offset @@StartCode
+            mov dword ptr [ecx+edx],eax
+
+            {  @@iTex  }
+            mov eax,iTex
+            mov edx,offset @@iTex-4
+            sub edx,offset @@StartCode
+            mov dword ptr [ecx+edx],eax
+          end;
+         end else
+         begin
+
           asm
             jmp @@EndCode
           @@StartCode:
@@ -5534,12 +5418,11 @@ var
     end;
   end;
 
-  procedure genUpdateRHW( var Code : Pointer );
+  procedure genUpdateRHW(var Code: Pointer);
   var
-    nRHW, iRHW : Pointer;
+    nRHW, iRHW: Pointer;
   begin
-    if not RHW.Enable then
-      Exit;
+    if not RHW.Enable then Exit;
 
     nRHW := @RHW.nRHW;
     iRHW := @RHW.iRHW;
@@ -5580,18 +5463,18 @@ var
     end;
   end;
 
-  procedure genBlend( var Code : Pointer; Blend : TDXR_Blend;
-    Dest, Col1, Col2 : PDXRMachine_Color; EnableChannels : TDXRColorChannels;
-    ConstChannels1, ConstChannels2 : TDXRColorChannels );
+  procedure genBlend(var Code: Pointer; Blend: TDXR_Blend;
+    Dest, Col1, Col2: PDXRMachine_Color; EnableChannels: TDXRColorChannels;
+    ConstChannels1, ConstChannels2: TDXRColorChannels);
 
-    procedure Func_col1_Add_col2( var Code : Pointer; Dest, col1, col2 : PWord );
+    procedure Func_col1_Add_col2(var Code: Pointer; Dest, col1, col2: PWord);
     begin
       asm
         jmp @@EndCode
       @@StartCode:
         movzx eax,byte ptr [offset _null]{}@@Col1:
         movzx edx,byte ptr [offset _null]{}@@Col2:
-        mov al,byte ptr [offset _AddTable + eax + edx]
+        mov al,byte ptr [offset (_AddTable + eax + edx)]
         mov byte ptr [offset _null],al{}@@Dest:
       @@EndCode:
         {$I DXRender.inc}
@@ -5615,7 +5498,7 @@ var
       end;
     end;
 
-    procedure Func_col1_Add_const2( var Code : Pointer; Dest, col1, col2 : PWord );
+    procedure Func_col1_Add_const2(var Code: Pointer; Dest, col1, col2: PWord);
     begin
       asm
         jmp @@EndCode
@@ -5647,15 +5530,15 @@ var
       end;
     end;
 
-    procedure Func_col1_Sub_col2( var Code : Pointer; Dest, col1, col2 : PWord );
+    procedure Func_col1_Sub_col2(var Code: Pointer; Dest, col1, col2: PWord);
     begin
       asm
         jmp @@EndCode
-      @@StartCode:
+      @@StartCode:    
         movzx eax,byte ptr [offset _null]{}@@Col1:
         movzx edx,byte ptr [offset _null]{}@@Col2:
         sub eax,edx
-        mov al,byte ptr [offset _SubTable + 255 + eax]
+        mov al,byte ptr [offset (_SubTable + 255 + eax)]
         mov byte ptr [offset _null],al{}@@Dest:
       @@EndCode:
         {$I DXRender.inc}
@@ -5679,7 +5562,7 @@ var
       end;
     end;
 
-    procedure Func_const1_Sub_col2( var Code : Pointer; Dest, col1, col2 : PWord );
+    procedure Func_const1_Sub_col2(var Code: Pointer; Dest, col1, col2: PWord);
     begin
       asm
         jmp @@EndCode
@@ -5687,7 +5570,7 @@ var
         mov eax,$11111111{}@@Col1:
         movzx edx,byte ptr [offset _null]{}@@Col2:
         sub eax,edx
-        mov al,byte ptr [offset _SubTable + 255 + eax]
+        mov al,byte ptr [offset (_SubTable + 255 + eax)]
         mov byte ptr [offset _null],al{}@@Dest:
       @@EndCode:
         {$I DXRender.inc}
@@ -5711,7 +5594,7 @@ var
       end;
     end;
 
-    procedure Func_col1_Sub_const2( var Code : Pointer; Dest, col1, col2 : PWord );
+    procedure Func_col1_Sub_const2(var Code: Pointer; Dest, col1, col2: PWord);
     begin
       asm
         jmp @@EndCode
@@ -5736,14 +5619,14 @@ var
         mov dword ptr [ecx+edx],eax
 
         {  @@Dest  }
-        mov eax,Dest; add eax,TDXRMachine_Color.R+1
+        mov eax,Dest; add eax,Byte(TDXRMachine_Color.R+1)
         mov edx,offset @@Dest-4
         sub edx,offset @@StartCode
         mov dword ptr [ecx+edx],eax
       end;
     end;
 
-    procedure genBlend_ZERO( var Code : Pointer; Dest : PDXRMachine_Color );
+    procedure genBlend_ZERO(var Code: Pointer; Dest: PDXRMachine_Color);
     begin
       asm
         jmp @@EndCode
@@ -5766,13 +5649,12 @@ var
       end;
     end;
 
-    procedure genBlend_ONE1( var Code : Pointer; Dest, Col1 : PDXRMachine_Color;
-      ConstChannels1 : TDXRColorChannels );
+    procedure genBlend_ONE1(var Code: Pointer; Dest, Col1: PDXRMachine_Color;
+      ConstChannels1: TDXRColorChannels);
     begin
-      if Dest = Col1 then
-        Exit;
+      if Dest=Col1 then Exit;
 
-      if False then //UseMMX then
+      if UseMMX then //False then//UseMMX then
       begin
         FMMXUsed := True;
         asm
@@ -5796,10 +5678,9 @@ var
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
         end;
-      end
-      else
+      end else
       begin
-        if ConstChannels1 = [ chRed, chGreen, chBlue, chAlpha ] then
+        if ConstChannels1=[chRed, chGreen, chBlue, chAlpha] then
         begin
           asm
             jmp @@EndCode
@@ -5832,8 +5713,7 @@ var
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
           end;
-        end
-        else
+        end else
         begin
           asm
             jmp @@EndCode
@@ -5872,8 +5752,8 @@ var
       end;
     end;
 
-    procedure genBlend_ONE1_ADD_ONE2( var Code : Pointer; Dest, Col1, Col2 : PDXRMachine_Color;
-      ConstChannels1, ConstChannels12 : TDXRColorChannels );
+    procedure genBlend_ONE1_ADD_ONE2(var Code: Pointer; Dest, Col1, Col2: PDXRMachine_Color;
+      ConstChannels1, ConstChannels12: TDXRColorChannels);
     begin
       if UseMMX then
       begin
@@ -5908,22 +5788,20 @@ var
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
         end;
-      end
-      else
+      end else
       begin
         { Red Channel }
         if chRed in EnableChannels then
         begin
           if chRed in ConstChannels1 then
           begin
-            Func_col1_Add_const2( Code, @Dest.R, @Col2.R, @Col1.R );
-          end
-          else if chRed in ConstChannels2 then
+            Func_col1_Add_const2(Code, @Dest.R, @Col2.R, @Col1.R);
+          end else
+          if chRed in ConstChannels2 then
           begin
-            Func_col1_Add_const2( Code, @Dest.R, @Col1.R, @Col2.R );
-          end
-          else
-            Func_col1_Add_col2( Code, @Dest.R, @Col1.R, @Col2.R );
+            Func_col1_Add_const2(Code, @Dest.R, @Col1.R, @Col2.R);
+          end else
+            Func_col1_Add_col2(Code, @Dest.R, @Col1.R, @Col2.R);
         end;
 
         { Green Channel }
@@ -5931,14 +5809,13 @@ var
         begin
           if chRed in ConstChannels1 then
           begin
-            Func_col1_Add_const2( Code, @Dest.G, @Col2.G, @Col1.G );
-          end
-          else if chRed in ConstChannels2 then
+            Func_col1_Add_const2(Code, @Dest.G, @Col2.G, @Col1.G);
+          end else
+          if chRed in ConstChannels2 then
           begin
-            Func_col1_Add_const2( Code, @Dest.G, @Col1.G, @Col2.G );
-          end
-          else
-            Func_col1_Add_col2( Code, @Dest.G, @Col1.G, @Col2.G );
+            Func_col1_Add_const2(Code, @Dest.G, @Col1.G, @Col2.G);
+          end else
+            Func_col1_Add_col2(Code, @Dest.G, @Col1.G, @Col2.G);
         end;
 
         { Blue Channel }
@@ -5946,14 +5823,13 @@ var
         begin
           if chRed in ConstChannels1 then
           begin
-            Func_col1_Add_const2( Code, @Dest.B, @Col2.B, @Col1.B );
-          end
-          else if chRed in ConstChannels2 then
+            Func_col1_Add_const2(Code, @Dest.B, @Col2.B, @Col1.B);
+          end else
+          if chRed in ConstChannels2 then
           begin
-            Func_col1_Add_const2( Code, @Dest.B, @Col1.B, @Col2.B );
-          end
-          else
-            Func_col1_Add_col2( Code, @Dest.B, @Col1.B, @Col2.B );
+            Func_col1_Add_const2(Code, @Dest.B, @Col1.B, @Col2.B);
+          end else
+            Func_col1_Add_col2(Code, @Dest.B, @Col1.B, @Col2.B);
         end;
 
         { Alpha Channel }
@@ -5961,20 +5837,19 @@ var
         begin
           if chRed in ConstChannels1 then
           begin
-            Func_col1_Add_const2( Code, @Dest.A, @Col2.A, @Col1.A );
-          end
-          else if chRed in ConstChannels2 then
+            Func_col1_Add_const2(Code, @Dest.A, @Col2.A, @Col1.A);
+          end else
+          if chRed in ConstChannels2 then
           begin
-            Func_col1_Add_const2( Code, @Dest.A, @Col1.A, @Col2.A );
-          end
-          else
-            Func_col1_Add_col2( Code, @Dest.A, @Col1.A, @Col2.A );
+            Func_col1_Add_const2(Code, @Dest.A, @Col1.A, @Col2.A);
+          end else
+            Func_col1_Add_col2(Code, @Dest.A, @Col1.A, @Col2.A);
         end;
       end;
     end;
 
-    procedure genBlend_ONE2_SUB_ONE1( var Code : Pointer; Dest, Col1, Col2 : PDXRMachine_Color;
-      ConstChannels1, ConstChannels12 : TDXRColorChannels );
+    procedure genBlend_ONE2_SUB_ONE1(var Code: Pointer; Dest, Col1, Col2: PDXRMachine_Color;
+      ConstChannels1, ConstChannels12: TDXRColorChannels);
     begin
       if UseMMX then
       begin
@@ -6009,22 +5884,20 @@ var
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
         end;
-      end
-      else
+      end else
       begin
         { Red Channel }
         if chRed in EnableChannels then
         begin
           if chRed in ConstChannels1 then
           begin
-            Func_col1_Sub_const2( Code, @Dest.R, @Col2.R, @Col1.R );
-          end
-          else if chRed in ConstChannels2 then
+            Func_col1_Sub_const2(Code, @Dest.R, @Col2.R, @Col1.R);
+          end else
+          if chRed in ConstChannels2 then
           begin
-            Func_const1_Sub_col2( Code, @Dest.R, @Col1.R, @Col2.R );
-          end
-          else
-            Func_col1_Sub_col2( Code, @Dest.R, @Col2.R, @Col1.R );
+            Func_const1_Sub_col2(Code, @Dest.R, @Col1.R, @Col2.R);
+          end else
+            Func_col1_Sub_col2(Code, @Dest.R, @Col2.R, @Col1.R);
         end;
 
         { Green Channel }
@@ -6032,14 +5905,13 @@ var
         begin
           if chRed in ConstChannels1 then
           begin
-            Func_col1_Sub_const2( Code, @Dest.G, @Col2.G, @Col1.G );
-          end
-          else if chRed in ConstChannels2 then
+            Func_col1_Sub_const2(Code, @Dest.G, @Col2.G, @Col1.G);
+          end else
+          if chRed in ConstChannels2 then
           begin
-            Func_const1_Sub_col2( Code, @Dest.G, @Col1.G, @Col2.G );
-          end
-          else
-            Func_col1_Sub_col2( Code, @Dest.G, @Col2.G, @Col1.G );
+            Func_const1_Sub_col2(Code, @Dest.G, @Col1.G, @Col2.G);
+          end else
+            Func_col1_Sub_col2(Code, @Dest.G, @Col2.G, @Col1.G);
         end;
 
         { Blue Channel }
@@ -6047,14 +5919,13 @@ var
         begin
           if chRed in ConstChannels1 then
           begin
-            Func_col1_Sub_const2( Code, @Dest.B, @Col2.B, @Col1.B );
-          end
-          else if chRed in ConstChannels2 then
+            Func_col1_Sub_const2(Code, @Dest.B, @Col2.B, @Col1.B);
+          end else
+          if chRed in ConstChannels2 then
           begin
-            Func_const1_Sub_col2( Code, @Dest.B, @Col1.B, @Col2.B );
-          end
-          else
-            Func_col1_Sub_col2( Code, @Dest.B, @Col2.B, @Col1.B );
+            Func_const1_Sub_col2(Code, @Dest.B, @Col1.B, @Col2.B);
+          end else
+            Func_col1_Sub_col2(Code, @Dest.B, @Col2.B, @Col1.B);
         end;
 
         { Alpha Channel }
@@ -6062,20 +5933,277 @@ var
         begin
           if chRed in ConstChannels1 then
           begin
-            Func_col1_Sub_const2( Code, @Dest.A, @Col2.A, @Col1.A );
-          end
-          else if chRed in ConstChannels2 then
+            Func_col1_Sub_const2(Code, @Dest.A, @Col2.A, @Col1.A);
+          end else
+          if chRed in ConstChannels2 then
           begin
-            Func_const1_Sub_col2( Code, @Dest.A, @Col1.A, @Col2.A );
-          end
-          else
-            Func_col1_Sub_col2( Code, @Dest.A, @Col2.A, @Col1.A );
+            Func_const1_Sub_col2(Code, @Dest.A, @Col1.A, @Col2.A);
+          end else
+            Func_col1_Sub_col2(Code, @Dest.A, @Col2.A, @Col1.A);
         end;
       end;
     end;
 
-    procedure genBlend_SRCALPHA1( var Code : Pointer; Dest, Col1 : PDXRMachine_Color;
-      ConstChannels1 : TDXRColorChannels );
+    procedure genBlend_ONE1_SUB_ONE2(var Code: Pointer; Dest, Col1, Col2: PDXRMachine_Color;
+      ConstChannels1, ConstChannels12: TDXRColorChannels);
+    begin
+      if UseMMX then
+      begin
+        FMMXUsed := True;
+        asm
+          jmp @@EndCode
+        @@StartCode:
+          db $0F,$6F,$05,$11,$11,$11,$11/// movq mm0,qword ptr [$11111111]
+                                 @@Col1:
+          db $0F,$D9,$05,$11,$11,$11,$11/// psubusw mm0,qword ptr [$11111111]
+                                 @@Col2:
+          db $0F,$7F,$05,$11,$11,$11,$11/// movq qword ptr [$11111111],mm0
+                                 @@Dest:
+        @@EndCode:
+          {$I DXRender.inc}
+          {  @@Col1  }
+          mov eax,Col1
+          mov edx,offset @@Col1-4
+          sub edx,offset @@StartCode
+          mov dword ptr [ecx+edx],eax
+
+          {  @@Col2  }
+          mov eax,Col2
+          mov edx,offset @@Col2-4
+          sub edx,offset @@StartCode
+          mov dword ptr [ecx+edx],eax
+
+          {  @@Dest  }
+          mov eax,Dest
+          mov edx,offset @@Dest-4
+          sub edx,offset @@StartCode
+          mov dword ptr [ecx+edx],eax
+        end;
+      end else
+      begin
+        { Red Channel }
+        if chRed in EnableChannels then
+        begin
+          if chRed in ConstChannels1 then
+          begin
+            Func_col1_Sub_const2(Code, @Dest.R, @Col1.R, @Col2.R);
+          end else
+          if chRed in ConstChannels2 then
+          begin
+            Func_const1_Sub_col2(Code, @Dest.R, @Col2.R, @Col1.R);
+          end else
+            Func_col1_Sub_col2(Code, @Dest.R, @Col1.R, @Col2.R);
+        end;
+
+        { Green Channel }
+        if chRed in EnableChannels then
+        begin
+          if chRed in ConstChannels1 then
+          begin
+            Func_col1_Sub_const2(Code, @Dest.G, @Col1.G, @Col2.G);
+          end else
+          if chRed in ConstChannels2 then
+          begin
+            Func_const1_Sub_col2(Code, @Dest.G, @Col2.G, @Col1.G);
+          end else
+            Func_col1_Sub_col2(Code, @Dest.G, @Col1.G, @Col2.G);
+        end;
+
+        { Blue Channel }
+        if chRed in EnableChannels then
+        begin
+          if chRed in ConstChannels1 then
+          begin
+            Func_col1_Sub_const2(Code, @Dest.B, @Col1.B, @Col2.B);
+          end else
+          if chRed in ConstChannels2 then
+          begin
+            Func_const1_Sub_col2(Code, @Dest.B, @Col2.B, @Col1.B);
+          end else
+            Func_col1_Sub_col2(Code, @Dest.B, @Col1.B, @Col2.B);
+        end;
+
+        { Alpha Channel }
+        if chRed in EnableChannels then
+        begin
+          if chRed in ConstChannels1 then
+          begin
+            Func_col1_Sub_const2(Code, @Dest.A, @Col1.A, @Col2.A);
+          end else
+          if chRed in ConstChannels2 then
+          begin
+            Func_const1_Sub_col2(Code, @Dest.A, @Col2.A, @Col1.A);
+          end else
+            Func_col1_Sub_col2(Code, @Dest.A, @Col1.A, @Col2.A);
+        end;
+      end;
+    end;
+
+    procedure genBlend_ONE1_MUL_ONE2(var Code: Pointer; Dest, Col1, Col2: PDXRMachine_Color;
+      ConstChannels1, ConstChannels12: TDXRColorChannels);
+    begin
+      if UseMMX then
+      begin
+        FMMXUsed := True;
+        asm
+          jmp @@EndCode
+        @@StartCode:
+          db $0F,$6F,$05,$11,$11,$11,$11/// movq mm0,qword ptr [$11111111]
+                                 @@Col1:
+          db $0F,$6F,$0D,$11,$11,$11,$11/// movq mm1,qword ptr [$11111111]
+                                 @@Col2:
+          db $0F,$71,$D0,$01       /// psrlw mm0,1
+          db $0F,$71,$D1,$01       /// psrlw mm1,1
+          db $0F,$E5,$C1           /// pmulhw mm0,mm1
+          db $0F,$71,$F0,$02       /// psllw mm0,2
+          db $0F,$7F,$05,$11,$11,$11,$11/// movq qword ptr [$11111111],mm0
+                                 @@Dest:
+        @@EndCode:
+          {$I DXRender.inc}
+          {  @@Col1  }
+          mov eax,Col1
+          mov edx,offset @@Col1-4
+          sub edx,offset @@StartCode
+          mov dword ptr [ecx+edx],eax
+
+          {  @@Col2  }
+          mov eax,Col2
+          mov edx,offset @@Col2-4
+          sub edx,offset @@StartCode
+          mov dword ptr [ecx+edx],eax
+
+          {  @@Dest  }
+          mov eax,Dest
+          mov edx,offset @@Dest-4
+          sub edx,offset @@StartCode
+          mov dword ptr [ecx+edx],eax
+        end;
+      end else
+      begin
+        if chRed in EnableChannels then
+        begin
+          asm
+            jmp @@EndCode
+          @@StartCode:
+            mov al,byte ptr [offset offset _null]{}@@Col1:
+            mul byte ptr [offset offset _null]   {}@@Col2:
+            mov byte ptr [offset offset _null],ah{}@@Dest:
+          @@EndCode:
+            {$I DXRender.inc}
+            {  @@Col1  }
+            mov eax,Col1; add eax,Byte(TDXRMachine_Color.R+1)
+            mov edx,offset @@Col1-4
+            sub edx,offset @@StartCode
+            mov dword ptr [ecx+edx],eax
+
+            {  @@Col2  }
+            mov eax,Col2; add eax,Byte(TDXRMachine_Color.R+1)
+            mov edx,offset @@Col2-4
+            sub edx,offset @@StartCode
+            mov dword ptr [ecx+edx],eax
+
+            {  @@Dest  }
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.R+1)
+            mov edx,offset @@Dest-4
+            sub edx,offset @@StartCode
+            mov dword ptr [ecx+edx],eax
+          end;
+        end;
+
+        if chGreen in EnableChannels then
+        begin
+          asm
+            jmp @@EndCode
+          @@StartCode:
+            mov al,byte ptr [offset offset _null]{}@@Col1:
+            mul byte ptr [offset offset _null]   {}@@Col2:
+            mov byte ptr [offset offset _null],ah{}@@Dest:
+          @@EndCode:
+            {$I DXRender.inc}
+            {  @@Col1  }
+            mov eax,Col1; add eax,Byte(TDXRMachine_Color.G+1)
+            mov edx,offset @@Col1-4
+            sub edx,offset @@StartCode
+            mov dword ptr [ecx+edx],eax
+
+            {  @@Col2  }
+            mov eax,Col2; add eax,Byte(TDXRMachine_Color.G+1)
+            mov edx,offset @@Col2-4
+            sub edx,offset @@StartCode
+            mov dword ptr [ecx+edx],eax
+
+            {  @@Dest  }
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.G+1)
+            mov edx,offset @@Dest-4
+            sub edx,offset @@StartCode
+            mov dword ptr [ecx+edx],eax
+          end;
+        end;
+
+        if chBlue in EnableChannels then
+        begin
+          asm
+            jmp @@EndCode
+          @@StartCode:
+            mov al,byte ptr [offset offset _null]{}@@Col1:
+            mul byte ptr [offset offset _null]   {}@@Col2:
+            mov byte ptr [offset offset _null],ah{}@@Dest:
+          @@EndCode:
+            {$I DXRender.inc}
+            {  @@Col1  }
+            mov eax,Col1; add eax,Byte(TDXRMachine_Color.B+1)
+            mov edx,offset @@Col1-4
+            sub edx,offset @@StartCode
+            mov dword ptr [ecx+edx],eax
+
+            {  @@Col2  }
+            mov eax,Col2; add eax,Byte(TDXRMachine_Color.B+1)
+            mov edx,offset @@Col2-4
+            sub edx,offset @@StartCode
+            mov dword ptr [ecx+edx],eax
+
+            {  @@Dest  }
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.B+1)
+            mov edx,offset @@Dest-4
+            sub edx,offset @@StartCode
+            mov dword ptr [ecx+edx],eax
+          end;
+        end;
+
+        if chAlpha in EnableChannels then
+        begin
+          asm
+            jmp @@EndCode
+          @@StartCode:
+            mov al,byte ptr [offset offset _null]{}@@Col1:
+            mul byte ptr [offset offset _null]   {}@@Col2:
+            mov byte ptr [offset offset _null],ah{}@@Dest:
+          @@EndCode:
+            {$I DXRender.inc}
+            {  @@Col1  }
+            mov eax,Col1; add eax,Byte(TDXRMachine_Color.A+1)
+            mov edx,offset @@Col1-4
+            sub edx,offset @@StartCode
+            mov dword ptr [ecx+edx],eax
+
+            {  @@Col2  }
+            mov eax,Col2; add eax,Byte(TDXRMachine_Color.A+1)
+            mov edx,offset @@Col2-4
+            sub edx,offset @@StartCode
+            mov dword ptr [ecx+edx],eax
+
+            {  @@Dest  }
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.A+1)
+            mov edx,offset @@Dest-4
+            sub edx,offset @@StartCode
+            mov dword ptr [ecx+edx],eax
+          end;
+        end;
+      end;
+    end;
+
+    procedure genBlend_SRCALPHA1(var Code: Pointer; Dest, Col1: PDXRMachine_Color;
+      ConstChannels1: TDXRColorChannels);
     begin
       asm
         jmp @@EndCode
@@ -6084,13 +6212,13 @@ var
       @@EndCode:
         {$I DXRender.inc}
         {  @@Col1  }
-        mov eax,Col1; add eax,TDXRMachine_Color.A+1
+        mov eax,Col1; add eax,Byte(TDXRMachine_Color.A+1)
         mov edx,offset @@Col1-4
         sub edx,offset @@StartCode
         mov dword ptr [ecx+edx],eax
       end;
 
-      if [ chRed, chGreen ] <= EnableChannels then
+      if [chRed, chGreen]<=EnableChannels then
       begin
         asm
           jmp @@EndCode
@@ -6114,8 +6242,7 @@ var
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
         end;
-      end
-      else
+      end else
       begin
         if chRed in EnableChannels then
         begin
@@ -6128,13 +6255,13 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@Col1  }
-            mov eax,Col1; add eax,TDXRMachine_Color.R+1
+            mov eax,Col1; add eax,Byte(TDXRMachine_Color.R+1)
             mov edx,offset @@Col1-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Dest  }
-            mov eax,Dest; add eax,TDXRMachine_Color.R+1
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.R+1)
             mov edx,offset @@Dest-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -6152,13 +6279,13 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@Col1  }
-            mov eax,Col1; add eax,TDXRMachine_Color.G+1
+            mov eax,Col1; add eax,Byte(TDXRMachine_Color.G+1)
             mov edx,offset @@Col1-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Dest  }
-            mov eax,Dest; add eax,TDXRMachine_Color.G+1
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.G+1)
             mov edx,offset @@Dest-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -6166,7 +6293,7 @@ var
         end;
       end;
 
-      if [ chBlue, chAlpha ] <= EnableChannels then
+      if [chBlue, chAlpha]<=EnableChannels then
       begin
         asm
           jmp @@EndCode
@@ -6190,8 +6317,7 @@ var
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
         end;
-      end
-      else
+      end else
       begin
         if chBlue in EnableChannels then
         begin
@@ -6204,13 +6330,13 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@Col1  }
-            mov eax,Col1; add eax,TDXRMachine_Color.B+1
+            mov eax,Col1; add eax,Byte(TDXRMachine_Color.B+1)
             mov edx,offset @@Col1-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Dest  }
-            mov eax,Dest; add eax,TDXRMachine_Color.B+1
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.B+1)
             mov edx,offset @@Dest-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -6228,13 +6354,13 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@Col1  }
-            mov eax,Col1; add eax,TDXRMachine_Color.A+1
+            mov eax,Col1; add eax,Byte(TDXRMachine_Color.A+1)
             mov edx,offset @@Col1-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Dest  }
-            mov eax,Dest; add eax,TDXRMachine_Color.A+1
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.A+1)
             mov edx,offset @@Dest-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -6243,8 +6369,8 @@ var
       end;
     end;
 
-    procedure genBlend_SRCALPHA1_ADD_ONE2( var Code : Pointer; Dest, Col1, Col2 : PDXRMachine_Color;
-      ConstChannels1, ConstChannels12 : TDXRColorChannels );
+    procedure genBlend_SRCALPHA1_ADD_ONE2(var Code: Pointer; Dest, Col1, Col2: PDXRMachine_Color;
+      ConstChannels1, ConstChannels12: TDXRColorChannels);
     begin
       asm
         jmp @@EndCode
@@ -6253,7 +6379,7 @@ var
       @@EndCode:
         {$I DXRender.inc}
         {  @@Col1  }
-        mov eax,Col1; add eax,TDXRMachine_Color.A+1
+        mov eax,Col1; add eax,Byte(TDXRMachine_Color.A+1)
         mov edx,offset @@Col1-4
         sub edx,offset @@StartCode
         mov dword ptr [ecx+edx],eax
@@ -6268,24 +6394,24 @@ var
           movzx edx,byte ptr [offset _null]{}@@Col2:
           imul eax,ebx
           shr eax,8
-          mov al,byte ptr [offset _AddTable + eax + edx]
+          mov al,byte ptr [offset (_AddTable + eax + edx)]
           mov byte ptr [offset _null],al{}@@Dest:
         @@EndCode:
           {$I DXRender.inc}
           {  @@Col1  }
-          mov eax,Col1; add eax,TDXRMachine_Color.R+1
+          mov eax,Col1; add eax,Byte(TDXRMachine_Color.R+1)
           mov edx,offset @@Col1-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Col2  }
-          mov eax,Col2; add eax,TDXRMachine_Color.R+1
+          mov eax,Col2; add eax,Byte(TDXRMachine_Color.R+1)
           mov edx,offset @@Col2-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Dest  }
-          mov eax,Dest; add eax,TDXRMachine_Color.R+1
+          mov eax,Dest; add eax,Byte(TDXRMachine_Color.R+1)
           mov edx,offset @@Dest-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -6301,24 +6427,24 @@ var
           movzx edx,byte ptr [offset _null]{}@@Col2:
           imul eax,ebx
           shr eax,8
-          mov al,byte ptr [offset _AddTable + eax + edx]
+          mov al,byte ptr [offset (_AddTable + eax + edx)]
           mov byte ptr [offset _null],al{}@@Dest:
         @@EndCode:
           {$I DXRender.inc}
           {  @@Col1  }
-          mov eax,Col1; add eax,TDXRMachine_Color.G+1
+          mov eax,Col1; add eax,Byte(TDXRMachine_Color.G+1)
           mov edx,offset @@Col1-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Col2  }
-          mov eax,Col2; add eax,TDXRMachine_Color.G+1
+          mov eax,Col2; add eax,Byte(TDXRMachine_Color.G+1)
           mov edx,offset @@Col2-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Dest  }
-          mov eax,Dest; add eax,TDXRMachine_Color.G+1
+          mov eax,Dest; add eax,Byte(TDXRMachine_Color.G+1)
           mov edx,offset @@Dest-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -6334,24 +6460,24 @@ var
           movzx edx,byte ptr [offset _null]{}@@Col2:
           imul eax,ebx
           shr eax,8
-          mov al,byte ptr [offset _AddTable + eax + edx]
+          mov al,byte ptr [offset (_AddTable + eax + edx)]
           mov byte ptr [offset _null],al{}@@Dest:
         @@EndCode:
           {$I DXRender.inc}
           {  @@Col1  }
-          mov eax,Col1; add eax,TDXRMachine_Color.B+1
+          mov eax,Col1; add eax,Byte(TDXRMachine_Color.B+1)
           mov edx,offset @@Col1-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Col2  }
-          mov eax,Col2; add eax,TDXRMachine_Color.B+1
+          mov eax,Col2; add eax,Byte(TDXRMachine_Color.B+1)
           mov edx,offset @@Col2-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Dest  }
-          mov eax,Dest; add eax,TDXRMachine_Color.B+1
+          mov eax,Dest; add eax,Byte(TDXRMachine_Color.B+1)
           mov edx,offset @@Dest-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -6367,24 +6493,24 @@ var
           movzx edx,byte ptr [offset _null]{}@@Col2:
           imul eax,ebx
           shr eax,8
-          mov al,byte ptr [offset _AddTable + eax + edx]
+          mov al,byte ptr [offset (_AddTable + eax + edx)]
           mov byte ptr [offset _null],al{}@@Dest:
         @@EndCode:
           {$I DXRender.inc}
           {  @@Col1  }
-          mov eax,Col1; add eax,TDXRMachine_Color.A+1
+          mov eax,Col1; add eax,Byte(TDXRMachine_Color.A+1)
           mov edx,offset @@Col1-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Col2  }
-          mov eax,Col2; add eax,TDXRMachine_Color.A+1
+          mov eax,Col2; add eax,Byte(TDXRMachine_Color.A+1)
           mov edx,offset @@Col2-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Dest  }
-          mov eax,Dest; add eax,TDXRMachine_Color.A+1
+          mov eax,Dest; add eax,Byte(TDXRMachine_Color.A+1)
           mov edx,offset @@Dest-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -6392,8 +6518,8 @@ var
       end;
     end;
 
-    procedure genBlend_ONE2_SUB_SRCALPHA1( var Code : Pointer; Dest, Col1, Col2 : PDXRMachine_Color;
-      ConstChannels1, ConstChannels12 : TDXRColorChannels );
+    procedure genBlend_ONE2_SUB_SRCALPHA1(var Code: Pointer; Dest, Col1, Col2: PDXRMachine_Color;
+      ConstChannels1, ConstChannels12: TDXRColorChannels);
     begin
       asm
         jmp @@EndCode
@@ -6402,7 +6528,7 @@ var
       @@EndCode:
         {$I DXRender.inc}
         {  @@Col1  }
-        mov eax,Col1; add eax,TDXRMachine_Color.A+1
+        mov eax,Col1; add eax,Byte(TDXRMachine_Color.A+1)
         mov edx,offset @@Col1-4
         sub edx,offset @@StartCode
         mov dword ptr [ecx+edx],eax
@@ -6418,24 +6544,24 @@ var
           imul eax,ebx
           shr eax,8
           sub edx,eax
-          mov al,byte ptr [offset _SubTable + 255 + edx]
+          mov al,byte ptr [offset (_SubTable + 255 + edx)]
           mov byte ptr [offset _null],al{}@@Dest:
         @@EndCode:
           {$I DXRender.inc}
           {  @@Col1  }
-          mov eax,Col1; add eax,TDXRMachine_Color.R+1
+          mov eax,Col1; add eax,Byte(TDXRMachine_Color.R+1)
           mov edx,offset @@Col1-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Col2  }
-          mov eax,Col2; add eax,TDXRMachine_Color.R+1
+          mov eax,Col2; add eax,Byte(TDXRMachine_Color.R+1)
           mov edx,offset @@Col2-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Dest  }
-          mov eax,Dest; add eax,TDXRMachine_Color.R+1
+          mov eax,Dest; add eax,Byte(TDXRMachine_Color.R+1)
           mov edx,offset @@Dest-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -6452,24 +6578,24 @@ var
           imul eax,ebx
           shr eax,8
           sub edx,eax
-          mov al,byte ptr [offset _SubTable + 255 + edx]
+          mov al,byte ptr [offset (_SubTable + 255 + edx)]
           mov byte ptr [offset _null],al{}@@Dest:
         @@EndCode:
           {$I DXRender.inc}
           {  @@Col1  }
-          mov eax,Col1; add eax,TDXRMachine_Color.G+1
+          mov eax,Col1; add eax,Byte(TDXRMachine_Color.G+1)
           mov edx,offset @@Col1-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Col2  }
-          mov eax,Col2; add eax,TDXRMachine_Color.G+1
+          mov eax,Col2; add eax,Byte(TDXRMachine_Color.G+1)
           mov edx,offset @@Col2-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Dest  }
-          mov eax,Dest; add eax,TDXRMachine_Color.G+1
+          mov eax,Dest; add eax,Byte(TDXRMachine_Color.G+1)
           mov edx,offset @@Dest-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -6486,24 +6612,24 @@ var
           imul eax,ebx
           shr eax,8
           sub edx,eax
-          mov al,byte ptr [offset _SubTable + 255 + edx]
+          mov al,byte ptr [offset (_SubTable + 255 + edx)]
           mov byte ptr [offset _null],al{}@@Dest:
         @@EndCode:
           {$I DXRender.inc}
           {  @@Col1  }
-          mov eax,Col1; add eax,TDXRMachine_Color.B+1
+          mov eax,Col1; add eax,Byte(TDXRMachine_Color.B+1)
           mov edx,offset @@Col1-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Col2  }
-          mov eax,Col2; add eax,TDXRMachine_Color.B+1
+          mov eax,Col2; add eax,Byte(TDXRMachine_Color.B+1)
           mov edx,offset @@Col2-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Dest  }
-          mov eax,Dest; add eax,TDXRMachine_Color.B+1
+          mov eax,Dest; add eax,Byte(TDXRMachine_Color.B+1)
           mov edx,offset @@Dest-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -6520,24 +6646,24 @@ var
           imul eax,ebx
           shr eax,8
           sub edx,eax
-          mov al,byte ptr [offset _SubTable + 255 + edx]
+          mov al,byte ptr [offset (_SubTable + 255 + edx)]
           mov byte ptr [offset _null],al{}@@Dest:
         @@EndCode:
           {$I DXRender.inc}
           {  @@Col1  }
-          mov eax,Col1; add eax,TDXRMachine_Color.A+1
+          mov eax,Col1; add eax,Byte(TDXRMachine_Color.A+1)
           mov edx,offset @@Col1-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Col2  }
-          mov eax,Col2; add eax,TDXRMachine_Color.A+1
+          mov eax,Col2; add eax,Byte(TDXRMachine_Color.A+1)
           mov edx,offset @@Col2-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Dest  }
-          mov eax,Dest; add eax,TDXRMachine_Color.A+1
+          mov eax,Dest; add eax,Byte(TDXRMachine_Color.A+1)
           mov edx,offset @@Dest-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -6545,8 +6671,8 @@ var
       end;
     end;
 
-    procedure genBlend_SRCALPHA1_ADD_INVSRCALPHA2( var Code : Pointer; Dest, Col1, Col2 : PDXRMachine_Color;
-      ConstChannels1, ConstChannels12 : TDXRColorChannels );
+    procedure genBlend_SRCALPHA1_ADD_INVSRCALPHA2(var Code: Pointer; Dest, Col1, Col2: PDXRMachine_Color;
+      ConstChannels1, ConstChannels12: TDXRColorChannels);
     begin
       asm
         jmp @@EndCode
@@ -6557,17 +6683,17 @@ var
       @@EndCode:
         {$I DXRender.inc}
         {  @@Col1  }
-        mov eax,Col1; add eax,TDXRMachine_Color.A+1
+        mov eax,Col1; add eax,Byte(TDXRMachine_Color.A+1)
         mov edx,offset @@Col1-4
         sub edx,offset @@StartCode
         mov dword ptr [ecx+edx],eax
       end;
-
-      if [ chRed, chGreen ] <= EnableChannels then
+                        
+      if [chRed, chGreen]<=EnableChannels then
       begin
         asm
           jmp @@EndCode
-        @@StartCode:
+        @@StartCode:    
           mov eax,dword ptr [offset _null]{}@@Col1:
           mov edx,dword ptr [offset _null]{}@@Col2:
           shr eax,8
@@ -6598,8 +6724,7 @@ var
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
         end;
-      end
-      else
+      end else
       begin
         if chRed in EnableChannels then
         begin
@@ -6616,19 +6741,19 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@Col1  }
-            mov eax,Col1; add eax,TDXRMachine_Color.R+1
+            mov eax,Col1; add eax,Byte(TDXRMachine_Color.R+1)
             mov edx,offset @@Col1-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Col2  }
-            mov eax,Col2; add eax,TDXRMachine_Color.R+1
+            mov eax,Col2; add eax,Byte(TDXRMachine_Color.R+1)
             mov edx,offset @@Col2-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Dest  }
-            mov eax,Dest; add eax,TDXRMachine_Color.R+1
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.R+1)
             mov edx,offset @@Dest-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -6650,19 +6775,19 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@Col1  }
-            mov eax,Col1; add eax,TDXRMachine_Color.G+1
+            mov eax,Col1; add eax,Byte(TDXRMachine_Color.G+1)
             mov edx,offset @@Col1-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Col2  }
-            mov eax,Col2; add eax,TDXRMachine_Color.G+1
+            mov eax,Col2; add eax,Byte(TDXRMachine_Color.G+1)
             mov edx,offset @@Col2-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Dest  }
-            mov eax,Dest; add eax,TDXRMachine_Color.G+1
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.G+1)
             mov edx,offset @@Dest-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -6670,7 +6795,7 @@ var
         end;
       end;
 
-      if [ chBlue, chAlpha ] <= EnableChannels then
+      if [chBlue, chAlpha]<=EnableChannels then
       begin
         asm
           jmp @@EndCode
@@ -6705,8 +6830,7 @@ var
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
         end;
-      end
-      else
+      end else
       begin
         if chBlue in EnableChannels then
         begin
@@ -6723,19 +6847,19 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@Col1  }
-            mov eax,Col1; add eax,TDXRMachine_Color.B+1
+            mov eax,Col1; add eax,Byte(TDXRMachine_Color.B+1)
             mov edx,offset @@Col1-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Col2  }
-            mov eax,Col2; add eax,TDXRMachine_Color.B+1
+            mov eax,Col2; add eax,Byte(TDXRMachine_Color.B+1)
             mov edx,offset @@Col2-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Dest  }
-            mov eax,Dest; add eax,TDXRMachine_Color.B+1
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.B+1)
             mov edx,offset @@Dest-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -6757,19 +6881,19 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@Col1  }
-            mov eax,Col1; add eax,TDXRMachine_Color.A+1
+            mov eax,Col1; add eax,Byte(TDXRMachine_Color.A+1)
             mov edx,offset @@Col1-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Col2  }
-            mov eax,Col2; add eax,TDXRMachine_Color.A+1
+            mov eax,Col2; add eax,Byte(TDXRMachine_Color.A+1)
             mov edx,offset @@Col2-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Dest  }
-            mov eax,Dest; add eax,TDXRMachine_Color.A+1
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.A+1)
             mov edx,offset @@Dest-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -6778,8 +6902,8 @@ var
       end;
     end;
 
-    procedure genBlend_INVSRCALPHA1_ADD_SRCALPHA2( var Code : Pointer; Dest, Col1, Col2 : PDXRMachine_Color;
-      ConstChannels1, ConstChannels12 : TDXRColorChannels );
+    procedure genBlend_INVSRCALPHA1_ADD_SRCALPHA2(var Code: Pointer; Dest, Col1, Col2: PDXRMachine_Color;
+      ConstChannels1, ConstChannels12: TDXRColorChannels);
     begin
       asm
         jmp @@EndCode
@@ -6790,13 +6914,13 @@ var
       @@EndCode:
         {$I DXRender.inc}
         {  @@Col1A  }
-        mov eax,Col1; add eax,TDXRMachine_Color.A+1
+        mov eax,Col1; add eax,Byte(TDXRMachine_Color.A+1)
         mov edx,offset @@Col1A-4
         sub edx,offset @@StartCode
         mov dword ptr [ecx+edx],eax
       end;
 
-      if [ chRed, chGreen ] <= EnableChannels then
+      if [chRed, chGreen]<=EnableChannels then
       begin
         asm
           jmp @@EndCode
@@ -6831,8 +6955,7 @@ var
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
         end;
-      end
-      else
+      end else
       begin
         if chRed in EnableChannels then
         begin
@@ -6849,19 +6972,19 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@Col1  }
-            mov eax,Col1; add eax,TDXRMachine_Color.R+1
+            mov eax,Col1; add eax,Byte(TDXRMachine_Color.R+1)
             mov edx,offset @@Col1-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Col2  }
-            mov eax,Col2; add eax,TDXRMachine_Color.R+1
+            mov eax,Col2; add eax,Byte(TDXRMachine_Color.R+1)
             mov edx,offset @@Col2-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Dest  }
-            mov eax,Dest; add eax,TDXRMachine_Color.R+1
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.R+1)
             mov edx,offset @@Dest-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -6883,19 +7006,19 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@Col1  }
-            mov eax,Col1; add eax,TDXRMachine_Color.G+1
+            mov eax,Col1; add eax,Byte(TDXRMachine_Color.G+1)
             mov edx,offset @@Col1-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Col2  }
-            mov eax,Col2; add eax,TDXRMachine_Color.G+1
+            mov eax,Col2; add eax,Byte(TDXRMachine_Color.G+1)
             mov edx,offset @@Col2-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Dest  }
-            mov eax,Dest; add eax,TDXRMachine_Color.G+1
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.G+1)
             mov edx,offset @@Dest-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -6903,7 +7026,7 @@ var
         end;
       end;
 
-      if [ chBlue, chAlpha ] <= EnableChannels then
+      if [chBlue, chAlpha]<=EnableChannels then
       begin
         asm
           jmp @@EndCode
@@ -6938,8 +7061,7 @@ var
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
         end;
-      end
-      else
+      end else
       begin
         if chBlue in EnableChannels then
         begin
@@ -6956,19 +7078,19 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@Col1  }
-            mov eax,Col1; add eax,TDXRMachine_Color.B+1
+            mov eax,Col1; add eax,Byte(TDXRMachine_Color.B+1)
             mov edx,offset @@Col1-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Col2  }
-            mov eax,Col2; add eax,TDXRMachine_Color.B+1
+            mov eax,Col2; add eax,Byte(TDXRMachine_Color.B+1)
             mov edx,offset @@Col2-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Dest  }
-            mov eax,Dest; add eax,TDXRMachine_Color.B+1
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.B+1)
             mov edx,offset @@Dest-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -6990,19 +7112,19 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@Col1  }
-            mov eax,Col1; add eax,TDXRMachine_Color.A+1
+            mov eax,Col1; add eax,Byte(TDXRMachine_Color.A+1)
             mov edx,offset @@Col1-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Col2  }
-            mov eax,Col2; add eax,TDXRMachine_Color.A+1
+            mov eax,Col2; add eax,Byte(TDXRMachine_Color.A+1)
             mov edx,offset @@Col2-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Dest  }
-            mov eax,Dest; add eax,TDXRMachine_Color.A+1
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.A+1)
             mov edx,offset @@Dest-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -7011,10 +7133,10 @@ var
       end;
     end;
 
-    procedure genBlend_DECALALPHA( var Code : Pointer; Dest, Col1, Col2 : PDXRMachine_Color;
-      ConstChannels1, ConstChannels12 : TDXRColorChannels );
+    procedure genBlend_DECALALPHA(var Code: Pointer; Dest, Col1, Col2: PDXRMachine_Color;
+      ConstChannels1, ConstChannels12: TDXRColorChannels);
     begin
-      if ( [ chRed, chGreen, chBlue ] <= EnableChannels ) and ( Dest <> Col1 ) then
+      if ([chRed, chGreen, chBlue]<=EnableChannels) and (Dest<>Col1) then
       begin
         if UseMMX then
         begin
@@ -7040,8 +7162,7 @@ var
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
           end;
-        end
-        else
+        end else
         begin
           asm
             jmp @@EndCode
@@ -7089,13 +7210,13 @@ var
         @@EndCode:
           {$I DXRender.inc}
           {  @@Col2  }
-          mov eax,Col2; add eax,TDXRMachine_Color.A+1
+          mov eax,Col2; add eax,Byte(TDXRMachine_Color.A+1)
           mov edx,offset @@Col2-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Dest  }
-          mov eax,Dest; add eax,TDXRMachine_Color.A+1
+          mov eax,Dest; add eax,Byte(TDXRMachine_Color.A+1)
           mov edx,offset @@Dest-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -7103,8 +7224,8 @@ var
       end;
     end;
 
-    procedure genBlend_MODULATE( var Code : Pointer; Dest, Col1, Col2 : PDXRMachine_Color;
-      ConstChannels1, ConstChannels12 : TDXRColorChannels );
+    procedure genBlend_MODULATE(var Code: Pointer; Dest, Col1, Col2: PDXRMachine_Color;
+      ConstChannels1, ConstChannels12: TDXRColorChannels);
     begin
       if chRed in EnableChannels then
       begin
@@ -7117,19 +7238,19 @@ var
         @@EndCode:
           {$I DXRender.inc}
           {  @@Col1  }
-          mov eax,Col1; add eax,TDXRMachine_Color.R+1
+          mov eax,Col1; add eax,Byte(TDXRMachine_Color.R+1)
           mov edx,offset @@Col1-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Col2  }
-          mov eax,Col2; add eax,TDXRMachine_Color.R+1
+          mov eax,Col2; add eax,Byte(TDXRMachine_Color.R+1)
           mov edx,offset @@Col2-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Dest  }
-          mov eax,Dest; add eax,TDXRMachine_Color.R+1
+          mov eax,Dest; add eax,Byte(TDXRMachine_Color.R+1)
           mov edx,offset @@Dest-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -7147,19 +7268,19 @@ var
         @@EndCode:
           {$I DXRender.inc}
           {  @@Col1  }
-          mov eax,Col1; add eax,TDXRMachine_Color.G+1
+          mov eax,Col1; add eax,Byte(TDXRMachine_Color.G+1)
           mov edx,offset @@Col1-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Col2  }
-          mov eax,Col2; add eax,TDXRMachine_Color.G+1
+          mov eax,Col2; add eax,Byte(TDXRMachine_Color.G+1)
           mov edx,offset @@Col2-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Dest  }
-          mov eax,Dest; add eax,TDXRMachine_Color.G+1
+          mov eax,Dest; add eax,Byte(TDXRMachine_Color.G+1)
           mov edx,offset @@Dest-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -7177,26 +7298,26 @@ var
         @@EndCode:
           {$I DXRender.inc}
           {  @@Col1  }
-          mov eax,Col1; add eax,TDXRMachine_Color.B+1
+          mov eax,Col1; add eax,Byte(TDXRMachine_Color.B+1)
           mov edx,offset @@Col1-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Col2  }
-          mov eax,Col2; add eax,TDXRMachine_Color.B+1
+          mov eax,Col2; add eax,Byte(TDXRMachine_Color.B+1)
           mov edx,offset @@Col2-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Dest  }
-          mov eax,Dest; add eax,TDXRMachine_Color.B+1
+          mov eax,Dest; add eax,Byte(TDXRMachine_Color.B+1)
           mov edx,offset @@Dest-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
         end;
       end;
 
-      if ( chAlpha in EnableChannels ) or ( Dest <> Col1 ) then
+      if (chAlpha in EnableChannels) or (Dest<>Col1) then
       begin
         asm
           jmp @@EndCode
@@ -7206,13 +7327,13 @@ var
         @@EndCode:
           {$I DXRender.inc}
           {  @@Col1  }
-          mov eax,Col1; add eax,TDXRMachine_Color.A+1
+          mov eax,Col1; add eax,Byte(TDXRMachine_Color.A+1)
           mov edx,offset @@Col1-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
 
           {  @@Dest  }
-          mov eax,Dest; add eax,TDXRMachine_Color.A+1
+          mov eax,Dest; add eax,Byte(TDXRMachine_Color.A+1)
           mov edx,offset @@Dest-4
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
@@ -7220,8 +7341,8 @@ var
       end;
     end;
 
-    procedure genBlend_MODULATEALPHA( var Code : Pointer; Dest, Col1, Col2 : PDXRMachine_Color;
-      ConstChannels1, ConstChannels12 : TDXRColorChannels );
+    procedure genBlend_MODULATEALPHA(var Code: Pointer; Dest, Col1, Col2: PDXRMachine_Color;
+      ConstChannels1, ConstChannels12: TDXRColorChannels);
     begin
       if UseMMX then
       begin
@@ -7256,8 +7377,7 @@ var
           sub edx,offset @@StartCode
           mov dword ptr [ecx+edx],eax
         end;
-      end
-      else
+      end else
       begin
         if chRed in EnableChannels then
         begin
@@ -7270,19 +7390,19 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@Col1  }
-            mov eax,Col1; add eax,TDXRMachine_Color.R+1
+            mov eax,Col1; add eax,Byte(TDXRMachine_Color.R+1)
             mov edx,offset @@Col1-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Col2  }
-            mov eax,Col2; add eax,TDXRMachine_Color.R+1
+            mov eax,Col2; add eax,Byte(TDXRMachine_Color.R+1)
             mov edx,offset @@Col2-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Dest  }
-            mov eax,Dest; add eax,TDXRMachine_Color.R+1
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.R+1)
             mov edx,offset @@Dest-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -7300,19 +7420,19 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@Col1  }
-            mov eax,Col1; add eax,TDXRMachine_Color.G+1
+            mov eax,Col1; add eax,Byte(TDXRMachine_Color.G+1)
             mov edx,offset @@Col1-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Col2  }
-            mov eax,Col2; add eax,TDXRMachine_Color.G+1
+            mov eax,Col2; add eax,Byte(TDXRMachine_Color.G+1)
             mov edx,offset @@Col2-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Dest  }
-            mov eax,Dest; add eax,TDXRMachine_Color.G+1
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.G+1)
             mov edx,offset @@Dest-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -7330,19 +7450,19 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@Col1  }
-            mov eax,Col1; add eax,TDXRMachine_Color.B+1
+            mov eax,Col1; add eax,Byte(TDXRMachine_Color.B+1)
             mov edx,offset @@Col1-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Col2  }
-            mov eax,Col2; add eax,TDXRMachine_Color.B+1
+            mov eax,Col2; add eax,Byte(TDXRMachine_Color.B+1)
             mov edx,offset @@Col2-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Dest  }
-            mov eax,Dest; add eax,TDXRMachine_Color.B+1
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.B+1)
             mov edx,offset @@Dest-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -7360,19 +7480,19 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@Col1  }
-            mov eax,Col1; add eax,TDXRMachine_Color.A+1
+            mov eax,Col1; add eax,Byte(TDXRMachine_Color.A+1)
             mov edx,offset @@Col1-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Col2  }
-            mov eax,Col2; add eax,TDXRMachine_Color.A+1
+            mov eax,Col2; add eax,Byte(TDXRMachine_Color.A+1)
             mov edx,offset @@Col2-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Dest  }
-            mov eax,Dest; add eax,TDXRMachine_Color.A+1
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.A+1)
             mov edx,offset @@Dest-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -7381,8 +7501,8 @@ var
       end;
     end;
 
-    procedure genBlend_ADD( var Code : Pointer; Dest, Col1, Col2 : PDXRMachine_Color;
-      ConstChannels1, ConstChannels12 : TDXRColorChannels );
+    procedure genBlend_ADD(var Code: Pointer; Dest, Col1, Col2: PDXRMachine_Color;
+      ConstChannels1, ConstChannels12: TDXRColorChannels);
     begin
       if UseMMX then
       begin
@@ -7429,34 +7549,32 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@Col2  }
-            mov eax,Col2; add eax,TDXRMachine_Color.A+1
+            mov eax,Col2; add eax,Byte(TDXRMachine_Color.A+1)
             mov edx,offset @@Col2-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Dest  }
-            mov eax,Dest; add eax,TDXRMachine_Color.A+1
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.A+1)
             mov edx,offset @@Dest-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
           end;
         end;
-      end
-      else
+      end else
       begin
         { Red Channel }
         if chRed in EnableChannels then
         begin
           if chRed in ConstChannels1 then
           begin
-            Func_col1_Add_const2( Code, @Dest.R, @Col2.R, @Col1.R );
-          end
-          else if chRed in ConstChannels2 then
+            Func_col1_Add_const2(Code, @Dest.R, @Col2.R, @Col1.R);
+          end else
+          if chRed in ConstChannels2 then
           begin
-            Func_col1_Add_const2( Code, @Dest.R, @Col1.R, @Col2.R );
-          end
-          else
-            Func_col1_Add_col2( Code, @Dest.R, @Col1.R, @Col2.R );
+            Func_col1_Add_const2(Code, @Dest.R, @Col1.R, @Col2.R);
+          end else
+            Func_col1_Add_col2(Code, @Dest.R, @Col1.R, @Col2.R);
         end;
 
         { Green Channel }
@@ -7464,14 +7582,13 @@ var
         begin
           if chRed in ConstChannels1 then
           begin
-            Func_col1_Add_const2( Code, @Dest.G, @Col2.G, @Col1.G );
-          end
-          else if chRed in ConstChannels2 then
+            Func_col1_Add_const2(Code, @Dest.G, @Col2.G, @Col1.G);
+          end else
+          if chRed in ConstChannels2 then
           begin
-            Func_col1_Add_const2( Code, @Dest.G, @Col1.G, @Col2.G );
-          end
-          else
-            Func_col1_Add_col2( Code, @Dest.G, @Col1.G, @Col2.G );
+            Func_col1_Add_const2(Code, @Dest.G, @Col1.G, @Col2.G);
+          end else
+            Func_col1_Add_col2(Code, @Dest.G, @Col1.G, @Col2.G);
         end;
 
         { Blue Channel }
@@ -7479,18 +7596,17 @@ var
         begin
           if chRed in ConstChannels1 then
           begin
-            Func_col1_Add_const2( Code, @Dest.B, @Col2.B, @Col1.B );
-          end
-          else if chRed in ConstChannels2 then
+            Func_col1_Add_const2(Code, @Dest.B, @Col2.B, @Col1.B);
+          end else
+          if chRed in ConstChannels2 then
           begin
-            Func_col1_Add_const2( Code, @Dest.B, @Col1.B, @Col2.B );
-          end
-          else
-            Func_col1_Add_col2( Code, @Dest.B, @Col1.B, @Col2.B );
+            Func_col1_Add_const2(Code, @Dest.B, @Col1.B, @Col2.B);
+          end else
+            Func_col1_Add_col2(Code, @Dest.B, @Col1.B, @Col2.B);
         end;
 
         {  Alpha Channel  }
-        if ( chAlpha in EnableChannels ) and ( Col2 <> Dest ) then
+        if (chAlpha in EnableChannels) and (Col2<>Dest) then
         begin
           asm
             jmp @@EndCode
@@ -7500,13 +7616,13 @@ var
           @@EndCode:
             {$I DXRender.inc}
             {  @@Col2  }
-            mov eax,Col2; add eax,TDXRMachine_Color.A+1
+            mov eax,Col2; add eax,Byte(TDXRMachine_Color.A+1)
             mov edx,offset @@Col2-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
 
             {  @@Dest  }
-            mov eax,Dest; add eax,TDXRMachine_Color.A+1
+            mov eax,Dest; add eax,Byte(TDXRMachine_Color.A+1)
             mov edx,offset @@Dest-4
             sub edx,offset @@StartCode
             mov dword ptr [ecx+edx],eax
@@ -7516,221 +7632,220 @@ var
     end;
 
   begin
-    if EnableChannels = [ ] then
-      Exit;
-
+    if EnableChannels=[] then Exit;
+                              
     case Blend of
-      DXR_BLEND_ZERO : genBlend_ZERO( Code, Dest );
-      DXR_BLEND_ONE1 : genBlend_ONE1( Code, Dest, Col1, ConstChannels1 );
-      DXR_BLEND_ONE2 : genBlend_ONE1( Code, Dest, Col2, ConstChannels2 );
-      DXR_BLEND_ONE1_ADD_ONE2 : genBlend_ONE1_ADD_ONE2( Code, Dest, Col1, Col2, ConstChannels1, ConstChannels2 );
-      DXR_BLEND_ONE2_SUB_ONE1 : genBlend_ONE2_SUB_ONE1( Code, Dest, Col1, Col2, ConstChannels1, ConstChannels2 );
-      DXR_BLEND_ONE1_SUB_ONE2 : genBlend_ONE2_SUB_ONE1( Code, Dest, Col2, Col1, ConstChannels1, ConstChannels2 );
-      DXR_BLEND_SRCALPHA1 : genBlend_SRCALPHA1( Code, Dest, Col1, ConstChannels1 );
-      DXR_BLEND_SRCALPHA1_ADD_ONE2 : genBlend_SRCALPHA1_ADD_ONE2( Code, Dest, Col1, Col2, ConstChannels1, ConstChannels2 );
-      DXR_BLEND_ONE2_SUB_SRCALPHA1 : genBlend_ONE2_SUB_SRCALPHA1( Code, Dest, Col1, Col2, ConstChannels1, ConstChannels2 );
-      DXR_BLEND_SRCALPHA1_ADD_INVSRCALPHA2 : genBlend_SRCALPHA1_ADD_INVSRCALPHA2( Code, Dest, Col1, Col2, ConstChannels1, ConstChannels2 );
-      DXR_BLEND_INVSRCALPHA1_ADD_SRCALPHA2 : genBlend_INVSRCALPHA1_ADD_SRCALPHA2( Code, Dest, Col1, Col2, ConstChannels1, ConstChannels2 );
-      DXR_BLEND_DECAL : genBlend_ONE1( Code, Dest, Col1, ConstChannels1 );
-      DXR_BLEND_DECALALPHA : genBlend_DECALALPHA( Code, Dest, Col1, Col2, ConstChannels1, ConstChannels2 );
-      DXR_BLEND_MODULATE : genBlend_MODULATE( Code, Dest, Col1, Col2, ConstChannels1, ConstChannels2 );
-      DXR_BLEND_MODULATEALPHA : genBlend_MODULATEALPHA( Code, Dest, Col1, Col2, ConstChannels1, ConstChannels2 );
-      DXR_BLEND_ADD : genBlend_ADD( Code, Dest, Col1, Col2, ConstChannels1, ConstChannels2 );
-    end;
+      DXR_BLEND_ZERO                      : genBlend_ZERO(Code, Dest);
+      DXR_BLEND_ONE1                      : genBlend_ONE1(Code, Dest, Col1, ConstChannels1);
+      DXR_BLEND_ONE2                      : genBlend_ONE1(Code, Dest, Col2, ConstChannels2);
+      DXR_BLEND_ONE1_ADD_ONE2             : genBlend_ONE1_ADD_ONE2(Code, Dest, Col1, Col2, ConstChannels1, ConstChannels2);
+      DXR_BLEND_ONE1_SUB_ONE2             : genBlend_ONE1_SUB_ONE2(Code, Dest, Col1, Col2, ConstChannels1, ConstChannels2);
+      DXR_BLEND_ONE2_SUB_ONE1             : genBlend_ONE2_SUB_ONE1(Code, Dest, Col1, Col2, ConstChannels1, ConstChannels2);
+      DXR_BLEND_ONE1_MUL_ONE2             : genBlend_ONE1_MUL_ONE2(Code, Dest, Col1, Col2, ConstChannels1, ConstChannels2);
+      DXR_BLEND_SRCALPHA1                 : genBlend_SRCALPHA1(Code, Dest, Col1, ConstChannels1);
+      DXR_BLEND_SRCALPHA1_ADD_ONE2        : genBlend_SRCALPHA1_ADD_ONE2(Code, Dest, Col1, Col2, ConstChannels1, ConstChannels2);
+      DXR_BLEND_ONE2_SUB_SRCALPHA1        : genBlend_ONE2_SUB_SRCALPHA1(Code, Dest, Col1, Col2, ConstChannels1, ConstChannels2);
+      DXR_BLEND_SRCALPHA1_ADD_INVSRCALPHA2: genBlend_SRCALPHA1_ADD_INVSRCALPHA2(Code, Dest, Col1, Col2, ConstChannels1, ConstChannels2);
+      DXR_BLEND_INVSRCALPHA1_ADD_SRCALPHA2: genBlend_INVSRCALPHA1_ADD_SRCALPHA2(Code, Dest, Col1, Col2, ConstChannels1, ConstChannels2);
+      DXR_BLEND_DECAL                     : genBlend_ONE1(Code, Dest, Col1, ConstChannels1);
+      DXR_BLEND_DECALALPHA                : genBlend_DECALALPHA(Code, Dest, Col1, Col2, ConstChannels1, ConstChannels2);
+      DXR_BLEND_MODULATE                  : genBlend_MODULATE(Code, Dest, Col1, Col2, ConstChannels1, ConstChannels2);
+      DXR_BLEND_MODULATEALPHA             : genBlend_MODULATEALPHA(Code, Dest, Col1, Col2, ConstChannels1, ConstChannels2);
+      DXR_BLEND_ADD                       : genBlend_ADD(Code, Dest, Col1, Col2, ConstChannels1, ConstChannels2);
+    end;                                                                                                       
   end;
 
 var
-  StackPoint : Integer;
+  StackPoint: Integer;
 
-  function NewWorkColor : PDXRMachine_Color;
+  function NewWorkColor: PDXRMachine_Color;
   begin
-    Result := @FStack[ StackPoint ]; Inc( StackPoint );
+    Result := @FStack[StackPoint]; Inc(StackPoint);
   end;
 
-  function GenerateCode2( var Code : Pointer; Tree : PDXRMachine_Tree ) : PDXRMachine_Color;
+  function GenerateCode2(var Code: Pointer; Tree: PDXRMachine_Tree): PDXRMachine_Color;
   var
-    Col1, Col2 : PDXRMachine_Color;
-    ConstChannels1, ConstChannels2 : TDXRColorChannels;
-    ch : TDXRColorChannels;
+    Col1, Col2: PDXRMachine_Color;
+    ConstChannels1, ConstChannels2: TDXRColorChannels;
+    ch: TDXRColorChannels;
   begin
     Result := NewWorkColor;
     case Tree.Typ of
-      DXR_TREETYPE_LOADBLACK :
-        begin
-          genBlend( Code, DXR_BLEND_ZERO, Result, nil, nil, Tree.Channels, [ ], [ ] );
-        end;
-      DXR_TREETYPE_LOADCOLOR :
-        begin
-          genBlend( Code, DXR_BLEND_ONE1, Result, @ColorList[ Tree.Color ].nColor, nil, Tree.Channels, [ ], [ ] );
-        end;
-      DXR_TREETYPE_LOADCONSTCOLOR :
-        begin
-          genBlend( Code, DXR_BLEND_ONE1, Result, @Tree.ConstColor, nil, Tree.Channels,
-            [ chRed, chGreen, chBlue, chAlpha ], [ ] );
-        end;
-      DXR_TREETYPE_LOADTEXTURE :
-        begin
-          genReadTexture( Code, Result, TextureList[ Tree.Texture ], Tree.Channels );
-        end;
-      DXR_TREETYPE_LOADBUMPTEXTURE :
-        begin
-          genReadBumpTexture( Code, Result, TextureList[ Tree.Texture ], TextureList[ Tree.BumpTexture ], Tree.Channels );
-        end;
-      DXR_TREETYPE_LOADDESTPIXEL :
-        begin
-          genReadDestPixel( Code );
-          genDecodeColor( Code, Dest^, Result, Tree.Channels, _BlackColor );
-        end;
-      DXR_TREETYPE_BLEND :
-        begin
+      DXR_TREETYPE_LOADBLACK:
+          begin
+            genBlend(Code, DXR_BLEND_ZERO, Result, nil, nil, Tree.Channels, [], []);
+          end;
+      DXR_TREETYPE_LOADCOLOR:
+          begin
+            genBlend(Code, DXR_BLEND_ONE1, Result, @ColorList[Tree.Color].nColor, nil, Tree.Channels, [], []);
+          end;
+      DXR_TREETYPE_LOADCONSTCOLOR:
+          begin
+            genBlend(Code, DXR_BLEND_ONE1, Result, @Tree.ConstColor, nil, Tree.Channels,
+              [chRed, chGreen, chBlue, chAlpha], []);
+          end;
+      DXR_TREETYPE_LOADTEXTURE:
+          begin
+            genReadTexture(Code, Result, TextureList[Tree.Texture], Tree.Channels);
+          end;
+      DXR_TREETYPE_LOADBUMPTEXTURE:
+          begin
+            genReadBumpTexture(Code, Result, TextureList[Tree.Texture], TextureList[Tree.BumpTexture], Tree.Channels);
+          end;
+      DXR_TREETYPE_LOADDESTPIXEL:
+          begin
+            genReadDestPixel(Code);
+            genDecodeColor(Code, Dest^, Result, Tree.Channels, _BlackColor);
+          end;
+      DXR_TREETYPE_BLEND:
+          begin
             // Blend color
-          Col1 := nil;
-          Col2 := nil;
+            Col1 := nil;
+            Col2 := nil;
 
-          ConstChannels1 := [ ];
-          ConstChannels2 := [ ];
+            ConstChannels1 := [];
+            ConstChannels2 := [];
 
-          if ( Tree.BlendTree1 <> nil ) and ( Tree.BlendTree1.Typ = DXR_TREETYPE_LOADBLACK ) then
-          begin
-            Col1 := @_BlackColor;
-          end
-          else if ( Tree.BlendTree1 <> nil ) and ( Tree.BlendTree1.Typ = DXR_TREETYPE_LOADCOLOR ) then
-          begin
-            Col1 := @ColorList[ Tree.BlendTree1.Color ].nColor;
-          end
-          else if ( Tree.BlendTree1 <> nil ) and ( Tree.BlendTree1.Typ = DXR_TREETYPE_LOADCONSTCOLOR ) then
-          begin
-            Col1 := @Tree.BlendTree1.ConstColor;
-            ConstChannels1 := [ chRed, chGreen, chBlue, chAlpha ];
-          end
-          else if ( Tree.BlendTree1 <> nil ) and ( Tree.BlendTree1.Typ = DXR_TREETYPE_LOADTEXTURE ) then
-          begin
-            ch := TextureList[ Tree.BlendTree1.Texture ].EnableChannels;
-
-            if ( chRed in Tree.BlendTree1.Channels ) and ( not ( chRed in ch ) ) then
+            if (Tree.BlendTree1<>nil) and (Tree.BlendTree1.Typ=DXR_TREETYPE_LOADBLACK) then
             begin
-              ConstChannels1 := ConstChannels1 + [ chRed ];
-              Tree.BlendTree1.Channels := Tree.BlendTree1.Channels - [ chRed ];
+              Col1 := @_BlackColor;
+            end else
+            if (Tree.BlendTree1<>nil) and (Tree.BlendTree1.Typ=DXR_TREETYPE_LOADCOLOR) then
+            begin
+              Col1 := @ColorList[Tree.BlendTree1.Color].nColor;
+            end else
+            if (Tree.BlendTree1<>nil) and (Tree.BlendTree1.Typ=DXR_TREETYPE_LOADCONSTCOLOR) then
+            begin
+              Col1 := @Tree.BlendTree1.ConstColor;
+              ConstChannels1 := [chRed, chGreen, chBlue, chAlpha];
+            end else
+            if (Tree.BlendTree1<>nil) and (Tree.BlendTree1.Typ=DXR_TREETYPE_LOADTEXTURE) then
+            begin
+              ch := TextureList[Tree.BlendTree1.Texture].EnableChannels;
+
+              if (chRed in Tree.BlendTree1.Channels) and (not (chRed in ch)) then
+              begin
+                ConstChannels1 := ConstChannels1 + [chRed];
+                Tree.BlendTree1.Channels := Tree.BlendTree1.Channels - [chRed];
+              end;
+
+              if (chGreen in Tree.BlendTree1.Channels) and (not (chGreen in ch)) then
+              begin
+                ConstChannels1 := ConstChannels1 + [chGreen];
+                Tree.BlendTree1.Channels := Tree.BlendTree1.Channels - [chGreen];
+              end;
+
+              if (chBlue in Tree.BlendTree1.Channels) and (not (chBlue in ch)) then
+              begin
+                ConstChannels1 := ConstChannels1 + [chBlue];
+                Tree.BlendTree1.Channels := Tree.BlendTree1.Channels - [chBlue];
+              end;
+
+              if (chAlpha in Tree.BlendTree1.Channels) and (not (chAlpha in ch)) then
+              begin
+                ConstChannels1 := ConstChannels1 + [chAlpha];
+                Tree.BlendTree1.Channels := Tree.BlendTree1.Channels - [chAlpha];
+              end;
+
+              Col1 := GenerateCode2(Code, Tree.BlendTree1);
+
+              if chRed in ConstChannels1 then
+                Col1.R := TextureList[Tree.BlendTree1.Texture].DefaultColor.R;
+
+              if chGreen in ConstChannels1 then
+                Col1.G := TextureList[Tree.BlendTree1.Texture].DefaultColor.G;
+
+              if chBlue in ConstChannels1 then
+                Col1.B := TextureList[Tree.BlendTree1.Texture].DefaultColor.B;
+                
+              if chAlpha in ConstChannels1 then
+                Col1.A := TextureList[Tree.BlendTree1.Texture].DefaultColor.A;
+            end else
+            if Tree.BlendTree1<>nil then
+            begin
+              Col1 := GenerateCode2(Code, Tree.BlendTree1);
             end;
 
-            if ( chGreen in Tree.BlendTree1.Channels ) and ( not ( chGreen in ch ) ) then
+            if (Tree.BlendTree2<>nil) and (Tree.BlendTree2.Typ=DXR_TREETYPE_LOADBLACK) then
             begin
-              ConstChannels1 := ConstChannels1 + [ chGreen ];
-              Tree.BlendTree1.Channels := Tree.BlendTree1.Channels - [ chGreen ];
+              Col2 := @_BlackColor;
+            end else
+            if (Tree.BlendTree2<>nil) and (Tree.BlendTree2.Typ=DXR_TREETYPE_LOADCOLOR) then
+            begin
+              Col2 := @ColorList[Tree.BlendTree2.Color].nColor;
+            end else
+            if (Tree.BlendTree2<>nil) and (Tree.BlendTree2.Typ=DXR_TREETYPE_LOADCONSTCOLOR) then
+            begin
+              Col2 := @Tree.BlendTree2.ConstColor;
+              ConstChannels2 := [chRed, chGreen, chBlue, chAlpha];
+            end else
+            if (Tree.BlendTree2<>nil) and (Tree.BlendTree2.Typ=DXR_TREETYPE_LOADTEXTURE) then
+            begin
+              ch := TextureList[Tree.BlendTree2.Texture].EnableChannels;
+              
+              if (chRed in Tree.BlendTree2.Channels) and (not (chRed in ch)) then
+              begin
+                ConstChannels2 := ConstChannels2 + [chRed];
+                Tree.BlendTree2.Channels := Tree.BlendTree2.Channels - [chRed];
+              end;
+
+              if (chGreen in Tree.BlendTree2.Channels) and (not (chGreen in ch)) then
+              begin
+                ConstChannels2 := ConstChannels2 + [chGreen];
+                Tree.BlendTree2.Channels := Tree.BlendTree2.Channels - [chGreen];
+              end;
+
+              if (chBlue in Tree.BlendTree2.Channels) and (not (chBlue in ch)) then
+              begin
+                ConstChannels2 := ConstChannels2 + [chBlue];
+                Tree.BlendTree2.Channels := Tree.BlendTree2.Channels - [chBlue];
+              end;
+
+              if (chAlpha in Tree.BlendTree2.Channels) and (not (chAlpha in ch)) then
+              begin
+                ConstChannels2 := ConstChannels2 + [chAlpha];
+                Tree.BlendTree2.Channels := Tree.BlendTree2.Channels - [chAlpha];
+              end;
+
+              Col2 := GenerateCode2(Code, Tree.BlendTree2);
+
+              if chRed in ConstChannels2 then
+                Col2.R := TextureList[Tree.BlendTree2.Texture].DefaultColor.R;
+
+              if chGreen in ConstChannels2 then
+                Col2.G := TextureList[Tree.BlendTree2.Texture].DefaultColor.G;
+
+              if chBlue in ConstChannels2 then
+                Col2.B := TextureList[Tree.BlendTree2.Texture].DefaultColor.B;
+
+              if chAlpha in ConstChannels2 then
+                Col2.A := TextureList[Tree.BlendTree2.Texture].DefaultColor.A;
+            end else
+            if Tree.BlendTree2<>nil then
+            begin
+              Col2 := GenerateCode2(Code, Tree.BlendTree2);
             end;
 
-            if ( chBlue in Tree.BlendTree1.Channels ) and ( not ( chBlue in ch ) ) then
-            begin
-              ConstChannels1 := ConstChannels1 + [ chBlue ];
-              Tree.BlendTree1.Channels := Tree.BlendTree1.Channels - [ chBlue ];
-            end;
-
-            if ( chAlpha in Tree.BlendTree1.Channels ) and ( not ( chAlpha in ch ) ) then
-            begin
-              ConstChannels1 := ConstChannels1 + [ chAlpha ];
-              Tree.BlendTree1.Channels := Tree.BlendTree1.Channels - [ chAlpha ];
-            end;
-
-            Col1 := GenerateCode2( Code, Tree.BlendTree1 );
-
-            if chRed in ConstChannels1 then
-              Col1.R := TextureList[ Tree.BlendTree1.Texture ].DefaultColor.R;
-
-            if chGreen in ConstChannels1 then
-              Col1.G := TextureList[ Tree.BlendTree1.Texture ].DefaultColor.G;
-
-            if chBlue in ConstChannels1 then
-              Col1.B := TextureList[ Tree.BlendTree1.Texture ].DefaultColor.B;
-
-            if chAlpha in ConstChannels1 then
-              Col1.A := TextureList[ Tree.BlendTree1.Texture ].DefaultColor.A;
-          end
-          else if Tree.BlendTree1 <> nil then
-          begin
-            Col1 := GenerateCode2( Code, Tree.BlendTree1 );
+            genBlend(Code, Tree.Blend, Result, Col1, Col2, Tree.Channels,
+              ConstChannels1, ConstChannels2);
           end;
-
-          if ( Tree.BlendTree2 <> nil ) and ( Tree.BlendTree2.Typ = DXR_TREETYPE_LOADBLACK ) then
-          begin
-            Col2 := @_BlackColor;
-          end
-          else if ( Tree.BlendTree2 <> nil ) and ( Tree.BlendTree2.Typ = DXR_TREETYPE_LOADCOLOR ) then
-          begin
-            Col2 := @ColorList[ Tree.BlendTree2.Color ].nColor;
-          end
-          else if ( Tree.BlendTree2 <> nil ) and ( Tree.BlendTree2.Typ = DXR_TREETYPE_LOADCONSTCOLOR ) then
-          begin
-            Col2 := @Tree.BlendTree2.ConstColor;
-            ConstChannels2 := [ chRed, chGreen, chBlue, chAlpha ];
-          end
-          else if ( Tree.BlendTree2 <> nil ) and ( Tree.BlendTree2.Typ = DXR_TREETYPE_LOADTEXTURE ) then
-          begin
-            ch := TextureList[ Tree.BlendTree2.Texture ].EnableChannels;
-
-            if ( chRed in Tree.BlendTree2.Channels ) and ( not ( chRed in ch ) ) then
-            begin
-              ConstChannels2 := ConstChannels2 + [ chRed ];
-              Tree.BlendTree2.Channels := Tree.BlendTree2.Channels - [ chRed ];
-            end;
-
-            if ( chGreen in Tree.BlendTree2.Channels ) and ( not ( chGreen in ch ) ) then
-            begin
-              ConstChannels2 := ConstChannels2 + [ chGreen ];
-              Tree.BlendTree2.Channels := Tree.BlendTree2.Channels - [ chGreen ];
-            end;
-
-            if ( chBlue in Tree.BlendTree2.Channels ) and ( not ( chBlue in ch ) ) then
-            begin
-              ConstChannels2 := ConstChannels2 + [ chBlue ];
-              Tree.BlendTree2.Channels := Tree.BlendTree2.Channels - [ chBlue ];
-            end;
-
-            if ( chAlpha in Tree.BlendTree2.Channels ) and ( not ( chAlpha in ch ) ) then
-            begin
-              ConstChannels2 := ConstChannels2 + [ chAlpha ];
-              Tree.BlendTree2.Channels := Tree.BlendTree2.Channels - [ chAlpha ];
-            end;
-
-            Col2 := GenerateCode2( Code, Tree.BlendTree2 );
-
-            if chRed in ConstChannels2 then
-              Col2.R := TextureList[ Tree.BlendTree2.Texture ].DefaultColor.R;
-
-            if chGreen in ConstChannels2 then
-              Col2.G := TextureList[ Tree.BlendTree2.Texture ].DefaultColor.G;
-
-            if chBlue in ConstChannels2 then
-              Col2.B := TextureList[ Tree.BlendTree2.Texture ].DefaultColor.B;
-
-            if chAlpha in ConstChannels2 then
-              Col2.A := TextureList[ Tree.BlendTree2.Texture ].DefaultColor.A;
-          end
-          else if Tree.BlendTree2 <> nil then
-          begin
-            Col2 := GenerateCode2( Code, Tree.BlendTree2 );
-          end;
-
-          genBlend( Code, Tree.Blend, Result, Col1, Col2, Tree.Channels,
-            ConstChannels1, ConstChannels2 );
-        end;
     end;
   end;
 
 var
-  ExitAddress, MainCode : Pointer;
-  Col : PDXRMachine_Color;
+  ExitAddress, MainCode: Pointer;
+  Col: PDXRMachine_Color;
 begin
-  if ( Tree.Typ = DXR_TREETYPE_LOADCOLOR ) and ( not ColorList[ Tree.Color ].Gouraud ) and
-    ( not ZBuffer.Enable ) and ( not Dither.Enable ) and ( Dest.BitCount in [ 16, 32 ] ) then
+  if (Tree.Typ=DXR_TREETYPE_LOADCOLOR) and (not ColorList[Tree.Color].Gouraud) and
+    (not ZBuffer.Enable) and (not Dither.Enable) and (Dest.BitCount in [16, 32]) then
   begin
     FCall := Code;
-    genInitDestAddress( Code );
-    genEncodeColor( Code, Dest^, @ColorList[ Tree.Color ].nColor, Tree.Channels );
+    genInitDestAddress(Code);
+    genEncodeColor(Code, Dest^, @ColorList[Tree.Color].nColor, Tree.Channels);
 
     case Dest.BitCount of
-      16 :
-        begin
-          asm
+      16: begin
+            asm
               jmp @@EndCode
             @@StartCode:
               mov edx,eax
@@ -7772,11 +7887,10 @@ begin
               ret
             @@EndCode:
               {$I DXRender.inc}
+            end;
           end;
-        end;
-      32 :
-        begin
-          asm
+      32: begin
+            asm
               jmp @@EndCode
             @@StartCode:
               {  DWORD  }
@@ -7788,8 +7902,8 @@ begin
               ret
             @@EndCode:
               {$I DXRender.inc}
+            end;
           end;
-        end;
     end;
 
     Exit;
@@ -7809,12 +7923,12 @@ begin
   {  -----------  Loop  -----------  }
   SkipAddress := Code;
 
-  genUpdateAxis( Code );
-  genUpdateColor( Code );
-  genUpdateTextureAxis( Code );
-  genUpdateRHW( Code );
-  genUpdateDestAddress( Code );
-  genUpdateZBufferAddress( Code );
+  genUpdateAxis(Code);
+  genUpdateColor(Code);
+  genUpdateTextureAxis(Code);
+  genUpdateRHW(Code);
+  genUpdateDestAddress(Code);
+  genUpdateZBufferAddress(Code);
 
   asm
     jmp @@EndCode
@@ -7823,52 +7937,49 @@ begin
   @@EndCode:
     {$I DXRender.inc}
   end;
-  genCmpFunc( Code, DXR_CMPFUNC_LESSEQUAL, ExitAddress );
+  genCmpFunc(Code, DXR_CMPFUNC_LESSEQUAL, ExitAddress);
 
   {  -----------  Main  -----------  }
   MainCode := Code;
 
-  genZBufferTest( Code );
+  genZBufferTest(Code);
 
-  if Tree.Typ = DXR_TREETYPE_LOADCOLOR then
+  if Tree.Typ=DXR_TREETYPE_LOADCOLOR then
   begin
-    genEncodeColor2( Code, Dest^, @ColorList[ Tree.Color ].nColor, Tree.Channels );
-    genWriteDestPixel( Code );
-  end
-  else if ( Tree.Typ = DXR_TREETYPE_LOADTEXTURE ) and ( not Dither.Enable ) and
-    ( TextureList[ Tree.Texture ].Filter in [ DXR_TEXTUREFILTER_NEAREST, DXR_TEXTUREFILTER_MIPMAP_NEAREST ] ) and
-    ( dxrCompareSurface( Dest^, TextureList[ Tree.Texture ].Surface^ ) ) then
+    genEncodeColor2(Code, Dest^, @ColorList[Tree.Color].nColor, Tree.Channels);
+    genWriteDestPixel(Code);
+  end else
+  if (Tree.Typ=DXR_TREETYPE_LOADTEXTURE) and (not Dither.Enable) and
+    (TextureList[Tree.Texture].Filter in [DXR_TEXTUREFILTER_NEAREST, DXR_TEXTUREFILTER_MIPMAP_NEAREST]) and
+    (dxrCompareSurface(Dest^, TextureList[Tree.Texture].Surface^)) then
   begin
-    genReadSurfacePixel( Code, TextureList[ Tree.Texture ], @TextureList[ Tree.Texture ].nAxis );
-    genColorKey( Code, TextureList[ Tree.Texture ] );
-    genWriteDestPixel( Code );
-  end
-  else
+    genReadSurfacePixel(Code, TextureList[Tree.Texture], @TextureList[Tree.Texture].nAxis);
+    genColorKey(Code, TextureList[Tree.Texture]);
+    genWriteDestPixel(Code);
+  end else
   begin
-    StackPoint := 0; Col := GenerateCode2( Code, Tree );
-    genEncodeColor2( Code, Dest^, Col, Tree.Channels );
-    genWriteDestPixel( Code );
+    StackPoint := 0; Col := GenerateCode2(Code, Tree);
+    genEncodeColor2(Code, Dest^, Col, Tree.Channels);
+    genWriteDestPixel(Code);
   end;
 
-  genCmpFunc( Code, DXR_CMPFUNC_ALWAYS, SkipAddress );
+  genCmpFunc(Code, DXR_CMPFUNC_ALWAYS, SkipAddress);
 
   {  -----------  Initialize  -----------  }
   FCall := Code;
 
-  genInitDestAddress( Code );
-  genInitZBuffer( Code );
+  genInitDestAddress(Code);
+  genInitZBuffer(Code);
 
-  genCmpFunc( Code, DXR_CMPFUNC_ALWAYS, MainCode );
+  genCmpFunc(Code, DXR_CMPFUNC_ALWAYS, MainCode);
 end;
 
-procedure TDXRMachine.Run( Count : Integer );
+procedure TDXRMachine.Run(Count: Integer);
 var
-  P : Pointer;
+  P: Pointer;
 begin
-  if Count <= 0 then
-    Exit;
-  if FCall = nil then
-    Exit;
+  if Count<=0 then Exit;
+  if FCall=nil then Exit;
 
   P := FCall;
 
@@ -7899,20 +8010,20 @@ begin
 end;
 
 var
-  FDXRMachine : TDXRMachine;
+  FDXRMachine: TDXRMachine;
 
-function DXRMachine : TDXRMachine;
+function DXRMachine: TDXRMachine;
 begin
-  if FDXRMachine = nil then
+  if FDXRMachine=nil then
     FDXRMachine := TDXRMachine.Create;
   Result := FDXRMachine;
 end;
 
-procedure dxrDefRenderStates( var States : TDXR_RenderStates );
+procedure dxrDefRenderStates(var States: TDXR_RenderStates);
 var
-  i : Integer;
+  i: Integer;
 begin
-  FillChar( States, SizeOf( States ), 0 );
+  FillChar(States, SizeOf(States), 0);
 
   with States do
   begin
@@ -7926,10 +8037,11 @@ begin
     ZBuffer := nil;
     ZFunc := DXR_CMPFUNC_LESSEQUAL;
     ZWriteEnable := True;
+    EnableDrawLine := 0;
   end;
 
-  for i := 0 to DXR_MAXTEXTURE - 1 do
-    with States.TextureList[ i ] do
+  for i:=0 to DXR_MAXTEXTURE-1 do
+    with States.TextureList[i] do
     begin
       LayerBlend := DXR_TEXTURELAYERBLEND_TEXTURE;
       Blend := DXR_BLEND_ONE1;
@@ -7945,108 +8057,107 @@ end;
 
 type
   PArrayDXR_Vertex = ^TArrayDXR_Vertex;
-  TArrayDXR_Vertex = array[ 0..0 ] of TDXR_Vertex;
+  TArrayDXR_Vertex = array[0..0] of TDXR_Vertex;
 
   PArrayPDXR_Vertex = ^TArrayPDXR_Vertex;
-  TArrayPDXR_Vertex = array[ 0..0 ] of PDXR_Vertex;
+  TArrayPDXR_Vertex = array[0..0] of PDXR_Vertex;
 
-  TDXR_Triangle = array[ 0..2 ] of PDXR_Vertex;
+  TDXR_Triangle = array[0..2] of PDXR_Vertex;
 
   PArrayDWORD = ^TArrayDWORD;
-  TArrayDWORD = array[ 0..2 ] of DWORD;
+  TArrayDWORD = array[0..2] of DWORD;
 
-procedure dxrDrawTriangle( const Dest : TDXR_Surface; const States : TDXR_RenderStates; const Tri : TDXR_Triangle );
+procedure dxrDrawTriangle(const Dest: TDXR_Surface; const States: TDXR_RenderStates; const Tri: TDXR_Triangle);
 
-  function InitGenerator_MakeTree_LoadTexture( Texture : Integer ) : PDXRMachine_Tree;
+  function InitGenerator_MakeTree_LoadTexture(Texture: Integer): PDXRMachine_Tree;
   begin
-    if States.TextureList[ Texture ].BumpTexture >= 0 then
-      Result := DXRMachine.CreateTree_LoadBumpTexture( Texture, States.TextureList[ Texture ].BumpTexture )
+    if States.TextureList[Texture].BumpTexture>=0 then
+      Result := DXRMachine.CreateTree_LoadBumpTexture(Texture, States.TextureList[Texture].BumpTexture)
     else
-      Result := DXRMachine.CreateTree_LoadTexture( Texture );
+      Result := DXRMachine.CreateTree_LoadTexture(Texture);
   end;
 
-  function InitGenerator_MakeTree : PDXRMachine_Tree;
+  function InitGenerator_MakeTree: PDXRMachine_Tree;
   var
-    i : Integer;
-    Layer : PDXR_TextureLayer;
+    i: Integer;
+    Layer: PDXR_TextureLayer;
   begin
     if States.TextureEnable then
     begin
       {  Load texel  }
-      Result := DXRMachine.CreateTree2( DXR_TREETYPE_LOADBLACK );
+      Result := DXRMachine.CreateTree2(DXR_TREETYPE_LOADBLACK);
 
       if States.TextureEnable then
-        for i := Low( States.TextureList ) to High( States.TextureList ) do
+        for i:=Low(States.TextureList) to High(States.TextureList) do
         begin
-          Layer := @States.TextureList[ i ];
-          if ( Layer.Surface <> nil ) and ( Layer.LayerBlend = DXR_TEXTURELAYERBLEND_TEXTURE ) then
+          Layer := @States.TextureList[i];
+          if (Layer.Surface<>nil) and (Layer.LayerBlend=DXR_TEXTURELAYERBLEND_TEXTURE) then
           begin
-            Result := DXRMachine.CreateTree_Blend( Layer.Blend, InitGenerator_MakeTree_LoadTexture( i ), Result );
+            Result := DXRMachine.CreateTree_Blend(Layer.Blend, InitGenerator_MakeTree_LoadTexture(i), Result);
           end;
         end;
 
       {  Lighting  }
-      Result := DXRMachine.CreateTree_Blend( States.TexBlend, Result, DXRMachine.CreateTree_LoadColor( 0 ) );
+      Result := DXRMachine.CreateTree_Blend(States.TexBlend, Result, DXRMachine.CreateTree_LoadColor(0));
 
       {  Blend after lighting is given  }
-      for i := Low( States.TextureList ) to High( States.TextureList ) do
+      for i:=Low(States.TextureList) to High(States.TextureList) do
       begin
-        Layer := @States.TextureList[ i ];
-        if ( Layer.Surface <> nil ) and ( Layer.LayerBlend = DXR_TEXTURELAYERBLEND_LAST ) then
+        Layer := @States.TextureList[i];
+        if (Layer.Surface<>nil) and (Layer.LayerBlend=DXR_TEXTURELAYERBLEND_LAST) then
         begin
-          Result := DXRMachine.CreateTree_Blend( Layer.Blend, InitGenerator_MakeTree_LoadTexture( i ), Result );
+          Result := DXRMachine.CreateTree_Blend(Layer.Blend, InitGenerator_MakeTree_LoadTexture(i), Result);
         end;
       end;
-    end
-    else
+    end else
     begin
-      Result := DXRMachine.CreateTree_LoadColor( 0 );
+      Result := DXRMachine.CreateTree_LoadColor(0);
     end;
 
     {  Blend with Dest pixel   }
-    Result := DXRMachine.CreateTree_Blend( States.Blend, Result, DXRMachine.CreateTree2( DXR_TREETYPE_LOADDESTPIXEL ) );
+    Result := DXRMachine.CreateTree_Blend(States.Blend, Result, DXRMachine.CreateTree2(DXR_TREETYPE_LOADDESTPIXEL));
 
     {  Specular generation  }
     if States.SpecularEnable then
     begin
-      Result := DXRMachine.CreateTree_Blend( DXR_BLEND_ONE1_ADD_ONE2, Result, DXRMachine.CreateTree_LoadColor( 1 ) );
+      Result := DXRMachine.CreateTree_Blend(DXR_BLEND_ONE1_ADD_ONE2, Result, DXRMachine.CreateTree_LoadColor(1));
     end;
   end;
 
   procedure InitGenerator;
 
-    function Hypot( X, Y : Extended ) : Extended;
+    function Hypot(X, Y: Extended): Extended;
     begin
-      Result := Sqrt( X * X + Y * Y );
+      Result := Sqrt(X*X + Y*Y);
     end;
 
   var
-    i : Integer;
-    Layer : PDXR_TextureLayer;
-    Mipmap1, Mipmap2, Mipmap3 : Integer;
-    TmpSurface2 : PDXR_Surface;
+    i: Integer;
+    Layer: PDXR_TextureLayer;
+    Mipmap1, Mipmap2, Mipmap3: Integer;
+    TmpSurface2: PDXR_Surface;
   begin
     DXRMachine.Initialize;
 
     {  Parameter setting  }
     DXRMachine.Dest := @Dest;
-    DXRMachine.ZBuffer.Enable := States.ZBuffer <> nil;
+    DXRMachine.ZBuffer.Enable := States.ZBuffer<>nil;
     DXRMachine.ZBuffer.Surface := States.ZBuffer;
     DXRMachine.ZBuffer.CmpFunc := States.ZFunc;
     DXRMachine.ZBuffer.WriteEnable := States.ZWriteEnable;
     DXRMachine.Dither.Enable := States.DitherEnable;
 
-    DXRMachine.ColorList[ 0 ].Gouraud := States.Shade = DXR_SHADEMODE_GOURAUD;
-    DXRMachine.ColorList[ 1 ].Gouraud := States.Shade = DXR_SHADEMODE_GOURAUD;
+    DXRMachine.ColorList[0].Gouraud := States.Shade=DXR_SHADEMODE_GOURAUD;
+    DXRMachine.ColorList[1].Gouraud := States.Shade=DXR_SHADEMODE_GOURAUD;
 
     if States.TextureEnable then
-      for i := Low( States.TextureList ) to High( States.TextureList ) do
+      for i:=Low(States.TextureList) to High(States.TextureList) do
       begin
-        Layer := @States.TextureList[ i ];
+        Layer := @States.TextureList[i];
 
-        if States.TextureList[ i ].Surface <> nil then
+        if States.TextureList[i].Surface<>nil then
         begin
-          with DXRMachine.TextureList[ i ] do
+          with DXRMachine.TextureList[i] do
           begin
             ColorKeyEnable := Layer.ColorKeyEnable;
             ColorKey := Layer.ColorKey;
@@ -8054,22 +8165,22 @@ procedure dxrDrawTriangle( const Dest : TDXR_Surface; const States : TDXR_Render
             Filter := States.TextureFilter;
             TextureAddress := Layer.TextureAddress;
 
-            if ( Filter in [ DXR_TEXTUREFILTER_MIPMAP_NEAREST, DXR_TEXTUREFILTER_MIPMAP_LINEAR ] ) and
-              ( Surface.MipmapChain <> nil ) then
+            if (Filter in [DXR_TEXTUREFILTER_MIPMAP_NEAREST, DXR_TEXTUREFILTER_MIPMAP_LINEAR]) and
+              (Surface.MipmapChain<>nil) then
             begin
               {  Mipmap  }
               Mipmap1 := MaxInt;
-              Mipmap3 := Trunc( Abs( Hypot( Tri[ 2 ].sx - Tri[ 1 ].sx, Tri[ 2 ].sy - Tri[ 1 ].sy ) ) *
-                Abs( Hypot( Tri[ 1 ].sx - Tri[ 0 ].sx, Tri[ 1 ].sy - Tri[ 0 ].sy ) ) *
-                Abs( Hypot( Tri[ 2 ].sx - Tri[ 0 ].sx, Tri[ 2 ].sy - Tri[ 0 ].sy ) ) / 9 );
+              Mipmap3 := Trunc(Abs(Hypot(Tri[2].sx-Tri[1].sx, Tri[2].sy-Tri[1].sy))*
+                Abs(Hypot(Tri[1].sx-Tri[0].sx, Tri[1].sy-Tri[0].sy))*
+                Abs(Hypot(Tri[2].sx-Tri[0].sx, Tri[2].sy-Tri[0].sy))/9);
 
               TmpSurface2 := Surface;
 
-              while TmpSurface2 <> nil do
+              while TmpSurface2<>nil do
               begin
-                Mipmap2 := TmpSurface2.Width2 * TmpSurface2.Height2;
+                Mipmap2 := TmpSurface2.Width2*TmpSurface2.Height2;
 
-                if ( Abs( Mipmap3 - Mipmap2 ) < Abs( Mipmap3 - Mipmap1 ) ) then
+                if (Abs(Mipmap3-Mipmap2)<Abs(Mipmap3-Mipmap1)) then
                 begin
                   Surface := TmpSurface2;
                   Mipmap1 := Mipmap2;
@@ -8083,125 +8194,122 @@ procedure dxrDrawTriangle( const Dest : TDXR_Surface; const States : TDXR_Render
       end;
 
     {  Tree making  }
-    DXRMachine.Compile( InitGenerator_MakeTree );
+    DXRMachine.Compile(InitGenerator_MakeTree);
   end;
 
 type
-  TCol64Array = array[ 0..1 ] of TDXRMachine_Color;
-  T2DAxis64Array = array[ 0..DXR_MAXTEXTURE - 1 ] of TDXRMachine_Axis;
+  TCol64Array = array[0..1] of TDXRMachine_Color;
+  T2DAxis64Array = array[0..DXR_MAXTEXTURE-1] of TDXRMachine_Axis;
 
 const
-  Int32Value = 65536.0 * 65536.0;
+  Int32Value = 65536.0*65536.0;
 
 var
-  TexXFloat, TexYFloat : array[ 0..DXR_MAXTEXTURE - 1 ] of DWORD;
+  TexXFloat, TexYFloat: array[0..DXR_MAXTEXTURE-1] of DWORD;
 
-  function Comp2DWORD( c : Comp ) : DWORD;
+  function Comp2DWORD(c: Comp): DWORD;
   begin
-    Result := PDWORD( @c )^;
+    Result := PDWORD(@c)^;
   end;
 
-  function FloatToIntFloat( d : Extended ) : Comp;
+  function FloatToIntFloat(d: Extended): Comp;
   begin
-    Result := d * Int32Value;
+    Result := d*Int32Value;
   end;
 
-  function FloatToColorFloat( d : Extended ) : Word;
+  function FloatToColorFloat(d: Extended): Word;
   begin
-    Result := Trunc( d * 255 );
+    Result := Trunc(d*255);
   end;
 
-  function FloatToTextureFloatX( i : Integer; d : Extended ) : DWORD;
+  function FloatToTextureFloatX(i: Integer; d: Extended): DWORD;
   begin
-    Result := Comp2DWORD( d * TexXFloat[ i ] );
+    Result := Comp2DWORD(d*TexXFloat[i]);
   end;
 
-  function FloatToTextureFloatY( i : Integer; d : Double ) : DWORD;
+  function FloatToTextureFloatY(i: Integer; d: Double): DWORD;
   begin
-    Result := Comp2DWORD( d * TexYFloat[ i ] );
+    Result := Comp2DWORD(d*TexYFloat[i]);
   end;
 
-  function FloatToRHWFloat( d : Extended ) : Comp;
+  function FloatToRHWFloat(d: Extended): Comp;
   begin
-    Result := d * Int32Value;
+    Result := d*Int32Value;
   end;
 
-  procedure drawline( x1, x2, y : Integer;
-    const x_ntex1, x_ntex2 : T2DAxis64Array;
-    const x_nc1, x_nc2 : TCol64Array;
-    const x_nRHW1, x_nRHW2 : Comp );
+  procedure drawline(x1, x2, y: Integer;
+    const x_ntex1, x_ntex2: T2DAxis64Array;
+    const x_nc1, x_nc2: TCol64Array;
+    const x_nRHW1, x_nRHW2: Comp);
   var
-    i, xcount, xcount2, ofs : Integer;
+    i, xcount, xcount2, ofs: Integer;
   begin
-    xcount := x2 - x1;
+    xcount := x2-x1;
     xcount2 := xcount;
 
     {  Clipping  }
     ofs := 0;
 
-    if x1 < 0 then
+    if x1<0 then
     begin
       i := -x1;
-      Inc( ofs, i );
-      Inc( x1, i );
-      Dec( xcount2, i );
+      Inc(ofs, i);
+      Inc(x1, i);
+      Dec(xcount2, i);
     end;
 
-    if x1 + xcount2 >= Integer( Dest.Width ) then
+    if x1+xcount2>=Integer(Dest.Width) then
     begin
-      i := ( x1 + xcount2 ) - Integer( Dest.Width );
-      Dec( xcount2, i );
+      i := (x1+xcount2)-Integer(Dest.Width);
+      Dec(xcount2, i);
     end;
 
-    if xcount2 <= 0 then
-      Exit;
+    if xcount2<=0 then Exit;
 
     DXRMachine.Axis.Axis.X := x1;
     DXRMachine.Axis.Axis.Y := y;
 
-    for i := 0 to DXRMachine.TextureIndexCount - 1 do
-      with DXRMachine.TextureList[ DXRMachine.TextureIndex[ i ] ] do
+    for i:=0 to DXRMachine.TextureIndexCount-1 do
+      with DXRMachine.TextureList[DXRMachine.TextureIndex[i]] do
       begin
-        nAxis := x_ntex1[ i ];
-        iAxis.X := Integer( x_ntex2[ i ].X - x_ntex1[ i ].X ) div xcount;
-        iAxis.Y := Integer( x_ntex2[ i ].Y - x_ntex1[ i ].Y ) div xcount;
+        nAxis := x_ntex1[i];
+        iAxis.X := Integer(x_ntex2[i].X-x_ntex1[i].X) div xcount;
+        iAxis.Y := Integer(x_ntex2[i].Y-x_ntex1[i].Y) div xcount;
 
-        if TextureAddress = DXR_TEXTUREADDRESS_DONOTCLIP then
+        if TextureAddress=DXR_TEXTUREADDRESS_DONOTCLIP then
         begin
-          if ( DWORD( nAxis.X ) shr 16 > DXRMachine.TextureList[ DXRMachine.TextureIndex[ i ] ].Surface.Width ) or
-            ( DWORD( nAxis.Y ) shr 16 > DXRMachine.TextureList[ DXRMachine.TextureIndex[ i ] ].Surface.Height ) then
-            Exit;
+          if (DWORD(nAxis.X) shr 16>DXRMachine.TextureList[DXRMachine.TextureIndex[i]].Surface.Width) or
+            (DWORD(nAxis.Y) shr 16>DXRMachine.TextureList[DXRMachine.TextureIndex[i]].Surface.Height) then Exit;
 
-          if ( ( DWORD( nAxis.X + iAxis.X * ( xcount ) - 1 ) ) shr 16 > DXRMachine.TextureList[ DXRMachine.TextureIndex[ i ] ].Surface.Width ) or
-            ( ( DWORD( nAxis.Y + iAxis.Y * ( xcount ) - 1 ) ) shr 16 > DXRMachine.TextureList[ DXRMachine.TextureIndex[ i ] ].Surface.Height ) then
-            Exit;
+          if ((DWORD(nAxis.X+iAxis.X*(xcount)-1)) shr 16>DXRMachine.TextureList[DXRMachine.TextureIndex[i]].Surface.Width) or
+            ((DWORD(nAxis.Y+iAxis.Y*(xcount)-1)) shr 16>DXRMachine.TextureList[DXRMachine.TextureIndex[i]].Surface.Height) then Exit;
         end;
 
-        if ofs <> 0 then
+        if ofs<>0 then
         begin
-          nAxis.X := nAxis.X + iAxis.X * ofs;
-          nAxis.Y := nAxis.Y + iAxis.Y * ofs;
+          nAxis.X := nAxis.X + iAxis.X*ofs;
+          nAxis.Y := nAxis.Y + iAxis.Y*ofs;
         end;
       end;
 
-    for i := 0 to DXRMachine.ColorIndexCount - 1 do
-      with DXRMachine.ColorList[ DXRMachine.ColorIndex[ i ] ] do
+    for i:=0 to DXRMachine.ColorIndexCount-1 do
+      with DXRMachine.ColorList[DXRMachine.ColorIndex[i]] do
       begin
         if Gouraud then
         begin
-          nColor := x_nc1[ i ];
+          nColor := x_nc1[i];
 
-          iColor.R := Integer( x_nc2[ i ].R - x_nc1[ i ].R ) div xcount;
-          iColor.G := Integer( x_nc2[ i ].G - x_nc1[ i ].G ) div xcount;
-          iColor.B := Integer( x_nc2[ i ].B - x_nc1[ i ].B ) div xcount;
-          iColor.A := Integer( x_nc2[ i ].A - x_nc1[ i ].A ) div xcount;
+          iColor.R := Integer(x_nc2[i].R-x_nc1[i].R) div xcount;
+          iColor.G := Integer(x_nc2[i].G-x_nc1[i].G) div xcount;
+          iColor.B := Integer(x_nc2[i].B-x_nc1[i].B) div xcount;
+          iColor.A := Integer(x_nc2[i].A-x_nc1[i].A) div xcount;
 
-          if ofs <> 0 then
+          if ofs<>0 then
           begin
-            nColor.R := nColor.R + iColor.R * ofs;
-            nColor.G := nColor.G + iColor.G * ofs;
-            nColor.B := nColor.B + iColor.B * ofs;
-            nColor.A := nColor.A + iColor.A * ofs;
+            nColor.R := nColor.R + iColor.R*ofs;
+            nColor.G := nColor.G + iColor.G*ofs;
+            nColor.B := nColor.B + iColor.B*ofs;
+            nColor.A := nColor.A + iColor.A*ofs;
           end;
         end;
       end;
@@ -8211,101 +8319,96 @@ var
       if Enable then
       begin
         nRHW := x_nRHW1;
-        iRHW := ( x_nRHW2 - x_nRHW1 ) / xcount;
-        if ofs <> 0 then
-          nRHW := nRHW + iRHW * ofs;
+        iRHW := (x_nRHW2-x_nRHW1) / xcount;
+        if ofs<>0 then
+          nRHW := nRHW + iRHW*ofs;
       end;
     end;
 
-    DXRMachine.Run( xcount2 );
+    DXRMachine.Run(xcount2);
   end;
 
-  procedure draw( p1, pt1, p2, pt2 : PDXR_Vertex; starty, ycount, y1, y2, ofs1, ofs2 : Integer );
+  procedure draw(p1, pt1, p2, pt2: PDXR_Vertex; starty, ycount, y1, y2, ofs1, ofs2: Integer);
   var
-    i, j, y : Integer;
-    c1, c2, c2_1, c2_2 : TDXR_Color;
-    y_nx1, y_nx2, y_ix1, y_ix2 : Comp;
-    y_ntex1, y_ntex2, y_itex1, y_itex2 : T2DAxis64Array;
-    y_nc1, y_nc2, y_ic1, y_ic2 : TCol64Array;
-    y_nRHW1, y_nRHW2, y_iRHW1, y_iRHW2 : Comp;
+    i, j, y: Integer;
+    c1, c2, c2_1, c2_2: TDXR_Color;
+    y_nx1, y_nx2, y_ix1, y_ix2: Comp;
+    y_ntex1, y_ntex2, y_itex1, y_itex2: T2DAxis64Array;
+    y_nc1, y_nc2, y_ic1, y_ic2: TCol64Array;
+    y_nRHW1, y_nRHW2, y_iRHW1, y_iRHW2: Comp;
   begin
-    if ycount <= 0 then
-      Exit;
-    if y1 = 0 then
-      Exit;
-    if y2 = 0 then
-      Exit;
+    if ycount<=0 then Exit;
+    if y1=0 then Exit;
+    if y2=0 then Exit;
 
     {  Clipping  }
-    if starty < 0 then
+    if starty<0 then
     begin
       i := -starty;
 
-      Inc( ofs1, i );
-      Inc( ofs2, i );
+      Inc(ofs1, i);
+      Inc(ofs2, i);
 
-      Inc( starty, i );
-      Dec( ycount, i );
+      Inc(starty, i);
+      Dec(ycount, i);
     end;
 
-    if starty + ycount >= Integer( Dest.Height ) then
+    if starty+ycount>=Integer(Dest.Height) then
     begin
-      i := ( starty + ycount ) - Integer( Dest.Height );
-      Dec( ycount, i );
+      i := (starty+ycount)-Integer(Dest.Height);
+      Dec(ycount, i);
     end;
 
-    if ycount <= 0 then
-      Exit;
+    if ycount<=0 then Exit;
 
-    y_nx1 := FloatToIntFloat( Trunc( p1.sx ) );
-    y_nx2 := FloatToIntFloat( Trunc( p2.sx ) );
-    y_ix1 := FloatToIntFloat( ( Trunc( pt1.sx ) - Trunc( p1.sx ) ) / y1 );
-    y_ix2 := FloatToIntFloat( ( Trunc( pt2.sx ) - Trunc( p2.sx ) ) / y2 );
+    y_nx1 := FloatToIntFloat(Trunc(p1.sx));
+    y_nx2 := FloatToIntFloat(Trunc(p2.sx));
+    y_ix1 := FloatToIntFloat((Trunc(pt1.sx)-Trunc(p1.sx))/y1);
+    y_ix2 := FloatToIntFloat((Trunc(pt2.sx)-Trunc(p2.sx))/y2);
 
-    if ofs1 <> 0 then
-      y_nx1 := y_nx1 + y_ix1 * ofs1;
+    if ofs1<>0 then
+      y_nx1 := y_nx1 + y_ix1*ofs1;
 
-    if ofs2 <> 0 then
-      y_nx2 := y_nx2 + y_ix2 * ofs2;
+    if ofs2<>0 then
+      y_nx2 := y_nx2 + y_ix2*ofs2;
 
-    for i := 0 to DXRMachine.TextureIndexCount - 1 do
+    for i:=0 to DXRMachine.TextureIndexCount-1 do
     begin
-      j := DXRMachine.TextureIndex[ i ];
+      j := DXRMachine.TextureIndex[i];
 
-      y_itex1[ i ].X := FloatToTextureFloatX( i, ( pt1.tu[ j ] - p1.tu[ j ] ) / y1 );
-      y_itex1[ i ].Y := FloatToTextureFloatY( i, ( pt1.tv[ j ] - p1.tv[ j ] ) / y1 );
-      y_itex2[ i ].X := FloatToTextureFloatX( i, ( pt2.tu[ j ] - p2.tu[ j ] ) / y2 );
-      y_itex2[ i ].Y := FloatToTextureFloatY( i, ( pt2.tv[ j ] - p2.tv[ j ] ) / y2 );
+      y_itex1[i].X := FloatToTextureFloatX(i, (pt1.tu[j]-p1.tu[j])/y1);
+      y_itex1[i].Y := FloatToTextureFloatY(i, (pt1.tv[j]-p1.tv[j])/y1);
+      y_itex2[i].X := FloatToTextureFloatX(i, (pt2.tu[j]-p2.tu[j])/y2);
+      y_itex2[i].Y := FloatToTextureFloatY(i, (pt2.tv[j]-p2.tv[j])/y2);
 
-      y_ntex1[ i ].X := FloatToTextureFloatX( i, p1.tu[ j ] );
-      y_ntex1[ i ].Y := FloatToTextureFloatY( i, p1.tv[ j ] );
-      y_ntex2[ i ].X := FloatToTextureFloatX( i, p2.tu[ j ] );
-      y_ntex2[ i ].Y := FloatToTextureFloatY( i, p2.tv[ j ] );
+      y_ntex1[i].X := FloatToTextureFloatX(i, p1.tu[j]);
+      y_ntex1[i].Y := FloatToTextureFloatY(i, p1.tv[j]);
+      y_ntex2[i].X := FloatToTextureFloatX(i, p2.tu[j]);
+      y_ntex2[i].Y := FloatToTextureFloatY(i, p2.tv[j]);
 
-      if ofs1 <> 0 then
+      if ofs1<>0 then
       begin
-        y_ntex1[ i ].X := y_ntex1[ i ].X + y_itex1[ i ].X * ofs1;
-        y_ntex1[ i ].Y := y_ntex1[ i ].Y + y_itex1[ i ].Y * ofs1;
+        y_ntex1[i].X := y_ntex1[i].X + y_itex1[i].X*ofs1;
+        y_ntex1[i].Y := y_ntex1[i].Y + y_itex1[i].Y*ofs1;
       end;
 
-      if ofs2 <> 0 then
+      if ofs2<>0 then
       begin
-        y_ntex2[ i ].X := y_ntex2[ i ].X + y_itex2[ i ].X * ofs2;
-        y_ntex2[ i ].Y := y_ntex2[ i ].Y + y_itex2[ i ].Y * ofs2;
+        y_ntex2[i].X := y_ntex2[i].X + y_itex2[i].X*ofs2;
+        y_ntex2[i].Y := y_ntex2[i].Y + y_itex2[i].Y*ofs2;
       end;
     end;
 
-    for i := 0 to DXRMachine.ColorIndexCount - 1 do
-      if DXRMachine.ColorList[ i ].Gouraud then
+    for i:=0 to DXRMachine.ColorIndexCount-1 do
+      if DXRMachine.ColorList[i].Gouraud then
       begin
-        if DXRMachine.ColorIndex[ i ] = 0 then
+        if DXRMachine.ColorIndex[i]=0 then
         begin
           c1 := p1.color;
           c2 := p2.color;
           c2_1 := pt1.color;
           c2_2 := pt2.color;
-        end
-        else
+        end else
         begin
           c1 := p1.specular;
           c2 := p2.specular;
@@ -8313,59 +8416,58 @@ var
           c2_2 := pt2.specular;
         end;
 
-        y_nc1[ i ].R := FloatToColorFloat( RGBA_GETRED( c1 ) );
-        y_nc1[ i ].G := FloatToColorFloat( RGBA_GETGREEN( c1 ) );
-        y_nc1[ i ].B := FloatToColorFloat( RGBA_GETBLUE( c1 ) );
-        y_nc1[ i ].A := FloatToColorFloat( RGBA_GETALPHA( c1 ) );
-        y_nc2[ i ].R := FloatToColorFloat( RGBA_GETRED( c2 ) );
-        y_nc2[ i ].G := FloatToColorFloat( RGBA_GETGREEN( c2 ) );
-        y_nc2[ i ].B := FloatToColorFloat( RGBA_GETBLUE( c2 ) );
-        y_nc2[ i ].A := FloatToColorFloat( RGBA_GETALPHA( c2 ) );
+        y_nc1[i].R := FloatToColorFloat(RGBA_GETRED(c1));
+        y_nc1[i].G := FloatToColorFloat(RGBA_GETGREEN(c1));
+        y_nc1[i].B := FloatToColorFloat(RGBA_GETBLUE(c1));
+        y_nc1[i].A := FloatToColorFloat(RGBA_GETALPHA(c1));
+        y_nc2[i].R := FloatToColorFloat(RGBA_GETRED(c2));
+        y_nc2[i].G := FloatToColorFloat(RGBA_GETGREEN(c2));
+        y_nc2[i].B := FloatToColorFloat(RGBA_GETBLUE(c2));
+        y_nc2[i].A := FloatToColorFloat(RGBA_GETALPHA(c2));
 
-        y_ic1[ i ].R := FloatToColorFloat( ( RGBA_GETRED( c2_1 ) - RGBA_GETRED( c1 ) ) / y1 );
-        y_ic1[ i ].G := FloatToColorFloat( ( RGBA_GETGREEN( c2_1 ) - RGBA_GETGREEN( c1 ) ) / y1 );
-        y_ic1[ i ].B := FloatToColorFloat( ( RGBA_GETBLUE( c2_1 ) - RGBA_GETBLUE( c1 ) ) / y1 );
-        y_ic1[ i ].A := FloatToColorFloat( ( RGBA_GETALPHA( c2_1 ) - RGBA_GETALPHA( c1 ) ) / y1 );
-        y_ic2[ i ].R := FloatToColorFloat( ( RGBA_GETRED( c2_2 ) - RGBA_GETRED( c2 ) ) / y2 );
-        y_ic2[ i ].G := FloatToColorFloat( ( RGBA_GETGREEN( c2_2 ) - RGBA_GETGREEN( c2 ) ) / y2 );
-        y_ic2[ i ].B := FloatToColorFloat( ( RGBA_GETBLUE( c2_2 ) - RGBA_GETBLUE( c2 ) ) / y2 );
-        y_ic2[ i ].A := FloatToColorFloat( ( RGBA_GETALPHA( c2_2 ) - RGBA_GETALPHA( c2 ) ) / y2 );
+        y_ic1[i].R := FloatToColorFloat((RGBA_GETRED(c2_1)-RGBA_GETRED(c1))/y1);
+        y_ic1[i].G := FloatToColorFloat((RGBA_GETGREEN(c2_1)-RGBA_GETGREEN(c1))/y1);
+        y_ic1[i].B := FloatToColorFloat((RGBA_GETBLUE(c2_1)-RGBA_GETBLUE(c1))/y1);
+        y_ic1[i].A := FloatToColorFloat((RGBA_GETALPHA(c2_1)-RGBA_GETALPHA(c1))/y1);
+        y_ic2[i].R := FloatToColorFloat((RGBA_GETRED(c2_2)-RGBA_GETRED(c2))/y2);
+        y_ic2[i].G := FloatToColorFloat((RGBA_GETGREEN(c2_2)-RGBA_GETGREEN(c2))/y2);
+        y_ic2[i].B := FloatToColorFloat((RGBA_GETBLUE(c2_2)-RGBA_GETBLUE(c2))/y2);
+        y_ic2[i].A := FloatToColorFloat((RGBA_GETALPHA(c2_2)-RGBA_GETALPHA(c2))/y2);
 
-        if ofs1 <> 0 then
+        if ofs1<>0 then
         begin
-          y_nc1[ i ].R := y_nc1[ i ].R + y_ic1[ i ].R * ofs1;
-          y_nc1[ i ].G := y_nc1[ i ].G + y_ic1[ i ].G * ofs1;
-          y_nc1[ i ].B := y_nc1[ i ].B + y_ic1[ i ].B * ofs1;
-          y_nc1[ i ].A := y_nc1[ i ].A + y_ic1[ i ].A * ofs1;
+          y_nc1[i].R := y_nc1[i].R + y_ic1[i].R*ofs1;
+          y_nc1[i].G := y_nc1[i].G + y_ic1[i].G*ofs1;
+          y_nc1[i].B := y_nc1[i].B + y_ic1[i].B*ofs1;
+          y_nc1[i].A := y_nc1[i].A + y_ic1[i].A*ofs1;
         end;
 
-        if ofs2 <> 0 then
+        if ofs2<>0 then
         begin
-          y_nc2[ i ].R := y_nc2[ i ].R + y_ic2[ i ].R * ofs2;
-          y_nc2[ i ].G := y_nc2[ i ].G + y_ic2[ i ].G * ofs2;
-          y_nc2[ i ].B := y_nc2[ i ].B + y_ic2[ i ].B * ofs2;
-          y_nc2[ i ].A := y_nc2[ i ].A + y_ic2[ i ].A * ofs2;
+          y_nc2[i].R := y_nc2[i].R + y_ic2[i].R*ofs2;
+          y_nc2[i].G := y_nc2[i].G + y_ic2[i].G*ofs2;
+          y_nc2[i].B := y_nc2[i].B + y_ic2[i].B*ofs2;
+          y_nc2[i].A := y_nc2[i].A + y_ic2[i].A*ofs2;
         end;
       end;
 
     if DXRMachine.RHW.Enable then
     begin
-      y_nRHW1 := FloatToRHWFloat( p1.rhw );
-      y_nRHW2 := FloatToRHWFloat( p2.rhw );
-      y_iRHW1 := FloatToRHWFloat( ( pt1.rhw - p1.rhw ) / y1 );
-      y_iRHW2 := FloatToRHWFloat( ( pt2.rhw - p2.rhw ) / y2 );
+      y_nRHW1 := FloatToRHWFloat(p1.rhw);
+      y_nRHW2 := FloatToRHWFloat(p2.rhw);
+      y_iRHW1 := FloatToRHWFloat((pt1.rhw-p1.rhw)/y1);
+      y_iRHW2 := FloatToRHWFloat((pt2.rhw-p2.rhw)/y2);
 
-      if ofs1 <> 0 then
+      if ofs1<>0 then
       begin
-        y_nRHW1 := y_nRHW1 + y_iRHW1 * ofs1;
+        y_nRHW1 := y_nRHW1 + y_iRHW1*ofs1;
       end;
 
-      if ofs2 <> 0 then
+      if ofs2<>0 then
       begin
-        y_nRHW2 := y_nRHW2 + y_iRHW2 * ofs2;
+        y_nRHW2 := y_nRHW2 + y_iRHW2*ofs2;
       end;
-    end
-    else
+    end else
     begin
       y_nRHW1 := 0;
       y_nRHW2 := 0;
@@ -8373,52 +8475,52 @@ var
       y_iRHW2 := 0;
     end;
 
-    for y := starty to starty + ycount - 1 do
+    for y:=starty to starty+ycount-1 do
     begin
-      if PInteger( Integer( @y_nx1 ) + 4 )^ < PInteger( Integer( @y_nx2 ) + 4 )^ then
-      begin
-        drawline(
-          PInteger( Integer( @y_nx1 ) + 4 )^, PInteger( Integer( @y_nx2 ) + 4 )^, y,
-          y_ntex1, y_ntex2,
-          y_nc1, y_nc2,
-          y_nRHW1, y_nRHW2
+      if (States.EnableDrawLine=0) or ((States.EnableDrawLine-1)=y mod 2) then
+        if PInteger(Integer(@y_nx1)+4)^<PInteger(Integer(@y_nx2)+4)^ then
+        begin
+          drawline(
+            PInteger(Integer(@y_nx1)+4)^, PInteger(Integer(@y_nx2)+4)^, y,
+            y_ntex1, y_ntex2,
+            y_nc1, y_nc2,
+            y_nRHW1, y_nRHW2
           );
-      end
-      else if PInteger( Integer( @y_nx1 ) + 4 )^ > PInteger( Integer( @y_nx2 ) + 4 )^ then
-      begin
-        drawline(
-          PInteger( Integer( @y_nx2 ) + 4 )^, PInteger( Integer( @y_nx1 ) + 4 )^, y,
-          y_ntex2, y_ntex1,
-          y_nc2, y_nc1,
-          y_nRHW2, y_nRHW1
+        end else if PInteger(Integer(@y_nx1)+4)^>PInteger(Integer(@y_nx2)+4)^ then
+        begin
+          drawline(
+            PInteger(Integer(@y_nx2)+4)^, PInteger(Integer(@y_nx1)+4)^, y,
+            y_ntex2, y_ntex1,
+            y_nc2, y_nc1,
+            y_nRHW2, y_nRHW1
           );
-      end;
+        end;
 
       y_nx1 := y_nx1 + y_ix1;
       y_nx2 := y_nx2 + y_ix2;
 
-      for i := 0 to DXRMachine.TextureIndexCount - 1 do
-        with DXRMachine.TextureList[ DXRMachine.TextureIndex[ i ] ] do
+      for i:=0 to DXRMachine.TextureIndexCount-1 do
+        with DXRMachine.TextureList[DXRMachine.TextureIndex[i]] do
         begin
-          y_ntex1[ i ].X := y_ntex1[ i ].X + y_itex1[ i ].X;
-          y_ntex1[ i ].Y := y_ntex1[ i ].Y + y_itex1[ i ].Y;
-          y_ntex2[ i ].X := y_ntex2[ i ].X + y_itex2[ i ].X;
-          y_ntex2[ i ].Y := y_ntex2[ i ].Y + y_itex2[ i ].Y;
+          y_ntex1[i].X := y_ntex1[i].X + y_itex1[i].X;
+          y_ntex1[i].Y := y_ntex1[i].Y + y_itex1[i].Y;
+          y_ntex2[i].X := y_ntex2[i].X + y_itex2[i].X;
+          y_ntex2[i].Y := y_ntex2[i].Y + y_itex2[i].Y;
         end;
 
-      for i := 0 to DXRMachine.ColorIndexCount - 1 do
-        with DXRMachine.ColorList[ DXRMachine.ColorIndex[ i ] ] do
+      for i:=0 to DXRMachine.ColorIndexCount-1 do
+        with DXRMachine.ColorList[DXRMachine.ColorIndex[i]] do
         begin
           if Gouraud then
           begin
-            y_nc1[ i ].R := y_nc1[ i ].R + y_ic1[ i ].R;
-            y_nc1[ i ].G := y_nc1[ i ].G + y_ic1[ i ].G;
-            y_nc1[ i ].B := y_nc1[ i ].B + y_ic1[ i ].B;
-            y_nc1[ i ].A := y_nc1[ i ].A + y_ic1[ i ].A;
-            y_nc2[ i ].R := y_nc2[ i ].R + y_ic2[ i ].R;
-            y_nc2[ i ].G := y_nc2[ i ].G + y_ic2[ i ].G;
-            y_nc2[ i ].B := y_nc2[ i ].B + y_ic2[ i ].B;
-            y_nc2[ i ].A := y_nc2[ i ].A + y_ic2[ i ].A;
+            y_nc1[i].R := y_nc1[i].R + y_ic1[i].R;
+            y_nc1[i].G := y_nc1[i].G + y_ic1[i].G;
+            y_nc1[i].B := y_nc1[i].B + y_ic1[i].B;
+            y_nc1[i].A := y_nc1[i].A + y_ic1[i].A;
+            y_nc2[i].R := y_nc2[i].R + y_ic2[i].R;
+            y_nc2[i].G := y_nc2[i].G + y_ic2[i].G;
+            y_nc2[i].B := y_nc2[i].B + y_ic2[i].B;
+            y_nc2[i].A := y_nc2[i].A + y_ic2[i].A;
           end;
         end;
 
@@ -8431,390 +8533,370 @@ var
   end;
 
 var
-  p : array[ 0..2 ] of PDXR_Vertex;
-  tmp : Pointer;
-  y1, y2, y3, i : Integer;
+  p: array[0..2] of PDXR_Vertex;
+  tmp: Pointer;
+  y1, y2, y3, i: Integer;
 begin
   {  Cull  }
   case States.CullMode of
-    DXR_CULL_NONE :
-      begin
-      end;
-    DXR_CULL_CW :
-      begin
-        if ( Tri[ 1 ].sx - Tri[ 0 ].sx ) * ( Tri[ 2 ].sy - Tri[ 0 ].sy ) - ( Tri[ 1 ].sy - Tri[ 0 ].sy ) * ( Tri[ 2 ].sx - Tri[ 0 ].sx ) > 0 then
-          Exit;
-      end;
-    DXR_CULL_CCW :
-      begin
-        if ( Tri[ 1 ].sx - Tri[ 0 ].sx ) * ( Tri[ 2 ].sy - Tri[ 0 ].sy ) - ( Tri[ 1 ].sy - Tri[ 0 ].sy ) * ( Tri[ 2 ].sx - Tri[ 0 ].sx ) < 0 then
-          Exit;
-      end;
+    DXR_CULL_NONE:
+        begin
+        end;
+    DXR_CULL_CW:
+        begin
+          if (Tri[1].sx-Tri[0].sx)*(Tri[2].sy-Tri[0].sy)-(Tri[1].sy-Tri[0].sy)*(Tri[2].sx-Tri[0].sx)>0 then Exit;
+        end;
+    DXR_CULL_CCW:
+        begin
+          if (Tri[1].sx-Tri[0].sx)*(Tri[2].sy-Tri[0].sy)-(Tri[1].sy-Tri[0].sy)*(Tri[2].sx-Tri[0].sx)<0 then Exit;
+        end;
   end;
 
-  Inc( RenderPrimitiveCount );
+  Inc(RenderPrimitiveCount);
 
   { p[0]=Top vertex of Y axis }
   { p[1]=Center vertex of Y axis }
   { p[2]=Bottom vertex of Y axis }
-  p[ 0 ] := Tri[ 0 ]; p[ 1 ] := Tri[ 1 ]; p[ 2 ] := Tri[ 2 ];
-  if p[ 0 ].sy > p[ 1 ].sy then
-  begin tmp := p[ 0 ]; p[ 0 ] := p[ 1 ]; p[ 1 ] := tmp end;
-  if p[ 0 ].sy > p[ 2 ].sy then
-  begin tmp := p[ 0 ]; p[ 0 ] := p[ 2 ]; p[ 2 ] := tmp end;
-  if p[ 1 ].sy > p[ 2 ].sy then
-  begin tmp := p[ 1 ]; p[ 1 ] := p[ 2 ]; p[ 2 ] := tmp end;
+  p[0]:=Tri[0]; p[1]:=Tri[1]; p[2]:=Tri[2];
+  if p[0].sy>p[1].sy then begin tmp:=p[0]; p[0]:=p[1]; p[1]:=tmp end;
+  if p[0].sy>p[2].sy then begin tmp:=p[0]; p[0]:=p[2]; p[2]:=tmp end;
+  if p[1].sy>p[2].sy then begin tmp:=p[1]; p[1]:=p[2]; p[2]:=tmp end;
 
-  if ( p[ 2 ].sy <= p[ 0 ].sy ) then
-    Exit;
-  if ( p[ 2 ].sy <= 0 ) or ( p[ 0 ].sy >= Dest.Height ) then
-    Exit;
-  if ( p[ 0 ].sx < 0 ) and ( p[ 1 ].sx < 0 ) and ( p[ 2 ].sx < 0 ) then
-    Exit;
-  if ( p[ 0 ].sx >= Dest.Width ) and ( p[ 1 ].sx >= Dest.Width ) and ( p[ 2 ].sx >= Dest.Width ) then
-    Exit;
+  if (p[2].sy<=p[0].sy) then Exit;
+  if (p[2].sy<=0) or (p[0].sy>=Dest.Height) then Exit;
+  if (p[0].sx<0) and (p[1].sx<0) and (p[2].sx<0) then Exit;
+  if (p[0].sx>=Dest.Width) and (p[1].sx>=Dest.Width) and (p[2].sx>=Dest.Width) then Exit;
 
   {  Generate code  }
-  if States.TextureFilter in [ DXR_TEXTUREFILTER_MIPMAP_NEAREST, DXR_TEXTUREFILTER_MIPMAP_LINEAR ] then
+  if States.TextureFilter in [DXR_TEXTUREFILTER_MIPMAP_NEAREST, DXR_TEXTUREFILTER_MIPMAP_LINEAR] then
     DXRMachine.Compiled := False;
 
   if not DXRMachine.Compiled then
     InitGenerator;
 
-  y1 := Trunc( p[ 1 ].sy ) - Trunc( p[ 0 ].sy );
-  y2 := Trunc( p[ 2 ].sy ) - Trunc( p[ 1 ].sy );
-  y3 := Trunc( p[ 2 ].sy ) - Trunc( p[ 0 ].sy );
+  y1 := Trunc(p[1].sy)-Trunc(p[0].sy);
+  y2 := Trunc(p[2].sy)-Trunc(p[1].sy);
+  y3 := Trunc(p[2].sy)-Trunc(p[0].sy);
 
-  for i := 0 to DXRMachine.TextureIndexCount - 1 do
-    with DXRMachine.TextureList[ DXRMachine.TextureIndex[ i ] ] do
+  for i:=0 to DXRMachine.TextureIndexCount-1 do
+    with DXRMachine.TextureList[DXRMachine.TextureIndex[i]] do
     begin
       case TextureAddress of
-        DXR_TEXTUREADDRESS_TILE :
-          begin
-            TexXFloat[ i ] := Surface.Width2 * TextureAxisFloat;
-            TexYFloat[ i ] := Surface.Height2 * TextureAxisFloat;
-          end;
-        DXR_TEXTUREADDRESS_DONOTCLIP :
-          begin
-            TexXFloat[ i ] := ( Surface.Width - 1 ) * TextureAxisFloat;
-            TexYFloat[ i ] := ( Surface.Height - 1 ) * TextureAxisFloat;
-          end;
+        DXR_TEXTUREADDRESS_TILE:
+            begin
+              TexXFloat[i] := Surface.Width2 * TextureAxisFloat;
+              TexYFloat[i] := Surface.Height2 * TextureAxisFloat;
+            end;
+        DXR_TEXTUREADDRESS_DONOTCLIP:
+            begin
+              TexXFloat[i] := (Surface.Width-1) * TextureAxisFloat;
+              TexYFloat[i] := (Surface.Height-1) * TextureAxisFloat;
+            end;
       end;
     end;
 
-  with DXRMachine.ColorList[ 0 ] do
-    if Enable and ( not Gouraud ) then
+  with DXRMachine.ColorList[0] do
+    if Enable and (not Gouraud) then
     begin
-      nColor.R := RGBA_GETRED( Tri[ 0 ].color ) * ColorFloat;
-      nColor.G := RGBA_GETGREEN( Tri[ 0 ].color ) * ColorFloat;
-      nColor.B := RGBA_GETBLUE( Tri[ 0 ].color ) * ColorFloat;
-      nColor.A := RGBA_GETALPHA( Tri[ 0 ].color ) * ColorFloat;
+      nColor.R := RGBA_GETRED(Tri[0].color)*ColorFloat;
+      nColor.G := RGBA_GETGREEN(Tri[0].color)*ColorFloat;
+      nColor.B := RGBA_GETBLUE(Tri[0].color)*ColorFloat;
+      nColor.A := RGBA_GETALPHA(Tri[0].color)*ColorFloat;
     end;
 
-  with DXRMachine.ColorList[ 1 ] do
-    if Enable and ( not Gouraud ) then
+  with DXRMachine.ColorList[1] do
+    if Enable and (not Gouraud) then
     begin
-      nColor.R := RGBA_GETRED( Tri[ 0 ].specular ) * ColorFloat;
-      nColor.G := RGBA_GETGREEN( Tri[ 0 ].specular ) * ColorFloat;
-      nColor.B := RGBA_GETBLUE( Tri[ 0 ].specular ) * ColorFloat;
-      nColor.A := RGBA_GETALPHA( Tri[ 0 ].specular ) * ColorFloat;
+      nColor.R := RGBA_GETRED(Tri[0].specular)*ColorFloat;
+      nColor.G := RGBA_GETGREEN(Tri[0].specular)*ColorFloat;
+      nColor.B := RGBA_GETBLUE(Tri[0].specular)*ColorFloat;
+      nColor.A := RGBA_GETALPHA(Tri[0].specular)*ColorFloat;
     end;
 
   { p[0] - p[1] }
-  draw( p[ 0 ], p[ 1 ], p[ 0 ], p[ 2 ], Trunc( p[ 0 ].sy ), y1, y1, y3, 0, 0 );
+  draw(p[0], p[1], p[0], p[2], Trunc(p[0].sy), y1, y1, y3, 0, 0);
 
   { p[1] - p[2] }
-  draw( p[ 1 ], p[ 2 ], p[ 0 ], p[ 2 ], Trunc( p[ 1 ].sy ), y2, y2, y3, 0, y1 );
+  draw(p[1], p[2], p[0], p[2], Trunc(p[1].sy), y2, y2, y3, 0, y1);
 end;
 
-procedure dxrDrawPrimitive( const Dest : TDXR_Surface; const States : TDXR_RenderStates; PrimitiveType : TDXR_PrimitiveType;
-  VertexList : PDXR_Vertex; VertexCount : DWORD );
+procedure dxrDrawPrimitive(const Dest: TDXR_Surface; const States: TDXR_RenderStates; PrimitiveType: TDXR_PrimitiveType;
+  VertexList: PDXR_Vertex; VertexCount: DWORD);
 var
-  i : Integer;
-  Tri : TDXR_Triangle;
+  i: Integer;
+  Tri: TDXR_Triangle;
 begin
-  if not ( PrimitiveType in [ DXR_PRIMITIVETYPE_TRIANGLELIST, DXR_PRIMITIVETYPE_TRIANGLESTRIP ] ) then
-    Exit;
+  if not (PrimitiveType in [DXR_PRIMITIVETYPE_TRIANGLELIST, DXR_PRIMITIVETYPE_TRIANGLESTRIP]) then Exit;
 
   DXRMachine.Compiled := False;
 
   case PrimitiveType of
-    DXR_PRIMITIVETYPE_TRIANGLELIST :
-      begin
-        for i := 0 to VertexCount div 3 - 1 do
+    DXR_PRIMITIVETYPE_TRIANGLELIST:
         begin
-          Tri[ 0 ] := @PArrayDXR_Vertex( VertexList )[ i * 3 ];
-          Tri[ 1 ] := @PArrayDXR_Vertex( VertexList )[ i * 3 + 1 ];
-          Tri[ 2 ] := @PArrayDXR_Vertex( VertexList )[ i * 3 + 2 ];
-          dxrDrawTriangle( Dest, States, Tri );
+          for i:=0 to VertexCount div 3-1 do
+          begin
+            Tri[0] := @PArrayDXR_Vertex(VertexList)[i*3];
+            Tri[1] := @PArrayDXR_Vertex(VertexList)[i*3+1];
+            Tri[2] := @PArrayDXR_Vertex(VertexList)[i*3+2];
+            dxrDrawTriangle(Dest, States, Tri);
+          end;
         end;
-      end;
-    DXR_PRIMITIVETYPE_TRIANGLESTRIP :
-      begin
-        for i := 2 to VertexCount - 1 do
+    DXR_PRIMITIVETYPE_TRIANGLESTRIP:
         begin
-          Tri[ 0 ] := @PArrayDXR_Vertex( VertexList )[ i - 2 ];
-          Tri[ 1 ] := @PArrayDXR_Vertex( VertexList )[ i - 1 ];
-          Tri[ 2 ] := @PArrayDXR_Vertex( VertexList )[ i ];
-          dxrDrawTriangle( Dest, States, Tri );
+          for i:=2 to VertexCount-1 do
+          begin
+            Tri[0] := @PArrayDXR_Vertex(VertexList)[i-2];
+            Tri[1] := @PArrayDXR_Vertex(VertexList)[i-1];
+            Tri[2] := @PArrayDXR_Vertex(VertexList)[i];
+            dxrDrawTriangle(Dest, States, Tri);
+          end;
         end;
-      end;
   end;
 end;
 
-procedure dxrDrawPointeredPrimitive( const Dest : TDXR_Surface; const States : TDXR_RenderStates; PrimitiveType : TDXR_PrimitiveType;
-  VertexList : PPDXR_Vertex; VertexCount : DWORD );
+procedure dxrDrawPointeredPrimitive(const Dest: TDXR_Surface; const States: TDXR_RenderStates; PrimitiveType: TDXR_PrimitiveType;
+  VertexList: PPDXR_Vertex; VertexCount: DWORD);
 var
-  i : Integer;
-  Tri : TDXR_Triangle;
+  i: Integer;
+  Tri: TDXR_Triangle;
 begin
-  if not ( PrimitiveType in [ DXR_PRIMITIVETYPE_TRIANGLELIST, DXR_PRIMITIVETYPE_TRIANGLESTRIP ] ) then
-    Exit;
+  if not (PrimitiveType in [DXR_PRIMITIVETYPE_TRIANGLELIST, DXR_PRIMITIVETYPE_TRIANGLESTRIP]) then Exit;
 
   DXRMachine.Compiled := False;
 
   case PrimitiveType of
-    DXR_PRIMITIVETYPE_TRIANGLELIST :
-      begin
-        for i := 0 to VertexCount div 3 - 1 do
+    DXR_PRIMITIVETYPE_TRIANGLELIST:
         begin
-          Tri[ 0 ] := PArrayPDXR_Vertex( VertexList )[ i * 3 ];
-          Tri[ 1 ] := PArrayPDXR_Vertex( VertexList )[ i * 3 + 1 ];
-          Tri[ 2 ] := PArrayPDXR_Vertex( VertexList )[ i * 3 + 2 ];
-          dxrDrawTriangle( Dest, States, Tri );
+          for i:=0 to VertexCount div 3-1 do
+          begin
+            Tri[0] := PArrayPDXR_Vertex(VertexList)[i*3];
+            Tri[1] := PArrayPDXR_Vertex(VertexList)[i*3+1];
+            Tri[2] := PArrayPDXR_Vertex(VertexList)[i*3+2];
+            dxrDrawTriangle(Dest, States, Tri);
+          end;
         end;
-      end;
-    DXR_PRIMITIVETYPE_TRIANGLESTRIP :
-      begin
-        for i := 2 to VertexCount - 1 do
+    DXR_PRIMITIVETYPE_TRIANGLESTRIP:
         begin
-          Tri[ 0 ] := PArrayPDXR_Vertex( VertexList )[ i - 2 ];
-          Tri[ 1 ] := PArrayPDXR_Vertex( VertexList )[ i - 1 ];
-          Tri[ 2 ] := PArrayPDXR_Vertex( VertexList )[ i ];
-          dxrDrawTriangle( Dest, States, Tri );
+          for i:=2 to VertexCount-1 do
+          begin
+            Tri[0] := PArrayPDXR_Vertex(VertexList)[i-2];
+            Tri[1] := PArrayPDXR_Vertex(VertexList)[i-1];
+            Tri[2] := PArrayPDXR_Vertex(VertexList)[i];
+            dxrDrawTriangle(Dest, States, Tri);
+          end;
         end;
-      end;
   end;
 end;
 
-procedure dxrDrawIndexedPrimitive( const Dest : TDXR_Surface; const States : TDXR_RenderStates; PrimitiveType : TDXR_PrimitiveType;
-  VertexList : PDXR_Vertex; VertexCount : DWORD; IndexList : PDWORD; IndexCount : DWORD );
+procedure dxrDrawIndexedPrimitive(const Dest: TDXR_Surface; const States: TDXR_RenderStates; PrimitiveType: TDXR_PrimitiveType;
+  VertexList: PDXR_Vertex; VertexCount: DWORD; IndexList: PDWORD; IndexCount: DWORD);
 var
-  i : Integer;
-  Tri : TDXR_Triangle;
+  i: Integer;
+  Tri: TDXR_Triangle;
 begin
-  if not ( PrimitiveType in [ DXR_PRIMITIVETYPE_TRIANGLELIST, DXR_PRIMITIVETYPE_TRIANGLESTRIP ] ) then
-    Exit;
+  if not (PrimitiveType in [DXR_PRIMITIVETYPE_TRIANGLELIST, DXR_PRIMITIVETYPE_TRIANGLESTRIP]) then Exit;
 
   DXRMachine.Compiled := False;
 
   case PrimitiveType of
-    DXR_PRIMITIVETYPE_TRIANGLELIST :
-      begin
-        for i := 0 to IndexCount div 3 - 1 do
+    DXR_PRIMITIVETYPE_TRIANGLELIST:
         begin
-          Tri[ 0 ] := @PArrayDXR_Vertex( VertexList )[ PArrayDWORD( IndexList )[ i * 3 ] ];
-          Tri[ 1 ] := @PArrayDXR_Vertex( VertexList )[ PArrayDWORD( IndexList )[ i * 3 + 1 ] ];
-          Tri[ 2 ] := @PArrayDXR_Vertex( VertexList )[ PArrayDWORD( IndexList )[ i * 3 + 2 ] ];
-          dxrDrawTriangle( Dest, States, Tri );
+          for i:=0 to IndexCount div 3-1 do
+          begin
+            Tri[0] := @PArrayDXR_Vertex(VertexList)[PArrayDWORD(IndexList)[i*3]];
+            Tri[1] := @PArrayDXR_Vertex(VertexList)[PArrayDWORD(IndexList)[i*3+1]];
+            Tri[2] := @PArrayDXR_Vertex(VertexList)[PArrayDWORD(IndexList)[i*3+2]];
+            dxrDrawTriangle(Dest, States, Tri);
+          end;
         end;
-      end;
-    DXR_PRIMITIVETYPE_TRIANGLESTRIP :
-      begin
-        for i := 2 to IndexCount - 1 do
+    DXR_PRIMITIVETYPE_TRIANGLESTRIP:
         begin
-          Tri[ 0 ] := @PArrayDXR_Vertex( VertexList )[ PArrayDWORD( IndexList )[ i - 2 ] ];
-          Tri[ 1 ] := @PArrayDXR_Vertex( VertexList )[ PArrayDWORD( IndexList )[ i - 1 ] ];
-          Tri[ 2 ] := @PArrayDXR_Vertex( VertexList )[ PArrayDWORD( IndexList )[ i ] ];
-          dxrDrawTriangle( Dest, States, Tri );
+          for i:=2 to IndexCount-1 do
+          begin
+            Tri[0] := @PArrayDXR_Vertex(VertexList)[PArrayDWORD(IndexList)[i-2]];
+            Tri[1] := @PArrayDXR_Vertex(VertexList)[PArrayDWORD(IndexList)[i-1]];
+            Tri[2] := @PArrayDXR_Vertex(VertexList)[PArrayDWORD(IndexList)[i]];
+            dxrDrawTriangle(Dest, States, Tri);
+          end;
         end;
-      end;
   end;
 end;
 
-function MulDiv64( a, b, c : Integer ) : Integer; assembler;
+function MulDiv64(a, b, c: Integer): Integer; assembler;
 asm
   mov eax, a
   imul b
   idiv c
 end;
 
-function Max( B1, B2 : Integer ) : Integer;
+function Max(B1, B2: Integer): Integer; {$IFDEF VER9UP}inline;{$ENDIF}
 begin
-  if B1 >= B2 then
-    Result := B1
-  else
-    Result := B2;
+  if B1>=B2 then Result := B1 else Result := B2;
 end;
 
-function Min( B1, B2 : Integer ) : Integer;
+function Min(B1, B2: Integer): Integer; {$IFDEF VER9UP}inline;{$ENDIF}
 begin
-  if B1 <= B2 then
-    Result := B1
-  else
-    Result := B2;
+  if B1<=B2 then Result := B1 else Result := B2;
 end;
 
-function BltClipX( const Dest, Src : TDXR_Surface;
-  var StartX, EndX, StartSrcX : Integer ) : Boolean;
+function BltClipX(const Dest, Src: TDXR_Surface;
+  var StartX, EndX, StartSrcX: Integer): Boolean; {$IFDEF VER9UP}inline;{$ENDIF}
 begin
-  if StartX < 0 then
+  if StartX<0 then
   begin
-    StartSrcX := StartSrcX - StartX;
+    StartSrcX := StartSrcX-StartX;
     StartX := 0;
   end;
 
-  EndX := Min( EndX, Dest.Width );
+  EndX := Min(EndX, Dest.Width);
 
-  Result := ( EndX > 0 ) and ( EndX - StartX > 0 );
+  Result := (EndX>0) and (EndX-StartX>0);
 end;
 
-function BltClipY( const Dest, Src : TDXR_Surface;
-  var StartY, EndY, StartSrcY : Integer ) : Boolean;
+function BltClipY(const Dest, Src: TDXR_Surface;
+  var StartY, EndY, StartSrcY: Integer): Boolean; {$IFDEF VER9UP}inline;{$ENDIF}
 begin
-  if StartY < 0 then
+  if StartY<0 then
   begin
-    StartSrcY := StartSrcY - StartY;
+    StartSrcY := StartSrcY-StartY;
     StartY := 0;
   end;
 
-  EndY := Min( EndY, Dest.Height );
+  EndY := Min(EndY, Dest.Height);
 
-  Result := ( EndY > 0 ) and ( EndY - StartY > 0 );
+  Result := (EndY>0) and (EndY-StartY>0);
 end;
 
-function BltClip( const Dest, Src : TDXR_Surface;
-  var StartX, StartY, EndX, EndY, StartSrcX, StartSrcY : Integer ) : Boolean;
+function BltClip(const Dest, Src: TDXR_Surface;
+  var StartX, StartY, EndX, EndY, StartSrcX, StartSrcY: Integer): Boolean; {$IFDEF VER9UP}inline;{$ENDIF}
 begin
-  Result := BltClipX( Dest, Src, StartX, EndX, StartSrcX ) and
-    BltClipY( Dest, Src, StartY, EndY, StartSrcY );
+  Result := BltClipX(Dest, Src, StartX, EndX, StartSrcX) and
+    BltClipY(Dest, Src, StartY, EndY, StartSrcY);
 end;
 
-function FillClip( const Dest : TDXR_Surface;
-  var StartX, StartY, EndX, EndY : Integer ) : Boolean;
+function FillClip(const Dest: TDXR_Surface;
+  var StartX, StartY, EndX, EndY: Integer): Boolean; {$IFDEF VER9UP}inline;{$ENDIF}
 begin
-  StartX := Max( StartX, 0 );
-  StartY := Max( StartY, 0 );
-  EndX := Min( EndX, Dest.Width );
-  EndY := Min( EndY, Dest.Height );
+  StartX := Max(StartX, 0);
+  StartY := Max(StartY, 0);
+  EndX := Min(EndX, Dest.Width);
+  EndY := Min(EndY, Dest.Height);
 
-  Result := ( StartX < EndX ) and ( StartY < EndY );
+  Result := (StartX<EndX) and (StartY<EndY);
 end;
 
 var
-  CosinTable : array[ 0..255 ] of Double;
+  CosinTable: array[0..255] of Double;
 
-procedure InitCosinTable;
+procedure InitCosinTable; {$IFDEF VER9UP}inline;{$ENDIF}
 var
-  i : Integer;
+  i: Integer;
 begin
-  for i := Low( CosinTable ) to High( CosinTable ) do
-    CosinTable[ i ] := Cos( ( i / 256 ) * 2 * PI );
+  for i:=Low(CosinTable) to High(CosinTable) do
+    CosinTable[i] := Cos((i/256)*2*PI);
 end;
 
-function Cos256( i : Integer ) : Double;
+function Cos256(i: Integer): Double; {$IFDEF VER9UP}inline;{$ENDIF}
 begin
-  Result := CosinTable[ i and 255 ];
+  Result := CosinTable[i and 255];
 end;
 
-function Sin256( i : Integer ) : Double;
+function Sin256(i: Integer): Double; {$IFDEF VER9UP}inline;{$ENDIF}
 begin
-  Result := CosinTable[ ( i + 192 ) and 255 ];
+  Result := CosinTable[(i+192) and 255];
 end;
 
-function RotationClip( const Dest, Src : TDXR_Surface;
-  X, Y, Width, Height : Integer; CenterX, CenterY : Double; Angle : Integer;
-  var StartX, StartY, EndX, EndY : Integer ) : Boolean;
+function RotationClip(const Dest, Src: TDXR_Surface;
+  X, Y, Width, Height: Integer; CenterX, CenterY: Double; Angle: Integer;
+  var StartX, StartY, EndX, EndY: Integer): Boolean;
 
-  function RotatePoint( ax, ay : Integer ) : TPoint;
+  function RotatePoint(ax, ay: Integer): TPoint;
   var
-    c, s : Double;
+    c, s: Double;
   begin
-    ax := Trunc( ax - Width * CenterX );
-    ay := Trunc( ay - Height * CenterY );
-    c := Cos256( Angle );
-    s := Sin256( Angle );
-    Result.X := X + Trunc( ax * c - ay * s );
-    Result.Y := Y + Trunc( ax * s + ay * c );
+    ax := Trunc(ax - Width*CenterX);
+    ay := Trunc(ay - Height*CenterY);
+    c := Cos256(Angle);
+    s := Sin256(Angle);
+    Result.X := X+Trunc(ax * c - ay * s);
+    Result.Y := Y+Trunc(ax * s + ay * c);
   end;
-
+                     
 var
-  i : Integer;
-  Points : array[ 0..3 ] of TPoint;
-begin
-  Points[ 0 ] := RotatePoint( 0, 0 );
-  Points[ 1 ] := RotatePoint( Width, 0 );
-  Points[ 2 ] := RotatePoint( 0, Height );
-  Points[ 3 ] := RotatePoint( Width, Height );
+  i: Integer;
+  Points: array[0..3] of TPoint;
+begin                      
+  Points[0] := RotatePoint(0, 0);
+  Points[1] := RotatePoint(Width, 0);
+  Points[2] := RotatePoint(0, Height);
+  Points[3] := RotatePoint(Width, Height);
 
-  StartX := Points[ 0 ].X;
-  StartY := Points[ 0 ].Y;
+  StartX := Points[0].X;
+  StartY := Points[0].Y;
   EndX := StartX;
   EndY := StartY;
 
-  for i := 1 to 3 do
-    with Points[ i ] do
+  for i:=1 to 3 do
+    with Points[i] do
     begin
-      StartX := Min( StartX, X );
-      StartY := Min( StartY, Y );
-      EndX := Max( EndX, X );
-      EndY := Max( EndY, Y );
+      StartX := Min(StartX, X);
+      StartY := Min(StartY, Y);
+      EndX := Max(EndX, X);
+      EndY := Max(EndY, Y);
     end;
 
-  StartX := Max( StartX, 0 );
-  StartY := Max( StartY, 0 );
-  EndX := Min( EndX, Dest.Width );
-  EndY := Min( EndY, Dest.Height );
+  StartX := Max(StartX, 0);
+  StartY := Max(StartY, 0);
+  EndX := Min(EndX, Dest.Width);
+  EndY := Min(EndY, Dest.Height);
 
-  Result := ( StartX <= Integer( Dest.Width ) ) and ( EndX > 0 ) and ( EndX - StartX > 0 ) and
-    ( StartY <= Integer( Dest.Height ) ) and ( EndY > 0 ) and ( EndY - StartY > 0 );
+  Result := (StartX<=Integer(Dest.Width)) and (EndX>0) and (EndX-StartX>0) and
+    (StartY<=Integer(Dest.Height)) and (EndY>0) and (EndY-StartY>0);
 end;
 
-procedure CopyXLineInitialize( const Dest, Src : TDXR_Surface;
-  const Blend : TDXR_Blend; Alpha : Integer;
-  IncX, IncY : Integer;
-  ColorKeyEnable : Boolean; ColorKey : DWORD );
+procedure CopyXLineInitialize(const Dest, Src: TDXR_Surface;
+  const Blend: TDXR_Blend; Alpha: Integer;
+  IncX, IncY: Integer;
+  ColorKeyEnable: Boolean; ColorKey: DWORD);
 var
-  Tree : PDXRMachine_Tree;
+  Tree: PDXRMachine_Tree;
 begin
   DXRMachine.Initialize;
 
   {  Parameter setting  }
   DXRMachine.Dest := @Dest;
-  DXRMachine.TextureList[ 0 ].ColorKeyEnable := ColorKeyEnable;
-  DXRMachine.TextureList[ 0 ].ColorKey := ColorKey;
-  DXRMachine.TextureList[ 0 ].Surface := @Src;
-  DXRMachine.TextureList[ 0 ].TextureAddress := DXR_TEXTUREADDRESS_DONOTCLIP;
-  DXRMachine.TextureList[ 0 ].iAxis.X := IncX;
-  DXRMachine.TextureList[ 0 ].iAxis.Y := IncY;
-  DXRMachine.TextureList[ 0 ].iAxisConstant := True;
-  DXRMachine.TextureList[ 0 ].DefaultColor.R := Alpha * ColorFloat;
-  DXRMachine.TextureList[ 0 ].DefaultColor.G := Alpha * ColorFloat;
-  DXRMachine.TextureList[ 0 ].DefaultColor.B := Alpha * ColorFloat;
-  DXRMachine.TextureList[ 0 ].DefaultColor.A := Alpha * ColorFloat;
+  DXRMachine.TextureList[0].ColorKeyEnable := ColorKeyEnable;
+  DXRMachine.TextureList[0].ColorKey := ColorKey;
+  DXRMachine.TextureList[0].Surface := @Src;
+  DXRMachine.TextureList[0].TextureAddress := DXR_TEXTUREADDRESS_DONOTCLIP;
+  DXRMachine.TextureList[0].iAxis.X := IncX;
+  DXRMachine.TextureList[0].iAxis.Y := IncY;
+  DXRMachine.TextureList[0].iAxisConstant := True;
+  DXRMachine.TextureList[0].DefaultColor.R := Alpha*ColorFloat;
+  DXRMachine.TextureList[0].DefaultColor.G := Alpha*ColorFloat;
+  DXRMachine.TextureList[0].DefaultColor.B := Alpha*ColorFloat;
+  DXRMachine.TextureList[0].DefaultColor.A := Alpha*ColorFloat;
 
   {  Tree making  }
-  Tree := DXRMachine.CreateTree_Blend( Blend, DXRMachine.CreateTree_LoadTexture( 0 ), DXRMachine.CreateTree2( DXR_TREETYPE_LOADDESTPIXEL ) );
+  Tree := DXRMachine.CreateTree_Blend(Blend, DXRMachine.CreateTree_LoadTexture(0), DXRMachine.CreateTree2(DXR_TREETYPE_LOADDESTPIXEL));
 
-  DXRMachine.Compile( Tree );
+  DXRMachine.Compile(Tree);
 end;
 
-procedure dxrCopyRectBlend( const Dest, Src : TDXR_Surface;
-  const DestRect, SrcRect : TRect; Blend : TDXR_Blend; Alpha : Integer;
-  ColorKeyEnable : Boolean; ColorKey : DWORD );
+procedure dxrCopyRectBlend(const Dest, Src: TDXR_Surface;
+  const DestRect, SrcRect: TRect; Blend: TDXR_Blend; Alpha: Integer;
+  ColorKeyEnable: Boolean; ColorKey: DWORD);
 var
-  StartX, StartY, EndX, EndY, StartSrcX, StartSrcY : Integer;
-  dy, sx, sy : Integer;
-  IncX, IncY : Integer;
+  StartX, StartY, EndX, EndY, StartSrcX, StartSrcY: Integer;
+  dy, sx, sy: Integer;
+  IncX, IncY: Integer;
 begin
   {  Clipping  }
-  if ( DestRect.Left >= DestRect.Right ) or ( DestRect.Top >= DestRect.Bottom ) then
-    Exit;
+  if (DestRect.Left>=DestRect.Right) or (DestRect.Top>=DestRect.Bottom) then Exit;
 
-  if ( SrcRect.Left < 0 ) or ( SrcRect.Top < 0 ) or
-    ( SrcRect.Right > Integer( Src.Width ) ) or ( SrcRect.Bottom > Integer( Src.Height ) ) or
-    ( SrcRect.Left >= SrcRect.Right ) or ( SrcRect.Top >= SrcRect.Bottom ) then
-    Exit;
+  if (SrcRect.Left<0) or (SrcRect.Top<0) or
+    (SrcRect.Right>Integer(Src.Width)) or (SrcRect.Bottom>Integer(Src.Height)) or
+    (SrcRect.Left>=SrcRect.Right) or (SrcRect.Top>=SrcRect.Bottom) then Exit;
 
   StartX := DestRect.Left;
   StartY := DestRect.Top;
@@ -8822,248 +8904,241 @@ begin
   EndY := DestRect.Bottom;
   StartSrcX := 0;
   StartSrcY := 0;
-  if not BltClip( Dest, Src, StartX, StartY, EndX, EndY, StartSrcX, StartSrcY ) then
-    Exit;
+  if not BltClip(Dest, Src, StartX, StartY, EndX, EndY, StartSrcX, StartSrcY) then Exit;
 
-  IncX := MulDiv64( SrcRect.Right - SrcRect.Left, TextureAxisFloat, DestRect.Right - DestRect.Left );
-  IncY := MulDiv64( SrcRect.Bottom - SrcRect.Top, TextureAxisFloat, DestRect.Bottom - DestRect.Top );
+  IncX := MulDiv64(SrcRect.Right-SrcRect.Left, TextureAxisFloat, DestRect.Right-DestRect.Left);
+  IncY := MulDiv64(SrcRect.Bottom-SrcRect.Top, TextureAxisFloat, DestRect.Bottom-DestRect.Top);
+                                                        
+  sx := StartSrcX * IncX + SrcRect.Left*TextureAxisFloat;
+  sy := StartSrcY * IncY + SrcRect.Top*TextureAxisFloat;
 
-  sx := StartSrcX * IncX + SrcRect.Left * TextureAxisFloat;
-  sy := StartSrcY * IncY + SrcRect.Top * TextureAxisFloat;
-
-  if ( sx < 0 ) or ( sy < 0 ) or ( ( sx + ( EndX - StartX ) * IncX ) shr 16 > Integer( Src.Width ) ) or
-    ( ( sy + ( EndY - StartY ) * IncY ) shr 16 > Integer( Src.Height ) ) then
-    Exit;
+  if (sx<0) or (sy<0) or ((sx+(EndX-StartX)*IncX) shr 16>Integer(Src.Width)) or
+    ((sy+(EndY-StartY)*IncY) shr 16>Integer(Src.Height)) then Exit;
 
   {  Compile  }
-  CopyXLineInitialize( Dest, Src, Blend, Alpha, IncX, 0, ColorKeyEnable, ColorKey );
+  CopyXLineInitialize(Dest, Src, Blend, Alpha, IncX, 0, ColorKeyEnable, ColorKey);
 
   {  Run  }
-  for dy := StartY to EndY - 1 do
+  for dy:=StartY to EndY-1 do
   begin
     DXRMachine.Axis.Axis.X := StartX;
     DXRMachine.Axis.Axis.Y := dy;
-    DXRMachine.TextureList[ 0 ].nAxis.X := sx;
-    DXRMachine.TextureList[ 0 ].nAxis.Y := sy;
-    DXRMachine.Run( EndX - StartX );
-    Inc( sy, IncY );
+    DXRMachine.TextureList[0].nAxis.X := sx;
+    DXRMachine.TextureList[0].nAxis.Y := sy;
+    DXRMachine.Run(EndX-StartX);
+    Inc(sy, IncY);
   end;
 end;
 
-procedure dxrFillRectColorBlend( const Dest : TDXR_Surface;
-  const DestRect : TRect; Blend : TDXR_Blend; Col : COLORREF );
+procedure dxrFillRectColorBlend(const Dest: TDXR_Surface;
+  const DestRect: TRect; Blend: TDXR_Blend; Col: COLORREF);
 var
-  dy, StartX, StartY, EndX, EndY : Integer;
-  Tree : PDXRMachine_Tree;
+  dy, StartX, StartY, EndX, EndY: Integer;
+  Tree: PDXRMachine_Tree;
 begin
   {  Clipping  }
-  if ( DestRect.Left >= DestRect.Right ) or ( DestRect.Top >= DestRect.Bottom ) then
-    Exit;
+  if (DestRect.Left>=DestRect.Right) or (DestRect.Top>=DestRect.Bottom) then Exit;
 
   StartX := DestRect.Left;
   StartY := DestRect.Top;
   EndX := DestRect.Right;
   EndY := DestRect.Bottom;
-  if not FillClip( Dest, StartX, StartY, EndX, EndY ) then
-    Exit;
+  if not FillClip(Dest, StartX, StartY, EndX, EndY) then Exit;
 
   {  Compile  }
   DXRMachine.Initialize;
   DXRMachine.Dest := @Dest;
-  Tree := DXRMachine.CreateTree_Blend( Blend,
-    DXRMachine.CreateTree_LoadConstColor( Byte( Col ), Byte( Col shr 8 ), Byte( Col shr 16 ), Byte( Col shr 24 ) ),
-    DXRMachine.CreateTree2( DXR_TREETYPE_LOADDESTPIXEL ) );
-  DXRMachine.Compile( Tree );
-
+  Tree := DXRMachine.CreateTree_Blend(Blend,
+    DXRMachine.CreateTree_LoadConstColor(Byte(Col), Byte(Col shr 8), Byte(Col shr 16), Byte(Col shr 24)),
+    DXRMachine.CreateTree2(DXR_TREETYPE_LOADDESTPIXEL));
+  DXRMachine.Compile(Tree);     
+    
   {  Run  }
-  for dy := StartY to EndY - 1 do
+  for dy:=StartY to EndY-1 do
   begin
     DXRMachine.Axis.Axis.X := StartX;
     DXRMachine.Axis.Axis.Y := dy;
-    DXRMachine.Run( EndX - StartX );
+    DXRMachine.Run(EndX-StartX);
   end;
 end;
 
-procedure dxrDrawWaveXBlend( const Dest, Src : TDXR_Surface;
-  X, Y, Width, Height : Integer; const SrcRect : TRect; amp, Len, ph : Integer;
-  Blend : TDXR_Blend; Alpha : Integer;
-  ColorKeyEnable : Boolean; ColorKey : DWORD );
+procedure dxrDrawWaveXBlend(const Dest, Src: TDXR_Surface;
+  X, Y, Width, Height: Integer; const SrcRect: TRect; amp, Len, ph: Integer;
+  Blend: TDXR_Blend; Alpha: Integer;
+  ColorKeyEnable: Boolean; ColorKey: DWORD);
 var
-  StartX, StartY, EndX, EndY, StartSrcX, StartSrcY : Integer;
-  sx, sy : Integer;
-  dy, IncX, IncY, i, IncPh : Integer;
+  StartX, StartY, EndX, EndY, StartSrcX, StartSrcY: Integer;
+  sx, sy: Integer;
+  dy, IncX, IncY, i, IncPh: Integer;
 begin
   {  Clipping  }
-  if ( Width = 0 ) or ( Height = 0 ) then
-    Exit;
+  if (Width=0) or (Height=0) then Exit;
 
-  if ( SrcRect.Left < 0 ) or ( SrcRect.Top < 0 ) or
-    ( SrcRect.Right > Integer( Src.Width ) ) or ( SrcRect.Bottom > Integer( Src.Height ) ) or
-    ( SrcRect.Left >= SrcRect.Right ) or ( SrcRect.Top >= SrcRect.Bottom ) then
-    Exit;
+  if (SrcRect.Left<0) or (SrcRect.Top<0) or
+    (SrcRect.Right>Integer(Src.Width)) or (SrcRect.Bottom>Integer(Src.Height)) or
+    (SrcRect.Left>=SrcRect.Right) or (SrcRect.Top>=SrcRect.Bottom) then Exit;
 
   StartY := Y;
-  EndY := Y + Height;
+  EndY := Y+Height;
   StartSrcY := 0;
-  if not BltClipY( Dest, Src, StartY, EndY, StartSrcY ) then
-    Exit;
+  if not BltClipY(Dest, Src, StartY, EndY, StartSrcY) then Exit;
 
-  IncX := MulDiv64( SrcRect.Right - SrcRect.Left, TextureAxisFloat, Width );
-  IncY := MulDiv64( SrcRect.Bottom - SrcRect.Top, TextureAxisFloat, Height );
+  IncX := MulDiv64(SrcRect.Right-SrcRect.Left, TextureAxisFloat, Width);
+  IncY := MulDiv64(SrcRect.Bottom-SrcRect.Top, TextureAxisFloat, Height);
 
-  if Len = 0 then
+  if Len=0 then
   begin
     IncPh := 0;
-  end
-  else
-    IncPh := MulDiv64( 256, 65536, Len );
-  i := ph * 65536 + StartSrcY * IncPh;
+  end else
+    IncPh := MulDiv64(256, 65536, Len);
+  i := ph*65536+StartSrcY*IncPh;
+             
+  sy := StartSrcY * IncY + SrcRect.Top*TextureAxisFloat;
 
-  sy := StartSrcY * IncY + SrcRect.Top * TextureAxisFloat;
-
-  if ( ( sy + ( EndY - StartY ) * IncY ) shr 16 > Integer( Src.Height ) ) then
-    Exit;
+  if ((sy+(EndY-StartY)*IncY) shr 16>Integer(Src.Height)) then Exit;
 
   {  Compile  }
-  CopyXLineInitialize( Dest, Src, Blend, Alpha, IncX, 0, ColorKeyEnable, ColorKey );
+  CopyXLineInitialize(Dest, Src, Blend, Alpha, IncX, 0, ColorKeyEnable, ColorKey);
 
   {  Run  }
-  for dy := StartY to EndY - 1 do
+  for dy:=StartY to EndY-1 do
   begin
     {  X clipping  }
-    StartX := X + Round( Sin256( i div 65536 ) * amp );
-    EndX := StartX + Width;
+    StartX := X+Round(Sin256(i div 65536)*amp);
+    EndX := StartX+Width;
     StartSrcX := 0;
 
-    if BltClipX( Dest, Src, StartX, EndX, StartSrcX ) then
+    if BltClipX(Dest, Src, StartX, EndX, StartSrcX) then
     begin
-      sx := StartSrcX * IncX + SrcRect.Left * TextureAxisFloat;
-      if ( sx < 0 ) or ( sy < 0 ) or ( ( sx + ( EndX - StartX ) * IncX ) shr 16 > Integer( Src.Width ) ) then
-        Exit;
+      sx := StartSrcX * IncX + SrcRect.Left*TextureAxisFloat;
+      if (sx<0) or (sy<0) or ((sx+(EndX-StartX)*IncX) shr 16>Integer(Src.Width)) then Exit;
       DXRMachine.Axis.Axis.X := StartX;
       DXRMachine.Axis.Axis.Y := dy;
-      DXRMachine.TextureList[ 0 ].nAxis.X := sx;
-      DXRMachine.TextureList[ 0 ].nAxis.Y := sy;
-      DXRMachine.Run( EndX - StartX );
+      DXRMachine.TextureList[0].nAxis.X := sx;
+      DXRMachine.TextureList[0].nAxis.Y := sy;
+      DXRMachine.Run(EndX-StartX);
     end;
 
-    Inc( i, IncPh );
-    Inc( sy, IncY );
+    Inc(i, IncPh);
+    Inc(sy, IncY);
   end;
 end;
 
-procedure dxrDrawRotateBlend( const Dest, Src : TDXR_Surface;
-  X, Y, Width, Height : Integer; const SrcRect : TRect; CenterX, CenterY : Double;
-  Angle : Integer; Blend : TDXR_Blend; Alpha : Integer;
-  ColorKeyEnable : Boolean; ColorKey : DWORD );
+procedure dxrDrawRotateBlend(const Dest, Src: TDXR_Surface;
+  X, Y, Width, Height: Integer; const SrcRect: TRect; CenterX, CenterY: Double;
+  Angle: Integer; Blend: TDXR_Blend; Alpha: Integer;
+  ColorKeyEnable: Boolean; ColorKey: DWORD);
 var
-  StartX, EndX, StartY, EndY : Integer;
-  dy, sx, sy : Integer;
-  c, s, xIncX, xIncY, yIncX, yIncY : Integer;
-  pSkip, pCount : Integer;
-  gStartX, gStartY : Integer;
+  StartX, EndX, StartY, EndY: Integer;
+  dy, sx, sy: Integer;
+  c, s, xIncX, xIncY, yIncX, yIncY: Integer;
+  pSkip, pCount: Integer;
+  gStartX, gStartY: Integer;
 begin
   {  Clipping  }
-  if ( Width = 0 ) or ( Height = 0 ) then
-    Exit;
+  if (Width=0) or (Height=0) then Exit;
 
-  if ( SrcRect.Left < 0 ) or ( SrcRect.Top < 0 ) or
-    ( SrcRect.Right > Integer( Src.Width ) ) or ( SrcRect.Bottom > Integer( Src.Height ) ) or
-    ( SrcRect.Left >= SrcRect.Right ) or ( SrcRect.Top >= SrcRect.Bottom ) then
-    Exit;
+  if (SrcRect.Left<0) or (SrcRect.Top<0) or
+    (SrcRect.Right>Integer(Src.Width)) or (SrcRect.Bottom>Integer(Src.Height)) or
+    (SrcRect.Left>=SrcRect.Right) or (SrcRect.Top>=SrcRect.Bottom) then Exit;
 
-  if not RotationClip( Dest, Src, X, Y, Width, Height, CenterX, CenterY, Angle,
-    StartX, StartY, EndX, EndY ) then
-    Exit;
+  if not RotationClip(Dest, Src, X, Y, Width, Height, CenterX, CenterY, Angle,
+    StartX, StartY, EndX, EndY) then Exit;
 
-  c := Trunc( Cos256( -Angle ) * TextureAxisFloat );
-  s := Trunc( Sin256( -Angle ) * TextureAxisFloat );
+  c := Trunc(Cos256(-Angle)*TextureAxisFloat);
+  s := Trunc(Sin256(-Angle)*TextureAxisFloat);
 
-  xIncX := MulDiv64( SrcRect.Right - SrcRect.Left, c, Width );
-  xIncY := MulDiv64( SrcRect.Bottom - SrcRect.Top, s, Height );
+  xIncX := MulDiv64(SrcRect.Right-SrcRect.Left, c, Width);
+  xIncY := MulDiv64(SrcRect.Bottom-SrcRect.Top, s, Height);
 
-  yIncX := MulDiv64( SrcRect.Right - SrcRect.Left, s, Width );
-  yIncY := MulDiv64( SrcRect.Bottom - SrcRect.Top, c, Height );
+  yIncX := MulDiv64(SrcRect.Right-SrcRect.Left, s, Width);
+  yIncY := MulDiv64(SrcRect.Bottom-SrcRect.Top, c, Height);
 
-  sx := ( -X + StartX ) * xIncX + ( Y - StartY ) * yIncX + Trunc( ( SrcRect.Right - SrcRect.Left ) * CenterX * TextureAxisFloat ) + SrcRect.Left * TextureAxisFloat;
-  sy := ( -X + StartX ) * xIncY - ( Y - StartY ) * yIncY + Trunc( ( SrcRect.Bottom - SrcRect.Top ) * CenterY * TextureAxisFloat ) + SrcRect.Top * TextureAxisFloat;
+  sx := (-X+StartX) * xIncX + (Y-StartY) * yIncX + Trunc((SrcRect.Right-SrcRect.Left)*CenterX*TextureAxisFloat) + SrcRect.Left*TextureAxisFloat;
+  sy := (-X+StartX) * xIncY - (Y-StartY) * yIncY + Trunc((SrcRect.Bottom-SrcRect.Top)*CenterY*TextureAxisFloat) + SrcRect.Top*TextureAxisFloat;
 
   {  Compile  }
-  CopyXLineInitialize( Dest, Src, Blend, Alpha, xIncX, xIncY, ColorKeyEnable, ColorKey );
+  CopyXLineInitialize(Dest, Src, Blend, Alpha, xIncX, xIncY, ColorKeyEnable, ColorKey);
 
   {  Run  }
-  for dy := StartY to EndY - 1 do
+  for dy := StartY to EndY-1 do
   begin
     gStartX := sx;
     gStartY := sy;
 
     {  X clipping  }
     pSkip := 0;
-    if xIncX > 0 then
+    if xIncX>0 then
     begin
-      if gStartX < SrcRect.Left * TextureAxisFloat then
-        pSkip := ( SrcRect.Left * TextureAxisFloat - gStartX + xIncX - 1 ) div xIncX;
-    end
-    else if xIncX < 0 then
+      if gStartX<SrcRect.Left*TextureAxisFloat then
+        pSkip := (SrcRect.Left*TextureAxisFloat-gStartX+xIncX-1) div xIncX;
+    end else if xIncX<0 then
     begin
-      if gStartX >= SrcRect.Right * TextureAxisFloat then
-        pSkip := ( SrcRect.Right * TextureAxisFloat - gStartX + xIncX ) div xIncX;
+      if gStartX>=SrcRect.Right*TextureAxisFloat then
+        pSkip := (SrcRect.Right*TextureAxisFloat-gStartX+xIncX) div xIncX;
     end;
 
-    if xIncY > 0 then
+    if xIncY>0 then
     begin
-      if gStartY < SrcRect.Top * TextureAxisFloat then
-        pSkip := Max( ( SrcRect.Top * TextureAxisFloat - gStartY + xIncY - 1 ) div xIncY, pSkip );
-    end
-    else if xIncY < 0 then
+      if gStartY<SrcRect.Top*TextureAxisFloat then
+        pSkip := Max((SrcRect.Top*TextureAxisFloat-gStartY+xIncY-1) div xIncY, pSkip);
+    end else if xIncY<0 then
     begin
-      if gStartY >= SrcRect.Bottom * TextureAxisFloat then
-        pSkip := Max( ( SrcRect.Bottom * TextureAxisFloat - gStartY + xIncY ) div xIncY, pSkip );
+      if gStartY>=SrcRect.Bottom*TextureAxisFloat then
+        pSkip := Max((SrcRect.Bottom*TextureAxisFloat-gStartY+xIncY) div xIncY, pSkip);
     end;
 
-    gStartX := gStartX + pSkip * xIncX;
-    gStartY := gStartY + pSkip * xIncY;
+    gStartX := gStartX + pSkip*xIncX;
+    gStartY := gStartY + pSkip*xIncY;
 
     {  X clipping  }
-    if xIncX >= 0 then
+    if xIncX>=0 then
     begin
-      pCount := ( SrcRect.Right * TextureAxisFloat - gStartX ) div Max( xIncX, 1 );
-    end
-    else
+      pCount := (SrcRect.Right*TextureAxisFloat-gStartX) div Max(xIncX, 1);
+    end else
     begin
-      pCount := ( gStartX - SrcRect.Left * TextureAxisFloat ) div ( -xIncX );
+      pCount := (gStartX-SrcRect.Left*TextureAxisFloat) div (-xIncX);
     end;
 
-    if xIncY >= 0 then
+    if xIncY>=0 then
     begin
-      pCount := Min( ( SrcRect.Bottom * TextureAxisFloat - gStartY ) div Max( xIncY, 1 ), pCount );
-    end
-    else
+      pCount := Min((SrcRect.Bottom*TextureAxisFloat-gStartY) div Max(xIncY, 1), pCount);
+    end else
     begin
-      pCount := Min( ( gStartY - SrcRect.Top * TextureAxisFloat ) div ( -xIncY ), pCount );
+      pCount := Min((gStartY-SrcRect.Top*TextureAxisFloat) div (-xIncY), pCount);
     end;
 
-    pCount := Min( Integer( Dest.Width ) - ( StartX + pSkip ), pCount );
+    pCount := Min(Integer(Dest.Width)-(StartX+pSkip), pCount);
 
     {  Run  }
     DXRMachine.Axis.Axis.X := StartX + pSkip;
     DXRMachine.Axis.Axis.Y := dy;
-    DXRMachine.TextureList[ 0 ].nAxis.X := gStartX;
-    DXRMachine.TextureList[ 0 ].nAxis.Y := gStartY;
-    DXRMachine.Run( pCount );
+    DXRMachine.TextureList[0].nAxis.X := gStartX;
+    DXRMachine.TextureList[0].nAxis.Y := gStartY;
+    DXRMachine.Run(pCount);
 
     sx := sx - yIncX;
     sy := sy + yIncY;
   end;
 end;
 
+//var TextureSurface, DestSurface: TDXR_Surface; RenderStates: TDXR_RenderStates;
+//
+//dxrDefRenderStates(RenderStates);
+//if dxrDDSurfaceLock(Surf.ISurface, DestSurface then begin
+//  dxrDDSurfaceLock(TextureSurface as IDirectDrawSurface, TextureSurface);
+//  RenderStates.TextureList<0>.Surface:=@TextureSurface;
+//  dxrDrawPrimitive(DestSurface, RenderStates, DXR_PRIMITIVETYPE_TRIANGLELIST, @VertexList, 36);
+//  dxrDDSurfaceUnlock(SurfaceTexture as IDirectDrawSurface, TextureSurface);
+//  dxrDDSurfaceUnlock(Surf.ISurface, DestSurface);
+//end;
+
 initialization
   ReadCPUID;
   Init;
   InitCosinTable;
 
-  dxrSetOption( DXR_OPTION_MMXENABLE, 1 );
+  dxrSetOption(DXR_OPTION_MMXENABLE, 1);
 finalization
   FDXRMachine.Free;
 end.
-

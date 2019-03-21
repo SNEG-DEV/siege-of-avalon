@@ -67,20 +67,12 @@ uses
 {$IFDEF DirectX}
   DirectX,
   DXUtil,
-  DXEffects,
 {$ENDIF}
   Windows,
-  Messages,
   SysUtils,
   Classes,
   Graphics,
   Controls,
-  Forms,
-  Dialogs,
-  ExtCtrls,
-  Character,
-  Resource,
-  StdCtrls,
   GameText,
   Display,
   Anigrp30,
@@ -193,6 +185,7 @@ var
   BM : TBitmap;
   DC : HDC;
   Y1 : integer;
+  pr : TRect;
 const
   FailName : string = 'TIntro.Init';
 begin
@@ -224,7 +217,8 @@ begin
         DXBack.ReleaseDC( DC );
       end;
 
-      lpDDSBack.BltFast( 0, 0, DXBack, Rect( 0, 0, 800, 600 ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+      pr := Rect( 0, 0, 800, 600 );
+      lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
 
       BM.LoadFromFile( InterfacePath + 'gMainMenuTextBttns.bmp' );
       Y1 := YFrame;
@@ -256,7 +250,8 @@ begin
     end;
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 800, 600 );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 
   except
@@ -274,6 +269,7 @@ end;
 procedure TIntro.MouseDown( Sender : TAniview; Button : TMouseButton; Shift : TShiftState; X, Y, GridX, GridY : integer );
 var
   i : integer;
+  pr : TRect;
 const
   FailName : string = 'TIntro.MouseDown';
 begin
@@ -313,9 +309,11 @@ begin
       else if PtInRect( rect( 438, 456, 488, 484 ), point( x, y ) ) then
       begin //No pressed- just show screen
         AreYouSureBoxVisible := false;
-        lpDDSBack.BltFast( 0, 0, DXBack, rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT ); //clear screen
+        pr := Rect( 0, 0, 800, 600 );
+        lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_WAIT ); //clear screen
         lpDDSFront.Flip( nil, DDFLIP_WAIT );
-        lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, 800, 600 );
+        lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
         MouseCursor.PlotDirty := false;
       end; //endif PtInRect
     end;
@@ -331,6 +329,7 @@ procedure TIntro.MouseMove( Sender : TAniview; Shift : TShiftState; X, Y,
 var
   Choice : integer;
   i : integer;
+  pr : TRect;
 const
   FailName : string = 'TIntro.MouseMove';
 begin
@@ -349,10 +348,10 @@ begin
           Choice := i;
           if Choice <> PrevChoice then
           begin
-            lpDDSBack.BltFast( 0, 0, DXBack, Rect( 0, 0, 800, 600 ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
-            lpDDSBack.BltFast( Captions[ i ].Rect.Left, Captions[ i ].Rect.Top, Captions[ i ].Image,
-              Rect( 0, 0, Captions[ i ].Rect.Right - Captions[ i ].Rect.Left, Captions[ i ].Rect.Bottom - Captions[ i ].Rect.Top ),
-              DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+            pr := Rect( 0, 0, 800, 600 );
+            lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+            pr := Rect( 0, 0, Captions[ i ].Rect.Right - Captions[ i ].Rect.Left, Captions[ i ].Rect.Bottom - Captions[ i ].Rect.Top );
+            lpDDSBack.BltFast( Captions[ i ].Rect.Left, Captions[ i ].Rect.Top, Captions[ i ].Image, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
             lpDDSFront.Flip( nil, DDFLIP_WAIT );
             MouseCursor.PlotDirty := false;
           end;
@@ -362,7 +361,8 @@ begin
 
       if ( Choice = 0 ) and ( Choice <> PrevChoice ) then
       begin
-        lpDDSBack.BltFast( 0, 0, DXBack, Rect( 0, 0, 800, 600 ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, 800, 600 );
+        lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
         lpDDSFront.Flip( nil, DDFLIP_WAIT );
         MouseCursor.PlotDirty := false;
       end;
@@ -381,6 +381,7 @@ var
   DXBorders : IDirectDrawSurface;
   InvisColor : integer;
   nRect : TRect;
+  pr : TRect;
 const
   FailName : string = 'TIntro.AreYouSure ';
 begin
@@ -399,8 +400,10 @@ begin
     DXBorders := DDGetImage( lpDD, BM, InvisColor, False );
     nRect := Captions[ 7 ].Rect; //Exit
 
-    lpDDSBack.BltFast( 0, 0, DXBack, rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
-    lpDDSBack.BltFast( 400 - BM.width div 2, nRect.top + 32, DXBorders, Rect( 0, 0, BM.width, BM.Height ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 800, 600 );
+    lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, BM.width, BM.Height );
+    lpDDSBack.BltFast( 400 - BM.width div 2, nRect.top + 32, DXBorders, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
     DXBorders := nil;
 
@@ -411,7 +414,8 @@ begin
     BM.Free;
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, Rect( 0, 0, 800, 600 ), DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 800, 600 );
+    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 
   except

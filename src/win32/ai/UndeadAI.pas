@@ -67,12 +67,10 @@ uses
   Classes,
   SysUtils,
   Character,
-  Resource,
   Engine,
   Anigrp30,
   LogFile,
-  Graphics,
-  Math;
+  Graphics;
 
 type
   TUndeadType = ( utSkeleton, utLich, utGhoul, utGhost );
@@ -102,7 +100,7 @@ type
     procedure Follow( Source, Target : TAniFigure ); override;
     procedure Execute; override;
     function OnCollideFigure( Target : TAniFigure ) : boolean; override;
-    procedure ReGroup( Source : TAniFigure; NewX, NewY : Integer ); override;
+    procedure Regroup( Source : TAniFigure; NewX, NewY : Integer ); override;
   end;
 
   TUndeadMeleeCombat = class( TAI )

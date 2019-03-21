@@ -67,7 +67,6 @@ uses
 {$IFDEF DirectX}
   DirectX,
   DXUtil,
-  DXEffects,
 {$ENDIF}
   Windows,
   Forms,
@@ -171,6 +170,7 @@ var
   ScrollStartValue : integer; //top of scroll
   ScrollEndValue : integer; //bottom of scroll
   //myPoint: Tpoint;
+  pr : TRect;
 const
   FailName : string = 'TScroll.ShowStatsScroll';
 begin
@@ -189,7 +189,8 @@ begin
   //show the sheet
     for i := 0 to 3 do
     begin //plot 4 segements of the sheet
-      lpDDSBack.BltFast( Mx, 13 + 45 + i * 90, DXSheet, Rect( 0, 0, 338, 90 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      pr := Rect( 0, 0, 338, 90 );
+      lpDDSBack.BltFast( Mx, 13 + 45 + i * 90, DXSheet, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     end;
     MaxScroll := 0;
     if ( My + 40 > ScrollStartValue ) and ( My + 40 < ScrollEndValue ) then
@@ -824,17 +825,21 @@ begin
     end;
 
 //plot the cleanup for spillover text from the description
-    lpDDSBack.BltFast( 171, 0, DXDirty, Rect( 0, 0, 338, 45 ), DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 338, 45 );
+    lpDDSBack.BltFast( 171, 0, DXDirty, @pr, DDBLTFAST_WAIT );
 //Now plot the rollers, top and bottom
-    lpDDSBack.BltFast( 119, 13, DXFrame, Rect( 0, 0, 443, 90 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-    lpDDSBack.BltFast( 119, 373, DXFrame, Rect( 0, 0, 443, 90 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 443, 90 );
+    lpDDSBack.BltFast( 119, 13, DXFrame, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 443, 90 );
+    lpDDSBack.BltFast( 119, 373, DXFrame, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
   //GetCursorPos(myPoint);
   //myPoint:=Game.ScreenToClient(myPoint);
   //if not PtInRect(Rect(119, 0, 600, 550),myPoint) then
     MouseCursor.Cleanup;
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    lpDDSBack.BltFast( 119, 0, lpDDSFront, Rect( 119, 0, 600, 550 ), DDBLTFAST_WAIT );
+    pr := Rect( 119, 0, 600, 550 );
+    lpDDSBack.BltFast( 119, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
   //if PtInRect(Rect(119, 0, 600, 550),myPoint) then
     MouseCursor.PlotDirty := false;
   except
@@ -847,6 +852,7 @@ end; //TScroll.ShowStatsScroll
 procedure TScroll.OpenStatsScroll( TheItem : TItem );
 var
   tempString : string;
+  pr : TRect;
 const
   FailName : string = 'TScroll.OpenStatsScroll';
 begin
@@ -859,7 +865,8 @@ begin
     KeepOnScrolling := false;
     StatsScrollItem := TheItem;
    //save this portion of the screen so we can just let text run off the top
-    DXDirty.BltFast( 0, 0, lpDDSBack, Rect( 171, 0, 509, 45 ), DDBLTFAST_WAIT );
+    pr := Rect( 171, 0, 509, 45 );
+    DXDirty.BltFast( 0, 0, lpDDSBack, @pr, DDBLTFAST_WAIT );
     DescList.clear;
     if StatsScrollItem.Info <> '' then
       tempString := StringReplace( StatsScrollItem.Info, '<CRLF>', char( 13 ), [ rfReplaceAll ] + [ rfIgnoreCase ] );

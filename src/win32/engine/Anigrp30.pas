@@ -66,21 +66,14 @@ interface
 uses
   Windows,
   Classes,
-  SysUtils,
-  Forms,
   Graphics,
   Controls,
-  ExtCtrls,
-  Dialogs,
   AniDec30,
   AStar,
-  MMTimer,
 {$IFDEF DirectX}
   DirectX,
-  DXUtil,
-  DXEffects,
 {$ENDIF}
-  LogFile;
+  MMTimer;
 
 type
   TAniMap = class;
@@ -683,7 +676,12 @@ var
 implementation
 
 uses
-  Character;
+  SysUtils,
+  Forms,
+{$IFDEF DirectX}
+  DXUtil,
+{$ENDIF}
+  LogFile;
 
 function MakeScript( const Frames : array of Word ) : ScriptInfo;
 var
@@ -1226,7 +1224,7 @@ var
   SortedZones : TList;
   ColorMatch : word;
   DblColorMatch : longword;
-  BltFx : DDBLTFX;
+  BltFx : TDDBLTFX;
   ddsd : TDDSurfaceDesc;
   C16 : word;
   p16 : ^word;
@@ -1234,6 +1232,7 @@ var
   LightR1, LightG1, LightB1 : word;
   Pitch : longint;
   TimeCount : longword;
+  pr : TRect;
 begin
   if not UseLighting then
     Exit;
@@ -1356,12 +1355,14 @@ begin
                       begin
                         BltFx.dwSize := SizeOf( BltFx );
                         BltFx.dwFillColor := ColorMatch;
-                        TempSurface.Blt( Rect( 0, 0, FTileWidth, FTileHeight ), nil, Rect( 0, 0, FTileWidth, FTileHeight ), DDBLT_COLORFILL + DDBLT_WAIT, BltFx );
+                        pr := Rect( 0, 0, FTileWidth, FTileHeight );
+                        TempSurface.Blt( @pr, nil, @pr, DDBLT_COLORFILL + DDBLT_WAIT, @BltFx );
                         if ( Index <> $FFFF ) then
                         begin
                           SrcX := ( Index div ZoneTile.FTileMaxColumnIndex ) * FTileWidth;
                           SrcY := ( Index mod ZoneTile.FTileMaxColumnIndex ) * FTileHeight + HalfHeight;
-                          TempSurface.BltFast( 0, 0, ZoneTile.FTileImages, Rect( SrcX, SrcY, SrcX + FTileWidth, SrcY + HalfHeight ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                          pr := Rect( SrcX, SrcY, SrcX + FTileWidth, SrcY + HalfHeight );
+                          TempSurface.BltFast( 0, 0, ZoneTile.FTileImages, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                         end;
                         Index := p^.Tile[ 2 ];
                         if ( Index <> $FFFF ) then
@@ -1369,7 +1370,8 @@ begin
                           SrcX := ( Index div ZoneTile.FTileMaxColumnIndex ) * FTileWidth;
                           SrcY := ( Index mod ZoneTile.FTileMaxColumnIndex ) * FTileHeight;
                           ZoneTile := Zones.Items[ p^.Zone[ 2 ] ];
-                          TempSurface.BltFast( HalfWidth, 0, ZoneTile.FTileImages, Rect( SrcX, SrcY, SrcX + HalfWidth, SrcY + FTileHeight ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                          pr := Rect( SrcX, SrcY, SrcX + HalfWidth, SrcY + FTileHeight );
+                          TempSurface.BltFast( HalfWidth, 0, ZoneTile.FTileImages, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                         end;
                         Index := p^.Tile[ 3 ];
                         if ( Index <> $FFFF ) then
@@ -1377,7 +1379,8 @@ begin
                           SrcX := ( Index div ZoneTile.FTileMaxColumnIndex ) * FTileWidth;
                           SrcY := ( Index mod ZoneTile.FTileMaxColumnIndex ) * FTileHeight;
                           ZoneTile := Zones.Items[ p^.Zone[ 3 ] ];
-                          TempSurface.BltFast( 0, HalfHeight, ZoneTile.FTileImages, Rect( SrcX, SrcY, SrcX + FTileWidth, SrcY + HalfHeight ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                          pr := Rect( SrcX, SrcY, SrcX + FTileWidth, SrcY + HalfHeight );
+                          TempSurface.BltFast( 0, HalfHeight, ZoneTile.FTileImages, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                         end;
                         Index := p^.Tile[ 4 ];
                         if ( Index <> $FFFF ) then
@@ -1385,14 +1388,16 @@ begin
                           SrcX := ( Index div ZoneTile.FTileMaxColumnIndex ) * FTileWidth + HalfWidth;
                           SrcY := ( Index mod ZoneTile.FTileMaxColumnIndex ) * FTileHeight;
                           ZoneTile := Zones.Items[ p^.Zone[ 4 ] ];
-                          TempSurface.BltFast( 0, 0, ZoneTile.FTileImages, Rect( SrcX, SrcY, SrcX + HalfWidth, SrcY + FTileHeight ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                          pr := Rect( SrcX, SrcY, SrcX + HalfWidth, SrcY + FTileHeight );
+                          TempSurface.BltFast( 0, 0, ZoneTile.FTileImages, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                         end;
                       end
                       else
                       begin
                         SrcX := ( Index div ZoneTile.FTileMaxColumnIndex ) * FTileWidth;
                         SrcY := ( Index mod ZoneTile.FTileMaxColumnIndex ) * FTileHeight;
-                        TempSurface.BltFast( 0, 0, ZoneTile.FTileImages, Rect( SrcX, SrcY, SrcX + FTileWidth, SrcY + FTileHeight ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                        pr := Rect( SrcX, SrcY, SrcX + FTileWidth, SrcY + FTileHeight );
+                        TempSurface.BltFast( 0, 0, ZoneTile.FTileImages, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                       end;
 
                       //Render Tile
@@ -1613,9 +1618,10 @@ begin
           begin
             Zone := TZone( OverlapTile[ OverlapTile.Count - 1 ] ).Index;
             TempSurface := DDGetSurface( lpDD, FStripWidth, FItemList[ i ].Height, TransparentColor, false );
+            pr := Rect( FItemList[ i ].ImageX, FItemList[ i ].ImageY, FItemList[ i ].ImageX + FStripWidth,
+              FItemList[ i ].ImageY + FItemList[ i ].Height );
             TempSurface.BltFast( 0, 0, ZoneTile.FItemImages,
-              Rect( FItemList[ i ].ImageX, FItemList[ i ].ImageY, FItemList[ i ].ImageX + FStripWidth,
-              FItemList[ i ].ImageY + FItemList[ i ].Height ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+              @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
             ddsd.dwSize := SizeOf( ddsd );
             if TempSurface.Lock( nil, ddsd, DDLOCK_WAIT, 0 ) = DD_OK then
             begin
@@ -3487,10 +3493,12 @@ end;
 procedure TAniView.InitDX( Handle : HWND; ResW, ResH, BPP : Integer );
 {$IFDEF DirectX}
 var
-  ddsd : DDSurfaceDesc;
-  Caps : DDSCaps;
-  BltFx : DDBLTFX;
+  ddsd : TDDSurfaceDesc;
+  Caps : TDDSCaps;
+  BltFx : TDDBLTFX;
   C : longint;
+  pr : TRect;
+  tmpDD : IDirectDraw;
 {$ENDIF}
 begin
 {$IFDEF DirectX}
@@ -3502,7 +3510,12 @@ begin
 //Log.Log('3');
   ResHeight := ResH;
 //Log.Log('4');
-  DirectDrawCreate( nil, lpDD, nil );
+  DirectDrawCreate( nil, tmpDD, nil );  // Prepare for DirectX 7 or newer
+  try
+    tmpDD.QueryInterface(IID_IDirectDraw, lpDD);
+  finally
+    tmpDD := nil;
+  end;
 //Log.Log('5');
   lpDD.SetCooperativeLevel( Handle, DDSCL_EXCLUSIVE or DDSCL_FULLSCREEN );
 //Log.Log('6');
@@ -3529,7 +3542,8 @@ begin
 //Log.Log('15');
   BltFx.dwFillColor := 0;
 //Log.Log('16');
-  lpDDSBack.Blt( Rect( 0, 0, ResWidth, ResHeight ), nil, Rect( 0, 0, ResWidth, ResHeight ), DDBLT_COLORFILL + DDBLT_WAIT, BltFx );
+  pr := Rect( 0, 0, ResWidth, ResHeight );
+  lpDDSBack.Blt( @pr, nil, @pr, DDBLT_COLORFILL + DDBLT_WAIT, @BltFx );
 //Log.Log('17');
   lpDDSFront.Flip( nil, DDFLIP_WAIT );
 //Log.Log('18');
@@ -3537,7 +3551,8 @@ begin
 //Log.Log('19');
   BltFx.dwFillColor := 0;
 //Log.Log('20');
-  lpDDSBack.Blt( Rect( 0, 0, ResWidth, ResHeight ), nil, Rect( 0, 0, ResWidth, ResHeight ), DDBLT_COLORFILL + DDBLT_WAIT, BltFx );
+  pr := Rect( 0, 0, ResWidth, ResHeight );
+  lpDDSBack.Blt( @pr, nil, @pr, DDBLT_COLORFILL + DDBLT_WAIT, @BltFx );
 //Log.Log('21');
   C := FindColorMatch( $FFFFFF );
 //Log.Log('22');
@@ -3752,9 +3767,10 @@ var
   DC : HDC;
   SrcX1, SrcY1, SrcX2, SrcY2 : Integer;
   DstX1, DstY1, DstX2, DstY2 : Integer;
-  BltFx : DDBLTFX;
-  ddck : DDCOLORKEY;
+  BltFx : TDDBLTFX;
+  ddck : TDDCOLORKEY;
 {$ENDIF}
+  pr, p2 : TRect;
 begin
   if FDrawing then
     exit;
@@ -3810,7 +3826,8 @@ begin
 
     //Copy map to frame buffer
 {$IFDEF DirectX}
-    lpDDSBack.BltFast( Left, Top, lpDDSMap, Rect( MapOffsetX, MapOffsetY, MapOffsetX + Width, MapOffsetY + Height ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( MapOffsetX, MapOffsetY, MapOffsetX + Width, MapOffsetY + Height );
+    lpDDSBack.BltFast( Left, Top, lpDDSMap, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
 
     //Add flicker lighting
     for i := 1 to FMap.Zones.Count - 1 do
@@ -3916,7 +3933,9 @@ begin
 {$IFDEF DirectX}
     BltFx.dwSize := SizeOf( BltFx );
     BltFx.dwFillColor := FMap.FColorMatch;
-    Work.Blt( Rect( WorkWidth div 2, 0, WorkWidth div 2 + XRayWidth + FMap.FStripWidth, XRayHeight ), nil, Rect( 320, 0, 320 + XRayWidth + FMap.FStripWidth, XRayHeight ), DDBLT_COLORFILL + DDBLT_WAIT, BltFx );
+    pr := Rect( WorkWidth div 2, 0, WorkWidth div 2 + XRayWidth + FMap.FStripWidth, XRayHeight );
+    p2 := Rect( 320, 0, 320 + XRayWidth + FMap.FStripWidth, XRayHeight );
+    Work.Blt( @pr, nil, @p2, DDBLT_COLORFILL + DDBLT_WAIT, @BltFx );
 {$ENDIF}
 {$IFNDEF DirectX}
     PatBlt( Work.Canvas.Handle, WorkWidth div 2, 0, XRayWidth + FMap.FStripWidth, XRayHeight, BLACKNESS );
@@ -4100,8 +4119,9 @@ begin
                         if ( DstY2 + OffsetY > XRayY2 ) and ( ColumnData^.BaseLine > XRayY2 ) then
                         begin
                           Clip( ColumnData^.Top - OffsetY, ColumnData^.BaseLine - OffsetY, DstY1, DstY2, SrcY1, SrcY2 );
+                          pr := Rect( SrcX1, SrcY2 - ( DstY2 + OffsetY - XRayY2 ), SrcX2, SrcY2 );
                           lpDDSBack.BltFast( left + DstX1, top + XRayY2 - OffsetY, ZoneItem.FItemImages,
-                            Rect( SrcX1, SrcY2 - ( DstY2 + OffsetY - XRayY2 ), SrcX2, SrcY2 ),
+                            @pr,
                             DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                         end;
                         Clip( ColumnData^.Top - OffsetY, XRayY2, DstY1, DstY2, SrcY1, SrcY2 ); //????
@@ -4111,8 +4131,9 @@ begin
                           Y := SrcY2 - SrcY1;
                           if H > Y then
                             H := Y;
+                          pr := Rect( SrcX1, SrcY1, SrcX2, SrcY1 + H );
                           lpDDSBack.BltFast( left + DstX1, top + DstY1, ZoneItem.FItemImages,
-                            Rect( SrcX1, SrcY1, SrcX2, SrcY1 + H ),
+                            @pr,
                             DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                         end;
                       end;
@@ -4120,8 +4141,9 @@ begin
                       //Blt to work at 0,0 with no color key.
                       //Then blt the appropriate segment of Xray on to work with black color key.
                       //Then blt the result onto the back buffer using SRCCOLORKEY
+                      pr := Rect( SrcX1, SrcY1, SrcX2, SrcY2 );
                       Work.BltFast( 0, 0, ZoneItem.FItemImages,
-                        Rect( SrcX1, SrcY1, SrcX2, SrcY2 ),
+                        @pr,
                         DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
 
                       X := DstX1 + OffsetX - XRayX1;
@@ -4137,15 +4159,16 @@ begin
                         j := -X;
                         X := 0;
                       end;
-
+                      pr := Rect( X, Y, W, H );
                       Work.BltFast( j, 0, XRayImage,
-                        Rect( X, Y, W, H ),
+                        @pr,
                         DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
                       ddck.dwColorSpaceLowValue := FMap.FColorMatch;
                       ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
-                      Work.SetColorKey( DDCKEY_SRCBLT, ddck );
-                      lpDDSBack.BltFast( Left + DstX1, Top + DstY1, Work, Rect( 0, 0, SrcX2 - SrcX1, SrcY2 - SrcY1 ),
+                      Work.SetColorKey( DDCKEY_SRCBLT, @ddck );
+                      pr := Rect( 0, 0, SrcX2 - SrcX1, SrcY2 - SrcY1 );
+                      lpDDSBack.BltFast( Left + DstX1, Top + DstY1, Work, @pr,
                         DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                     end
                     else
@@ -4169,7 +4192,8 @@ begin
                       end
                       else
                         Clip( XRayY1 - OffsetY, XRayY2 - OffsetY, DstY1, DstY2, SrcY1, SrcY2 );
-                      lpDDSBack.BltFast( Left + DstX1, Top + DstY1, ZoneItem.FItemImages, Rect( SrcX1, SrcY1, SrcX2, SrcY2 ),
+                      pr := Rect( SrcX1, SrcY1, SrcX2, SrcY2 );
+                      lpDDSBack.BltFast( Left + DstX1, Top + DstY1, ZoneItem.FItemImages, @pr,
                         RepaintCode ); //****
                     end;
 {$ENDIF}
@@ -4358,6 +4382,7 @@ var
   SrcX1, SrcY1 : Longint;
   SrcX2, SrcY2 : Longint;
 {$ENDIF}
+  pr : TRect;
 begin
   NewMapX := OffsetX div FMap.FTileWidth;
   if ( OffsetX < 0 ) then
@@ -4410,7 +4435,8 @@ begin
       SrcY2 := MapBitHeight;
     end;
 
-    lpDDSMap.BltFast( X, Y, lpDDSMap, Rect( SrcX1, SrcY1, SrcX2, SrcY2 ),
+    pr := Rect( SrcX1, SrcY1, SrcX2, SrcY2 );
+    lpDDSMap.BltFast( X, Y, lpDDSMap, @pr,
       DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
 {$ENDIF}
 {$IFNDEF DirectX}
@@ -4555,7 +4581,7 @@ end;
 
 procedure TAniView.PreCreateMap( W, H : longint );
 var
-  ddsd : DDSurfaceDesc;
+  ddsd : TDDSurfaceDesc;
   ReturnCode : HRESULT;
 begin
   MapPreCreated := true;
@@ -4647,8 +4673,8 @@ procedure TAniView.InitMap;
 var
   W, H : Longint;
 {$IFDEF DirectX}
-  ddsd : DDSurfaceDesc;
-  ddck : DDCOLORKEY;
+  ddsd : TDDSurfaceDesc;
+  ddck : TDDCOLORKEY;
   ReturnCode : HRESULT;
 {$ENDIF}
 begin
@@ -4758,11 +4784,11 @@ TZone(FMap.Zones[19]).ExportItems('f:\zone19items.bmp'); }
   end;
   ddck.dwColorSpaceLowValue := FMap.FColorMatch;
   ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
-  lpDDSMap.SetColorKey( DDCKEY_SRCBLT, ddck );
+  lpDDSMap.SetColorKey( DDCKEY_SRCBLT, @ddck );
 
   ddck.dwColorSpaceLowValue := FMap.FColorMatch;
   ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
-  lpDDSBack.SetColorKey( DDCKEY_SRCBLT, ddck );
+  lpDDSBack.SetColorKey( DDCKEY_SRCBLT, @ddck );
 
   if not MapPreCreated then
   begin
@@ -4921,7 +4947,7 @@ begin
           Clip1( Y1, Y2, YA, R.Top, R.Bottom );
 
           lpDDSBack.BltFast( XA, YA, TZone( FMap.Zones.Items[ FMap.FItemList[ i ].Zone ] ).FItemImages,
-            R, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+            @R, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         end;
       end;
     end;
@@ -4947,6 +4973,7 @@ var
   Offset : Integer;
   NewState : Integer;
   ZoneX, ZoneY : integer;
+  pr : TRect;
 begin
   case Zone.Flicker of
     flFluorescent :
@@ -5053,13 +5080,13 @@ begin
             SrcY := ( Index mod Zone.FTileMaxColumnIndex ) * FMap.FTileHeight;
             if ( Layer = 0 ) then
             begin
-              Work.BltFast( X, Y, Zone.FTileImages, Rect( SrcX, SrcY,
-                SrcX + FMap.FTileWidth, SrcY + FMap.FTileHeight ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+              pr := Rect( SrcX, SrcY, SrcX + FMap.FTileWidth, SrcY + FMap.FTileHeight );
+              Work.BltFast( X, Y, Zone.FTileImages, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
             end
             else
             begin
-              Work.BltFast( X, Y, Zone.FTileImages, Rect( SrcX, SrcY,
-                SrcX + FMap.FTileWidth, SrcY + FMap.FTileheight ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+              pr := Rect( SrcX, SrcY, SrcX + FMap.FTileWidth, SrcY + FMap.FTileheight );
+              Work.BltFast( X, Y, Zone.FTileImages, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
             end;
           end;
         end;
@@ -5113,13 +5140,15 @@ begin
         SrcY2a := SrcY2;
 
         Clip1( ZoneY, ZoneY + H, Ya, SrcY1a, SrcY2a );
-        Work.BltFast( X - ZoneX, Ya - ZoneY, Zone.FItemImages, Rect( SrcX1, SrcY1a, SrcX2, SrcY2a ),
+        pr := Rect( SrcX1, SrcY1a, SrcX2, SrcY2a );
+        Work.BltFast( X - ZoneX, Ya - ZoneY, Zone.FItemImages, @pr,
           DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
         //also clip x against edge of screen
         Clip1( Y, ZoneY, Y, SrcY1, SrcY2 );
         Clip1( 0, Width, X, SrcX1, SrcX2 );
-        lpDDSBack.BltFast( X + Left, Y + Top, Zone.FItemImages, Rect( SrcX1, SrcY1, SrcX2, SrcY2 ),
+        pr := Rect( SrcX1, SrcY1, SrcX2, SrcY2 );
+        lpDDSBack.BltFast( X + Left, Y + Top, Zone.FItemImages, @pr,
           DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       end;
     end;
@@ -5149,8 +5178,10 @@ begin
     H := Height - ZoneY;
   end;
 
-  Work.BltFast( SrcX, SrcY, lpDDSBack, Rect( ZoneX + Left, ZoneY + Top, ZoneX + Left + W, ZoneY + Top + H ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-  lpDDSBack.BltFast( ZoneX + Left, ZoneY + Top, Work, Rect( SrcX, SrcY, SrcX + W, SrcY + H ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+  pr := Rect( ZoneX + Left, ZoneY + Top, ZoneX + Left + W, ZoneY + Top + H );
+  Work.BltFast( SrcX, SrcY, lpDDSBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+  pr := Rect( SrcX, SrcY, SrcX + W, SrcY + H );
+  lpDDSBack.BltFast( ZoneX + Left, ZoneY + Top, Work, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
 end;
 {$ENDIF}
 
@@ -5225,6 +5256,7 @@ var
   SrcY1, SrcY2 : Longint;
   MapH, DstH : Longint;
 {$ENDIF}
+  pr : TRect;
 begin
   MinY := MapY * FMap.FTileHeight;
   if ( MinY > PixelHeight ) then
@@ -5292,15 +5324,16 @@ begin
             begin
               if not ZoneItem.FullRefresh then
               begin
-                lpDDSMap.BltFast( X, Y, ZoneItem.FItemImages, Rect( FMap.FItemList[ i ].ImageX, SrcY1,
-                  FMap.FItemList[ i ].ImageX + FMap.FItemList[ i ].Width, SrcY2 ),
+                pr := Rect( FMap.FItemList[ i ].ImageX, SrcY1, FMap.FItemList[ i ].ImageX + FMap.FItemList[ i ].Width, SrcY2 );
+                lpDDSMap.BltFast( X, Y, ZoneItem.FItemImages, @pr,
                   DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
               end;
             end
             else
             begin
-              lpDDSMap.BltFast( X, Y, ZoneItem.FItemImages, Rect( FMap.FItemList[ i ].ImageX, SrcY1,
-                FMap.FItemList[ i ].ImageX + FMap.FItemList[ i ].Width, SrcY2 ),
+              pr := Rect( FMap.FItemList[ i ].ImageX, SrcY1,
+                FMap.FItemList[ i ].ImageX + FMap.FItemList[ i ].Width, SrcY2 );
+              lpDDSMap.BltFast( X, Y, ZoneItem.FItemImages, @pr,
                 DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
             end;
 {$ENDIF}
@@ -5336,6 +5369,7 @@ var
   SrcY1, SrcY2 : Longint;
   MapH, DstH : Longint;
 {$ENDIF}
+  pr : TRect;
 begin
   MinY := MapY * FMap.FTileheight;
   if ( MinY > PixelHeight ) then
@@ -5436,14 +5470,14 @@ begin
                   begin
                     if not ZoneItem.FullRefresh then
                     begin
-                      lpDDSMap.BltFast( DstX, DstY, ZoneItem.FItemImages, Rect( SrcX, SrcY1,
-                        SrcX + W, SrcY2 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                      pr := Rect( SrcX, SrcY1, SrcX + W, SrcY2 );
+                      lpDDSMap.BltFast( DstX, DstY, ZoneItem.FItemImages, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                     end;
                   end
                   else
                   begin
-                    lpDDSMap.BltFast( DstX, DstY, ZoneItem.FItemImages, Rect( SrcX, SrcY1,
-                      SrcX + W, SrcY2 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                    pr := Rect( SrcX, SrcY1, SrcX + W, SrcY2 );
+                    lpDDSMap.BltFast( DstX, DstY, ZoneItem.FItemImages, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                   end;
                 end;
 {$ENDIF}
@@ -5499,14 +5533,14 @@ begin
                   begin
                     if not ZoneItem.FullRefresh then
                     begin
-                      lpDDSMap.BltFast( DstX, DstY, ZoneItem.FItemImages, Rect( FMap.FItemList[ i ].ImageX, SrcY1,
-                        FMap.FItemList[ i ].ImageX + W1, SrcY2 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                      pr := Rect( FMap.FItemList[ i ].ImageX, SrcY1, FMap.FItemList[ i ].ImageX + W1, SrcY2 );
+                      lpDDSMap.BltFast( DstX, DstY, ZoneItem.FItemImages, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                     end;
                   end
                   else
                   begin
-                    lpDDSMap.BltFast( DstX, DstY, ZoneItem.FItemImages, Rect( FMap.FItemList[ i ].ImageX, SrcY1,
-                      FMap.FItemList[ i ].ImageX + W1, SrcY2 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                    pr := Rect( FMap.FItemList[ i ].ImageX, SrcY1, FMap.FItemList[ i ].ImageX + W1, SrcY2 );
+                    lpDDSMap.BltFast( DstX, DstY, ZoneItem.FItemImages, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                   end;
                 end;
 {$ENDIF}
@@ -5560,7 +5594,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
     ZoneTile : TZone;
     HalfWidth, HalfHeight : Integer;
   {$IFDEF DirectX}
-    BltFx : DDBLTFX;
+    BltFx : TDDBLTFX;
     SrcX2, SrcY2 : Longint;
     Offset : Integer;
   {$ENDIF}
@@ -5571,6 +5605,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
     Mask, k : Word;
     DC : HDC;
   {$ENDIF}
+    pr : TRect;
   begin
     p := GridLoc;
     Index := p^.Tile[ Layer ];
@@ -5692,8 +5727,8 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
         end;
         if ( SrcX2 > SrcX ) and ( SrcY2 > SrcY ) then
         begin
-          Dest.BltFast( DstX, DstY, ZoneTile.FTileImages, Rect( SrcX, SrcY,
-            SrcX2, SrcY2 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          pr := Rect( SrcX, SrcY, SrcX2, SrcY2 );
+          Dest.BltFast( DstX, DstY, ZoneTile.FTileImages, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         end;
       end;
 
@@ -5713,8 +5748,8 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
         end;
         if ( SrcX2 > SrcX ) and ( SrcY2 > SrcY ) then
         begin
-          Dest.BltFast( DstX, DstY, ZoneTile.FTileImages, Rect( SrcX, SrcY,
-            SrcX2, SrcY2 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          pr := Rect( SrcX, SrcY, SrcX2, SrcY2 );
+          Dest.BltFast( DstX, DstY, ZoneTile.FTileImages, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         end;
       end;
 
@@ -5734,8 +5769,8 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
         end;
         if ( SrcX2 > SrcX ) and ( SrcY2 > SrcY ) then
         begin
-          Dest.BltFast( DstX, DstY, ZoneTile.FTileImages, Rect( SrcX, SrcY,
-            SrcX2, SrcY2 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          pr := Rect( SrcX, SrcY, SrcX2, SrcY2 );
+          Dest.BltFast( DstX, DstY, ZoneTile.FTileImages, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         end;
       end;
 
@@ -5755,8 +5790,8 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
         end;
         if ( SrcX2 > SrcX ) and ( SrcY2 > SrcY ) then
         begin
-          Dest.BltFast( DstX, DstY, ZoneTile.FTileImages, Rect( SrcX, SrcY,
-            SrcX2, SrcY2 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          pr := Rect( SrcX, SrcY, SrcX2, SrcY2 );
+          Dest.BltFast( DstX, DstY, ZoneTile.FTileImages, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         end;
       end;
 {$ENDIF}
@@ -5790,7 +5825,8 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
             end;
             BltFx.dwSize := SizeOf( BltFx );
             BltFx.dwFillColor := FMap.FColorMatch;
-            Dest.Blt( Rect( X, Y, DstX, DstY ), nil, Rect( X, Y, DstX, DstY ), DDBLT_COLORFILL + DDBLT_WAIT, BltFx );
+            pr := Rect( X, Y, DstX, DstY );
+            Dest.Blt( @pr, nil, @pr, DDBLT_COLORFILL + DDBLT_WAIT, @BltFx );
             Exit;
           end
           else
@@ -5817,8 +5853,8 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
           if ( SrcX2 <= SrcX ) or ( SrcY2 <= SrcY ) then
             Exit;
         end;
-        Dest.BltFast( DstX, DstY, ZoneTile.FTileImages, Rect( SrcX, SrcY,
-          SrcX2, SrcY2 ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+        pr := Rect( SrcX, SrcY, SrcX2, SrcY2 );
+        Dest.BltFast( DstX, DstY, ZoneTile.FTileImages, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
 {$ENDIF}
 {$IFNDEF DirectX}
         DstX := X;
@@ -5850,8 +5886,8 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
           if ( SrcX2 <= SrcX ) or ( SrcY2 <= SrcY ) then
             Exit;
         end;
-        Dest.BltFast( DstX, DstY, ZoneTile.FTileImages, Rect( SrcX, SrcY,
-          SrcX2, SrcY2 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        pr := Rect( SrcX, SrcY, SrcX2, SrcY2 );
+        Dest.BltFast( DstX, DstY, ZoneTile.FTileImages, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 {$ENDIF}
 {$IFNDEF DirectX}
         DstX := X;
@@ -7955,8 +7991,8 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
       W, H : integer;
     {$IFDEF DirectX}
       NewItemImages : IDirectDrawSurface;
-      ddsd : DDSurfaceDesc;
-      ddck : DDCOLORKEY;
+      ddsd : TDDSurfaceDesc;
+      ddck : TDDCOLORKEY;
 //  BltFx: DDBLTFX;
       SrcX1, SrcX2, SrcY1, SrcY2 : integer;
       Bitmap : TBitmap;
@@ -7967,6 +8003,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
       OldSrcBM, OldDestBM : HBITMAP;
     {$ENDIF}
       NewItem : ItemInfo;
+      pr : TRect;
     begin
       if Loaded then
       begin
@@ -8149,11 +8186,12 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
 
           if Assigned( FItemImages ) then
           begin
-            NewItemImages.BltFast( 0, 0, FItemImages, Rect( 0, 0, FItemBitWidth, FItemBitHeight ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+            pr := Rect( 0, 0, FItemBitWidth, FItemBitHeight );
+            NewItemImages.BltFast( 0, 0, FItemImages, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
           end;
           ddck.dwColorSpaceLowValue := FMap.ColorMatch;
           ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
-          NewItemImages.SetColorKey( DDCKEY_SRCBLT, ddck );
+          NewItemImages.SetColorKey( DDCKEY_SRCBLT, @ddck );
 
           FItemImages := nil;
           FItemImages := NewItemImages;
@@ -8174,8 +8212,9 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
             SrcX2 := W;
           if SrcY2 > H then
             SrcY2 := H;
+          pr := Rect( SrcX1, SrcY1, SrcX2, SrcY2 );
           FItemImages.BltFast( X, FItemColumnBitHeight + ( i - 1 ) * NewItem.Height, Image,
-            Rect( SrcX1, SrcY1, SrcX2, SrcY2 ),
+            @pr,
             DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
         end;
 
@@ -8248,9 +8287,9 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
         W, H : integer;
       {$IFDEF DirectX}
         NewTileImages : IDirectDrawSurface;
-        ddsd : DDSurfaceDesc;
-        ddck : DDCOLORKEY;
-        BltFx : DDBLTFX;
+        ddsd : TDDSurfaceDesc;
+        ddck : TDDCOLORKEY;
+        BltFx : TDDBLTFX;
         SrcX1, SrcX2, SrcY1, SrcY2 : integer;
       {$ENDIF}
       {$IFNDEF DirectX}
@@ -8261,6 +8300,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
         OldSrcBM, OldDestBM : HBITMAP;
         NewTileImages, NewTileMasks : HBITMAP;
       {$ENDIF}
+        pr : TRect;
       begin
         if Loaded then
           exit;
@@ -8328,16 +8368,17 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
 
             BltFx.dwSize := SizeOf( BltFx );
             BltFx.dwFillColor := FMap.ColorMatch;
-            NewTileImages.Blt( Rect( 0, 0, NewBitWidth, NewBitHeight ), nil,
-              Rect( 0, 0, NewBitWidth, NewBitHeight ), DDBLT_COLORFILL + DDBLT_WAIT, BltFx );
+            pr := Rect( 0, 0, NewBitWidth, NewBitHeight );
+            NewTileImages.Blt( @pr, nil, @pr, DDBLT_COLORFILL + DDBLT_WAIT, @BltFx );
             if Assigned( FTileImages ) then
             begin
-              NewTileImages.BltFast( 0, 0, FTileImages, Rect( 0, 0, FTileBitWidth, FTileBitHeight ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+              pr := Rect( 0, 0, FTileBitWidth, FTileBitHeight );
+              NewTileImages.BltFast( 0, 0, FTileImages, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
             end;
 
             ddck.dwColorSpaceLowValue := FMap.ColorMatch;
             ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
-            NewTileImages.SetColorKey( DDCKEY_SRCBLT, ddck );
+            NewTileImages.SetColorKey( DDCKEY_SRCBLT, @ddck );
 
             FTileImages := nil;
             FTileImages := NewTileImages;
@@ -8365,7 +8406,8 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
                 SrcX2 := W;
               if SrcY2 > H then
                 SrcY2 := H;
-              FTileImages.BltFast( X, Y, Image, Rect( SrcX1, SrcY1, SrcX2, SrcY2 ),
+              pr := Rect( SrcX1, SrcY1, SrcX2, SrcY2 );
+              FTileImages.BltFast( X, Y, Image, @pr,
                 DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
               inc( Y, FMap.FTileHeight );
             end;
@@ -8604,12 +8646,13 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
       procedure TZone.LoadFromStream( Stream : TStream );
       var
         L : longint;
-        ddsd : DDSurfaceDesc;
-        ddck : DDCOLORKEY;
-        BltFx : DDBLTFX;
+        ddsd : TDDSurfaceDesc;
+        ddck : TDDCOLORKEY;
+        BltFx : TDDBLTFX;
         i : integer;
         p : ^byte;
         MemSize : longint;
+        pr : TRect;
       begin
         if Loaded then
           exit;
@@ -8640,12 +8683,12 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
 
           BltFx.dwSize := SizeOf( BltFx );
           BltFx.dwFillColor := FMap.ColorMatch;
-          FTileImages.Blt( Rect( 0, 0, FTileBitWidth, FTileBitHeight ), nil,
-            Rect( 0, 0, FTileBitWidth, FTileBitHeight ), DDBLT_COLORFILL + DDBLT_WAIT, BltFx );
+          pr := Rect( 0, 0, FTileBitWidth, FTileBitHeight );
+          FTileImages.Blt( @pr, nil, @pr, DDBLT_COLORFILL + DDBLT_WAIT, @BltFx );
 
           ddck.dwColorSpaceLowValue := FMap.ColorMatch;
           ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
-          FTileImages.SetColorKey( DDCKEY_SRCBLT, ddck );
+          FTileImages.SetColorKey( DDCKEY_SRCBLT, @ddck );
         end;
 
         if L > 0 then
@@ -8700,7 +8743,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
 
           ddck.dwColorSpaceLowValue := FMap.ColorMatch;
           ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
-          FItemImages.SetColorKey( DDCKEY_SRCBLT, ddck );
+          FItemImages.SetColorKey( DDCKEY_SRCBLT, @ddck );
         end;
 
         if L > 0 then
@@ -8736,10 +8779,11 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
       var
         NewTileImages : IDirectDrawSurface;
         NewItemImages : IDirectDrawSurface;
-        ddsd : DDSurfaceDesc;
-        ddck : DDCOLORKEY;
+        ddsd : TDDSurfaceDesc;
+        ddck : TDDCOLORKEY;
         i, Rem : integer;
         L : longword;
+        pr : TRect;
       const
         SectionHeight = 256;
       begin
@@ -8760,19 +8804,21 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
             begin
               for i := 0 to FItemBitHeight div SectionHeight - 1 do
               begin
-                NewItemImages.BltFast( 0, i * SectionHeight, FItemImages, Rect( 0, i * SectionHeight, FItemBitWidth, ( i + 1 ) * SectionHeight ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+                pr := Rect( 0, i * SectionHeight, FItemBitWidth, ( i + 1 ) * SectionHeight );
+                NewItemImages.BltFast( 0, i * SectionHeight, FItemImages, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
               end;
               Rem := FItemBitHeight mod SectionHeight;
               if Rem > 0 then
               begin
-                NewItemImages.BltFast( 0, FItemBitHeight - Rem, FItemImages, Rect( 0, FItemBitHeight - Rem, FItemBitWidth, FItemBitHeight ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+                pr := Rect( 0, FItemBitHeight - Rem, FItemBitWidth, FItemBitHeight );
+                NewItemImages.BltFast( 0, FItemBitHeight - Rem, FItemImages, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
               end;
 
               FItemImages := nil;
               FItemImages := NewItemImages;
               ddck.dwColorSpaceLowValue := FMap.ColorMatch;
               ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
-              FItemImages.SetColorKey( DDCKEY_SRCBLT, ddck );
+              FItemImages.SetColorKey( DDCKEY_SRCBLT, @ddck );
               ItemsInVideo := True;
             end
             else
@@ -8811,19 +8857,21 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
             begin
               for i := 0 to FTileBitHeight div SectionHeight - 1 do
               begin
-                NewTileImages.BltFast( 0, i * SectionHeight, FTileImages, Rect( 0, i * SectionHeight, FTileBitWidth, ( i + 1 ) * SectionHeight ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+                pr := Rect( 0, i * SectionHeight, FTileBitWidth, ( i + 1 ) * SectionHeight );
+                NewTileImages.BltFast( 0, i * SectionHeight, FTileImages, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
               end;
               Rem := FTileBitHeight mod SectionHeight;
               if Rem > 0 then
               begin
-                NewTileImages.BltFast( 0, FTileBitHeight - Rem, FTileImages, Rect( 0, FTileBitHeight - Rem, FTileBitWidth, FTileBitHeight ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+                pr := Rect( 0, FTileBitHeight - Rem, FTileBitWidth, FTileBitHeight );
+                NewTileImages.BltFast( 0, FTileBitHeight - Rem, FTileImages, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
               end;
 
               FTileImages := nil;
               FTileImages := NewTileImages;
               ddck.dwColorSpaceLowValue := FMap.ColorMatch;
               ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
-              FTileImages.SetColorKey( DDCKEY_SRCBLT, ddck );
+              FTileImages.SetColorKey( DDCKEY_SRCBLT, @ddck );
               TilesInVideo := true;
             end
             else
@@ -8866,8 +8914,8 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
           W, H : integer;
         {$IFDEF DirectX}
           NewItemImages : IDirectDrawSurface;
-          ddsd : DDSurfaceDesc;
-          ddck : DDCOLORKEY;
+          ddsd : TDDSurfaceDesc;
+          ddck : TDDCOLORKEY;
 //  BltFx: DDBLTFX;
         {$ENDIF}
         {$IFNDEF DirectX}
@@ -8875,6 +8923,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
           NewItemImages, NewItemMasks : HBITMAP;
           OldSrcBM, OldDestBM : HBITMAP;
         {$ENDIF}
+          pr : TRect;
         begin
           if ( Image = nil ) then
             Exit;
@@ -8923,13 +8972,15 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
 
             if Assigned( FItemImages ) then
             begin
-              NewItemImages.BltFast( 0, 0, FItemImages, Rect( 0, 0, FItemBitWidth, FItemBitHeight ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+              pr := Rect( 0, 0, FItemBitWidth, FItemBitHeight );
+              NewItemImages.BltFast( 0, 0, FItemImages, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
             end;
-            NewItemImages.BltFast( NewX, NewY, Image, Rect( 0, 0, W, H ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+            pr := Rect( 0, 0, W, H );
+            NewItemImages.BltFast( NewX, NewY, Image, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
 
             ddck.dwColorSpaceLowValue := FMap.ColorMatch;
             ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
-            NewItemImages.SetColorKey( DDCKEY_SRCBLT, ddck );
+            NewItemImages.SetColorKey( DDCKEY_SRCBLT, @ddck );
 
             FItemImages := nil;
             FItemImages := NewItemImages;
@@ -8939,7 +8990,8 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
           end
           else
           begin
-            FItemImages.BltFast( NewX, NewY, Image, Rect( 0, 0, W, H ), DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+            pr := Rect( 0, 0, W, H );
+            FItemImages.BltFast( NewX, NewY, Image, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
           end;
       {$ENDIF}
       {$IFNDEF DirectX}
@@ -9531,6 +9583,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
           SrcX1, SrcY1, SrcX2, SrcY2 : Integer;
           DstX1, DstY1, DstX2, DstY2 : Integer;
         {$ENDIF}
+          pr : TRect;
         begin
           if ( Figure.Frame = 0 ) or not Figure.Visible then
             Exit;
@@ -9549,8 +9602,8 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
           DstY1 := Figure.View.Top + Figure.PosY;
           DstY2 := DstY1 + Figure.Height;
           Clip( Figure.View.Top, Figure.View.Top + Figure.View.Height, DstY1, DstY2, SrcY1, SrcY2 );
-          lpDDSBack.BltFast( DstX1, DstY1, Picture,
-            Rect( SrcX1, SrcY1, SrcX2, SrcY2 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          pr := Rect( SrcX1, SrcY1, SrcX2, SrcY2 );
+          lpDDSBack.BltFast( DstX1, DstY1, Picture, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       {$ENDIF}
       {$IFNDEF DirectX}
           SelectObject( Figure.FView.TempDC, Mask );

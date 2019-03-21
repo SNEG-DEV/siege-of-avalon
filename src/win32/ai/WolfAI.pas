@@ -65,10 +65,8 @@ uses
   Classes,
   SysUtils,
   Character,
-  Engine,
   Anigrp30,
   LogFile,
-  dialogs,
   Resource,
   Graphics;
 

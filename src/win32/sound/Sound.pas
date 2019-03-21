@@ -64,7 +64,6 @@ unit Sound;
 interface
 
 uses
-  Windows,
   Classes,
   SysUtils,
   Resource,
