@@ -6,7 +6,7 @@ This is a fork from the [**gondur/Siege-of-Avalon-Open-Source**](https://github.
 
 The main focus of this fork: 
 
-1. Moving the Win32 source to newer Delphi 10.3 or later including its free Community Editons.
+1. Moving the Win32 source to newer Delphi 10.3 or later including its free Community Editons. **DONE**
 2. Fixing various glitches and heavy refactoring.
 3. Include HD/FullHD support like already done by gondur.
 4. Possibly replace DX with either SDL2/Vulkan/other to gain crossplatform support, but since the DX is maintain for latest Delphi versions - this has lower priority.
@@ -45,4 +45,8 @@ In win32_d7onwards branch:
 - Stepped back. Now playable in Delphi 2007
 - Unused uses clean + a bit strfunc remove - 0 Hints, 0 Warnings in Delphi 2007
 
-...moving towards Delphi 10.3 Rio - in small steps :)
+### Status as of Mar 22th, 2019 ###
+
+- Playable - compiled with Delphi 10.3.1 Rio, so ready for Community Editon!
+
+... code cleanup and removal of any warnings, up next...

@@ -1281,6 +1281,7 @@ begin
     TimeCount := GetTickCount;
     for Zone := 1 to SortedZones.Count - 1 do
     begin
+    Log.Log('1');
       ZoneTile := SortedZones.Items[ Zone ];
       if ZoneTile is TLightZone then
       begin
@@ -1310,7 +1311,7 @@ begin
           end;
           TLightZone( CurrentZone ).OverlapZones := Overlap;
         end;
-
+ Log.Log('2');
         TempSurface := DDGetSurface( lpDD, FTileWidth, FTileHeight, TransparentColor, false );
         for State := 1 to CurrentZone.States do
         begin
@@ -1399,7 +1400,7 @@ begin
                         pr := Rect( SrcX, SrcY, SrcX + FTileWidth, SrcY + FTileHeight );
                         TempSurface.BltFast( 0, 0, ZoneTile.FTileImages, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                       end;
-
+Log.Log('3');
                       //Render Tile
                       ddsd.dwSize := SizeOf( ddsd );
                       if TempSurface.Lock( nil, ddsd, DDLOCK_WAIT, 0 ) = DD_OK then
@@ -1409,7 +1410,7 @@ begin
                           begin
                             Y2 := j + Y * FTileHeight;
                             p16 := ddsd.lpSurface;
-                            inc( PChar( p16 ), j * ddsd.lPitch );
+                            inc( PAnsiChar( p16 ), j * ddsd.lPitch );
                             for i := 0 to FTileWidth - 1 do
                             begin
                               X2 := i + X * FTileWidth;
@@ -1814,7 +1815,7 @@ begin
                           end;
                       end;
                     end;
-                    inc( PChar( p16 ), ddsd.lPitch );
+                    inc( PAnsiChar( p16 ), ddsd.lPitch );
                   end;
                 end;
               finally
