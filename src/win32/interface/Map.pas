@@ -63,6 +63,7 @@ interface
 
 uses
   SysUtils,
+  Types,
   Classes,
   Controls,
   Windows,

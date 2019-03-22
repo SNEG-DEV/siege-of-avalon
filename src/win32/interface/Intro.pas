@@ -70,6 +70,7 @@ uses
 {$ENDIF}
   Windows,
   SysUtils,
+  Types,
   Classes,
   Graphics,
   Controls,
