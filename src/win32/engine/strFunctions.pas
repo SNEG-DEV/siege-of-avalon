@@ -70,33 +70,14 @@ type
   TSROption = ( srWord, srCase, srAll );
   TSROptions = set of TsrOption;
 
-function strUpper( const S : string ) : string;
-function strEncrypt( const S : string; Key : Word ) : string;
-function strDecrypt( const S : string; Key : Word ) : string;
-function strLastCh( const S : string ) : Char;
 procedure strStripLast( var S : string );
 procedure strStripFirst( var S : string );
-procedure strSearchReplace( var S : string; const Source, Dest : string; Options : TSRoptions );
-function strReplace( const S : string; C : Char; const Replace : string ) : string;
 function strContains( const S1, S2 : string ) : Boolean;
 function strToken( var S : string; Seperator : Char ) : string;
 function strTokenCount( S : string; Seperator : Char ) : Integer;
 function strTokenAt( const S : string; Seperator : Char; At : Integer ) : string;
 procedure strTokenToStrings( S : string; Seperator : Char; List : TStrings );
-function strTokenFromStrings( Seperator : Char; List : TStrings ) : string;
 function strLeft( const S : string; Len : Integer ) : string;
-function strRight( const S : string; Len : Integer ) : string;
-function strPadChL( const S : string; C : Char; Len : Integer ) : string;
-function strPadChR( const S : string; C : Char; Len : Integer ) : string;
-function strPadChC( const S : string; C : Char; Len : Integer ) : string;
-function strPadL( const S : string; Len : Integer ) : string;
-function strPadR( const S : string; Len : Integer ) : string;
-function strPadC( const S : string; Len : Integer ) : string;
-procedure AppendTextToFile( fileName : TFileName; const msg : string );
-function strChrCount( S : string; Seperator : Char ) : Integer;
-procedure CopyMemIniFile( Src, Dest : TMemIniFile );
-procedure CopyIniFile( Src : TMemIniFIle; Dest : TIniFile );
-
 
 const
   NULL = #0;
@@ -110,38 +91,8 @@ const
   SPACE = BLANK;
   C1 = 52845;
   C2 = 22719;
-  CRLF : PChar = CR + LF;
 
 implementation
-
-function strEncrypt( const S : string; Key : Word ) : string;
-var
-  I : Integer;
-begin
-  SetLength( Result, Length( S ) );
-  for I := 1 to Length( S ) do
-  begin
-    Result[ I ] := Char( Ord( S[ I ] ) xor ( Key shr 8 ) );
-    Key := ( Ord( Result[ I ] ) + Key ) * C1 + C2;
-  end;
-end;
-
-function strDecrypt( const S : string; Key : Word ) : string;
-var
-  I : Integer;
-begin
-  SetLength( Result, Length( S ) );
-  for I := 1 to Length( S ) do
-  begin
-    Result[ I ] := char( Ord( S[ I ] ) xor ( Key shr 8 ) );
-    Key := ( Ord( S[ I ] ) + Key ) * C1 + C2;
-  end;
-end;
-
-function strLastCh( const S : string ) : Char;
-begin
-  Result := S[ Length( S ) ];
-end;
 
 procedure strStripLast( var S : string );
 begin
@@ -153,69 +104,6 @@ procedure strStripFirst( var S : string );
 begin
   if Length( S ) > 0 then
     Delete( S, 1, 1 );
-end;
-
-
-procedure strSearchReplace( var S : string; const Source, Dest : string; Options : TSRoptions );
-var
-  hs, hs1, hs2, hs3 : string;
-var
-  i, j : integer;
-
-begin
-  if srCase in Options then
-  begin
-    hs := s;
-    hs3 := source;
-  end
-  else
-  begin
-    hs := StrUpper( s );
-    hs3 := StrUpper( Source );
-  end;
-  hs1 := '';
-  I := pos( hs3, hs );
-  j := length( hs3 );
-  while i > 0 do
-  begin
-    delete( hs, 1, i + j - 1 );
-    hs1 := Hs1 + copy( s, 1, i - 1 );
-    delete( s, 1, i - 1 );
-    hs2 := copy( s, 1, j );
-    delete( s, 1, j );
-    if ( not ( srWord in Options ) )
-      or ( pos( s[ 1 ], ' .,:;-#''+*?=)(/&%$§"!{[]}\~<>|' ) > 0 ) then
-    begin
-
-      hs1 := hs1 + dest;
-    end
-    else
-    begin
-      hs1 := hs1 + hs2;
-    end;
-    if srall in options then
-      I := pos( hs3, hs )
-    else
-      i := 0;
-  end;
-  s := hs1 + s;
-end;
-
-function strUpper( const S : string ) : string;
-begin
-  Result := AnsiUpperCase( S );
-end;
-
-function strReplace( const S : string; C : Char; const Replace : string ) : string;
-var
-  i : Integer;
-begin
-  Result := '';
-  for i := Length( S ) downto 1 do
-    if S[ i ] = C then
-      Result := Replace + Result
-    else
-      Result := S[ i ] + Result;
 end;
 
 function strContains( const S1, S2 : string ) : Boolean;
@@ -282,142 +170,9 @@ begin
   end;
 end;
 
-function strTokenFromStrings( Seperator : Char; List : TStrings ) : string;
-var
-  i : Integer;
-begin
-  Result := '';
-  for i := 0 to List.Count - 1 do
-    if Result <> '' then
-      Result := Result + Seperator + List[ i ]
-    else
-      Result := List[ i ];
-end;
-
 function strLeft( const S : string; Len : Integer ) : string;
 begin
   Result := Copy( S, 1, Len );
 end;
-
-function strRight( const S : string; Len : Integer ) : string;
-begin
-  if Len >= Length( S ) then
-    Result := S
-  else
-    Result := Copy( S, Succ( Length( S ) ) - Len, Len );
-end;
-
-function strPadChL( const S : string; C : Char; Len : Integer ) : string;
-begin
-  Result := S;
-  while Length( Result ) < Len do
-    Result := C + Result;
-end;
-
-function strPadChR( const S : string; C : Char; Len : Integer ) : string;
-begin
-  Result := S;
-  while Length( Result ) < Len do
-    Result := Result + C;
-end;
-
-function strPadChC( const S : string; C : Char; Len : Integer ) : string;
-begin
-  Result := S;
-  while Length( Result ) < Len do
-  begin
-    Result := Result + C;
-    if Length( Result ) < Len then
-      Result := C + Result;
-  end;
-end;
-
-function strPadL( const S : string; Len : Integer ) : string;
-begin
-  Result := strPadChL( S, BLANK, Len );
-end;
-
-function strPadC( const S : string; Len : Integer ) : string;
-begin
-  Result := strPadChC( S, BLANK, Len );
-end;
-
-
-function strPadR( const S : string; Len : Integer ) : string;
-begin
-  Result := strPadChR( S, BLANK, Len );
-end;
-
-
-procedure AppendTextToFile( fileName : TFileName; const msg : string );
-var
-  Output : TextFile;
-begin
-  if Length( fileName ) = 0 then
-    exit; // If there is no filename, exit
-
-  AssignFile( Output, fileName ); // Get our handle
-  if not FileExists( fileName ) then // If the file not there
-    ReWrite( Output ); //   create it
-  Append( Output ); // set the file up for append
-  Writeln( Output, msg ); // write our msg
-  CloseFile( Output ); // close the file
-end;
-
-function strChrCount( S : string; Seperator : Char ) : Integer;
-begin
-  Result := 0;
-  while Pos( Seperator, S ) > 0 do
-  begin
-    S[ Pos( Seperator, S ) ] := '+';
-    Inc( Result );
-  end;
-end;
-
-procedure CopyMemIniFile( Src, Dest : TMemIniFile );
-var
-  mySectionsList : TStrings;
-  myValuesList : TStrings;
-  i : integer;
-  j : integer;
-begin
-  mySectionsList := TStringList.Create;
-  myValuesList := TStringList.Create;
-
-  Src.ReadSections( mySectionsList );
-  for i := 0 to mySectionsList.Count - 1 do
-  begin
-    src.ReadSectionValues( mySectionsList.Strings[ i ], myValuesList );
-    for j := 0 to myValuesList.count - 1 do
-    begin
-      Dest.WriteString( mySectionsList.Strings[ i ], StrTokenAt( myValuesList.Strings[ j ], '=', 0 ), Src.ReadString( mySectionsList.Strings[ i ], StrTokenAt( myValuesList.Strings[ j ], '=', 0 ), '' ) );
-    end;
-    myValuesList.Clear;
-  end;
-end;
-
-procedure CopyIniFile( Src : TMemIniFile; Dest : TIniFIle );
-var
-  mySectionsList : TStrings;
-  myValuesList : TStrings;
-  i : integer;
-  j : integer;
-begin
-  mySectionsList := TStringList.Create;
-  myValuesList := TStringList.Create;
-
-  Src.ReadSections( mySectionsList );
-  for i := 0 to mySectionsList.Count - 1 do
-  begin
-    src.ReadSectionValues( mySectionsList.Strings[ i ], myValuesList );
-    for j := 0 to myValuesList.count - 1 do
-    begin
-      Dest.WriteString( mySectionsList.Strings[ i ], StrTokenAt( myValuesList.Strings[ j ], '=', 0 ), Src.ReadString( mySectionsList.Strings[ i ], StrTokenAt( myValuesList.Strings[ j ], '=', 0 ), '' ) );
-    end;
-    myValuesList.Clear;
-  end;
-end;
-
-
 
 end.

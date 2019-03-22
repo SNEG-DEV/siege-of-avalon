@@ -68,6 +68,7 @@ uses
   DirectX,
 {$ENDIF}
   Windows,
+  Types,
   Classes,
   Graphics,
   Controls,

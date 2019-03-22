@@ -70,6 +70,7 @@ uses
   DXEffects,
 {$ENDIF}
   Windows,
+  Types,
   Classes,
   Graphics,
   Controls,

@@ -72,6 +72,7 @@ uses
   Windows,
   SysUtils,
   Classes,
+  Types,
   Graphics,
   Controls,
   Character,
