@@ -23,36 +23,4 @@ all found in the original free playable 1. chapter/demo - http://soaos.sourcefor
 
 Also for Win7 and above: use either compatibility mode as XP (I might update the registry later on) - and/or include ddraw.dll from [**DDrawCompat**](https://github.com/narzoul/DDrawCompat) - binary can be downloaded under releases.
 
----
-
-### Status as of Mar 14th, 2019 ###
-
-- Replaced 3 "corrupt/missing" assets
-
-New branch (win32_d7onwards):
-
-- Replaced and updated DX files - using files from unDelphiX (http://www.micrel.cz/Dx/)
-- Converted source to compilable in Delphi 7, being fully playable.
-
-### Status as of Mar 17th, 2019 ###
-
-In win32_d7onwards branch:
-
-- Compiles and runs in DX 10.2.3 - non-playable yet
-- Character screen has glitches, but works
-- Loading 90% - missing lightning/tiles
-
-### Status as of Mar 20th, 2019 ###
-
-- Stepped back. Now playable in Delphi 2007
-- Unused uses clean + a bit strfunc remove - 0 Hints, 0 Warnings in Delphi 2007
-
-### Status as of Mar 21th, 2019 ###
-
-- Updated readme and merge win32_d7onwards branch with master, so now Delphi 2007 is minimum.
-
-### Status as of Mar 22th, 2019 ###
-
-- Playable - compiled with Delphi 10.3.1 Rio, so ready for Community Editon!
-
-... code cleanup and removal of any warnings, up next...
+Look in the changelog for status, changes and planned changes.
