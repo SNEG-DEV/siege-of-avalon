@@ -918,7 +918,7 @@ end; //TCreation.Paint;
 
 procedure TCreation.CreateCollisionRects;
 var
-  i, j : integer;
+  i : integer;
   LineHeight : integer;
 
 const

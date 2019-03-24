@@ -62,24 +62,15 @@ unit Transit;
 interface
 
 uses
-  SysUtils,
   Types,
   Classes,
   Controls,
   Forms,
   Windows,
-  Gametext,
-  Graphics,
   DirectX,
   Anigrp30,
-  Engine,
-  DXEffects,
-  DXUtil,
   Display,
-  MMTimer,
-  digifx,
-  DFX,
-  LogFile;
+  MMTimer;
 
 type
   TTransit = class;
@@ -175,7 +166,16 @@ type
 implementation
 
 uses
-  AniDemo;
+  AniDemo,
+  SysUtils,
+  Gametext,
+  Graphics,
+  Engine,
+  DXEffects,
+  DXUtil,
+  digifx,
+  DFX,
+  LogFile;
 
 { TTransit }
 

@@ -747,7 +747,6 @@ destructor TAniMap.Destroy;
 var
   i : Integer;
 begin
-//  if not (csDesigning in ComponentState) then begin
   if ( FMapData <> 0 ) then
   begin
     GlobalFree( FMapData );
@@ -756,7 +755,6 @@ begin
   for i := 0 to Zones.Count - 1 do
     TZone( Zones.Items[ i ] ).Free;
   Zones.Free;
-//  end;
   inherited Destroy;
 end;
 
@@ -854,27 +852,12 @@ end;
 procedure TAniMap.Clear;
 var
   i : Longint;
-//  GridSize: longint;
-//  GridLoc: ^GridInfo;
   NewZone : TZone;
 begin
   if ( FMapData <> 0 ) then
   begin
     GlobalFree( FMapData );
     FMapData := 0;
-{    if (FWidth > 0) and (FHeight > 0) then begin
-      GridSize := FWidth * FHeight;
-      GridLoc := GlobalLock(FMapData);
-      for i := 1 to GridSize do begin
-        GridLoc^.Tile[0] := $FFFF;
-        GridLoc^.Tile[1] := $FFFF;
-        GridLoc^.CollisionMask := 0;
-        GridLoc^.LineOfSightMask := 0;
-        GridLoc^.Figure := nil;
-        Inc(GridLoc);
-      end;
-      GlobalUnlock(FMapData);
-    end; }
   end;
   FreeResources;
   for i := 0 to Zones.count - 1 do
@@ -1281,7 +1264,6 @@ begin
     TimeCount := GetTickCount;
     for Zone := 1 to SortedZones.Count - 1 do
     begin
-    Log.Log('1');
       ZoneTile := SortedZones.Items[ Zone ];
       if ZoneTile is TLightZone then
       begin
@@ -1311,7 +1293,6 @@ begin
           end;
           TLightZone( CurrentZone ).OverlapZones := Overlap;
         end;
- Log.Log('2');
         TempSurface := DDGetSurface( lpDD, FTileWidth, FTileHeight, TransparentColor, false );
         for State := 1 to CurrentZone.States do
         begin
@@ -1400,7 +1381,6 @@ begin
                         pr := Rect( SrcX, SrcY, SrcX + FTileWidth, SrcY + FTileHeight );
                         TempSurface.BltFast( 0, 0, ZoneTile.FTileImages, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                       end;
-Log.Log('3');
                       //Render Tile
                       ddsd.dwSize := SizeOf( ddsd );
                       if TempSurface.Lock( nil, ddsd, DDLOCK_WAIT, 0 ) = DD_OK then
@@ -3435,12 +3415,6 @@ begin
   if not ( csDesigning in ComponentState ) then
   begin
     //Built-in Timer;
-{    Timer := TAniTimer.Create(AOwner);
-    Timer.Interval := FInterval;
-    Timer.OnTimer := nil;               //Must set active property
-    Timer.resolution := 1;
-    Timer.TimerPriority := tpNormal;  }
-
 {$IFNDEF DirectX}
     //FrameDC
     FrameBuffer := TBitmap.Create;
@@ -7673,7 +7647,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
     if Assigned( Timer ) then
       Timer.Interval := PInterval;
   end;
-
+//
   procedure TAniView.SetActive( VActive : Boolean );
   begin
     FActive := VActive;

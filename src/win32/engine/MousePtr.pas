@@ -155,11 +155,8 @@ begin
     DXDirty.BltFast( 0, 0, DXSurface, @pr, DDBLTFAST_WAIT );
 
     MouseTimer := TTimer.create( nil );
-//  MouseTimer:=TAniTimer.create(nil);
     MouseTimer.onTimer := MouseTimerEvent;
-//  MouseTimer.TimerPriority:=tpNormal;
     MouseTimer.Interval := 10;
-//  MouseTimer.resolution := 1;
     MouseTimer.enabled := false;
   except
     on E : Exception do

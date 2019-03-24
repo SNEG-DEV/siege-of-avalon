@@ -74,7 +74,7 @@ type
     FItemList : TStringList;
     FFileName : string;
     FItemName : string;
-    DataString : string;
+    DataString : AnsiString;
     function GetFields( FieldPos : integer ) : string;
   public
     function strTokenAt( const S : string; At : Integer ) : string;
@@ -102,7 +102,7 @@ begin
     FDataBase.LoadFromFile( FFileName );
     for iLoop := 0 to FDatabase.Count - 1 do
     begin
-      FItemList.Add( Parse( FDatabase.Strings[ iLoop ], 0, '|' ) {+ '=' + IntToStr(iLoop)} );
+      FItemList.Add( Parse( AnsiString( FDatabase.Strings[ iLoop ] ), 0, '|' ) {+ '=' + IntToStr(iLoop)} );
     end;
   end;
 
@@ -131,7 +131,7 @@ begin
   i := FItemList.IndexOf( Key );
   if i >= 0 then
   begin
-    DataString := FDatabase.Strings[ i ];
+    DataString := AnsiString( FDatabase.Strings[ i ] );
     result := true;
   end
   else

@@ -65,10 +65,7 @@ interface
 
 uses
   Classes,
-  SysUtils,
-  Resource,
-  MP3,
-  LogFile;
+  Resource;
 
 type
   TSound = class( TObject )
@@ -111,6 +108,11 @@ var
   DaSoundCardAvailable : boolean;
 
 implementation
+
+uses
+  SysUtils,
+  MP3,
+  LogFile;
 
 { TSound }
 
@@ -168,7 +170,7 @@ end; //Destroy
 function TSound.OpenSound( const NameList : string; InstanceCount : integer; var NameListCount : integer ) : TDynamicSmallIntArray;
 var
   i, j, k : longint;
-  S : string;
+  S : AnsiString;
 const
   FailName : string = 'TSound.OpenSound';
 begin
@@ -187,7 +189,7 @@ begin
     begin
       for i := 0 to NameListCount - 1 do
       begin
-        S := SoundPath + 'sfx\' + SoundParser.strings[ i ] + '.wav';
+        S := AnsiString( SoundPath + 'sfx\' + SoundParser.strings[ i ] + '.wav');
         if FileExists( S ) then
         begin
           if DaSoundCardAvailable then

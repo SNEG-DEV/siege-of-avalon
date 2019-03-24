@@ -92,7 +92,7 @@ type
     procedure SetGameVolume( GameVolume : integer ); //does seemingly nothing
     procedure ResumeThisSong;
     procedure PauseThisSong;
-    procedure OpenThisSong( SongName : string );
+    procedure OpenThisSong( SongName : AnsiString );
     procedure PlayThisSong;
     constructor Create( WindowHandle : integer );
     destructor Destroy; override;
@@ -149,7 +149,7 @@ begin
   end;
 end; //TMusic.Destroy;
 
-procedure TMusic.OpenThisSong( SongName : string );
+procedure TMusic.OpenThisSong( SongName : AnsiString );
 begin
   if not DaSoundCardAvailable then
     exit;
@@ -206,7 +206,7 @@ begin
   end
   else if SongType = 2 then
   begin //MIDI
-    OpenMidiSong( MidiFileName );
+    OpenMidiSong( AnsiString( MidiFileName ) );
   end
   else
   begin //Song type invalid
@@ -336,7 +336,7 @@ begin
   end
   else if SongType = 2 then
   begin //midisong - no resume
-    OpenMidiSong( MidiFileName );
+    OpenMidiSong( AnsiString( MidiFileName ) );
   end
   else
   begin //invalid song type

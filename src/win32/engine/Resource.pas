@@ -154,7 +154,7 @@ type
     ShadowColor : TColor;
     RLE : TRLESprite;
     OnDemand : boolean;
-    Filename : string;
+    Filename : String;
     procedure EnumLightSource( Figure : TAniFigure; Index, X, Y, Z : longint; Intensity : double; Radius : integer ); override;
     procedure LoadData( INI : TStringINIFile ); virtual;
     procedure Draw( Canvas : TCanvas; X, Y : Integer; Frame : Word ); override;
@@ -289,7 +289,7 @@ var
   TitlesDB : string;
 
 
-function Parse( const S : AnsiString; Index : integer; ParseChar : AnsiChar ) : string;
+function Parse( const S : String; Index : integer; ParseChar : Char ) : string;
 function GetFile( const FileName : string; var BM : TBitmap; var INI : TStringIniFile; var FrameCount : Integer ) : Boolean;
 function LoadResource( const Filename : string ) : TResource; overload;
 function LoadResource( const Filename : string; OnDemand : boolean ) : TResource; overload;
@@ -304,10 +304,12 @@ uses
   Engine,
   Parts;
 
-function Parse( const S : AnsiString; Index : integer; ParseChar : AnsiChar ) : string;
+function Parse( const S : String; Index : integer; ParseChar : Char ) : string;
 var
   i, j, k : integer;
+  Sa : AnsiString;
 begin
+  Sa := AnsiString( S );
   result := '';
   j := Pos( ParseChar, S );
   if ( Index = 0 ) then
@@ -453,7 +455,7 @@ begin
             Stream.LoadFromFile( POXFile );
             TextOnly := false;
             Stream.write( #80#79#88#65, 4 ); //POX vA - Proprietary Object eXtension
-            S := lowercase( trim( INI.ReadString( 'Header', 'GameClass', '' ) ) );
+            S := AnsiString( AnsiLowerCase( Trim( INI.ReadString( 'Header', 'GameClass', '' ) ) ) );
             if S = 'staticobject' then
             begin
               Stream.write( #83#84, 2 ); //fmt ST
@@ -461,7 +463,7 @@ begin
             end
             else if ( S = 'character' ) or ( S = 'charactersprite' ) then
             begin
-              S := lowercase( trim( INI.ReadString( 'Header', 'LayeredParts', '' ) ) );
+              S := AnsiString( AnsiLowerCase( Trim( INI.ReadString( 'Header', 'LayeredParts', '' ) ) ) );
               if ( S = 'yes' ) or ( S = 'base' ) then
               begin
                 Stream.write( #76#76, 2 ); //fmt LL
@@ -668,7 +670,7 @@ begin
   i := 0;
   while True do
   begin
-    C := LowerCase( Parse( S, i, ',' ) );
+    C := AnsiString( AnsiLowerCase( Parse( S, i, ',' ) ) );
     if C = '' then
     begin
       Break;
@@ -735,7 +737,6 @@ begin
     Log.LogEntry( FailName );
 {$ENDIF}
   try
-
     NewScript := TScript.Create;
     NewScript.Multiplier := Multiplier;
     i := 0;
@@ -802,7 +803,7 @@ end;
 
 procedure TResource.LoadAction( INI : TStringIniFile; const Action : AnsiString );
 var
-  S0, S1, S2, S3, S4, S5, S6, S7, S8 : string;
+  S0, S1, S2, S3, S4, S5, S6, S7, S8 : AnsiString;
   Group : string;
   Multiplier : Word;
 const
@@ -816,15 +817,15 @@ begin
 
     Group := 'Action ' + Action;
     Multiplier := INI.ReadInteger( Group, 'FrameMultiplier', FrameMultiplier );
-    S0 := lowercase( INI.ReadString( Group, 'Frames', '' ) );
-    S1 := lowercase( INI.ReadString( Group, 'SSFrames', '' ) );
-    S2 := lowercase( INI.ReadString( Group, 'SEFrames', '' ) );
-    S3 := lowercase( INI.ReadString( Group, 'EEFrames', '' ) );
-    S4 := lowercase( INI.ReadString( Group, 'NEFrames', '' ) );
-    S5 := lowercase( INI.ReadString( Group, 'NNFrames', '' ) );
-    S6 := lowercase( INI.ReadString( Group, 'NWFrames', '' ) );
-    S7 := lowercase( INI.ReadString( Group, 'WWFrames', '' ) );
-    S8 := lowercase( INI.ReadString( Group, 'SWFrames', '' ) );
+    S0 := AnsiString( AnsiLowerCase( INI.ReadString( Group, 'Frames', '' ) ) );
+    S1 := AnsiString( AnsiLowerCase( INI.ReadString( Group, 'SSFrames', '' ) ) );
+    S2 := AnsiString( AnsiLowerCase( INI.ReadString( Group, 'SEFrames', '' ) ) );
+    S3 := AnsiString( AnsiLowerCase( INI.ReadString( Group, 'EEFrames', '' ) ) );
+    S4 := AnsiString( AnsiLowerCase( INI.ReadString( Group, 'NEFrames', '' ) ) );
+    S5 := AnsiString( AnsiLowerCase( INI.ReadString( Group, 'NNFrames', '' ) ) );
+    S6 := AnsiString( AnsiLowerCase( INI.ReadString( Group, 'NWFrames', '' ) ) );
+    S7 := AnsiString( AnsiLowerCase( INI.ReadString( Group, 'WWFrames', '' ) ) );
+    S8 := AnsiString( AnsiLowerCase( INI.ReadString( Group, 'SWFrames', '' ) ) );
     if S0 <> '' then
       LoadScript( S0, Action, Multiplier );
     if S1 <> '' then
@@ -933,7 +934,7 @@ begin
     Actions.CommaText := S;
     for i := 0 to Actions.Count - 1 do
     begin
-      LoadAction( INI, Actions.Strings[ i ] );
+      LoadAction( INI, AnsiString( Actions.Strings[ i ] ) );
     end;
     Actions.Free;
 
@@ -1055,7 +1056,7 @@ begin
     Stream.Read( M, sizeof( M ) );
     Stream.Read( BB, sizeof( BB ) ); //CRLF
     Stream.Read( L, sizeof( L ) );
-    Stream.Seek( L, soFromCurrent );
+    Stream.Position := Stream.Position + L; // Stream.Seek( L, soFromCurrent );
     Stream.Read( BB, sizeof( BB ) );
     if BB = EOB then
     begin
@@ -1283,29 +1284,29 @@ begin
     FContactFrame := INI.ReadInteger( 'Action Attack1', 'TriggerFrame', 1 );
     FReleaseFrame := INI.ReadInteger( 'Action BowAttack', 'TriggerFrame', 1 );
     FCastFrame := INI.ReadInteger( 'Action Cast', 'TriggerFrame', 1 );
-    Equipment[ slLeg1 ] := INI.ReadString( 'Layers', 'leg1', '' );
-    Equipment[ slBoot ] := INI.ReadString( 'Layers', 'boot', '' );
-    Equipment[ slLeg2 ] := INI.ReadString( 'Layers', 'leg2', '' );
-    Equipment[ slChest1 ] := INI.ReadString( 'Layers', 'chest1', '' );
-    Equipment[ slChest2 ] := INI.ReadString( 'Layers', 'chest2', '' );
-    Equipment[ slArm ] := INI.ReadString( 'Layers', 'arm', '' );
-    Equipment[ slBelt ] := INI.ReadString( 'Layers', 'belt', '' );
-    Equipment[ slChest3 ] := INI.ReadString( 'Layers', 'chest3', '' );
-    Equipment[ slGauntlet ] := INI.ReadString( 'Layers', 'gauntlet', '' );
-    Equipment[ slOuter ] := INI.ReadString( 'Layers', 'outer', '' );
-    Equipment[ slHelmet ] := INI.ReadString( 'Layers', 'helmet', '' );
-    Equipment[ slWeapon ] := INI.ReadString( 'Layers', 'weapon', '' );
-    Equipment[ slShield ] := INI.ReadString( 'Layers', 'shield', '' );
-    Equipment[ slMisc1 ] := INI.ReadString( 'Layers', 'misc1', '' );
-    Equipment[ slMisc2 ] := INI.ReadString( 'Layers', 'misc2', '' );
-    Equipment[ slMisc3 ] := INI.ReadString( 'Layers', 'misc3', '' );
+    Equipment[ slLeg1 ] := AnsiString( INI.ReadString( 'Layers', 'leg1', '' ) );
+    Equipment[ slBoot ] := AnsiString( INI.ReadString( 'Layers', 'boot', '' ) );
+    Equipment[ slLeg2 ] := AnsiString( INI.ReadString( 'Layers', 'leg2', '' ) );
+    Equipment[ slChest1 ] := AnsiString( INI.ReadString( 'Layers', 'chest1', '' ) );
+    Equipment[ slChest2 ] := AnsiString( INI.ReadString( 'Layers', 'chest2', '' ) );
+    Equipment[ slArm ] := AnsiString( INI.ReadString( 'Layers', 'arm', '' ) );
+    Equipment[ slBelt ] := AnsiString( INI.ReadString( 'Layers', 'belt', '' ) );
+    Equipment[ slChest3 ] := AnsiString( INI.ReadString( 'Layers', 'chest3', '' ) );
+    Equipment[ slGauntlet ] := AnsiString( INI.ReadString( 'Layers', 'gauntlet', '' ) );
+    Equipment[ slOuter ] := AnsiString( INI.ReadString( 'Layers', 'outer', '' ) );
+    Equipment[ slHelmet ] := AnsiString( INI.ReadString( 'Layers', 'helmet', '' ) );
+    Equipment[ slWeapon ] := AnsiString( INI.ReadString( 'Layers', 'weapon', '' ) );
+    Equipment[ slShield ] := AnsiString( INI.ReadString( 'Layers', 'shield', '' ) );
+    Equipment[ slMisc1 ] := AnsiString( INI.ReadString( 'Layers', 'misc1', '' ) );
+    Equipment[ slMisc2 ] := AnsiString( INI.ReadString( 'Layers', 'misc2', '' ) );
+    Equipment[ slMisc3 ] := AnsiString( INI.ReadString( 'Layers', 'misc3', '' ) );
 
     FAttackVariations := 1;
     while INI.SectionExists( 'Action Attack' + IntToStr( FAttackVariations ) ) do
       inc( FAttackVariations );
     dec( FAttackVariations );
 
-    NakedName := INI.ReadString( 'Layers', 'naked', '' );
+    NakedName := AnsiString( INI.ReadString( 'Layers', 'naked', '' ) );
     if NakedName <> '' then
     begin
       NakedResource := PartManager.GetLayerResource( NakedName );
@@ -1320,7 +1321,7 @@ begin
       UseDefaultPants := nil;
     Female := Pos( 'female', lowercase( NakedName ) ) > 0;
 
-    HeadName := INI.ReadString( 'Layers', 'head', '' );
+    HeadName := AnsiString( INI.ReadString( 'Layers', 'head', '' ) );
     if HeadName <> '' then
     begin
       HeadResource := PartManager.GetLayerResource( HeadName );
@@ -2209,7 +2210,7 @@ begin
     Actions.CommaText := S;
     for i := 0 to Actions.Count - 1 do
     begin
-      LoadAction( INI, Actions.Strings[ i ] );
+      LoadAction( INI, AnsiString( Actions.Strings[ i ] ) );
     end;
     Actions.Free;
 

@@ -108,8 +108,7 @@ uses
   Showgraphic,
   LogScreen,
   Transit,
-  AddKickNPC,
-  Security;
+  AddKickNPC;
 
 const
   WM_StartMainMenu = WM_USER + 1;
@@ -127,7 +126,7 @@ const
 var
   DlgProgress : TLoaderBox;
   InterfacePath : string;
-  MapPath : string;
+  MapPath : AnsiString;
   MaxPartyMembers : Integer;
   bPlayClosingMovie : Boolean;
   OpeningMovie : string;
@@ -351,6 +350,7 @@ procedure ForceNotReadOnly( const FileName : string );
 implementation
 
 uses
+  System.IOUtils,
   strFunctions,
   digifx,
   DFX,
@@ -703,7 +703,7 @@ begin
       Player.Equipment[ slLeg1 ] := SelectedPants;
       if Assigned( SelectedHair ) then
       begin
-        TCharacterResource( Player.Resource ).HeadName := ExtractFilePath( TCharacterResource( Player.Resource ).NakedName ) + ChangeFileExt( ExtractFileName( SelectedHair.FileName ), '.gif' );
+        TCharacterResource( Player.Resource ).HeadName := AnsiString( ExtractFilePath( TCharacterResource( Player.Resource ).NakedName ) + ChangeFileExt( ExtractFileName( SelectedHair.FileName ), '.gif' ));
         TCharacterResource( Player.Resource ).HeadResource := TLayerResource( SelectedHair );
       end
       else
@@ -971,12 +971,13 @@ begin
     DefaultPath := ExtractFilePath( Application.ExeName );
     DisableConsole := True;
 
-    if not GetChapterAuthorizeMask( DefaultPath + 'siege.ini' ) then
-    begin
-      ExitCode := 70;
-      Close;
-      Exit;
-    end;
+// Disable security
+//    if not GetChapterAuthorizeMask( DefaultPath + 'siege.ini' ) then
+//    begin
+//      ExitCode := 70;
+//      Close;
+//      Exit;
+//    end;
     {  Present := Now;
       DecodeDate(Present, Year, Month, Day);
       if (Year > 2000) or (Month > 10) or
@@ -1051,7 +1052,7 @@ begin
     Log.Log( 'CachePath=' + CachePath );
     Log.flush;
 
-    MapPath := INI.ReadString( 'Settings', 'MapPath', '' );
+    MapPath := AnsiString( INI.ReadString( 'Settings', 'MapPath', '' ) );
     if MapPath <> '' then
     begin
       if MapPath[ Length( MapPath ) ] <> '\' then
@@ -1226,7 +1227,7 @@ begin
     GameMap.UseAmbientOnly := ( LowerCase( INI.ReadString( 'Settings', 'AmbientOnly', '' ) ) = 'true' );
     Log.flush;
 
-    if ( INI.ReadInteger( 'Settings', 'JournalFont', 0 ) = 1 ) and DirectoryExists( ArtPath + 'journalalt' ) then
+    if ( INI.ReadInteger( 'Settings', 'JournalFont', 0 ) = 1 ) and SysUtils.DirectoryExists( ArtPath + 'journalalt' ) then
       AdventureLog1.LogDirectory := ArtPath + 'journalalt\'
     else
       AdventureLog1.LogDirectory := ArtPath + 'journal\';
@@ -1397,7 +1398,7 @@ begin
             MusicLib.PauseThisSong;
             if NextSong <> '' then
             begin
-              MusicLib.OpenThisSong( SoundPath + NextSong + '.mp3' );
+              MusicLib.OpenThisSong( AnsiString( SoundPath + NextSong + '.mp3' ) );
               FadeIn := MasterMusicVolume + 5;
             end;
           end;
@@ -2015,7 +2016,7 @@ begin
             j := Pos( 'loadmap(', LowerCase( TTrigger( FigureInstances.Objects[ i ] ).OnTrigger ) );
             if j > 0 then
             begin
-              S := Parse( Copy( TTrigger( FigureInstances.Objects[ i ] ).OnTrigger, j + 8, Length( TTrigger( FigureInstances.Objects[ i ] ).OnTrigger ) - j - 7 ), 0, ',' );
+              S := Parse( AnsiString( Copy( TTrigger( FigureInstances.Objects[ i ] ).OnTrigger, j + 8, Length( TTrigger( FigureInstances.Objects[ i ] ).OnTrigger ) - j - 7 )), 0, ',' );
               if FileExists( FindMap( S ) ) then
               begin
                 MouseCursor.SetFrame( 1 );
@@ -3978,7 +3979,7 @@ begin
         if ReadCache or WriteCache then
         begin
           LVLDate := GetFileDate( LVLFile );
-          if not DirectoryExists( S ) then
+          if not SysUtils.DirectoryExists( S ) then
             CreateDirectory( PChar( S ), nil );
           CacheExists := FileExists( CacheFileA ) and FileExists( CacheFileB );
           if CacheExists then
@@ -4097,7 +4098,6 @@ begin
         end;
       end;
       DlgProgress.SetBar( Round( DlgProgress.MaxValue * 0.87 ) );
-
       if UseCache then
       begin
         if FileExists( CacheFileC ) then
@@ -4181,6 +4181,7 @@ begin
               end
               else
               begin
+                // TODO: Out of Memory when i=259
                 TCharacter( FigureInstances.Objects[ i ] ).Init;
               end;
             end
@@ -4333,7 +4334,7 @@ begin
     if Themes.Count > 0 then
     begin
       FCurrentTheme := Themes.Names[ 0 ];
-      S := Parse( Themes.Strings[ 0 ], 1, '=' );
+      S := Parse( AnsiString( Themes.Strings[ 0 ] ), 1, '=' );
     end
     else
     begin
@@ -4405,7 +4406,7 @@ var
     Block : TSavBlocks;
     List : TStringList;
     L : Longint;
-    S : string;
+    S : AnsiString;
     k : TSlot;
   begin
     Result := TMemoryStream.Create;
@@ -4417,7 +4418,7 @@ var
         Result.Write( Block, SizeOf( Block ) );
         List.Clear;
         TCharacter( NPCList.Items[ i ] ).SaveProperties( List );
-        S := List.Text;
+        S := AnsiString( List.Text );
         L := Length( S );
         Result.Write( L, SizeOf( L ) );
         Result.Write( S[ 1 ], L );
@@ -4432,7 +4433,7 @@ var
             Result.Write( Block, SizeOf( Block ) );
             List.Clear;
             TCharacter( NPCList.Items[ i ] ).Equipment[ k ].SaveProperties( List );
-            S := List.Text;
+            S := AnsiString( List.Text );
             L := Length( S );
             Result.Write( L, SizeOf( L ) );
             Result.Write( S[ 1 ], L );
@@ -4447,7 +4448,7 @@ var
           Result.Write( Block, SizeOf( Block ) );
           List.Clear;
           TItem( TCharacter( NPCList.Items[ i ] ).Inventory.Items[ j ] ).SaveProperties( List );
-          S := List.Text;
+          S := AnsiString ( List.Text );
           L := Length( S );
           Result.Write( L, SizeOf( L ) );
           Result.Write( S[ 1 ], L );
@@ -4470,7 +4471,7 @@ var
     i, j : Integer;
     Block : TSavBlocks;
     List : TStringList;
-    S : string;
+    S : AnsiString;
     L, L1, L2 : Longint;
     Flag : Boolean;
   begin
@@ -4516,7 +4517,7 @@ var
             Result.Write( Block, SizeOf( Block ) );
             List.Clear;
             TGameObject( FigureInstances.Objects[ i ] ).SaveProperties( List );
-            S := List.Text;
+            S := AnsiString( List.Text );
             L2 := Length( S );
             L := SizeOf( L1 ) + L1 + SizeOf( L2 ) + L2;
             Result.Write( L, SizeOf( L ) );
@@ -4533,7 +4534,7 @@ var
                 Result.Write( Block, SizeOf( Block ) );
                 List.Clear;
                 TItem( TContainer( FigureInstances.Objects[ i ] ).Inventory.Items[ j ] ).SaveProperties( List );
-                S := List.Text;
+                S := AnsiString( List.Text );
                 L := Length( S );
                 Result.Write( L, SizeOf( L ) );
                 Result.Write( S[ 1 ], L );
@@ -4574,8 +4575,8 @@ begin
       TravelList.Add( S );
 
     EOB := EOBMarker;
-    if not DirectoryExists( DefaultPath + 'games' ) then
-      ForceDirectories( DefaultPath + 'games' );
+    if not SysUtils.DirectoryExists( DefaultPath + 'games' ) then
+      SysUtils.ForceDirectories( DefaultPath + 'games' );
 
     FileName := DefaultPath + 'games\' + GameName + '.sav';
     ForceNotReadOnly( FileName );
@@ -4769,7 +4770,7 @@ var
                 SetLength( S, L );
                 Stream.Read( S[ 1 ], L );
                 List.Text := S;
-                S := LowerCase( List.Values[ 'Resource' ] );
+                S := AnsiString( AnsiLowerCase( List.Values[ 'Resource' ] ) );
                 i := Pos( 'players\player', S );
                 if i > 0 then
                 begin
@@ -4784,7 +4785,7 @@ var
                     inc( j );
                   end;
                   S := copy( S, i, j - i + 1 ) + '.gif';
-                  S1 := ChangeFileExt( S, '' );
+                  S1 := AnsiString (ChangeFileExt( S, '' ) );
                   i := Figures.IndexOf( S1 );
                   if i >= 0 then
                   begin
@@ -4797,7 +4798,7 @@ var
                     i := Figures.Add( S1 );
                     Figures.Objects[ i ] := NewCharacter.Resource;
                   end;
-                  S := List.Values[ 'HeadLayer' ];
+                  S := AnsiString( List.Values[ 'HeadLayer' ] );
                   TCharacterResource( NewCharacter.Resource ).HeadName := S;
                   if S <> '' then
                     TCharacterResource( NewCharacter.Resource ).HeadResource := PartManager.GetLayerResource( S );
@@ -4816,7 +4817,7 @@ var
                     i := Figures.Add( S );
                     Figures.Objects[ i ] := NewCharacter.Resource;
                   end;
-                  S := List.Values[ 'HeadLayer' ];
+                  S := AnsiString( List.Values[ 'HeadLayer' ] );
                   TCharacterResource( NewCharacter.Resource ).HeadName := S;
                   if S <> '' then
                     TCharacterResource( NewCharacter.Resource ).HeadResource := PartManager.GetLayerResource( S );
@@ -4987,7 +4988,7 @@ var
                 Stream.Read( S[ 1 ], L1 );
               end;
               List.Text := S;
-              S := List.Values[ 'InScene' ];
+              S := AnsiString( List.Values[ 'InScene' ] );
               if ( S = '' ) or ( Pos( '[' + Scene + ']', S ) <> 0 ) then
               begin
                 ObjectRef := nil;
@@ -5026,7 +5027,7 @@ var
                   FigureInstances.Objects[ i ] := ObjectRef;
                   if ObjectRef is TSpriteObject then
                   begin
-                    S := List.Values[ 'Resource' ];
+                    S := AnsiString( List.Values[ 'Resource' ] );
                     if S = '' then
                     begin
                       ObjectRef.Free;
@@ -5035,7 +5036,7 @@ var
                     end
                     else
                     begin
-                      S1 := ChangeFileExt( S, '' );
+                      S1 := AnsiString( ChangeFileExt( S, '' ) );
                       j := Figures.IndexOf( S1 );
                       if j >= 0 then
                       begin
@@ -5141,7 +5142,6 @@ begin
         SavFile.QuestList := Quests;
         SavFile.AdventureList := Adventures;
       end;
-
       SavFile.Open( FileName );
       SavFile.CurrentMap := ChangeFileExt( ExtractFileName( LVLFile ), '' );
       SavFile.CurrentScene := CurrentScene;
@@ -5495,7 +5495,7 @@ begin
           begin
             if FadeOut = 0 then
             begin
-              MusicLib.OpenThisSong( SoundPath + NextSong + '.mp3' );
+              MusicLib.OpenThisSong( AnsiString ( SoundPath + NextSong + '.mp3' ) );
               MusicLib.SetSongVolume( 0 );
               FadeIn := MasterMusicVolume + 5;
             end;
@@ -5706,6 +5706,8 @@ begin
       // *** jrs Add commandline override for StartFile setting. Mostly for testing, but might have other uses
       GetCommandLineLVLFile;
 
+      if not System.IOUtils.TPath.IsPathRooted( LVLFile ) then
+        LVLFile := DefaultPath + 'Maps\' + System.IOUtils.TPath.GetFileName( LVLFile );
       if not FileExists( LVLFile ) then
       begin // jrs
         Log.log( FailName, 'Unable to open game map file %s', [ LVLFile ] );
@@ -7134,7 +7136,7 @@ end;
 procedure TfrmMain.CloseTransit( Sender : TObject );
 var
   i : Integer;
-  S, S1 : string;
+  S, S1 : String;
   ResMap, ResGroup : string;
   Found : Boolean;
 begin
@@ -7174,28 +7176,28 @@ begin
       else
       begin
         S := LowerCase( ResultMapName );
-        ResMap := Parse( S, 0, '|' );
-        ResGroup := Parse( S, 1, '|' );
+        ResMap := Parse( AnsiString ( S ), 0, '|' );
+        ResGroup := Parse( AnsiString ( S ), 1, '|' );
         i := 1; //Targets has a leading '|'
-        S := Parse( Targets, i, '|' );
+        S := Parse( AnsiString ( Targets ), i, '|' );
         while S <> '' do
         begin
-          S1 := Parse( S, 0, ',' );
+          S1 := Parse( AnsiString ( S ), 0, ',' );
           if S1 = ResMap then
           begin
-            S1 := Parse( S, 2, ',' );
+            S1 := Parse( AnsiString ( S ), 2, ',' );
             if S1 = ResGroup then
             begin
-              TransitionScreen := Parse( S, 3, ',' );
+              TransitionScreen := Parse( AnsiString ( S ), 3, ',' );
               NewLVLFile := FindMap( ResMap );
-              NewScene := Parse( S, 1, ',' );
+              NewScene := Parse( AnsiString ( S ), 1, ',' );
               NewStartingPoint := ResGroup;
               Found := True;
               Break;
             end;
           end;
           Inc( i );
-          S := Parse( Targets, i, '|' );
+          S := Parse( AnsiString ( Targets ), i, '|' );
         end;
       end;
     end;
@@ -7271,7 +7273,7 @@ var
     BB : Word;
   begin
     Result := False;
-    S0 := LowerCase( PathName );
+    S0 := AnsiString ( AnsiLowerCase( PathName ) );
     Stream.Position := 0;
     List := TStringList.Create;
     try
@@ -7289,10 +7291,10 @@ var
           SetLength( S1, L1 );
           Stream.Read( S1[ 1 ], L1 );
           List.Text := S1;
-          S1 := List.Values[ 'GroupName' ];
+          S1 := AnsiString( List.Values[ 'GroupName' ] );
           if LowerCase( S1 ) = S0 then
           begin
-            S1 := List.Values[ 'Position' ];
+            S1 := AnsiString( List.Values[ 'Position' ] );
             X := StrToInt( Parse( S1, 0, ',' ) ) div GameMap.TileWidth;
             Y := StrToInt( Parse( S1, 1, ',' ) ) div GameMap.TileHeight;
             Result := True;
@@ -7343,10 +7345,10 @@ begin
       SavFile.Open( S );
 
       i := 1;
-      S := Parse( Targets, i, '|' );
+      S := Parse( AnsiString ( Targets ), i, '|' );
       while S <> '' do
       begin
-        S1 := Parse( S, 0, ',' );
+        S1 := Parse( AnsiString ( S ), 0, ',' );
         SavFile.CurrentMap := S1;
         Properties := SavFile.Properties;
         MapKnown := SavFile.MapKnown;
@@ -7358,7 +7360,7 @@ begin
             if GetLevelDims then
             begin //Returns Width,Height
               //Scan for listed path groups
-              PathName := Parse( S, 2, ',' );
+              PathName := Parse( AnsiString ( S ), 2, ',' );
               if GetPathXY( Properties, PathName ) then
               begin //Returns X,Y
                 if ( X >= 0 ) and ( X < Width ) and ( Y >= 0 ) and ( Y < Height ) then
@@ -7379,7 +7381,7 @@ begin
           end;
         end;
         Inc( i );
-        S := Parse( Targets, i, '|' );
+        S := Parse( AnsiString ( Targets ), i, '|' );
       end;
     except
       Log.Log( '*** Error: Transit Error' );
@@ -8056,7 +8058,7 @@ var
 begin
   INI := TIniFile.Create( DefaultPath + 'siege.ini' );
 
-  if ( INI.ReadInteger( 'Settings', 'JournalFont', 0 ) = 1 ) and DirectoryExists( ArtPath + 'journalalt' ) then
+  if ( INI.ReadInteger( 'Settings', 'JournalFont', 0 ) = 1 ) and SysUtils.DirectoryExists( ArtPath + 'journalalt' ) then
     HistoryLog.LogDirectory := ArtPath + 'journalalt\'
   else
     HistoryLog.LogDirectory := ArtPath + 'journal\';

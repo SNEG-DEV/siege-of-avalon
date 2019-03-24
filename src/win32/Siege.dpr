@@ -80,7 +80,6 @@ uses
   WolfAI in 'ai\WolfAI.pas',
   Anigrp30 in 'engine\Anigrp30.pas',
   AniDec30 in 'engine\AniDec30.pas',
-  string32 in 'engine\string32.pas',
   DXEffects in 'graphics\DXEffects.pas',
   DXUtil in 'graphics\DXUtil.pas',
   LogFile in 'Engine\LogFile.pas',
@@ -103,7 +102,6 @@ uses
   Spells1 in 'engine\Spells1.pas',
   Intro in 'interface\Intro.pas',
   SaveFile in 'engine\SaveFile.pas',
-  Security in 'engine\Security.pas',
   ItemDatabase in 'engine\ItemDatabase.pas',
   AddKickNPC in 'interface\AddKickNPC.pas',
   LoadGame in 'interface\LoadGame.pas',
@@ -123,7 +121,8 @@ uses
   Scroll in 'engine\Scroll.pas',
   Statistics in 'interface\Statistics.pas',
   strFunctions in 'engine\strFunctions.pas',
-  Transit in 'interface\Transit.pas';
+  Transit in 'interface\Transit.pas',
+  MMTimer in 'engine\MMTimer.pas';
 
 {$R *.RES}
 
@@ -203,6 +202,7 @@ begin
 end;
 
 begin
+//  ReportMemoryLeaksOnShutdown := TRUE;
 
   // A means of assuring that only one copy of game runs at a time, but does it REALLY work? What is runtime error 216?
   hMutex := OpenMutex( MUTEX_ALL_ACCESS, False, MUTEXNAME );

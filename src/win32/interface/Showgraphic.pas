@@ -76,10 +76,7 @@ uses
   Forms,
   Display,
   Anigrp30,
-  Music,
-  resource,
-  Engine,
-  Logfile;
+  Music;
   
 type
   TShowGraphic = class( TDisplay )
@@ -94,16 +91,22 @@ type
   public
     frmMain : TForm;
     FileName : string;
-    MusicFileName : string;
+    MusicFileName : AnsiString;
     pMusic : TMusic;
     constructor Create;
     destructor Destroy; override;
     procedure Init; override;
     procedure Release; override;
   end;
+
 implementation
+
 uses
-  AniDemo;
+  AniDemo,
+  Resource,
+  Engine,
+  LogFile;
+
 { TShowGraphic }
 
 constructor TShowGraphic.Create;
@@ -181,7 +184,7 @@ begin
     begin
       if FileExists( SoundPath + 'Theme\' + MusicFileName ) then
       begin
-        pMusic.OpenThisSong( SoundPath + 'Theme\' + MusicFileName );
+        pMusic.OpenThisSong( AnsiString ( SoundPath + 'Theme\' + MusicFileName ) );
         pMusic.PlayThisSong;
         pMusic.SetSongVolume( 99 );
       end;

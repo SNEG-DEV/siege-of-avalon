@@ -215,8 +215,8 @@ begin
     HLText := -1;
     pText.LoadFontGraphic( 'Inventory' );
 
-    Filename := Parse( Conversation, 0, '.' );
-    Section := Parse( Conversation, 1, '.' );
+    Filename := Parse( AnsiString ( Conversation ), 0, '.' );
+    Section := Parse( AnsiString ( Conversation ), 1, '.' );
     if ( Filename = '' ) then
     begin
       Close;

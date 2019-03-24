@@ -523,7 +523,7 @@ type
 
 function AssignHumanoidAI( AIName : string ) : TAI;
 function RangeTest( Target, Source : TAniFigure; iDist : integer ) : boolean;
-function LineOfSight( Character, Track : TAniFigure ) : boolean;
+//function LineOfSight( Character, Track : TAniFigure ) : boolean;
 function GetFacing( SrcX, SrcY, TargetX, TargetY : Longint ) : Extended;
 function GetSpellEffect( const s : string ) : TResource;
 
@@ -621,10 +621,10 @@ begin
 
 end;
 
-function LineOfSight( Character, Track : TAniFigure ) : boolean;
-begin
-  result := true;
-end;
+//function LineOfSight( Character, Track : TAniFigure ) : boolean;
+//begin
+//  result := true;
+//end;
 
 function GetFacing( SrcX, SrcY, TargetX, TargetY : Longint ) : Extended;
 var

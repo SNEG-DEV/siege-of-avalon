@@ -86,8 +86,8 @@ type
     constructor Create;
     destructor Destroy; override;
     function AddLogEntry( LogFile : string ) : integer;
-    function ReadLogByName( LogFile : string ) : string;
-    function ReadLogByIndex( LogIndex : integer ) : string;
+    function ReadLogByName( LogFile : string ) : AnsiString;
+    function ReadLogByIndex( LogIndex : integer ) : AnsiString;
     procedure DeleteLogEntry( LogFile : string );
     procedure Clear;
 //  published
@@ -169,7 +169,7 @@ begin
   end;
 end;
 
-function TAdventureLog.ReadLogByName( LogFile : string ) : string;
+function TAdventureLog.ReadLogByName( LogFile : string ) : AnsiString;
 var
   MyStream : TFileStream;
   iSize : integer;
@@ -201,7 +201,7 @@ begin
   end;
 end;
 
-function TAdventureLog.ReadLogByIndex( LogIndex : integer ) : string;
+function TAdventureLog.ReadLogByIndex( LogIndex : integer ) : AnsiString;
 var
   MyStream : TFileStream;
   iSize : integer;
@@ -243,7 +243,7 @@ begin
   end;
 end;
 
-procedure TAdventureLog.DeleteLogEntry( LogFile : string );
+procedure TAdventureLog.DeleteLogEntry( LogFile : String );
 const
   FailName : string = 'TAdventureLog.DeleteLogEntry';
 begin

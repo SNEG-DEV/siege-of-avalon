@@ -1467,8 +1467,7 @@ begin
 {$ENDIF}
   Result := 'failure';
   try
-    Sentence := pTempItems( ItemList.Items[ CurrentSelectedItem ] ).PItem.Name;
-    Sentence := trim( Sentence );
+    Sentence := AnsiString( Trim( pTempItems( ItemList.Items[ CurrentSelectedItem ] ).PItem.Name ));
     LoopCount := 0;
     while ( pText.TextLength( Sentence ) > 300 ) and ( LoopCount < 10 ) do
     begin

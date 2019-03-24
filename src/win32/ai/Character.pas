@@ -2812,7 +2812,6 @@ var
   Event : string;
   i : integer;
   Changed : boolean;
-  S : string;
   NewDamage : TDamageProfile;
 const
   FailName : string = 'TCharacter.DoFrame';

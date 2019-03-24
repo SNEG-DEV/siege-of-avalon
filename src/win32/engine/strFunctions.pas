@@ -62,9 +62,7 @@ unit strFunctions;
 interface
 
 uses
-  SysUtils,
-  classes,
-  IniFiles;
+  Classes;
 
 type
   TSROption = ( srWord, srCase, srAll );

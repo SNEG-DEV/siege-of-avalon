@@ -1527,7 +1527,7 @@ begin
                   break;
               end;
             end;
-            Stream.Seek( P + L, soFromBeginning );
+            Stream.Position := P + L; // Seek( P + L, soFromBeginning );
             Stream.Read( BB, sizeof( BB ) );
             if BB <> EOB then
             begin

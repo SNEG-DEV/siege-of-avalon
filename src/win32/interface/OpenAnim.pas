@@ -166,7 +166,7 @@ begin
     if assigned( pMusic ) then
     begin
   //  sndPlaySound(PChar(SoundPath + 'Theme\IntroTitle.wav'),1);
-      pMusic.OpenThisSong( SoundPath + 'Theme\IntroTitle.MP3' );
+      pMusic.OpenThisSong( AnsiString ( SoundPath + 'Theme\IntroTitle.MP3' ) );
       pMusic.PlayThisSong;
       pMusic.SetSongVolume( 99 );
     end;

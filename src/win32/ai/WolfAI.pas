@@ -62,13 +62,8 @@ unit WolfAI;
 interface
 
 uses
-  Classes,
-  SysUtils,
   Character,
-  Anigrp30,
-  LogFile,
-  Resource,
-  Graphics;
+  Anigrp30;
 
 type
   TWolfType = ( wtWolf, wtStarving, wtDire, wtRabid );
@@ -134,6 +129,13 @@ type
 function AssignWolfAI( AIName : string ) : TAI;
 
 implementation
+
+uses
+  Classes,
+  SysUtils,
+  LogFile,
+  Resource,
+  Graphics;
 
 const
   PI = 3.1415926535;

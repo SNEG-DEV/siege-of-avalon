@@ -68,6 +68,12 @@ uses
 
 type
   TLog = class( TFileStream )
+  private
+    RealCurrDbgLvl, // Set by Command Line Parser to current Debug Level of Detail
+    RealCurrDbgGroup : Word; // Set by Command Line Parser to current Debug Interest Group
+    MEMORYSTATUS : TMemoryStatus;
+    procedure OutputLogHeader;
+    procedure ParseCommandLine;
   public
     iErr : Integer; // Convenient temporary error value storage
     CurrDbgGroup : Word; // obsolete, forcibly overwritten herein
@@ -80,12 +86,6 @@ type
     procedure Msg( const FailName : string; const Msg : string; const Args : array of const );
     function VersionInfo( const InfoStr, defaultStr : string ) : string;
     procedure Flush;
-  private
-    RealCurrDbgLvl, // Set by Command Line Parser to current Debug Level of Detail
-      RealCurrDbgGroup : Word; // Set by Command Line Parser to current Debug Interest Group
-    MEMORYSTATUS : TMemoryStatus;
-    procedure OutputLogHeader;
-    procedure ParseCommandLine;
   end;
 
 const
@@ -114,7 +114,7 @@ var
 implementation
 
 uses
-  String32,
+  StrUtils,
   Forms,
   Engine,
   IniFiles;
@@ -169,29 +169,29 @@ var
 //  B : TBytes;
 begin
 
-  S := ExtractFileName( Application.ExeName ) + #13#10
+  S := AnsiString( ExtractFileName( Application.ExeName ) + #13#10
     + 'Copyright ©1999-2000 Digital Tome L.P. Texas USA' + #13#10
     + 'Portions Copyright ©1999-2000 Digital Tome, Inc. ' + #13#10
-    + 'All Rights Reserved' + #13#10 + #13#10;
+    + 'All Rights Reserved' + #13#10 + #13#10 );
 //  b := TEncoding.UTF8.GetBytes(s);
 // S := TEncoding.UTF8.GetString(b);
   Write( S[1], Length( S ) );
 
   if RealCurrDbgLvl > 0 then
   begin
-    S := 'FileVersion: ' + VersionInfo( 'FileVersion', 'VersionError' ) + #13#10;
+    S := AnsiString( 'FileVersion: ' + VersionInfo( 'FileVersion', 'VersionError' ) + #13#10 );
 //    b := TEncoding.UTF8.GetBytes(s);
     Write( S[1], Length( S ) );
 
-    S := 'ProductVersion: ' + VersionInfo( 'ProductVersion', 'VersionError' ) + #13#10;
+    S := AnsiString( 'ProductVersion: ' + VersionInfo( 'ProductVersion', 'VersionError' ) + #13#10 );
 //    b := TEncoding.UTF8.GetBytes(s);
     Write( S[1], Length( S ) );
 
-    S := 'Comments: ' + VersionInfo( 'Comments', 'No Comments' ) + #13#10 + #13#10;
+    S := AnsiString( 'Comments: ' + VersionInfo( 'Comments', 'No Comments' ) + #13#10 + #13#10 );
 //    b := TEncoding.UTF8.GetBytes(s);
     Write( S[1], Length( S ) );
 
-    S := 'Commandline: ' + #13#10 + CmdLine + #13#10 + #13#10;
+    S := AnsiString( 'Commandline: ' + #13#10 + CmdLine + #13#10 + #13#10 );
 //    b := TEncoding.UTF8.GetBytes(s);
     Write( S[1], Length( S ) );
   end;
@@ -201,31 +201,31 @@ begin
   with MEMORYSTATUS do
   begin
     // Size of MemoryStatus record
-    S := IntToStr( dwLength ) + ' = Size of ''MemoryStatus'' record' + #13#10;
+    S := AnsiString( IntToStr( dwLength ) + ' = Size of ''MemoryStatus'' record' + #13#10 );
 
     // Per-Cent of Memory in use by your system
-    S := S + IntToStr( dwMemoryLoad ) + '% memory in use' + #13#10;
+    S := S + AnsiString( IntToStr( dwMemoryLoad ) + '% memory in use' + #13#10 );
 
     // The amount of Total Physical memory allocated to your system.
-    S := S + IntToStr( dwTotalPhys ) + ' Total Physical Memory in bytes' + #13#10;
+    S := S + AnsiString( IntToStr( dwTotalPhys ) + ' Total Physical Memory in bytes' + #13#10 );
 
     // The amount available of physical memory in your system.
-    S := S + IntToStr( dwAvailPhys ) + ' Available Physical Memory in bytes' + #13#10;
+    S := S + AnsiString( IntToStr( dwAvailPhys ) + ' Available Physical Memory in bytes' + #13#10 );
 
     // The amount of Total Bytes allocated to your page file.
-    S := S + IntToStr( dwTotalPageFile ) + ' Total Bytes of Paging File' + #13#10;
+    S := S + AnsiString( IntToStr( dwTotalPageFile ) + ' Total Bytes of Paging File' + #13#10 );
 
     // The amount of available bytes in your page file.
-    S := S + IntToStr( dwAvailPageFile ) + ' Available bytes in paging file' + #13#10;
+    S := S + AnsiString( IntToStr( dwAvailPageFile ) + ' Available bytes in paging file' + #13#10 );
 
     // The amount of Total bytes allocated to this program (generally 2 gigabytes of virtual space).
-    S := S + IntToStr( dwTotalVirtual ) + ' User Bytes of Address space' + #13#10;
+    S := S + AnsiString( IntToStr( dwTotalVirtual ) + ' User Bytes of Address space' + #13#10 );
 
     // The amount of avalable bytes that is left to your program to use.
-    S := S + IntToStr( dwAvailVirtual ) + ' Available User bytes of address space' + #13#10;
+    S := S + AnsiString( IntToStr( dwAvailVirtual ) + ' Available User bytes of address space' + #13#10 );
 
     // Nice little block seperator
-    S := S + #13#10 + ' ===== End Of Header =====' + #13#10 + #13#10;
+    S := S + AnsiString( #13#10 + ' ===== End Of Header =====' + #13#10 + #13#10 );
 //    b := TEncoding.UTF8.GetBytes(s);
     Write( S[1], Length( S ) );
   end; { with }
@@ -236,8 +236,8 @@ const
   FailName : string = 'TLog.ParseCommandLine';
 var
   i : Integer;
-  w : Word;
-  sTemp : string;
+  w : Integer;
+  sTemp : AnsiString;
   DebugSet, BadParam : Boolean;
 begin
   BadParam := False;
@@ -245,12 +245,11 @@ begin
   w := 0;
   for i := 1 to ParamCount do
   begin
-    sTemp := Trim( UpperCase( ParamStr( i ) ) );
-    if ( Pos( 'DEBUG=', sTemp ) > 0 ) then
+    sTemp := AnsiString( Trim( ParamStr( i ) ) );
+    if StrUtils.StartsText( 'DEBUG=', sTemp ) then  // Only DEBUG param seems valid
     begin
       DebugSet := True;
-      ParseString( sTemp, '=' ); // crop off the prefix part
-      Trim( sTemp );
+      sTemp := AnsiString( StrUtils.ReplaceText( sTemp, 'DEBUG=', '' ) );
       if Length( sTemp ) < 1 then
       begin
         BadParam := True;
@@ -258,12 +257,8 @@ begin
       end
       else
       begin
-        if IsDigit( sTemp[ 1 ] ) or ( sTemp[ 1 ] = '$' ) then
-        try
-          w := StrToInt( sTemp );
-        except
-          BadParam := True;
-        end
+        if TryStrToInt( sTemp, w ) then
+          BadParam := False
         else if CompareText( sTemp, 'ALL' ) = 0 then
           w := $FFFF
         else
@@ -280,9 +275,9 @@ begin
   RealCurrDbgLvl := w and 3;
   sTemp := '';
   if BadParam then
-    sTemp := FailName + ' Invalid Debug Commandline Parameter ' + sTemp + #13#10#13#10 + CmdLine;
+    sTemp := AnsiString( FailName + ' Invalid Debug Commandline Parameter ' + sTemp + #13#10#13#10 + CmdLine );
   if DebugSet or ( w > 0 ) then
-    FmtStr( sTemp, FailName + ' Debug Set, CurrDbgGroup = %x, RealCurrDbgLvl = %d' + #13#10#13#10, [ RealCurrDbgGroup, RealCurrDbgLvl ] );
+    sTemp := AnsiString( Format( FailName + ' Debug Set, CurrDbgGroup = %x, RealCurrDbgLvl = %d' + #13#10#13#10, [ RealCurrDbgGroup, RealCurrDbgLvl ] ) );
   if Length( sTemp ) > 0 then
     Write( sTemp[ 1 ], Length( sTemp ) );
 end;
@@ -305,7 +300,7 @@ var
 begin
   CurrDbgLvl := RealCurrDbgLvl;
   CurrDbgGroup := RealCurrDbgGroup;
-  S := TimeToStr( Time ) + ' ' + Format( '%8.8d', [ Game.FrameCount ] ) + ': ' + FailName + ' ' + Format( Msg, Args ) + #13#10;
+  S := AnsiString( TimeToStr( Time ) + ' ' + Format( '%8.8d', [ Game.FrameCount ] ) + ': ' + FailName + ' ' + Format( Msg, Args ) + #13#10 );
 //  b := TEncoding.UTF8.GetBytes(s);
   Write( S[1], Length( S ) );
   if ( RealCurrDbgGroup and DbgFlushLog ) <> 0 then
@@ -319,7 +314,7 @@ var
 begin
   CurrDbgLvl := RealCurrDbgLvl;
   CurrDbgGroup := RealCurrDbgGroup;
-  S := FailName + ' ' + Format( Msg, Args ) + #13#10;
+  S := AnsiString( FailName + ' ' + Format( Msg, Args ) + #13#10 );
 //  b := TEncoding.UTF8.GetBytes(s);
   Write( S[1], Length( S ) );
   if ( RealCurrDbgGroup and DbgFlushLog ) <> 0 then
@@ -333,7 +328,7 @@ var
 begin
   CurrDbgLvl := RealCurrDbgLvl;
   CurrDbgGroup := RealCurrDbgGroup;
-  S := TimeToStr( Time ) + ' ' + Format( '%8.8d', [ Game.FrameCount ] ) + ': === ' + FailName + ' ===' + #13#10;
+  S := AnsiString( TimeToStr( Time ) + ' ' + Format( '%8.8d', [ Game.FrameCount ] ) + ': === ' + FailName + ' ===' + #13#10 );
 //  b := TEncoding.UTF8.GetBytes(s);
   Write( S[1], Length( S ) );
   if ( RealCurrDbgGroup and DbgFlushLog ) <> 0 then
@@ -347,7 +342,7 @@ var
 begin
   CurrDbgLvl := RealCurrDbgLvl;
   CurrDbgGroup := RealCurrDbgGroup;
-  S := TimeToStr( Time ) + ' ' + Format( '%8.8d', [ Game.FrameCount ] ) + ': ' + Msg + #13#10;
+  S := AnsiString( TimeToStr( Time ) + ' ' + Format( '%8.8d', [ Game.FrameCount ] ) + ': ' + Msg + #13#10 );
 //  b := TEncoding.UTF8.GetBytes(s);
   Write( S[1], Length( S ) );
   if ( RealCurrDbgGroup and DbgFlushLog ) <> 0 then
@@ -361,7 +356,7 @@ var
 begin
   if length( Msg ) > 0 then
   begin
-    S := Msg + #13#10;
+    S := AnsiString( Msg + #13#10 );
 //    b := TEncoding.UTF8.GetBytes(s);
     Write( S[1], Length( S ) );
   end;

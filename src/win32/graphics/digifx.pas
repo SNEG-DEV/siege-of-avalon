@@ -70,7 +70,7 @@ unit digifx;
 interface
 
 uses
-  Windows;
+  Winapi.Windows;
 
 const
   BLITFX_NONE = 0;
@@ -190,7 +190,8 @@ function digifxGetErrorText : PCHAR;
 implementation
 
 uses
-  SysUtils;
+  System.SysUtils,
+  System.AnsiStrings;
 
 type
   DFXSTARTUPLIB = function : PDWORD; stdcall;
@@ -264,7 +265,7 @@ begin
           call dword ptr [eax + DLL_GetInfo*4];
           mov StrPtr, esi;
         end;
-        if ( StrLComp( StrPtr, 'DigitalFX', 9 ) = 0 ) then
+        if ( System.AnsiStrings.StrLComp( StrPtr, 'DigitalFX', 9 ) = 0 ) then
         begin
           DrvFilesTab[ DriversCnt ].Info := StrPtr;
           DrvFilesTab[ DriversCnt ].Fname := TmpFname;

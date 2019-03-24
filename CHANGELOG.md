@@ -2,7 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
-- Remove all warnings in code compilation under DX 10.3.1
+- Remove all none-critical warnings in code compilation under DX 10.3.1, all due to unicode
+- Refactor all save/load rutines - honor file-formats
+- Reduce the file I/O overhead
 - Merge the non HD-related fixes from gondur repo
 - Add documentation on the assets file-formats used.
 - Evaluate the tools - maybe redo/merge them - and include them in the repository.
@@ -16,9 +18,20 @@ All notable changes to this project will be documented in this file.
 - Better multi-language support - right now it is crippled, like other parts of the UI code.
 
 
-## 2019-03-23
+## 2019-03-24
 ### Added
 - Moved change log/status from readme into changelog file.
+- MMTimer unit missing from project file
+
+### Fixed
+- Save games back to normal
+- Cleaned a bit of uses and reduced compiler warnings
+- Absolute vs relative path fun with initial startfile (lvl)
+- All critical warnings gone - mostly cause by unicode transition
+
+### Removed
+- string32 unit
+- security unit
 
 ## 2019-03-22
 ### Fixed

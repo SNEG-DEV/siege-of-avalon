@@ -926,7 +926,7 @@ begin
         begin
           if Assigned( MusicLib ) then
           begin
-            MusicLib.OpenThisSong( SoundPath + 'theme\' + Parms );
+            MusicLib.OpenThisSong( AnsiString( SoundPath + 'theme\' + Parms ) );
             MusicLib.PlayThisSong;
             frmMain.SoundTimer.Enabled := false;
           end;
@@ -1498,7 +1498,7 @@ begin
     //Calculate TotalSize, Load Name and Size fields
     for i := 0 to Count - 1 do
     begin
-      pList^.Name := ChangeFileExt( FileList.strings[ i ], '' );
+      pList^.Name := ShortString( ChangeFileExt( FileList.strings[ i ], '' ) );
 
 
       AssignFile( F, Dir + FileList.strings[ i ] );

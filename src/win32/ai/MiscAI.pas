@@ -1614,9 +1614,6 @@ end;
 
 procedure TCompanion.FollowLeader;
 var
-  r : Integer;
-  T : single;
-  X, Y : Integer;
   iRange : Double;
 const
   FailName : string = 'MiscAI.BTCompanion.FollowPlayer';

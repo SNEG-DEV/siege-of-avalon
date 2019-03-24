@@ -65,12 +65,8 @@ interface
 
 uses
   Classes,
-  SysUtils,
   Character,
-  Engine,
-  Anigrp30,
-  LogFile,
-  Graphics;
+  Anigrp30;
 
 type
   TUndeadType = ( utSkeleton, utLich, utGhoul, utGhost );
@@ -243,6 +239,12 @@ function AssignUndeadAI( AIName : string ) : TAI;
 function GetFacing( SrcX, SrcY, TargetX, TargetY : Longint ) : Extended;
 
 implementation
+
+uses
+  SysUtils,
+  Engine,
+  LogFile,
+  Graphics;
 
 const
   pi = 3.1415926535;

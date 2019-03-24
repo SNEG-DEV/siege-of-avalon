@@ -212,8 +212,6 @@ var
   dX2, dY2 : integer;
   h, h1, h3 : double;
   a1, a3 : double;
-  LoopCount : longint;
-  //  a2,h2: double; //Creates a tighter path which is not appropriate for 8 direction walk
   FavorDiagonal : boolean;
 begin
   inc( Iteration );
@@ -243,7 +241,6 @@ begin
   else
     FavorDiagonal := ( dX - dY ) < dY;
 
-  LoopCount := 0;
   repeat
     AGrid[ X, Y ].Closed := true;
     InitD[ MinD ].NextX := AGrid[ X, Y ].NextX;
@@ -416,7 +413,6 @@ begin
     until not ( AGrid[ X, Y ].Closed );
 
     MinD := D;
-    inc( LoopCount );
   until ( X = DestX ) and ( Y = DestY );
 
   result := 0;

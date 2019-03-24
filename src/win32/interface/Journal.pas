@@ -95,7 +95,7 @@ type
     DXPic : IDirectDrawSurface;
     PicWidth : integer;
     PicHeight : integer;
-    LogText : string;
+    LogText : AnsiString;
     CurrentLogIndex : integer;
     txtMessage : array[ 0..1 ] of string;
     procedure ShowText;
@@ -191,7 +191,7 @@ begin
   //JournalLog.LogDirectory:=ExtractFilePath(Application.ExeName) + 'Journal\';
     INI := TIniFile.Create( DefaultPath + 'siege.ini' );
 
-    if ( INI.readinteger( 'Settings', 'JournalFont', 0 ) = 1 ) and DirectoryExists( ArtPath + 'journalalt' ) then
+    if ( INI.readinteger( 'Settings', 'JournalFont', 0 ) = 1 ) and SysUtils.DirectoryExists( ArtPath + 'journalalt' ) then
       JournalLog.LogDirectory := ArtPath + 'journalalt\'
     else
       JournalLog.LogDirectory := ArtPath + 'journal\';

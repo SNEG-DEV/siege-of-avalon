@@ -66,23 +66,15 @@ interface
 uses
 {$IFDEF DirectX}
   DirectX,
-  DXUtil,
-  DXEffects,
 {$ENDIF}
-  Windows,
-  SysUtils,
   Types,
   Classes,
   Graphics,
   Controls,
   Character,
-  GameText,
   Display,
-  Anigrp30,
-  Engine,
-  Resource,
-  Logfile;
-  
+  Anigrp30;
+
 type
   InformationRect = record
     rect : TRect;
@@ -139,11 +131,20 @@ type
 
 implementation
 uses
-  AniDemo;
+  AniDemo,
+{$IFDEF DirectX}
+  DXUtil,
+  DXEffects,
+{$ENDIF}
+  SysUtils,
+  GameText,
+  Engine,
+  Resource,
+  Logfile;
+
 const
   TRAININGJUMP : integer = 10;
   TRAININGBASE : integer = 20;
-
 
 { TStatistics }
 
@@ -754,7 +755,6 @@ procedure TStatistics.CreateCollisionRects;
 var
   i, j : integer;
   LineHeight : integer;
-  a : string;
 const
   FailName : string = 'TStatistics.CreateCollisonrects';
 begin

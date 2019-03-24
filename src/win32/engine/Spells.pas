@@ -64,13 +64,10 @@ interface
 uses
   Classes,
   Windows,
-  SysUtils,
   Anigrp30,
   digifx,
-  Engine,
   Character,
-  Resource,
-  LogFile;
+  Resource;
 
 var
   AllSpellList : TStringList;
@@ -713,7 +710,10 @@ uses
   AniDemo,
   Effects,
   Display,
-  Spells1;
+  Spells1,
+  SysUtils,
+  Engine,
+  LogFile;
 
 var
   ProtectionResource : TResource;

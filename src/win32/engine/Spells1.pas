@@ -62,14 +62,9 @@ unit Spells1;
 interface
 
 uses
-  Classes,
   Windows,
-  SysUtils,
-  Engine,
   Character,
-  Resource,
-  Spells,
-  LogFile;
+  Resource;
 
 var
   GreatFoot : TSpell;
@@ -177,6 +172,13 @@ type
 function LoadSpells1 : boolean;
 
 implementation
+
+uses
+  Classes,
+  SysUtils,
+  Engine,
+  Spells,
+  LogFile;
 
 function LoadSpells1 : boolean;
 begin

@@ -74,11 +74,7 @@ uses
   Graphics,
   SysUtils,
   Character,
-  GameText,
-  Anigrp30,
-  Engine,
-  Logfile,
-  Display;
+  GameText;
 
 type
   TScroll = class( TObject )
@@ -106,7 +102,11 @@ type
 
 implementation
 uses
-  AniDemo;
+  AniDemo,
+  Anigrp30,
+  Engine,
+  Logfile,
+  Display;
 
 constructor TScroll.Create;
 var

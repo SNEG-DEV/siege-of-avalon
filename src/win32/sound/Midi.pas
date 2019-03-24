@@ -68,13 +68,13 @@ uses
 
 function CreateMidi : integer; stdcall; external 'Soundlib.dll';
 procedure StopMidi; stdcall; external 'Soundlib.dll';
-function OpenMidi( FileName : pchar ) : integer; stdcall; external 'Soundlib.dll';
+function OpenMidi( FileName : pAnsiChar ) : integer; stdcall; external 'Soundlib.dll';
 function PlayMidi : integer; stdcall; external 'Soundlib.dll';
 procedure FreeMidi; stdcall; external 'Soundlib.dll';
 function SetMidiVolume( Volume : integer ) : integer; stdcall; external 'Soundlib.dll';
 function GetMidiVolume : integer; stdcall; external 'Soundlib.dll';
 
-function OpenMidiSong( FileName : string ) : integer;
+function OpenMidiSong( FileName : AnsiString ) : integer;
 function CreateMidiPlayer : integer;
 procedure StopMidiSong;
 function GetMidiSongVolume : integer;
@@ -120,7 +120,7 @@ begin
   end;
 end; //StopMidiSong
 
-function OpenMidiSong( FileName : string ) : integer;
+function OpenMidiSong( FileName : AnsiString ) : integer;
 const
   FailName : string = 'Midi.OpenMidiSong';
 begin

@@ -362,7 +362,7 @@ var
   BlockPos, BlockSize, L : longint;
   EOB, BB : word;
   Block : TSavBlocks;
-  S : string;
+  S : AnsiString;
   List : TStringList;
   BlockPointer : PBlockPointer;
   i : integer;
@@ -765,7 +765,8 @@ procedure TSavFile.Save;
 var
   Stream : TFileStream;
   Mem : TmemoryStream;
-  S : string;
+  S : AnsiString;
+  SavFileName : string;
   MapFilename : string;
   List : TStringList;
   EOB : word;
@@ -966,9 +967,9 @@ begin
       if not assigned( MapStream ) then
       begin
         try
-          S := ChangeFileExt( FFilename, '.map' );
-          if FileExists( S ) then
-            CopyFile( PChar( S ), PChar( MapFilename ), false );
+          SavFileName := ChangeFileExt( FFilename, '.map' );
+          if FileExists( SavFileName ) then
+            CopyFile( PChar( SavFileName ), PChar( MapFilename ), false );
         except
         end;
       end;
@@ -1019,7 +1020,7 @@ begin
 
       Block := sbIndex;
       Stream.Write( Block, sizeof( Block ) );
-      S := MapIndex.Text;
+      S := AnsiString( MapIndex.Text );
       L := Length( S ) + MapIndex.count * sizeof( TBlockPointer ) + sizeof( L );
       Stream.write( L, sizeof( L ) );
       L := Length( S );
@@ -1035,11 +1036,11 @@ begin
       Block := sbMap;
       Stream.Write( Block, sizeof( Block ) );
       List.Clear;
-      S := 'Map=' + MapName;
+      S := AnsiString( 'Map=' + MapName );
       List.add( S );
-      S := 'Scene=' + SceneName;
+      S := AnsiString( 'Scene=' + SceneName );
       List.add( S );
-      S := List.Text;
+      S := AnsiString( List.Text );
       L := Length( S );
       Stream.write( L, sizeof( L ) );
       if L > 0 then
@@ -1051,11 +1052,11 @@ begin
       i := TravelList.IndexOf( FCurrentMap );
       if i < 0 then
         TravelList.add( FCurrentMap );
-      S := FCurrentMap + '|' + lowercase( CurrentScene );
+      S := AnsiString( FCurrentMap + '|' + lowercase( CurrentScene ) );
       i := TravelList.IndexOf( S );
       if i < 0 then
         TravelList.add( S );
-      S := TravelList.Text;
+      S := AnsiString( TravelList.Text );
       L := Length( S );
       Stream.write( L, sizeof( L ) );
       if L > 0 then
@@ -1064,7 +1065,7 @@ begin
 
       Block := sbJournal;
       Stream.Write( Block, sizeof( Block ) );
-      S := JournalList.Text;
+      S := AnsiString( JournalList.Text );
       L := Length( S );
       Stream.write( L, sizeof( L ) );
       if L > 0 then
@@ -1080,7 +1081,7 @@ begin
 
       Block := sbQuest;
       Stream.Write( Block, sizeof( Block ) );
-      S := QuestList.Text;
+      S := AnsiString( QuestList.Text );
       L := Length( S );
       Stream.write( L, sizeof( L ) );
       if L > 0 then
@@ -1089,7 +1090,7 @@ begin
 
       Block := sbAdventure;
       Stream.Write( Block, sizeof( Block ) );
-      S := AdventureList.Text;
+      S := AnsiString( AdventureList.Text );
       L := Length( S );
       Stream.write( L, sizeof( L ) );
       if L > 0 then
@@ -1119,7 +1120,7 @@ begin
 
       Block := sbDeathScreen;
       Stream.Write( Block, sizeof( Block ) );
-      S := DeathScreen;
+      S := AnsiString( DeathScreen );
       L := Length( S );
       Stream.write( L, sizeof( L ) );
       if L > 0 then

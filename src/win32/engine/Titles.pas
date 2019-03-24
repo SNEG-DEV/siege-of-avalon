@@ -62,10 +62,8 @@ unit Titles;
 interface
 
 uses
-  SysUtils,
   Character,
-  ItemDatabase,
-  LogFile;
+  ItemDatabase;
 
 type
   TTitlesDB = class( TStringDatabase )
@@ -99,6 +97,10 @@ var
   TitlesManager : TTitlesDB;
 
 implementation
+
+uses
+  SysUtils,
+  LogFile;
 
 { TTitlesDB }
 
