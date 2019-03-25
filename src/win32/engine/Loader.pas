@@ -64,10 +64,10 @@ interface
 {$INCLUDE Anigrp30cfg.inc}
 
 uses
-  Classes,
-  Windows,
-  Graphics,
-  SysUtils,
+  System.Classes,
+  System.IOUtils,
+  Vcl.Graphics,
+  System.SysUtils,
   Anigrp30,
   AniDec30,
   Character,
@@ -103,7 +103,7 @@ implementation
 uses
   Parts,
   AniDemo,
-  Variants;
+  System.Variants;
 
 function LoadMap( var Map : TAniMap; const Filename, Scene : string; IgnoreDefaultSprites, IgnoreSceneSprites : boolean ) : boolean;
 var
@@ -330,7 +330,7 @@ var
       while Stream.Position < MaxPos do
       begin
         Stream.Read( iMapPos, sizeof( iMapPos ) );
-        ZeroMemory( @aDiam, sizeof( aDiam ) );
+        aDiam := Default(TDTileInfo);
         i := iMapPos mod Width;
         j := iMapPos div Width;
         Stream.Read( iSlice, sizeof( iSlice ) ); //how many slices filled
@@ -446,7 +446,7 @@ var
     //    Log.Log('Light Zone: '+inttostr(zone));
 
           S := DefaultPath + 'Maps\' + ChangeFileExt( ExtractFilename( LVLFile ), '.zit' );
-          if FileExists( S ) then
+          if TFile.Exists( S ) then
           try
             ZoneStream := TFileStream.Create( S, fmOpenRead or fmShareDenyWrite );
             try
@@ -1150,7 +1150,7 @@ var
       begin
         S := AnsiString( DefaultPath + 'Maps\' + ChangeFileExt( ExtractFilename( LVLFile ), '.zit' ) );
         try
-          if FileExists( S ) then
+          if TFile.Exists( S ) then
             ZoneStream := TFileStream.Create( S, fmOpenRead or fmShareDenyWrite )
         except
         end;
@@ -1190,7 +1190,7 @@ begin
   result := false;
   try
     Log.Log( 'Map File=' + Filename );
-    if not FileExists( Filename ) then
+    if not TFile.Exists( Filename ) then
     begin
       Log.Log( 'File not found' );
       result := false;
@@ -1210,7 +1210,7 @@ begin
     SceneName := lowercase( SceneName );
     CacheFileA := CachePath + ChangeFileExt( ExtractFilename( LVLFile ), '' ) + '_' + SceneName + '.pit';
     CacheFileB := CachePath + ChangeFileExt( ExtractFilename( LVLFile ), '' ) + '_' + SceneName + '.zit';
-    UseCache := ReadCache and FileExists( CacheFileA ) and FileExists( CacheFileB );
+    UseCache := ReadCache and TFile.Exists( CacheFileA ) and TFile.Exists( CacheFileB );
 
     Zones := TStringList.Create;
     try
@@ -1236,7 +1236,7 @@ begin
       begin
         S := AnsiString( DefaultPath + 'Maps\' + ChangeFileExt( ExtractFilename( LVLFile ), '.zit' ));
         try
-          if FileExists( S ) then
+          if TFile.Exists( S ) then
             Stream := TFileStream.Create( S, fmOpenRead or fmShareDenyWrite )
         except
         end;
@@ -1423,7 +1423,7 @@ begin
                     begin
                       if DumpMode then
                       begin
-                        if not FileExists( ArtPath + S + '.pox' ) then
+                        if not TFile.Exists( ArtPath + S + '.pox' ) then
                           Log.Log( '*** Error: Resource does not exist ' + S );
                       end
                       else

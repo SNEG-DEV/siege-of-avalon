@@ -64,7 +64,9 @@ unit Sound;
 interface
 
 uses
-  Classes,
+  System.Classes,
+  System.SysUtils,
+  System.IOUtils,
   Resource;
 
 type
@@ -110,7 +112,6 @@ var
 implementation
 
 uses
-  SysUtils,
   MP3,
   LogFile;
 
@@ -190,7 +191,7 @@ begin
       for i := 0 to NameListCount - 1 do
       begin
         S := AnsiString( SoundPath + 'sfx\' + SoundParser.strings[ i ] + '.wav');
-        if FileExists( S ) then
+        if TFile.Exists( S ) then
         begin
           if DaSoundCardAvailable then
             j := LoadWavSound( S ) + 1

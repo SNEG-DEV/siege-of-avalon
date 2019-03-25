@@ -64,10 +64,11 @@ unit Anigrp30;
 interface
 
 uses
-  Windows,
-  Classes,
-  Graphics,
-  Controls,
+  Winapi.Windows,
+  System.Types,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
   AniDec30,
   AStar,
 {$IFDEF DirectX}
@@ -676,8 +677,8 @@ var
 implementation
 
 uses
-  SysUtils,
-  Forms,
+  System.SysUtils,
+  Vcl.Forms,
 {$IFDEF DirectX}
   DXUtil,
 {$ENDIF}
@@ -3823,8 +3824,8 @@ begin
 {$ENDIF}
 
     //Get mouse position
-    GetCursorPos( MousePosition );
-    MousePosition := ScreenToClient( MousePosition );
+    // GetCursorPos( MousePosition );
+    MousePosition := ScreenToClient( Mouse.CursorPos );
     MouseOverFigure := nil;
     MouseOverHLFigure := nil;
     MouseOverTile := nil;

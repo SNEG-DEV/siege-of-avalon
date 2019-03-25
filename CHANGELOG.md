@@ -17,6 +17,12 @@ All notable changes to this project will be documented in this file.
 - Mod selection - more DLC style - extendable instead of destructive copy/paste exercises.
 - Better multi-language support - right now it is crippled, like other parts of the UI code.
 
+## 2019-03-25
+### Fixed
+- Replaced winapi functions with cross-platform alternatives
+
+### Removed
+- A fair part of windows-ism - Windows unit only left in DirectDraw related stuff
 
 ## 2019-03-24
 ### Added

@@ -1356,7 +1356,7 @@ begin
     prRect.bottom := 600;
     prRect.Right := 800;
   end;
-  ClipCursor( prRect );
+  ClipCursor( prRect ); //TODO: Windows-ism - replace
   Dispose( prRect );
 end; //TNPCBehavior.ContainCursor
 

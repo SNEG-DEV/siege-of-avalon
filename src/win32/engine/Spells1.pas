@@ -62,7 +62,7 @@ unit Spells1;
 interface
 
 uses
-  Windows,
+  System.Types,
   Character,
   Resource;
 
@@ -174,8 +174,8 @@ function LoadSpells1 : boolean;
 implementation
 
 uses
-  Classes,
-  SysUtils,
+  System.Classes,
+  System.SysUtils,
   Engine,
   Spells,
   LogFile;

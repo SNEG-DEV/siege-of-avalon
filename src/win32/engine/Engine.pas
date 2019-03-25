@@ -64,16 +64,16 @@ unit Engine;
 interface
 
 uses
-  Windows,
-  Classes,
+  System.Classes,
+  System.IOUtils,
   Anigrp30,
-  ExtCtrls,
-  Math,
-  SysUtils,
-  INIFiles,
+  Vcl.ExtCtrls,
+  System.Math,
+  System.SysUtils,
+  System.IniFiles,
   DirectX,
   LogFile,
-  Graphics,
+  Vcl.Graphics,
   Resource,
   Titles,
   DFX,
@@ -144,6 +144,7 @@ var
   SOLName : string;
   QuickSave : string;
   BlackScript : string;
+
 implementation
 
 uses
@@ -1597,19 +1598,19 @@ begin
     begin
       Log.Log( '  ' + pList^.Name );
       try
-        DeleteFile( Dir + pList^.Name + '.zit' );
+        TFile.Delete( Dir + pList^.Name + '.zit' );
       except
       end;
       try
-        DeleteFile( Dir + pList^.Name + '.pit' );
+        TFile.Delete( Dir + pList^.Name + '.pit' );
       except
       end;
       try
-        DeleteFile( Dir + pList^.Name + '.dit' );
+        TFile.Delete( Dir + pList^.Name + '.dit' );
       except
       end;
       try
-        DeleteFile( Dir + pList^.Name + '.cit' );
+        TFile.Delete( Dir + pList^.Name + '.cit' );
       except
       end;
       dec( TotalSize, pList^.Size );

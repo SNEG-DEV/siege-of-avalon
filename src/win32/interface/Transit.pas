@@ -62,11 +62,10 @@ unit Transit;
 interface
 
 uses
-  Types,
-  Classes,
-  Controls,
-  Forms,
-  Windows,
+  System.Types,
+  System.Classes,
+  Vcl.Controls,
+  Vcl.Forms,
   DirectX,
   Anigrp30,
   Display,
@@ -167,9 +166,9 @@ implementation
 
 uses
   AniDemo,
-  SysUtils,
+  System.SysUtils,
   Gametext,
-  Graphics,
+  Vcl.Graphics,
   Engine,
   DXEffects,
   DXUtil,

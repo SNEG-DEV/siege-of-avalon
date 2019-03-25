@@ -62,9 +62,10 @@ unit LogFile;
 interface
 
 uses
-  Classes,
-  SysUtils,
-  Windows;
+  System.Classes,
+  System.IOUtils,
+  System.SysUtils,
+  Winapi.Windows;
 
 type
   TLog = class( TFileStream )
@@ -114,10 +115,10 @@ var
 implementation
 
 uses
-  StrUtils,
-  Forms,
+  System.StrUtils,
+  Vcl.Forms,
   Engine,
-  IniFiles;
+  System.IniFiles;
 
 { TLog }
 
@@ -246,10 +247,10 @@ begin
   for i := 1 to ParamCount do
   begin
     sTemp := AnsiString( Trim( ParamStr( i ) ) );
-    if StrUtils.StartsText( 'DEBUG=', sTemp ) then  // Only DEBUG param seems valid
+    if StartsText( 'DEBUG=', sTemp ) then  // Only DEBUG param seems valid
     begin
       DebugSet := True;
-      sTemp := AnsiString( StrUtils.ReplaceText( sTemp, 'DEBUG=', '' ) );
+      sTemp := AnsiString( ReplaceText( sTemp, 'DEBUG=', '' ) );
       if Length( sTemp ) < 1 then
       begin
         BadParam := True;

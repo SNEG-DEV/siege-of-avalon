@@ -67,13 +67,12 @@ uses
 {$IFDEF DirectX}
   DirectX,
 {$ENDIF}
-  Windows,
-  Types,
-  Classes,
-  Graphics,
-  Controls,
-  Forms,
-  ExtCtrls,
+  System.Types,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.ExtCtrls,
   Character,
   Resource,
   Display,
@@ -182,7 +181,7 @@ type
 implementation
 
 uses
-  SysUtils,
+  System.SysUtils,
 {$IFDEF DirectX}
   DXUtil,
   DXEffects,

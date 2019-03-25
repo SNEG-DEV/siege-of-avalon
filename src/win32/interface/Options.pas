@@ -69,13 +69,12 @@ uses
   DXUtil,
   DXEffects,
 {$ENDIF}
-  Windows,
-  SysUtils,
-  Types,
-  Classes,
-  Graphics,
-  Controls,
-  ExtCtrls,
+  System.SysUtils,
+  System.Types,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.ExtCtrls,
   Character,
   GameText,
   Display,
@@ -122,9 +121,12 @@ type
     procedure Init; override;
     procedure Release; override;
   end;
+
 implementation
+
 uses
   AniDemo;
+
 { TOptions }
 
 constructor TOptions.Create;
@@ -680,7 +682,8 @@ var
 begin
   if ScrollState < 0 then
   begin
-    GetCursorPos( P );
+//    GetCursorPos( P );
+    P := Mouse.CursorPos;
     if PtinRect( rect( 670, 319, 690, 333 ), P ) then
     begin //up arrow
       if ScrollState < -1 then
@@ -701,7 +704,8 @@ begin
   end
   else if ScrollState > 0 then
   begin
-    GetCursorPos( P );
+    // GetCursorPos( P );
+    P := Mouse.CursorPos;
     if PtinRect( rect( 670, 352, 690, 365 ), P ) then
     begin //down arrow
       if ScrollState > 1 then

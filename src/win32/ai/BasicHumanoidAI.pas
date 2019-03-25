@@ -83,9 +83,10 @@ interface
 {$INCLUDE Anigrp30cfg.inc}
 
 uses
-  Classes,
-  SysUtils,
-  Graphics,
+  System.Classes,
+  System.SysUtils,
+  System.IOUTils,
+  Vcl.Graphics,
   Character,
   Anigrp30,
   strFunctions,
@@ -532,7 +533,8 @@ var
 
 implementation
 
-uses engine,
+uses
+  Engine,
   LogFile,
   Effects,
   Spells;
@@ -2104,7 +2106,7 @@ begin
   // indicator that the player should talk to this character next
     S := LowerCase( Character.Properties[ 'TalkToMe' ] );
     try
-      if ( S <> '' ) and TalkToMe and FileExists( ArtPath + 'engine\weaponprojectiles\mageblueball.pox' ) then
+      if ( S <> '' ) and TalkToMe and TFile.Exists( ArtPath + 'engine\weaponprojectiles\mageblueball.pox' ) then
       begin
 //          TalkToMeTitles := s;
         TalkToMeCount := StrTokenCount( s, '|' );
@@ -5737,7 +5739,7 @@ begin
       FSummonGuid := '';
     end;
 
-{    if FileExists(ArtPath + 'engine\spells\SummonReceive.pox') and FileExists(ArtPath + 'engine\spells\SummonCast.pox') then
+{    if TFile.Exists(ArtPath + 'engine\spells\SummonReceive.pox') and TFile.Exists(ArtPath + 'engine\spells\SummonCast.pox') then
     begin
       FSummonResource := LoadArtResource('engine\spells\SummonReceive.gif');
       FSummonResource.Alpha := 75;

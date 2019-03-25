@@ -105,7 +105,8 @@ var
 implementation
 
 uses
-  SysUtils,
+  System.SysUtils,
+  System.IOUtils,
   Midi,
   MP3,
   Sound,
@@ -164,7 +165,7 @@ begin
     StopMidiSong;
   end;
   SongType := -1;
-  if FileExists( SongName ) then
+  if TFile.Exists( SongName ) then
   begin
     SongType := 1; //MP3
        //Open the Mp3 Song
@@ -179,7 +180,7 @@ begin
         OpenMP3Song( SongName, True ); //loopit
     end;
   end
-  else if FileExists( ChangeFileExt( SongName, '.MID' ) ) then
+  else if TFile.Exists( ChangeFileExt( SongName, '.MID' ) ) then
   begin //if we cant find this file with .MP3 try it with .MID
     SongType := 2;
     MP3SongOpen := false;
@@ -231,7 +232,7 @@ begin
   DatFile := StringReplace( SongName, '.mp3', '.dat', [ rfIgnoreCase ] );
 
   JustPlayTheSongOnce := false;
-  if FileExists( DatFile ) then
+  if TFile.Exists( DatFile ) then
   begin
    {  AssignFile(F,DatFile);
      Reset(F);

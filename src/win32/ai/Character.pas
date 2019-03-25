@@ -64,11 +64,11 @@ unit Character;
 interface
 
 uses
-  Classes,
-  Windows,
+  System.Classes,
+  Winapi.Windows,
   Anigrp30,
   AniDec30,
-  Graphics,
+  Vcl.Graphics,
 {$IFDEF DirectX}
   DirectX,
 {$ENDIF}
@@ -1098,7 +1098,7 @@ var
 implementation
 
 uses
-  SysUtils,
+  System.SysUtils,
 {$IFDEF DirectX}
   DXUtil,
 {$ENDIF}
@@ -1108,7 +1108,7 @@ uses
   Display,
   Parts,
   Sound,
-  INIFiles,
+  System.IniFiles,
   AI1,
   BasicHumanoidAI,
   UndeadAI,

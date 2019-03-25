@@ -69,10 +69,11 @@ uses
   DXUtil,
   DXEffects,
 {$ENDIF}
-  Windows,
-  Classes,
-  Graphics,
-  SysUtils,
+  System.Types,
+  System.Classes,
+  Vcl.Graphics,
+  System.SysUtils,
+  System.IOUtils,
   Anigrp30,
   Logfile;
 
@@ -143,8 +144,10 @@ type
   end;
 
 implementation
+
 uses
   AniDemo;
+
 { TGameText }
 
 constructor TGameText.Create;
@@ -156,7 +159,6 @@ begin
     Log.LogEntry( FailName );
 {$ENDIF}
   try
-
     LoadText;
     LoadFontGraphic( 'Inventory' );
     LoadDarkFontGraphic( 'Inventory' );
@@ -323,7 +325,7 @@ begin
   try
 
 
-    if FileExists( InterfacePath + 'fntAlphaCoords.dat' ) then
+    if TFile.Exists( InterfacePath + 'fntAlphaCoords.dat' ) then
     begin
       AssignFile( F, InterfacePath + 'fntAlphaCoords.dat' );
       Reset( F );
@@ -345,7 +347,7 @@ begin
       CloseFile( F );
     end;
   //And Now the Dark Font
-    if FileExists( InterfacePath + 'fntDarkAlphaCoords.dat' ) then
+    if TFile.Exists( InterfacePath + 'fntDarkAlphaCoords.dat' ) then
     begin
       AssignFile( F, InterfacePath + 'fntDarkAlphaCoords.dat' );
       Reset( F );
@@ -367,7 +369,7 @@ begin
       CloseFile( F );
     end;
   //And Now the Tiny Font
-    if FileExists( InterfacePath + 'fntTinyCoords.dat' ) then
+    if TFile.Exists( InterfacePath + 'fntTinyCoords.dat' ) then
     begin
       AssignFile( F, InterfacePath + 'fntTinyCoords.dat' );
       Reset( F );
@@ -390,7 +392,7 @@ begin
     end;
 
   //And Now the Mega Tiny Font
-    if FileExists( InterfacePath + 'fntMegaTinyCoords.dat' ) then
+    if TFile.Exists( InterfacePath + 'fntMegaTinyCoords.dat' ) then
     begin
       AssignFile( F, InterfacePath + 'fntMegaTinyCoords.dat' );
       Reset( F );
@@ -412,7 +414,7 @@ begin
       CloseFile( F );
     end;
   //And Now the 13 Tiny Font
-    if FileExists( InterfacePath + 'fnt13Coords.dat' ) then
+    if TFile.Exists( InterfacePath + 'fnt13Coords.dat' ) then
     begin
       AssignFile( F, InterfacePath + 'fnt13Coords.dat' );
       Reset( F );

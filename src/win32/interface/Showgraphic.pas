@@ -68,12 +68,13 @@ uses
   DirectX,
   DXUtil,
 {$ENDIF}
-  Windows,
-  SysUtils,
-  Classes,
-  Graphics,
-  Controls,
-  Forms,
+  System.SysUtils,
+  System.IOUtils,
+  System.Classes,
+  System.Types,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
   Display,
   Anigrp30,
   Music;
@@ -182,7 +183,7 @@ begin
 
     if assigned( pMusic ) then
     begin
-      if FileExists( SoundPath + 'Theme\' + MusicFileName ) then
+      if TFile.Exists( SoundPath + 'Theme\' + MusicFileName ) then
       begin
         pMusic.OpenThisSong( AnsiString ( SoundPath + 'Theme\' + MusicFileName ) );
         pMusic.PlayThisSong;

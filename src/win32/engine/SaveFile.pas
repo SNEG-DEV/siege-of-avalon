@@ -62,9 +62,8 @@ unit SaveFile;
 interface
 
 uses
-  Windows,
-  SysUtils,
-  Classes;
+  System.SysUtils,
+  System.Classes;
 
 type
   TSavBlocks = ( sbMap, sbMapKnown, sbCharacter, sbItem, sbTravel, sbJournal, scAbstract, scSoundPlayer, scPathCorner, scTrigger, scSpriteObject,
@@ -156,6 +155,9 @@ const
   EOBMarker = $4242;
 
 implementation
+
+uses
+  System.IOUtils;
 
 { TSavFile }
 
@@ -430,7 +432,7 @@ begin
   end;
   MapIndex.Clear;
 
-  if not FileExists( FFilename ) then
+  if not TFile.Exists( FFilename ) then
   begin
     NewFormat := true;
     exit;
@@ -446,7 +448,7 @@ begin
   try
 
     IdxFile := ChangeFileExt( Filename, '.idx' );
-    NewFormat := FileExists( IdxFile );
+    NewFormat := TFile.Exists( IdxFile );
     if NewFormat then
     begin
       Stream := TFileStream.create( IdxFile, fmOpenRead or fmShareCompat );
@@ -764,8 +766,8 @@ end;
 procedure TSavFile.Save;
 var
   Stream : TFileStream;
-  Mem : TmemoryStream;
-  S : AnsiString;
+  Mem : TMemoryStream;
+  S : string;
   SavFileName : string;
   MapFilename : string;
   List : TStringList;
@@ -799,16 +801,16 @@ begin
       begin
         //if we're saveing as a new file, but haven't changed anything
         try
-          if FileExists( FFilename ) then
-            CopyFile( PChar( FFilename ), PChar( NewFilename ), false )
+          if TFile.Exists( FFilename ) then
+            TFile.Copy( FFilename, NewFilename, True )
           else
-            DeleteFile( NewFilename );
+            TFile.Delete( NewFilename );
         except
         end;
       end
       else if NewFormat and not NewFile and not NeedProperties then
       begin
-        if FileExists( FFilename ) then
+        if TFile.Exists( FFilename ) then
         begin
           //Save in place - dont touch unchanged data before current block
           //Move current block to end
@@ -883,7 +885,7 @@ begin
       end
       else
       begin
-        if FileExists( FFilename ) then
+        if TFile.Exists( FFilename ) then
         begin
           Mem := TMemoryStream.create;
           try
@@ -968,8 +970,8 @@ begin
       begin
         try
           SavFileName := ChangeFileExt( FFilename, '.map' );
-          if FileExists( SavFileName ) then
-            CopyFile( PChar( SavFileName ), PChar( MapFilename ), false );
+          if TFile.Exists( SavFileName ) then
+            TFile.Copy( SavFileName, MapFilename, True );
         except
         end;
       end;
@@ -991,7 +993,7 @@ begin
       end
       else
       begin
-        if FileExists( MapFilename ) then
+        if TFile.Exists( MapFilename ) then
           Stream := TFileStream.create( MapFilename, fmOpenReadWrite or fmShareCompat )
         else
           Stream := TFileStream.create( MapFilename, fmCreate or fmShareCompat );

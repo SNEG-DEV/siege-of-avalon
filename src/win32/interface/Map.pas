@@ -62,13 +62,12 @@ unit Map;
 interface
 
 uses
-  SysUtils,
-  Types,
-  Classes,
-  Controls,
-  Windows,
+  System.SysUtils,
+  System.Types,
+  System.Classes,
+  Vcl.Controls,
   Gametext,
-  Graphics,
+  Vcl.Graphics,
   DirectX,
   Anigrp30,
   AniDec30,

@@ -65,13 +65,13 @@ interface
 
 uses
   DirectX,
-  Windows,
-  Classes,
-  Controls,
+  System.Types,
+  System.Classes,
+  Vcl.Controls,
   Character,
   Display,
   Anigrp30,
-  INIFiles;
+  System.IniFiles;
 
 
 type
@@ -134,8 +134,8 @@ function CheckPartyOne( sTmp : string ) : boolean;
 implementation
 
 uses
-  SysUtils,
-  Graphics,
+  System.SysUtils,
+  Vcl.Graphics,
   DXUtil,
   DXEffects,
   Engine,

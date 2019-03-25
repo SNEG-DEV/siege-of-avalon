@@ -64,13 +64,14 @@ interface
 {$INCLUDE Anigrp30cfg.inc}
 
 uses
-  Classes,
-  Windows,
-  SysUtils,
-  Graphics,
+  System.Classes,
+  System.Types,
+  System.SysUtils,
+  System.IOUtils,
+  Vcl.Graphics,
   Anigrp30,
   AniDec30,
-  IniFiles,
+  System.IniFiles,
 {$IFDEF DirectX}
   DirectX,
   DXUtil,
@@ -361,7 +362,7 @@ begin
 {$ENDIF}
   try
 
-    if not FileExists( cFile ) then
+    if not TFile.Exists( cFile ) then
     begin
       exit;
     end;
@@ -437,7 +438,7 @@ begin
     end
     else
     begin
-      if not FileExists( POXFile ) then
+      if not TFile.Exists( POXFile ) then
         exit;
       Convert := false;
     end;
@@ -699,7 +700,7 @@ begin
   S := FileName;
   INI := nil;
   BM := nil;
-  if FileExists(S) then begin
+  if TFile.Exists(S) then begin
     GIF := TGIF.Create;
     try
       GIF.GifConvert(S);

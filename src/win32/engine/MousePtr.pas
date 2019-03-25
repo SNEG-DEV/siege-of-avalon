@@ -68,11 +68,12 @@ uses
   DirectX,
   DXUtil,
 {$ENDIF}
-  Windows,
-  SysUtils,
-  Classes,
-  Graphics,
-  ExtCtrls,
+  System.Types,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.ExtCtrls,
   Anigrp30,
   LogFile;
 
@@ -138,7 +139,7 @@ begin
     inherited;
     BMBack := TBitmap.Create;
   //transparent color
-    InvisColor := rgb( 255, 0, 255 );
+    InvisColor := $00FF00FF;
 
     BMBack.LoadFromFile( InterfacePath + 'siegecursorsheet.bmp' );
     DXMousePtr := DDGetImage( lpDD, BMBack, InvisColor, False );
@@ -150,7 +151,8 @@ begin
 
     FPlotDirty := false;
     DXSurface := lpDDSFront;
-    GetCursorPos( mPt );
+    // GetCursorPos( mPt );
+    mPt := Mouse.CursorPos;
     pr := Rect( mPt.x, mPt.y, mPt.x + PtrWidth, mPt.y + PtrHeight );
     DXDirty.BltFast( 0, 0, DXSurface, @pr, DDBLTFAST_WAIT );
 
@@ -198,8 +200,8 @@ begin
     exit;
 
   PrevPt := mPt;
-  GetCursorPos( mPt );
-
+//  GetCursorPos( mPt );
+  mPt := Mouse.CursorPos;
   if ( MouseAnimationCycle > 0 ) and ( MouseCounter > MouseAnimationCycle ) then
   begin
     inc( MouseFrame );

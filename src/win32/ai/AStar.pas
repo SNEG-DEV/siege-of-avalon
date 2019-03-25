@@ -62,7 +62,7 @@ unit AStar;
 interface
 
 uses
-  Windows;
+  Winapi.Windows;
 
 const
   MinSearch = -128;

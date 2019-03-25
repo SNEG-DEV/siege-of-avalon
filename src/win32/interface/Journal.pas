@@ -68,16 +68,15 @@ uses
   DirectX,
   DXUtil,
 {$ENDIF}
-  Windows,
-  SysUtils,
-  Types,
-  Classes,
-  Graphics,
-  Controls,
-  Forms,
-  jpeg,
-  iniFiles,
-  FileCtrl,
+  System.SysUtils,
+  System.IOUtils,
+  System.Types,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Imaging.jpeg,
+  System.IniFiles,
   Resource,
   GameText,
   Display,
@@ -85,6 +84,7 @@ uses
   AdventureLog,
   LogFile,
   Engine;
+
 type
 
   TJournal = class( TDisplay )
@@ -119,9 +119,12 @@ type
     procedure Init; override;
     procedure Release; override;
   end;
+
 implementation
+
 uses
   AniDemo;
+
 { TJournal }
 
 constructor TJournal.Create;
@@ -191,7 +194,7 @@ begin
   //JournalLog.LogDirectory:=ExtractFilePath(Application.ExeName) + 'Journal\';
     INI := TIniFile.Create( DefaultPath + 'siege.ini' );
 
-    if ( INI.readinteger( 'Settings', 'JournalFont', 0 ) = 1 ) and SysUtils.DirectoryExists( ArtPath + 'journalalt' ) then
+    if ( INI.readinteger( 'Settings', 'JournalFont', 0 ) = 1 ) and TDirectory.Exists( ArtPath + 'journalalt' ) then
       JournalLog.LogDirectory := ArtPath + 'journalalt\'
     else
       JournalLog.LogDirectory := ArtPath + 'journal\';
@@ -375,7 +378,7 @@ begin
   //get the pic, if it exists
     if ( CurrentLogIndex >= 0 ) and ( CurrentLogIndex < JournalLog.LogFileList.count ) then
     begin
-      if FileExists( JournalLog.LogDirectory + ChangeFileExt( JournalLog.LogFileList.strings[ CurrentLogIndex ], '.bmp' ) ) then
+      if TFile.Exists( JournalLog.LogDirectory + ChangeFileExt( JournalLog.LogFileList.strings[ CurrentLogIndex ], '.bmp' ) ) then
       begin
         PicName := JournalLog.LogDirectory + ChangeFileExt( JournalLog.LogFileList.strings[ CurrentLogIndex ], '.bmp' );
         if LogText <> '' then
@@ -391,7 +394,7 @@ begin
         if LogText <> '' then
           pText.PlotTextBlockAroundBox( Logtext, 50, 750, 50, 240, rect( PicXY.X, PicXY.Y, PicXY.X + PicWidth + 20, PicXY.Y + PicHeight + 20 ) );
       end
-      else if FileExists( JournalLog.LogDirectory + ChangeFileExt( JournalLog.LogFileList.strings[ CurrentLogIndex ], '.jpg' ) ) then
+      else if TFile.Exists( JournalLog.LogDirectory + ChangeFileExt( JournalLog.LogFileList.strings[ CurrentLogIndex ], '.jpg' ) ) then
       begin
         PicName := JournalLog.LogDirectory + ChangeFileExt( JournalLog.LogFileList.strings[ CurrentLogIndex ], '.jpg' );
         if LogText <> '' then

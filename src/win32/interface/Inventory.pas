@@ -69,12 +69,12 @@ uses
   DXUtil,
   DXEffects,
 {$ENDIF}
-  Windows,
-  SysUtils,
-  Types,
-  Classes,
-  Graphics,
-  Controls,
+  Winapi.Windows,
+  System.SysUtils,
+  System.Types,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
   Character,
   Resource,
   GameText,
@@ -162,7 +162,7 @@ type
   public
     Character : Tcharacter;
     GroundList : TList;
-    Locked : bool;
+    Locked : Boolean;
     DrawGuy : TNotifyEvent;
     constructor Create;
     destructor Destroy; override;
@@ -172,8 +172,10 @@ type
   end;
 
 implementation
+
 uses
   AniDemo;
+
 { TInventory }
 
 const
@@ -1635,7 +1637,7 @@ begin
       prRect.bottom := 600;
       prRect.Right := 800;
     end;
-    ClipCursor( prRect );
+    ClipCursor( prRect ); //TODO: Windows-ism - replace
     Dispose( prRect );
   except
     on E : Exception do

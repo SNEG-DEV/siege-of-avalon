@@ -62,8 +62,9 @@ unit ItemDatabase;
 interface
 
 uses
-  SysUtils,
-  Classes,
+  System.SysUtils,
+  System.IOUtils,
+  System.Classes,
   Resource,
   LogFile;
 
@@ -97,7 +98,7 @@ begin
   FFileName := Filename;
   FDataBase := TStringList.Create;
   FItemList := TStringList.Create;
-  if FileExists( FFileName ) then
+  if TFile.Exists( FFileName ) then
   begin
     FDataBase.LoadFromFile( FFileName );
     for iLoop := 0 to FDatabase.Count - 1 do

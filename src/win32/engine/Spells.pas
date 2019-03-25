@@ -62,8 +62,9 @@ unit Spells;
 interface
 
 uses
-  Classes,
-  Windows,
+  System.Classes,
+  Winapi.Windows,
+  System.Types,
   Anigrp30,
   digifx,
   Character,
@@ -711,7 +712,7 @@ uses
   Effects,
   Display,
   Spells1,
-  SysUtils,
+  SYstem.SysUtils,
   Engine,
   LogFile;
 

@@ -64,9 +64,11 @@ unit DFX;
 interface
 
 uses
-  Windows,
-  Classes,
-  Graphics,
+  Winapi.Windows,
+  System.Types,
+  System.IOUtils,
+  System.Classes,
+  Vcl.Graphics,
   digifx;
 
 const
@@ -145,7 +147,7 @@ procedure DFXClearBitPlane( Plane : BITPLANE; Color : DWORD );
 implementation
 
 uses
-  SysUtils,
+  System.SysUtils,
   DXUtil,
   Anigrp30,
   LogFile;

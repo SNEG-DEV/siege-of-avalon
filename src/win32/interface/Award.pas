@@ -69,12 +69,11 @@ uses
   DXUtil,
   DXEffects,
 {$ENDIF}
-  Windows,
-  SysUtils,
-  Classes,
-  Types,
-  Graphics,
-  Controls,
+  System.SysUtils,
+  System.Classes,
+  System.Types,
+  Vcl.Graphics,
+  Vcl.Controls,
   Character,
   GameText,
   Display,
@@ -111,9 +110,12 @@ type
     procedure Init; override;
     procedure Release; override;
   end;
+
 implementation
+
 uses
   AniDemo;
+
 { TAward }
 
 constructor TAward.Create;
@@ -192,16 +194,16 @@ begin
     if TitleCount > 15 then
     begin
       BMBack.LoadFromFile( InterfacePath + 'logPrevious.bmp' );
-      DXPrev := DDGetImage( lpDD, BMBack, rgb( 255, 0, 255 ), False );
+      DXPrev := DDGetImage( lpDD, BMBack, $00FF00FF, False );
 
       BMBack.LoadFromFile( InterfacePath + 'logPrevious2.bmp' );
-      DXPrev2 := DDGetImage( lpDD, BMBack, rgb( 255, 0, 255 ), False );
+      DXPrev2 := DDGetImage( lpDD, BMBack, $00FF00FF, False );
 
       BMBack.LoadFromFile( InterfacePath + 'logNext.bmp' );
-      DXNext := DDGetImage( lpDD, BMBack, rgb( 255, 0, 255 ), False );
+      DXNext := DDGetImage( lpDD, BMBack, $00FF00FF, False );
 
       BMBack.LoadFromFile( InterfacePath + 'logNext2.bmp' );
-      DXNext2 := DDGetImage( lpDD, BMBack, rgb( 255, 0, 255 ), False );
+      DXNext2 := DDGetImage( lpDD, BMBack, $00FF00FF, False );
     end;
     pr := Rect( 0, 0, ResWidth, ResHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
@@ -214,13 +216,13 @@ begin
     DXBackToGame := DDGetImage( lpDD, BMBack, $00FFFF00, False );
 
     BMBack.LoadFromFile( InterfacePath + 'LogLeftGeeble.bmp' );
-    DXLeftGeeble := DDGetImage( lpDD, BMBack, rgb( 255, 0, 255 ), False );
+    DXLeftGeeble := DDGetImage( lpDD, BMBack, $00FF00FF, False );
     BMBack.LoadFromFile( InterfacePath + 'LogRightGeeble.bmp' );
-    DXRightGeeble := DDGetImage( lpDD, BMBack, rgb( 255, 0, 255 ), False );
+    DXRightGeeble := DDGetImage( lpDD, BMBack, $00FF00FF, False );
 
 
     BMBack.LoadFromFile( InterfacePath + 'LogScreen.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, rgb( 255, 0, 255 ), False );
+    DXBack := DDGetImage( lpDD, BMBack, $00FF00FF, False );
 
     DrawAlpha( DXBack, Rect( 0, 380, 213, 380 + 81 ), Rect( 0, 0, 213, 81 ), DXLeftGeeble, True, 80 );
     DrawAlpha( DXBack, Rect( 452, 0, 452 + 213, 81 ), Rect( 0, 0, 213, 81 ), DXRightGeeble, True, 80 );

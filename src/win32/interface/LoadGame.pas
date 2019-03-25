@@ -69,14 +69,14 @@ uses
   DXUtil,
   DXEffects,
 {$ENDIF}
-  Windows,
-  SysUtils,
-  Types,
-  Classes,
-  Graphics,
-  Controls,
-  Forms,
-  ExtCtrls,
+  System.SysUtils,
+  System.Types,
+  System.Classes,
+  System.IOUtils,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.ExtCtrls,
   GameText,
   Display,
   Anigrp30,
@@ -166,11 +166,14 @@ type
     procedure Init; override;
     procedure Release; override;
   end;
+
 implementation
+
 uses
   AniDemo,
   Resource,
   SaveFile;
+
 { TLoadGame }
 
 constructor TLoadGame.Create;
@@ -688,7 +691,8 @@ begin
   try
     if ScrollState < 0 then
     begin
-      GetCursorPos( P );
+      P := Mouse.CursorPos;
+//      GetCursorPos( P );
       if PtinRect( rect( 673, 203, 694, 218 ), P ) then
       begin //up arrow
         if ScrollState < -1 then
@@ -708,7 +712,8 @@ begin
     end
     else if ScrollState > 0 then
     begin
-      GetCursorPos( P );
+      // GetCursorPos( P );
+      P := Mouse.CursorPos;
       if PtinRect( rect( 673, 234, 694, 250 ), P ) then
       begin //down arrow
         if ScrollState > 1 then
@@ -903,23 +908,23 @@ begin
            //if PtInRect(rect(422,509,474,541),point(x,y)) then begin //Yes pressed- del file
         if PtInRect( rect( nRect.left - 10 + 53, nRect.top + 32 + 78, nRect.left - 10 + 104, nRect.top + 32 + 109 ), point( x, y ) ) then
         begin //Yes pressed- del file
-          DeleteFile( PChar( ExtractFilePath( Application.ExeName ) + 'Games\' + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.sav' ) );
-          if FileExists( ExtractFilePath( Application.ExeName ) + 'Games\' + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.bmp' ) then
-            DeleteFile( PChar( ExtractFilePath( Application.ExeName ) + 'Games\' + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.bmp' ) );
+          TFile.Delete( ExtractFilePath( Application.ExeName ) + 'Games\' + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.sav' );
+          if TFile.Exists( ExtractFilePath( Application.ExeName ) + 'Games\' + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.bmp' ) then
+            TFile.Delete( ExtractFilePath( Application.ExeName ) + 'Games\' + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.bmp' );
           try
-            if FileExists( ExtractFilePath( Application.ExeName ) + 'Games\' + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.idx' ) then
-              DeleteFile( PChar( ExtractFilePath( Application.ExeName ) + 'Games\' + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.idx' ) );
+            if TFile.Exists( ExtractFilePath( Application.ExeName ) + 'Games\' + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.idx' ) then
+              TFile.Delete( ExtractFilePath( Application.ExeName ) + 'Games\' + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.idx' );
           except
           end;
           try
-            if FileExists( ExtractFilePath( Application.ExeName ) + 'Games\' + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.map' ) then
-              DeleteFile( PChar( ExtractFilePath( Application.ExeName ) + 'Games\' + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.map' ) );
+            if TFile.Exists( ExtractFilePath( Application.ExeName ) + 'Games\' + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.map' ) then
+              TFile.Delete( ExtractFilePath( Application.ExeName ) + 'Games\' + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.map' );
           except
           end;
           a := ChangeFileExt( ArtPath + CharacterGif, '.pox' );
-              //if FileExists(a) then
-                 //DeleteFile(PChar(a)); -> This is OUT in a June 11 modification
-          SelectRect.delete( CurrentSelectedListItem );
+              //if TFile.Exists(a) then
+                 //TDelete.File(a); -> This is OUT in a June 11 modification
+          SelectRect.Delete( CurrentSelectedListItem );
           CurrentSelectedListItem := -1;
           MoveList;
           Paint;
@@ -1281,7 +1286,7 @@ begin
     else
       PicName := '';
 
-    if ( PicName <> '' ) and FileExists( PicName ) then
+    if ( PicName <> '' ) and TFile.Exists( PicName ) then
     begin
       BM := TBitmap.Create;
       InvisColor := $00FFFF00;
@@ -1480,7 +1485,7 @@ begin
     FoundCharacters := false;
     try
       Filename := ExtractFilePath( Application.ExeName ) + 'games\' + GameName + '.idx';
-      if not FileExists( Filename ) then
+      if not TFile.Exists( Filename ) then
         Filename := ExtractFilePath( Application.ExeName ) + 'games\' + GameName + '.sav';
     //Level:=lowercase(ChangeFileExt(ExtractFilename(LVLFile),''));
     //Scene:=CurrentScene;
@@ -1545,7 +1550,7 @@ begin
       exit;
     end;
 
-    result := true;
+    Result := True;
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );

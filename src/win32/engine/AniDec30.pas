@@ -64,8 +64,8 @@ unit AniDec30;
 interface
 
 uses
-  Windows,
-  Graphics;
+  Winapi.Windows,
+  Vcl.Graphics;
 
 const
   MaxItems = 2047;

@@ -64,15 +64,16 @@ interface
 {$INCLUDE Anigrp30cfg.inc}
 
 uses
-  Windows,
-  Messages,
-  SysUtils,
-  Classes,
-  Graphics,
-  Controls,
-  Forms,
-  ExtCtrls,
-  IniFiles,
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.IOUtils,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.ExtCtrls,
+  System.IniFiles,
   LogFile,
   Spells,
 {$IFDEF DirectX}
@@ -97,7 +98,6 @@ uses
   Journal,
   CharCreation,
   Intro,
-  FileCtrl,
   Options,
   NPCBehavior,
   LoaderBox,
@@ -350,7 +350,6 @@ procedure ForceNotReadOnly( const FileName : string );
 implementation
 
 uses
-  System.IOUtils,
   strFunctions,
   digifx,
   DFX,
@@ -386,44 +385,6 @@ var
   DlgAdvLog : TAdvLog;
   DlgRoster : TAddKickNPC;
   DlgTransit : TTransit;
-
-function WinExecAndWait32( FileName : string; Visibility : Integer ) : Integer;
-var
-  zAppName : array[ 0..512 ] of Char;
-  zCurDir : array[ 0..255 ] of Char;
-  WorkDir : string;
-  STARTUPINFO : TStartupInfo;
-  ProcessInfo : TProcessInformation;
-  tt : DWORD;
-begin
-  StrPCopy( zAppName, FileName );
-  GetDir( 0, WorkDir );
-  StrPCopy( zCurDir, WorkDir );
-  FillChar( STARTUPINFO, SizeOf( STARTUPINFO ), #0 );
-  STARTUPINFO.cb := SizeOf( STARTUPINFO );
-
-  STARTUPINFO.dwFlags := STARTF_USESHOWWINDOW;
-  STARTUPINFO.wShowWindow := Visibility;
-  if not CreateProcess( nil,
-    zAppName, { pointer to command line string }
-    nil, { pointer to process security attributes }
-    nil, { pointer to thread security attributes }
-    False, { handle inheritance flag }
-    CREATE_NEW_CONSOLE or { creation flags }
-    NORMAL_PRIORITY_CLASS,
-    nil, { pointer to new environment block }
-    nil, { pointer to current directory name }
-    STARTUPINFO, { pointer to STARTUPINFO }
-    ProcessInfo ) then
-    Result := -1 { pointer to PROCESS_INF }
-
-  else
-  begin
-    WaitForSingleObject( ProcessInfo.hProcess, INFINITE );
-    GetExitCodeProcess( ProcessInfo.hProcess, tt );
-    Result := Integer( tt );
-  end;
-end;
 
 procedure TfrmMain.CloseAllDialogs( Sender : TObject );
 var
@@ -683,15 +644,15 @@ begin
     ForceNotReadOnly( DefaultPath + 'games\' + TempGame + '.map' );
 
     try
-      DeleteFile( PChar( DefaultPath + 'games\' + TempGame + '.sav' ) );
+      TFile.Delete( DefaultPath + 'games\' + TempGame + '.sav' );
     except
     end;
     try
-      DeleteFile( PChar( DefaultPath + 'games\' + TempGame + '.idx' ) );
+      TFile.Delete( DefaultPath + 'games\' + TempGame + '.idx' );
     except
     end;
     try
-      DeleteFile( PChar( DefaultPath + 'games\' + TempGame + '.map' ) );
+      TFile.Delete( DefaultPath + 'games\' + TempGame + '.map' );
     except
     end;
 
@@ -1227,7 +1188,7 @@ begin
     GameMap.UseAmbientOnly := ( LowerCase( INI.ReadString( 'Settings', 'AmbientOnly', '' ) ) = 'true' );
     Log.flush;
 
-    if ( INI.ReadInteger( 'Settings', 'JournalFont', 0 ) = 1 ) and SysUtils.DirectoryExists( ArtPath + 'journalalt' ) then
+    if ( INI.ReadInteger( 'Settings', 'JournalFont', 0 ) = 1 ) and TDirectory.Exists( ArtPath + 'journalalt' ) then
       AdventureLog1.LogDirectory := ArtPath + 'journalalt\'
     else
       AdventureLog1.LogDirectory := ArtPath + 'journal\';
@@ -1890,10 +1851,10 @@ begin
           GameName := QuickSave;
           {        S1:=DefaultPath+'games\'+TempGame+'.sav';
                   S2:=DefaultPath+'games\'+GameName+'.sav';
-                  if FileExists(S1) then begin
+                  if TFile.Exists(S1) then begin
                     try
-                      if FileExists(S2) then DeleteFile(PChar(S2));
-                      CopyFile(PChar(S1),Pchar(S2),False);
+                      if TFile.Exists(S2) then TFile.Delete(S2);
+                      TFile.Copy(S1, S2, True);
                     except
                       Log.Log('Error: *** Could not copy '+S1+' to ' + S2);
                     end;
@@ -1970,7 +1931,7 @@ begin
           repeat
             Inc( i );
             S := DefaultPath + 'SS' + IntToHex( i, 8 ) + '.bmp';
-          until not FileExists( S );
+          until not TFile.Exists( S );
           BM.PixelFormat := pf24bit;
           BM.SaveToFile( S );
         finally
@@ -2017,7 +1978,7 @@ begin
             if j > 0 then
             begin
               S := Parse( AnsiString( Copy( TTrigger( FigureInstances.Objects[ i ] ).OnTrigger, j + 8, Length( TTrigger( FigureInstances.Objects[ i ] ).OnTrigger ) - j - 7 )), 0, ',' );
-              if FileExists( FindMap( S ) ) then
+              if TFile.Exists( FindMap( S ) ) then
               begin
                 MouseCursor.SetFrame( 1 );
                 Zonable := True;
@@ -2296,15 +2257,15 @@ begin
 
     Log.Log( 'Shutting down application' );
     try
-      DeleteFile( PChar( DefaultPath + 'games\' + TempGame + '.sav' ) );
+      TFile.Delete( DefaultPath + 'games\' + TempGame + '.sav' );
     except
     end;
     try
-      DeleteFile( PChar( DefaultPath + 'games\' + TempGame + '.idx' ) );
+      TFile.Delete( DefaultPath + 'games\' + TempGame + '.idx' );
     except
     end;
     try
-      DeleteFile( PChar( DefaultPath + 'games\' + TempGame + '.map' ) );
+      TFile.Delete( DefaultPath + 'games\' + TempGame + '.map' );
     except
     end;
 
@@ -2381,7 +2342,7 @@ begin
   end;
   if Assigned( lpDD ) then
     lpDD.FlipToGDISurface;
-  MessageBox( Handle, PChar( E.Message ), 'Failure', MB_OK );
+  MessageBox( Handle, PChar(E.Message), 'Failure', MB_OK );
   Application.Terminate;
 end;
 
@@ -3800,7 +3761,7 @@ try
     DlgTransit:=TTransit.Create;
 
     S:=InterfacePath+'coordinates.dat';
-    if FileExists(S) then
+    if TFile.Exists(S) then
       INI:=TINIFile.create(S)
     else
       INI:=nil;
@@ -3870,15 +3831,15 @@ begin
       ForceNotReadOnly( DefaultPath + 'games\~End of Level.idx' );
       ForceNotReadOnly( DefaultPath + 'games\~End of Level.map' );
       try
-        CopyFile( PChar( DefaultPath + 'games\' + GameName + '.sav' ), PChar( DefaultPath + 'games\~End of Level.sav' ), False );
+        TFile.Copy( DefaultPath + 'games\' + GameName + '.sav', DefaultPath + 'games\~End of Level.sav', True );
       except
       end;
       try
-        CopyFile( PChar( DefaultPath + 'games\' + GameName + '.idx' ), PChar( DefaultPath + 'games\~End of Level.idx' ), False );
+        TFile.Copy( DefaultPath + 'games\' + GameName + '.idx', DefaultPath + 'games\~End of Level.idx', True );
       except
       end;
       try
-        CopyFile( PChar( DefaultPath + 'games\' + GameName + '.map' ), PChar( DefaultPath + 'games\~End of Level.map' ), False );
+        TFile.Copy( DefaultPath + 'games\' + GameName + '.map', DefaultPath + 'games\~End of Level.map', True );
       except
       end;
       Log.Log( 'ClearOnDemandResources' );
@@ -3944,11 +3905,11 @@ begin
     else
     begin
       S := ArtPath + 'Transition\' + TransitionScreen + '.bmp';
-      if not FileExists( S ) then
+      if not TFile.Exists( S ) then
         S := DefaultTransition;
     end;
 
-    if FileExists( S ) then
+    if TFile.Exists( S ) then
       DlgProgress.FileName := S
     else
       DlgProgress.FileName := '';
@@ -3979,12 +3940,12 @@ begin
         if ReadCache or WriteCache then
         begin
           LVLDate := GetFileDate( LVLFile );
-          if not SysUtils.DirectoryExists( S ) then
-            CreateDirectory( PChar( S ), nil );
-          CacheExists := FileExists( CacheFileA ) and FileExists( CacheFileB );
+          if not TDirectory.Exists( S ) then
+            TDirectory.CreateDirectory( S );
+          CacheExists := TFile.Exists( CacheFileA ) and TFile.Exists( CacheFileB );
           if CacheExists then
           begin
-            if FileExists( CacheFileD ) then
+            if TFile.Exists( CacheFileD ) then
             begin
               try
                 Stream := TFileStream.Create( CacheFileD, fmOpenRead or fmShareDenyWrite );
@@ -3995,10 +3956,10 @@ begin
                   begin
                     Log.Log( 'Deleting cache' );
                     try
-                      DeleteFile( PChar( CacheFileA ) );
-                      DeleteFile( PChar( CacheFileB ) );
-                      DeleteFile( PChar( CacheFileC ) );
-                      DeleteFile( PChar( CacheFileD ) );
+                      TFile.Delete( CacheFileA );
+                      TFile.Delete( CacheFileB );
+                      TFile.Delete( CacheFileC );
+                      TFile.Delete( CacheFileD );
                     except
                     end;
                     CacheExists := False;
@@ -4053,7 +4014,7 @@ begin
       end;
       Log.Log( 'Map load complete' );
 
-      if FileExists( CacheFileD ) then
+      if TFile.Exists( CacheFileD ) then
       begin
         try
           Stream := TFileStream.Create( CacheFileD, fmOpenReadWrite or fmShareCompat );
@@ -4100,7 +4061,7 @@ begin
       DlgProgress.SetBar( Round( DlgProgress.MaxValue * 0.87 ) );
       if UseCache then
       begin
-        if FileExists( CacheFileC ) then
+        if TFile.Exists( CacheFileC ) then
         begin
           Stream := TFileStream.Create( CacheFileC, fmOpenRead or fmShareDenyWrite );
           try
@@ -4242,7 +4203,7 @@ begin
           DlgProgress.SetBar( Round( DlgProgress.MaxValue * 0.98 ) );
 
           S := DefaultPath + 'Maps\' + ChangeFileExt( ExtractFileName( LVLFile ), '.zit' );
-          if FileExists( S ) then
+          if TFile.Exists( S ) then
           begin
             ForceNotReadOnly( S );
             Stream := TFileStream.Create( S, fmOpenReadWrite or fmShareDenyWrite );
@@ -4575,8 +4536,8 @@ begin
       TravelList.Add( S );
 
     EOB := EOBMarker;
-    if not SysUtils.DirectoryExists( DefaultPath + 'games' ) then
-      SysUtils.ForceDirectories( DefaultPath + 'games' );
+    if not TDirectory.Exists( DefaultPath + 'games' ) then
+      ForceDirectories( DefaultPath + 'games' );
 
     FileName := DefaultPath + 'games\' + GameName + '.sav';
     ForceNotReadOnly( FileName );
@@ -5188,7 +5149,7 @@ begin
     MouseCursor.Enabled := False;
 
     S := FindMap( NewFile );
-    if not ( FileExists( S ) ) then
+    if not ( TFile.Exists( S ) ) then
     begin
       Log.Log( '*** Error: Map not found: ' + NewFile );
       Exit;
@@ -5474,21 +5435,21 @@ begin
           NextSong := SongParser.Strings[ i ];
 
           S := SoundPath + NextSong + '.mp3';
-          if FileExists( S ) then
+          if TFile.Exists( S ) then
           begin
             SongDuration := 2400;
           end;
 
           {//Prevent play of MP3
           S:=SoundPath+NextSong+'.mp3';
-          if FileExists(S) then begin
+          if TFile.Exists(S) then begin
             NextSong:='';
             i:=0;
             repeat
               NextSong:=SongParser.strings[i];
               S:=SoundPath+NextSong+'.mp3';
               inc(i);
-            until (i>=SongParser.Count) or not FileExists(S);
+            until (i>=SongParser.Count) or not TFile.Exists(S);
           end; }
 
           if NextSong <> '' then
@@ -5673,7 +5634,7 @@ begin
     INI := TIniFile.Create( DefaultPath + 'siege.ini' );
     try
       PlayerResource := 'players\' + INI.ReadString( 'Character', 'Resource', 'player' ) + '.pox';
-      if not FileExists( ArtPath + PlayerResource ) then
+      if not TFile.Exists( ArtPath + PlayerResource ) then
       begin
         //Message could not create character
         PostMessage( Handle, WM_StartMainMenu, 0, 0 ); //Restart the intro
@@ -5708,7 +5669,7 @@ begin
 
       if not System.IOUtils.TPath.IsPathRooted( LVLFile ) then
         LVLFile := DefaultPath + 'Maps\' + System.IOUtils.TPath.GetFileName( LVLFile );
-      if not FileExists( LVLFile ) then
+      if not TFile.Exists( LVLFile ) then
       begin // jrs
         Log.log( FailName, 'Unable to open game map file %s', [ LVLFile ] );
         Log.Flush;
@@ -6035,29 +5996,29 @@ begin
         ForceNotReadOnly( ChangeFileExt( S2, '.idx' ) );
         ForceNotReadOnly( ChangeFileExt( S2, '.map' ) );
         try
-          DeleteFile( PChar( S1 ) );
+          TFile.Delete( S1 );
         except
         end;
         try
-          DeleteFile( PChar( ChangeFileExt( S1, '.idx' ) ) );
+          TFile.Delete( ChangeFileExt( S1, '.idx' ) );
         except
         end;
         try
-          DeleteFile( PChar( ChangeFileExt( S1, '.map' ) ) );
+          TFile.Delete( ChangeFileExt( S1, '.map' ) );
         except
         end;
 
         try
-          CopyFile( PChar( S2 ), PChar( S1 ), False );
+          TFile.Copy( S2, S1, True );
         except
           Log.Log( 'Error: *** Could not copy ' + S2 + ' to ' + S1 );
         end;
         try
-          CopyFile( PChar( ChangeFileExt( S2, '.idx' ) ), PChar( ChangeFileExt( S1, '.idx' ) ), False );
+          TFile.Copy( ChangeFileExt( S2, '.idx' ), ChangeFileExt( S1, '.idx' ), True );
         except
         end;
         try
-          CopyFile( PChar( ChangeFileExt( S2, '.map' ) ), PChar( ChangeFileExt( S1, '.map' ) ), False );
+          TFile.Copy( ChangeFileExt( S2, '.map' ), ChangeFileExt( S1, '.map' ), True );
         except
         end;
 
@@ -6123,10 +6084,10 @@ begin
         try
           {        S1:=DefaultPath+'games\'+TempGame+'.sav';
                   S2:=DefaultPath+'games\'+DlgLoad.LoadThisFile+'.sav';
-                  if FileExists(S1) then begin
+                  if TFile.Exists(S1) then begin
                     try
-                      if FileExists(S2) then DeleteFile(PChar(S2));
-                      CopyFile(PChar(S1),Pchar(S2),False);
+                      if TFile.Exists(S2) then TFile.Delete(S2);
+                      TFile.Copy( S1, S2, True);
                     except
                       Log.Log('Error: *** Could not copy '+S1+' to ' + S2);
                     end;
@@ -6230,7 +6191,7 @@ begin
 {$ENDIF}
   try
     LocalShowHistory := True;
-    if not ( FileExists( OpeningMovie ) ) then
+    if not ( TFile.Exists( OpeningMovie ) ) then
     begin
       DlgOpenAnim := TOpenAnim.Create;
       with DlgOpenAnim do
@@ -7070,10 +7031,10 @@ begin
     GameName := Name;
     {    S1:=DefaultPath+'games\'+TempGame+'.sav';
         S2:=DefaultPath+'games\'+GameName+'.sav';
-        if FileExists(S1) then begin
+        if TFile.Exists(S1) then begin
           try
-            if FileExists(S2) then DeleteFile(PChar(S2));
-            CopyFile(PChar(S1),Pchar(S2),False);
+            if TFile.Exists(S2) then TFile.Delete(S2);
+            TFile.Copy(S1, S2, True);
           except
             Log.Log('Error: *** Could not copy '+S1+' to ' + S2);
           end;
@@ -7162,7 +7123,7 @@ begin
       if ResultIndex < 0 then
       begin
         S := FindMap( DefaultMap );
-        if not ( FileExists( S ) ) then
+        if not ( TFile.Exists( S ) ) then
         begin
           Log.Log( '*** Error: Default map not found: ' + DefaultMap );
           Exit;
@@ -7338,9 +7299,9 @@ begin
   SavFile := TSavFile.Create;
   try
     S := DefaultPath + 'games\' + TempGame + '.sav';
-    if not FileExists( S ) then
+    if not TFile.Exists( S ) then
       S := DefaultPath + 'games\' + GameName + '.sav';
-    if FileExists( S ) then
+    if TFile.Exists( S ) then
     try
       SavFile.Open( S );
 
@@ -7355,7 +7316,7 @@ begin
         if Assigned( Properties ) and Assigned( MapKnown ) then
         begin
           FileName := FindMap( S1 );
-          if FileExists( FileName ) then
+          if TFile.Exists( FileName ) then
           begin
             if GetLevelDims then
             begin //Returns Width,Height
@@ -7411,7 +7372,7 @@ begin
     begin
       Log.Log( '  Avoid transit' );
       S := FindMap( trNewFile );
-      if not ( FileExists( S ) ) then
+      if not ( TFile.Exists( S ) ) then
       begin
         Log.Log( '*** Error: Selected map not found: ' + trNewFile );
         Exit;
@@ -7460,11 +7421,11 @@ Log.Log('  Starting Point: '+trStartingPoint);
     MapKnownList:=TStringList.create;
     MapKnownList.sorted:=true;
     S:=DefaultPath+'games\'+TempGame+'.sav';
-    if not FileExists(S) then
+    if not TFile.Exists(S) then
       S:=DefaultPath+'games\'+GameName+'.sav';
 //Log.Log('Look for map known and path corner blocks in save file');
 //Log.Log('Scanning: '+S);
-    if FileExists(S) then try
+    if TFile.Exists(S) then try
       Stream:=TFileStream.create(S,fmOpenRead or fmShareCompat);
       try
         //Look for map known and path corner blocks in save file
@@ -7538,7 +7499,7 @@ Log.Log('  Starting Point: '+trStartingPoint);
             try
               //Find the map size block
               S:=FindMap(S1);
-              if FileExists(S) then begin
+              if TFile.Exists(S) then begin
 //Log.Log('Identify which points we have seen');
 //Log.Log('Scanning: '+S);
                 try
@@ -7656,7 +7617,7 @@ Log.Log('  Show transit');
     else begin
 Log.Log('  Avoid transit');
       S:=FindMap(trNewFile);
-      if not(FileExists(S)) then begin
+      if not(TFile.Exists(S)) then begin
         Log.Log('*** Error: Selected map not found: '+trNewFile);
         exit;
       end;
@@ -7687,7 +7648,7 @@ begin
     if S[ Length( S ) ] <> '\' then
       S := S + '\';
     S1 := S + FileName + '.lvl';
-    if FileExists( S1 ) then
+    if TFile.Exists( S1 ) then
     begin
       Result := S1;
       Exit;
@@ -7868,7 +7829,7 @@ begin
     Game.Enabled := True;
     Game.ForceRefresh := True;
 
-    if FileExists( ClosingMovie ) then
+    if TFile.Exists( ClosingMovie ) then
     begin
       bPlayClosingMovie := True;
       PostMessage( Handle, WM_Done, 0, 0 );
@@ -7933,7 +7894,8 @@ begin
   if ( Count >= 30 ) and MouseCursor.Enabled then
   begin
     Count := 0;
-    GetCursorPos( P );
+//    GetCursorPos( P );
+    P := Mouse.CursorPos;
     if PtInRect( Rect( 726, 429, 772, 473 ), P ) then
       MsgID := 1 //Inventory
     else if PtInRect( Rect( 732, 511, 781, 555 ), P ) then
@@ -8058,7 +8020,7 @@ var
 begin
   INI := TIniFile.Create( DefaultPath + 'siege.ini' );
 
-  if ( INI.ReadInteger( 'Settings', 'JournalFont', 0 ) = 1 ) and SysUtils.DirectoryExists( ArtPath + 'journalalt' ) then
+  if ( INI.ReadInteger( 'Settings', 'JournalFont', 0 ) = 1 ) and TDirectory.Exists( ArtPath + 'journalalt' ) then
     HistoryLog.LogDirectory := ArtPath + 'journalalt\'
   else
     HistoryLog.LogDirectory := ArtPath + 'journal\';

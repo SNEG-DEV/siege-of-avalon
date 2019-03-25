@@ -69,12 +69,12 @@ uses
   DXUtil,
   DXEffects,
 {$ENDIF}
-  Windows,
-  SysUtils,
-  Classes,
-  Types,
-  Graphics,
-  Controls,
+  Winapi.Windows,
+  System.SysUtils,
+  System.Classes,
+  System.Types,
+  Vcl.Graphics,
+  Vcl.Controls,
   Character,
   Resource,
   GameText,
@@ -167,7 +167,9 @@ type
     procedure Init; override;
     procedure Release; override;
   end;
+
 implementation
+
 uses
   AniDemo;
 
@@ -1433,15 +1435,13 @@ begin
       prRect.Right := 800;
       paint;
     end;
-    ClipCursor( prRect );
+    ClipCursor( prRect ); //TODO: Windows-ism - replace
     Dispose( prRect );
   except
     on E : Exception do
       Log.log( FailName + E.Message );
   end;
-
 end; //TLootCorpse.ContainCursor
-
 
 procedure TLootCorpse.BuildGrid;
 var

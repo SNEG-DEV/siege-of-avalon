@@ -68,11 +68,11 @@ uses
   DirectX,
   DXUtil,
 {$ENDIF}
-  Windows,
-  Forms,
-  Classes,
-  Graphics,
-  SysUtils,
+  Vcl.Forms,
+  System.Classes,
+  System.Types,
+  Vcl.Graphics,
+  System.SysUtils,
   Character,
   GameText;
 
@@ -891,13 +891,13 @@ begin
     Log.LogEntry( FailName );
 {$ENDIF}
   try
-    OldTime := GetTickCount;
+    OldTime := TThread.GetTickCount;  // TStopWatch better
     Adj := 0;
     while KeepOnScrolling do
     begin
-      TimeDif := GetTickCount - OldTime;
+      TimeDif := TThread.GetTickCount - OldTime;
       Adj := Adj + 80 * ( TimeDif / 1000 );
-      OldTime := GetTickCount;
+      OldTime := TThread.GetTickCount;
       if Adj >= 1 then
       begin
         ScrollFactor := ScrollFactor + ScrollAmount * Trunc( Adj );

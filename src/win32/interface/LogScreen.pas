@@ -69,22 +69,21 @@ uses
   DXUtil,
   DXEffects,
 {$ENDIF}
-  Windows,
-  SysUtils,
-  Types,
-  Classes,
-  Graphics,
-  Controls,
+  System.SysUtils,
+  System.IOUtils,
+  System.Types,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
   GameText,
   Display,
   Anigrp30,
   Engine,
-  inifiles,
+  System.IniFiles,
   LogFile,
-  resource;
+  Resource;
+
 type
-
-
   TLogScreen = class( TDisplay )
   private
     //Bitmap stuff
@@ -130,8 +129,10 @@ type
   end;
 
 implementation
+
 uses
   AniDemo;
+
 { TLogScreen }
 
 constructor TLogScreen.Create;
@@ -196,7 +197,7 @@ begin
 
     FirstItem[ 0 ] := 0;
 
-    if FileExists( FileName ) then
+    if TFile.Exists( FileName ) then
     begin
       INI := TMeminifile.create( FileName );
       IniFileFound := true;
@@ -244,23 +245,23 @@ begin
     if IniFileFound and ( MaxPages > 0 ) then
     begin //(LogInfo.count > 15) then begin
       BMBack.LoadFromFile( InterfacePath + 'logPrevious.bmp' );
-      DXPrev := DDGetImage( lpDD, BMBack, rgb( 255, 0, 255 ), False );
+      DXPrev := DDGetImage( lpDD, BMBack, $00FF00FF, False );  // $00BBGGRR = rgb( 255, 0, 255 )
 
       BMBack.LoadFromFile( InterfacePath + 'logPrevious2.bmp' );
-      DXPrev2 := DDGetImage( lpDD, BMBack, rgb( 255, 0, 255 ), False );
+      DXPrev2 := DDGetImage( lpDD, BMBack, $00FF00FF, False );
 
       BMBack.LoadFromFile( InterfacePath + 'logNext.bmp' );
-      DXNext := DDGetImage( lpDD, BMBack, rgb( 255, 0, 255 ), False );
+      DXNext := DDGetImage( lpDD, BMBack, $00FF00FF, False );
 
       BMBack.LoadFromFile( InterfacePath + 'logNext2.bmp' );
-      DXNext2 := DDGetImage( lpDD, BMBack, rgb( 255, 0, 255 ), False );
+      DXNext2 := DDGetImage( lpDD, BMBack, $00FF00FF, False );
     end;
 
     BMBack.LoadFromFile( InterfacePath + 'obInvBackToGame.bmp' );
     DXBackToGame := DDGetImage( lpDD, BMBack, $00FFFF00, False );
 
     BMBack.LoadFromFile( InterfacePath + 'LogScreen.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, rgb( 255, 0, 255 ), False );
+    DXBack := DDGetImage( lpDD, BMBack, $00FF00FF, False );
     pr := Rect( 0, 0, BMBack.width, BMBack.Height );
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 

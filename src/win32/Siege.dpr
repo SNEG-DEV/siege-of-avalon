@@ -60,11 +60,12 @@ program Siege;
 {******************************************************************************}
 
 uses
-  Forms,
-  Windows,
-  SysUtils,
-  IniFiles,
-  Controls,
+  Vcl.Forms,
+  Winapi.Windows,
+  System.SysUtils,
+  System.IniFiles,
+  System.IOUtils,
+  Vcl.Controls,
   AniDemo in 'engine\AniDemo.pas' {frmMain},
   Loader in 'engine\Loader.pas',
   Resource in 'engine\Resource.pas',
@@ -152,7 +153,7 @@ begin
     Screen.Cursor := crNone;
     Application.ProcessMessages;
 
-    if FileExists( OpeningMovie ) and ( LowerCase( SiegeIni.ReadString( 'Settings', 'ShowIntro', 'true' ) ) = 'true' ) then
+    if TFile.Exists( OpeningMovie ) and ( LowerCase( SiegeIni.ReadString( 'Settings', 'ShowIntro', 'true' ) ) = 'true' ) then
     begin
       //Begin the opening Movie
       StrPCopy( zAppName, ExtractFilePath( Application.ExeName ) + 'BinkPlay.exe' + ' ' + OpeningMovie + ' ' + MovieSwitches + '/P' );
@@ -184,7 +185,7 @@ begin
   //Begin the closing Movie
   Screen.Cursor := crNone;
   Application.ProcessMessages;
-  if FileExists( ClosingMovie ) and bPlayClosingMovie then
+  if TFile.Exists( ClosingMovie ) and bPlayClosingMovie then
   begin
     StrPCopy( zAppName, ExtractFilePath( Application.ExeName ) + 'BinkPlay.exe' + ' ' + ClosingMovie + ' ' + MovieSwitches );
     GetDir( 0, WorkDir );
@@ -211,7 +212,7 @@ begin
     CloseHandle( hMutex );
     Exit;
   end;
-  hMutex := CreateMutex( nil, True, PChar( MUTEXNAME ) );
+  hMutex := CreateMutex( nil, True, MUTEXNAME );
 
   PlayOpeningMovie;
   bPlayClosingMovie := False; // Game must force to true to show closing movie

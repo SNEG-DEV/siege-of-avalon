@@ -64,7 +64,7 @@ unit AdventureLog;
 interface
 
 uses
-  Classes;
+  System.Classes;
 
 type
 //  TAboutAdventureLogProperty = class( TPropertyEditor )
@@ -99,7 +99,8 @@ type
 implementation
 
 uses
-  SysUtils,
+  System.SysUtils,
+  System.IOUtils,
   LogFile;
 
 //procedure TAboutAdventureLogProperty.Edit;
@@ -183,7 +184,7 @@ begin
 {$ENDIF}
   try
 
-    if not ( fileExists( FLogDirectory + LogFile ) ) then
+    if not ( TFile.Exists( FLogDirectory + LogFile ) ) then
     begin
       result := '';
       exit;
@@ -219,7 +220,7 @@ begin
     begin
       if FLogDateList.strings[ LogIndex ] <> '' then
       begin
-        if not ( fileExists( FLogDirectory + FLogDateList.strings[ LogIndex ] ) ) then
+        if not ( TFile.Exists( FLogDirectory + FLogDateList.strings[ LogIndex ] ) ) then
         begin
           result := '';
           exit;

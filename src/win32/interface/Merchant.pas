@@ -69,13 +69,13 @@ uses
   DXUtil,
   DXEffects,
 {$ENDIF}
-  Windows,
-  SysUtils,
-  Types,
-  Classes,
-  Graphics,
-  Controls,
-  ExtCtrls,
+  Winapi.Windows,
+  System.SysUtils,
+  System.Types,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.ExtCtrls,
   Character,
   Resource,
   GameText,
@@ -167,7 +167,7 @@ type
     Character : TCharacter; //the charachter we draw inventory from to fill left box
     Merchant : TCharacter;
     GroundList : TList; //Passed to us - list of items on the ground
-    Locked : Bool;
+    Locked : Boolean;
     DrawGuy : TNotifyEvent;
     constructor Create;
     destructor Destroy; override;
@@ -175,9 +175,12 @@ type
     procedure Init; override;
     procedure Release; override;
   end;
+
 implementation
+
 uses
   AniDemo;
+
 { TMerchant }
 
 const
@@ -1391,7 +1394,7 @@ begin
       prRect.bottom := 600;
       prRect.Right := 800;
     end;
-    ClipCursor( prRect );
+    ClipCursor( prRect ); //TODO: Windows-ism - replace
     Dispose( prRect );
   except
     on E : Exception do
@@ -1722,7 +1725,8 @@ var
 begin
   if ScrollStateLeft <> 0 then
   begin
-    GetCursorPos( P );
+    // GetCursorPos( P );
+    P := Mouse.CursorPos;
     i := 0;
     while i < 4 do
     begin
@@ -1782,7 +1786,8 @@ begin
 
   if ScrollStateRight <> 0 then
   begin
-    GetCursorPos( P );
+    // GetCursorPos( P );
+    P := Mouse.CursorPos;
     i := 0;
     while i < 4 do
     begin

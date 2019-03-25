@@ -67,11 +67,10 @@ uses
 {$IFDEF DirectX}
   DirectX,
 {$ENDIF}
-  Windows,
-  Types,
-  Classes,
-  Graphics,
-  Controls,
+  System.Types,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
   Character,
   Display,
   Anigrp30,
@@ -124,7 +123,7 @@ type
   public
     Character : TCharacter;
     //procedure DrawThem(Character: TCharacter; X,Y:integer);
-    CheckBox : array[ 0..4 ] of bool;
+    CheckBox : array[ 0..4 ] of Boolean;
     property OnDraw : TDrawTheGuyEvent read FOnDraw write FOnDraw;
     constructor Create;
     destructor Destroy; override;
@@ -135,7 +134,7 @@ type
 implementation
 
 uses
-  SysUtils,
+  System.SysUtils,
 {$IFDEF DirectX}
   DXUtil,
   DXEffects,
@@ -220,22 +219,22 @@ begin
     pText.LoadTinyFontGraphic;
 
     BMBack.LoadFromFile( InterfacePath + 'AddBox.bmp' );
-    DXBox := DDGetImage( lpDD, BMBack, rgb( 255, 0, 255 ), False );
+    DXBox := DDGetImage( lpDD, BMBack, $00FF00FF, False );
 
     BMBack.LoadFromFile( InterfacePath + 'AddBoxX.bmp' );
-    DXBox2 := DDGetImage( lpDD, BMBack, rgb( 255, 0, 255 ), False );
+    DXBox2 := DDGetImage( lpDD, BMBack, $00FF00FF, False );
 
     BMBack.LoadFromFile( InterfacePath + 'obInvBackToGame.bmp' );
     DXBackToGame := DDGetImage( lpDD, BMBack, $00FFFF00, False );
 
     BMBack.LoadFromFile( InterfacePath + 'LogLeftGeeble.bmp' );
-    DXLeftGeeble := DDGetImage( lpDD, BMBack, rgb( 255, 0, 255 ), False );
+    DXLeftGeeble := DDGetImage( lpDD, BMBack, $00FF00FF, False );
     BMBack.LoadFromFile( InterfacePath + 'LogRightGeeble.bmp' );
-    DXRightGeeble := DDGetImage( lpDD, BMBack, rgb( 255, 0, 255 ), False );
+    DXRightGeeble := DDGetImage( lpDD, BMBack, $00FF00FF, False );
 
 
     BMBack.LoadFromFile( InterfacePath + 'LogScreen.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, rgb( 255, 0, 255 ), False );
+    DXBack := DDGetImage( lpDD, BMBack, $00FF00FF, False );
 
     DrawAlpha( DXBack, Rect( 0, 380, 213, 380 + 81 ), Rect( 0, 0, 213, 81 ), DXLeftGeeble, True, 60 );
     DrawAlpha( DXBack, Rect( 452, 0, 452 + 213, 81 ), Rect( 0, 0, 213, 81 ), DXRightGeeble, True, 60 );

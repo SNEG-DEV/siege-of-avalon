@@ -69,12 +69,12 @@ uses
   DXUtil,
   DXEffects,
 {$ENDIF}
-  Windows,
-  SysUtils,
-  Types,
-  Classes,
-  Graphics,
-  Controls,
+  Winapi.Windows,
+  System.SysUtils,
+  System.Types,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
   Character,
   Resource,
   GameText,
@@ -82,7 +82,7 @@ uses
   Parts,
   Scroll,
   Anigrp30,
-  logfile,
+  Logfile,
   Engine;
 
 type
@@ -158,9 +158,12 @@ type
     procedure Init; override;
     procedure Release; override;
   end;
+
 implementation
+
 uses
   AniDemo;
+
 { TObjInventory }
 
 const
@@ -170,7 +173,6 @@ const
   ClearBottom = 462;
   ClearLeft = 20;
   ClearRight = 590;
-
 
 constructor TObjInventory.Create;
 const
@@ -1285,7 +1287,7 @@ begin
       prRect.Right := 800;
       paint;
     end;
-    ClipCursor( prRect );
+    ClipCursor( prRect ); //TODO: Windows-ism - replace
     Dispose( prRect );
   except
     on E : Exception do

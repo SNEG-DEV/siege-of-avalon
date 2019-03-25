@@ -69,12 +69,12 @@ uses
   DXUtil,
   DXEffects,
 {$ENDIF}
-  Windows,
-  SysUtils,
-  Classes,
-  Graphics,
-  Controls,
-  Forms,
+  System.SysUtils,
+  System.Types,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
   Display,
   Anigrp30,
   Music,
@@ -106,9 +106,12 @@ type
     procedure Release; override;
     property Cancel : boolean read FCancel;
   end;
+
 implementation
+
 uses
   AniDemo;
+
 { TOpenAnim }
 
 constructor TOpenAnim.Create;
@@ -279,8 +282,8 @@ begin
     pr := Rect( 0, 0, 800, 600 );
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_WAIT );
     MusicStillPlaying := true;
-    MusicStartTime := GetTickCount;
-    OldTime := GetTickCount;
+    MusicStartTime := TThread.GetTickCount;
+    OldTime := TThread.GetTickCount;
     Adj := 0;
     Alpha := 0;
     Phase := 0;
@@ -288,7 +291,7 @@ begin
     begin
       if MusicStillPlaying then
       begin
-        if GetTickCount - MusicStartTime > 19500 then
+        if TThread.GetTickCount - MusicStartTime > 19500 then
         begin
                //pMusic.PauseThisSong;
           MusicStillPlaying := false;
@@ -298,7 +301,7 @@ begin
       end;
       if Phase = 0 then
       begin
-        TimeDif := GetTickCount - OldTime;
+        TimeDif := TThread.GetTickCount - OldTime;
         if TimeDif > 1980 then
         begin
           Phase := 1;
@@ -307,14 +310,14 @@ begin
       else if Phase = 1 then
       begin
         application.ProcessMessages;
-        TimeDif := GetTickCount - OldTime;
+        TimeDif := TThread.GetTickCount - OldTime;
         if Alpha < 100 then
           Adj := Adj + 24 * ( TimeDif / 1000 )
         else if Alpha < 200 then
           Adj := Adj + 92 * ( TimeDif / 1000 )
         else
           Adj := Adj + 172 * ( TimeDif / 1000 );
-        OldTime := GetTickCount;
+        OldTime := TThread.GetTickCount;
         if Adj >= 1 then
         begin
           Alpha := Alpha + round( Adj );
@@ -345,12 +348,12 @@ begin
       end
       else if Phase = 2 then
       begin
-        TimeDif := GetTickCount - OldTime;
+        TimeDif := TThread.GetTickCount - OldTime;
         if Alpha > 100 then
           Adj := Adj + 92 * ( TimeDif / 1000 )
         else
           Adj := Adj + 62 * ( TimeDif / 1000 );
-        OldTime := GetTickCount;
+        OldTime := TThread.GetTickCount;
         if Adj >= 1 then
         begin
           application.ProcessMessages;
@@ -385,21 +388,21 @@ begin
           Phase := 3;
           Adj := 0;
           Alpha := 0;
-          OldTime := GetTickCount;
+          OldTime := TThread.GetTickCount;
         end;
       end
       else if Phase = 3 then
       begin
-        TimeDif := GetTickCount - OldTime;
+        TimeDif := TThread.GetTickCount - OldTime;
         if TimeDif > 1500 then
         begin
           Phase := 4;
-          StartFinalCount := GetTickCount;
+          StartFinalCount := TThread.GetTickCount;
         end;
       end
       else if Phase = 4 then
       begin
-        TimeDif := GetTickCount - OldTime;
+        TimeDif := TThread.GetTickCount - OldTime;
         if Alpha < 100 then
           Adj := Adj + 20 * ( TimeDif / 1000 )
         else if Alpha < 200 then
@@ -407,7 +410,7 @@ begin
         else
           Adj := Adj + 172 * ( TimeDif / 1000 );
 
-        OldTime := GetTickCount;
+        OldTime := TThread.GetTickCount;
         if Adj >= 1 then
         begin
           application.ProcessMessages;
@@ -431,7 +434,7 @@ begin
           lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
           application.ProcessMessages;
         end;
-        if GetTickCount - StartFinalCount > 9000 then
+        if TThread.GetTickCount - StartFinalCount > 9000 then
         begin
           KeepOnPlaying := false;
           if assigned( pMusic ) then
