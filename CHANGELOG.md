@@ -17,6 +17,14 @@ All notable changes to this project will be documented in this file.
 - Mod selection - more DLC style - extendable instead of destructive copy/paste exercises.
 - Better multi-language support - right now it is crippled, like other parts of the UI code.
 
+## 2019-03-26
+### Added
+- Added preliminary support keymappings.
+- Added preliminary support for Original/HD/FullHD option
+
+### Fixed
+- A bit more spring cleaning - this time on colors
+
 ## 2019-03-25
 ### Fixed
 - Replaced winapi functions with cross-platform alternatives

@@ -186,6 +186,7 @@ uses
   DXUtil,
   DXEffects,
 {$ENDIF}
+  SoAOS.Types,
   Engine,
   Logfile,
   GameText,
@@ -233,7 +234,6 @@ end;
 
 procedure TCreation.Init;
 var
-  InvisColor : Integer;
   i : integer;
   pr : TRect;
 const
@@ -286,26 +286,25 @@ begin
     LoadBaseValues;
     BMBack := TBitmap.Create;
   //BMTemp := TBitmap.Create;
-  //transparent color
-    InvisColor := $00FFFF00;
+
   //Load the Background Bitmap and plot it
 
     BMBack.LoadFromFile( InterfacePath + 'chaRedOval.bmp' );
-    DXCircle := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXCircle := DDGetImage( lpDD, BMBack, cInvisColor, False );
     BMBack.LoadFromFile( InterfacePath + 'chaBlack.bmp' );
-    DXBlack := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBlack := DDGetImage( lpDD, BMBack, cInvisColor, False );
     BMBack.LoadFromFile( InterfacePath + 'chaChooseBox.bmp' );
-    DXBox := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBox := DDGetImage( lpDD, BMBack, cInvisColor, False );
     BMBack.LoadFromFile( InterfacePath + 'chaContinue.bmp' );
     chaContinueRect.Right := BMBack.width;
     chaContinueRect.Bottom := BMBack.height;
-    DXContinue := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXContinue := DDGetImage( lpDD, BMBack, cInvisColor, False );
     BMBack.LoadFromFile( InterfacePath + 'chaCancel.bmp' );
     chaCancelRect.Right := BMBack.width;
     chaCancelRect.Bottom := BMBack.height;
-    DXCancel := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXCancel := DDGetImage( lpDD, BMBack, cInvisColor, False );
     BMBack.LoadFromFile( InterfacePath + 'CharCreate.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBack := DDGetImage( lpDD, BMBack, cInvisColor, False );
 
     pr := Rect( 0, 0, BMBack.width, BMBack.Height );
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );

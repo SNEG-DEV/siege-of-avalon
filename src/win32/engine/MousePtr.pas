@@ -116,6 +116,7 @@ type
 implementation
 
 uses
+  SoAOS.Types,
   AniDemo;
 
 const
@@ -126,7 +127,6 @@ const
 
 constructor TMousePtr.Create;
 var
-  InvisColor : integer;
   pr : TRect;
 const
   FailName : string = 'TMousePtr.Create';
@@ -138,15 +138,12 @@ begin
   try
     inherited;
     BMBack := TBitmap.Create;
-  //transparent color
-    InvisColor := $00FF00FF;
-
     BMBack.LoadFromFile( InterfacePath + 'siegecursorsheet.bmp' );
-    DXMousePtr := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXMousePtr := DDGetImage( lpDD, BMBack, cTransparent, False );
   //lpDDSBack.BltFast(0, 0, DXMousePtr, Rect(0, 0, PtrWidth, PtrHeight), DDBLTFAST_WAIT);
 
     BMBack.Free;
-    DXDirty := DDGetSurface( lpDD, PtrWidth, PtrHeight, InvisColor, true );
+    DXDirty := DDGetSurface( lpDD, PtrWidth, PtrHeight, cTransparent, true );
   //pre-load Dirty
 
     FPlotDirty := false;

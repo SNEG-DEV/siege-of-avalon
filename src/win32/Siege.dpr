@@ -123,7 +123,8 @@ uses
   Statistics in 'interface\Statistics.pas',
   strFunctions in 'engine\strFunctions.pas',
   Transit in 'interface\Transit.pas',
-  MMTimer in 'engine\MMTimer.pas';
+  MMTimer in 'engine\MMTimer.pas',
+  SoAOS.Types in 'engine\SoAOS.Types.pas';
 
 {$R *.RES}
 

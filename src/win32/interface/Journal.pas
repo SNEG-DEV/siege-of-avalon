@@ -123,6 +123,7 @@ type
 implementation
 
 uses
+  SoAOS.Types,
   AniDemo;
 
 { TJournal }
@@ -163,7 +164,6 @@ end; //Destroy
 
 procedure TJournal.Init;
 var
-  InvisColor : integer;
   i : integer;
   Ini : TIniFile;
   pr : TRect;
@@ -214,11 +214,9 @@ begin
 
     pText.LoadFontGraphic( 'inventory' ); //load the statistics font graphic in
     BMBack := TBitmap.Create;
-  //transparent color
-    InvisColor := $00FFFF00;
 
     BMBack.LoadFromFile( InterfacePath + 'Journal.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBack := DDGetImage( lpDD, BMBack, cInvisColor, False );
   //lpDDSBack.BltFast(0, 0, DXBack, Rect(0, 0, BMBack.width, BMBack.Height), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
 
   {//Now for the Alpha'ed edges
@@ -386,7 +384,7 @@ begin
         else
           PicXY := point( 0, 0 );
         BM.LoadFromFile( PicName );
-        DXPic := DDGetImage( lpDD, BM, $00FFFF00, False );
+        DXPic := DDGetImage( lpDD, BM, cInvisColor, False );
         PicWidth := BM.width;
         PicHeight := BM.height;
         pr := Rect( 0, 0, BM.width, BM.Height );
@@ -411,7 +409,7 @@ begin
 
         jpg.Free;
 
-        DXPic := DDGetImage( lpDD, BM, $00FFFF00, False );
+        DXPic := DDGetImage( lpDD, BM, cInvisColor, False );
         PicWidth := BM.width;
         PicHeight := BM.height;
         pr := Rect( 0, 0, BM.width, BM.Height );

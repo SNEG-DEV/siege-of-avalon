@@ -110,6 +110,7 @@ type
 implementation
 
 uses
+  SoAOS.Types,
   AniDemo;
 
 { TOpenAnim }
@@ -150,7 +151,6 @@ end; //Destroy
 
 procedure TOpenAnim.Init;
 var
-  InvisColor : integer;
   pr : TRect;
 const
   FailName : string = 'TOpenAnim.init';
@@ -178,17 +178,14 @@ begin
     YAdj := -20;
 
     BMBack := TBitmap.Create;
-  //transparent color
-    InvisColor := $00FFFF00;
-
     BMBack.LoadFromFile( InterfacePath + 'aniSiege.bmp' );
-    DXSiege := DDGetImage( lpDD, BMBack, InvisColor, false );
+    DXSiege := DDGetImage( lpDD, BMBack, cInvisColor, false );
 
     BMBack.LoadFromFile( InterfacePath + 'aniDTIPresents.bmp' );
-    DXLogo := DDGetImage( lpDD, BMBack, InvisColor, false );
+    DXLogo := DDGetImage( lpDD, BMBack, cInvisColor, false );
 
     BMBack.LoadFromFile( InterfacePath + 'aniBack.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, InvisColor, true );
+    DXBack := DDGetImage( lpDD, BMBack, cInvisColor, true );
     pr := Rect( 0, 0, 800, 600 );
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_WAIT );
 

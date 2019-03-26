@@ -146,6 +146,7 @@ type
 implementation
 
 uses
+  SoAOS.Types,
   AniDemo;
 
 { TGameText }
@@ -218,7 +219,7 @@ begin
     else if Lowercase( Screenname ) = 'createchar' then
       BM.LoadFromFile( InterfacePath + 'fntGoldFont.bmp' );
 
-    DXSurface := DDGetImage( lpDD, BM, $00FFFF00, false );
+    DXSurface := DDGetImage( lpDD, BM, cInvisColor, false );
     BM.free;
   except
     on E : Exception do
@@ -242,7 +243,7 @@ begin
       exit;
     BM := TBitmap.create;
     BM.LoadFromFile( InterfacePath + 'fntBoldFont.bmp' );
-    DXDarkSurface := DDGetImage( lpDD, BM, $00FFFF00, false );
+    DXDarkSurface := DDGetImage( lpDD, BM, cInvisColor, false );
     BM.free;
   except
     on E : Exception do
@@ -258,7 +259,7 @@ begin
     exit;
   BM := TBitmap.create;
   BM.LoadFromFile( InterfacePath + 'fntTinyFont.bmp' );
-  DXTinySurface := DDGetImage( lpDD, BM, $00FFFF00, false );
+  DXTinySurface := DDGetImage( lpDD, BM, cInvisColor, false );
   BM.free;
 
 end; //TGameText.LoadTinyFontGraphic
@@ -278,7 +279,7 @@ begin
     exit;
   BM := TBitmap.create;
   BM.LoadFromFile( InterfacePath + 'fnt13.bmp' );
-  DX13Surface := DDGetImage( lpDD, BM, $00FFFF00, false );
+  DX13Surface := DDGetImage( lpDD, BM, cInvisColor, false );
   BM.free;
 
 end; //TGameText.Load13Graphic
@@ -298,7 +299,7 @@ begin
     exit;
   BM := TBitmap.create;
   BM.LoadFromFile( InterfacePath + 'fntMegaTinyFont.bmp' );
-  DXMegaTinySurface := DDGetImage( lpDD, BM, $00FFFF00, false );
+  DXMegaTinySurface := DDGetImage( lpDD, BM, cInvisColor, false );
   BM.free;
 
 end; //TGameText.LoadMegaTinyFontGraphic
@@ -1508,7 +1509,7 @@ begin
     exit;
   BM := TBitmap.create;
   BM.LoadFromFile( InterfacePath + 'fntTinyGold.bmp' );
-  DXGoldSurface := DDGetImage( lpDD, BM, $00FFFF00, false );
+  DXGoldSurface := DDGetImage( lpDD, BM, cInvisColor, false );
   BM.free;
 end;
 

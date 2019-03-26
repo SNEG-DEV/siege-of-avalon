@@ -179,6 +179,7 @@ type
 implementation
 
 uses
+  SoAOS.Types,
   AniDemo;
 
 { TMerchant }
@@ -229,7 +230,6 @@ end;
 
 procedure TMerchant.Init;
 var
-  InvisColor : Integer; //Transparent color :RGB(0,255,255)
   i : Integer;
   DXBorder : IDirectDrawSurface;
   t : TSlot;
@@ -265,20 +265,18 @@ begin
     DlgScroll.ScrollIsShowing := False; //stats screen isnt showing
     Alpha := 220; //alpha value for all alphabet plots
     BMBack := TBitmap.Create;
-  //transparent color
-    InvisColor := $00FFFF00;
 
   //We have to do this part up here in order to get coordinated from buildgrid
     BMBack.LoadFromFile( InterfacePath + 'merGroundBox.bmp' );
-    DXGroundBox := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXGroundBox := DDGetImage( lpDD, BMBack, cInvisColor, False );
     BMBack.LoadFromFile( InterfacePath + 'invRightArrow.bmp' );
-    DXRightArrow := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXRightArrow := DDGetImage( lpDD, BMBack, cInvisColor, False );
     BMBack.LoadFromFile( InterfacePath + 'invLeftArrow.bmp' );
-    DXLeftArrow := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXLeftArrow := DDGetImage( lpDD, BMBack, cInvisColor, False );
     BMBack.LoadFromFile( InterfacePath + 'obInvBackToGame.bmp' );
-    DXBackToGame := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBackToGame := DDGetImage( lpDD, BMBack, cInvisColor, False );
     BMBack.LoadFromFile( InterfacePath + 'merBackHighlight.bmp' );
-    DXBackHighlight := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBackHighlight := DDGetImage( lpDD, BMBack, cInvisColor, False );
 {  BMBack.LoadFromFile(InterfacePath + 'merBuyItem.bmp');
   DXBuyItem := DDGetImage(lpDD, BMBack, InvisColor, False);
   BMBack.LoadFromFile(InterfacePath + 'merSellItem.bmp');
@@ -288,44 +286,44 @@ begin
 
   //Arrows Left up, right up, left down, right down, then darks
     BMBack.LoadFromFile( InterfacePath + 'meruparrowL.bmp' );
-    ScrollArrows[ 0 ].DX := DDGetImage( lpDD, BMBack, InvisColor, False );
+    ScrollArrows[ 0 ].DX := DDGetImage( lpDD, BMBack, cInvisColor, False );
     ScrollArrows[ 0 ].X := 45 - 23;
     ScrollArrows[ 0 ].Y := 37;
     BMBack.LoadFromFile( InterfacePath + 'meruparrowR.bmp' );
-    ScrollArrows[ 1 ].DX := DDGetImage( lpDD, BMBack, InvisColor, False );
+    ScrollArrows[ 1 ].DX := DDGetImage( lpDD, BMBack, cInvisColor, False );
     ScrollArrows[ 1 ].X := 298;
     ScrollArrows[ 1 ].Y := 37;
     BMBack.LoadFromFile( InterfacePath + 'merdownarrowL.bmp' );
-    ScrollArrows[ 2 ].DX := DDGetImage( lpDD, BMBack, InvisColor, False );
+    ScrollArrows[ 2 ].DX := DDGetImage( lpDD, BMBack, cInvisColor, False );
     ScrollArrows[ 2 ].X := 45 - 23;
     ScrollArrows[ 2 ].Y := 353 - 32;
     BMBack.LoadFromFile( InterfacePath + 'merdownarrowR.bmp' );
-    ScrollArrows[ 3 ].DX := DDGetImage( lpDD, BMBack, InvisColor, False );
+    ScrollArrows[ 3 ].DX := DDGetImage( lpDD, BMBack, cInvisColor, False );
     ScrollArrows[ 3 ].X := 298;
     ScrollArrows[ 3 ].Y := 353 - 32;
     BMBack.LoadFromFile( InterfacePath + 'meruparrowLD.bmp' );
-    ScrollArrows[ 4 ].DX := DDGetImage( lpDD, BMBack, InvisColor, False );
+    ScrollArrows[ 4 ].DX := DDGetImage( lpDD, BMBack, cInvisColor, False );
     ScrollArrows[ 4 ].X := ScrollArrows[ 0 ].X;
     ScrollArrows[ 4 ].Y := ScrollArrows[ 0 ].Y;
     BMBack.LoadFromFile( InterfacePath + 'meruparrowRD.bmp' );
-    ScrollArrows[ 5 ].DX := DDGetImage( lpDD, BMBack, InvisColor, False );
+    ScrollArrows[ 5 ].DX := DDGetImage( lpDD, BMBack, cInvisColor, False );
     ScrollArrows[ 5 ].X := ScrollArrows[ 1 ].X;
     ScrollArrows[ 5 ].Y := ScrollArrows[ 1 ].Y;
     BMBack.LoadFromFile( InterfacePath + 'merdownarrowLD.bmp' );
-    ScrollArrows[ 6 ].DX := DDGetImage( lpDD, BMBack, InvisColor, False );
+    ScrollArrows[ 6 ].DX := DDGetImage( lpDD, BMBack, cInvisColor, False );
     ScrollArrows[ 6 ].X := ScrollArrows[ 2 ].X;
     ScrollArrows[ 6 ].Y := ScrollArrows[ 2 ].Y;
     BMBack.LoadFromFile( InterfacePath + 'merdownarrowRD.bmp' );
-    ScrollArrows[ 7 ].DX := DDGetImage( lpDD, BMBack, InvisColor, False );
+    ScrollArrows[ 7 ].DX := DDGetImage( lpDD, BMBack, cInvisColor, False );
     ScrollArrows[ 7 ].X := ScrollArrows[ 3 ].X;
     ScrollArrows[ 7 ].Y := ScrollArrows[ 3 ].Y;
  //end of arrows
 
 
     BMBack.LoadFromFile( InterfacePath + 'Merchant.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBack := DDGetImage( lpDD, BMBack, cInvisColor, False );
   //DxDirty := DDGetImage(lpDD, BMBack, InvisColor, False); //for now this is how we will do it
-    DXDirty := DDGetSurface( lpDD, GroundListWidth, GroundListHeight, InvisColor, true );
+    DXDirty := DDGetSurface( lpDD, GroundListWidth, GroundListHeight, cInvisColor, true );
   //build the left side inventory space
     BuildGrid;
   //now we blit the screen to the backbuffer
@@ -333,13 +331,13 @@ begin
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   //Now for the Alpha'ed edges
     BMBack.LoadFromFile( InterfacePath + 'obInvRightShadow.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
     DrawSub( lpDDSBack, Rect( 659, 0, 659 + BMBack.Width, BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, Alpha );
 
     DXBorder := nil;
 
     BMBack.LoadFromFile( InterfacePath + 'obInvBottomShadow.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
     DrawSub( lpDDSBack, Rect( 0, 456, BMBack.Width, 456 + BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, Alpha );
 
     DXBorder := nil; //release DXBorder
@@ -1421,7 +1419,7 @@ begin
   //Load the grid graphic, and draw the left inventory area before we blit the screen to the backbuffer
     BM := TBitmap.create;
     BM.LoadFromFile( InterfacePath + 'merGrid.bmp' );
-    DXGrid := DDGetImage( lpDD, BM, $00FFFF00, False );
+    DXGrid := DDGetImage( lpDD, BM, cInvisColor, False );
     BM.free;
 
   //if OtherOb is TCharacter then begin

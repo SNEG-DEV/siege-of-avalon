@@ -81,6 +81,7 @@ uses
   DXUtil,
   DXEffects,
 {$ENDIF}
+  SoAOS.Types,
   Anigrp30,
   AniDec30,
   Character,
@@ -284,6 +285,8 @@ type
     procedure DrawRosterGuy( Character : TCharacter; X, Y : Integer );
     procedure SetActive( const Value : Boolean );
   public
+    ScreenMetrics : TScreenResolutionData;
+    Keymap : TKeymapData;
     DeathScreen : string;
     DisableConsole : Boolean;
     SoundTimer : TTimer;
@@ -932,26 +935,11 @@ begin
     DefaultPath := ExtractFilePath( Application.ExeName );
     DisableConsole := True;
 
-// Disable security
-//    if not GetChapterAuthorizeMask( DefaultPath + 'siege.ini' ) then
-//    begin
-//      ExitCode := 70;
-//      Close;
-//      Exit;
-//    end;
-    {  Present := Now;
-      DecodeDate(Present, Year, Month, Day);
-      if (Year > 2000) or (Month > 10) or
-        ((Month = 10) and (Day > 5)) then begin
-        close;
-        exit
-      end;  }
-
     NewGame := True;
 
     Log.Log( 'Set Bounds' );
     Log.flush;
-    Game.SetBounds( 0, 0, 703, 511 );
+    Game.SetBounds( 0, 0, ScreenMetrics.GameWidth, ScreenMetrics.GameHeight ); // 703, 511
 
 {$IFDEF DirectX}
     Log.Log( 'Mode=DX' );
@@ -1207,8 +1195,8 @@ begin
 
     Log.Log( 'Initializing DX...' );
     Log.flush;
-    Game.InitDX( Handle, 800, 600, 16 );
-    Game.PreCreateMap( 768, 544 );
+    Game.InitDX( Handle, ScreenMetrics.ScreeenWidth, ScreenMetrics.ScreenHeight, ScreenMetrics.BPP );  // 800, 600, 16
+    Game.PreCreateMap( ScreenMetrics.PreMapWidth, ScreenMetrics.PreMapHeight );  // 768, 544
     Log.Log( 'DX initialization complete' );
     Log.flush;
     if PixelFormat = pf555 then
@@ -1241,10 +1229,10 @@ begin
     end;
 
     NPCHealthBltFx.dwSize := SizeOf( TDDBLTFX );
-    NPCHealthBltFx.dwFillColor := DDColorMatch( lpDDSFront, $1F1F5F );
+    NPCHealthBltFx.dwFillColor := DDColorMatch( lpDDSFront, cHealthColor );
 
     NPCManaBltFx.dwSize := SizeOf( TDDBLTFX );
-    NPCManaBltFx.dwFillColor := DDColorMatch( lpDDSFront, $B09730 );
+    NPCManaBltFx.dwFillColor := DDColorMatch( lpDDSFront, cManaColor );
 
     NPCBarXCoord[ 1 ] := 67;
     NPCBarXCoord[ 2 ] := 153;
@@ -1583,19 +1571,19 @@ begin
 
     if DisableConsole then
       Exit;
-    if ( key = 83 ) then
+    if ( key = Keymap.Spell ) then
     begin //S
       SpellBarActive := not SpellBarActive;
       if SpellBarActive then
         DrawSpellGlyphs;
     end
-    else if ( key = 88 ) then
+    else if ( key = Keymap.XRay ) then
     begin //X
       XRayOn := not XRayOn;
       if Assigned( Current ) then
         TCharacter( Current ).AutoTransparent := XRayOn;
     end
-    else if ( key = 80 ) then
+    else if ( key = Keymap.Pause ) then
     begin //P - Pause
       if Active xor Paused then
       begin
@@ -1650,7 +1638,7 @@ begin
         end;
       end;
     end
-    else if ( key = 77 ) then
+    else if ( key = Keymap.Map ) then
     begin //M
       if DlgMap.Loaded then
         CloseAllDialogs( DlgMap )
@@ -1661,7 +1649,7 @@ begin
         BeginMap( Current );
       end;
     end
-    else if ( key = 68 ) then
+    else if ( key = Keymap.Demo ) then
     begin //D
       // player.hitpoints := -1;
 
@@ -1710,7 +1698,7 @@ begin
       //  AddQuest('a');
       //  AddLogEntry('a');
       //end
-    else if ( key = 82 ) then
+    else if ( key = Keymap.Roster ) then
     begin //R
       if DlgRoster.Loaded then
         CloseAllDialogs( DlgRoster )
@@ -1721,7 +1709,7 @@ begin
         BeginRoster( nil );
       end;
     end
-    else if ( key = 65 ) then
+    else if ( key = Keymap.Award ) then
     begin //A
       if DlgTitles.Loaded then
         CloseAllDialogs( Dlgtitles )
@@ -1732,7 +1720,7 @@ begin
         BeginTitles( Current );
       end;
     end
-    else if ( key = 81 ) then
+    else if ( key = Keymap.QuestLog ) then
     begin //Q
       if DlgQuestLog.Loaded then
         CloseAllDialogs( DlgQuestLog )
@@ -1743,7 +1731,7 @@ begin
         BeginQuestLog;
       end;
     end
-    else if ( key = 87 ) then
+    else if ( key = Keymap.AdventureLog ) then
     begin //W
       if DlgAdvLog.Loaded then
         CloseAllDialogs( DlgAdvLog )
@@ -1754,7 +1742,7 @@ begin
         BeginAdvLog;
       end;
     end
-    else if ( key = 74 ) then
+    else if ( key = Keymap.Journal ) then
     begin //J
       if DlgJournal.Loaded then
         CloseAllDialogs( DlgJournal )
@@ -1765,7 +1753,7 @@ begin
         BeginJournal;
       end;
     end
-    else if ( key = 79 ) then
+    else if ( key = Keymap.Option ) then
     begin //O
       if DlgOptions.Loaded then
         CloseAllDialogs( DlgOptions )
@@ -1776,7 +1764,7 @@ begin
         BeginOptions( Current );
       end;
     end
-    else if ( key = 73 ) then
+    else if ( key = Keymap.Inventory ) then
     begin //I
       if DlgInventory.Loaded then
         CloseAllDialogs( DlgInventory )
@@ -1787,7 +1775,7 @@ begin
         BeginInventory( Current );
       end;
     end
-    else if ( key = 67 ) then
+    else if ( key = Keymap.Character ) then
     begin //C
       if DlgStatistics.Loaded then
         CloseAllDialogs( DlgStatistics )
@@ -1798,11 +1786,11 @@ begin
         BeginStatistics( Current );
       end;
     end
-    else if ( key = 66 ) then
+    else if ( key = Keymap.BattleCry ) then
     begin //B - Battlecry
       Current.DoBattleCry;
     end
-    else if ( key = 32 ) then
+    else if ( key = Keymap.CombatToggle ) then
     begin //space
       Current.CombatMode := not Current.CombatMode;
       for i := 0 to NPCList.Count - 1 do
@@ -1819,7 +1807,7 @@ begin
         end;
       end;
     end
-    else if ( key >= 116 ) and ( key < 124 ) then
+    else if ( key >= 116 ) and ( key < 124 ) then   //  F5 - F12 spell hotkeys
     begin
       if Assigned( Current.HotKey[ key - 115 ] ) then
       begin
@@ -1829,7 +1817,7 @@ begin
       if SpellbarActive then
         DrawSpellGlyphs;
     end
-    else if ( key = 112 ) then
+    else if ( key = Keymap.Help ) then
     begin
       if DlgShow.Loaded then
         CloseAllDialogs( DlgShow )
@@ -1840,7 +1828,7 @@ begin
         BeginHelp;
       end;
     end
-    else if ( key = 113 ) then
+    else if ( key = Keymap.QuickSave ) then
     begin
       if Active then
       begin
@@ -1886,7 +1874,7 @@ begin
         Active := True;
       end;
     end
-      {else if (Key=114) or (Key=115) then begin
+      {else if (Key=114) or (Key=115) then begin     // F3 - F4 Debugmode
         if CurrDbgLvl=0 then begin
           CurrDbgLvl:=3;
           ShowQuickMessage('Debug On',150);
@@ -1896,7 +1884,7 @@ begin
           ShowQuickMessage('Debug Off',150);
         end;
       end  }
-    else if ( key = 27 ) then
+    else if ( key = Keymap.Menu ) then
     begin
       Active := False;
 
@@ -1912,7 +1900,7 @@ begin
 
       PostMessage( Handle, WM_StartMainMenu, 0, 0 ); //Restart the intro
     end
-    else if ( key = 109 ) then
+    else if ( key = Keymap.Screenshot ) then
     begin
       try
         BM := TBitmap.Create;
@@ -2299,6 +2287,9 @@ begin
   BorderIcons := [];
   FormStyle := fsStayOnTop;
 
+  ScreenMetrics := cOriginal; // cHD or cFullHD - TBA
+  Keymap := cKeyOrig; // cKeyGerman .. - TBA
+
   Application.OnException := AppException;
   Application.OnActivate := AppActivate;
   Application.OnDeactivate := AppDeactivate;
@@ -2313,11 +2304,11 @@ begin
 
   Game := TAniView.Create( frmMain );
   Game.Parent := frmMain;
-  Game.Height := 511;
+  Game.Height := ScreenMetrics.GameHeight; // 511;
   Game.Left := 0;
   Game.LMouseButton := False;
   Game.ShowRepaint := False;
-  Game.Width := 703;
+  Game.Width := ScreenMetrics.GameWidth;  // 703
   Game.OnAfterDisplay := AniView1AfterDisplay;
   Game.OnBeforeDisplay := AniView1BeforeDisplay;
   Game.OnMouseDown := AniView1MouseDown;

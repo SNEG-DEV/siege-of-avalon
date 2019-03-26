@@ -94,6 +94,9 @@ type
 
 implementation
 
+uses
+  SoAOS.Types;
+
 { TLoaderBox }
 
 constructor TLoaderBox.Create;
@@ -106,7 +109,7 @@ begin
 {$ENDIF}
   try
     BltFx.dwSize := SizeOf( BltFx ); //RGB(244,164,4)
-    BltFx.dwFillColor := DDColorMatch( lpDDSFront, $00108020 );  // RGB( 32, 128, 16 )
+    BltFx.dwFillColor := DDColorMatch( lpDDSFront, cLoadBackColor );  // RGB( 32, 128, 16 )
     inherited;
   except
     on E : Exception do
@@ -153,11 +156,11 @@ begin
 
   //BMBack.LoadFromFile(InterfacePath+'LoaderBox.bmp');
     BMBack.LoadFromFile( FileName );
-    DXBox := DDGetImage( lpDD, BMBack, $00FFFF00, False );
+    DXBox := DDGetImage( lpDD, BMBack, cInvisColor, False );
   //lpDDSBack.BltFast(250, 169, DXBox, Rect(0, 0, BMBack.width, BMBack.Height), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
   //Draw beveling
     BltFx.dwSize := SizeOf( BltFx );
-    BltFx.dwFillColor := DDColorMatch( DXBox, $00CDCDCD ); // RGB( 205, 205, 205 )
+    BltFx.dwFillColor := DDColorMatch( DXBox, cLoadColor ); // RGB( 205, 205, 205 )
   //DXBox.Blt(rect(50+i-5,500+i-5,750,500+i+1-5),nil,rect(50+i-5,500+i-5,750,500+i+1-5),DDBLT_COLORFILL + DDBLT_WAIT, BltFx);
     pr := Rect( 0, 0, BMBack.width, BMBack.Height );
     lpDDSBack.BltFast( 0, 0, DXBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );

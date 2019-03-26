@@ -128,9 +128,10 @@ type
     procedure Release; override;
   end;
 
-
 implementation
+
 uses
+  SoAOS.Types,
   AniDemo,
 {$IFDEF DirectX}
   DXUtil,
@@ -157,13 +158,11 @@ begin
     Log.LogEntry( FailName );
 {$ENDIF}
   try
-
     inherited;
   except
     on E : Exception do
       Log.log( FailName + E.Message );
   end;
-
 end;
 
 destructor TStatistics.Destroy;
@@ -175,19 +174,15 @@ begin
     Log.LogEntry( FailName );
 {$ENDIF}
   try
-
     inherited;
   except
     on E : Exception do
       Log.log( FailName + E.Message );
   end;
-
 end;
-
 
 procedure TStatistics.Init;
 var
-  InvisColor : Integer; //Transparent color :RGB(0,255,255)
   DXBorder : IDirectDrawSurface;
   i : integer;
   pr : TRect;
@@ -199,7 +194,6 @@ begin
     Log.LogEntry( FailName );
 {$ENDIF}
   try
-
     if Loaded then
       Exit;
     inherited;
@@ -218,22 +212,20 @@ begin
     CreateCollisionRects;
     LoadBaseValues;
     BMBack := TBitmap.Create;
-  //transparent color
-    InvisColor := $00FFFF00;
   //Load the Background Bitmap and plot it
 {$IFDEF DirectX}
 //  BMBack.LoadFromFile(ExtractFilePath(Application.ExeName) + '\BaseInterface.bmp');
 //  DXBack := DDGetImage(lpDD, BMBack, InvisColor, False);
 //  lpDDSBack.BltFast(0,0,DXBack,rect(0,0,800,600),DDBLTFAST_WAIT);
     BMBack.LoadFromFile( InterfacePath + 'staRightArrow.bmp' );
-    DXRightArrow := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXRightArrow := DDGetImage( lpDD, BMBack, cInvisColor, False );
     BMBack.LoadFromFile( InterfacePath + 'staLeftArrow.bmp' );
-    DXLeftArrow := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXLeftArrow := DDGetImage( lpDD, BMBack, cInvisColor, False );
     BMBack.LoadFromFile( InterfacePath + 'staBackToGame.bmp' );
-    DXBackToGame := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBackToGame := DDGetImage( lpDD, BMBack, cInvisColor, False );
 
     BMBack.LoadFromFile( InterfacePath + 'Statistics.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBack := DDGetImage( lpDD, BMBack, cInvisColor, False );
   //Plot the arrows on the background
     for i := 0 to 15 do
     begin
@@ -249,13 +241,13 @@ begin
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   //Now for the Alpha'ed edges
     BMBack.LoadFromFile( InterfacePath + 'staRightshad.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
     DrawSub( lpDDSBack, Rect( 647, 0, 647 + BMBack.Width, BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, 128 );
 
     DXBorder := nil;
 
     BMBack.LoadFromFile( InterfacePath + 'staBottomshad.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
     DrawSub( lpDDSBack, Rect( 0, 455, BMBack.Width, 455 + BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, 128 );
 
     DXBorder := nil; //release DXBorder

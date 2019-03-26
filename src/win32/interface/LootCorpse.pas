@@ -171,6 +171,7 @@ type
 implementation
 
 uses
+  SoAOS.Types,
   AniDemo;
 
 const
@@ -222,7 +223,6 @@ end;
 
 procedure TLootCorpse.Init;
 var
-  InvisColor : Integer; //Transparent color :RGB(0,255,255)
   i : Integer;
   DXBorder : IDirectDrawSurface;
   GreatestWidth, GreatestHeight : integer; //used to create the dirty rect surface
@@ -259,30 +259,28 @@ begin
     DlgScroll.ScrollIsShowing := False; //stats screen isnt showing
     Alpha := 220; //alpha value for all alphabet plots
     BMBack := TBitmap.Create;
-  //transparent color
-    InvisColor := $00FFFF00;
 
   //We have to do this part up here in order to get coordinated from buildgrid
     BMBack.LoadFromFile( InterfacePath + 'merBackHighlight.bmp' );
-    DXBrown := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBrown := DDGetImage( lpDD, BMBack, cInvisColor, False );
 
     BMBack.LoadFromFile( InterfacePath + 'invRightArrow.bmp' );
-    DXRightArrow := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXRightArrow := DDGetImage( lpDD, BMBack, cInvisColor, False );
     BMBack.LoadFromFile( InterfacePath + 'invLeftArrow.bmp' );
-    DXLeftArrow := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXLeftArrow := DDGetImage( lpDD, BMBack, cInvisColor, False );
     BMBack.LoadFromFile( InterfacePath + 'obInvBackToGame.bmp' );
-    DXBackToGame := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBackToGame := DDGetImage( lpDD, BMBack, cInvisColor, False );
     BMBack.LoadFromFile( InterfacePath + 'ltPatch.bmp' );
-    DXPatch := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXPatch := DDGetImage( lpDD, BMBack, cInvisColor, False );
     BMBack.LoadFromFile( InterfacePath + 'ltPrevDark.bmp' );
-    DXPrev := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXPrev := DDGetImage( lpDD, BMBack, cInvisColor, False );
     BMBack.LoadFromFile( InterfacePath + 'ltNextDark.bmp' );
-    DXNext := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXNext := DDGetImage( lpDD, BMBack, cInvisColor, False );
 
     BMBack.LoadFromFile( InterfacePath + 'obInvLeftAll.bmp' );
-    DXLeftAll := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXLeftAll := DDGetImage( lpDD, BMBack, cInvisColor, False );
     BMBack.LoadFromFile( InterfacePath + 'obInvCharacterToObjectInventory.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBack := DDGetImage( lpDD, BMBack, cInvisColor, False );
 
     BuildGrid;
   //now we blit the screen to the backbuffer
@@ -290,13 +288,13 @@ begin
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   //Now for the Alpha'ed edges
     BMBack.LoadFromFile( InterfacePath + 'obInvRightShadow.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
     DrawSub( lpDDSBack, Rect( 659, 0, 659 + BMBack.Width, BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, Alpha );
 
     DXBorder := nil;
 
     BMBack.LoadFromFile( InterfacePath + 'obInvBottomShadow.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
     DrawSub( lpDDSBack, Rect( 0, 456, BMBack.Width, 456 + BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, Alpha );
 
     DXBorder := nil; //release DXBorder
@@ -403,7 +401,7 @@ begin
         GreatestHeight := pTempItems( ItemList.Items[ i ] ).H;
     end;
   //Create the DirectRect fix surface
-    DXDirty := DDGetSurface( lpDD, GreatestWidth, GreatestHeight, InvisColor, true );
+    DXDirty := DDGetSurface( lpDD, GreatestWidth, GreatestHeight, cInvisColor, true );
 
 {$IFDEF DirectX}
   //release the bitmap
@@ -1462,17 +1460,17 @@ begin
     BM := TBitmap.create;
 
     BM.LoadFromFile( InterfacePath + 'ltPrev.bmp' );
-    DXGrid := DDGetImage( lpDD, BM, $00FFFF00, False );
+    DXGrid := DDGetImage( lpDD, BM, cInvisColor, False );
     pr := rect( 0, 0, BM.width, BM.Height );
     DXBack.BltFast( 415, 357, DXGrid, @pr, DDBLTFAST_WAIT );
     DXGrid := nil;
     BM.LoadFromFile( InterfacePath + 'ltNext.bmp' );
-    DXGrid := DDGetImage( lpDD, BM, $00FFFF00, False );
+    DXGrid := DDGetImage( lpDD, BM, cInvisColor, False );
     pr := rect( 0, 0, BM.width, BM.Height );
     DXBack.BltFast( 576, 357, DXGrid, @pr, DDBLTFAST_WAIT );
     DXGrid := nil;
     BM.LoadFromFile( InterfacePath + 'obInvGrid.bmp' );
-    DXGrid := DDGetImage( lpDD, BM, $00FFFF00, False );
+    DXGrid := DDGetImage( lpDD, BM, cInvisColor, False );
     BM.free;
 
     if OtherOb is TCharacter then
@@ -1699,7 +1697,5 @@ begin
   end;
 
 end; //TLootCorpse.Release
-
-
 
 end.

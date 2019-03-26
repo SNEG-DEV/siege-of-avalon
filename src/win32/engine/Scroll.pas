@@ -102,6 +102,7 @@ type
 
 implementation
 uses
+  SoAOS.Types,
   AniDemo,
   Anigrp30,
   Engine,
@@ -123,11 +124,11 @@ begin
     inherited;
     BM := TBitmap.create;
     BM.LoadFromFile( InterfacePath + 'ScrollFrame.bmp' );
-    DXDirty := DDGetImage( lpDD, BM, $00FFFF00, False );
+    DXDirty := DDGetImage( lpDD, BM, cInvisColor, False );
     BM.LoadFromFile( InterfacePath + 'ScrollFrame.bmp' );
-    DXFrame := DDGetImage( lpDD, BM, $00FFFF00, False );
+    DXFrame := DDGetImage( lpDD, BM, cInvisColor, False );
     BM.LoadFromFile( InterfacePath + 'ScrollPage.bmp' );
-    DXSheet := DDGetImage( lpDD, BM, $00FFFF00, False );
+    DXSheet := DDGetImage( lpDD, BM, cInvisColor, False );
     BM.Free;
     DescList := TStringlist.create;
     ExText.Open( 'Scroll' );

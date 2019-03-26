@@ -170,6 +170,7 @@ type
 implementation
 
 uses
+  SoAOS.Types,
   AniDemo,
   Resource,
   SaveFile;
@@ -219,7 +220,6 @@ end; //Destroy
 
 procedure TLoadGame.Init;
 var
-  InvisColor : integer;
   DXTemp : IDirectDrawSurface;
   BM : TBitmap;
   i : integer;
@@ -262,7 +262,6 @@ begin
 
     StartFile := 0;
 
-
     DeleteBoxVisible := false;
     OverwriteBoxVisible := false;
     MustEnterNameBoxVisible := false;
@@ -277,9 +276,6 @@ begin
     BMBack := TBitmap.Create;
     BM := TBitmap.Create;
 
-  //transparent color
-    InvisColor := $00FFFF00;
-
     if LoadFile then
     begin
       BMBack.LoadFromFile( InterfacePath + 'ldLoadLight.bmp' );
@@ -292,33 +288,33 @@ begin
     end;
     DXLoadRect.Right := BMBack.Width;
     DXLoadRect.Bottom := BMBack.Height;
-    DXLoad := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXLoad := DDGetImage( lpDD, BMBack, cInvisColor, False );
 
     BMBack.LoadFromFile( InterfacePath + 'ldCancel.bmp' );
     ldCancelRect.Right := BMBack.Width;
     ldCancelRect.Bottom := BMBack.Height;
-    DXCancel := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXCancel := DDGetImage( lpDD, BMBack, cInvisColor, False );
 
     BMBack.LoadFromFile( InterfacePath + 'ldOk.bmp' );
-    DXok := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXok := DDGetImage( lpDD, BMBack, cInvisColor, False );
 
     BMBack.LoadFromFile( InterfacePath + 'opYellow.bmp' );
-    DXBackHighlight := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBackHighlight := DDGetImage( lpDD, BMBack, cInvisColor, False );
 
     BMBack.LoadFromFile( InterfacePath + 'ldLoadSave.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBack := DDGetImage( lpDD, BMBack, cInvisColor, False );
 
     if LoadFile then
     begin
       BM.LoadFromFile( InterfacePath + 'ldLoadDark.bmp' );
-      DXTemp := DDGetImage( lpDD, BM, InvisColor, False );
+      DXTemp := DDGetImage( lpDD, BM, cInvisColor, False );
       pr := Rect( 0, 0, BM.width, BM.height );
       DXBack.BltFast( ldLoadDarkRect.Left, ldLoadDarkRect.Top, DXTemp, @pr, DDBLTFAST_WAIT );
     end
     else
     begin
       BM.LoadFromFile( InterfacePath + 'ldSaveDark.bmp' );
-      DXTemp := DDGetImage( lpDD, BM, InvisColor, False );
+      DXTemp := DDGetImage( lpDD, BM, cInvisColor, False );
       pr := Rect( 0, 0, BM.width, BM.height );
       DXBack.BltFast( ldSaveDarkRect.Left, ldSaveDarkRect.Top, DXTemp, @pr, DDBLTFAST_WAIT );
     end;
@@ -328,14 +324,14 @@ begin
     if LoadFile then
     begin
       BM.LoadFromFile( InterfacePath + 'ldLoadUpper.bmp' );
-      DXTemp := DDGetImage( lpDD, BM, InvisColor, False );
+      DXTemp := DDGetImage( lpDD, BM, cInvisColor, False );
       pr := Rect( 0, 0, BM.width, BM.height );
       DXBack.BltFast( ldLoadUpperRect.Left, ldLoadUpperRect.Top, DXTemp, @pr, DDBLTFAST_WAIT );
     end
     else
     begin
       BM.LoadFromFile( InterfacePath + 'ldSaveUpper.bmp' );
-      DXTemp := DDGetImage( lpDD, BM, InvisColor, False );
+      DXTemp := DDGetImage( lpDD, BM, cInvisColor, False );
       pr := Rect( 0, 0, BM.width, BM.height );
       DXBack.BltFast( ldSaveUpperRect.Left, ldSaveUpperRect.Top, DXTemp, @pr, DDBLTFAST_WAIT );
     end;
@@ -1108,7 +1104,6 @@ procedure TLoadGame.DeleteSavedFile;
 var
   BM : TBitmap;
   DXBorders : IDirectDrawSurface;
-  InvisColor : integer;
   nRect : TRect;
   pr : TRect;
 const
@@ -1122,11 +1117,9 @@ begin
   try
 
     BM := TBitmap.Create;
-  //transparent color
-    InvisColor := $00FFFF00;
 
     BM.LoadFromFile( InterfacePath + 'ldChooseBox.bmp' );
-    DXBorders := DDGetImage( lpDD, BM, InvisColor, False );
+    DXBorders := DDGetImage( lpDD, BM, cInvisColor, False );
   //lpDDSBack.BltFast(369, 431, DXBorders, Rect(0, 0, BM.width, BM.Height), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
     nRect := pItem( SelectRect.Items[ CurrentSelectedListItem ] ).Rect;
     pr := Rect( 0, 0, BM.width, BM.Height );
@@ -1156,7 +1149,6 @@ procedure TLoadGame.OverwriteSavedFile;
 var
   BM : TBitmap;
   DXBorders : IDirectDrawSurface;
-  InvisColor : integer;
   nRect : TRect;
   pr : TRect;
 const
@@ -1170,11 +1162,9 @@ begin
   try
 
     BM := TBitmap.Create;
-  //transparent color
-    InvisColor := $00FFFF00;
 
     BM.LoadFromFile( InterfacePath + 'ldChooseBox.bmp' );
-    DXBorders := DDGetImage( lpDD, BM, InvisColor, False );
+    DXBorders := DDGetImage( lpDD, BM, cInvisColor, False );
   //lpDDSBack.BltFast(369, 431, DXBorders, Rect(0, 0, BM.width, BM.Height), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
     nRect := pItem( SelectRect.Items[ CurrentSelectedListItem ] ).Rect;
     pr := Rect( 0, 0, BM.width, BM.Height );
@@ -1204,16 +1194,13 @@ procedure TLoadGame.MustEnterName;
 var
   BM : TBitmap;
   DXBorders : IDirectDrawSurface;
-  InvisColor : integer;
   nRect : TRect;
   pr : TRect;
 begin
   BM := TBitmap.Create;
-  //transparent color
-  InvisColor := $00FFFF00;
 
   BM.LoadFromFile( InterfacePath + 'ldChooseBox.bmp' );
-  DXBorders := DDGetImage( lpDD, BM, InvisColor, False );
+  DXBorders := DDGetImage( lpDD, BM, cInvisColor, False );
 
   nRect := pItem( SelectRect.Items[ CurrentSelectedListItem ] ).Rect;
   pr := Rect( 0, 0, BM.width, BM.Height );
@@ -1242,7 +1229,6 @@ var
   PicName : string;
   BM : TBitmap;
   DXTemp : IDirectDrawSurface;
-  InvisColor : integer;
   i : integer;
   nRect : TRect;
   pr : TRect;
@@ -1289,9 +1275,8 @@ begin
     if ( PicName <> '' ) and TFile.Exists( PicName ) then
     begin
       BM := TBitmap.Create;
-      InvisColor := $00FFFF00;
       BM.LoadFromFile( PicName );
-      DXTemp := DDGetImage( lpDD, BM, InvisColor, False );
+      DXTemp := DDGetImage( lpDD, BM, cInvisColor, False );
       pr := Rect( 0, 0, 225, 162 );
       lpDDSBack.BltFast( 114, 257, DXTemp, @pr, DDBLTFAST_WAIT );
       BM.free;

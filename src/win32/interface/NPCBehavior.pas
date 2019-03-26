@@ -69,12 +69,12 @@ uses
   DXUtil,
   DXEffects,
 {$ENDIF}
-  Windows,
-  Types,
-  Classes,
-  Graphics,
-  Controls,
-  ExtCtrls,
+  Winapi.Windows,
+  System.Types,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.ExtCtrls,
   Character,
   GameText,
   Display,
@@ -152,9 +152,13 @@ type
     procedure Init; override;
     procedure Release; override;
   end;
+
 implementation
+
 uses
+  SoAOS.Types,
   AniDemo;
+
 { TNPCBehavior }
 
 constructor TNPCBehavior.Create;
@@ -169,7 +173,6 @@ end; //Destroy
 
 procedure TNPCBehavior.Init;
 var
-  InvisColor : integer;
   DXBorders : IDirectDrawSurface;
   BM : TBitmap;
   pr : TRect;
@@ -202,29 +205,27 @@ begin
   pText.LoadFontGraphic( 'statistics' ); //load the statistics font graphic in
   BMBack := TBitmap.Create;
   BM := TBitmap.create;
-  //transparent color
-  InvisColor := $00FFFF00;
 
   //create the dirty surface
-  DXDirty := DDGetSurface( lpDD, 35, 35, InvisColor, true );
+  DXDirty := DDGetSurface( lpDD, 35, 35, cInvisColor, true );
 
   BMBack.LoadFromFile( InterfacePath + 'NPC.bmp' );
-  DXBack := DDGetImage( lpDD, BMBack, InvisColor, False );
+  DXBack := DDGetImage( lpDD, BMBack, cInvisColor, False );
 
   BM.LoadFromFile( InterfacePath + 'NPCTarget1.bmp' );
-  DXTarget[ 0 ] := DDGetImage( lpDD, BM, InvisColor, False );
+  DXTarget[ 0 ] := DDGetImage( lpDD, BM, cInvisColor, False );
   BM.LoadFromFile( InterfacePath + 'NPCTarget2.bmp' );
-  DXTarget[ 1 ] := DDGetImage( lpDD, BM, InvisColor, False );
+  DXTarget[ 1 ] := DDGetImage( lpDD, BM, cInvisColor, False );
   BM.LoadFromFile( InterfacePath + 'NPCTarget3.bmp' );
-  DXTarget[ 2 ] := DDGetImage( lpDD, BM, InvisColor, False );
+  DXTarget[ 2 ] := DDGetImage( lpDD, BM, cInvisColor, False );
   BM.LoadFromFile( InterfacePath + 'NPCTarget4.bmp' );
-  DXTarget[ 3 ] := DDGetImage( lpDD, BM, InvisColor, False );
+  DXTarget[ 3 ] := DDGetImage( lpDD, BM, cInvisColor, False );
 
   BM.LoadFromFile( InterfacePath + 'NPCActionIcons.bmp' );
-  DXIcons := DDGetImage( lpDD, BM, rgb( 255, 0, 255 ), False );
+  DXIcons := DDGetImage( lpDD, BM, cTransparent, False );
 
   BM.LoadFromFile( InterfacePath + 'NPCBackToGame.bmp' );
-  DXBackToGame := DDGetImage( lpDD, BM, rgb( 255, 0, 255 ), False );
+  DXBackToGame := DDGetImage( lpDD, BM, cTransparent, False );
 
   BM.Free;
 

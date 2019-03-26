@@ -113,6 +113,7 @@ type
 implementation
 
 uses
+  SoAOS.Types,
   AniDemo;
 
 const
@@ -134,7 +135,7 @@ begin
 {$ENDIF}
   try
     Caption.Rect := Rect( X, Y, X + W, Y + H );
-    Caption.Image := DDGetSurface( lpDD, W, H, $FF00FF, true );
+    Caption.Image := DDGetSurface( lpDD, W, H, cTransparent, true );
     Caption.Image.GetDC( DC );
     try
       BitBlt( DC, 0, 0, W, H, BM.canvas.handle, X - XFrame, Y - YFrame, SRCCOPY );
@@ -208,7 +209,7 @@ begin
     BM := TBitmap.Create;
     try
       BM.LoadFromFile( InterfacePath + 'gMainMenuBlank.bmp' );
-      DXBack := DDGetImage( lpDD, BM, $00FFFF00, true );
+      DXBack := DDGetImage( lpDD, BM, cInvisColor, true );
 
       BM.LoadFromFile( InterfacePath + 'gMainMenuText.bmp' );
       DXBack.GetDC( DC );
@@ -380,7 +381,6 @@ procedure TIntro.AreYouSure;
 var
   BM : TBitmap;
   DXBorders : IDirectDrawSurface;
-  InvisColor : integer;
   nRect : TRect;
   pr : TRect;
 const
@@ -392,13 +392,10 @@ begin
     Log.LogEntry( FailName );
 {$ENDIF}
   try
-
     BM := TBitmap.Create;
-  //transparent color
-    InvisColor := $00FFFF00;
 
     BM.LoadFromFile( InterfacePath + 'ldChooseBox.bmp' );
-    DXBorders := DDGetImage( lpDD, BM, InvisColor, False );
+    DXBorders := DDGetImage( lpDD, BM, cInvisColor, False );
     nRect := Captions[ 7 ].Rect; //Exit
 
     pr := Rect( 0, 0, 800, 600 );

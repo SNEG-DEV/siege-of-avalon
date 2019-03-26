@@ -114,6 +114,7 @@ type
 implementation
 
 uses
+  SoAOS.Types,
   AniDemo;
 
 { TAward }
@@ -194,16 +195,16 @@ begin
     if TitleCount > 15 then
     begin
       BMBack.LoadFromFile( InterfacePath + 'logPrevious.bmp' );
-      DXPrev := DDGetImage( lpDD, BMBack, $00FF00FF, False );
+      DXPrev := DDGetImage( lpDD, BMBack, cTransparent, False );
 
       BMBack.LoadFromFile( InterfacePath + 'logPrevious2.bmp' );
-      DXPrev2 := DDGetImage( lpDD, BMBack, $00FF00FF, False );
+      DXPrev2 := DDGetImage( lpDD, BMBack, cTransparent, False );
 
       BMBack.LoadFromFile( InterfacePath + 'logNext.bmp' );
-      DXNext := DDGetImage( lpDD, BMBack, $00FF00FF, False );
+      DXNext := DDGetImage( lpDD, BMBack, cTransparent, False );
 
       BMBack.LoadFromFile( InterfacePath + 'logNext2.bmp' );
-      DXNext2 := DDGetImage( lpDD, BMBack, $00FF00FF, False );
+      DXNext2 := DDGetImage( lpDD, BMBack, cTransparent, False );
     end;
     pr := Rect( 0, 0, ResWidth, ResHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
@@ -213,16 +214,16 @@ begin
     pText.LoadTinyFontGraphic;
 
     BMBack.LoadFromFile( InterfacePath + 'obInvBackToGame.bmp' );
-    DXBackToGame := DDGetImage( lpDD, BMBack, $00FFFF00, False );
+    DXBackToGame := DDGetImage( lpDD, BMBack, cInvisColor, False );
 
     BMBack.LoadFromFile( InterfacePath + 'LogLeftGeeble.bmp' );
-    DXLeftGeeble := DDGetImage( lpDD, BMBack, $00FF00FF, False );
+    DXLeftGeeble := DDGetImage( lpDD, BMBack, cTransparent, False );
     BMBack.LoadFromFile( InterfacePath + 'LogRightGeeble.bmp' );
-    DXRightGeeble := DDGetImage( lpDD, BMBack, $00FF00FF, False );
+    DXRightGeeble := DDGetImage( lpDD, BMBack, cTransparent, False );
 
 
     BMBack.LoadFromFile( InterfacePath + 'LogScreen.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, $00FF00FF, False );
+    DXBack := DDGetImage( lpDD, BMBack, cTransparent, False );
 
     DrawAlpha( DXBack, Rect( 0, 380, 213, 380 + 81 ), Rect( 0, 0, 213, 81 ), DXLeftGeeble, True, 80 );
     DrawAlpha( DXBack, Rect( 452, 0, 452 + 213, 81 ), Rect( 0, 0, 213, 81 ), DXRightGeeble, True, 80 );
@@ -231,13 +232,13 @@ begin
 
   //Now for the Alpha'ed edges
     BMBack.LoadFromFile( InterfacePath + 'obInvRightShadow.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, $00FFFF00, False );
+    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
     DrawSub( lpDDSBack, Rect( 659, 0, 659 + BMBack.Width, BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, 150 );
 
     DXBorder := nil;
 
     BMBack.LoadFromFile( InterfacePath + 'obInvBottomShadow.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, $00FFFF00, False );
+    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
     DrawSub( lpDDSBack, Rect( 0, 456, BMBack.Width, 456 + BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, 150 );
 
     DXBorder := nil; //release DXBorder

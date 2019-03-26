@@ -125,6 +125,7 @@ type
 implementation
 
 uses
+  SoAOS.Types,
   AniDemo;
 
 { TOptions }
@@ -165,7 +166,6 @@ end; //Destroy
 
 procedure TOptions.Init;
 var
-  InvisColor : integer;
   i : integer;
   pr : TRect;
 const
@@ -202,23 +202,20 @@ begin
     if UseSmallFont then
       pText.LoadGoldFontGraphic;
     BMBack := TBitmap.Create;
-  //transparent color
-    InvisColor := $00FFFF00;
-
     BMBack.LoadFromFile( InterfacePath + 'opContinue.bmp' );
     opContinueRect.Right := BMBack.Width;
     opContinueRect.Bottom := BMBack.Height;
-    DXContinue := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXContinue := DDGetImage( lpDD, BMBack, cInvisColor, False );
     BMBack.LoadFromFile( InterfacePath + 'opYellow.bmp' );
-    DXYellow := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXYellow := DDGetImage( lpDD, BMBack, cInvisColor, False );
 
     BMBack.LoadFromFile( InterfacePath + 'opVolume.bmp' );
-    DXVolumeSlider := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXVolumeSlider := DDGetImage( lpDD, BMBack, cInvisColor, False );
     BMBack.LoadFromFile( InterfacePath + 'opVolumeShadow.bmp' );
-    DXVolumeShadow := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXVolumeShadow := DDGetImage( lpDD, BMBack, cInvisColor, False );
 
     BMBack.LoadFromFile( InterfacePath + 'options.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBack := DDGetImage( lpDD, BMBack, cInvisColor, False );
 
 
   //now we blit the screen to the backbuffer

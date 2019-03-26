@@ -174,6 +174,7 @@ type
 implementation
 
 uses
+  SoAOS.Types,
   AniDemo;
 
 { TInventory }
@@ -323,7 +324,6 @@ end;
 
 procedure TInventory.Init;
 var
-  InvisColor : Integer; //Transparent color :RGB(0,255,255)
   i : Integer;
   t : TSlot; //Index for Equipment loop
   DXBorder : IDirectDrawSurface;
@@ -373,8 +373,6 @@ begin
     Alpha := 170; //alpha value for all alphabet plots
     TopGroundIndex := 0; //initialize the top ground item to element zero of GroundList
     BMBack := TBitmap.Create;
-  //transparent color
-    InvisColor := $00FFFF00;
   //Create list
     ItemList := TList.Create; //create the ItemList
   //ItemList.Sorted := True;              //Indicate that it is always to be sorted
@@ -498,7 +496,7 @@ begin
       //end new
     end;
   //Create the DirectRect fix surface
-    DXDirty := DDGetSurface( lpDD, GreatestWidth, GreatestHeight, InvisColor, true );
+    DXDirty := DDGetSurface( lpDD, GreatestWidth, GreatestHeight, cInvisColor, true );
 
     if WeHaveAWeaponAndThisIsTheIndex > -1 then
     begin //If wielding a weapon, put it in a spot where it doesnt collide
@@ -545,34 +543,34 @@ begin
 {$ENDIF}
 {$IFDEF DirectX}
     BMBack.LoadFromFile( InterfacePath + 'invRightArrow.bmp' );
-    DXRightArrow := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXRightArrow := DDGetImage( lpDD, BMBack, cInvisColor, False );
     BMBack.LoadFromFile( InterfacePath + 'invLeftArrow.bmp' );
-    DXLeftArrow := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXLeftArrow := DDGetImage( lpDD, BMBack, cInvisColor, False );
     BMBack.LoadFromFile( InterfacePath + 'invBackToGame.bmp' );
-    DXBackToGame := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBackToGame := DDGetImage( lpDD, BMBack, cInvisColor, False );
 
     BMBack.LoadFromFile( InterfacePath + 'invRedCircle.bmp' );
-    DXCircle := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXCircle := DDGetImage( lpDD, BMBack, cInvisColor, False );
     BMBack.LoadFromFile( InterfacePath + 'merBackHighlight.bmp' );
-    DXBrown := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBrown := DDGetImage( lpDD, BMBack, cInvisColor, False );
 
   //BMBack.LoadFromFile(InterfacePath +'creatures.bmp');
   //DXBack:=DDGetImage(lpDD,BMBack,InvisColor,false);
   //lpDDSBack.BltFast(0,0,DXBack,Rect(0,0,BMBack.width,BMBack.Height),DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
     BMBack.LoadFromFile( InterfacePath + 'inventory.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBack := DDGetImage( lpDD, BMBack, cInvisColor, False );
   //DxDirty := DDGetImage(lpDD, BMBack, InvisColor, False); //for now this is how we will do it
     pr := Rect( 0, 0, BMBack.width, BMBack.Height );
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   //Now for the Alpha'ed edges
     BMBack.LoadFromFile( InterfacePath + 'invRightInventoryAlpha.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
     DrawSub( lpDDSBack, Rect( 659, 0, 659 + BMBack.Width, BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, Alpha );
 
     DXBorder := nil;
 
     BMBack.LoadFromFile( InterfacePath + 'invBottomInventoryAlpha.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
     DrawSub( lpDDSBack, Rect( 0, 460, BMBack.Width, 460 + BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, Alpha );
 
     DXBorder := nil; //release DXBorder

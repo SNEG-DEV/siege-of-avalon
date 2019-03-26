@@ -103,6 +103,7 @@ type
 implementation
 
 uses
+  SoAOS.Types,
   AniDemo,
   Resource,
   Engine,
@@ -144,7 +145,6 @@ end; //Destroy
 
 procedure TShowGraphic.Init;
 var
-  InvisColor : integer;
   pr : TRect;
 const
   FailName : string = 'TShowGraphic.init';
@@ -162,15 +162,11 @@ begin
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 
-
     frmMain.OnMouseDown := FormMouseDown;
 
     BMBack := TBitmap.Create;
-  //transparent color
-    InvisColor := $00FFFF00;
-
     BMBack.LoadFromFile( InterfacePath + FileName );
-    DXBack := DDGetImage( lpDD, BMBack, InvisColor, False );
+    DXBack := DDGetImage( lpDD, BMBack, cInvisColor, False );
     pr := Rect( 0, 0, 800, 600 );
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_WAIT );
 

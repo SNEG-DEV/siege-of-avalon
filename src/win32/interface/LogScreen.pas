@@ -131,6 +131,7 @@ type
 implementation
 
 uses
+  SoAOS.Types,
   AniDemo;
 
 { TLogScreen }
@@ -245,35 +246,35 @@ begin
     if IniFileFound and ( MaxPages > 0 ) then
     begin //(LogInfo.count > 15) then begin
       BMBack.LoadFromFile( InterfacePath + 'logPrevious.bmp' );
-      DXPrev := DDGetImage( lpDD, BMBack, $00FF00FF, False );  // $00BBGGRR = rgb( 255, 0, 255 )
+      DXPrev := DDGetImage( lpDD, BMBack, cTransparent, False );
 
       BMBack.LoadFromFile( InterfacePath + 'logPrevious2.bmp' );
-      DXPrev2 := DDGetImage( lpDD, BMBack, $00FF00FF, False );
+      DXPrev2 := DDGetImage( lpDD, BMBack, cTransparent, False );
 
       BMBack.LoadFromFile( InterfacePath + 'logNext.bmp' );
-      DXNext := DDGetImage( lpDD, BMBack, $00FF00FF, False );
+      DXNext := DDGetImage( lpDD, BMBack, cTransparent, False );
 
       BMBack.LoadFromFile( InterfacePath + 'logNext2.bmp' );
-      DXNext2 := DDGetImage( lpDD, BMBack, $00FF00FF, False );
+      DXNext2 := DDGetImage( lpDD, BMBack, cTransparent, False );
     end;
 
     BMBack.LoadFromFile( InterfacePath + 'obInvBackToGame.bmp' );
-    DXBackToGame := DDGetImage( lpDD, BMBack, $00FFFF00, False );
+    DXBackToGame := DDGetImage( lpDD, BMBack, cInvisColor, False );
 
     BMBack.LoadFromFile( InterfacePath + 'LogScreen.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, $00FF00FF, False );
+    DXBack := DDGetImage( lpDD, BMBack, cTransparent, False );
     pr := Rect( 0, 0, BMBack.width, BMBack.Height );
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
   //Now for the Alpha'ed edges
     BMBack.LoadFromFile( InterfacePath + 'obInvRightShadow.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, $00FFFF00, False );
+    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
     DrawSub( lpDDSBack, Rect( 659, 0, 659 + BMBack.Width, BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, 150 );
 
     DXBorder := nil;
 
     BMBack.LoadFromFile( InterfacePath + 'obInvBottomShadow.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, $00FFFF00, False );
+    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
     DrawSub( lpDDSBack, Rect( 0, 456, BMBack.Width, 456 + BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, 150 );
 
     DXBorder := nil; //release DXBorder
