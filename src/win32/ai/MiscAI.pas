@@ -76,19 +76,17 @@ unit MiscAI;
 {                                                                             }
 {*****************************************************************************}
 
-{$INCLUDE Anigrp30cfg.inc}
-
 interface
 
 uses
-  Classes,
-  SysUtils,
+  System.Classes,
+  System.SysUtils,
+  SoAOS.Types,
   Character,
   Engine,
   Anigrp30,
   LogFile,
   Resource,
-  Graphics,
   strFunctions;
 
 type
@@ -3542,7 +3540,7 @@ begin
           if ( TCharacter( List.Objects[ iLoop ] ).Wounds / TCharacter( List.Objects[ iLoop ] ).Hitpoints ) * 100 >= TimeToAttack then
           begin
             Character.Track := TCharacter( List.Objects[ iLoop ] );
-            Character.Say( 'Die Wimp!', clWhite );
+            Character.Say( 'Die Wimp!', cTalkWhiteColor );
             WaitingToKill := False;
             Break;
           end;
@@ -3640,7 +3638,7 @@ begin
             TAI( TCharacter( List.Objects[ iLoop ] ).AI ).CallToArms( character, Character.Track );
         end;
       end;
-      Character.Say( 'All Attack!!', clRed );
+      Character.Say( 'All Attack!!', cTalkRedColor );
       List.Free;
     end;
   except
@@ -3902,7 +3900,7 @@ begin
     begin
       if ( FriendList.Count < EnemyList.Count ) and ( FriendList.Count > 2 ) then
       begin
-        Character.Say( 'ReGroup!', clYellow );
+        Character.Say( 'ReGroup!', cTalkYellowColor );
         for iLoop := 0 to FriendList.Count - 1 do
         begin
           if Assigned( TCharacter( FriendList.Objects[ iLoop ] ).AI ) then
@@ -3982,8 +3980,8 @@ begin
     begin
       Character.Face( Character.Track.x, Character.Track.y );
       case random( 4 ) of
-        0 : Character.Say( 'Get out of way!', clRed );
-        1 : Character.Say( 'You in way! Move!', clRed );
+        0 : Character.Say( 'Get out of way!', cTalkRedColor );
+        1 : Character.Say( 'You in way! Move!', cTalkRedColor );
       end;
       Character.DoAction( 'Attack1' );
       walking := False;
@@ -4015,9 +4013,9 @@ begin
                     Character.Approach( Character.Track );
                     Walking := True;
                     if TContainer( Character.Track ).Closed then
-                      Character.Say( 'Lets see whats in this', clWhite )
+                      Character.Say( 'Lets see whats in this', cTalkWhiteColor )
                     else
-                      Character.Say( 'Now who left this open?', clWhite );
+                      Character.Say( 'Now who left this open?', cTalkWhiteColor );
 
                     Delay := Random( 140 ) + 100;
                     List.Free;
@@ -4036,7 +4034,7 @@ begin
                       Character.Track := TCharacter( List.Objects[ Random( List.Count ) ] );
                     Character.WalkTo( Character.Track.X, Character.Track.Y, 64 );
                     walking := True;
-                    Character.Say( 'Wont be needin this no more', clWhite );
+                    Character.Say( 'Wont be needin this no more', cTalkWhiteColor );
                     Delay := Random( 140 ) + 100;
                     List.Free;
                     Fighting := False;
@@ -4069,7 +4067,7 @@ begin
                 X := round( r * cos( T ) ) + CenterX;
                 Y := round( r * sin( T ) ) + CenterY;
                 Character.walkTo( X, Y, 64 );
-                character.say( '', clBlack ); //clear text
+                Character.say( '', cTalkBlackColor ); //clear text
                 delay := Random( 200 ) + 200;
                 Walking := True;
                 Fighting := False;
@@ -4208,11 +4206,11 @@ begin
     if IdleDuty = idGuard then
       case Random( 18 ) of
         6 :
-          character.say( 'Guard duty sucks', clWhite );
+          character.say( 'Guard duty sucks', cTalkWhiteColor );
         12 :
-          character.Say( 'who goes there?', clWhite );
+          character.Say( 'who goes there?', cTalkWhiteColor );
         17 :
-          character.Say( 'Did you hear something?', clWhite );
+          character.Say( 'Did you hear something?', cTalkWhiteColor );
       end;
 
   except
@@ -4518,7 +4516,7 @@ begin
     X := round( r * cos( T ) ) + CenterX;
     Y := round( r * sin( T ) ) + CenterY;
     Character.walkTo( X, Y, 16 );
-    character.say( '', clBlack ); //clear text
+    character.say( '', cTalkBlackColor ); //clear text
     delay := Random( 200 ) + 200;
     Walking := True;
   except
@@ -5000,7 +4998,7 @@ begin
           Character.Track := Player;
           Fighting := True;
           delay := 0;
-          character.Say( 'Don' + #39 + 't you guys ever learn!', clRed );
+          character.Say( 'Don' + #39 + 't you guys ever learn!', cTalkRedColor );
           Exit;
         end;
 
@@ -5009,7 +5007,7 @@ begin
           Character.Track := Player;
           Fighting := True;
           delay := 0;
-          character.Say( 'Hello my name is Inigo Montoya!' + #10 + 'You kill my Father! Prepare to die!', clRed );
+          character.Say( 'Hello my name is Inigo Montoya!' + #10 + 'You kill my Father! Prepare to die!', cTalkRedColor );
           Exit;
         end;
         if Player.TitleExists( StrTokenAt( strTitle, ';', 2 ) ) then
@@ -5017,7 +5015,7 @@ begin
           Character.Track := Player;
           Fighting := True;
           delay := 0;
-          character.Say( 'Hello my name is Inigo Montoya!' + #10 + 'You kill my Mother! Prepare to die!', clRed );
+          character.Say( 'Hello my name is Inigo Montoya!' + #10 + 'You kill my Mother! Prepare to die!', cTalkRedColor );
           Exit;
         end;
       end;
@@ -5234,7 +5232,7 @@ begin
       Y := random( 200 ) + 50;
     end;
     Character.walkTo( X, Y, 16 );
-    character.say( '...', clBlack ); //clear text
+    character.say( '...', cTalkBlackColor ); //clear text
     delay := Random( 200 ) + 200;
   except
     on E : Exception do
@@ -5460,7 +5458,7 @@ begin
       if ( Character.Wounds / Character.HitPoints ) * 100 >= 25 then
       begin
         fighting := False;
-        Character.say( 'Ok ok! Stop! I get the point!', clRed );
+        Character.say( 'Ok ok! Stop! I get the point!', cTalkRedColor );
         bShutUp := True;
         bHarassing := True;
         player.AddTitle( 'drunk' );
@@ -5525,25 +5523,25 @@ begin
         if Character.Track = Player then
         begin
           case Random( 2 ) of
-            0 : character.Say( 'Hey buddy, I saw her first!', clWhite );
-            1 : character.Say( 'She' + #39 + 'll come around. ' + #10 + 'No woman can resist this for long!', clWhite );
+            0 : character.Say( 'Hey buddy, I saw her first!', cTalkWhiteColor );
+            1 : character.Say( 'She' + #39 + 'll come around. ' + #10 + 'No woman can resist this for long!', cTalkWhiteColor );
           end;
         end
         else
         begin
           case Random( 5 ) of
-            0 : Character.say( 'C' + #39 + 'mere, sugar! Daddy' + #39 + 's got a present for you!', clWhite );
-            1 : Character.say( 'How ' + #39 + 'bout you give me a little kiss!', clWhite );
-            2 : Character.say( 'How ' + #39 + 'bout I  make your night honey!', clWhite );
-            3 : Character.say( 'So when do you get off?', clWhite );
-            4 : Character.say( 'Hey baby, I can make you see stars!', clWhite );
+            0 : Character.say( 'C' + #39 + 'mere, sugar! Daddy' + #39 + 's got a present for you!', cTalkWhiteColor );
+            1 : Character.say( 'How ' + #39 + 'bout you give me a little kiss!', cTalkWhiteColor );
+            2 : Character.say( 'How ' + #39 + 'bout I  make your night honey!', cTalkWhiteColor );
+            3 : Character.say( 'So when do you get off?', cTalkWhiteColor );
+            4 : Character.say( 'Hey baby, I can make you see stars!', cTalkWhiteColor );
           end;
           case Random( 6 ) of
-            0 : Tcharacter( Character.Track ).say( 'Leave me alone, you knave!', clYellow );
-            1 : Tcharacter( Character.Track ).say( 'Ugh! You are the foulest creature here!', clYellow );
-            2 : Tcharacter( Character.Track ).say( 'With you? Never!', clYellow );
-            3 : Tcharacter( Character.Track ).say( 'I' + #39 + 'd rather kiss an orc!', clYellow );
-            4 : Tcharacter( Character.Track ).say( 'Me and you? Never!', clYellow );
+            0 : TCharacter( Character.Track ).say( 'Leave me alone, you knave!', cTalkYellowColor );
+            1 : TCharacter( Character.Track ).say( 'Ugh! You are the foulest creature here!', cTalkYellowColor );
+            2 : TCharacter( Character.Track ).say( 'With you? Never!', cTalkYellowColor );
+            3 : TCharacter( Character.Track ).say( 'I' + #39 + 'd rather kiss an orc!', cTalkYellowColor );
+            4 : TCharacter( Character.Track ).say( 'Me and you? Never!', cTalkYellowColor );
           end;
 
         end;
@@ -6825,7 +6823,7 @@ begin
       if Delay > 0 then
       begin
         dec( Delay );
-        character.say( strSpell, clred );
+        character.say( strSpell, cTalkRedColor );
         exit;
       end;
 
@@ -7674,7 +7672,7 @@ begin
         if Character.IsEnemy( TCharacter( Source ) ) then
           if ( Character.Wounds / Character.HitPoints ) * 100 >= iTimeToRun then
           begin
-            Character.say( 'Ok ok! Thats enough training for now.', clred );
+            Character.say( 'Ok ok! Thats enough training for now.', cTalkRedColor );
             Character.MakeNeutral( 'player' );
             character.AIMode := aiNone;
             exit;

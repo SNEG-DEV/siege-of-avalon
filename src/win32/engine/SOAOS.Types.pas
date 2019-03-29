@@ -4,16 +4,22 @@ interface
 
 uses
   System.SysUtils,
+  System.UITypes,
   System.Types;
 
 const
 /// <summary> RGB color consts to improve readbility </summary>
-  cTransparent   = $00FF00FF;   // Fuchsia/Magenta transparent
-  cInvisColor    = $00FFFF00;   // Aqua/Cyan transparent
-  cLoadBackColor = $00108020;   // ??
-  cLoadColor     = $00CDCDCD;   // ??
-  cHealthColor   = $001F1F5F;
-  cManaColor     = $00B09730;
+  cTransparent     = TColors.Fuchsia;   // Fuchsia/Magenta transparent
+  cInvisColor      = TColors.Cyan;   // Aqua/Cyan transparent
+  cLoadBackColor   = $00108020;   // ??
+  cLoadColor       = $00CDCDCD;   // ??
+  cHealthColor     = $001F1F5F;
+  cManaColor       = $00B09730;
+  cTalkRedColor    = TColors.Red;  // Angry
+  cTalkWhiteColor  = TColors.White;
+  cTalkYellowColor = TColors.Yellow;
+  cTalkBlackColor  = TColors.Black; // Clear text
+  cTalkBlueColor   = TColors.Blue;  // Undead
 
 type
 //  class function AppPath: string; static;

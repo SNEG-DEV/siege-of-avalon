@@ -59,8 +59,6 @@ unit Anigrp30;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE Anigrp30cfg.inc}
-
 interface
 
 uses
@@ -3404,9 +3402,6 @@ end;
 constructor TAniView.Create( AOwner : TComponent );
 var
   ScreenDC : HDC;
-{$IFDEF SHAREWARE}
-  Msg : string;
-{$ENDIF}
 begin
   inherited Create( AOwner );
 

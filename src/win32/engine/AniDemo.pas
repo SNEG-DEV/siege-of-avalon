@@ -61,8 +61,6 @@ unit AniDemo;
 
 interface
 
-{$INCLUDE Anigrp30cfg.inc}
-
 uses
   Winapi.Windows,
   Winapi.Messages,
@@ -150,16 +148,16 @@ type
   end;
 
   TfrmMain = class( TForm )
-    Image4 : TImage;
-    Image1 : TImage;
-    Image2 : TImage;
+    imgBottomBar : TImage;
+    imgAutoTransparent : TImage;
+    imgSidebar : TImage;
     imgLife : TImage;
     imgMana : TImage;
     imgSpellBar : TImage;
-    Image3 : TImage;
-    Image5 : TImage;
+    imgShadow : TImage;
+    imgGlow : TImage;
     Timer2 : TTimer;
-    Image6 : TImage;
+    imgCombat : TImage;
     imgHelp : TImage;
     imgPaused : TImage;
     Timer3 : TTimer;
@@ -1600,7 +1598,7 @@ begin
           end;
           OverlayB.GetDC( DC );
           try
-            BitBlt( DC, 391, 30, 202, 68, Image4.Canvas.Handle, 391, 30, SRCCOPY );
+            BitBlt( DC, 391, 30, 202, 68, imgBottomBar.Canvas.Handle, 391, 30, SRCCOPY );
           finally
             OverlayB.ReleaseDC( DC );
           end;
@@ -3332,42 +3330,42 @@ begin
     case Slot of
       1 :
         begin
-          Image := Image4;
+          Image := imgBottomBar;
           Surface := OverlayB;
           DstX := 34 - W div 2;
           DstY := 546 - 486 - H div 2;
         end;
       2 :
         begin
-          Image := Image4;
+          Image := imgBottomBar;
           Surface := OverlayB;
           DstX := 116 - W div 2;
           DstY := 546 - 486 - H div 2;
         end;
       3 :
         begin
-          Image := Image4;
+          Image := imgBottomBar;
           Surface := OverlayB;
           DstX := 200 - W div 2;
           DstY := 546 - 486 - H div 2;
         end;
       4 :
         begin
-          Image := Image4;
+          Image := imgBottomBar;
           Surface := OverlayB;
           DstX := 280 - W div 2;
           DstY := 546 - 486 - H div 2;
         end;
       5 :
         begin
-          Image := Image4;
+          Image := imgBottomBar;
           Surface := OverlayB;
           DstX := 492 - W div 2;
           DstY := 546 - 486 - H div 2;
         end;
     else
       begin
-        Image := Image2;
+        Image := imgSidebar;
         Surface := OverlayR;
         DstX := 746 - 683 - W div 2;
         DstY := 66 - H div 2;
@@ -3388,7 +3386,7 @@ begin
       begin
         if TCharacter( Figure ).CombatMode then
         begin
-          BitBlt( DC, 21, 0, Image6.width, Image6.Height, Image6.Canvas.Handle, 0, 0, SRCCOPY );
+          BitBlt( DC, 21, 0, imgCombat.width, imgCombat.Height, imgCombat.Canvas.Handle, 0, 0, SRCCOPY );
         end;
       end;
     end;
@@ -3557,12 +3555,12 @@ begin
       finally
         BM.Free;
       end;
-      Image6.Picture.BITMAP.LoadFromFile( InterfacePath + 'combat.bmp' );
-      Image4.Picture.BITMAP.LoadFromFile( InterfacePath + 'bottombar.bmp' );
-      OverlayB := DDGetImage( lpDD, Image4.Picture.BITMAP,
+      imgCombat.Picture.BITMAP.LoadFromFile( InterfacePath + 'combat.bmp' );
+      imgBottomBar.Picture.BITMAP.LoadFromFile( InterfacePath + 'bottombar.bmp' );
+      OverlayB := DDGetImage( lpDD, imgBottomBar.Picture.BITMAP,
         ColorToRGB( clFuchsia ), True );
-      Image2.Picture.BITMAP.LoadFromFile( InterfacePath + 'sidebar.bmp' );
-      OverlayR := DDGetImage( lpDD, Image2.Picture.BITMAP,
+      imgSidebar.Picture.BITMAP.LoadFromFile( InterfacePath + 'sidebar.bmp' );
+      OverlayR := DDGetImage( lpDD, imgSidebar.Picture.BITMAP,
         ColorToRGB( clFuchsia ), True );
       imgMana.Picture.BITMAP.LoadFromFile( InterfacePath + 'mana.bmp' );
 
@@ -3573,9 +3571,9 @@ begin
       imgSpellBar.Picture.BITMAP.LoadFromFile( InterfacePath + 'spellbar.bmp' );
       SpellBar := DDGetImage( lpDD, imgSpellBar.Picture.BITMAP,
         ColorToRGB( clFuchsia ), True );
-      ShadowImage := DDGetImage( lpDD, Image3.Picture.BITMAP,
+      ShadowImage := DDGetImage( lpDD, imgShadow.Picture.BITMAP,
         ColorToRGB( clBlack ), False );
-      Game.AutoTransparentMask := Image1.Picture.BITMAP;
+      Game.AutoTransparentMask := imgAutoTransparent.Picture.BITMAP;
       NoSpellIcon := DDGetSurface( lpDD, 32, 32, clBlack, False );
 
       pr := Rect( 456, 64, 456 + 32, 64 + 32 );
@@ -3590,7 +3588,7 @@ begin
 
       GlowImage := TRLESprite.Create;
 
-      GlowImage.LoadFromBitmap( Image5.Picture.BITMAP, Image5.width, Image5.Height, 0 );
+      GlowImage.LoadFromBitmap( imgGlow.Picture.BITMAP, imgGlow.width, imgGlow.Height, 0 );
       Log.Log( 'Console load Complete' );
 
       ScreenShot := TBitmap.Create;
@@ -6308,7 +6306,7 @@ begin
     begin
       OverlayB.GetDC( DC );
       try
-        BitBlt( DC, 391, 30, 202, 68, Image4.Canvas.Handle, 391, 30, SRCCOPY );
+        BitBlt( DC, 391, 30, 202, 68, imgBottomBar.Canvas.Handle, 391, 30, SRCCOPY );
       finally
         OverlayB.ReleaseDC( DC );
       end;
@@ -6847,7 +6845,7 @@ begin
     begin
       OverlayB.GetDC( DC );
       try
-        BitBlt( DC, 659, 74, 68, 24, Image4.Canvas.Handle, 659, 74, SRCCOPY );
+        BitBlt( DC, 659, 74, 68, 24, imgBottomBar.Canvas.Handle, 659, 74, SRCCOPY );
       finally
         OverlayB.ReleaseDC( DC );
       end;
@@ -6873,7 +6871,7 @@ begin
 
   OverlayB.GetDC( DC );
   try
-    BitBlt( DC, 659, 50, 68, 24, Image4.Canvas.Handle, 659, 50, SRCCOPY );
+    BitBlt( DC, 659, 50, 68, 24, imgBottomBar.Canvas.Handle, 659, 50, SRCCOPY );
   finally
     OverlayB.ReleaseDC( DC );
   end;
@@ -6893,7 +6891,7 @@ begin
 
   OverlayB.GetDC( DC );
   try
-    BitBlt( DC, 659, 26, 68, 24, Image4.Canvas.Handle, 659, 26, SRCCOPY );
+    BitBlt( DC, 659, 26, 68, 24, imgBottomBar.Canvas.Handle, 659, 26, SRCCOPY );
   finally
     OverlayB.ReleaseDC( DC );
   end;
@@ -6908,7 +6906,7 @@ var
 begin
   OverlayB.GetDC( DC );
   try
-    BitBlt( DC, 659, 50, 68, 24, Image4.Canvas.Handle, 659, 50, SRCCOPY );
+    BitBlt( DC, 659, 50, 68, 24, imgBottomBar.Canvas.Handle, 659, 50, SRCCOPY );
   finally
     OverlayB.ReleaseDC( DC );
   end;
@@ -6926,7 +6924,7 @@ var
 begin
   OverlayB.GetDC( DC );
   try
-    BitBlt( DC, 659, 74, 68, 24, Image4.Canvas.Handle, 659, 74, SRCCOPY );
+    BitBlt( DC, 659, 74, 68, 24, imgBottomBar.Canvas.Handle, 659, 74, SRCCOPY );
   finally
     OverlayB.ReleaseDC( DC );
   end;
@@ -6939,7 +6937,7 @@ var
 begin
   OverlayB.GetDC( DC );
   try
-    BitBlt( DC, 659, 26, 68, 24, Image4.Canvas.Handle, 659, 26, SRCCOPY );
+    BitBlt( DC, 659, 26, 68, 24, imgBottomBar.Canvas.Handle, 659, 26, SRCCOPY );
   finally
     OverlayB.ReleaseDC( DC );
   end;
@@ -7000,7 +6998,7 @@ var
 begin
   OverlayB.GetDC( DC );
   try
-    BitBlt( DC, 0, 0, Image4.width, Image4.Height, Image4.Canvas.Handle, 0, 0, SRCCOPY );
+    BitBlt( DC, 0, 0, imgBottomBar.width, imgBottomBar.Height, imgBottomBar.Canvas.Handle, 0, 0, SRCCOPY );
   finally
     OverlayB.ReleaseDC( DC );
   end;

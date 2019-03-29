@@ -62,14 +62,13 @@ unit Display;
 interface
 
 uses
-  SysUtils,
-  Classes,
-  Controls,
-  Forms,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Controls,
   Gametext,
   Anigrp30,
   Engine,
-  INIFiles,
+  System.IniFiles,
   LogFile;
 
 type
@@ -279,7 +278,7 @@ var
   F : TextFile;
 begin
 
-  AssignFile( F, ExtractFilePath( Application.ExeName ) + '\mylog.txt' );
+  AssignFile( F, ExtractFilePath( ParamStr(0) ) + '\mylog.txt' );
   //Reset(F);
   //Readln(F, S);
   Append( F ); //, extractfilepath(application.exename) + '\mylog.txt' );

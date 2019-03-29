@@ -59,8 +59,6 @@ unit Converse;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE Anigrp30cfg.inc}
-
 interface
 
 uses
@@ -138,6 +136,7 @@ uses
   Vcl.Graphics,
   DXUtil,
   DXEffects,
+  SoAOS.Types,
   Engine,
   LogFile,
   strFunctions,
@@ -203,7 +202,7 @@ begin
     BM := TBitmap.Create;
     try
       BM.LoadFromFile( InterfacePath + 'DialogueBox.bmp' );
-      Image := DDGetImage( lpDD, BM, clFuchsia, true );
+      Image := DDGetImage( lpDD, BM, cTransparent, true );
       ReEntry := True;
       X1 := 65;
       Y1 := 40;
@@ -231,7 +230,7 @@ begin
     BM := TBitmap.Create;
     try
       BM.LoadFromFile( InterfacePath + 'DialogueBoxshadowmap.bmp' );
-      Shadow := DDGetImage( lpDD, BM, clFuchsia, false );
+      Shadow := DDGetImage( lpDD, BM, cTransparent, false );
       try
         DrawSub( lpDDSBack, Rect( X1, Y1, X2, Y2 ), Rect( 0, 0, BM.width, BM.height ), Shadow, true, 170 );
       finally

@@ -62,7 +62,7 @@ unit strFunctions;
 interface
 
 uses
-  Classes;
+  System.Classes;
 
 type
   TSROption = ( srWord, srCase, srAll );
@@ -70,7 +70,6 @@ type
 
 procedure strStripLast( var S : string );
 procedure strStripFirst( var S : string );
-function strContains( const S1, S2 : string ) : Boolean;
 function strToken( var S : string; Seperator : Char ) : string;
 function strTokenCount( S : string; Seperator : Char ) : Integer;
 function strTokenAt( const S : string; Seperator : Char; At : Integer ) : string;
@@ -102,11 +101,6 @@ procedure strStripFirst( var S : string );
 begin
   if Length( S ) > 0 then
     Delete( S, 1, 1 );
-end;
-
-function strContains( const S1, S2 : string ) : Boolean;
-begin
-  Result := Pos( S1, S2 ) > 0;
 end;
 
 function strToken( var S : string; Seperator : Char ) : string;

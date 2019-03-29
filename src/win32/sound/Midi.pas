@@ -82,6 +82,7 @@ function SetMidiSongVolume( Volume : integer ) : integer;
 function PlayMidiSong : integer;
 
 implementation
+
 var
   MidiIsAvailable : integer;
 

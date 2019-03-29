@@ -59,8 +59,6 @@ unit Statistics;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE Anigrp30cfg.inc}
-
 interface
 
 uses
@@ -214,7 +212,7 @@ begin
     BMBack := TBitmap.Create;
   //Load the Background Bitmap and plot it
 {$IFDEF DirectX}
-//  BMBack.LoadFromFile(ExtractFilePath(Application.ExeName) + '\BaseInterface.bmp');
+//  BMBack.LoadFromFile(DefaultPath + '\BaseInterface.bmp');
 //  DXBack := DDGetImage(lpDD, BMBack, InvisColor, False);
 //  lpDDSBack.BltFast(0,0,DXBack,rect(0,0,800,600),DDBLTFAST_WAIT);
     BMBack.LoadFromFile( InterfacePath + 'staRightArrow.bmp' );

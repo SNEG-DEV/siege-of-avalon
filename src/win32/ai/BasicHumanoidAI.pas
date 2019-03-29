@@ -80,13 +80,12 @@ unit BasicHumanoidAI;
 
 interface
 
-{$INCLUDE Anigrp30cfg.inc}
-
 uses
   System.Classes,
   System.SysUtils,
   System.IOUTils,
-  Vcl.Graphics,
+  System.Types,
+  SoAOS.Types,
   Character,
   Anigrp30,
   strFunctions,
@@ -538,12 +537,6 @@ uses
   LogFile,
   Effects,
   Spells;
-
-const
-  PI = 3.1415926535;
-  pi2 = 2 * PI;
-  clRed = TColor( $0000FF );
-  clWhite = TColor( $FFFFFF );
 
 function AssignHumanoidAI( AIName : string ) : TAI;
 var
@@ -1037,9 +1030,9 @@ begin
             if Character.Track = Current then
             begin
               if StrPlayerSay <> '' then
-                character.Say( StrTokenAt( StrPlayerSay, ',', Random( StrTokenCount( StrPlayerSay, ',' ) ) ), clred );
+                character.Say( StrTokenAt( StrPlayerSay, ',', Random( StrTokenCount( StrPlayerSay, ',' ) ) ), cTalkRedColor );
               if StrPlayerRsp <> '' then
-                Current.Say( StrTokenAt( StrPlayerRsp, ',', Random( StrTokenCount( StrPlayerRsp, ',' ) ) ), clred );
+                Current.Say( StrTokenAt( StrPlayerRsp, ',', Random( StrTokenCount( StrPlayerRsp, ',' ) ) ), cTalkRedColor );
             end;
           except
             on E : Exception do
@@ -1050,9 +1043,9 @@ begin
             if ( Character.IsAlly( Character.Track ) ) and ( Character.Track <> Current ) then
             begin
               if StrFriendSay <> '' then
-                character.Say( StrTokenAt( StrFriendSay, ',', Random( StrTokenCount( StrFriendSay, ',' ) ) ), clred );
+                character.Say( StrTokenAt( StrFriendSay, ',', Random( StrTokenCount( StrFriendSay, ',' ) ) ), cTalkRedColor );
               if StrFriendRsp <> '' then
-                Current.Say( StrTokenAt( StrFriendRsp, ',', Random( StrTokenCount( StrFriendRsp, ',' ) ) ), clred );
+                Current.Say( StrTokenAt( StrFriendRsp, ',', Random( StrTokenCount( StrFriendRsp, ',' ) ) ), cTalkRedColor );
             end;
           except
             on E : Exception do
@@ -1062,9 +1055,9 @@ begin
             if ( Character.IsNeutral( Character.Track ) ) and ( Character.Track <> Current ) then
             begin
               if StrNeutralSay <> '' then
-                character.Say( StrTokenAt( StrNeutralSay, ',', Random( StrTokenCount( StrNeutralSay, ',' ) ) ), clred );
+                character.Say( StrTokenAt( StrNeutralSay, ',', Random( StrTokenCount( StrNeutralSay, ',' ) ) ), cTalkRedColor );
               if StrNeutralRsp <> '' then
-                Current.Say( StrTokenAt( StrNeutralRsp, ',', Random( StrTokenCount( StrNeutralRsp, ',' ) ) ), clred );
+                Current.Say( StrTokenAt( StrNeutralRsp, ',', Random( StrTokenCount( StrNeutralRsp, ',' ) ) ), cTalkRedColor );
             end;
           except
             on E : Exception do
@@ -1074,9 +1067,9 @@ begin
             if ( Character.IsEnemy( Character.Track ) ) and ( Character.Track <> Current ) then
             begin
               if StrEnemySay <> '' then
-                character.Say( StrTokenAt( StrEnemySay, ',', Random( StrTokenCount( StrEnemySay, ',' ) ) ), clred );
+                character.Say( StrTokenAt( StrEnemySay, ',', Random( StrTokenCount( StrEnemySay, ',' ) ) ), cTalkRedColor );
               if StrEnemyRsp <> '' then
-                Current.Say( StrTokenAt( StrEnemyRsp, ',', Random( StrTokenCount( StrEnemyRsp, ',' ) ) ), clred );
+                Current.Say( StrTokenAt( StrEnemyRsp, ',', Random( StrTokenCount( StrEnemyRsp, ',' ) ) ), cTalkRedColor );
             end;
           except
             on E : Exception do
@@ -1175,7 +1168,7 @@ begin
               character.AIMode := aiCombat;
 
               if CombatSay <> '' then
-                Character.Say( CombatSay, clRed );
+                Character.Say( CombatSay, cTalkRedColor );
 
               FriendList := GetPerceptibleAllies( Character, 1 );
                  //ach a bad guy... tell all my friends
@@ -1215,7 +1208,7 @@ begin
             character.AIMode := aiCombat;
 
             if CombatSay <> '' then
-              Character.Say( CombatSay, clRed );
+              Character.Say( CombatSay, cTalkRedColor );
             list.free;
           end;
         end;
@@ -1301,7 +1294,7 @@ begin
       if iLeash <> 0 then
       begin
         r := random( iLeash );
-        T := pi2 * random( 360 ) / 360;
+        T := c2PI * random( 360 ) / 360;
         X := round( r * cos( T ) ) + CenterX;
         Y := round( r * sin( T ) ) + CenterY;
       end
@@ -2363,7 +2356,7 @@ begin
         character.AIMode := aiCombat;
 
         if CombatSay <> '' then
-          Character.Say( CombatSay, clRed );
+          Character.Say( CombatSay, cTalkRedColor );
 
         FriendList := GetPerceptibleAllies( Character, 1 );
              //ach a bad guy... tell all my friends
@@ -2710,7 +2703,7 @@ begin
       begin
         inc( CirclePoint, 45 );
         r := 100;
-        T := pi2 * CirclePoint / 360;
+        T := c2PI * CirclePoint / 360;
         X := round( r * cos( T ) ) + Character.Track.X;
         Y := round( r * sin( T ) / 2 ) + Character.Track.Y;
         Character.WalkTo( X, Y, 16 );
@@ -2794,7 +2787,7 @@ begin
           Character.Track := TCharacter( List.objects[ random( List.count ) ] );
 
         if CombatSay <> '' then
-          Character.Say( CombatSay, clRed );
+          Character.Say( CombatSay, cTalkRedColor );
 
         list.free;
       end
@@ -3747,7 +3740,7 @@ begin
       ShotCounter := 0;
       inc( CirclePoint, 45 );
       r := iDistance;
-      T := pi2 * CirclePoint / 360;
+      T := c2PI * CirclePoint / 360;
       X := round( r * cos( T ) ) + TCharacter( Character.Track ).X;
       Y := round( r * sin( T ) / 2 ) + TCharacter( Character.Track ).Y;
 
@@ -4926,7 +4919,7 @@ begin
       NukeCounter := 0;
       inc( CirclePoint, 45 );
       r := iDistance; //300
-      T := pi2 * CirclePoint / 360;
+      T := c2PI * CirclePoint / 360;
       X := round( r * cos( T ) ) + TCharacter( Character.Track ).X;
       Y := round( r * sin( T ) / 2 ) + TCharacter( Character.Track ).Y;
       Walking := True;
@@ -6491,11 +6484,11 @@ begin
         end;
         if List.Count <> 0 then
           Character.Track := TCharacter( List.objects[ 0 ] );
-        Character.Say( 'Lets get to work', clWhite );
+        Character.Say( 'Lets get to work', cTalkWhiteColor );
 
         if Assigned( Character.Track ) then
           if TCharacter( Character.Track ).Name <> '' then
-            Character.Say( Character.Track.Name + ' your ass is mine!', clwhite )
+            Character.Say( Character.Track.Name + ' your ass is mine!', cTalkWhiteColor )
 
       end;
       list.free;
@@ -6790,7 +6783,7 @@ begin
           inc( GoodCollideCount );
           if ( GoodCollideCount > 3 ) and Assigned( Character.track ) then
           begin
-            Character.say( 'Ok you die now!', clred );
+            Character.say( 'Ok you die now!', cTalkRedColor );
             Character.Face( target.x, target.y );
 
             Character.Track := TCharacter( target );
@@ -6804,7 +6797,7 @@ begin
           begin
             Character.Stand;
             Character.Face( Character.Track.x, Character.Track.y );
-            Character.Say( 'Get out of my way', clred );
+            Character.Say( 'Get out of my way', cTalkRedColor );
             List := GetPerceptibleAllies( Character, 2.5 );
             if Assigned( List ) then
             begin
@@ -7199,7 +7192,7 @@ begin
             Character.Track := TCharacter( List.objects[ 0 ] );
           if Assigned( Character.Track ) then
             if TCharacter( Character.Track ).Name <> '' then
-              Character.Say( Character.Track.Name + ' your ass is mine!', clwhite );
+              Character.Say( Character.Track.Name + ' your ass is mine!', cTalkWhiteColor );
           list.free;
         end;
       end;
@@ -7559,7 +7552,7 @@ begin
       begin
         Character.Stand;
         Character.Face( Character.Track.x, Character.Track.y );
-        Character.Say( 'Get out of my way', clred );
+        Character.Say( 'Get out of my way', cTalkRedColor );
         List := GetPerceptibleAllies( Character, 2.5 );
         if Assigned( List ) then
         begin

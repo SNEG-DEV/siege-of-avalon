@@ -176,16 +176,16 @@ function digifxLoadDriver( lpDrvNamePtr : PChar; dwPixFmt : DWORD ) : DFXHND;
 function digifxFreeDriver( hDFX : DFXHND ) : BOOL;
 function digifxCreateRLE( hDFX : DFXHND; SrcBitsPtr : PBITPLANE; KeyColor : DWORD; RLEHDRPtr : PRLEHDR; BuffPtr : Pointer; FirstPtr : PRLEHDR ) : DWORD;
 function digifxConvertRLE( hDFX : DFXHND; RLEHDRPtr : PRLEHDR ) : BOOL;
-function digifxConvertBitplane( hDFX : DFXHND; BitplanePtr : PBITPLANE ) : BOOL;
+//function digifxConvertBitplane( hDFX : DFXHND; BitplanePtr : PBITPLANE ) : BOOL;
 function digifxDrawRLE( hDFX : DFXHND; RLEHDRPtr : PRLEHDR; XPos : integer; YPos : integer; FXPtr : PBLITFX; DstBitsPtr : PBITPLANE ) : BOOL;
-function digifxRLEConvertToPixels( hDFX : DFXHND; RLEHDRPtr : PRLEHDR; PixTabPtr : PPIXEL; PixCnt : DWORD; PixSize : DWORD ) : DWORD;
-function digifxDrawPixels( hDFX : DFXHND; PixTabPtr : PPIXEL; PixCnt : DWORD; XPos : integer; YPos : integer; FXPtr : PBLITFX; DstBitsPtr : PBITPLANE ) : BOOL;
+//function digifxRLEConvertToPixels( hDFX : DFXHND; RLEHDRPtr : PRLEHDR; PixTabPtr : PPIXEL; PixCnt : DWORD; PixSize : DWORD ) : DWORD;
+//function digifxDrawPixels( hDFX : DFXHND; PixTabPtr : PPIXEL; PixCnt : DWORD; XPos : integer; YPos : integer; FXPtr : PBLITFX; DstBitsPtr : PBITPLANE ) : BOOL;
 function digifxDrawBitplane( hDFX : DFXHND; SrcBitsPtr : PBITPLANE; XPos : integer; YPos : integer; KeyColor : DWORD; FXPtr : PBLITFX; DstBitsPtr : PBITPLANE ) : BOOL;
-function digifxDrawRect( hDFX : DFXHND; RectPtr : PRECT; XPos : integer; YPos : integer; FXPtr : PBLITFX; DstBitsPtr : PBITPLANE ) : BOOL;
-function digifxDrawLine( hDFX : DFXHND; XBgn : integer; YBgn : integer; XEnd : integer; YEnd : integer; FXPtr : PBLITFX; DstBitsPtr : PBITPLANE ) : BOOL;
+//function digifxDrawRect( hDFX : DFXHND; RectPtr : PRECT; XPos : integer; YPos : integer; FXPtr : PBLITFX; DstBitsPtr : PBITPLANE ) : BOOL;
+//function digifxDrawLine( hDFX : DFXHND; XBgn : integer; YBgn : integer; XEnd : integer; YEnd : integer; FXPtr : PBLITFX; DstBitsPtr : PBITPLANE ) : BOOL;
 function digifxConvertColor( hDFX : DFXHND; R : BYTE; G : BYTE; B : BYTE ) : DWORD;
-function digifxCheckSupport( hDFX : DFXHND; ProcNo : DWORD; FXPtr : PBLITFX; SrcPtr : Pointer; DstPtr : PBITPLANE ) : BOOL;
-function digifxGetErrorText : PCHAR;
+//function digifxCheckSupport( hDFX : DFXHND; ProcNo : DWORD; FXPtr : PBLITFX; SrcPtr : Pointer; DstPtr : PBITPLANE ) : BOOL;
+//function digifxGetErrorText : PCHAR;
 
 implementation
 
@@ -426,10 +426,10 @@ begin
     result := true;
 end;
 
-function digifxGetErrorText : PCHAR;
-begin
-  result := ErrPtr;
-end;
+//function digifxGetErrorText : PCHAR;
+//begin
+//  result := ErrPtr;
+//end;
 
 function digifxCreateRLE( hDFX : DFXHND; SrcBitsPtr : PBITPLANE; KeyColor : DWORD; RLEHDRPtr : PRLEHDR; BuffPtr : Pointer; FirstPtr : PRLEHDR ) : DWORD;
 begin
@@ -453,46 +453,46 @@ end;
 // Return type mismatch: changed DWORD -> BOOL
 // Moved NewBuffPtr inside the proc. Is this ptr a dummy ptr?
 
-function digifxConvertBitplane( hDFX : DFXHND; BitplanePtr : PBITPLANE ) : BOOL;
-var
-  NewBuffPtr : Pointer;
-begin
-  NewBuffPtr := nil;
-  result := CallDFX( hDFX, DLL_ConvertBitplane, 0, 0, 0, 0, DWORD( BitplanePtr ), DWORD( NewBuffPtr ) );
-end;
+//function digifxConvertBitplane( hDFX : DFXHND; BitplanePtr : PBITPLANE ) : BOOL;
+//var
+//  NewBuffPtr : Pointer;
+//begin
+//  NewBuffPtr := nil;
+//  result := CallDFX( hDFX, DLL_ConvertBitplane, 0, 0, 0, 0, DWORD( BitplanePtr ), DWORD( NewBuffPtr ) );
+//end;
 
 function digifxDrawRLE( hDFX : DFXHND; RLEHDRPtr : PRLEHDR; XPos : integer; YPos : integer; FXPtr : PBLITFX; DstBitsPtr : PBITPLANE ) : BOOL;
 begin
   result := CallDFX( hDFX, DLL_DrawRLE, DWORD( XPos ), DWORD( YPos ), 0, DWORD( FXPtr ), DWORD( RLEHDRPtr ), DWORD( DstBitsPtr ) );
 end;
 
-function digifxRLEConvertToPixels( hDFX : DFXHND; RLEHDRPtr : PRLEHDR; PixTabPtr : PPIXEL; PixCnt : DWORD; PixSize : DWORD ) : DWORD;
-begin
-  if ( CallDFX( hDFX, DLL_RLEConvertToPixels, DWORD( PixSize ), 0, DWORD( PixCnt ), 0, DWORD( RLEHDRPtr ), DWORD( PixTabPtr ) ) ) then
-    result := RegEAX
-  else
-    result := 0;
-end;
+//function digifxRLEConvertToPixels( hDFX : DFXHND; RLEHDRPtr : PRLEHDR; PixTabPtr : PPIXEL; PixCnt : DWORD; PixSize : DWORD ) : DWORD;
+//begin
+//  if ( CallDFX( hDFX, DLL_RLEConvertToPixels, DWORD( PixSize ), 0, DWORD( PixCnt ), 0, DWORD( RLEHDRPtr ), DWORD( PixTabPtr ) ) ) then
+//    result := RegEAX
+//  else
+//    result := 0;
+//end;
 
-function digifxDrawPixels( hDFX : DFXHND; PixTabPtr : PPIXEL; PixCnt : DWORD; XPos : integer; YPos : integer; FXPtr : PBLITFX; DstBitsPtr : PBITPLANE ) : BOOL;
-begin
-  result := CallDFX( hDFX, DLL_DrawPixels, DWORD( PixTabPtr ), DWORD( XPos ), DWORD( YPos ), DWORD( PixCnt ), DWORD( DstBitsPtr ), DWORD( FXPtr ) );
-end;
+//function digifxDrawPixels( hDFX : DFXHND; PixTabPtr : PPIXEL; PixCnt : DWORD; XPos : integer; YPos : integer; FXPtr : PBLITFX; DstBitsPtr : PBITPLANE ) : BOOL;
+//begin
+//  result := CallDFX( hDFX, DLL_DrawPixels, DWORD( PixTabPtr ), DWORD( XPos ), DWORD( YPos ), DWORD( PixCnt ), DWORD( DstBitsPtr ), DWORD( FXPtr ) );
+//end;
 
 function digifxDrawBitplane( hDFX : DFXHND; SrcBitsPtr : PBITPLANE; XPos : integer; YPos : integer; KeyColor : DWORD; FXPtr : PBLITFX; DstBitsPtr : PBITPLANE ) : BOOL;
 begin
   result := CallDFX( hDFX, DLL_DrawBitplane, DWORD( SrcBitsPtr ), DWORD( XPos ), DWORD( YPos ), KeyColor, DWORD( DstBitsPtr ), DWORD( FXPtr ) );
 end;
 
-function digifxDrawRect( hDFX : DFXHND; RectPtr : PRECT; XPos : integer; YPos : integer; FXPtr : PBLITFX; DstBitsPtr : PBITPLANE ) : BOOL;
-begin
-  result := CallDFX( hDFX, DLL_DrawRect, DWORD( RectPtr ), DWORD( XPos ), DWORD( YPos ), DWORD( FXPtr ), DWORD( DstBitsPtr ), 0 );
-end;
+//function digifxDrawRect( hDFX : DFXHND; RectPtr : PRECT; XPos : integer; YPos : integer; FXPtr : PBLITFX; DstBitsPtr : PBITPLANE ) : BOOL;
+//begin
+//  result := CallDFX( hDFX, DLL_DrawRect, DWORD( RectPtr ), DWORD( XPos ), DWORD( YPos ), DWORD( FXPtr ), DWORD( DstBitsPtr ), 0 );
+//end;
 
-function digifxDrawLine( hDFX : DFXHND; XBgn : integer; YBgn : integer; XEnd : integer; YEnd : integer; FXPtr : PBLITFX; DstBitsPtr : PBITPLANE ) : BOOL;
-begin
-  result := CallDFX( hDFX, DLL_DrawLine, DWORD( XBgn ), DWORD( YBgn ), DWORD( XEnd ), DWORD( YEnd ), DWORD( DstBitsPtr ), DWORD( FXPtr ) );
-end;
+//function digifxDrawLine( hDFX : DFXHND; XBgn : integer; YBgn : integer; XEnd : integer; YEnd : integer; FXPtr : PBLITFX; DstBitsPtr : PBITPLANE ) : BOOL;
+//begin
+//  result := CallDFX( hDFX, DLL_DrawLine, DWORD( XBgn ), DWORD( YBgn ), DWORD( XEnd ), DWORD( YEnd ), DWORD( DstBitsPtr ), DWORD( FXPtr ) );
+//end;
 
 function digifxConvertColor( hDFX : DFXHND; R : BYTE; G : BYTE; B : BYTE ) : DWORD;
 var
@@ -512,10 +512,10 @@ begin
     result := NOKEYCOLOR;
 end;
 
-function digifxCheckSupport( hDFX : DFXHND; ProcNo : DWORD; FXPtr : PBLITFX; SrcPtr : Pointer; DstPtr : PBITPLANE ) : BOOL;
-begin
-  result := CallDFX( hDFX, DLL_CheckSupport, ProcNo, DWORD( FXPtr ), 0, 0, DWORD( SrcPtr ), DWORD( DstPtr ) );
-end;
+//function digifxCheckSupport( hDFX : DFXHND; ProcNo : DWORD; FXPtr : PBLITFX; SrcPtr : Pointer; DstPtr : PBITPLANE ) : BOOL;
+//begin
+//  result := CallDFX( hDFX, DLL_CheckSupport, ProcNo, DWORD( FXPtr ), 0, 0, DWORD( SrcPtr ), DWORD( DstPtr ) );
+//end;
 
 end.
 

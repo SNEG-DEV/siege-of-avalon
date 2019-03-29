@@ -59,12 +59,11 @@ unit AniDec30;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE Anigrp30cfg.inc}
-
 interface
 
 uses
   Winapi.Windows,
+  System.UITypes,
   Vcl.Graphics;
 
 const

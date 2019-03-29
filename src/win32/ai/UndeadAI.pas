@@ -59,12 +59,12 @@ unit UndeadAI;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE Anigrp30cfg.inc}
-
 interface
 
 uses
-  Classes,
+  System.Classes,
+  System.Types,
+  SoAOS.Types,
   Character,
   Anigrp30;
 
@@ -241,14 +241,9 @@ function GetFacing( SrcX, SrcY, TargetX, TargetY : Longint ) : Extended;
 implementation
 
 uses
-  SysUtils,
+  System.SysUtils,
   Engine,
-  LogFile,
-  Graphics;
-
-const
-  pi = 3.1415926535;
-  pi2 = 2 * pi;
+  LogFile;
 
 function AssignUndeadAI( AIName : string ) : TAI;
 var
@@ -446,10 +441,10 @@ begin
       begin
         Character.Face( dead.X, dead.Y );
         case random( 4 ) of
-          0 : Character.Say( '*slurp*', clblue );
-          1 : Character.Say( '*crunch*', clblue );
-          2 : Character.Say( '*snap*', clblue );
-          3 : Character.Say( '*chew*', clblue );
+          0 : Character.Say( '*slurp*', cTalkBlueColor );
+          1 : Character.Say( '*crunch*', cTalkBlueColor );
+          2 : Character.Say( '*snap*', cTalkBlueColor );
+          3 : Character.Say( '*chew*', cTalkBlueColor );
         end;
         case random( 2 ) of
           0 : Character.DoAction( 'Attack1' );
@@ -534,9 +529,9 @@ begin
   try
     if ( FUndeadType <> utSkeleton ) then
     begin
-      character.say( 'clear', clblack ); //clear the text
+      character.say( 'clear', cTalkBlackColor ); //clear the text
       r := random( Leash );
-      T := pi2 * random( 360 ) / 360;
+      T := c2PI * random( 360 ) / 360;
       X := round( r * cos( T ) ) + CenterX;
       Y := round( r * sin( T ) / 2 ) + CenterY;
       Character.WalkTo( X, Y, 64 );
@@ -839,7 +834,7 @@ begin
       begin
         inc( CirclePoint, 45 );
         r := 100;
-        T := pi2 * CirclePoint / 360;
+        T := c2PI * CirclePoint / 360;
         X := Round( r * cos( T ) ) + TCharacter( Character.Track ).X;
         Y := Round( r * sin( T ) / 2 ) + TCharacter( Character.Track ).Y;
         Character.WalkTo( X, Y, 16 );
@@ -877,10 +872,10 @@ begin
       begin
         Character.Face( Character.Track.X, Character.track.Y );
         case random( 4 ) of
-          0 : Character.Say( '*slurp*', clblue );
-          1 : Character.Say( '*crunch*', clblue );
-          2 : Character.Say( '*snap*', clblue );
-          3 : Character.Say( '*chew*', clblue );
+          0 : Character.Say( '*slurp*', cTalkBlueColor );
+          1 : Character.Say( '*crunch*', cTalkBlueColor );
+          2 : Character.Say( '*snap*', cTalkBlueColor );
+          3 : Character.Say( '*chew*', cTalkBlueColor );
         end;
         case random( 2 ) of
           0 : Character.DoAction( 'Attack1' );
@@ -1384,7 +1379,7 @@ begin
       ShotCounter := 0;
       inc( CirclePoint, 45 );
       r := 300;
-      T := pi2 * CirclePoint / 360;
+      T := c2PI * CirclePoint / 360;
       X := Round( r * cos( T ) ) + Character.Track.X;
       Y := Round( r * sin( T ) / 2 ) + Character.Track.Y;
       Character.WalkTo( X, Y, 16 );
@@ -1906,7 +1901,7 @@ begin
       NukeCounter := 0;
       inc( CirclePoint, 45 );
       r := 300;
-      T := pi2 * CirclePoint / 360;
+      T := c2PI * CirclePoint / 360;
       X := Round( r * cos( T ) ) + Character.Track.X;
       Y := Round( r * sin( T ) / 2 ) + Character.Track.Y;
       Character.WalkTo( X, Y, 16 );
@@ -2498,7 +2493,7 @@ begin
       NukeCounter := 0;
       inc( CirclePoint, 45 );
       r := 300;
-      T := pi2 * CirclePoint / 360;
+      T := c2PI * CirclePoint / 360;
       X := Round( r * cos( T ) ) + Character.Track.X;
       Y := Round( r * sin( T ) / 2 ) + Character.Track.Y;
       Character.WalkTo( X, Y, 16 );

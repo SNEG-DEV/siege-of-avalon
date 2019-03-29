@@ -59,9 +59,8 @@ unit LoaderBox;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE Anigrp30cfg.inc}
-
 interface
+
 uses
 {$IFDEF DirectX}
   DirectX,

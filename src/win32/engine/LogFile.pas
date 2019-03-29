@@ -116,7 +116,6 @@ implementation
 
 uses
   System.StrUtils,
-  Vcl.Forms,
   Engine,
   System.IniFiles;
 
@@ -136,7 +135,7 @@ var
   Buf,
     Value : PChar;
 begin
-  S := Application.ExeName;
+  S := ParamStr(0);
   n := GetFileVersionInfoSize( PChar( S ), n );
   VersionInfo := defaultStr;
   if n > 0 then
@@ -156,7 +155,7 @@ function GetIniDebugValue( ) : Integer;
 var
   INI : TIniFile;
 begin
-  INI := TIniFile.Create( ExtractFilePath( Application.ExeName ) + 'siege.ini' );
+  INI := TIniFile.Create( DefaultPath + 'siege.ini' );
   try
     Result := INI.ReadInteger( 'Settings', 'Debug', 0 );
   finally
@@ -170,7 +169,7 @@ var
 //  B : TBytes;
 begin
 
-  S := AnsiString( ExtractFileName( Application.ExeName ) + #13#10
+  S := AnsiString( ExtractFileName( ParamStr(0) ) + #13#10
     + 'Copyright ©1999-2000 Digital Tome L.P. Texas USA' + #13#10
     + 'Portions Copyright ©1999-2000 Digital Tome, Inc. ' + #13#10
     + 'All Rights Reserved' + #13#10 + #13#10 );

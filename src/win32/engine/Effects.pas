@@ -62,7 +62,8 @@ unit Effects;
 interface
 
 uses
-  SysUtils,
+  System.SysUtils,
+  System.Types,
   Resource,
   Character,
   Anigrp30,
@@ -195,7 +196,7 @@ begin
     p^.X := 0;
     p^.Y := 0;
     p^.Z := random * 10;
-    p^.Angle := random * PI2;
+    p^.Angle := random * c2PI;
     p^.Rise := 0.25 + random / 2;
     p^.Offset := random * 30 - 15;
     inc( p );

@@ -59,8 +59,6 @@ unit DFX;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE Anigrp30cfg.inc}
-
 interface
 
 uses
@@ -92,8 +90,8 @@ type
   public
     constructor Create;
     destructor Destroy; override;
-    procedure LoadFromRLE( FileName : string );
-    procedure SaveToRLE( FileName : string );
+//    procedure LoadFromRLE( FileName : string );
+//    procedure SaveToRLE( FileName : string );
     procedure LoadFromStream( Stream : TStream );
     procedure SaveToStream( Stream : TStream );
     procedure LoadFromBitPlane( BitPlane : TBitPlane );
@@ -165,44 +163,44 @@ begin
   end;
 end;
 
-function DFXCheckSupport : BOOL;
-var
-  dfx_blitfx : BLITFX;
-  rlehdr_temp : RLEHDR;
-  bitplane_temp : BITPLANE;
-  my_bitplane : BITPLANE;
-begin
-  my_bitplane.bitsFmt := dfx_pixelformat;
-  dfx_blitfx.FXType := BLITFX_BLEND;
-  dfx_blitfx.BlendSrcFactor := 0;
-  dfx_blitfx.BlendDstFactor := 0;
-
-  rlehdr_temp.PixFmt := dfx_pixelformat;
-  rlehdr_temp.DataPtr := nil;
-  bitplane_temp.bitsFmt := dfx_pixelformat;
-  bitplane_temp.bitsPtr := nil;
-
-  Result := False;
-
-  if ( not digifxCheckSupport( dfx_hnd, DFX_DRAWRLE, @dfx_blitfx, @rlehdr_temp, @my_bitplane ) ) then
-    Exit;
-  if ( not digifxCheckSupport( dfx_hnd, DFX_DRAWBITPLANE, @dfx_blitfx, @bitplane_temp, @my_bitplane ) ) then
-    Exit;
-
-  dfx_blitfx.FXType := BLITFX_TEXTURED;
-  rlehdr_temp.PixFmt := dfx_pixelformat;
-  rlehdr_temp.DataPtr := nil;
-
-  if ( not digifxCheckSupport( dfx_hnd, DFX_DRAWRLE, @dfx_blitfx, @rlehdr_temp, @my_bitplane ) ) then
-    Exit;
-  dfx_blitfx.FXType := BLITFX_MONO;
-  if ( not digifxCheckSupport( dfx_hnd, DFX_DRAWRECT, @dfx_blitfx, @rlehdr_temp, @my_bitplane ) ) then
-    Exit;
-  if ( not digifxCheckSupport( dfx_hnd, DFX_DRAWLINE, @dfx_blitfx, @rlehdr_temp, @my_bitplane ) ) then
-    Exit;
-
-  Result := True;
-end;
+//function DFXCheckSupport : BOOL;
+//var
+//  dfx_blitfx : BLITFX;
+//  rlehdr_temp : RLEHDR;
+//  bitplane_temp : BITPLANE;
+//  my_bitplane : BITPLANE;
+//begin
+//  my_bitplane.bitsFmt := dfx_pixelformat;
+//  dfx_blitfx.FXType := BLITFX_BLEND;
+//  dfx_blitfx.BlendSrcFactor := 0;
+//  dfx_blitfx.BlendDstFactor := 0;
+//
+//  rlehdr_temp.PixFmt := dfx_pixelformat;
+//  rlehdr_temp.DataPtr := nil;
+//  bitplane_temp.bitsFmt := dfx_pixelformat;
+//  bitplane_temp.bitsPtr := nil;
+//
+//  Result := False;
+//
+//  if ( not digifxCheckSupport( dfx_hnd, DFX_DRAWRLE, @dfx_blitfx, @rlehdr_temp, @my_bitplane ) ) then
+//    Exit;
+//  if ( not digifxCheckSupport( dfx_hnd, DFX_DRAWBITPLANE, @dfx_blitfx, @bitplane_temp, @my_bitplane ) ) then
+//    Exit;
+//
+//  dfx_blitfx.FXType := BLITFX_TEXTURED;
+//  rlehdr_temp.PixFmt := dfx_pixelformat;
+//  rlehdr_temp.DataPtr := nil;
+//
+//  if ( not digifxCheckSupport( dfx_hnd, DFX_DRAWRLE, @dfx_blitfx, @rlehdr_temp, @my_bitplane ) ) then
+//    Exit;
+//  dfx_blitfx.FXType := BLITFX_MONO;
+//  if ( not digifxCheckSupport( dfx_hnd, DFX_DRAWRECT, @dfx_blitfx, @rlehdr_temp, @my_bitplane ) ) then
+//    Exit;
+//  if ( not digifxCheckSupport( dfx_hnd, DFX_DRAWLINE, @dfx_blitfx, @rlehdr_temp, @my_bitplane ) ) then
+//    Exit;
+//
+//  Result := True;
+//end;
 
 function DFXEnumProc( driverinfo : PChar ) : BOOL;
 begin
@@ -268,44 +266,44 @@ end;
 
 { TRLESprite }
 
-procedure TRLESprite.LoadFromRLE( FileName : string );
-var
-  TmpFile : THandle;
-  Size, BuffSize, BytesCnt, i : DWORD;
-  lpRLE, RelocOffset : PChar;
-  p : PRLEHDR;
-begin
-  if Assigned( lpSpr ) then
-  begin
-    FreeMem( lpSpr.DataPtr );
-    FreeMem( lpSpr );
-    lpSpr := nil;
-  end;
-
-  TmpFile := CreateFile( PChar( FileName ), GENERIC_READ, 0, nil, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0 );
-  if ( TmpFile = INVALID_HANDLE_VALUE ) then
-    raise Exception.CreateFmt( 'Could not load file %s.', [ FileName ] );
-
-  ReadFile( TmpFile, PicCnt, SizeOf( PicCnt ), BytesCnt, nil );
-  ReadFile( TmpFile, BuffSize, SizeOf( BuffSize ), BytesCnt, nil );
-  Size := PicCnt * SizeOf( RLEHDR );
-  GetMem( lpSpr, Size );
-  ReadFile( TmpFile, lpSpr^, Size, BytesCnt, nil );
-  GetMem( lpRLE, BuffSize );
-  ReadFile( TmpFile, lpRLE^, BuffSize, BytesCnt, nil );
-  CloseHandle( TmpFile );
-
-  FMemSize := BuffSize;
-
-  RelocOffset := PChar( lpRLE - lpSpr.DataPtr );
-  p := lpSpr;
-  for i := 1 to PicCnt do
-  begin
-    p.DataPtr := PChar( p.DataPtr + DWORD( RelocOffset ) );
-    digifxConvertRLE( dfx_hnd, p );
-    Inc( p );
-  end;
-end;
+//procedure TRLESprite.LoadFromRLE( FileName : string );
+//var
+//  TmpFile : THandle;
+//  Size, BuffSize, BytesCnt, i : DWORD;
+//  lpRLE, RelocOffset : PChar;
+//  p : PRLEHDR;
+//begin
+//  if Assigned( lpSpr ) then
+//  begin
+//    FreeMem( lpSpr.DataPtr );
+//    FreeMem( lpSpr );
+//    lpSpr := nil;
+//  end;
+//
+//  TmpFile := CreateFile( PChar( FileName ), GENERIC_READ, 0, nil, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0 );
+//  if ( TmpFile = INVALID_HANDLE_VALUE ) then
+//    raise Exception.CreateFmt( 'Could not load file %s.', [ FileName ] );
+//
+//  ReadFile( TmpFile, PicCnt, SizeOf( PicCnt ), BytesCnt, nil );
+//  ReadFile( TmpFile, BuffSize, SizeOf( BuffSize ), BytesCnt, nil );
+//  Size := PicCnt * SizeOf( RLEHDR );
+//  GetMem( lpSpr, Size );
+//  ReadFile( TmpFile, lpSpr^, Size, BytesCnt, nil );
+//  GetMem( lpRLE, BuffSize );
+//  ReadFile( TmpFile, lpRLE^, BuffSize, BytesCnt, nil );
+//  CloseHandle( TmpFile );
+//
+//  FMemSize := BuffSize;
+//
+//  RelocOffset := PChar( lpRLE - lpSpr.DataPtr );
+//  p := lpSpr;
+//  for i := 1 to PicCnt do
+//  begin
+//    p.DataPtr := PChar( p.DataPtr + DWORD( RelocOffset ) );
+//    digifxConvertRLE( dfx_hnd, p );
+//    Inc( p );
+//  end;
+//end;
 
 procedure TRLESprite.LoadFromBitmap( BITMAP : TBitmap; FrameWidth, FrameHeight : Integer; Color : TColor );
 var
@@ -402,23 +400,23 @@ begin
   FreeMem( Sizes );
 end;
 
-procedure TRLESprite.SaveToRLE( FileName : string );
-var
-  TmpFile : THandle;
-  BuffSize, BytesCnt : DWORD;
-begin
-  TmpFile := CreateFile( PChar( FileName ), GENERIC_WRITE, 0, nil, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0 );
-  if ( TmpFile = INVALID_HANDLE_VALUE ) then
-    Exit;
-
-  BuffSize := FMemSize;
-
-  WriteFile( TmpFile, PicCnt, SizeOf( PicCnt ), BytesCnt, nil );
-  WriteFile( TmpFile, BuffSize, SizeOf( BuffSize ), BytesCnt, nil );
-  WriteFile( TmpFile, lpSpr^, PicCnt * SizeOf( RLEHDR ), BytesCnt, nil );
-  WriteFile( TmpFile, lpSpr.DataPtr^, BuffSize, BytesCnt, nil );
-  CloseHandle( TmpFile );
-end;
+//procedure TRLESprite.SaveToRLE( FileName : string );
+//var
+//  TmpFile : THandle;
+//  BuffSize, BytesCnt : DWORD;
+//begin
+//  TmpFile := CreateFile( PChar( FileName ), GENERIC_WRITE, 0, nil, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0 );
+//  if ( TmpFile = INVALID_HANDLE_VALUE ) then
+//    Exit;
+//
+//  BuffSize := FMemSize;
+//
+//  WriteFile( TmpFile, PicCnt, SizeOf( PicCnt ), BytesCnt, nil );
+//  WriteFile( TmpFile, BuffSize, SizeOf( BuffSize ), BytesCnt, nil );
+//  WriteFile( TmpFile, lpSpr^, PicCnt * SizeOf( RLEHDR ), BytesCnt, nil );
+//  WriteFile( TmpFile, lpSpr.DataPtr^, BuffSize, BytesCnt, nil );
+//  CloseHandle( TmpFile );
+//end;
 
 constructor TRLESprite.Create;
 begin

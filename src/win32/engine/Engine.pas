@@ -59,21 +59,19 @@ unit Engine;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE Anigrp30cfg.inc}
-
 interface
 
 uses
   System.Classes,
+  System.Types,
   System.IOUtils,
+  System.UITypes,
   Anigrp30,
-  Vcl.ExtCtrls,
   System.Math,
   System.SysUtils,
   System.IniFiles,
   DirectX,
   LogFile,
-  Vcl.Graphics,
   Resource,
   Titles,
   DFX,
@@ -89,10 +87,6 @@ function UnFormatFP( S : string ) : double;
 procedure CheckCache;
 procedure GetChapters( INI : TINIFile );
 function SymbolReplacement( const Script : string ) : string;
-
-const
-  PI = 3.1415926535;
-  pi2 = 2 * PI;
 
 var
   Game : TAniView;
@@ -840,7 +834,7 @@ begin
               if StrToInt( Parms ) <> 0 then
               begin
                 r := random( StrToInt( Parms ) );
-                T := pi2 * random( 360 ) / 360;
+                T := c2PI * random( 360 ) / 360;
                 X := round( r * cos( T ) ) + TCharacter( ObjectRef ).X;
                 Y := round( r * sin( T ) ) + TCharacter( ObjectRef ).Y;
                 TCharacter( ObjectRef ).walkTo( X, Y, 16 );
@@ -901,7 +895,7 @@ begin
           begin
             if ObjectRef is TSpriteObject then
             begin
-              TSpriteObject( ObjectRef ).Say( Parms, clWhite );
+              TSpriteObject( ObjectRef ).Say( Parms, TColors.White );
             end;
           end;
         end

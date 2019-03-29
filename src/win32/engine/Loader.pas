@@ -61,12 +61,10 @@ unit Loader;
 
 interface
 
-{$INCLUDE Anigrp30cfg.inc}
-
 uses
   System.Classes,
   System.IOUtils,
-  Vcl.Graphics,
+  System.UITypes,
   System.SysUtils,
   Anigrp30,
   AniDec30,

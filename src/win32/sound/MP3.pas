@@ -62,9 +62,10 @@ unit MP3;
 interface
 
 uses
-  Windows;
+  System.Types;
 
 type
+  pDWORD = ^DWORD;
   pFSOUND_STREAM = ^FSOUND_STREAM;
   FSOUND_STREAM = record
     Thing : byte;
@@ -121,7 +122,7 @@ function FSOUND_SetOutput( outputtype : FSOUND_OUTPUTTYPES ) : ByteBool; stdcall
 function FSOUND_SetDriver( driver : DWORD ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_SetDriver@4';
 function FSOUND_Init( mixrate, maxchannels, vcmmode : DWORD ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_Init@12';
 procedure FSOUND_Close; stdcall; external 'fmod.dll' name '_FSOUND_Close@0';
-function FSOUND_Stream_OpenMpeg( filename : pAnsiChar; mode : ULong ) : pFSOUND_STREAM; stdcall; external 'fmod.dll' name '_FSOUND_Stream_OpenMpeg@8';
+function FSOUND_Stream_OpenMpeg( filename : pAnsiChar; mode : Cardinal ) : pFSOUND_STREAM; stdcall; external 'fmod.dll' name '_FSOUND_Stream_OpenMpeg@8';
 function FSOUND_Stream_Play( channel : DWORD; stream : pFSOUND_STREAM ) : DWORD; stdcall; external 'fmod.dll' name '_FSOUND_Stream_Play@8';
 function FSOUND_Stream_Stop( stream : pFSOUND_STREAM ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_Stream_Stop@4';
 function FSOUND_Stream_Close( stream : pFSOUND_STREAM ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_Stream_Close@4';
@@ -129,7 +130,7 @@ function FSOUND_Stream_SetPaused( stream : pFSOUND_STREAM; paused : ByteBool ) :
 function FSOUND_SetVolume( channel : DWORD; vol : DWORD ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_SetVolume@8';
 
 function FSOUND_SetMixer( mixer : FSOUND_MIXERTYPES ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_SetMixer@4';
-function FSOUND_Sample_LoadWav( index : DWORD; filename : pAnsiChar; mode : ULong ) : pFSOUND_SAMPLE; stdcall; external 'fmod.dll' name '_FSOUND_Sample_LoadWav@12';
+function FSOUND_Sample_LoadWav( index : DWORD; filename : pAnsiChar; mode : Cardinal ) : pFSOUND_SAMPLE; stdcall; external 'fmod.dll' name '_FSOUND_Sample_LoadWav@12';
 procedure FSOUND_SetSFXMasterVolume( volume : DWORD ); stdcall; external 'fmod.dll' name '_FSOUND_SetSFXMasterVolume@4';
 procedure FSOUND_Sample_Free( sptr : pFSOUND_SAMPLE ); stdcall; external 'fmod.dll' name '_FSOUND_Sample_Free@4';
 function FSOUND_Sample_SetDefaults( sptr : pFSOUND_SAMPLE; deffreq, defvol, defpan, defpri : DWORD ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_Sample_SetDefaults@20';
@@ -139,7 +140,7 @@ function FSOUND_GetFrequency( channel : DWORD ) : DWORD; stdcall; external 'fmod
 function FSOUND_SetFrequency( channel : DWORD; freq : DWORD ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_SetFrequency@8';
 function FSOUND_SetPan( channel : DWORD; pan : DWORD ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_SetPan@8';
 function FSOUND_Sample_GetDefaults( sptr : pFSOUND_SAMPLE; deffreq, defvol, defpan, defpri : pDWORD ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_Sample_GetDefaults@20';
-function FSOUND_Sample_SetLoopMode( sptr : pFSOUND_SAMPLE; loopmode : ULong ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_Sample_SetLoopMode@8';
+function FSOUND_Sample_SetLoopMode( sptr : pFSOUND_SAMPLE; loopmode : Cardinal ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_Sample_SetLoopMode@8';
 function FSOUND_StopSound( channel : DWORD ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_StopSound@4';
 function FSOUND_SetHWND( HWND : pointer ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_SetHWND@4';
 function FSOUND_SetBufferSize( Len_ns : DWORD ) : ByteBool; stdcall; external 'fmod.dll' name '_FSOUND_SetBufferSize@4';

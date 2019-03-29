@@ -59,8 +59,6 @@ unit Scroll;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE Anigrp30cfg.inc}
-
 interface
 
 uses
@@ -909,7 +907,7 @@ begin
         ShowStatsScroll;
         Adj := Adj - Trunc( Adj );
       end;
-      application.ProcessMessages;
+      Application.ProcessMessages;
     end; //wend
   except
     on E : Exception do

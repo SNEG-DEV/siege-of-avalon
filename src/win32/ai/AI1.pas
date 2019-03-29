@@ -61,8 +61,6 @@ unit AI1;
 
 interface
 
-{$INCLUDE Anigrp30cfg.inc}
-
 uses
   Character,
   Anigrp30;
@@ -117,19 +115,15 @@ type
     procedure Execute; override;
   end;
 
-
 function AssignAI1( AIName : string ) : TAI;
 
 implementation
 
 uses
-  Classes,
-  SysUtils,
+  System.Classes,
+  System.Types,
+  System.SysUtils,
   LogFile;
-
-const
-  PI = 3.1415926535;
-  pi2 = 2 * PI;
 
 function AssignAI1( AIName : string ) : TAI;
 var
@@ -180,7 +174,7 @@ begin
       if Delay <= 0 then
       begin
         r := random( Leash );
-        T := pi2 * random( 360 ) / 360;
+        T := c2PI * random( 360 ) / 360;
         X := Round( r * cos( T ) ) + CenterX;
         Y := Round( r * sin( T ) / 2 ) + CenterY;
         Character.WalkTo( X, Y, 4 );

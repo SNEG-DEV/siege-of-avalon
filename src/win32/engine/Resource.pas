@@ -61,14 +61,13 @@ unit Resource;
 
 interface
 
-{$INCLUDE Anigrp30cfg.inc}
-
 uses
   System.Classes,
   System.Types,
   System.SysUtils,
   System.IOUtils,
   Vcl.Graphics,
+  SoAOS.Types,
   Anigrp30,
   AniDec30,
   System.IniFiles,
@@ -139,7 +138,6 @@ type
     FrameHeight : Integer;
     FrameMultiplier : Integer;
     SpecialEffect : TAniSpecialEffect;
-    TransparentColor : TColor;
     Radius : Integer;
     CenterX : Integer;
     CenterY : Integer;
@@ -532,7 +530,7 @@ begin
               Stream.write( L, sizeof( L ) );
               Stream.write( S[ 1 ], L );
               Stream.write( EOB, sizeof( EOB ) );
-              C := StrToInt( lowercase( trim( INI.ReadString( 'Header', 'TransparentColor', '16776960' ) ) ) );
+              C := StrToInt( lowercase( trim( INI.ReadString( 'Header', 'TransparentColor', '16776960' ) ) ) );   // cInvisColor
               result.RLE := TRLESprite.create;
               result.RLE.LoadFromBitmap( BM, result.FrameWidth, result.FrameHeight, C );
               result.RLE.SaveToStream( Stream );
@@ -889,7 +887,6 @@ begin
       UseLighting := True;
       Vertical := ( S = 'vert' );
     end;
-    TransparentColor := clFuchsia;
     S := LowerCase( INI.ReadString( 'Header', 'Highlightable', '' ) );
     if ( S = 'yes' ) then
       Highlightable := True
@@ -940,7 +937,7 @@ begin
     Actions.Free;
 
     Picture := TBitPlane.Create( FrameWidth, FrameHeight );
-    Picture.KeyColor := TransparentColor;
+    Picture.KeyColor := cTransparent;
 
   except
     on E : Exception do
@@ -2200,7 +2197,6 @@ begin
     FrameWidth := INI.ReadInteger( 'Header', 'ImageWidth', 96 );
     FrameHeight := INI.ReadInteger( 'Header', 'ImageHeight', 86 );
     S := LowerCase( INI.ReadString( 'Header', 'Blend', '' ) );
-    TransparentColor := clFuchsia;
     Radius := INI.ReadInteger( 'Header', 'CollisionRadius', 16 );
     FrameMultiplier := INI.ReadInteger( 'Header', 'FrameMultiplier', 1 );
     CenterX := INI.ReadInteger( 'Header', 'CollisionOffset', FrameWidth div 2 );
@@ -2222,7 +2218,7 @@ begin
       Highlightable := False;
 
     Picture := TBitPlane.Create( FrameWidth, FrameHeight );
-    Picture.KeyColor := TransparentColor;
+    Picture.KeyColor := cTransparent;
 
     DrawShadow := false;
     ComplexShadow := false;
@@ -2275,7 +2271,7 @@ begin
       W := FrameWidth
     else
       W := FrameWidth + 4 - ( FrameWidth mod 4 );
-    BM := DDGetSurface( lpDD, W, FrameHeight, clFuchsia, false, ColorMatch );
+    BM := DDGetSurface( lpDD, W, FrameHeight, cTransparent, false, ColorMatch );
 
     ddck.dwColorSpaceLowValue := ColorMatch;
     ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
@@ -2412,7 +2408,7 @@ begin
       W := FrameWidth
     else
       W := FrameWidth + 4 - ( FrameWidth mod 4 );
-    BM := DDGetSurface( lpDD, W, FrameHeight, clFuchsia, false, ColorMatch );
+    BM := DDGetSurface( lpDD, W, FrameHeight, cTransparent, false, ColorMatch );
 
     ddck.dwColorSpaceLowValue := ColorMatch;
     ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
@@ -2559,7 +2555,7 @@ begin
       W := FrameWidth
     else
       W := FrameWidth + 4 - ( FrameWidth mod 4 );
-    result := DDGetSurface( lpDD, W, FrameHeight, clFuchsia, false, ColorMatch );
+    result := DDGetSurface( lpDD, W, FrameHeight, cTransparent, false, ColorMatch );
 
     ddsd.dwSize := SizeOf( ddsd );
     if result.Lock( nil, ddsd, DDLOCK_WAIT, 0 ) = DD_OK then
@@ -2694,7 +2690,7 @@ begin
       W := FrameWidth
     else
       W := FrameWidth + 4 - ( FrameWidth mod 4 );
-    TileBM := DDGetSurface( lpDD, W, FrameHeight, clFuchsia, false, ColorMatch );
+    TileBM := DDGetSurface( lpDD, W, FrameHeight, cTransparent, false, ColorMatch );
 
     ddck.dwColorSpaceLowValue := ColorMatch;
     ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;

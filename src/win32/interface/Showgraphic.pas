@@ -59,8 +59,6 @@ unit ShowGraphic;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE Anigrp30cfg.inc}
-
 interface
 
 uses

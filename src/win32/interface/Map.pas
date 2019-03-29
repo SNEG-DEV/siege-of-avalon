@@ -65,6 +65,7 @@ uses
   System.SysUtils,
   System.Types,
   System.Classes,
+  SoAOS.Types,
   Vcl.Controls,
   Gametext,
   Vcl.Graphics,
@@ -150,8 +151,8 @@ begin
 
     BM := TBitmap.create;
     BM.LoadFromFile( InterfacePath + 'MapBack.bmp' );
-    DXBack := DDGetImage( lpDD, BM, clAqua, false );
-    DXDirty := DDGetImage( lpDD, BM, clAqua, false );
+    DXBack := DDGetImage( lpDD, BM, cInvisColor, false );
+    DXDirty := DDGetImage( lpDD, BM, cInvisColor, false );
 
     BM.LoadFromFile( InterfacePath + 'MapMaskedShadowLayer.bmp' );
     Image := DDGetImage( lpDD, BM, clBlack, false );
@@ -165,7 +166,7 @@ begin
     end;
 
     BM.LoadFromFile( InterfacePath + 'MapColorLayer.bmp' );
-    Image := DDGetImage( lpDD, BM, clAqua, true );
+    Image := DDGetImage( lpDD, BM, cInvisColor, true );
     try
       if assigned( Image ) then
       begin

@@ -59,8 +59,6 @@ unit NPCBehavior;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE Anigrp30cfg.inc}
-
 interface
 
 uses
@@ -234,7 +232,7 @@ begin
   lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   LoadAIData;
   //Now for the Alpha'ed edges
-  //BMBack.LoadFromFile(ExtractFilePath(Application.ExeName) + 'Dialog\DialogueBoxShadowMap.bmp');
+  //BMBack.LoadFromFile(DefaultPath + 'Dialog\DialogueBoxShadowMap.bmp');
   //DXBorders := DDGetImage(lpDD, BMBack, InvisColor, False);
   //DrawSub(lpDDSBack, Rect(190+XAdj, 130+YAdj, 190+XAdj + BMBack.Width, 130+YAdj+BMBack.Height), Rect(0, 0, BMBack.Width, BMBack.Height), DXBorders, True, 128);
 

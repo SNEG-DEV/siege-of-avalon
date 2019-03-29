@@ -59,15 +59,15 @@ unit Character;
 {                                                                              }
 {******************************************************************************}
 
-{$INCLUDE Anigrp30cfg.inc}
-
 interface
 
 uses
   System.Classes,
+  System.UITypes,
   Winapi.Windows,
   Anigrp30,
   AniDec30,
+  SoAOS.Types,
   Vcl.Graphics,
 {$IFDEF DirectX}
   DirectX,
@@ -3127,7 +3127,7 @@ begin
               TItem( FTarget ).Resource := PartManager.GetLayerResource( TItem( FTarget ).LayeredImage );
             end
             else
-              Say( FullInvMsg, clWhite );
+              Say( FullInvMsg, cTalkWhiteColor );
             FTarget := nil;
           end
           else if ( FTarget is TContainer ) and not InterfaceLocked then
@@ -8161,7 +8161,7 @@ begin
   end;
   if not result then
   begin
-    Say( ChestMsg, clRed );
+    Say( ChestMsg, cTalkRedColor );
   end;
 end;
 
@@ -8982,7 +8982,7 @@ begin
     result := nil;
     W := GroundListWidth;
     H := GroundListHeight;
-    result := DDGetSurface( lpDD, W, H, clFuchsia, true, ColorMatch );
+    result := DDGetSurface( lpDD, W, H, cTransparent, true, ColorMatch );
     if assigned( result ) then
     begin
       if assigned( Resource ) then
@@ -9067,7 +9067,7 @@ begin
       begin
         W := InvW * 18;
         H := InvH * 26;
-        result := DDGetSurface( lpDD, W, H, clFuchsia, true, ColorMatch );
+        result := DDGetSurface( lpDD, W, H, cTransparent, true, ColorMatch );
         if assigned( result ) then
         begin
           ddsd.dwSize := SizeOf( ddsd );
@@ -9127,7 +9127,7 @@ begin
       H := 26
     else
       H := InvH * 26;
-    result := DDGetSurface( lpDD, W, H, clFuchsia, true, ColorMatch );
+    result := DDGetSurface( lpDD, W, H, cTransparent, true, ColorMatch );
     if assigned( result ) then
     begin
       ddsd.dwSize := SizeOf( ddsd );
@@ -12826,7 +12826,7 @@ begin
             Item.LayeredImage := PartManager.GetImageFile( Item.PartName, TCharacterResource( TCharacter( Dest ).Resource ).NakedName );
             Item.Resource := PartManager.GetLayerResource( Item.LayeredImage );
             Item.SetPos( Dest.X, Dest.Y, Dest.Z );
-            TCharacter( Dest ).Say( FullInvMsg, clWhite );
+            TCharacter( Dest ).Say( FullInvMsg, cTalkWhiteColor );
             Item.enabled := true;
             Item.Drop;
           end;

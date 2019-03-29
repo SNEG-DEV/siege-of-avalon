@@ -712,7 +712,7 @@ uses
   Effects,
   Display,
   Spells1,
-  SYstem.SysUtils,
+  System.SysUtils,
   Engine,
   LogFile;
 
@@ -5880,7 +5880,7 @@ begin
     p^.X := 0;
     p^.Y := 0;
     p^.Z := random * 10;
-    p^.Angle := random * PI2;
+    p^.Angle := random * c2PI;
     p^.Rise := 2.5 + random / 2;
     p^.Offset := random * 30 - 15;
     inc( p );
@@ -5936,7 +5936,7 @@ begin
     p^.X := 0;
     p^.Y := 0;
     p^.Z := random * 10;
-    p^.Angle := random * PI2;
+    p^.Angle := random * c2PI;
     p^.Rise := 2.5 + random / 2;
     p^.Offset := random * 30 - 15;
     inc( p );
@@ -8039,7 +8039,7 @@ begin
     Count := Source.Mysticism div 4;
     if Count < 3 then
       Count := 3;
-    Angle := pi2 / Count;
+    Angle := c2PI / Count;
     TargetY := Source.TargetY + Z2;
     D := sqrt( sqr( Source.X - Source.TargetX ) + sqr( 2 * ( Source.Y - TargetY ) ) );
     A := ATan( Source.TargetX - Source.X, 2 * ( TargetY - Source.Y ) );

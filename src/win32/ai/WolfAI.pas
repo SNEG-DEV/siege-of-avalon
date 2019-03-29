@@ -131,15 +131,12 @@ function AssignWolfAI( AIName : string ) : TAI;
 implementation
 
 uses
-  Classes,
-  SysUtils,
+  System.Classes,
+  System.SysUtils,
+  System.Types,
+  SoAOS.Types,
   LogFile,
-  Resource,
-  Graphics;
-
-const
-  PI = 3.1415926535;
-  pi2 = 2 * PI;
+  Resource;
 
 function AssignWolfAI( AIName : string ) : TAI;
 var
@@ -269,11 +266,11 @@ begin
   try
     Character.Track := nil;
     r := random( 500 );
-    T := pi2 * random( 360 ) / 360;
+    T := c2PI * random( 360 ) / 360;
     X := Round( r * cos( T ) ) + CenterX;
     Y := Round( r * sin( T ) ) + CenterY;
     Character.walkTo( X, Y, 16 );
-    character.say( '...', clblack ); //clear text
+    character.say( '...', cTalkBlackColor ); //clear text
     delay := Random( 200 ) + 200;
     Walking := True;
   except
