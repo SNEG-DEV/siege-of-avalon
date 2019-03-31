@@ -645,15 +645,15 @@ begin
     ForceNotReadOnly( DefaultPath + 'games\' + TempGame + '.map' );
 
     try
-      TFile.Delete( DefaultPath + 'games\' + TempGame + '.sav' );
+      DeleteFile( DefaultPath + 'games\' + TempGame + '.sav' );
     except
     end;
     try
-      TFile.Delete( DefaultPath + 'games\' + TempGame + '.idx' );
+      DeleteFile( DefaultPath + 'games\' + TempGame + '.idx' );
     except
     end;
     try
-      TFile.Delete( DefaultPath + 'games\' + TempGame + '.map' );
+      DeleteFile( DefaultPath + 'games\' + TempGame + '.map' );
     except
     end;
 

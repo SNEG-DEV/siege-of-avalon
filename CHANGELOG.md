@@ -17,6 +17,10 @@ All notable changes to this project will be documented in this file.
 - Mod selection - more DLC style - extendable instead of destructive copy/paste exercises.
 - Better multi-language support - right now it is crippled, like other parts of the UI code.
 
+## 2019-03-31 
+### Fixed
+- Replaced 4 "corrupt/missing" assets - causing out of memory errors and crashes
+
 ## 2019-03-29 
 ### Fixed
 - A bit more spring cleaning - this time again on colors and functions
