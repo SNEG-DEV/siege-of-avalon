@@ -926,7 +926,7 @@ procedure TfrmMain.FormShow( Sender : TObject );
 var
   INI : TIniFile;
   ShowIntro : Boolean;
-  rtString, scr : string;
+  rtString : string;
   PopupEnabled : Boolean;
 const
   FailName : string = 'Main.FormShow';

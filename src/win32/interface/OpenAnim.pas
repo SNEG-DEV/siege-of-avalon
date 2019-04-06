@@ -192,7 +192,7 @@ begin
   //DrawAlpha(lpDDSBack,rect(0,0,800,600),rect(0,0,25,25),DXSiege,false,255);
   //DrawSub(lpDDSBack,rect(0,0,800,600),rect(0,0,25,25),DXSiege,false,255);
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );  //NOHD
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
 
     KeepOnPlaying := true;
@@ -330,7 +330,7 @@ begin
           application.ProcessMessages;
           lpDDSFront.Flip( nil, DDFLIP_WAIT );
           application.ProcessMessages;
-          pr := Rect( 0, 0, 800, 600 );  //NOHD
+          pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
           lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
           application.ProcessMessages;
         end;
@@ -374,7 +374,7 @@ begin
           Adj := Adj - Trunc( Adj );
           lpDDSFront.Flip( nil, DDFLIP_WAIT );
           application.ProcessMessages;
-          pr := Rect( 0, 0, 800, 600 );  //NOHD
+          pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
           lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
           application.ProcessMessages;
         end;
@@ -425,7 +425,7 @@ begin
           application.ProcessMessages;
           lpDDSFront.Flip( nil, DDFLIP_WAIT );
           application.ProcessMessages;
-          pr := Rect( 0, 0, 800, 600 );  //NOHD
+          pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
           lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
           application.ProcessMessages;
         end;

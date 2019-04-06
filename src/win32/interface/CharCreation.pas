@@ -829,27 +829,27 @@ begin
 
     end;
     // great when all this nonsense code goes away...
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    if x > 600 then
-    begin
-      pr := Rect( 500, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );  // 1920, 1080
-      lpDDSBack.BltFast( 500, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    end
-    else if x > 400 then
-    begin
-      pr := Rect( 300, 0, ScreenMetrics.ScreenWidth-100, ScreenMetrics.ScreenHeight );  // 1820, 1080
-      lpDDSBack.BltFast( 300, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    end
-    else if x > 200 then
-    begin
-      pr := Rect( 100, 0, ScreenMetrics.ScreenWidth-300, ScreenMetrics.ScreenHeight );  // was 500, 600 <-> 1720, 1080
-      lpDDSBack.BltFast( 100, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    end
-    else
-    begin
-      pr := Rect( 0, 0, ScreenMetrics.ScreenWidth-500, ScreenMetrics.ScreenHeight );
-      lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );  // 1420, 1080
-    end;
+//    lpDDSFront.Flip( nil, DDFLIP_WAIT );
+//    if x > 600 then
+//    begin
+//      pr := Rect( 500, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );  // 1920, 1080
+//      lpDDSBack.BltFast( 500, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
+//    end
+//    else if x > 400 then
+//    begin
+//      pr := Rect( 300, 0, ScreenMetrics.ScreenWidth-100, ScreenMetrics.ScreenHeight );  // 1820, 1080
+//      lpDDSBack.BltFast( 300, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
+//    end
+//    else if x > 200 then
+//    begin
+//      pr := Rect( 100, 0, ScreenMetrics.ScreenWidth-300, ScreenMetrics.ScreenHeight );  // was 500, 600 <-> 1720, 1080
+//      lpDDSBack.BltFast( 100, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
+//    end
+//    else
+//    begin
+//      pr := Rect( 0, 0, ScreenMetrics.ScreenWidth-500, ScreenMetrics.ScreenHeight );
+//      lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );  // 1420, 1080
+//    end;
 
   //lpDDSBack.BltFast(101, 61, lpDDSFront, Rect(101, 61, 710, 600), DDBLTFAST_WAIT);
   //lpDDSBack.BltFast(101, 61, lpDDSFront, Rect(101, 61, 710, 600), DDBLTFAST_WAIT);

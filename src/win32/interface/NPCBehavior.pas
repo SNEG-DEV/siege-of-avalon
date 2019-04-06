@@ -242,7 +242,7 @@ begin
   pText.PlotText( CharAI.character.name, 9, 41, 240 );
   PlotMenu;
   lpDDSFront.Flip( nil, DDFLIP_WAIT );
-  pr := Rect( 0, 0, 800, 600 );  //NOHD
+  pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
   lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
   MouseCursor.PlotDirty := false;
 end; //Init
@@ -1262,7 +1262,7 @@ begin
   end; //endif CurrentSelectedItem
 
   lpDDSFront.Flip( nil, DDFLIP_WAIT );
-  pr := Rect( 0, 0, 800, 600 );  //NOHD
+  pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
   lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
   MouseCursor.PlotDirty := false;
 end; //MouseMove

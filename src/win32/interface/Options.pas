@@ -183,7 +183,7 @@ begin
       Exit;
     inherited;
     MouseCursor.Cleanup;
-    pr := Rect( 0, 0, 800, 600 );  //NOHD
+    pr := Rect( 0, 0, ResWidth, ResHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 
@@ -344,7 +344,7 @@ begin
       end; //end for
     end;
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );  // NOHD
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
@@ -642,7 +642,7 @@ pText.PlotText( intToStr( k - 1 ), 611, 264 + j * 35, 240 );
     end;
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );  //NOHD
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
@@ -729,7 +729,7 @@ pText.PlotText( intToStr( k - 1 ), 611, 264 + j * 35, 240 );
         end
       end; //end for
       lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      pr := Rect( 0, 0, 800, 600 ); // NOHD
+      pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
       lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
       MouseCursor.PlotDirty := false;
     end;

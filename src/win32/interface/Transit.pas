@@ -337,7 +337,7 @@ begin
 
     Paint;
     MouseCursor.Cleanup;
-    pr := Rect( 0, 0, 800, 600 );  //NOHD
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
   except
     on E : Exception do
@@ -419,7 +419,7 @@ begin
               end;
               Paint;
               MouseCursor.Cleanup;
-              pr := Rect( 0, 0, 800, 600 ); //NOHD
+              pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
               lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
               Timer.tag := 0;
               Timer.enabled := true;
@@ -448,7 +448,7 @@ begin
         DefaultTransit.ShowInRed;
         MouseCursor.Cleanup;
         lpDDSFront.Flip( nil, DDFLIP_WAIT );
-        pr := Rect( 0, 0, 800, 600 );   //NOHD
+        pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
         lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
         MouseCursor.PlotDirty := false;
         Locked := true;
@@ -472,7 +472,7 @@ begin
               TTransitPoint( Selected.Dest.items[ i ] ).ShowInRed;
               MouseCursor.Cleanup;
               lpDDSFront.Flip( nil, DDFLIP_WAIT );
-              pr := Rect( 0, 0, 800, 600 );   //NOHD
+              pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
               lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
               MouseCursor.PlotDirty := false;
               Locked := true;
@@ -514,7 +514,7 @@ begin
       begin
       //lpDDSFront.Flip(nil, DDFLIP_WAIT);
         MouseCursor.Cleanup;
-        pr := Rect( 0, 0, 800, 600 );   //NOHD
+        pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
         lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
         if assigned( DXBack ) then
         begin
@@ -532,7 +532,7 @@ begin
       begin
      //clean up
         MouseCursor.Cleanup;
-        pr := Rect( 0, 0, 800, 600 );  //NOHD
+        pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
         lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
         if assigned( DXDirty ) then
         begin

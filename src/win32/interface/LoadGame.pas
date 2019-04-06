@@ -359,7 +359,7 @@ begin
 
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );  //NOHD
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
@@ -654,7 +654,7 @@ begin
          //plot the Carat
       pText.PlotText( '|', CaratPosition + X1, Y1, 240 );
       lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      pr := Rect( 0, 0, 800, 600 );  //NOHD
+      pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
       lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
       MouseCursor.PlotDirty := false;
     end //endif
@@ -751,7 +751,7 @@ begin
         pText.PlotText( SavedFileName, X1, Y1, 240 );
 
         lpDDSFront.Flip( nil, DDFLIP_WAIT );
-        pr := Rect( 0, 0, 800, 600 );  //NOHD
+        pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
         lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
         MouseCursor.PlotDirty := false;
       end;
@@ -1021,7 +1021,7 @@ begin
 
 //  if LoadFile then begin
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );  //NOHD
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 //  end;
@@ -1088,7 +1088,7 @@ begin
     end;
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );  //NOHD
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
@@ -1288,7 +1288,7 @@ begin
 
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );  //NOHD
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except

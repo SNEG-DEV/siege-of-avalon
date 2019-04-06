@@ -250,7 +250,7 @@ begin
     end;
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 ); //NOHD
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 
@@ -312,7 +312,7 @@ begin
         pr := Rect( 0, 0, 800, 600 );  //NOHD
         lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_WAIT ); //clear screen
         lpDDSFront.Flip( nil, DDFLIP_WAIT );
-        pr := Rect( 0, 0, 800, 600 );  //NOHD
+        pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
         lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
         MouseCursor.PlotDirty := false;
       end; //endif PtInRect
@@ -348,7 +348,7 @@ begin
           Choice := i;
           if Choice <> PrevChoice then
           begin
-            pr := Rect( 0, 0, 800, 600 );  //NOHD
+            pr := Rect( 0, 0, 800, 600 ); //NOHD
             lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
             pr := Rect( 0, 0, Captions[ i ].Rect.Right - Captions[ i ].Rect.Left, Captions[ i ].Rect.Bottom - Captions[ i ].Rect.Top );
             lpDDSBack.BltFast( Captions[ i ].Rect.Left, Captions[ i ].Rect.Top, Captions[ i ].Image, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
@@ -361,7 +361,7 @@ begin
 
       if ( Choice = 0 ) and ( Choice <> PrevChoice ) then
       begin
-        pr := Rect( 0, 0, 800, 600 );  //NOHD
+        pr := Rect( 0, 0, 800, 600 ); //NOHD
         lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
         lpDDSFront.Flip( nil, DDFLIP_WAIT );
         MouseCursor.PlotDirty := false;
@@ -410,7 +410,7 @@ begin
     BM.Free;
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 ); //NOHD
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 
