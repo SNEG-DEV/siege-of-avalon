@@ -81,6 +81,7 @@ interface
 uses
   System.Classes,
   System.SysUtils,
+  System.Types,
   SoAOS.Types,
   Character,
   Engine,
@@ -624,12 +625,8 @@ function GetFacing( SrcX, SrcY, TargetX, TargetY : Longint ) : Extended;
 implementation
 
 uses
-  anidemo,
+  AniDemo,
   BasicHumanoidAI;
-  
-const
-  PI = 3.1415926535;
-  pi2 = 2 * PI;
 
 function AssignMiscAI( AIName : string ) : TAI;
 var
@@ -1006,7 +1003,7 @@ begin
     Character.Vision := 0;
     character.Hearing := 0;
     Character.Smell := 0;
-    Character.MysticVision := 300;
+    Character.MysticVision := ScreenMetrics.CharacterMysticVision;  //SD 300 HD 750
 
     SetMeleeRanged( character.TitleExists( 'MeleeRanged' ) );
     SetMeleeAggressive( character.TitleExists( 'MeleeAggressive' ) );
@@ -1445,7 +1442,7 @@ begin
       if Target = Current then
       begin
         r := random( 150 );
-        T := pi2 * random( 360 ) / 360;
+        T := c2PI * random( 360 ) / 360;
         X := round( r * cos( T ) ) + FLeader.X + 10;
         Y := round( r * sin( T ) / 2 ) + FLeader.Y + 10;
         Character.WalkTo( X, Y, 4 );
@@ -2041,7 +2038,7 @@ begin
       Walking := True;
       inc( CirclePoint, 45 );
       r := iDistance;
-      T := pi2 * CirclePoint / 360;
+      T := c2PI * CirclePoint / 360;
       X := round( r * cos( T ) ) + TCharacter( Character.Track ).X;
       Y := round( r * sin( T ) / 2 ) + TCharacter( Character.Track ).Y;
 
@@ -2844,7 +2841,7 @@ begin
       if Target = FMaster then
       begin
         r := random( 150 );
-        T := pi2 * random( 360 ) / 360;
+        T := c2PI * random( 360 ) / 360;
         X := round( r * cos( T ) ) + FMaster.X + 10;
         Y := round( r * sin( T ) / 2 ) + FMaster.Y + 10;
         Character.WalkTo( X, Y, 4 );
@@ -3293,7 +3290,7 @@ begin
       NukeCounter := 0;
       Inc( CirclePoint, 45 );
       r := 300;
-      T := pi2 * CirclePoint / 360;
+      T := c2PI * CirclePoint / 360;
       X := round( r * cos( T ) ) + Character.Track.X;
       Y := round( r * sin( T ) / 2 ) + Character.Track.Y;
       Character.WalkTo( X, Y, 16 );
@@ -4063,7 +4060,7 @@ begin
                 //Pick A random direction
                 Character.Track := nil;
                 r := random( iLeash );
-                T := pi2 * random( 360 ) / 360;
+                T := c2PI * random( 360 ) / 360;
                 X := round( r * cos( T ) ) + CenterX;
                 Y := round( r * sin( T ) ) + CenterY;
                 Character.walkTo( X, Y, 64 );
@@ -4512,7 +4509,7 @@ begin
     //Pick A random direction
     Character.Track := nil;
     r := random( 500 );
-    T := pi2 * random( 360 ) / 360;
+    T := c2PI * random( 360 ) / 360;
     X := round( r * cos( T ) ) + CenterX;
     Y := round( r * sin( T ) ) + CenterY;
     Character.walkTo( X, Y, 16 );
@@ -5099,7 +5096,7 @@ begin
       NukeCounter := 0;
       Inc( CirclePoint, 45 );
       r := 300;
-      T := pi2 * CirclePoint / 360;
+      T := c2PI * CirclePoint / 360;
       X := round( r * cos( T ) ) + Character.Track.X;
       Y := round( r * sin( T ) / 2 ) + Character.Track.Y;
       Character.WalkTo( X, Y, 16 );
@@ -5222,7 +5219,7 @@ begin
     if iLeash <> 0 then
     begin
       r := random( iLeash );
-      T := pi2 * random( 360 ) / 360;
+      T := c2PI * random( 360 ) / 360;
       X := round( r * cos( T ) ) + CenterX;
       Y := round( r * sin( T ) ) + CenterY;
     end
@@ -5631,7 +5628,7 @@ begin
       NukeCounter := 0;
       Inc( CirclePoint, 45 );
       r := 300;
-      T := pi2 * CirclePoint / 360;
+      T := c2PI * CirclePoint / 360;
       X := round( r * cos( T ) ) + Character.Track.X;
       Y := round( r * sin( T ) / 2 ) + Character.Track.Y;
       Character.WalkTo( X, Y, 16 );
@@ -6467,7 +6464,7 @@ begin
       if ( FrameCount mod 360 ) = 0 then
       begin
         r := random( 150 );
-        T := pi2 * random( 360 ) / 360;
+        T := c2PI * random( 360 ) / 360;
         X := round( r * cos( T ) ) + FLeader.X + 10;
         Y := round( r * sin( T ) / 2 ) + FLeader.Y + 10;
         Character.WalkTo( X, Y, 4 );
@@ -6569,7 +6566,7 @@ begin
       NukeCounter := 0;
       Inc( CirclePoint, 45 );
       r := 300;
-      T := pi2 * CirclePoint / 360;
+      T := c2PI * CirclePoint / 360;
       X := round( r * cos( T ) ) + Character.Track.X;
       Y := round( r * sin( T ) / 2 ) + Character.Track.Y;
       Character.WalkTo( X, Y, 16 );

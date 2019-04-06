@@ -10,6 +10,7 @@ uses
 const
 /// <summary> RGB color consts to improve readbility </summary>
   cTransparent     = TColors.Fuchsia;   // Fuchsia/Magenta transparent
+  cInvisIntro      = $00FC04FC; // Someone is making fun of us, not using cTransparent for those assets
   cInvisColor      = TColors.Cyan;   // Aqua/Cyan transparent
   cLoadBackColor   = $00108020;   // ??
   cLoadColor       = $00CDCDCD;   // ??
@@ -26,7 +27,7 @@ type
 
 /// <summary> Screen resolution to improve readbility, names might change when I get a clue what is needed</summary>
   TScreenResolutionData = record
-    ScreeenWidth: integer;
+    ScreenWidth: integer;
     ScreenHeight: integer;
     BPP: integer;
     PreMapWidth: integer;
@@ -35,14 +36,30 @@ type
     GameHeight: integer;
     GameMapWidth: integer;
     GameMapHeight: integer;
+  	SpellBarX : integer;
+   	SpellBarY : integer;
+	  StatsX : integer;  // and inventorydlg?
+   	StatsY : integer;
+  	HelpBoxY : integer;
+  	MouseMsgX : integer;
+  	BottomBarX : integer;
+  	NPCBarY : integer;
+  	ManaEmptyX : integer;
+  	LifeEmptyX : integer;
+  	LogX : integer;
     Visibility: integer;
+    CharacterMysticVision: integer;
+    PartyMemberSlots: integer;
+    spellbarFile: string;
+    sidebarFile: string;
+    bottombarFile: string;
 //    MagicRange: integer;
     IniIdent: string;
   end;
 
 const
   cOriginal : TScreenResolutionData =
-    (ScreeenWidth : 800;
+    (ScreenWidth : 800;
      ScreenHeight : 600;
      BPP : 16;
      PreMapWidth: 768;
@@ -51,11 +68,27 @@ const
      GameHeight : 511;
      GameMapWidth : 200;
      GameMapHeight : 400;
+	   SpellBarX : 683;
+	   SpellBarY : 486;
+	   StatsX : 699;
+	   StatsY : 498;
+	   HelpBoxY : 455;
+	   MouseMsgX : 394;
+	   BottomBarX : 391;
+	   NPCBarY : 581;
+	   ManaEmptyX : 699;
+	   LifeEmptyX : 709;
+	   LogX : 659;
      Visibility : 300; // ??
+     CharacterMysticVision: 300;
+     PartyMemberSlots: 2;
+     spellbarFile: 'spellbar.bmp';
+     sidebarFile: 'sidebar.bmp';
+     bottombarFile: 'bottombar.bmp';
      IniIdent : 'Original';
     );
   cHD : TScreenResolutionData =
-    (ScreeenWidth : 1280;
+    (ScreenWidth : 1280;
      ScreenHeight : 720;
      BPP : 16;
      PreMapWidth: 1280;
@@ -64,20 +97,52 @@ const
      GameHeight : 631;
      GameMapWidth : 200;  // ??
      GameMapHeight : 400; // ??
+  	 SpellBarX : 1163;  // ??
+	   SpellBarY : 606;
+	   StatsX : 1803;
+	   StatsY : 966;
+	   HelpBoxY : 575;
+	   MouseMsgX : 566;
+	   BottomBarX : 564;  //??
+	   NPCBarY : 701;
+   	 ManaEmptyX : 1179;
+   	 LifeEmptyX : 1189;
+	   LogX : 1139; // ??
      Visibility : 300;  //??
+     CharacterMysticVision: 750;
+     PartyMemberSlots: 4;
+     spellbarFile: 'spellbarHD.bmp';
+     sidebarFile: 'sidebarHD.bmp';
+     bottombarFile: 'bottombarHD.bmp';
      IniIdent : 'HD';
     );
   cFullHD : TScreenResolutionData =
-    (ScreeenWidth : 1920;
+    (ScreenWidth : 1920;
      ScreenHeight : 1080;
      BPP : 16;
      PreMapWidth: 1920;
      PreMapHeight: 1080;
      GameWidth : 1823;
-     GameHeight : 991;
+     GameHeight : 997;  // 997?
      GameMapWidth : 200;  // ??
      GameMapHeight : 400; // ??
+  	 SpellBarX : 1803;
+	   SpellBarY : 966;
+	   StatsX : 1803;
+	   StatsY : 966;
+	   HelpBoxY : 935;
+	   MouseMsgX : 566;
+	   BottomBarX : 564;
+	   NPCBarY : 1061;
+	   ManaEmptyX : 1819;
+	   LifeEmptyX : 1829;
+	   LogX : 1139;
      Visibility : 300;  // ??
+     CharacterMysticVision: 750;
+     PartyMemberSlots: 4;
+     spellbarFile: 'spellbarFullHD.bmp';
+     sidebarFile: 'sidebarFullHD.bmp';
+     bottombarFile: 'bottombarFullHD.bmp';
      IniIdent : 'FullHD';
     );
 

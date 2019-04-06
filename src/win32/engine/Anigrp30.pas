@@ -680,6 +680,8 @@ uses
 {$IFDEF DirectX}
   DXUtil,
 {$ENDIF}
+  AniDemo,
+  Character,
   LogFile;
 
 function MakeScript( const Frames : array of Word ) : ScriptInfo;
@@ -6436,7 +6438,25 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
     NextFigure, TempFigure : TAniFigure;
     RemX, RemY : integer;
     BitMask : word;
+    XRayOn : boolean;
   begin
+    // Test and keep?
+    // Keep X pressed for XRayOn
+    if ( Winapi.Windows.GetKeyState( 88 ) < 0 ) then
+          begin
+           XRayOn := true;
+           if Assigned( Current ) then
+           TCharacter( Current ).AutoTransparent := XRayOn;
+           //Log.log('XRayOn');
+           end;
+    if ( Winapi.Windows.GetKeystate ( 88 ) >= 0 ) then
+          begin
+           XRayOn := false;
+           if Assigned( Current ) then
+           TCharacter( Current ).AutoTransparent := XRayOn;
+           //Log.log('XRayOff');
+           end;
+    // Keep X pressed for XRayOn
     Top := 0;
     Bottom := 0;
     Dx := Figure.DestX - Figure.StepX;
@@ -8307,8 +8327,10 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
           else
             NewBitHeight := NewMaxIndex * FMap.FTileHeight;
           X := ( ( FTileMaxIndex - 1 ) div FTileMaxColumnIndex ) * FMap.FTileWidth;
+//          X := ( ( FTileMaxIndex  ) div FTileMaxColumnIndex ) * FMap.FTileWidth ;  // from gondurs
           Y := ( FTileMaxIndex mod FTileMaxColumnIndex ) * FMap.FTileHeight;
           if ( ( FTileMaxIndex mod FTileMaxColumnIndex ) = 0 ) and ( FTileMaxIndex > 0 ) then
+//            if ( ( FTileMaxIndex mod FTileMaxColumnIndex ) < 0 ) and ( FTileMaxIndex > 0 ) then   // from gondurs
             inc( X, FMap.FTileWidth );
           Tile[ Index ] := NewTile;
     {$IFDEF DirectX}

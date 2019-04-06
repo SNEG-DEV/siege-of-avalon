@@ -228,7 +228,7 @@ begin
 
     ShowText;
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
@@ -307,7 +307,35 @@ end; //FormMouseMove
 
 procedure TJournal.MouseDown( Sender : TAniview; Button : TMouseButton; Shift : TShiftState; X, Y, GridX, GridY : integer );
 begin
-
+   begin
+  try
+  //check for clicks
+    if ptinRect( rect( 582, 575, 659, 596 ), point( x, y ) ) then
+    begin //prev
+      if CurrentLogIndex > 0 then
+      begin
+        CurrentLogIndex := CurrentLogIndex - 1;
+        ShowText;
+      end;
+    end
+    else if ptinRect( rect( 681, 575, 721, 596 ), point( x, y ) ) then
+    begin //next
+      if CurrentLogIndex < JournalLog.LogFileList.count - 1 then
+      begin
+        CurrentLogIndex := CurrentLogIndex + 1;
+        ShowText;
+      end;
+    end
+    else if ptinRect( rect( 746, 575, 786, 596 ), point( x, y ) ) then
+    begin //exit
+      Close;
+      frmMain := nil;
+    end;
+  except
+    on E : Exception do
+     exit;
+  end;
+  end;
 end; //MouseDown
 
 procedure TJournal.MouseMove( Sender : TAniview; Shift : TShiftState; X, Y, GridX, GridY : integer );
@@ -360,7 +388,7 @@ begin
     if CurrentLogIndex > StartLogIndex then
       StartLogIndex := CurrentLogIndex;
   //clear screen
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   //Plot buttons
   //pText.PlotText('Previous',300,570,240);
@@ -424,7 +452,7 @@ begin
     if not NoPageNumbers then
       pText.plotText( txtMessage[ 0 ] + intToStr( CurrentLogIndex + 1 ) + txtMessage[ 1 ] + IntToStr( JournalLog.LogFileList.count ), 81, 575, 255 );
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
     BM.Free;

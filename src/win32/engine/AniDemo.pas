@@ -283,7 +283,6 @@ type
     procedure DrawRosterGuy( Character : TCharacter; X, Y : Integer );
     procedure SetActive( const Value : Boolean );
   public
-    ScreenMetrics : TScreenResolutionData;
     Keymap : TKeymapData;
     DeathScreen : string;
     DisableConsole : Boolean;
@@ -341,6 +340,8 @@ type
 
 var
   SetAppExStyleCount : Integer;
+  ScreenMetrics : TScreenResolutionData;
+  AdjustedPartyHitPoints : Boolean;
   frmMain : TfrmMain;
 
 const
@@ -698,15 +699,21 @@ begin
       if SelectedTraining = 18 then
       begin
         Player.AddTitle( 'Squire' );
+        Player.AddTitle( 'Siegeexe' );
+        Player.AddTitle( 'AoAFull' );
       end
       else if SelectedTraining = 19 then
       begin
         Player.AddTitle( 'Hunter' );
+        Player.AddTitle( 'Siegeexe' );
+        Player.AddTitle( 'AoAFull' );
       end
       else if SelectedTraining = 20 then
       begin
         Player.AddTitle( 'Apprentice' );
         Player.AddTitle( 'Charge' );
+        Player.AddTitle( 'Siegeexe' );
+        Player.AddTitle( 'AoAFull' );
       end;
 
       if AllSpells then
@@ -752,7 +759,7 @@ begin
 
     TransitionScreen := '';
     DeathScreen := '';
-    MaxPartyMembers := 2;
+    MaxPartyMembers := ScreenMetrics.PartyMemberSlots; // Original 2
     if not LoadMapFile( True, False ) then
       Exit;
 
@@ -781,6 +788,7 @@ var
 const
   FailName : string = 'Main.CharCreationDraw';
 begin
+  // Drawing Actor/Player
 {$IFDEF DODEBUG}
   if ( CurrDbgLvl >= DbgLvlSevere ) then
     Log.LogEntry( FailName );
@@ -848,6 +856,7 @@ begin
     if Assigned( MusicLib ) then
       MusicLib.SetSongVolume( MasterMusicVolume );
     PlotShadows := DlgOptions.PlotShadows;
+    PlotScreenRes := DlgOptions.PlotScreenRes;
     if MasterSoundVolume > 100 then
       MasterSoundVolume := 100
     else if MasterSoundVolume < 0 then
@@ -861,6 +870,9 @@ begin
       INI.WriteInteger( 'Settings', 'SoundVolume', MasterSoundVolume );
       INI.WriteInteger( 'Settings', 'MusicVolume', MasterMusicVolume );
       INI.WriteInteger( 'Settings', 'Shadows', Integer( PlotShadows ) );
+
+      INI.WriteInteger( 'Settings', 'ScreenResolution', PlotScreenRes );
+      // Add AdjustedPartyHP
     finally
       INI.Free;
     end;
@@ -914,10 +926,8 @@ procedure TfrmMain.FormShow( Sender : TObject );
 var
   INI : TIniFile;
   ShowIntro : Boolean;
-  rtString : string;
+  rtString, scr : string;
   PopupEnabled : Boolean;
-  //  Present: TDateTime;
-  //  Year, Month, Day: Word;
 const
   FailName : string = 'Main.FormShow';
 begin
@@ -926,7 +936,6 @@ begin
     Log.LogEntry( FailName );
 {$ENDIF}
   try
-
     Log.Log( 'Start Siege' );
     Log.flush;
 
@@ -934,6 +943,24 @@ begin
     DisableConsole := True;
 
     NewGame := True;
+
+    INI := TIniFile.Create( DefaultPath + 'siege.ini' );
+
+    PlotScreenRes := INI.ReadInteger( 'Settings', 'ScreenResolution', 600 );
+
+    case PlotScreenRes of
+       600 : ScreenMetrics := cOriginal;
+       720 : ScreenMetrics := cHD;
+      1080 : ScreenMetrics := cFullHD;
+      else
+      begin
+        PlotScreenRes := 600;
+        INI.WriteInteger( 'Settings', 'ScreenResolution', 600 );
+        ScreenMetrics := cOriginal;
+      end;
+    end;
+
+    AdjustedPartyHitPoints := ( LowerCase( INI.ReadString( 'Settings', 'AdjustedPartyHitPoints', 'false' ) ) = 'true' );
 
     Log.Log( 'Set Bounds' );
     Log.flush;
@@ -951,8 +978,6 @@ begin
 
     Log.Log( 'Read Settings' );
     Log.flush;
-    INI := TIniFile.Create( DefaultPath + 'siege.ini' );
-
     //  CurrDbgLvl := INI.ReadInteger('Settings', 'Debug', 0);
 
     GetChapters( INI );
@@ -1193,7 +1218,7 @@ begin
 
     Log.Log( 'Initializing DX...' );
     Log.flush;
-    Game.InitDX( Handle, ScreenMetrics.ScreeenWidth, ScreenMetrics.ScreenHeight, ScreenMetrics.BPP );  // 800, 600, 16
+    Game.InitDX( Handle, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight, ScreenMetrics.BPP );  // 800, 600, 16
     Game.PreCreateMap( ScreenMetrics.PreMapWidth, ScreenMetrics.PreMapHeight );  // 768, 544
     Log.Log( 'DX initialization complete' );
     Log.flush;
@@ -1249,7 +1274,7 @@ begin
       KeepTravelList := '';
       TransitionScreen := '';
       DeathScreen := '';
-      MaxPartyMembers := 2;
+      MaxPartyMembers := ScreenMetrics.PartyMemberSlots; // Original 2
       if not LoadMapFile( False, True ) then
         Exit;
       DisableConsole := False;
@@ -1623,10 +1648,12 @@ begin
 
             HPDistance := HPDistance * ( 66 / TCharacter( NPCList[ i ] ).HitPoints );
             ManaDistance := ManaDistance * ( 66 / TCharacter( NPCList[ i ] ).Mana );
-            pr := Rect( NPCBarXCoord[ i ], 581 - Round( HPDistance ), NPCBarXCoord[ i ] + 5, 581 );
+            pr := Rect( NPCBarXCoord[ i ], ScreenMetrics.NPCBarY - Round( HPDistance ), NPCBarXCoord[ i ] + 5, ScreenMetrics.NPCBarY );
+			
             pr0 := Rect( 0, 0, 0, 0 );
             lpDDSFront.Blt( @pr, nil, @pr0, DDBLT_COLORFILL + DDBLT_WAIT, @NPCHealthBltFx );
-            pr := Rect( NPCBarXCoord[ i ] + 7, 581 - Round( ManaDistance ), NPCBarXCoord[ i ] + 7 + 5, 581 );
+            pr := Rect( NPCBarXCoord[ i ] + 7, ScreenMetrics.NPCBarY - Round( ManaDistance ), NPCBarXCoord[ i ] + 7 + 5, ScreenMetrics.NPCBarY );
+			
             lpDDSFront.Blt( @pr, nil, @pr0, DDBLT_COLORFILL + DDBLT_WAIT, @NPCManaBltFx );
           end;
         end
@@ -1647,9 +1674,250 @@ begin
         BeginMap( Current );
       end;
     end
-    else if ( key = Keymap.Demo ) then
-    begin //D
-      // player.hitpoints := -1;
+    else if (key = 90) then  //FIX - German only :(
+    begin //Z Zweischwerterstilfunktion
+         if player.titleexists('geschicklichkeit1') then
+          begin
+               if player.titleexists('Dagger') then
+                  begin
+                  RunScript(Player,'player.additem(DaggerShield)');
+                  RunScript(Player,'player.removeitem(Dagger)');
+                  end;
+               if player.titleexists('Daggershield') then
+                  begin
+                  RunScript(Player,'player.additem(Dagger)');
+                  RunScript(Player,'player.removeitem(DaggerShield)');
+                  end;
+               if player.titleexists('Daggerworn') then
+                  begin
+                  RunScript(Player,'player.additem(DaggerwornShield)');
+                  RunScript(Player,'player.removeitem(Daggerworn)');
+                  end;
+               if player.titleexists('Daggershieldworn') then
+                  begin
+                  RunScript(Player,'player.additem(Daggerworn)');
+                  RunScript(Player,'player.removeitem(DaggerwornShield)');
+                  end;
+               if player.titleexists('DaggerFine') then
+                  begin
+                  RunScript(Player,'player.additem(DaggerFineShield)');
+                  RunScript(Player,'player.removeitem(DaggerFine)');
+                  end;
+               if player.titleexists('DaggershieldFine') then
+                  begin
+                  RunScript(Player,'player.additem(DaggerFine)');
+                  RunScript(Player,'player.removeitem(DaggerFineShield)');
+                  end;
+               if player.titleexists('Axe') then
+                  begin
+                  RunScript(Player,'player.additem(Axeshield)');
+                  RunScript(Player,'player.removeitem(Axe)');
+                  end;
+               if player.titleexists('Axeshield') then
+                  begin
+                  RunScript(Player,'player.additem(Axe)');
+                  RunScript(Player,'player.removeitem(Axeshield)');
+                  end;
+               if player.titleexists('AxeFine') then
+                  begin
+                  RunScript(Player,'player.additem(AxeFineshield)');
+                  RunScript(Player,'player.removeitem(AxeFine)');
+                  end;
+               if player.titleexists('AxeshieldFine') then
+                  begin
+                  RunScript(Player,'player.additem(AxeFine)');
+                  RunScript(Player,'player.removeitem(AxeFineshield)');
+                  end;
+               if player.titleexists('AxeWorn') then
+                  begin
+                  RunScript(Player,'player.additem(AxeWornshield)');
+                  RunScript(Player,'player.removeitem(AxeWorn)');
+                  end;
+               if player.titleexists('AxeshieldWorn') then
+                  begin
+                  RunScript(Player,'player.additem(AxeWorn)');
+                  RunScript(Player,'player.removeitem(AxeWornshield)');
+                  end;
+               if player.titleexists('Shortsword') then
+                  begin
+                  if (player.strength > 6) and (player.coordination > 11) then
+                     begin
+                     RunScript(Player,'player.additem(ShortswordShield)');
+                     RunScript(Player,'player.removeitem(Shortsword)');
+                     end;
+                  end;
+               if player.titleexists('ShortswordShield') then
+                  begin
+                  RunScript(Player,'player.additem(Shortsword)');
+                  RunScript(Player,'player.removeitem(ShortswordShield)');
+                  end;
+               if player.titleexists('Shortswordworn') then
+                  begin
+                  if (player.strength > 6) and (player.coordination > 11) then
+                     begin
+                     RunScript(Player,'player.additem(ShortswordwornShield)');
+                     RunScript(Player,'player.removeitem(Shortswordworn)');
+                     end;
+                  end;
+               if player.titleexists('ShortswordShieldworn') then
+                  begin
+                  RunScript(Player,'player.additem(Shortswordworn)');
+                  RunScript(Player,'player.removeitem(ShortswordwornShield)');
+                  end;
+          end;
+    if player.titleexists('geschicklichkeit2') then
+    begin
+         if (player.strength > 11) and (player.coordination > 15) then
+         begin
+         if player.titleexists('Gladius') then
+            begin
+            RunScript(Player,'player.additem(GladiusswordShield)');
+            RunScript(Player,'player.removeitem(Gladiussword)');
+            end;
+         if player.titleexists('gladiusworn') then
+            begin
+            RunScript(Player,'player.additem(GladiusswordwornShield)');
+            RunScript(Player,'player.removeitem(Gladiusswordworn)');
+            end;
+         if player.titleexists('GladiusFine') then
+            begin
+            RunScript(Player,'player.additem(gladiusswordFineShield)');
+            RunScript(Player,'player.removeitem(gladiusswordFine)');
+            end;
+         end;
+    if player.titleexists('gladiusshield') then
+       begin
+       RunScript(Player,'player.additem(gladiussword)');
+       RunScript(Player,'player.removeitem(gladiusswordShield)');
+       end;
+    if player.titleexists('gladiusshieldworn') then
+       begin
+       RunScript(Player,'player.additem(gladiusswordworn)');
+       RunScript(Player,'player.removeitem(gladiusswordwornShield)');
+       end;
+    if player.titleexists('gladiusshieldFine') then
+       begin
+       RunScript(Player,'player.additem(gladiusswordFine)');
+       RunScript(Player,'player.removeitem(gladiusswordFineShield)');
+       end;
+       if (player.strength > 12) and (player.coordination > 15) then
+         begin
+         if player.titleexists('Scimitar') then
+            begin
+            RunScript(Player,'player.additem(scimitarShield)');
+            RunScript(Player,'player.removeitem(scimitar)');
+            end;
+         if player.titleexists('scimitarworn') then
+            begin
+            RunScript(Player,'player.additem(scimitarwornShield)');
+            RunScript(Player,'player.removeitem(scimitarworn)');
+            end;
+         if player.titleexists('scimitarFine') then
+            begin
+            RunScript(Player,'player.additem(scimitarFineShield)');
+            RunScript(Player,'player.removeitem(scimitarFine)');
+            end;
+         end;
+    if player.titleexists('scimitarshield') then
+       begin
+       RunScript(Player,'player.additem(scimitar)');
+       RunScript(Player,'player.removeitem(scimitarShield)');
+       end;
+    if player.titleexists('scimitarshieldworn') then
+       begin
+       RunScript(Player,'player.additem(scimitarworn)');
+       RunScript(Player,'player.removeitem(scimitarwornShield)');
+       end;
+    if player.titleexists('scimitarshieldFine') then
+       begin
+       RunScript(Player,'player.additem(scimitarFine)');
+       RunScript(Player,'player.removeitem(scimitarFineShield)');
+       end;
+    end;
+    if player.titleexists('geschicklichkeit3') then
+    begin
+    if (player.strength > 14) and (player.coordination > 17) then
+         begin
+         if player.titleexists('Bastardsword') then
+            begin
+            RunScript(Player,'player.additem(BastardswordShield)');
+            RunScript(Player,'player.removeitem(Bastardsword)');
+            end;
+         if player.titleexists('Bastardswordworn') then
+            begin
+            RunScript(Player,'player.additem(BastardswordwornShield)');
+            RunScript(Player,'player.removeitem(Bastardswordworn)');
+            end;
+         if player.titleexists('BastardswordFine') then
+            begin
+            RunScript(Player,'player.additem(BastardswordFineShield)');
+            RunScript(Player,'player.removeitem(BastardswordFine)');
+            end;
+         end;
+    if player.titleexists('Bastardswordshield') then
+       begin
+       RunScript(Player,'player.additem(Bastardsword)');
+       RunScript(Player,'player.removeitem(BastardswordShield)');
+       end;
+    if player.titleexists('Bastardswordshieldworn') then
+       begin
+       RunScript(Player,'player.additem(Bastardswordworn)');
+       RunScript(Player,'player.removeitem(BastardswordwornShield)');
+       end;
+    if player.titleexists('BastardswordshieldFine') then
+       begin
+       RunScript(Player,'player.additem(BastardswordFine)');
+       RunScript(Player,'player.removeitem(BastardswordFineShield)');
+       end;
+        if (player.strength > 15) and (player.coordination > 19) then
+         begin
+         if player.titleexists('Officersword') then
+            begin
+            RunScript(Player,'player.additem(OfficerswordShield)');
+            RunScript(Player,'player.removeitem(Officersword)');
+            end;
+         end;
+    if player.titleexists('Officerswordshield') then
+       begin
+       RunScript(Player,'player.additem(OfficerswordFine)');
+       RunScript(Player,'player.removeitem(OfficerswordFineShield)');
+       end;
+    end;
+    end
+        else if ( key = 84 ) then  //FIX - German only :( Transit
+    begin //T
+    if not player.titleexists('Schnellerwechselaus') then
+    begin
+    if player.titleexists('chapter04') then
+    begin
+        runscript(player,'Loadmap(03Wald1,default,forst,Wald|#Schnellreise.Fall3#)');
+    end;
+    if player.titleexists('chapter03') then
+    begin
+        if not player.titleexists('chapter04') then
+        begin
+             runscript(player,'Loadmap(03Wald1,default,forst,Wald|#Schnellreise.Fall2#)');
+        end;
+    end;
+    if player.titleexists('chapter02') then
+    begin
+         if not player.titleexists('chapter03') then
+         begin
+              if player.titleexists('ImForst') then
+                 runscript(player,'Loadmap(Wald1,default,forst,Wald|#Schnellreise.Fall1#)')
+              else
+                  runscript(player,'Loadmap(southgate1b,default,Levelpoint4|#Schnellreise.Fall1#)');
+         end;
+    end;
+    if not player.titleexists('chapter02') then
+    begin
+         runscript(player,'Loadmap(southgate1b,default,Levelpoint4|#Schnellreise.Fall1#)');
+    end;
+    end;
+    end
+    {else if ( key = 76 ) then
+    begin //L
+       //player.hitpoints := -1;
 
       // for i := 0 to  Npclist.Count -1 do
       // TCharacter(npclist.Items[i]).hitpoints := -1;
@@ -1673,8 +1941,9 @@ begin
  //  RunScript(Player,'SaveGame(baba)');
  //Player.AddEffect(GetNamedEffect('deathpulse'));
  //  Player.AddEffect(TBurningRam.create);
- //  RunScript(Player,'doaction(death);doeffect(spirit)');
-    end
+   RunScript(Player,'doaction(death);doeffect(spirit)');
+   ShowQuickmessage( 'Suizid ist auch eine Lösung',300);
+    end}
       {  for i:=0 to FigureInstances.count-1 do begin
           if FigureInstances.objects[i] is tcharacter then begin
             if pos('88620',tcharacter(FigureInstances.objects[i]).guid)>0 then begin
@@ -1805,11 +2074,18 @@ begin
         end;
       end;
     end
-    else if ( key >= 116 ) and ( key < 124 ) then   //  F5 - F12 spell hotkeys
+//    else if ( key >= 116 ) and ( key < 124 ) then   //  F5 - F12 spell hotkeys
+//    begin
+//      if Assigned( Current.HotKey[ key - 115 ] ) then
+//      begin
+//        Current.CurrentSpell := Current.HotKey[ key - 115 ];
+//       DrawCurrentSpell;
+//     end;
+    else if ( key >= 48 ) and ( key < 58 ) then
     begin
-      if Assigned( Current.HotKey[ key - 115 ] ) then
+      if Assigned( Current.HotKey[ key - 47 ] ) then
       begin
-        Current.CurrentSpell := Current.HotKey[ key - 115 ];
+        Current.CurrentSpell := Current.HotKey[ key - 47 ];
         DrawCurrentSpell;
       end;
       if SpellbarActive then
@@ -1872,6 +2148,7 @@ begin
         Active := True;
       end;
     end
+	//TODO: Remove DEBUG keys...unless they work
       {else if (Key=114) or (Key=115) then begin     // F3 - F4 Debugmode
         if CurrDbgLvl=0 then begin
           CurrDbgLvl:=3;
@@ -2121,8 +2398,8 @@ begin
     else if i < 0 then
       i := 0;
     pr := Rect( 0, 0, 78, i );
-    lpDDSBack.BltFast( 699, 134, ManaEmpty, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
-
+	
+    lpDDSBack.BltFast( ScreenMetrics.ManaEmptyX, 134, ManaEmpty, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
     if Life > 0 then
       i := Round( 107 * ( Wounds / Life ) )
     else
@@ -2132,8 +2409,9 @@ begin
     else if i < 0 then
       i := 0;
     pr := Rect( 0, 0, 52, i );
-    lpDDSBack.BltFast( 709, 248, LifeEmpty, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
 
+    lpDDSBack.BltFast( ScreenMetrics.LifeEmptyX, 248, LifeEmpty, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );  //SD
+	
     if not SpellbarActive then
     begin
       for i := 1 to NPCList.Count - 1 do
@@ -2153,10 +2431,11 @@ begin
         HPDistance := HPDistance * ( 66 / TCharacter( NPCList[ i ] ).HitPoints );
         ManaDistance := ManaDistance * ( 66 / TCharacter( NPCList[ i ] ).Mana );
 
-        pr := Rect( NPCBarXCoord[ i ], 581 - Round( HPDistance ), NPCBarXCoord[ i ] + 5, 581 );
+        pr := Rect( NPCBarXCoord[ i ], ScreenMetrics.NPCBarY - Round( HPDistance ), NPCBarXCoord[ i ] + 5, ScreenMetrics.NPCBarY );
         pr0 := Rect( 0, 0, 0, 0 );
         lpDDSBack.Blt( @pr, nil, @pr0, DDBLT_COLORFILL + DDBLT_WAIT, @NPCHealthBltFx );
-        pr := Rect( NPCBarXCoord[ i ] + 7, 581 - Round( ManaDistance ), NPCBarXCoord[ i ] + 7 + 5, 581 );
+
+        pr := Rect( NPCBarXCoord[ i ] + 7, ScreenMetrics.NPCBarY - Round( ManaDistance ), NPCBarXCoord[ i ] + 7 + 5, ScreenMetrics.NPCBarY );
         lpDDSBack.Blt( @pr, nil, @pr0, DDBLT_COLORFILL + DDBLT_WAIT, @NPCManaBltFx );
       end;
     end;
@@ -2186,10 +2465,10 @@ begin
 {$IFDEF DirectX}
     if SpellBarActive then
     begin
-      pr := Rect( 0, 0, 800, 114 );
-      lpDDSBack.BltFast( 0, 486, SpellBar, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, 114 );
+      lpDDSBack.BltFast( 0, ScreenMetrics.SpellBarY, SpellBar, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       pr := Rect( 0, 0, 195, 59 );
-      lpDDSBack.BltFast( 250, 455, HelpBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 250, ScreenMetrics.HelpBoxY, HelpBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     end
     else
     begin
@@ -2197,11 +2476,11 @@ begin
         ShowMouseMessage( TSpriteObject( HLFigure ).Name )
       else
         ShowMouseMessage( '' );
-      pr := Rect( 0, 0, 800, 114 );
-      lpDDSBack.BltFast( 0, 486, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, 114 );
+      lpDDSBack.BltFast( 0, ScreenMetrics.SpellBarY, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     end;
-    pr := Rect( 0, 0, 117, 486 );
-    lpDDSBack.BltFast( 683, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, 117, ScreenMetrics.SpellBarY );
+    lpDDSBack.BltFast( ScreenMetrics.SpellBarX, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
     if Assigned( Player ) then
     begin
@@ -2243,15 +2522,15 @@ begin
 
     Log.Log( 'Shutting down application' );
     try
-      TFile.Delete( DefaultPath + 'games\' + TempGame + '.sav' );
+      DeleteFile( DefaultPath + 'games\' + TempGame + '.sav' );
     except
     end;
     try
-      TFile.Delete( DefaultPath + 'games\' + TempGame + '.idx' );
+      DeleteFile( DefaultPath + 'games\' + TempGame + '.idx' );
     except
     end;
     try
-      TFile.Delete( DefaultPath + 'games\' + TempGame + '.map' );
+      DeleteFile( DefaultPath + 'games\' + TempGame + '.map' );
     except
     end;
 
@@ -2285,8 +2564,9 @@ begin
   BorderIcons := [];
   FormStyle := fsStayOnTop;
 
-  ScreenMetrics := cOriginal; // cHD or cFullHD - TBA
+  ScreenMetrics := cOriginal; // cOriginal or  cHD or cFullHD - TBA
   Keymap := cKeyOrig; // cKeyGerman .. - TBA
+  AdjustedPartyHitPoints := False; // True = Rucksacksepp's HP adjusted by number of PartyMembers
 
   Application.OnException := AppException;
   Application.OnActivate := AppActivate;
@@ -2302,7 +2582,7 @@ begin
 
   Game := TAniView.Create( frmMain );
   Game.Parent := frmMain;
-  Game.Height := ScreenMetrics.GameHeight; // 511;
+  Game.Height := ScreenMetrics.GameHeight; // 511; In HD there was a diff 991 <-> 997?
   Game.Left := 0;
   Game.LMouseButton := False;
   Game.ShowRepaint := False;
@@ -2310,7 +2590,7 @@ begin
   Game.OnAfterDisplay := AniView1AfterDisplay;
   Game.OnBeforeDisplay := AniView1BeforeDisplay;
   Game.OnMouseDown := AniView1MouseDown;
-  
+
 
   GameMap := TAniMap.Create( frmMain );
   GameMap.AmbientColor := clBlack;
@@ -2711,6 +2991,7 @@ begin
       DlgOptions.SoundVolume := MasterSoundVolume;
       DlgOptions.MusicVolume := MasterMusicVolume;
       DlgOptions.PlotShadows := PlotShadows;
+      DlgOptions.PlotScreenRes := PlotScreenRes;
       DlgOptions.IconDX := SpellGlyphs;
       OpenDialog( DlgOptions, CloseAllDialogs );
     end;
@@ -2853,6 +3134,7 @@ procedure TfrmMain.FormMouseDown( Sender : TObject; Button : TMouseButton;
 var
   i : Integer;
   pr : TRect;
+  Ymin1, Ymin2, Ymax, Yorg : Integer;
 const
   FailName : string = 'Main.FormMouseDown';
 begin
@@ -2864,11 +3146,34 @@ begin
     begin
       if SpellBarActive then
       begin
-        if ( X >= 0 ) and ( X < 696 ) and ( Y >= 486 ) and ( Y < 595 ) then
+        //TODO: Refactor - code smell below - I even added more stupidity
+        if ScreenMetrics.IniIdent='Original' then
         begin
-          if ( X >= 9 ) and ( X < 693 ) and ( Y >= 519 ) and ( Y < 595 ) then
+          Ymin1 := 486;
+          Ymin2 := 519;
+          Ymax := 595;
+          Yorg := 520;
+        end;
+        if ScreenMetrics.IniIdent='HD' then
+        begin
+          Ymin1 := 606;
+          Ymin2 := 639;
+          Ymax := 715;
+          Yorg := 640;
+        end;
+        if ScreenMetrics.IniIdent='FullHD' then
+        begin
+          Ymin1 := 966;
+          Ymin2 := 999;
+          Ymax := 1075;
+          Yorg := 1000;
+        end;
+
+        if ( X >= 0 ) and ( X < 696 ) and ( Y >= Ymin1 ) and ( Y < Ymax ) then
+        begin
+          if ( X >= 9 ) and ( X < 693 ) and ( Y >= Ymin2 ) and ( Y < Ymax ) then
           begin
-            i := ( X - 9 ) div 37 + 18 * ( ( Y - 520 ) div 36 );
+            i := ( X - 9 ) div 37 + 18 * ( ( Y - Yorg ) div 36 );
             if ( i >= 0 ) and ( i < 36 ) then
             begin
               if Assigned( Spells[ i ] ) then
@@ -2883,7 +3188,8 @@ begin
         end
         else
         begin
-          if ( X >= 714 ) and ( X < 782 ) and ( Y >= 9 ) and ( Y < 107 ) then
+          if ((ScreenMetrics.ScreenWidth=800) and ( X >= 714 ) and ( X < 782 ) and ( Y >= 9 ) and ( Y < 107 )) or
+    		     ( X >= 1834 ) and ( X < 1902 ) and ( Y >= 9 ) and ( Y < 107 ) then //Both HD and FullHD?
           begin
             i := 0;
             if i < NPCList.Count then
@@ -2909,7 +3215,10 @@ begin
                     CloseAllDialogs( DlgStatistics );
                     ChangeFocus( NPCList.Items[ i ] );
                     pr := Rect( 16, 0, 117, 120 );
-                    lpDDSFront.BltFast( 699, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                    if ScreenMetrics.ScreenWidth>800 then
+                      lpDDSFront.BltFast( 1819, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ) //Both HD and FullHD?
+                    else
+                      lpDDSFront.BltFast( 699, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                     BeginStatistics( Current );
                   end
                   else if DlgInventory.Loaded then
@@ -2918,7 +3227,10 @@ begin
                     CloseAllDialogs( DlgStatistics );
                     ChangeFocus( NPCList.Items[ i ] );
                     pr := Rect( 16, 0, 117, 120 );
-                    lpDDSFront.BltFast( 699, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                    if ScreenMetrics.ScreenWidth>800 then
+                      lpDDSFront.BltFast( 1819, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ) //Both HD and FullHD?
+                    else
+                      lpDDSFront.BltFast( 699, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                     BeginInventory( Current );
                   end
                   else if Active then
@@ -2935,23 +3247,34 @@ begin
         end;
       end
       else
-      begin
+      begin  // Teammates
         i := -1;
-        if ( X >= 0 ) and ( X < 66 ) and ( Y >= 518 ) and ( Y < 580 ) then
+        if ((ScreenMetrics.ScreenWidth=800) and ( X >= 0 ) and ( X < 66 ) and ( Y >= 518 ) and ( Y < 580 )) or
+           (( X >= 0 ) and ( X < 66 ) and ( Y >= 998 ) and ( Y < 1060 )) then //Both HD and FullHD?
         begin
           i := 1;
         end
-        else if ( X >= 80 ) and ( X < 152 ) and ( Y >= 518 ) and ( Y < 580 ) then
+        else if ((ScreenMetrics.ScreenWidth=800) and ( X >= 80 ) and ( X < 152 ) and ( Y >= 518 ) and ( Y < 580 )) or
+                (( X >= 80 ) and ( X < 152 ) and ( Y >= 998 ) and ( Y < 1060 )) then //Both HD and FullHD?
         begin
           i := 2;
+        end;
+
+        if ( MaxPartyMembers=4 ) then //HD always has 4 slots
+        begin
+          if ((ScreenMetrics.ScreenWidth=800) and (X>=166) and (X<234) and (Y>=518) and (Y<580)) or
+             ((X>=166) and (X<234) and ( Y >= 998 ) and ( Y < 1060 )) then //Both HD and FullHD?
+          begin
+            i:=3;
+          end
+          else if ((ScreenMetrics.ScreenWidth=800) and (X>=248) and (X<311) and (Y>=518) and (Y<580)) or
+                  ((X>=248) and (X<311) and ( Y >= 998 ) and ( Y < 1060 )) then //Both HD and FullHD?
+          begin
+            i:=4;
+          end
         end
-          {      else if (X>=166) and (X<234) and (Y>=518) and (Y<580) then begin
-                  i:=3;
-                end
-                else if (X>=248) and (X<311) and (Y>=518) and (Y<580) then begin
-                  i:=4;
-                end  }
-        else if ( X >= 716 ) and ( X < 778 ) and ( Y >= 11 ) and ( Y < 104 ) then
+        else if ((ScreenMetrics.ScreenWidth=800) and ( X >= 716 ) and ( X < 778 ) and ( Y >= 11 ) and ( Y < 104 )) or
+                (( X >= 1834 ) and ( X < 1902 ) and ( Y >= 9 ) and ( Y < 107 )) then //Both HD and FullHD?
         begin
           i := 0;
         end;
@@ -2994,9 +3317,9 @@ begin
                   CloseAllDialogs( DlgStatistics );
                   ChangeFocus( NPCList.Items[ i ] );
                   pr := Rect( 0, 12, 326, 114 );
-                  lpDDSFront.BltFast( 0, 498, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                  lpDDSFront.BltFast( 0, ScreenMetrics.StatsY, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                   pr := Rect( 16, 0, 117, 120 );
-                  lpDDSFront.BltFast( 699, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                  lpDDSFront.BltFast( ScreenMetrics.StatsX, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                   BeginStatistics( Current );
                 end
                 else if DlgInventory.Loaded then
@@ -3005,9 +3328,9 @@ begin
                   CloseAllDialogs( DlgStatistics );
                   ChangeFocus( NPCList.Items[ i ] );
                   pr := Rect( 0, 12, 326, 114 );
-                  lpDDSFront.BltFast( 0, 498, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                  lpDDSFront.BltFast( 0, ScreenMetrics.StatsY, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                   pr := Rect( 16, 0, 117, 120 );
-                  lpDDSFront.BltFast( 699, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                  lpDDSFront.BltFast( ScreenMetrics.StatsX, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                   BeginInventory( Current );
                 end
                 else if Active then
@@ -3025,7 +3348,8 @@ begin
 
       if Assigned( Current ) then
       begin
-        if ( X >= 725 ) and ( X < 773 ) and ( Y >= 430 ) and ( Y < 475 ) then
+        if ((ScreenMetrics.ScreenWidth=800) and ( X >= 725 ) and ( X < 773 ) and ( Y >= 430 ) and ( Y < 475 )) or
+           (( X >= 1846 ) and ( X < 1895 ) and ( Y >= 886 ) and ( Y < 930 )) then //Both HD and FullHD?
         begin
           if DlgInventory.Loaded then
             CloseAllDialogs( DlgInventory )
@@ -3036,7 +3360,8 @@ begin
             BeginInventory( Current );
           end;
         end
-        else if ( X >= 724 ) and ( X < 772 ) and ( Y >= 511 ) and ( Y < 559 ) then
+        else if ((ScreenMetrics.ScreenWidth=800) and ( X >= 724 ) and ( X < 772 ) and ( Y >= 511 ) and ( Y < 559 )) or
+                (( X >= 1846 ) and ( X < 1892 ) and ( Y >= 991 ) and ( Y < 1039 )) then  //Both HD and FullHD?
         begin
           if DlgMap.Loaded then
             CloseAllDialogs( DlgMap )
@@ -3047,7 +3372,8 @@ begin
             BeginMap( Current );
           end;
         end
-        else if ( X >= 658 ) and ( X < 728 ) and ( Y >= 559 ) and ( Y < 584 ) then
+        else if ((ScreenMetrics.ScreenWidth=800) and ( X >= 658 ) and ( X < 728 ) and ( Y >= 559 ) and ( Y < 584 )) or
+                (( X >= 1138 ) and ( X < 1202 ) and ( Y >= 1039 ) and ( Y < 1064 )) then  //Both HD and FullHD?
         begin
           if DlgJournal.Loaded then
             CloseAllDialogs( DlgJournal )
@@ -3058,7 +3384,8 @@ begin
             BeginJournal;
           end;
         end
-        else if ( X >= 658 ) and ( X < 728 ) and ( Y >= 533 ) and ( Y < 559 ) then
+        else if ((ScreenMetrics.ScreenWidth=800) and ( X >= 658 ) and ( X < 728 ) and ( Y >= 533 ) and ( Y < 559 )) or
+                (( X >= 1138 ) and ( X < 1202 ) and ( Y >= 1016 ) and ( Y < 1039 )) then  //Both HD and FullHD?
         begin
           if DlgAdvLog.Loaded then
             CloseAllDialogs( DlgAdvLog )
@@ -3069,7 +3396,8 @@ begin
             BeginAdvLog;
           end;
         end
-        else if ( X >= 658 ) and ( X < 728 ) and ( Y >= 511 ) and ( Y < 533 ) then
+        else if ((ScreenMetrics.ScreenWidth=800) and ( X >= 658 ) and ( X < 728 ) and ( Y >= 511 ) and ( Y < 533 )) or
+                (( X >= 1138 ) and ( X < 1202 ) and ( Y >= 998 ) and ( Y < 1013 )) then  //Both HD and FullHD?
         begin
           if DlgQuestLog.Loaded then
             CloseAllDialogs( DlgQuestLog )
@@ -3080,7 +3408,8 @@ begin
             BeginQuestLog;
           end;
         end
-        else if ( X >= 608 ) and ( X < 648 ) and ( Y >= 542 ) and ( Y < 584 ) then
+        else if ((ScreenMetrics.ScreenWidth=800) and ( X >= 608 ) and ( X < 648 ) and ( Y >= 542 ) and ( Y < 584 )) or
+                (( X >= 1088 ) and ( X < 1128 ) and ( Y >= 1022 ) and ( Y < 1064 )) then  //Both HD and FullHD?
         begin
           if DlgTitles.Loaded then
             CloseAllDialogs( DlgTitles )
@@ -3091,7 +3420,8 @@ begin
             BeginTitles( Current );
           end;
         end
-        else if ( X >= 175 ) and ( X < 256 ) and ( Y >= 539 ) and ( Y < 571 ) then
+        else if ((ScreenMetrics.ScreenWidth=800) and ( X >= 175 ) and ( X < 256 ) and ( Y >= 539 ) and ( Y < 571 )) or
+                (( X >= 345 ) and ( X < 425 ) and ( Y >= 1020 ) and ( Y < 1050 )) then  //Both HD and FullHD?
         begin
           if DlgRoster.Loaded then
             CloseAllDialogs( DlgRoster )
@@ -3104,7 +3434,8 @@ begin
           end;
           Exit;
         end
-        else if ( X >= 324 ) and ( X < 385 ) and ( Y >= 512 ) and ( Y < 588 ) and not SpellBarActive then
+        else if ((ScreenMetrics.ScreenWidth=800) and ( X >= 324 ) and ( X < 385 ) and ( Y >= 512 ) and ( Y < 588 )) or
+                (( X >= 507 ) and ( X < 541 ) and ( Y >= 992 ) and ( Y < 1068 )) and not SpellBarActive then  //Both HD and FullHD?
         begin
           SpellBarActive := not SpellBarActive;
           if SpellBarActive then
@@ -3125,20 +3456,43 @@ var
   S, Info : string;
   i : Integer;
   DC : HDC;
+  Ymin1, Ymin2, Ymax, Yorg : Integer;
 const
   FailName : string = 'Main.FormMouseMove';
 begin
   try
-
     if SpellBarActive then
     begin
+      //TODO: Refactor - code smell below - I even added more stupidity
       S := '';
-      Info := '';
-      if ( X >= 0 ) and ( X < 696 ) and ( Y >= 486 ) and ( Y < 595 ) then
+      Info := '';  // Game info area
+      if ScreenMetrics.IniIdent='Original' then
       begin
-        if ( X >= 9 ) and ( X < 693 ) and ( Y >= 519 ) and ( Y < 595 ) then
+        Ymin1 := 486;
+        Ymin2 := 519;
+        Ymax := 595;
+        Yorg := 520;
+      end;
+      if ScreenMetrics.IniIdent='HD' then
+      begin
+        Ymin1 := 606;
+        Ymin2 := 639;
+        Ymax := 715;
+        Yorg := 640;
+      end;
+      if ScreenMetrics.IniIdent='FullHD' then
+      begin
+        Ymin1 := 966;
+        Ymin2 := 999;
+        Ymax := 1075;
+        Yorg := 1000;
+      end;
+
+      if ( X >= 0 ) and ( X < 696 ) and ( Y >= Ymin1 ) and ( Y < Ymax ) then
+      begin
+        if ( X >= 9 ) and ( X < 693 ) and ( Y >= Ymin2 ) and ( Y < Ymax ) then
         begin
-          i := ( X - 9 ) div 37 + 18 * ( ( Y - 520 ) div 36 );
+          i := ( X - 9 ) div 37 + 18 * ( ( Y - Yorg ) div 36 );
           if ( i >= 0 ) and ( i < 36 ) then
           begin
             if Assigned( Spells[ i ] ) then
@@ -3556,10 +3910,11 @@ begin
         BM.Free;
       end;
       imgCombat.Picture.BITMAP.LoadFromFile( InterfacePath + 'combat.bmp' );
-      imgBottomBar.Picture.BITMAP.LoadFromFile( InterfacePath + 'bottombar.bmp' );
+	  //TODO get correct HD/FullHD bmps
+      imgBottomBar.Picture.BITMAP.LoadFromFile( InterfacePath + ScreenMetrics.bottombarFile );
       OverlayB := DDGetImage( lpDD, imgBottomBar.Picture.BITMAP,
         ColorToRGB( clFuchsia ), True );
-      imgSidebar.Picture.BITMAP.LoadFromFile( InterfacePath + 'sidebar.bmp' );
+      imgSidebar.Picture.BITMAP.LoadFromFile( InterfacePath + ScreenMetrics.sidebarFile );
       OverlayR := DDGetImage( lpDD, imgSidebar.Picture.BITMAP,
         ColorToRGB( clFuchsia ), True );
       imgMana.Picture.BITMAP.LoadFromFile( InterfacePath + 'mana.bmp' );
@@ -3568,7 +3923,7 @@ begin
       imgLife.Picture.BITMAP.LoadFromFile( InterfacePath + 'health.bmp' );
 
       LifeEmpty := DDGetImage( lpDD, imgLife.Picture.BITMAP, ColorToRGB( clBlack ), True );
-      imgSpellBar.Picture.BITMAP.LoadFromFile( InterfacePath + 'spellbar.bmp' );
+      imgSpellBar.Picture.BITMAP.LoadFromFile( InterfacePath + ScreenMetrics.spellbarFile );
       SpellBar := DDGetImage( lpDD, imgSpellBar.Picture.BITMAP,
         ColorToRGB( clFuchsia ), True );
       ShadowImage := DDGetImage( lpDD, imgShadow.Picture.BITMAP,
@@ -3873,7 +4228,6 @@ var
   Brightness : Longint;
   SceneName : string;
   TimeStamp : TDateTime;
-///  ValidationCode : Int64;
   INI : TIniFile;
 const
   FailName : string = 'Main.LoadMapFile';
@@ -4102,6 +4456,7 @@ begin
         //Stuff for summoning spells
         RatResource := TCharacterResource( PartManager.GetOnDemandResource( 'SpriteObject\Character\Animals\Rat' ) );
         WolfResource := TCharacterResource( PartManager.GetOnDemandResource( 'SpriteObject\Character\Animals\Wolf1' ) );
+        GolemResource := TCharacterResource( PartManager.GetOnDemandResource( 'SpriteObject\Character\Monsters\Golem\Rockgolem' ) );
 
         for i := 0 to NPCList.Count - 1 do
         begin
@@ -4131,7 +4486,6 @@ begin
               end
               else
               begin
-                // TODO: Out of Memory when i=259
                 TCharacter( FigureInstances.Objects[ i ] ).Init;
               end;
             end
@@ -4317,19 +4671,6 @@ begin
       SaveAGame( SOLName );
     end;
 
-///    ValidationCode := GetlevelCode( LVLFile );
-  {  if ValidationCode <> 0 then begin
-      if (ValidationCode and ChapterAuthorizeMask) = 0 then begin
-        Log.Log('*** Authorization failed ' + IntToStr(ValidationCode)); //jrs
-        Log.Log('Map could not be loaded ' + IntToStr(ChapterAuthorizeMask)); // jrs
-        //Error Message
-        FreeAll;
-        ExitCode := 69;
-        Close;
-        Result := False;
-        Exit;
-      end;
-    end;   }
 
     if Player.BaseHitPoints < 1 then
     begin // jrs 6Nov01 Restore norm/default base hitpoints to Player
@@ -5178,18 +5519,18 @@ begin
       FillRectSub( lpDDSBack, Rect( 0, 0, 703, 511 ), $202020 );
       if SpellBarActive then
       begin
-        pr := Rect( 0, 0, 800, 114 );
-        lpDDSBack.BltFast( 0, 486, SpellBar, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, 114 );
+        lpDDSBack.BltFast( 0, ScreenMetrics.SpellBarY, SpellBar, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         pr := Rect( 0, 0, 195, 59 );
-        lpDDSBack.BltFast( 250, 455, HelpBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        lpDDSBack.BltFast( 250, ScreenMetrics.HelpBoxY, HelpBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       end
       else
       begin
-        pr := Rect( 0, 0, 800, 114 );
-        lpDDSBack.BltFast( 0, 486, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, 114 );
+        lpDDSBack.BltFast( 0, ScreenMetrics.SpellBarY, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       end;
-      pr := Rect( 0, 0, 117, 486 );
-      lpDDSBack.BltFast( 683, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      pr := Rect( 0, 0, 117, ScreenMetrics.SpellBarY );
+      lpDDSBack.BltFast( ScreenMetrics.SpellBarX, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       DrawHealthBars;
       lpDDSFront.Flip( nil, DDFLIP_WAIT );
       MouseCursor.PlotDirty := False;
@@ -5292,15 +5633,19 @@ begin
     Log.LogEntry( FailName );
 {$ENDIF}
   try
-
     pr := Rect( 0, 0, 32, 32 );
-    OverlayB.BltFast( 339, 64, NoSpellIcon, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+    if ScreenMetrics.ScreenWidth>800 then
+      OverlayB.BltFast( 508, 64, NoSpellIcon, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT ) //Both HD and FullHD?
+    else
+      OverlayB.BltFast( 339, 64, NoSpellIcon, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
 
     if Assigned( Current ) and Assigned( Current.CurrentSpell ) then
     begin
       Point := Current.CurrentSpell.GetIconXY( Current );
-      DrawAlpha( OverlayB, Rect( 339, 64, 339 + 32, 64 + 32 ),
-        Rect( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), SpellGlyphs, False, 200 );
+      if ScreenMetrics.ScreenWidth>800 then
+        DrawAlpha( OverlayB, Rect( 508, 64, 508 + 32, 64 + 32 ),Rect( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), SpellGlyphs, False, 200 ) //Both HD and FullHD?
+      else
+        DrawAlpha( OverlayB, Rect( 339, 64, 339 + 32, 64 + 32 ), Rect( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), SpellGlyphs, False, 200 );
     end;
 
   except
@@ -5318,6 +5663,7 @@ var
   X, Y : Integer;
 const
   FailName : string = 'Main.DrawSpellGlyphs';
+  FailName2 : string = 'Main.DrawHelpbox';
 begin
 {$IFDEF DODEBUG}
   if ( CurrDbgLvl >= DbgLvlSevere ) then
@@ -5346,16 +5692,17 @@ begin
             Spells[ i ] := TSpell( SpellList.Objects[ i ] );
             Point := TSpell( SpellList.Objects[ i ] ).GetIconXY( Current );
             X := 9 + ( i mod 18 ) * 37;
-            Y := 31 + ( i div 18 ) * 36;
+            Y := 31 + ( i div 18 ) * 36;  //HD is 33 not 31??
             if SpellList.Objects[ i ] = Current.CurrentSpell then
             begin
               FillRectAlpha( SpellBar, Rect( X - 2, Y - 2, X + 34, Y + 34 ), clMaroon, 200 );
+              //SpellBar.bltfast(X, Y,Spellglyphs, Rect ( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
               DrawAlpha( SpellBar, Rect( X, Y, X + 32, Y + 32 ),
-                Rect( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), SpellGlyphs, False, 160 );
+			    Rect( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), SpellGlyphs, False, 160 );
             end
             else
-              DrawAlpha( SpellBar, Rect( X, Y, X + 32, Y + 32 ),
-                Rect( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), SpellGlyphs, False, 200 );
+            //SpellBar.bltfast(X, Y,Spellglyphs, Rect ( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+              DrawAlpha( SpellBar, Rect( X, Y, X + 32, Y + 32 ), Rect( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), SpellGlyphs, False, 200 );
           end;
         end;
       finally
@@ -5546,7 +5893,7 @@ begin
     DlgIntro.Captions[ 1 ].Enabled := True;
     DlgIntro.Captions[ 2 ].Enabled := True;
     DlgIntro.Captions[ 3 ].Enabled := not NewGame;
-    DlgIntro.Captions[ 4 ].Enabled := not NewGame;
+    DlgIntro.Captions[ 4 ].Enabled := True;  // not NewGame;
     DlgIntro.Captions[ 5 ].Enabled := True;
     DlgIntro.Captions[ 6 ].Enabled := True;
     DlgIntro.Captions[ 7 ].Enabled := True;
@@ -5642,7 +5989,11 @@ begin
     NewGame := True;
 
     Player := TCharacter.Create( 400, 400, 0, 1, True );
-    Player.TrainingPoints := 20;
+
+    if AdjustedPartyHitPoints then
+      Player.TrainingPoints := 10
+    else
+      Player.TrainingPoints := 20; //Original
 
     AdventureLog1.Clear;
     DlgJournal.StartLogIndex := -1;
@@ -5842,8 +6193,8 @@ begin
         LayeredImage := S + 'PonytailGrey';
       Hair[ 4, 3, 2 ] := PartManager.GetLayerResource( LayeredImage );
       Hair[ 4, 4, 2 ] := nil;
-
-  {    Hair[1, 1, 1] := PartManager.GetLayerResource(S + 'ShortHairBeardLight');
+//TODO: Why the above ?
+      Hair[1, 1, 1] := PartManager.GetLayerResource(S + 'ShortHairBeardLight');
       Hair[1, 2, 1] := PartManager.GetLayerResource(S + 'LongHairBeardLight');
       Hair[1, 3, 1] := PartManager.GetLayerResource(S + 'PonyBeardLight');
       Hair[1, 4, 1] := PartManager.GetLayerResource(S + 'BeardLight');
@@ -5865,7 +6216,20 @@ begin
 
       Hair[1, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairLight');
       Hair[1, 2, 2] := PartManager.GetLayerResource(S + 'LongHairLight');
-      if Female then
+      Hair[1, 3, 2] := PartManager.GetLayerResource(S + 'PonyTailLight');
+
+      Hair[2, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairDark');
+      Hair[2, 2, 2] := PartManager.GetLayerResource(S + 'LongHairDark');
+      Hair[2, 3, 2] := PartManager.GetLayerResource(S + 'PonyTailDark');
+
+      Hair[3, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairRed');
+      Hair[3, 2, 2] := PartManager.GetLayerResource(S + 'LongHairRed');
+      Hair[3, 3, 2] := PartManager.GetLayerResource(S + 'PonyTailRed');
+
+      Hair[4, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairGrey');
+      Hair[4, 2, 2] := PartManager.GetLayerResource(S + 'LongHairGrey');
+      Hair[4, 3, 2] := PartManager.GetLayerResource(S + 'PonyTailGrey');
+      {if Female then
         Hair[1, 3, 2] := PartManager.GetLayerResource(S + 'FemHiPonytailLight')
       else
         Hair[1, 3, 2] := PartManager.GetLayerResource(S + 'PonytailLight');
@@ -5893,7 +6257,7 @@ begin
         Hair[4, 3, 2] := PartManager.GetLayerResource(S + 'FemHiPonytailGrey')
       else
         Hair[4, 3, 2] := PartManager.GetLayerResource(S + 'PonytailGrey');
-      Hair[4, 4, 2] := nil;   }
+      Hair[4, 4, 2] := nil;}
 
       Spinner := 0;
       OnDraw := CharCreationDraw;
@@ -5920,6 +6284,7 @@ begin
     DlgOptions.SoundVolume := MasterSoundVolume;
     DlgOptions.MusicVolume := MasterMusicVolume;
     DlgOptions.PlotShadows := PlotShadows;
+    DlgOptions.PlotScreenRes := PlotScreenRes;
     if NewGame then
     begin
       DlgOptions.Character := nil;
@@ -6025,7 +6390,7 @@ begin
 
         TransitionScreen := '';
         DeathScreen := '';
-        MaxPartyMembers := 2;
+        MaxPartyMembers := 4;  // Was 2
         if not LoadMapFile( False, True ) then
           Exit;
         LastFileSaved := GameName;
@@ -6255,10 +6620,7 @@ end;
 
 procedure TfrmMain.ShowMouseMessage( const Msg : string );
 const
-  tX1 = 394;
   tY1 = 33;
-  tX2 = 394;
-  tX3 = tx2 + 196;
   tY2 = 55;
 var
   NewMessage : Boolean;
@@ -6306,12 +6668,12 @@ begin
     begin
       OverlayB.GetDC( DC );
       try
-        BitBlt( DC, 391, 30, 202, 68, imgBottomBar.Canvas.Handle, 391, 30, SRCCOPY );
+        BitBlt( DC, ScreenMetrics.BottomBarX, 30, 202, 68, imgBottomBar.Canvas.Handle, ScreenMetrics.BottomBarX, 30, SRCCOPY );
       finally
         OverlayB.ReleaseDC( DC );
       end;
-      DlgText.PlotF13Text( OverlayB, MouseMessage, tX1, tY1, 170 );
-      DlgText.PlotF13Block( OverlayB, QuickMessage, tX2, tx3, tY2, 170 );
+      DlgText.PlotF13Text( OverlayB, MouseMessage, ScreenMetrics.MouseMsgX, tY1, 170 );
+      DlgText.PlotF13Block( OverlayB, QuickMessage, ScreenMetrics.MouseMsgX, ScreenMetrics.MouseMsgX + 196, tY2, 170 );
       //    DlgText.PlotText2(OverlayB,QuickMessage,tx2,ty2,170);
       //    DlgText.LoadTinyFontGraphic;
       //    DlgText.PlotTinyText2(OverlayB,QuickMessage,tx2,ty2,170);
@@ -6366,15 +6728,15 @@ begin
     begin
       PaintCharacterOnBorder( TSpriteObject( Sender ), i );
       pr := Rect( 0, 0, 117, 133 );
-      lpDDSBack.BltFast( 683, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( ScreenMetrics.SpellBarX, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     end
     else if i >= 1 then
     begin
       if not SpellBarActive then
       begin
         PaintCharacterOnBorder( Current, i );
-        pr := Rect( 0, 0, 800, 114 );
-        lpDDSBack.BltFast( 0, 486, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, 114 );
+        lpDDSBack.BltFast( 0, ScreenMetrics.SpellBarY, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       end;
 
       for i := 1 to NPCList.Count - 1 do
@@ -6394,11 +6756,11 @@ begin
         HPDistance := HPDistance * ( 66 / TCharacter( NPCList[ i ] ).HitPoints );
         ManaDistance := ManaDistance * ( 66 / TCharacter( NPCList[ i ] ).Mana );
 
-        pr := Rect( NPCBarXCoord[ i ], 581 - Round( HPDistance ), NPCBarXCoord[ i ] + 5, 581 );
+        pr := Rect( NPCBarXCoord[ i ], ScreenMetrics.NPCBarY - Round( HPDistance ), NPCBarXCoord[ i ] + 5, ScreenMetrics.NPCBarY );
         pr0 := Rect( 0, 0, 0, 0 );
         lpDDSBack.Blt( @pr, nil, @pr0, DDBLT_COLORFILL + DDBLT_WAIT, @NPCHealthBltFx );
 
-        pr := Rect( NPCBarXCoord[ i ] + 7, 581 - Round( ManaDistance ), NPCBarXCoord[ i ] + 7 + 5, 581 );
+        pr := Rect( NPCBarXCoord[ i ] + 7, ScreenMetrics.NPCBarY - Round( ManaDistance ), NPCBarXCoord[ i ] + 7 + 5, ScreenMetrics.NPCBarY );
         pr0 := Rect( 0, 0, 0, 0 );
         lpDDSBack.Blt( @pr, nil, @pr0, DDBLT_COLORFILL + DDBLT_WAIT, @NPCManaBltFx );
       end;
@@ -6476,7 +6838,7 @@ begin
     if Initialized then
     begin
       WindowState := wsNormal;
-      SetBounds( 0, 0, 800, 600 );
+      SetBounds( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
       Game.Enabled := True;
       FormShow( Self );
     end
@@ -6845,12 +7207,12 @@ begin
     begin
       OverlayB.GetDC( DC );
       try
-        BitBlt( DC, 659, 74, 68, 24, imgBottomBar.Canvas.Handle, 659, 74, SRCCOPY );
+        BitBlt( DC, ScreenMetrics.LogX, 74, 68, 24, imgBottomBar.Canvas.Handle, ScreenMetrics.LogX, 74, SRCCOPY );
       finally
         OverlayB.ReleaseDC( DC );
       end;
-      FillRectAlpha( OverlayB, Rect( 660, 75, 659 + 67, 74 + 23 ), $80, 32 );
-      FillRectAlpha( OverlayB, Rect( 659, 74, 659 + 68, 74 + 24 ), $80, 96 );
+      FillRectAlpha( OverlayB, Rect( ScreenMetrics.LogX+1, 75, ScreenMetrics.LogX + 67, 74 + 23 ), $80, 32 );
+      FillRectAlpha( OverlayB, Rect( ScreenMetrics.LogX, 74, ScreenMetrics.LogX + 68, 74 + 24 ), $80, 96 );
     end;
   except
     on E : Exception do
@@ -6871,12 +7233,12 @@ begin
 
   OverlayB.GetDC( DC );
   try
-    BitBlt( DC, 659, 50, 68, 24, imgBottomBar.Canvas.Handle, 659, 50, SRCCOPY );
+    BitBlt( DC, ScreenMetrics.LogX, 50, 68, 24, imgBottomBar.Canvas.Handle, ScreenMetrics.LogX, 50, SRCCOPY );
   finally
     OverlayB.ReleaseDC( DC );
   end;
-  FillRectAlpha( OverlayB, Rect( 660, 51, 659 + 67, 50 + 23 ), $80, 32 );
-  FillRectAlpha( OverlayB, Rect( 659, 50, 659 + 68, 50 + 24 ), $80, 96 );
+  FillRectAlpha( OverlayB, Rect( ScreenMetrics.LogX+1, 51, ScreenMetrics.LogX + 67, 50 + 23 ), $80, 32 );
+  FillRectAlpha( OverlayB, Rect( ScreenMetrics.LogX, 50, ScreenMetrics.LogX + 68, 50 + 24 ), $80, 96 );
 end;
 
 procedure TfrmMain.AddQuest( const Entry : string );
@@ -6891,12 +7253,12 @@ begin
 
   OverlayB.GetDC( DC );
   try
-    BitBlt( DC, 659, 26, 68, 24, imgBottomBar.Canvas.Handle, 659, 26, SRCCOPY );
+    BitBlt( DC, ScreenMetrics.LogX, 26, 68, 24, imgBottomBar.Canvas.Handle, ScreenMetrics.LogX, 26, SRCCOPY );
   finally
     OverlayB.ReleaseDC( DC );
   end;
-  FillRectAlpha( OverlayB, Rect( 660, 27, 659 + 67, 26 + 23 ), $80, 32 );
-  FillRectAlpha( OverlayB, Rect( 659, 26, 659 + 68, 26 + 24 ), $80, 96 );
+  FillRectAlpha( OverlayB, Rect( ScreenMetrics.LogX+1, 27, ScreenMetrics.LogX + 67, 26 + 23 ), $80, 32 );
+  FillRectAlpha( OverlayB, Rect( ScreenMetrics.LogX, 26, ScreenMetrics.LogX + 68, 26 + 24 ), $80, 96 );
 end;
 
 procedure TfrmMain.ClearAdventureGraphic;
@@ -6906,15 +7268,15 @@ var
 begin
   OverlayB.GetDC( DC );
   try
-    BitBlt( DC, 659, 50, 68, 24, imgBottomBar.Canvas.Handle, 659, 50, SRCCOPY );
+    BitBlt( DC, ScreenMetrics.LogX, 50, 68, 24, imgBottomBar.Canvas.Handle, ScreenMetrics.LogX, 50, SRCCOPY );
   finally
     OverlayB.ReleaseDC( DC );
   end;
   if not SpellBarActive then
   begin
     MouseCursor.cleanup;
-    pr := Rect( 659, 50, 659 + 68, 50 + 24 );
-    lpDDSFront.BltFast( 659, 486 + 50, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( ScreenMetrics.LogX, 50, ScreenMetrics.LogX + 68, 50 + 24 );
+    lpDDSFront.BltFast( ScreenMetrics.LogX, ScreenMetrics.SpellBarY + 50, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   end;
 end;
 
@@ -6924,7 +7286,7 @@ var
 begin
   OverlayB.GetDC( DC );
   try
-    BitBlt( DC, 659, 74, 68, 24, imgBottomBar.Canvas.Handle, 659, 74, SRCCOPY );
+    BitBlt( DC, ScreenMetrics.LogX, 74, 68, 24, imgBottomBar.Canvas.Handle, ScreenMetrics.LogX, 74, SRCCOPY );
   finally
     OverlayB.ReleaseDC( DC );
   end;
@@ -6937,15 +7299,15 @@ var
 begin
   OverlayB.GetDC( DC );
   try
-    BitBlt( DC, 659, 26, 68, 24, imgBottomBar.Canvas.Handle, 659, 26, SRCCOPY );
+    BitBlt( DC, ScreenMetrics.LogX, 26, 68, 24, imgBottomBar.Canvas.Handle, ScreenMetrics.LogX, 26, SRCCOPY );
   finally
     OverlayB.ReleaseDC( DC );
   end;
   if not SpellBarActive then
   begin
     MouseCursor.cleanup;
-    pr := Rect( 659, 26, 659 + 68, 26 + 24 );
-    lpDDSFront.BltFast( 659, 486 + 26, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( ScreenMetrics.LogX, 26, ScreenMetrics.LogX + 68, 26 + 24 );
+    lpDDSFront.BltFast( ScreenMetrics.LogX, ScreenMetrics.SpellBarY + 26, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   end;
 end;
 
@@ -7688,18 +8050,18 @@ begin
         FillRectSub( lpDDSBack, Rect( 0, 0, 703, 511 ), $202020 );
         if SpellBarActive then
         begin
-          pr := Rect( 0, 0, 800, 114 );
-          lpDDSBack.BltFast( 0, 486, SpellBar, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, 114 );
+          lpDDSBack.BltFast( 0, ScreenMetrics.SpellBarY, SpellBar, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
           pr := Rect( 0, 0, 195, 59 );
-          lpDDSBack.BltFast( 250, 455, HelpBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          lpDDSBack.BltFast( 250, ScreenMetrics.HelpBoxY, HelpBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         end
         else
         begin
-          pr := Rect( 0, 0, 800, 114 );
-          lpDDSBack.BltFast( 0, 486, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, 114 );
+          lpDDSBack.BltFast( 0, ScreenMetrics.SpellBarY, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         end;
-        pr := Rect( 0, 0, 117, 486 );
-        lpDDSBack.BltFast( 683, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, 117, ScreenMetrics.SpellBarY );
+        lpDDSBack.BltFast( ScreenMetrics.SpellBarX, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         DrawHealthBars;
         lpDDSFront.Flip( nil, DDFLIP_WAIT );
         MouseCursor.PlotDirty := False;
@@ -7885,7 +8247,8 @@ begin
     Count := 0;
 //    GetCursorPos( P );
     P := Mouse.CursorPos;
-    if PtInRect( Rect( 726, 429, 772, 473 ), P ) then
+	//TODO: Adjust points to HD? Does disabled make a differnce?
+    {if PtInRect( Rect( ScreenMetrics.726, 429, ScreenMetrics.772, 473 ), P ) then  //HD 1206
       MsgID := 1 //Inventory
     else if PtInRect( Rect( 732, 511, 781, 555 ), P ) then
       MsgID := 2 //Map
@@ -7913,8 +8276,8 @@ begin
       MsgID := 13 //Party Member 1
     else if PtInRect( Rect( 80, 510, 151, 586 ), P ) and not frmMain.SpellBarActive then
       MsgID := 14 //Party Member 2
-    else
-      MsgID := 0;
+    else }
+    MsgID := 0;
     if MsgID = 0 then
     begin
       if FMsgID > 0 then

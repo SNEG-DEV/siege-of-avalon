@@ -224,12 +224,10 @@ begin
   OldHAdj := HAdj;
   WAdj := 0;
   HAdj := 0;
-  if mPt.x + PtrWidth > 800 then
-    WAdj := ( mPt.x + PtrWidth ) - 800;
-      //mPt.x:=800-PtrWidth;
-  if mPt.y + PtrHeight > 600 then
-    HAdj := ( mPt.y + PtrHeight ) - 600;
-      //mPt.y:=600-PtrHeight;
+  if mPt.x + PtrWidth > ScreenMetrics.ScreenWidth then
+    WAdj := ( mPt.x + PtrWidth ) - ScreenMetrics.ScreenWidth;
+  if mPt.y + PtrHeight > ScreenMetrics.ScreenHeight then
+    HAdj := ( mPt.y + PtrHeight ) - ScreenMetrics.ScreenHeight;
 
   if FPlotDirty then
   begin

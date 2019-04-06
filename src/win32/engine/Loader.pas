@@ -507,11 +507,14 @@ var
         InScene := lowercase( Attributes.values[ 'InScene' ] ); //Check to see if object is in current scene
         if ( InScene <> '' ) then
         begin
-          if ( Pos( '[' + SceneName + ']', InScene ) = 0 ) then
+          if ( InScene <> Scenename ) then   //Fix by Rucksacksepp
           begin
-            Attributes.free;
-            Log.Log( '  Object not in scene' );
-            exit;
+            if ( Pos( '[' + SceneName + ']', InScene ) = 0 ) then
+            begin
+              Attributes.Free;
+              Log.Log( '  Object not in scene' );
+              Exit;
+            end;
           end;
         end;
 

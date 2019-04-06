@@ -135,6 +135,7 @@ uses
   System.SysUtils,
   System.Types,
   SoAOS.Types,
+  AniDemo,
   LogFile,
   Resource;
 
@@ -807,6 +808,18 @@ begin
         i := StrToInt( s );
         if i >= 0 then
         begin
+
+          //Addition: Because of higher resolution you can see opponents earlier, ranged attack without counterreaction
+          if ScreenMetrics.ScreenWidth>800 then //TODO: Refactor like alot of other stuff - too much copy-paste everywhere
+          begin
+            if not Character.TitleExists('Widescreen') then
+            begin
+              Character.Vision := Character.Vision + 400;
+              Character.AddTitle('Widescreen');
+            end;
+          end;
+          // Addition
+
           character.Mysticism := player.Mysticism + i;
           character.Stealth := player.Stealth + i;
           character.combat := player.combat + i;

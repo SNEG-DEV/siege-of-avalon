@@ -103,7 +103,7 @@ type
     BaseCombat : integer;
     BaseStealth : integer;
     TrainingPoints : integer;
-    txtMessage : array[ 0..64 ] of string;
+    txtMessage : array[ 0..64 ] of string;  //Why 65 in soaos?
     procedure ArrowInfo( i : integer ); //info can change
     procedure LoadBaseValues; //saves the base stats of the character
     procedure LoadNames;
@@ -257,7 +257,7 @@ begin
     ShowStats;
   //Whew! Now we flip it all to the screen
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 {$ENDIF}
@@ -685,7 +685,7 @@ begin
     end;
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, ScreenMetrics.ScreenHeight, ScreenMetrics.ScreenWidth );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
@@ -731,7 +731,7 @@ begin
   //replot the entire screen statistics
     ShowStats;
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
@@ -993,11 +993,11 @@ begin
     StatName[ 1 ][ 4 ] := txtMessage[ 11 ]; //'Heat';
     StatName[ 1 ][ 5 ] := txtMessage[ 12 ]; //'Cold';
     StatName[ 1 ][ 6 ] := txtMessage[ 13 ]; //'Electric';
-    StatName[ 1 ][ 7 ] := txtMessage[ 15 ]; //'Poison'; //Now Magic
-    StatName[ 1 ][ 8 ] := txtMessage[ 17 ]; //'Magic';  //Now Stun
-//  StatName[1][9]:=txtMessage[16];//'Mental';
-//  StatName[1][10]:=txtMessage[17];//'Stun';
-//  StatName[1][11]:=txtMessage[18];//'Special';
+    StatName[ 1 ][ 7 ] := txtMessage[ 15 ]; //'Magic';
+    StatName[ 1 ][ 8 ] := txtMessage[ 17 ]; //'Stun';
+    StatName[ 1 ][ 9 ] := txtMessage[ 18 ]; //'Special';
+    //StatName[ 1 ][ 10 ] :=txtMessage[ 15 ]; //'Poison';
+    StatName[ 1 ][ 11 ] := txtMessage[ 16 ]; //'Mental';
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -1279,10 +1279,11 @@ begin
     InfoRect[ ix + 55 ].info := txtMessage[ 19 ] + a + txtMessage[ 20 ] + StatName[ 1 ][ 8 ] + txtMessage[ 21 ];
     InfoRect[ ix + 55 + 11 ].info := txtMessage[ 22 ] + b + txtMessage[ 23 ] + StatName[ 1 ][ 8 ] + txtMessage[ 21 ];
 
-    InfoRect[ ix + 56 ].Disabled := true;
+{    InfoRect[ ix + 56 ].Disabled := true;
     InfoRect[ ix + 56 + 11 ].Disabled := true;
     InfoRect[ ix + 57 ].Disabled := true;
-    InfoRect[ ix + 57 + 11 ].Disabled := true;
+    InfoRect[ ix + 57 + 11 ].Disabled := true;}
+ //TODO: Checkout on correct statnames between translations
 {   i:=i+24;
    str(Round(Character.resistance.mental.Invulnerability),a);
    pText.PlotText(a,451,i,Alpha);
@@ -1298,6 +1299,22 @@ begin
    pText.PlotText(b,490,i,Alpha);
    InfoRect[ix+57].info:=txtMessage[19]+ a +txtMessage[20]+ StatName[1][10]+ txtMessage[21];
    InfoRect[ix+57+11].info:=txtMessage[22]+ a +txtMessage[23]+ StatName[1][10]+ txtMessage[21];  }
+   
+   i:=i+24;
+   str(Round(Character.resistance.poison.Invulnerability),a);
+   pText.PlotTextCentered(a,x1,x2,i,Alpha);
+   str(Round(Character.resistance.poison.Resistance*100),b);
+   pText.PlotTextCentered(b,x3,x4,i,Alpha);
+   InfoRect[ix+56].info:=txtMessage[19]+ a +txtMessage[20]+ 'Gift'+ txtMessage[21];
+   InfoRect[ix+56+11].info:=txtMessage[22]+ b +txtMessage[23]+ 'Gift'+ txtMessage[21];
+
+   i:=i+24;
+   str(Round(Character.resistance.mental.Invulnerability),a);
+   pText.PlotTextCentered(a,x1,x2,i,Alpha);
+   str(Round(Character.resistance.mental.Resistance*100),b);
+   pText.PlotTextCentered(b,x3,x4,i,Alpha);
+   InfoRect[ix+57].info:=txtMessage[19]+ a +txtMessage[20]+ StatName[1][11]+ txtMessage[21];
+   InfoRect[ix+57+11].info:=txtMessage[22]+ b +txtMessage[23]+ StatName[1][11]+ txtMessage[21];
 
 
    //Damage column
@@ -1352,9 +1369,9 @@ begin
     InfoRect[ ix + 88 ].info := txtMessage[ 24 ] + a + txtMessage[ 25 ] + b + txtMessage[ 26 ] + StatName[ 1 ][ 8 ] +
       txtMessage[ 27 ];
 
-    InfoRect[ ix + 89 ].Disabled := true;
+    {InfoRect[ ix + 89 ].Disabled := true;
     InfoRect[ ix + 90 ].Disabled := true;
-    InfoRect[ ix + 91 ].Disabled := true;
+    InfoRect[ ix + 91 ].Disabled := true;}
 {   i:=i+24;
    str(Round(Character.damage.mental.Min),a);
    str(Round(Character.damage.mental.Max),b);
@@ -1373,6 +1390,26 @@ begin
    pText.PlotText(a+'-'+b,600,i,Alpha);
    InfoRect[ix+91].info:=txtMessage[24]+ a + txtMessage[25] + b + txtMessage[26] + StatName[1][11]+
                       txtMessage[27];  }
+					  
+i:=i+24;
+   str(Round(Character.damage.special.Min),a);
+   str(Round(Character.damage.special.Max),b);
+   pText.PlotTextCentered(a+'-'+b,x1,x2,i,Alpha);
+   InfoRect[ix+89].info:=txtMessage[24]+ a + txtMessage[25] + b + txtMessage[26] + StatName[1][9]+
+                      txtMessage[27];
+
+   i:=i+24;
+   str(Round(Character.damage.poison.Min),a);
+   str(Round(Character.damage.poison.Max),b);
+   pText.PlotTextCentered(a+'-'+b,x1,x2,i,Alpha);
+   InfoRect[ix+90].info:=txtMessage[24]+ a + txtMessage[25] + b + txtMessage[26] + 'Gift'+
+                      txtMessage[27];
+   i:=i+24;
+   str(Round(Character.damage.mental.Min),a);
+   str(Round(Character.damage.mental.Max),b);
+   pText.PlotTextCentered(a+'-'+b,x1,x2,i,Alpha);
+   InfoRect[ix+91].info:=txtMessage[24]+ a + txtMessage[25] + b + txtMessage[26] + StatName[1][11]+
+                      txtMessage[27];					  
   except
     on E : Exception do
       Log.log( FailName + E.Message );

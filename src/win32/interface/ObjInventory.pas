@@ -393,7 +393,7 @@ begin
     end;
   //Whew! Now we flip it all to the screen
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 {$ENDIF}
@@ -778,7 +778,7 @@ begin
       end;
     end; //endif
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
@@ -960,7 +960,7 @@ begin
 
       CurrentSelectedItem := -1; //deassign it
       lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      pr := Rect( 0, 0, 800, 600 );
+      pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
       lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
       MouseCursor.PlotDirty := false;
     end;
@@ -1028,7 +1028,7 @@ begin
       pText.PlotTextCentered( TContainer( OtherOb ).name, 417, 633, 10, Alpha );
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
@@ -1279,8 +1279,8 @@ begin
     end
     else
     begin //constrict to main inventory area
-      prRect.bottom := 600;
-      prRect.Right := 800;
+      prRect.bottom := ScreenMetrics.ScreenHeight;
+      prRect.Right := ScreenMetrics.ScreenWidth;
       paint;
     end;
     ClipCursor( prRect ); //TODO: Windows-ism - replace

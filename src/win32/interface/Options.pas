@@ -90,6 +90,7 @@ type
     DXYellow : IDirectDrawSurface; //used to draw lines
     DXVolumeSlider : IDirectDrawSurface;
     DXVolumeShadow : IDirectDrawSurface;
+    DXScreenResolution : IDirectDrawSurface;
     XAdj, YAdj : integer; //adjust ments for placement of the sheet
     CurrentSelectedListItem : integer;
     StartSpell : integer;
@@ -111,9 +112,11 @@ type
     SoundVolume : integer;
     MusicVolume : integer;
     PlotShadows : boolean;
+    PlotScreenRes  : Integer;
     Character : TCharacter;
     IconDX : IDirectDrawSurface;
     opContinueRect : TRect;
+    opScreenResRect : TRect;
     constructor Create;
     destructor Destroy; override;
     procedure Init; override;
@@ -139,6 +142,7 @@ begin
   try
     inherited;
     opContinueRect := Rect( 400, 450, 400 + 300, 450 + 45 );
+    opScreenResRect := Rect( 105, 460, 105 + 311, 460 + 26 );
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -179,7 +183,7 @@ begin
       Exit;
     inherited;
     MouseCursor.Cleanup;
-    pr := Rect( 0, 0, ResWidth, ResHeight );
+    pr := Rect( 0, 0, 800, 600 );  //NOHD
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 
@@ -195,7 +199,6 @@ begin
     CurrentSelectedListItem := -1;
     StartSpell := 0;
 
-
     pText.LoadFontGraphic( 'createchar' ); //load the GoldFont font graphic in
     if UseSmallFont then
       pText.LoadGoldFontGraphic;
@@ -204,6 +207,12 @@ begin
     opContinueRect.Right := BMBack.Width;
     opContinueRect.Bottom := BMBack.Height;
     DXContinue := DDGetImage( lpDD, BMBack, cInvisColor, False );
+
+    BMBack.LoadFromFile( InterfacePath + 'opScreenRes.bmp' );
+    opScreenResRect.Right := BMBack.Width;
+    opScreenResRect.Bottom := BMBack.Height;
+    DXScreenResolution := DDGetImage( lpDD, BMBack, cInvisColor, False );
+
     BMBack.LoadFromFile( InterfacePath + 'opYellow.bmp' );
     DXYellow := DDGetImage( lpDD, BMBack, cInvisColor, False );
 
@@ -262,11 +271,27 @@ begin
   //clear Yes/no
     pr := Rect( 556, 70, 650, 90 );
     lpDDSBack.BltFast( 556, 70, DXBack, @pr, DDBLTFAST_WAIT );
+  //clear resolution
+    pr := Rect( 108, 463, 313, 483 );
+    lpDDSBack.BltFast( 108, 463, DXBack, @pr, DDBLTFAST_WAIT );
 
     if PlotShadows then
       DrawAlpha( lpDDSBack, rect( 560, 75, 573, 86 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 )
     else
       DrawAlpha( lpDDSBack, rect( 632, 75, 645, 86 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
+
+    if True then  // HDAvail
+    begin
+      pr := Rect( 0, 0, opScreenResRect.Right, opScreenResRect.Bottom );
+      lpDDSBack.BltFast( opScreenResRect.Left, opScreenResRect.Top, DXScreenResolution, @pr, DDBLTFAST_WAIT );
+
+      case PlotScreenRes of
+        600 : DrawAlpha( lpDDSBack, rect( 112, 468, 125, 479 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
+        720 : DrawAlpha( lpDDSBack, rect( 219, 468, 232, 479 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
+        1080 : DrawAlpha( lpDDSBack, rect( 295, 468, 308, 479 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
+      end;
+    end;
+
   //Put in the volume
   //Sound FX
     DrawAlpha( lpDDSBack, rect( 116, 92, SoundVolume * 2 + 116, 105 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
@@ -291,11 +316,18 @@ begin
         if ( i >= StartSpell ) and ( i < StartSpell + 5 ) then
         begin //only show 10 files
             //Show a hotkey if associated
-          for k := 1 to 8 do
+//          for k := 1 to 8 do  // F3-F12
+//          begin
+//            if TSpell( SpellList.objects[ i ] ) = Character.HotKey[ k ] then
+//            begin
+//              pText.PlotText( 'F' + intToStr( k + 2 ), 611, 264 + j * 35, 240 );
+//            end;
+//          end;
+		  for k := 0 to 10 do // Keys 0-9
           begin
             if TSpell( SpellList.objects[ i ] ) = Character.HotKey[ k ] then
             begin
-              pText.PlotText( 'F' + intToStr( k + 4 ), 611, 264 + j * 35, 240 );
+              pText.PlotText( intToStr( k - 1), 611, 264 + j * 35, 240 );
             end;
           end;
             //Plot The Spell Icons
@@ -312,7 +344,7 @@ begin
       end; //end for
     end;
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, 800, 600 );  // NOHD
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
@@ -333,18 +365,23 @@ begin
 {$ENDIF}
   try
 
-   //function key f5 to f12
+   //was function key f3 to f12, now 0-9
     if Character <> nil then
     begin
-      if ( key > 115 ) and ( key < 124 ) and ( CurrentSelectedListItem <> -1 ) then
+//      if ( key > 115 ) and ( key < 124 ) and ( CurrentSelectedListItem <> -1 ) then
+if ( key > 47 ) and ( key < 58 ) and ( CurrentSelectedListItem <> -1 ) then
       begin
-        Character.HotKey[ key - 115 ] := TSpell( SpellList.objects[ CurrentSelectedListItem ] );
+//        Character.HotKey[ key - 115 ] := TSpell( SpellList.objects[ CurrentSelectedListItem ] );
+Character.HotKey[ key - 47 ] := TSpell( SpellList.objects[ CurrentSelectedListItem ] );
            //We dont want more than one key pointing at the same spell, so if allready assigned, change to nil.
-        for i := 1 to 8 do
+//        for i := 1 to 8 do
+for i := 1 to 10 do
         begin
-          if i <> key - 115 then
+//          if i <> key - 115 then
+if i <> key - 47 then
           begin
-            if Character.HotKey[ key - 115 ] = Character.HotKey[ i ] then
+//            if Character.HotKey[ key - 115 ] = Character.HotKey[ i ] then
+if Character.HotKey[ key - 47 ] = Character.HotKey[ i ] then
               Character.HotKey[ i ] := nil;
           end
         end;
@@ -430,6 +467,18 @@ begin
     begin //no
       PlotShadows := false;
     end
+    else if PtInRect( rect( 109, 464, 128, 482 ), point( x, y ) ) then
+    begin //original
+      PlotScreenRes := 600;
+    end
+    else if PtInRect( rect( 216, 464, 235, 482 ), point( x, y ) ) then
+    begin //HD
+      PlotScreenRes := 720;
+    end
+    else if PtInRect( rect( 292, 464, 311, 482 ), point( x, y ) ) then
+    begin //FullHD
+      PlotScreenRes := 1080;
+    end
     else if PtinRect( rect( 502, 450, 502 + 198, 450 + 45 ), point( X, Y ) ) then
     begin //over back button
       Close; //quit
@@ -474,11 +523,22 @@ begin
     pr := Rect( opContinueRect.Left, opContinueRect.Top, opContinueRect.Left + opContinueRect.Right, opContinueRect.Top + opContinueRect.Bottom );
     lpDDSBack.BltFast( opContinueRect.Left, opContinueRect.Top, DXBack, @pr, DDBLTFAST_WAIT );
 
+    if True then  // HDAvail
+    begin
+      pr := Rect( 0, 0, opScreenResRect.Right, opScreenResRect.Bottom );
+      lpDDSBack.BltFast( opScreenResRect.Left, opScreenResRect.Top, DXScreenResolution, @pr, DDBLTFAST_WAIT );
+
+      case PlotScreenRes of
+        600 : DrawAlpha( lpDDSBack, rect( 112, 468, 125, 479 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
+        720 : DrawAlpha( lpDDSBack, rect( 219, 468, 232, 479 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
+        1080 : DrawAlpha( lpDDSBack, rect( 295, 468, 308, 479 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
+      end;
+    end;
+
     if PlotShadows then
       DrawAlpha( lpDDSBack, rect( 560, 75, 573, 86 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 )
     else
       DrawAlpha( lpDDSBack, rect( 632, 75, 645, 86 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
-
 
   //FX volume - we do mousedown check here as well for drag
     if PtInRect( Rect( 100, 88, 335, 125 ), point( x, y ) ) and ( Shift = [ ssLeft ] ) then
@@ -497,7 +557,6 @@ begin
         X := 116;
       MusicVolume := ( X - 116 ) div 2;
     end;
-
 
   //Sound FX
     DrawAlpha( lpDDSBack, rect( 116, 92, SoundVolume * 2 + 116, 105 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
@@ -523,11 +582,13 @@ begin
         if ( i >= StartSpell ) and ( i < StartSpell + 5 ) then
         begin //only show 10 files
             //Show a hotkey if associated
-          for k := 1 to 8 do
+//          for k := 1 to 8 do
+for k := 1 to 10 do
           begin
             if TSpell( SpellList.objects[ i ] ) = Character.HotKey[ k ] then
             begin
-              pText.PlotText( 'F' + intToStr( k + 4 ), 611, 264 + j * 35, 240 );
+//              pText.PlotText( 'F' + intToStr( k + 4 ), 611, 264 + j * 35, 240 );
+pText.PlotText( intToStr( k - 1 ), 611, 264 + j * 35, 240 );
             end;
           end;
             //Plot The Spell Icons
@@ -580,9 +641,8 @@ begin
       end;
     end;
 
-
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, 800, 600 );  //NOHD
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
@@ -620,6 +680,7 @@ begin
     DXYellow := nil;
     DXVolumeSlider := nil;
     DXVolumeShadow := nil;
+    DXScreenResolution := nil;
 
     inherited;
   except
@@ -651,11 +712,13 @@ procedure TOptions.TimerEvent( Sender : TObject );
         if ( i >= StartSpell ) and ( i < StartSpell + 5 ) then
         begin //only show 10 files
               //Show a hotkey if associated
-          for k := 1 to 8 do
+//          for k := 1 to 8 do
+for k := 1 to 10 do
           begin
             if TSpell( SpellList.objects[ i ] ) = Character.HotKey[ k ] then
             begin
-              pText.PlotText( 'F' + intToStr( k + 4 ), 611, 264 + j * 35, 240 );
+//              pText.PlotText( 'F' + intToStr( k + 4 ), 611, 264 + j * 35, 240 );
+pText.PlotText( intToStr( k - 1 ), 611, 264 + j * 35, 240 );
             end;
           end;
               //Plot The Spell Icons
@@ -666,7 +729,7 @@ procedure TOptions.TimerEvent( Sender : TObject );
         end
       end; //end for
       lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      pr := Rect( 0, 0, 800, 600 );
+      pr := Rect( 0, 0, 800, 600 ); // NOHD
       lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
       MouseCursor.PlotDirty := false;
     end;

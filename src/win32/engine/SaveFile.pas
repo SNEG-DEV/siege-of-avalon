@@ -157,7 +157,9 @@ const
 implementation
 
 uses
-  System.IOUtils;
+  System.IOUtils,
+  SoAOS.Types,
+  AniDemo;
 
 { TSavFile }
 
@@ -423,7 +425,8 @@ begin
     FProperties := nil;
     CreatedProperties := false;
   end;
-  MaxPartyMembers := 2;
+
+  MaxPartyMembers := ScreenMetrics.PartyMemberSlots; //Original 2
 
   for i := 0 to MapIndex.count - 1 do
   begin

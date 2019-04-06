@@ -242,7 +242,7 @@ begin
   pText.PlotText( CharAI.character.name, 9, 41, 240 );
   PlotMenu;
   lpDDSFront.Flip( nil, DDFLIP_WAIT );
-  pr := Rect( 0, 0, 800, 600 );
+  pr := Rect( 0, 0, 800, 600 );  //NOHD
   lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
   MouseCursor.PlotDirty := false;
 end; //Init
@@ -1262,7 +1262,7 @@ begin
   end; //endif CurrentSelectedItem
 
   lpDDSFront.Flip( nil, DDFLIP_WAIT );
-  pr := Rect( 0, 0, 800, 600 );
+  pr := Rect( 0, 0, 800, 600 );  //NOHD
   lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
   MouseCursor.PlotDirty := false;
 end; //MouseMove
@@ -1332,7 +1332,7 @@ begin
     FadeTimer.enabled := false;
   end;
   lpDDSFront.Flip( nil, DDFLIP_WAIT );
-  pr := Rect( 0, 0, 800, 600 );
+  pr := Rect( 0, 0, 800, 600 );  //NOHD
   lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
   MouseCursor.PlotDirty := false;
 end; //FadeTimerEvent
@@ -1352,8 +1352,8 @@ begin
   end
   else
   begin //constrict to main inventory area
-    prRect.bottom := 600;
-    prRect.Right := 800;
+    prRect.bottom := ScreenMetrics.ScreenHeight;  // 600 - was 720 - should probably be 1080
+    prRect.Right := ScreenMetrics.ScreenWidth;  // 800 - was 1280 - shold probably be 1920
   end;
   ClipCursor( prRect ); //TODO: Windows-ism - replace
   Dispose( prRect );

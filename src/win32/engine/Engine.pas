@@ -108,11 +108,14 @@ var
   CurrentStartingPoint : string;
   TravelList : TStringList;
   PlotShadows : boolean;
+  PlotScreenRes : integer;
   DefaultPants : TLayerResource;
   FemDefaultPants : TLayerResource;
   ElfDefaultPants : TLayerResource;
   RatResource : TCharacterResource;
   WolfResource : TCharacterResource;
+  GolemResource : TCharacterResource;
+  SkeletonResource : TCharacterResource;
   GIFToPOX : boolean;
   AllSpells : boolean;
   Bikini : boolean;
@@ -142,6 +145,7 @@ var
 implementation
 
 uses
+  SoAOS.Types,
   AniDemo,
   Character,
   Parts,
@@ -895,7 +899,7 @@ begin
           begin
             if ObjectRef is TSpriteObject then
             begin
-              TSpriteObject( ObjectRef ).Say( Parms, TColors.White );
+              TSpriteObject( ObjectRef ).Say( Parms, cTalkWhiteColor );
             end;
           end;
         end
@@ -930,7 +934,8 @@ begin
         begin
           if Assigned( MusicLib ) then
           begin
-            frmMain.SoundTimer.Enabled := false;
+            MusicLib.PauseThisSong;
+            frmMain.SoundTimer.Enabled := true;
           end;
         end
 
@@ -1592,19 +1597,19 @@ begin
     begin
       Log.Log( '  ' + pList^.Name );
       try
-        TFile.Delete( Dir + pList^.Name + '.zit' );
+        DeleteFile( Dir + pList^.Name + '.zit' );
       except
       end;
       try
-        TFile.Delete( Dir + pList^.Name + '.pit' );
+        DeleteFile( Dir + pList^.Name + '.pit' );
       except
       end;
       try
-        TFile.Delete( Dir + pList^.Name + '.dit' );
+        DeleteFile( Dir + pList^.Name + '.dit' );
       except
       end;
       try
-        TFile.Delete( Dir + pList^.Name + '.cit' );
+        DeleteFile( Dir + pList^.Name + '.cit' );
       except
       end;
       dec( TotalSize, pList^.Size );

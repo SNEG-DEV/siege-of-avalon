@@ -463,7 +463,7 @@ begin
       begin
         //lpDDSFront.Flip(nil, DDFLIP_WAIT);
         MouseCursor.Cleanup;
-        pr := Rect( 0, 0, 800, 600 );
+        pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
         lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
         if assigned( DXBack ) then
         begin
@@ -481,7 +481,7 @@ begin
       begin
        //clean up
         MouseCursor.Cleanup;
-        pr := Rect( 0, 0, 800, 600 );
+        pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
         lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
         if assigned( DXDirty ) then
         begin

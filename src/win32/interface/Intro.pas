@@ -133,7 +133,7 @@ begin
 {$ENDIF}
   try
     Caption.Rect := Rect( X, Y, X + W, Y + H );
-    Caption.Image := DDGetSurface( lpDD, W, H, cTransparent, true );
+    Caption.Image := DDGetSurface( lpDD, W, H, cInvisIntro, true );
     Caption.Image.GetDC( DC );
     try
       BitBlt( DC, 0, 0, W, H, BM.canvas.handle, X - XFrame, Y - YFrame, SRCCOPY );
@@ -217,40 +217,40 @@ begin
         DXBack.ReleaseDC( DC );
       end;
 
-      pr := Rect( 0, 0, 800, 600 );
+      pr := Rect( 0, 0, 800, 600 ); //NOHD
       lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
 
       BM.LoadFromFile( InterfacePath + 'gMainMenuTextBttns.bmp' );
       Y1 := YFrame;
-      MakeRect( Captions[ 1 ], XFrame, Y1, BM );
+      MakeRect( Captions[ 1 ], XFrame, Y1, BM );  // New game
 
       inc( Y1, 52 );
-      MakeRect( Captions[ 2 ], XFrame, Y1, BM );
+      MakeRect( Captions[ 2 ], XFrame, Y1, BM );  // Load
 
       inc( Y1, 52 );
-      MakeRect( Captions[ 3 ], XFrame, Y1, BM );
+      MakeRect( Captions[ 3 ], XFrame, Y1, BM );  // Save
 
       inc( Y1, 52 );
-      MakeRect( Captions[ 4 ], XFrame, Y1, BM );
+      MakeRect( Captions[ 4 ], XFrame, Y1, BM );  // Options
 
       inc( Y1, 52 );
-      MakeRect( Captions[ 5 ], XFrame, Y1, BM );
+      MakeRect( Captions[ 5 ], XFrame, Y1, BM );  // History
 
       inc( Y1, 52 );
-      MakeRect( Captions[ 6 ], XFrame, Y1, BM );
+      MakeRect( Captions[ 6 ], XFrame, Y1, BM );  // Credits
 
       inc( Y1, 52 );
-      MakeRect( Captions[ 7 ], XFrame, Y1, BM );
+      MakeRect( Captions[ 7 ], XFrame, Y1, BM );  // Exit
 
       inc( Y1, 52 );
-      MakeRect( Captions[ 8 ], XFrame, Y1, BM );
+      MakeRect( Captions[ 8 ], XFrame, Y1, BM );  // Resume
 
     finally
       BM.Free;
     end;
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, 800, 600 ); //NOHD
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 
@@ -309,10 +309,10 @@ begin
       else if PtInRect( rect( 438, 456, 488, 484 ), point( x, y ) ) then
       begin //No pressed- just show screen
         AreYouSureBoxVisible := false;
-        pr := Rect( 0, 0, 800, 600 );
+        pr := Rect( 0, 0, 800, 600 );  //NOHD
         lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_WAIT ); //clear screen
         lpDDSFront.Flip( nil, DDFLIP_WAIT );
-        pr := Rect( 0, 0, 800, 600 );
+        pr := Rect( 0, 0, 800, 600 );  //NOHD
         lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
         MouseCursor.PlotDirty := false;
       end; //endif PtInRect
@@ -348,7 +348,7 @@ begin
           Choice := i;
           if Choice <> PrevChoice then
           begin
-            pr := Rect( 0, 0, 800, 600 );
+            pr := Rect( 0, 0, 800, 600 );  //NOHD
             lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
             pr := Rect( 0, 0, Captions[ i ].Rect.Right - Captions[ i ].Rect.Left, Captions[ i ].Rect.Bottom - Captions[ i ].Rect.Top );
             lpDDSBack.BltFast( Captions[ i ].Rect.Left, Captions[ i ].Rect.Top, Captions[ i ].Image, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
@@ -361,7 +361,7 @@ begin
 
       if ( Choice = 0 ) and ( Choice <> PrevChoice ) then
       begin
-        pr := Rect( 0, 0, 800, 600 );
+        pr := Rect( 0, 0, 800, 600 );  //NOHD
         lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
         lpDDSFront.Flip( nil, DDFLIP_WAIT );
         MouseCursor.PlotDirty := false;
@@ -396,7 +396,7 @@ begin
     DXBorders := DDGetImage( lpDD, BM, cInvisColor, False );
     nRect := Captions[ 7 ].Rect; //Exit
 
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, 800, 600 ); //NOHD
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_WAIT );
     pr := Rect( 0, 0, BM.width, BM.Height );
     lpDDSBack.BltFast( 400 - BM.width div 2, nRect.top + 32, DXBorders, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
@@ -410,7 +410,7 @@ begin
     BM.Free;
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, 800, 600 ); //NOHD
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 

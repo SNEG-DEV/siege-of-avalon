@@ -202,8 +202,8 @@ begin
 {$ENDIF}
   try
     inherited;
-    chaContinueRect := Rect( 400, 449, 0, 0 ); // left, top, right, bottom
-    chaCancelRect := Rect( 100, 449, 0, 0 );
+    chaContinueRect := Rect( 400, 449, 0, 0 ); // left, top, right, bottom chaContinueRect := Rect( 498, 450, 0, 0 ); gondur //HD
+    chaCancelRect := Rect( 100, 449, 0, 0 ); // chaCancelRect := Rect( 102, 450, 0, 0 );  gondur //HD
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -485,11 +485,11 @@ begin
           begin
             if ChosenTraining = 18 then
             begin
-              Character.Strength := Character.BaseStrength - 5;
+              Character.Strength := Character.BaseStrength - 4;
               Character.Coordination := Character.BaseCoordination - 2;
-              Character.Constitution := Character.BaseConstitution - 3;
+              Character.Constitution := Character.BaseConstitution - 2;
               Character.Perception := Character.BasePerception + 3;
-              Character.Charm := Character.BaseCharm + 3;
+              Character.Charm := Character.BaseCharm + 1;
               Character.Mysticism := Character.BaseMysticism + 3;
               Character.Combat := Character.BaseCombat - 10;
               Character.Stealth := Character.BaseStealth - 0;
@@ -528,11 +528,11 @@ begin
                 pText.PlotGoldTextCentered( lpDDSBack, txtMessage[ 5 ], 300, 448, 135, 250 )
               else
                 pText.PlotTextCentered( txtMessage[ 5 ], 300, 448, 135, 250 );
-              Character.Strength := Character.BaseStrength + 5;
+              Character.Strength := Character.BaseStrength + 4;
               Character.Coordination := Character.BaseCoordination + 2;
-              Character.Constitution := Character.BaseConstitution + 3;
+              Character.Constitution := Character.BaseConstitution + 2;
               Character.Perception := Character.BasePerception - 3;
-              Character.Charm := Character.BaseCharm - 3;
+              Character.Charm := Character.BaseCharm - 1;
               Character.Mysticism := Character.BaseMysticism - 3;
               Character.Combat := Character.BaseCombat + 10;
               Character.Stealth := Character.BaseStealth + 0;
@@ -828,27 +828,27 @@ begin
       end;
 
     end;
-
+    // great when all this nonsense code goes away...
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
     if x > 600 then
     begin
-      pr := Rect( 500, 0, 800, 600 );
+      pr := Rect( 500, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );  // 1920, 1080
       lpDDSBack.BltFast( 500, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     end
     else if x > 400 then
     begin
-      pr := Rect( 300, 0, 700, 600 );
+      pr := Rect( 300, 0, ScreenMetrics.ScreenWidth-100, ScreenMetrics.ScreenHeight );  // 1820, 1080
       lpDDSBack.BltFast( 300, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     end
     else if x > 200 then
     begin
-      pr := Rect( 100, 0, 500, 600 );
+      pr := Rect( 100, 0, ScreenMetrics.ScreenWidth-300, ScreenMetrics.ScreenHeight );  // was 500, 600 <-> 1720, 1080
       lpDDSBack.BltFast( 100, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     end
     else
     begin
-      pr := Rect( 0, 0, 300, 600 );
-      lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
+      pr := Rect( 0, 0, ScreenMetrics.ScreenWidth-500, ScreenMetrics.ScreenHeight );
+      lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );  // 1420, 1080
     end;
 
   //lpDDSBack.BltFast(101, 61, lpDDSFront, Rect(101, 61, 710, 600), DDBLTFAST_WAIT);
@@ -902,7 +902,7 @@ begin
     ShowStats;
     pText.PlotText( CharacterName, 310, 95, 240 );
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
@@ -1481,7 +1481,7 @@ begin
      //plot the Carat
     pText.PlotText( '|', CaratPosition + 310, 95, 240 );
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
@@ -1642,7 +1642,7 @@ begin
 
     BoxOpen := box;
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
@@ -1671,7 +1671,7 @@ begin
     if assigned( OnDraw ) then
       OnDraw( self );
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except

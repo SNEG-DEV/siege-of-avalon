@@ -184,7 +184,7 @@ begin
 
     BMBack.LoadFromFile( InterfacePath + 'aniBack.bmp' );
     DXBack := DDGetImage( lpDD, BMBack, cInvisColor, true );
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, 800, 600 ); //NOHD
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_WAIT );
 
     BMBack.Free;
@@ -192,7 +192,7 @@ begin
   //DrawAlpha(lpDDSBack,rect(0,0,800,600),rect(0,0,25,25),DXSiege,false,255);
   //DrawSub(lpDDSBack,rect(0,0,800,600),rect(0,0,25,25),DXSiege,false,255);
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, 800, 600 );  //NOHD
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
 
     KeepOnPlaying := true;
@@ -274,7 +274,7 @@ begin
 {$ENDIF}
   try
     StartFinalCount := 0;
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, 800, 600 );  //NOHD
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_WAIT );
     MusicStillPlaying := true;
     MusicStartTime := TThread.GetTickCount;
@@ -322,7 +322,7 @@ begin
           application.ProcessMessages;
           for i := 0 to 11 do
           begin
-            DrawAlpha( lpDDSBack, Rect( 0, 250 + i * 19, 800, 250 + i * 19 + 19 ), rect( 0, i * 19, 800, i * 19 + 19 ), DXLogo, true, Alpha );
+            DrawAlpha( lpDDSBack, Rect( 0, 250 + i * 19, 800, 250 + i * 19 + 19 ), rect( 0, i * 19, 800, i * 19 + 19 ), DXLogo, true, Alpha );  //NOHD
             application.processmessages;
           end;
           application.ProcessMessages;
@@ -330,7 +330,7 @@ begin
           application.ProcessMessages;
           lpDDSFront.Flip( nil, DDFLIP_WAIT );
           application.ProcessMessages;
-          pr := Rect( 0, 0, 800, 600 );
+          pr := Rect( 0, 0, 800, 600 );  //NOHD
           lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
           application.ProcessMessages;
         end;
@@ -357,7 +357,7 @@ begin
           if Alpha < 0 then
             Alpha := 0;
           application.ProcessMessages;
-          pr := Rect( 0, 250, 800, 250 + 228 );
+          pr := Rect( 0, 250, 800, 250 + 228 );  //NOHD
           lpDDSBack.BltFast( 0, 250, DXBack, @pr, DDBLTFAST_WAIT );
           application.ProcessMessages;
           if Alpha > 0 then
@@ -365,7 +365,7 @@ begin
 //                    DrawAlpha(lpDDSBack,Rect(0, 250, 800, 250+228),rect(0,0,800,228),DXLogo,true,Alpha);
             for i := 0 to 11 do
             begin
-              DrawAlpha( lpDDSBack, Rect( 0, 250 + i * 19, 800, 250 + i * 19 + 19 ), rect( 0, i * 19, 800, i * 19 + 19 ), DXLogo, true, Alpha );
+              DrawAlpha( lpDDSBack, Rect( 0, 250 + i * 19, 800, 250 + i * 19 + 19 ), rect( 0, i * 19, 800, i * 19 + 19 ), DXLogo, true, Alpha ); //NOHD
               application.processmessages;
             end;
           end;
@@ -374,7 +374,7 @@ begin
           Adj := Adj - Trunc( Adj );
           lpDDSFront.Flip( nil, DDFLIP_WAIT );
           application.ProcessMessages;
-          pr := Rect( 0, 0, 800, 600 );
+          pr := Rect( 0, 0, 800, 600 );  //NOHD
           lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
           application.ProcessMessages;
         end;
@@ -425,7 +425,7 @@ begin
           application.ProcessMessages;
           lpDDSFront.Flip( nil, DDFLIP_WAIT );
           application.ProcessMessages;
-          pr := Rect( 0, 0, 800, 600 );
+          pr := Rect( 0, 0, 800, 600 );  //NOHD
           lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
           application.ProcessMessages;
         end;

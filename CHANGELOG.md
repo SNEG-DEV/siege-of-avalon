@@ -10,12 +10,18 @@ All notable changes to this project will be documented in this file.
 - Evaluate the tools - maybe redo/merge them - and include them in the repository.
 - Getting rid of need for custem ddraw.dll
 - Replacing DirectDraw with cross-platform library
-- Remove/minimize window-ism
-- Add HD/FullHD support - either add a "launcher" or re-organizing the "Options"
 - Add a character selector - again probably re-organizing the "Character Creator" dialog
 - Character in the center - add male/female choices.
 - Mod selection - more DLC style - extendable instead of destructive copy/paste exercises.
 - Better multi-language support - right now it is crippled, like other parts of the UI code.
+
+## 2019-03-26
+### Added
+- Added Original/HD/FullHD option in option dialog - requires restart/activate - will leave it at that until SDL2
+- HD and FullHD interface assets - SoA-styled, feel welcome to improve these - a bit of a rush job
+
+### Fixed
+- Color glitch in menu - I tried to ignore
 
 ## 2019-03-31 
 ### Fixed

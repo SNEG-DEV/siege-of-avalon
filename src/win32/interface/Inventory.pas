@@ -125,7 +125,7 @@ type
     DXBrown : IDirectDrawSurface; //Show where we can drop item in inventory
 {$ENDIF}
     SlotName : TStringList; //names of each slot we plot on screen
-    SlotCoord : array[ 0..15 ] of BodySlotCoord; //coordinates used to generate rects
+    SlotCoord : array[ 0..16 ] of BodySlotCoord; //coordinates used to generate rects
     //GroundList: TList;
     GroundOrderList : TList; //used to keep track of the order of items on the ground
     TopGroundIndex : Integer; //Index of the current top ground item
@@ -266,22 +266,27 @@ begin
     SlotCoord[ 12 ].cy := 194;
     SlotCoord[ 12 ].cr := 200;
 
-    SlotName.Add( 'Misc1' );
-    SlotCoord[ 13 ].cx := 343;
-    SlotCoord[ 13 ].cy := 103;
-    SlotCoord[ 13 ].cr := 21;
+    SlotName.Add( 'tabar' );
+    SlotCoord[ 13 ].cx := 450;
+    SlotCoord[ 13 ].cy := 125;
+    SlotCoord[ 13 ].cr := 40;
 
-    SlotName.Add( 'Misc2' );
-    SlotCoord[ 14 ].cx := 321;
-    SlotCoord[ 14 ].cy := 138;
+    SlotName.Add( 'Misc1' );
+    SlotCoord[ 14 ].cx := 343;
+    SlotCoord[ 14 ].cy := 103;
     SlotCoord[ 14 ].cr := 21;
 
-    SlotName.Add( 'Misc3' );
-    SlotCoord[ 15 ].cx := 363;
+    SlotName.Add( 'Misc2' );
+    SlotCoord[ 15 ].cx := 321;
     SlotCoord[ 15 ].cy := 138;
     SlotCoord[ 15 ].cr := 21;
 
-    for i := 0 to 15 do
+    SlotName.Add( 'Misc3' );
+    SlotCoord[ 16 ].cx := 363;
+    SlotCoord[ 16 ].cy := 138;
+    SlotCoord[ 16 ].cr := 21;
+
+    for i := 0 to 16 do
     begin //set up the collision rects
       SlotCoord[ i ].Rect.Left := SlotCoord[ i ].cx - SlotCoord[ i ].cr;
       SlotCoord[ i ].Rect.Right := SlotCoord[ i ].cx + SlotCoord[ i ].cr;
@@ -601,7 +606,7 @@ begin
   //Whew! Now we flip it all to the screen
     MouseCursor.Cleanup;
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 {$ENDIF}
@@ -1072,7 +1077,7 @@ begin
     begin
       WriteTheInventoryData;
       lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      pr := Rect( 0, 0, 800, 600 );
+      pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );  // 1920, 1080
       lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
       MouseCursor.PlotDirty := false;
     end;
@@ -1121,7 +1126,7 @@ begin
       pr := Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H );
       lpDDSBack.BltFast( Tx, Ty, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      pr := Rect( 0, 0, 800, 600 );
+      pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
       lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
       MouseCursor.PlotDirty := false;
     end
@@ -1230,7 +1235,7 @@ begin
       end; //endif CurrentSelectedItem
       CurrentSelectedItem := -1; //deassign it
       lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      pr := Rect( 0, 0, 800, 600 );
+      pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
       lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
       MouseCursor.PlotDirty := false;
     end;
@@ -1308,7 +1313,7 @@ begin
     end;
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
   except
@@ -1386,7 +1391,7 @@ begin
     R1.Right := R1.Left + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W;
     R1.Top := Integer( Y - ( pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H div 2 ) );
     R1.Bottom := R1.Top + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H;
-    for i := 0 to 15 do
+    for i := 0 to 16 do
     begin //check where we will land vs all other inv items for collision
       k := IntersectRect( R3, SlotCoord[ i ].Rect, R1 );
       if k then
@@ -1630,8 +1635,8 @@ begin
     end
     else
     begin //resote to fullscreen
-      prRect.bottom := 600;
-      prRect.Right := 800;
+      prRect.bottom := ScreenMetrics.ScreenHeight;
+      prRect.Right := ScreenMetrics.ScreenWidth;
     end;
     ClipCursor( prRect ); //TODO: Windows-ism - replace
     Dispose( prRect );

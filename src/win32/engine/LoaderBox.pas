@@ -108,7 +108,7 @@ begin
 {$ENDIF}
   try
     BltFx.dwSize := SizeOf( BltFx ); //RGB(244,164,4)
-    BltFx.dwFillColor := DDColorMatch( lpDDSFront, cLoadBackColor );  // RGB( 32, 128, 16 )
+    BltFx.dwFillColor := DDColorMatch( lpDDSFront, cLoadBackColor );  //TODO: Make const RGB(100,100,255) blue, RGB(244,164,4) yellow, RGB( 32, 128, 16 ) green
     inherited;
   except
     on E : Exception do
@@ -178,7 +178,7 @@ begin
     BMBack.free;
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, 800, 600 );  //NO HD
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
   except
     on E : Exception do

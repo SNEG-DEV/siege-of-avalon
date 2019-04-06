@@ -165,13 +165,13 @@ begin
     BMBack := TBitmap.Create;
     BMBack.LoadFromFile( InterfacePath + FileName );
     DXBack := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, 800, 600 ); //NOHD
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_WAIT );
 
     BMBack.Free;
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );
+    pr := Rect( 0, 0, 800, 600 ); //NOHD
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 
