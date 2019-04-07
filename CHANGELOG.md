@@ -15,12 +15,21 @@ All notable changes to this project will be documented in this file.
 - Mod selection - more DLC style - extendable instead of destructive copy/paste exercises.
 - Better multi-language support - right now it is crippled, like other parts of the UI code.
 
-## 2019-03-26
+## 2019-04-07
+### Changed
+- Cleaned out a bit of TBitmaps and wrapped some DD code.
+- Most BMPs are loaded to GPU surfaces - but still too many times - so just faster not better :)
+
+### Removed
+- Some VCL dependency
+
+## 2019-04-06
 ### Added
 - Added Original/HD/FullHD option in option dialog - requires restart/activate - will leave it at that until SDL2
 - HD and FullHD interface assets - SoA-styled, feel welcome to improve these - a bit of a rush job
 
 ### Fixed
+- Cursor artifacts just introduced
 - Color glitch in menu - I tried to ignore
 
 ## 2019-03-31 

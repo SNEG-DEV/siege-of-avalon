@@ -71,7 +71,6 @@ uses
   System.SysUtils,
   System.Types,
   System.Classes,
-  Vcl.Graphics,
   Vcl.Controls,
   Character,
   Resource,
@@ -109,7 +108,6 @@ type
 
   TInventory = class( TDisplay )
   private
-    BMBack : TBitmap; //The inventory screen bitmap used for loading
     ItemList : TList; //the list of items
     pInventoryItem : pTempItems; //The temporary inventory and equipment items combined
     CurrentSelectedItem : Integer; //Current Item being dragged about
@@ -173,6 +171,7 @@ implementation
 
 uses
   SoAOS.Types,
+  SoAOS.Graphics.Draw,
   AniDemo;
 
 { TInventory }
@@ -327,7 +326,7 @@ end;
 
 procedure TInventory.Init;
 var
-  i : Integer;
+  i, width, height : Integer;
   t : TSlot; //Index for Equipment loop
   DXBorder : IDirectDrawSurface;
   WeHaveAWeaponAndThisIsTheIndex : integer; //for moving the weapon to a clear spot on barbie
@@ -375,7 +374,6 @@ begin
     DlgScroll.ScrollIsShowing := False; //stats screen isnt showing
     Alpha := 170; //alpha value for all alphabet plots
     TopGroundIndex := 0; //initialize the top ground item to element zero of GroundList
-    BMBack := TBitmap.Create;
   //Create list
     ItemList := TList.Create; //create the ItemList
   //ItemList.Sorted := True;              //Indicate that it is always to be sorted
@@ -510,105 +508,38 @@ begin
       pTempItems( ItemList.Items[ WeHaveAWeaponAndThisIsTheIndex ] ).InvY := Ty;
     end; //endif
 
-{ //all gone and no longer used - we just load the image over and over
-  //We now have a list of character inventory items sorted by filename
-  //Create the DirectDraw surfaces - don't load the same graphic more than once, just reuse the surface
-   //The first item automatically gets a DXSurface - this is an init of sorts
-  if ItemList.Count > 0 then begin      //if we have any items at all
-    BMBack.LoadFromFile(InterfacePath +'items\' + ItemList.Strings[0]);
-    pTempItems(ItemList.Items[0]).W := BMBack.width; //set the width and height here
-    pTempItems(ItemList.Items[0]).H := BMBack.Height;
-
-    pTempItems(ItemList.Items[0]).DXSurface := DDGetImage(lpDD, BMBack, InvisColor, False);
-
-  end;
-  for i := 1 to ItemList.Count - 1 do begin
-    if ItemList.Strings[i] = ItemList.Strings[i - 1] then begin //if this item has the same barbie graphic as the last item, copy its DXSurface pointer
-      pTempItems(ItemList.Items[i]).DXSurface := pTempItems(ItemList.Items[i - 1]).DXSurface;
-      pTempItems(ItemList.Items[i]).W := pTempItems(ItemList.Items[i - 1]).W;
-      pTempItems(ItemList.Items[i]).H := pTempItems(ItemList.Items[i - 1]).H;
-    end
-    else begin                          //if this item has a different filename, then create a new dxsurface
-      BMBack.LoadFromFile(InterfacePath +'items\' + ItemList.Strings[i]);
-      pTempItems(ItemList.Items[i]).W := BMBack.width; //set the width and height here
-      pTempItems(ItemList.Items[i]).H := BMBack.Height;
-
-      pTempItems(ItemList.Items[i]).DXSurface := DDGetImage(lpDD, BMBack, InvisColor, False);
-
-    end;
-  end;  }
-
   //Load the Background Bitmap and plot it
-{$IFNDEF DirectX}
-    BMBack.LoadFromFile( InterfacePath + 'inventory.bmp' );
-    BitBlt( Game.Canvas.Handle, 0, 0, BMBack.width, BMBack.Height, BMBack.Canvas.Handle, 0, 0, SRCCOPY );
-    Game.Refresh;
-{$ENDIF}
 {$IFDEF DirectX}
-    BMBack.LoadFromFile( InterfacePath + 'invRightArrow.bmp' );
-    DXRightArrow := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    BMBack.LoadFromFile( InterfacePath + 'invLeftArrow.bmp' );
-    DXLeftArrow := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    BMBack.LoadFromFile( InterfacePath + 'invBackToGame.bmp' );
-    DXBackToGame := DDGetImage( lpDD, BMBack, cInvisColor, False );
-
-    BMBack.LoadFromFile( InterfacePath + 'invRedCircle.bmp' );
-    DXCircle := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    BMBack.LoadFromFile( InterfacePath + 'merBackHighlight.bmp' );
-    DXBrown := DDGetImage( lpDD, BMBack, cInvisColor, False );
-
-  //BMBack.LoadFromFile(InterfacePath +'creatures.bmp');
-  //DXBack:=DDGetImage(lpDD,BMBack,InvisColor,false);
-  //lpDDSBack.BltFast(0,0,DXBack,Rect(0,0,BMBack.width,BMBack.Height),DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
-    BMBack.LoadFromFile( InterfacePath + 'inventory.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, cInvisColor, False );
-  //DxDirty := DDGetImage(lpDD, BMBack, InvisColor, False); //for now this is how we will do it
-    pr := Rect( 0, 0, BMBack.width, BMBack.Height );
+    DXRightArrow := SoAOS_DX_LoadBMP( InterfacePath + 'invRightArrow.bmp', cInvisColor );
+    DXLeftArrow := SoAOS_DX_LoadBMP( InterfacePath + 'invLeftArrow.bmp', cInvisColor );
+    DXBackToGame := SoAOS_DX_LoadBMP( InterfacePath + 'invBackToGame.bmp', cInvisColor );
+    DXCircle := SoAOS_DX_LoadBMP( InterfacePath + 'invRedCircle.bmp', cInvisColor );
+    DXBrown := SoAOS_DX_LoadBMP( InterfacePath + 'merBackHighlight.bmp', cInvisColor );
+    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'inventory.bmp', cInvisColor, width, height );
+    pr := Rect( 0, 0, width, height );
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   //Now for the Alpha'ed edges
-    BMBack.LoadFromFile( InterfacePath + 'invRightInventoryAlpha.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    DrawSub( lpDDSBack, Rect( 659, 0, 659 + BMBack.Width, BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, Alpha );
+    DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'invRightInventoryAlpha.bmp', cInvisColor, width, height );
+    DrawSub( lpDDSBack, Rect( 659, 0, 659 + width, height ), Rect( 0, 0, width, height ), DXBorder, True, Alpha );
 
     DXBorder := nil;
 
-    BMBack.LoadFromFile( InterfacePath + 'invBottomInventoryAlpha.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    DrawSub( lpDDSBack, Rect( 0, 460, BMBack.Width, 460 + BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, Alpha );
+    DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'invBottomInventoryAlpha.bmp', cInvisColor, width, height );
+    DrawSub( lpDDSBack, Rect( 0, 460, width, 460 + height ), Rect( 0, 0, width, height ), DXBorder, True, Alpha );
 
     DXBorder := nil; //release DXBorder
 {$ENDIF}
 
 {$IFDEF DirectX}
-  //release the bitmap
-    BMBack.Free;
-  //pText.Load13Graphic;
- // pText.PlotF13Text(lpDDSBack,'This is a test of Font 13!!',20,300,240);
- // pText.PlotF13Block(lpDDSBack,'This is a test of Font 13.  Hopefully, this sorry excuse for a font function can In Fact, Plot A Large Block O text Without Puking.',120,300,400,240);
- // pText.Unload13Graphic;
-  //Now plot all of the items on the grid
-{  for i := 0 to ItemList.Count - 1 do begin
-    //lpDDSBack.BltFast(pTempItems(ItemList.Items[i]).InvX, pTempItems(ItemList.Items[i]).InvY, pTempItems(ItemList.Items[i]).DXSurface, Rect(0, 0, pTempItems(ItemList.Items[i]).W, pTempItems(ItemList.Items[i]).H), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
-    if pTempItems(ItemList.Items[i]).ItemType <> 'Ground' then begin//if not in the ground slot
-       DrawSub(lpDDSBack,rect(pTempItems(ItemList.Items[i]).InvX, pTempItems(ItemList.Items[i]).InvY,pTempItems(ItemList.Items[i]).InvX+pTempItems(ItemList.Items[i]).W, pTempItems(ItemList.Items[i]).InvY+pTempItems(ItemList.Items[i]).H),Rect(0, 0, pTempItems(ItemList.Items[i]).W, pTempItems(ItemList.Items[i]).H),pTempItems(ItemList.Items[i]).DXShadow ,True,ShadowAlpha);
-       lpDDSBack.BltFast(pTempItems(ItemList.Items[i]).InvX, pTempItems(ItemList.Items[i]).InvY, pTempItems(ItemList.Items[i]).DXSurface, Rect(0, 0, pTempItems(ItemList.Items[i]).W, pTempItems(ItemList.Items[i]).H), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT)
-    end
-    else //In the ground slot so plot iconic image
-       lpDDSBack.BltFast(pTempItems(ItemList.Items[i]).InvX, pTempItems(ItemList.Items[i]).InvY, pTempItems(ItemList.Items[i]).DXSurfaceIcon, Rect(0, 0, GroundListWidth, GroundListHeight), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
-  end;  }
-
-  //new code July 8 2000
     DontPlotCurrentItem := false;
     paint;
-  //end new code
 
     pText.PlotText( IntToStr( Character.money ) + ' ' + txtCrowns, 240 - pText.TextLength( IntToStr( Character.money ) + ' ' + txtCrowns ), 10, Alpha );
   //Whew! Now we flip it all to the screen
     MouseCursor.Cleanup;
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+
+    SoAOS_DX_BltFront;
+
 {$ENDIF}
   except
     on E : Exception do
@@ -622,7 +553,6 @@ procedure TInventory.MouseDown( Sender : TAniview; Button : TMouseButton;
 var
   i, j : Integer;
   pTemp : Pointer;
-  //a,b: string;
   B1, B2, B3, B4 : Boolean;
   rRect : TRect;
   DontDropInGround : boolean;
@@ -670,9 +600,7 @@ begin
           if j <> 0 then
           begin //if its not the first item in the list
           //replace the back from the DXBack buffer.
-          //lpDDSBack.BltFast(pTempItems(GroundOrderList.Items[j]).InvX, pTempItems(GroundOrderList.Items[j]).InvY, DXBack, Rect(pTempItems(GroundOrderList.Items[j]).InvX, pTempItems(GroundOrderList.Items[j]).InvY, pTempItems(GroundOrderList.Items[j]).InvX + pTempItems(GroundOrderList.Items[j]).W, pTempItems(GroundOrderList.Items[j]).InvY + pTempItems(GroundOrderList.Items[j]).H), DDBLTFAST_WAIT);
-            pr := Rect( 275, 384, 353, 416 );
-            lpDDSBack.BltFast( 275, 384, DXBack, @pr, DDBLTFAST_WAIT );
+            SoAOS_DX_BltFastWaitXY( DXBack, Rect( 275, 384, 353, 416 ) );
             pTempItems( GroundOrderList.Items[ j ] ).InvX := 999;
             pTempItems( GroundOrderList.Items[ j ] ).InvY := 999;
             j := j - 1;
@@ -697,9 +625,7 @@ begin
           if j < ( GroundOrderList.Count - 1 ) then
           begin //if its not the last item in the list
           //replace the back from the DXBack buffer.
-          //lpDDSBack.BltFast(pTempItems(GroundOrderList.Items[j]).InvX, pTempItems(GroundOrderList.Items[j]).InvY, DXBack, Rect(pTempItems(GroundOrderList.Items[j]).InvX, pTempItems(GroundOrderList.Items[j]).InvY, pTempItems(GroundOrderList.Items[j]).InvX + pTempItems(GroundOrderList.Items[j]).W, pTempItems(GroundOrderList.Items[j]).InvY + pTempItems(GroundOrderList.Items[j]).H), DDBLTFAST_WAIT);
-            pr := Rect( 275, 384, 353, 416 );
-            lpDDSBack.BltFast( 275, 384, DXBack, @pr, DDBLTFAST_WAIT );
+            SoAOS_DX_BltFastWaitXY( DXBack, Rect( 275, 384, 353, 416 ) );
             pTempItems( GroundOrderList.Items[ j ] ).InvX := 999;
             pTempItems( GroundOrderList.Items[ j ] ).InvY := 999;
             j := j + 1;
@@ -729,8 +655,7 @@ begin
           end
           else
           begin
-            pr := Rect( 275, 384, 353, 416 );
-            lpDDSBack.BltFast( 275, 384, DXBack, @pr, DDBLTFAST_WAIT ); //clean the box
+            SoAOS_DX_BltFastWaitXY( DXBack, Rect( 275, 384, 353, 416 ) );
             if GroundOrderList.Count > 1 then
             begin //get the next item on the ground and show it
               j := TopGroundIndex; //GroundOrderList.IndexOf(ItemList.Items[CurrentSelectedItem]);
@@ -745,7 +670,6 @@ begin
               pTemp := Pointer( GroundOrderList.Items[ j ] ); //save the pointer to the new topmost item so we can do the delete and still track it
               GroundOrderList.Delete( TopGroundIndex ); //GroundOrderList.IndexOf(ItemList.Items[CurrentSelectedItem])); //remove this item from the GroundList pointer list
               TopGroundIndex := GroundOrderList.IndexOf( pTempItems( pTemp ) );
-              //TopGroundIndex:=GroundOrderList.IndexOf(GroundOrderList.items[j]);
             end
             else
             begin
@@ -786,7 +710,6 @@ begin
             begin
               DlgScroll.OpenStatsScroll( pTempItems( ItemList.Items[ i ] ).pItem );
             end
-//          else if (X > 250) and Locked then begin
             else if ( X > 250 ) and Locked then
             begin
               //dont let players pick up item from the body of an NPC
@@ -887,8 +810,7 @@ begin
           TopGroundIndex := 0;
         end;
 
-        pr := Rect( 276, 386, 353, 416 );
-        lpDDSBack.BltFast( 276, 386, DXBack, @pr, DDBLTFAST_WAIT ); //clean out the Ground box
+        SoAOS_DX_BltFastWaitXY( DXBack, Rect( 276, 386, 353, 416 ) ); //clean out the Ground box
         pTempItems( ItemList.Items[ CurrentSelectedItem ] ).InvX := 277; //315-pTempItems(ItemList.Items[CurrentSelectedItem]).IW div 2;
         pTempItems( ItemList.Items[ CurrentSelectedItem ] ).InvY := 386; //401-pTempItems(ItemList.Items[CurrentSelectedItem]).IH div 2;
         pTempItems( ItemList.Items[ CurrentSelectedItem ] ).BodySlot := -1;
@@ -1076,10 +998,7 @@ begin
     if Loaded then
     begin
       WriteTheInventoryData;
-      lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );  // 1920, 1080
-      lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-      MouseCursor.PlotDirty := false;
+      SoAOS_DX_BltFront;
     end;
   except
     on E : Exception do
@@ -1125,10 +1044,8 @@ begin
       DrawSub( lpDDSBack, rect( Tx, Ty, Tx + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, Ty + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ), Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ), pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXShadow, True, ShadowAlpha );
       pr := Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H );
       lpDDSBack.BltFast( Tx, Ty, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-      lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-      lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-      MouseCursor.PlotDirty := false;
+
+      SoAOS_DX_BltFront;
     end
     else if Assigned( DXBack ) and ( DlgScroll.ScrollIsShowing = False ) then
     begin //do the rollover
@@ -1189,12 +1106,9 @@ begin
         end;
       end; //endif
     //Clean up arrows and back to game
-      pr := Rect( 261, 394, 261 + 14, 394 + 15 );
-      lpDDSBack.BltFast( 261, 394, DXBack, @pr, DDBLTFAST_WAIT );
-      pr := Rect( 354, 396, 354 + 11, 396 + 11 );
-      lpDDSBack.BltFast( 354, 396, DXBack, @pr, DDBLTFAST_WAIT );
-      pr := Rect( 595, 416, 595 + 74, 416 + 46 );
-      lpDDSBack.BltFast( 595, 416, DXBack, @pr, DDBLTFAST_WAIT );
+      SoAOS_DX_BltFastWaitXY( DXBack, Rect( 261, 394, 261 + 14, 394 + 15 ) );
+      SoAOS_DX_BltFastWaitXY( DXBack, Rect( 354, 396, 354 + 11, 396 + 11 ) );
+      SoAOS_DX_BltFastWaitXY( DXBack, Rect( 595, 416, 595 + 74, 416 + 46 ) );
       if CurrentSelectedItem = -1 then
       begin //If we arent over an item then check arrows and back button
         if PtinRect( rect( 259, 385, 277, 418 ), point( X, Y ) ) then
@@ -1234,10 +1148,8 @@ begin
         end;
       end; //endif CurrentSelectedItem
       CurrentSelectedItem := -1; //deassign it
-      lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-      lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-      MouseCursor.PlotDirty := false;
+
+      SoAOS_DX_BltFront;
     end;
   except
     on E : Exception do
@@ -1312,10 +1224,7 @@ begin
       end; //endif
     end;
 
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -1723,7 +1632,7 @@ begin
     WriteTheInventoryData;
     ExText.Close;
 {$IFNDEF DirectX}
-    BMBack.Free;
+//    BMBack.Free;
 {$ENDIF}
 {$IFDEF DirectX}
     Locked := false;

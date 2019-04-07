@@ -21,6 +21,7 @@ const
   cTalkYellowColor = TColors.Yellow;
   cTalkBlackColor  = TColors.Black; // Clear text
   cTalkBlueColor   = TColors.Blue;  // Undead
+  cBlackBackground = TColors.Black;
 
 type
 //  class function AppPath: string; static;

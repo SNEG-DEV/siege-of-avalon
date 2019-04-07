@@ -71,7 +71,6 @@ uses
   System.SysUtils,
   System.Types,
   System.Classes,
-  Vcl.Graphics,
   Vcl.Controls,
   Vcl.ExtCtrls,
   Character,
@@ -114,7 +113,6 @@ type
     NumberOfMerchantItems : integer;
     NumberOfPlayerItems : integer;
     //Bitmap stuff
-    BMBack : TBitmap; //The inventory screen bitmap used for loading
     ItemList : TList; //the list of items
     pInventoryItem : pTempItems; //The temporary inventory and equipment items combined
     CurrentSelectedItem : Integer; //Current Item being dragged about
@@ -178,6 +176,7 @@ implementation
 
 uses
   SoAOS.Types,
+  SoAOS.Graphics.Draw,
   AniDemo;
 
 { TMerchant }
@@ -228,7 +227,7 @@ end;
 
 procedure TMerchant.Init;
 var
-  i : Integer;
+  i, width, height : Integer;
   DXBorder : IDirectDrawSurface;
   t : TSlot;
   pr : TRect;
@@ -262,82 +261,61 @@ begin
     CurrentSelectedItem := -1; //We aren't dragging anything
     DlgScroll.ScrollIsShowing := False; //stats screen isnt showing
     Alpha := 220; //alpha value for all alphabet plots
-    BMBack := TBitmap.Create;
 
   //We have to do this part up here in order to get coordinated from buildgrid
-    BMBack.LoadFromFile( InterfacePath + 'merGroundBox.bmp' );
-    DXGroundBox := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    BMBack.LoadFromFile( InterfacePath + 'invRightArrow.bmp' );
-    DXRightArrow := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    BMBack.LoadFromFile( InterfacePath + 'invLeftArrow.bmp' );
-    DXLeftArrow := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    BMBack.LoadFromFile( InterfacePath + 'obInvBackToGame.bmp' );
-    DXBackToGame := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    BMBack.LoadFromFile( InterfacePath + 'merBackHighlight.bmp' );
-    DXBackHighlight := DDGetImage( lpDD, BMBack, cInvisColor, False );
+    DXGroundBox := SoAOS_DX_LoadBMP( InterfacePath + 'merGroundBox.bmp', cInvisColor );
+    DXRightArrow := SoAOS_DX_LoadBMP( InterfacePath + 'invRightArrow.bmp', cInvisColor );
+    DXLeftArrow := SoAOS_DX_LoadBMP( InterfacePath + 'invLeftArrow.bmp', cInvisColor );
+    DXBackToGame := SoAOS_DX_LoadBMP( InterfacePath + 'obInvBackToGame.bmp', cInvisColor );
+    DXBackHighlight := SoAOS_DX_LoadBMP( InterfacePath + 'merBackHighlight.bmp', cInvisColor );
 {  BMBack.LoadFromFile(InterfacePath + 'merBuyItem.bmp');
   DXBuyItem := DDGetImage(lpDD, BMBack, InvisColor, False);
   BMBack.LoadFromFile(InterfacePath + 'merSellItem.bmp');
   DXSellItem := DDGetImage(lpDD, BMBack, InvisColor, False);   }
-    DXBuyItem := DDGetSurface( lpDD, 192, 24, clBlack, false );
-    DXSellItem := DDGetSurface( lpDD, 192, 24, clBlack, false );
+    DXBuyItem := DDGetSurface( lpDD, 192, 24, cBlackBackground, false );
+    DXSellItem := DDGetSurface( lpDD, 192, 24, cBlackBackground, false );
 
   //Arrows Left up, right up, left down, right down, then darks
-    BMBack.LoadFromFile( InterfacePath + 'meruparrowL.bmp' );
-    ScrollArrows[ 0 ].DX := DDGetImage( lpDD, BMBack, cInvisColor, False );
+    ScrollArrows[ 0 ].DX := SoAOS_DX_LoadBMP( InterfacePath + 'meruparrowL.bmp', cInvisColor );
     ScrollArrows[ 0 ].X := 45 - 23;
     ScrollArrows[ 0 ].Y := 37;
-    BMBack.LoadFromFile( InterfacePath + 'meruparrowR.bmp' );
-    ScrollArrows[ 1 ].DX := DDGetImage( lpDD, BMBack, cInvisColor, False );
+    ScrollArrows[ 1 ].DX := SoAOS_DX_LoadBMP( InterfacePath + 'meruparrowL.bmp', cInvisColor );
     ScrollArrows[ 1 ].X := 298;
     ScrollArrows[ 1 ].Y := 37;
-    BMBack.LoadFromFile( InterfacePath + 'merdownarrowL.bmp' );
-    ScrollArrows[ 2 ].DX := DDGetImage( lpDD, BMBack, cInvisColor, False );
+    ScrollArrows[ 2 ].DX := SoAOS_DX_LoadBMP( InterfacePath + 'merdownarrowL.bmp', cInvisColor );
     ScrollArrows[ 2 ].X := 45 - 23;
     ScrollArrows[ 2 ].Y := 353 - 32;
-    BMBack.LoadFromFile( InterfacePath + 'merdownarrowR.bmp' );
-    ScrollArrows[ 3 ].DX := DDGetImage( lpDD, BMBack, cInvisColor, False );
+    ScrollArrows[ 3 ].DX := SoAOS_DX_LoadBMP( InterfacePath + 'merdownarrowR.bmp', cInvisColor );
     ScrollArrows[ 3 ].X := 298;
     ScrollArrows[ 3 ].Y := 353 - 32;
-    BMBack.LoadFromFile( InterfacePath + 'meruparrowLD.bmp' );
-    ScrollArrows[ 4 ].DX := DDGetImage( lpDD, BMBack, cInvisColor, False );
+    ScrollArrows[ 4 ].DX := SoAOS_DX_LoadBMP( InterfacePath + 'meruparrowLD.bmp', cInvisColor );
     ScrollArrows[ 4 ].X := ScrollArrows[ 0 ].X;
     ScrollArrows[ 4 ].Y := ScrollArrows[ 0 ].Y;
-    BMBack.LoadFromFile( InterfacePath + 'meruparrowRD.bmp' );
-    ScrollArrows[ 5 ].DX := DDGetImage( lpDD, BMBack, cInvisColor, False );
+    ScrollArrows[ 5 ].DX := SoAOS_DX_LoadBMP( InterfacePath + 'meruparrowRD.bmp', cInvisColor );
     ScrollArrows[ 5 ].X := ScrollArrows[ 1 ].X;
     ScrollArrows[ 5 ].Y := ScrollArrows[ 1 ].Y;
-    BMBack.LoadFromFile( InterfacePath + 'merdownarrowLD.bmp' );
-    ScrollArrows[ 6 ].DX := DDGetImage( lpDD, BMBack, cInvisColor, False );
+    ScrollArrows[ 6 ].DX := SoAOS_DX_LoadBMP( InterfacePath + 'merdownarrowLD.bmp', cInvisColor );
     ScrollArrows[ 6 ].X := ScrollArrows[ 2 ].X;
     ScrollArrows[ 6 ].Y := ScrollArrows[ 2 ].Y;
-    BMBack.LoadFromFile( InterfacePath + 'merdownarrowRD.bmp' );
-    ScrollArrows[ 7 ].DX := DDGetImage( lpDD, BMBack, cInvisColor, False );
+    ScrollArrows[ 7 ].DX := SoAOS_DX_LoadBMP( InterfacePath + 'merdownarrowRD.bmp', cInvisColor );
     ScrollArrows[ 7 ].X := ScrollArrows[ 3 ].X;
     ScrollArrows[ 7 ].Y := ScrollArrows[ 3 ].Y;
  //end of arrows
 
-
-    BMBack.LoadFromFile( InterfacePath + 'Merchant.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, cInvisColor, False );
-  //DxDirty := DDGetImage(lpDD, BMBack, InvisColor, False); //for now this is how we will do it
+    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'Merchant.bmp', cInvisColor, width, height );
     DXDirty := DDGetSurface( lpDD, GroundListWidth, GroundListHeight, cInvisColor, true );
   //build the left side inventory space
     BuildGrid;
   //now we blit the screen to the backbuffer
-    pr := Rect( 0, 0, BMBack.width, BMBack.Height );
+    pr := Rect( 0, 0, width, height );
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   //Now for the Alpha'ed edges
-    BMBack.LoadFromFile( InterfacePath + 'obInvRightShadow.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    DrawSub( lpDDSBack, Rect( 659, 0, 659 + BMBack.Width, BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, Alpha );
-
+    DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'obInvRightShadow.bmp', cInvisColor, width, height );
+    DrawSub( lpDDSBack, Rect( 659, 0, 659 + width, height ), Rect( 0, 0, width, height ), DXBorder, True, Alpha );
     DXBorder := nil;
 
-    BMBack.LoadFromFile( InterfacePath + 'obInvBottomShadow.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    DrawSub( lpDDSBack, Rect( 0, 456, BMBack.Width, 456 + BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, Alpha );
-
+    DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'obInvBottomShadow.bmp', cInvisColor, width, height );
+    DrawSub( lpDDSBack, Rect( 0, 456, width, 456 + height ), Rect( 0, 0, width, height ), DXBorder, True, Alpha );
     DXBorder := nil; //release DXBorder
 
   //Now put the names up
@@ -427,8 +405,6 @@ begin
 
 
 {$IFDEF DirectX}
-  //release the bitmap
-    BMBack.Free;
   //Now plot all of the items on the grid
     for i := 0 to ItemList.Count - 1 do
     begin
@@ -444,7 +420,6 @@ begin
     ShowLeftList;
     ShowRightList;
 
-
     ScrollStateLeft := 0;
     ScrollStateRight := 0;
     Timer := TTimer.create( nil );
@@ -453,10 +428,7 @@ begin
     Timer.enabled := True;
 
   //Whew! Now we flip it all to the screen
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
 {$ENDIF}
   except
     on E : Exception do
@@ -468,7 +440,6 @@ procedure TMerchant.MouseDown( Sender : TAniview; Button : TMouseButton;
   Shift : TShiftState; X, Y, GridX, GridY : integer );
 var
   i, j : integer;
-  //B1, B2, B3, B4, B5: Boolean;
   pTemp : Pointer;
   rRect : TRect;
   daPrice : longint;
@@ -828,10 +799,7 @@ begin
 
     end; //endif
 
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -875,10 +843,7 @@ begin
     //plot the item centered under the mouse pointer
       pr := Rect( 0, 0, GroundListWidth, GroundListHeight );
       lpDDSBack.BltFast( Tx, Ty, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXSurfaceIcon, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-      lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );  // 1920, 1080
-      lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-      MouseCursor.PlotDirty := false;
+      SoAOS_DX_BltFront;
     end
     else if Assigned( DXBack ) and ( DlgScroll.ScrollIsShowing = False ) then
     begin //do the rollover
@@ -1064,10 +1029,7 @@ begin
       end; //endif CurrentSelectedItem
 
       CurrentSelectedItem := -1; //deassign it
-      lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-      lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-      MouseCursor.PlotDirty := false;
+      SoAOS_DX_BltFront;
     end;
 
   except
@@ -1126,10 +1088,7 @@ begin
     pText.PlotTextCentered( txtMessage[ 1 ], 46, 298, 362, BuySellAlpha );
     pText.PlotTextCentered( txtMessage[ 2 ], 355, 607, 362, BuySellAlpha );
 
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -1398,13 +1357,10 @@ begin
   end;
 end; //TMerchant.ContainCursor
 
-
 procedure TMerchant.BuildGrid;
 var
   i, j : integer;
-  //StartX,StartY: integer;
   DXGrid : IDirectDrawSurface; //DD surface holding our chunk O' grid to draw right grid with
-  BM : TBitmap;
   pr : TRect;
 const
   FailName : string = 'TMerchant.BuildGrid';
@@ -1415,19 +1371,14 @@ begin
 {$ENDIF}
   try
   //Load the grid graphic, and draw the left inventory area before we blit the screen to the backbuffer
-    BM := TBitmap.create;
-    BM.LoadFromFile( InterfacePath + 'merGrid.bmp' );
-    DXGrid := DDGetImage( lpDD, BM, cInvisColor, False );
-    BM.free;
+    DXGrid := SoAOS_DX_LoadBMP( InterfacePath + 'merGrid.bmp', cInvisColor );
 
   //if OtherOb is TCharacter then begin
     for j := 0 to 8 do
     begin
       for i := 0 to 6 do
       begin
-           //DXBack.BltFast((607-36)-i*36,(352-35)-j*35,DXGrid,rect(0,0,38,37),DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
         DrawAlpha( DXBack, rect( ( 607 - 36 ) - i * 36, ( 352 - 35 ) - j * 35, ( 607 - 36 ) - i * 36 + 38, ( 352 - 35 ) - j * 35 + 37 ), rect( 0, 0, 38, 37 ), DXGrid, True, 160 );
-           //DXBack.BltFast((297-36)-i*36,(352-35)-j*35,DXGrid,rect(0,0,38,37),DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
         DrawAlpha( DXBack, rect( ( 297 - 36 ) - i * 36, ( 352 - 35 ) - j * 35, ( 297 - 36 ) - i * 36 + 38, ( 352 - 35 ) - j * 35 + 37 ), rect( 0, 0, 38, 37 ), DXGrid, True, 160 );
       end;
     end;
@@ -1767,10 +1718,7 @@ begin
           pText.PlotTinyTextBlock( ( txtMessage[ 6 ] ), ClearLeft, ClearRight, SmlMsg, Alpha )
         else
           pText.PlotText( ( txtMessage[ 6 ] ), ClearLeft, LrgMsg, Alpha );
-        lpDDSFront.Flip( nil, DDFLIP_WAIT );
-        pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-        lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-        MouseCursor.PlotDirty := false;
+        SoAOS_DX_BltFront;
         break;
       end;
       i := i + 1;
@@ -1828,10 +1776,7 @@ begin
         else
           pText.PlotText( ( txtMessage[ 11 ] ), ClearLeft, LrgMsg, Alpha );
 
-        lpDDSFront.Flip( nil, DDFLIP_WAIT );
-        pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-        lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-        MouseCursor.PlotDirty := false;
+        SoAOS_DX_BltFront;
         break;
       end;
       i := i + 1;

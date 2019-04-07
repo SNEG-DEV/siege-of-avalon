@@ -69,7 +69,6 @@ uses
   Vcl.Forms,
   System.Classes,
   System.Types,
-  Vcl.Graphics,
   System.SysUtils,
   Character,
   GameText;
@@ -78,9 +77,9 @@ type
   TScroll = class( TObject )
   private
     DescList : TStringList;
-    DxSheet : IDirectDrawSurface; //Surface used for statistics
-    DxFrame : IDirectDrawSurface; //Nifty roller thing for statistics
-    DxDirty : IDirectDrawSurface;
+    DXSheet : IDirectDrawSurface; //Surface used for statistics
+    DXFrame : IDirectDrawSurface; //Nifty roller thing for statistics
+    DXDirty : IDirectDrawSurface;
     ScrollFactor : integer; //How far we've scrolled
     StatsScrollItem : TItem; //Index for scroll item
     MaxScroll : integer; //max Scroll YCoord
@@ -97,10 +96,11 @@ type
     destructor Destroy; override;
   end;
 
-
 implementation
+
 uses
   SoAOS.Types,
+  SoAOS.Graphics.Draw,
   AniDemo,
   Anigrp30,
   Engine,
@@ -109,7 +109,6 @@ uses
 
 constructor TScroll.Create;
 var
-  BM : TBitmap;
   i : integer;
 const
   FailName : string = 'TCharacter.create';
@@ -120,14 +119,9 @@ begin
 {$ENDIF}
   try
     inherited;
-    BM := TBitmap.create;
-    BM.LoadFromFile( InterfacePath + 'ScrollFrame.bmp' );
-    DXDirty := DDGetImage( lpDD, BM, cInvisColor, False );
-    BM.LoadFromFile( InterfacePath + 'ScrollFrame.bmp' );
-    DXFrame := DDGetImage( lpDD, BM, cInvisColor, False );
-    BM.LoadFromFile( InterfacePath + 'ScrollPage.bmp' );
-    DXSheet := DDGetImage( lpDD, BM, cInvisColor, False );
-    BM.Free;
+    DXDirty := SoAOS_DX_LoadBMP( InterfacePath + 'ScrollFrame.bmp', cInvisColor );
+    DXFrame := SoAOS_DX_LoadBMP( InterfacePath + 'ScrollFrame.bmp', cInvisColor );
+    DXSheet := SoAOS_DX_LoadBMP( InterfacePath + 'ScrollPage.bmp', cInvisColor );
     DescList := TStringlist.create;
     ExText.Open( 'Scroll' );
     for i := 0 to 34 do
@@ -168,7 +162,6 @@ var
   Yadj : integer;
   ScrollStartValue : integer; //top of scroll
   ScrollEndValue : integer; //bottom of scroll
-  //myPoint: Tpoint;
   pr : TRect;
 const
   FailName : string = 'TScroll.ShowStatsScroll';

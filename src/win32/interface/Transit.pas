@@ -165,6 +165,8 @@ type
 implementation
 
 uses
+  SoAOS.Types,
+  SoAOS.Graphics.Draw,
   AniDemo,
   System.SysUtils,
   Gametext,
@@ -182,9 +184,7 @@ procedure TTransit.Init;
 const
   FailName : string = 'TTransit.Init';
 var
-  BM : TBitmap;
   NewHotspot : THotspot;
-  pr : TRect;
 begin
 {$IFDEF DODEBUG}
   if ( CurrDbgLvl >= DbgLvlSevere ) then
@@ -311,24 +311,17 @@ begin
 
     DirtyRect := rect( 440, 545, 440 + 150, 545 + 30 );
 
-    BM := TBitmap.create;
-    try
-      BM.LoadFromFile( InterfacePath + 'MapBack.bmp' );
-      DXBack := DDGetSurface( lpDD, DirtyRect.Right - DirtyRect.Left, DirtyRect.Bottom - DirtyRect.Top, clAqua, false );
-      DXDirty := DDGetSurface( lpDD, DirtyRect.Right - DirtyRect.Left, DirtyRect.Bottom - DirtyRect.Top, clAqua, false );
+    DXBack := DDGetSurface( lpDD, DirtyRect.Right - DirtyRect.Left, DirtyRect.Bottom - DirtyRect.Top, clAqua, false );
+    DXDirty := DDGetSurface( lpDD, DirtyRect.Right - DirtyRect.Left, DirtyRect.Bottom - DirtyRect.Top, clAqua, false );
 
-      BM.LoadFromFile( InterfacePath + 'TransitDefault.bmp' );
-      Background := DDGetImage( lpDD, BM, clAqua, true );
-      try
-        if assigned( Background ) then
-        begin
-          DXBack.BltFast( 0, 0, Background, @DirtyRect, DDBLTFAST_WAIT );
-          DXDirty.BltFast( 0, 0, Background, @DirtyRect, DDBLTFAST_WAIT );
-        end;
-      except
+    Background := SoAOS_DX_LoadBMP( InterfacePath + 'TransitDefault.bmp', cInvisColor );
+    try
+      if assigned( Background ) then
+      begin
+        DXBack.BltFast( 0, 0, Background, @DirtyRect, DDBLTFAST_WAIT );
+        DXDirty.BltFast( 0, 0, Background, @DirtyRect, DDBLTFAST_WAIT );
       end;
-    finally
-      BM.free;
+    except
     end;
 
     pText.LoadDarkFontGraphic( 'inventory' );
@@ -337,8 +330,7 @@ begin
 
     Paint;
     MouseCursor.Cleanup;
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
+    SoAOS_DX_BltFastWaitXY( lpDDSFront, Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight ) );
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -375,7 +367,6 @@ const
 var
   LastSelected : THotspot;
   i : integer;
-  pr : TRect;
 begin
 {$IFDEF DODEBUG}
   if ( CurrDbgLvl >= DbgLvlSevere ) then
@@ -419,8 +410,7 @@ begin
               end;
               Paint;
               MouseCursor.Cleanup;
-              pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-              lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
+              SoAOS_DX_BltFastWaitXY( lpDDSFront, Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight ) );
               Timer.tag := 0;
               Timer.enabled := true;
             end
@@ -447,10 +437,7 @@ begin
         ResultMapName := DefaultTransit.MapResult;
         DefaultTransit.ShowInRed;
         MouseCursor.Cleanup;
-        lpDDSFront.Flip( nil, DDFLIP_WAIT );
-        pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-        lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-        MouseCursor.PlotDirty := false;
+        SoAOS_DX_BltFront;
         Locked := true;
         Timer.enabled := false;
         Timer.Interval := 500;
@@ -471,10 +458,7 @@ begin
               ResultMapName := TTransitPoint( Selected.Dest.items[ i ] ).MapResult;
               TTransitPoint( Selected.Dest.items[ i ] ).ShowInRed;
               MouseCursor.Cleanup;
-              lpDDSFront.Flip( nil, DDFLIP_WAIT );
-              pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-              lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-              MouseCursor.PlotDirty := false;
+              SoAOS_DX_BltFront;
               Locked := true;
               Timer.enabled := false;
               Timer.Interval := 500;
@@ -514,8 +498,7 @@ begin
       begin
       //lpDDSFront.Flip(nil, DDFLIP_WAIT);
         MouseCursor.Cleanup;
-        pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-        lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
+        SoAOS_DX_BltFastWaitXY( lpDDSFront, Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight ) );
         if assigned( DXBack ) then
         begin
           pr := Rect( 0, 0, DirtyRect.Right - DirtyRect.Left, DirtYrect.Bottom - DirtyRect.Top );
@@ -532,8 +515,7 @@ begin
       begin
      //clean up
         MouseCursor.Cleanup;
-        pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-        lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
+        SoAOS_DX_BltFastWaitXY( lpDDSFront, Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight ) );
         if assigned( DXDirty ) then
         begin
           pr := Rect( 0, 0, DirtyRect.Right - DirtyRect.Left, DirtYrect.Bottom - DirtyRect.Top );
@@ -912,19 +894,13 @@ end;
 
 procedure THotspot.SetGrayImage( const Value : string );
 var
-  BM : TBitmap;
+  width, height : Integer;
 begin
   if Value = '' then
     exit;
-  BM := TBitmap.create;
-  try
-    BM.LoadFromFile( InterfacePath + Value );
-    Region.Right := Region.Left + BM.width;
-    Region.Top := Region.Bottom - BM.height;
-    FGrayImage := DDGetImage( lpDD, BM, clAqua, false );
-  finally
-    BM.free;
-  end;
+  FGrayImage := SoAOS_DX_LoadBMP( InterfacePath + Value, cInvisColor, width, height );
+  Region.Right := Region.Left + width;
+  Region.Top := Region.Bottom - height;
 end;
 
 procedure THotspot.Setpos( X, Y : integer );
@@ -937,19 +913,13 @@ end;
 
 procedure THotspot.SetRedImage( const Value : string );
 var
-  BM : TBitmap;
+  width, height : Integer;
 begin
   if Value = '' then
     exit;
-  BM := TBitmap.create;
-  try
-    BM.LoadFromFile( InterfacePath + Value );
-    Region.Right := Region.Left + BM.width;
-    Region.Top := Region.Bottom - BM.height;
-    FRedImage := DDGetImage( lpDD, BM, clAqua, false );
-  finally
-    BM.free;
-  end;
+  FRedImage := SoAOS_DX_LoadBMP( InterfacePath + Value, cInvisColor, width, height );
+  Region.Right := Region.Left + width;
+  Region.Top := Region.Bottom - height;
 end;
 
 { TTransitPoint }
@@ -967,19 +937,13 @@ end;
 
 procedure TTransitPoint.SetImage( const Value : string );
 var
-  BM : TBitmap;
+  width, height : Integer;
 begin
   if Value = '' then
     exit;
-  BM := TBitmap.create;
-  try
-    BM.LoadFromFile( InterfacePath + Value );
-    Region.Right := Region.Left + BM.width;
-    Region.Bottom := Region.Top + BM.height;
-    FImage := DDGetImage( lpDD, BM, clAqua, false );
-  finally
-    BM.free;
-  end;
+  FImage := SoAOS_DX_LoadBMP( InterfacePath + Value, cInvisColor, width, height );
+  Region.Right := Region.Left + width;
+  Region.Bottom := Region.Top + height;
 end;
 
 procedure TTransitPoint.SetIndex( const Value : integer );

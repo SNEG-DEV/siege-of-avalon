@@ -69,7 +69,6 @@ uses
 {$ENDIF}
   System.Classes,
   System.Types,
-  Vcl.Graphics,
   System.SysUtils,
   Anigrp30,
   Logfile;
@@ -94,7 +93,8 @@ type
 implementation
 
 uses
-  SoAOS.Types;
+  SoAOS.Types,
+  SoAOS.Graphics.Draw;
 
 { TLoaderBox }
 
@@ -134,9 +134,8 @@ end;
 
 procedure TLoaderBox.Init;
 var
-  BMBack : TBitmap;
   BltFx : TDDBLTFX;
-  i : integer;
+  i, width, height : integer;
   pr : TRect;
 const
   FailName : string = 'TLoaderBox.init';
@@ -151,17 +150,10 @@ begin
 
     OldValue := 0;
 
-    BMBack := TBitmap.create;
-
-  //BMBack.LoadFromFile(InterfacePath+'LoaderBox.bmp');
-    BMBack.LoadFromFile( FileName );
-    DXBox := DDGetImage( lpDD, BMBack, cInvisColor, False );
-  //lpDDSBack.BltFast(250, 169, DXBox, Rect(0, 0, BMBack.width, BMBack.Height), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
-  //Draw beveling
+    DXBox := SoAOS_DX_LoadBMP( FileName, cInvisColor, width, height );
     BltFx.dwSize := SizeOf( BltFx );
     BltFx.dwFillColor := DDColorMatch( DXBox, cLoadColor ); // RGB( 205, 205, 205 )
-  //DXBox.Blt(rect(50+i-5,500+i-5,750,500+i+1-5),nil,rect(50+i-5,500+i-5,750,500+i+1-5),DDBLT_COLORFILL + DDBLT_WAIT, BltFx);
-    pr := Rect( 0, 0, BMBack.width, BMBack.Height );
+    pr := Rect( 0, 0, width, height );
     lpDDSBack.BltFast( 0, 0, DXBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
  { for i:=0 to 9 do begin
      DrawSub(lpDDSBack,rect(50+i-5,500+i-5,750,500+i+1-5),rect(50+i-5,500+i-5,750,500+i+1-5),DXBox,False,150-i*10);
@@ -169,17 +161,13 @@ begin
      lpDDSBack.Blt(rect(59-i-5,550+i-5,750,550+i+1-5),nil,rect(59-i-5,550+i-5,750,550+i+1-5),DDBLT_COLORFILL + DDBLT_WAIT, BltFx);
      DrawAlpha(lpDDSBack,rect(59-i-5,550+i-5,750,550+i+1-5),rect(59-i-5,550+i-5,750,550+i+1-5),DXBox,False,200-i*10);
   end; }
-  //DrawSub(lpDDSBack,rect(50,500,750,501),rect(50,500,750,501),DXBox,False,100);
-  //DrawSub(lpDDSBack,rect(50,500,750,550),rect(50,500,750,550),DXBox,False,100);
     for i := 0 to 25 do
     begin
       DrawSub( lpDDSBack, rect( 55, 505 + i, 745, 505 + i + 1 ), rect( 55, 505 + i, 745, 505 + i + 1 ), DXBox, False, 100 - i * 3 );
     end;
-    BMBack.free;
 
     lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );  //NO HD
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
+    SoAOS_DX_BltFastWaitXY( lpDDSFront, Rect( 0, 0, 800, 600 ) );  //NO HD
   except
     on E : Exception do
       Log.log( FailName + E.Message );

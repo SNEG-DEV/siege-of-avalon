@@ -67,7 +67,6 @@ uses
 {$ENDIF}
   System.Types,
   System.Classes,
-  Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
   Vcl.ExtCtrls,
@@ -97,7 +96,6 @@ type
     CaratCharPosition : integer; //position in Characters
     CaratVisible : boolean;
     //Bitmap stuff
-    BMBack : TBitmap; //The inventory screen bitmap used for loading
     DXBack : IDirectDrawSurface; //DD surface that holds the statistics screen before blit
     DXCircle : IDirectDrawSurface; //circle used for outline
     //DXRightArrow:  IDirectDrawSurface;
@@ -185,6 +183,7 @@ uses
   DXEffects,
 {$ENDIF}
   SoAOS.Types,
+  SoAOS.Graphics.Draw,
   Engine,
   Logfile,
   GameText,
@@ -232,7 +231,7 @@ end;
 
 procedure TCreation.Init;
 var
-  i : integer;
+  i, width, height : integer;
   pr : TRect;
 const
   FailName : string = 'TCreation.init';
@@ -282,39 +281,24 @@ begin
     LoadNames;
     CreateCollisionRects;
     LoadBaseValues;
-    BMBack := TBitmap.Create;
-  //BMTemp := TBitmap.Create;
 
   //Load the Background Bitmap and plot it
 
-    BMBack.LoadFromFile( InterfacePath + 'chaRedOval.bmp' );
-    DXCircle := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    BMBack.LoadFromFile( InterfacePath + 'chaBlack.bmp' );
-    DXBlack := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    BMBack.LoadFromFile( InterfacePath + 'chaChooseBox.bmp' );
-    DXBox := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    BMBack.LoadFromFile( InterfacePath + 'chaContinue.bmp' );
-    chaContinueRect.Right := BMBack.width;
-    chaContinueRect.Bottom := BMBack.height;
-    DXContinue := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    BMBack.LoadFromFile( InterfacePath + 'chaCancel.bmp' );
-    chaCancelRect.Right := BMBack.width;
-    chaCancelRect.Bottom := BMBack.height;
-    DXCancel := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    BMBack.LoadFromFile( InterfacePath + 'CharCreate.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, cInvisColor, False );
-
-    pr := Rect( 0, 0, BMBack.width, BMBack.Height );
+    DXCircle := SoAOS_DX_LoadBMP( InterfacePath + 'chaRedOval.bmp', cInvisColor );
+    DXBlack := SoAOS_DX_LoadBMP( InterfacePath + 'chaBlack.bmp', cInvisColor );
+    DXBox := SoAOS_DX_LoadBMP( InterfacePath + 'chaChooseBox.bmp', cInvisColor );
+    DXContinue := SoAOS_DX_LoadBMP( InterfacePath + 'chaContinue.bmp', cInvisColor, width, height );
+    chaContinueRect.Right := width;
+    chaContinueRect.Bottom := height;
+    DXCancel := SoAOS_DX_LoadBMP( InterfacePath + 'chaCancel.bmp', cInvisColor, width, height );
+    chaCancelRect.Right := width;
+    chaCancelRect.Bottom := height;
+    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'CharCreate.bmp', cInvisColor, width, height );
+    pr := Rect( 0, 0, width, height );
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
-
-  //release the bitmap
-    BMBack.Free;
     ShowStats;
     DrawTheGuy;
-  //Whew! Now we flip it all to the screen
-//  lpDDSFront.Flip(nil, DDFLIP_WAIT);
-//  lpDDSBack.BltFast(0, 0, lpDDSFront, Rect(0, 0, 800, 600), DDBLTFAST_WAIT);
 
   except
     on E : Exception do
@@ -362,7 +346,6 @@ var
   i : integer;
   BoxWasOpened : boolean;
   BoxClosed : boolean;
-  pr : TRect;
 const
   FailName : string = 'TCreation.MouseDown';
 begin
@@ -581,13 +564,10 @@ begin
       else if ( ptInRect( rect( 465, 59, 465 + 123, 59 + 181 ), point( x, y ) ) and ( Y > 59 + 141 ) ) or ( ptInRect( rect( 279, 239 + ( BoxOpen - 12 ) * 42, 279 + 123, 239 + ( BoxOpen - 12 ) * 42 + 181 ), point( x, y ) ) and ( Y > 239 + ( BoxOpen - 12 ) * 42 + 141 ) ) then
       begin
        //clean up any dimmed text
-        pr := Rect( 114, 237, 261, 439 );
-        lpDDSBack.BltFast( 114, 237, DXBack, @pr, DDBLTFAST_WAIT );
+        SoAOS_DX_BltFastWaitXY( DXBack, Rect( 114, 237, 261, 439 ) );
        //clean up after old boxes
-        pr := Rect( 279, 239, 402, 588 );
-        lpDDSBack.BltFast( 279, 239, DXBack, @pr, DDBLTFAST_WAIT );
-        pr := Rect( 465, 59, 465 + 123, 59 + 181 );
-        lpDDSBack.BltFast( 465, 59, DXBack, @pr, DDBLTFAST_WAIT );
+        SoAOS_DX_BltFastWaitXY( DXBack, Rect( 279, 239, 402, 588 ) );
+        SoAOS_DX_BltFastWaitXY( DXBack, Rect( 465, 59, 465 + 123, 59 + 181 ) );
         BoxOpen := -1;
         BoxClosed := true;
       end;
@@ -606,13 +586,10 @@ begin
       if ( BoxWasOpened = false ) and ( BoxOpen > -1 ) then
       begin //close the box -they clicked outside
        //clean up any dimmed text
-        pr := Rect( 114, 237, 261, 439 );
-        lpDDSBack.BltFast( 114, 237, DXBack, @pr, DDBLTFAST_WAIT );
+        SoAOS_DX_BltFastWaitXY( DXBack, Rect( 114, 237, 261, 439 ) );
        //clean up after old boxes
-        pr := Rect( 279, 239, 402, 588 );
-        lpDDSBack.BltFast( 279, 239, DXBack, @pr, DDBLTFAST_WAIT );
-        pr := Rect( 465, 59, 465 + 123, 59 + 181 );
-        lpDDSBack.BltFast( 465, 59, DXBack, @pr, DDBLTFAST_WAIT );
+        SoAOS_DX_BltFastWaitXY( DXBack, Rect( 279, 239, 402, 588 ) );
+        SoAOS_DX_BltFastWaitXY( DXBack, Rect( 465, 59, 465 + 123, 59 + 181 ) );
         BoxOpen := -1;
         BoxClosed := true;
       end; //endif
@@ -634,8 +611,7 @@ begin
         begin //Hasnt entered name- tell player to enter name or pick training
           if BoxOpen = 17 then
           begin
-            pr := Rect( 490, 239, 682, 430 );
-            lpDDSBack.BltFast( 490, 239, DXBack, @pr, DDBLTFAST_WAIT );
+            SoAOS_DX_BltFastWaitXY( DXBack, Rect( 490, 239, 682, 430 ) );
             if UseSmallFont then
             begin
               if ( ChosenTraining > -1 ) then
@@ -653,8 +629,7 @@ begin
           end
           else
           begin
-            pr := Rect( 490, 160, 682, 430 );
-            lpDDSBack.BltFast( 490, 160, DXBack, @pr, DDBLTFAST_WAIT );
+            SoAOS_DX_BltFastWaitXY( DXBack, Rect( 490, 160, 682, 430 ) );
             if UseSmallFont then
             begin
               if ( ChosenTraining > -1 ) then
@@ -901,10 +876,7 @@ begin
   //replot the entire screen statistics
     ShowStats;
     pText.PlotText( CharacterName, 310, 95, 240 );
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -1480,10 +1452,7 @@ begin
     pText.PlotText( CharacterName, 310, 95, 240 );
      //plot the Carat
     pText.PlotText( '|', CaratPosition + 310, 95, 240 );
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -1639,12 +1608,8 @@ begin
 
     end; //ednif
 
-
     BoxOpen := box;
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -1670,10 +1635,7 @@ begin
     SelectedHair := hair[ ( ixSelectedHair - 8 ) + 1, ( ixSelectedHairStyle - 12 ) + 1, ( ixSelectedBeard - 16 ) + 1 ];
     if assigned( OnDraw ) then
       OnDraw( self );
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName + E.Message );

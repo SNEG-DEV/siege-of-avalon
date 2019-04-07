@@ -70,7 +70,6 @@ uses
   System.SysUtils,
   System.Classes,
   System.Types,
-  Vcl.Graphics,
   Vcl.Controls,
   Character,
   GameText,
@@ -78,12 +77,11 @@ uses
   Anigrp30,
   Engine,
   Logfile;
-  
+
 type
   TAward = class( TDisplay )
   private
     //Bitmap stuff
-    BMBack : TBitmap; //The inventory screen bitmap used for loading
     DXBack : IDirectDrawSurface;
     DXBackToGame : IDirectDrawSurface; //Back To Game highlight
     DXLeftGeeble : IDirectDrawSurface;
@@ -113,6 +111,7 @@ implementation
 
 uses
   SoAOS.Types,
+  SoAOS.Graphics.Draw,
   AniDemo;
 
 { TAward }
@@ -154,7 +153,7 @@ end; //Destroy
 procedure TAward.Init;
 var
   DXBorder : IDirectDrawSurface;
-  i : integer;
+  i, width, height : integer;
   pr : TRect;
 const
   FailName : string = 'TAward.init';
@@ -174,7 +173,7 @@ begin
       txtMessage[ i ] := ExText.GetText( 'Message' + inttostr( i ) );
 
     MouseCursor.Cleanup;
-    BMBack := TBitmap.Create;
+
     PageNumber := 0;
 
   //Get the number of visible titles for this char
@@ -192,17 +191,10 @@ begin
 
     if TitleCount > 15 then
     begin
-      BMBack.LoadFromFile( InterfacePath + 'logPrevious.bmp' );
-      DXPrev := DDGetImage( lpDD, BMBack, cTransparent, False );
-
-      BMBack.LoadFromFile( InterfacePath + 'logPrevious2.bmp' );
-      DXPrev2 := DDGetImage( lpDD, BMBack, cTransparent, False );
-
-      BMBack.LoadFromFile( InterfacePath + 'logNext.bmp' );
-      DXNext := DDGetImage( lpDD, BMBack, cTransparent, False );
-
-      BMBack.LoadFromFile( InterfacePath + 'logNext2.bmp' );
-      DXNext2 := DDGetImage( lpDD, BMBack, cTransparent, False );
+      DXPrev := SoAOS_DX_LoadBMP( InterfacePath + 'logPrevious.bmp', cTransparent );
+      DXPrev2 := SoAOS_DX_LoadBMP( InterfacePath + 'logPrevious2.bmp', cTransparent );
+      DXNext := SoAOS_DX_LoadBMP( InterfacePath + 'logNext.bmp', cTransparent );
+      DXNext2 := SoAOS_DX_LoadBMP( InterfacePath + 'logNext2.bmp', cTransparent );
     end;
     pr := Rect( 0, 0, ResWidth, ResHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
@@ -211,37 +203,23 @@ begin
     pText.LoadFontGraphic( 'statistics' ); //load the inventory font graphic in
     pText.LoadTinyFontGraphic;
 
-    BMBack.LoadFromFile( InterfacePath + 'obInvBackToGame.bmp' );
-    DXBackToGame := DDGetImage( lpDD, BMBack, cInvisColor, False );
-
-    BMBack.LoadFromFile( InterfacePath + 'LogLeftGeeble.bmp' );
-    DXLeftGeeble := DDGetImage( lpDD, BMBack, cTransparent, False );
-    BMBack.LoadFromFile( InterfacePath + 'LogRightGeeble.bmp' );
-    DXRightGeeble := DDGetImage( lpDD, BMBack, cTransparent, False );
-
-
-    BMBack.LoadFromFile( InterfacePath + 'LogScreen.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, cTransparent, False );
+    DXBackToGame := SoAOS_DX_LoadBMP( InterfacePath + 'obInvBackToGame.bmp', cInvisColor );
+    DXLeftGeeble := SoAOS_DX_LoadBMP( InterfacePath + 'LogLeftGeeble.bmp', cTransparent );
+    DXRightGeeble := SoAOS_DX_LoadBMP( InterfacePath + 'LogRightGeeble.bmp', cTransparent );
+    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'LogScreen.bmp', cTransparent, width, height );
 
     DrawAlpha( DXBack, Rect( 0, 380, 213, 380 + 81 ), Rect( 0, 0, 213, 81 ), DXLeftGeeble, True, 80 );
     DrawAlpha( DXBack, Rect( 452, 0, 452 + 213, 81 ), Rect( 0, 0, 213, 81 ), DXRightGeeble, True, 80 );
-    pr := Rect( 0, 0, BMBack.width, BMBack.Height );
+    pr := Rect( 0, 0, width, height );
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
   //Now for the Alpha'ed edges
-    BMBack.LoadFromFile( InterfacePath + 'obInvRightShadow.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    DrawSub( lpDDSBack, Rect( 659, 0, 659 + BMBack.Width, BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, 150 );
-
+    DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'obInvRightShadow.bmp', cInvisColor, width, height );
+    DrawSub( lpDDSBack, Rect( 659, 0, 659 + width, height ), Rect( 0, 0, width, height ), DXBorder, True, 150 );
     DXBorder := nil;
-
-    BMBack.LoadFromFile( InterfacePath + 'obInvBottomShadow.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    DrawSub( lpDDSBack, Rect( 0, 456, BMBack.Width, 456 + BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, 150 );
-
+    DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'obInvBottomShadow.bmp', cInvisColor, width, height );
+    DrawSub( lpDDSBack, Rect( 0, 456, width, 456 + height ), Rect( 0, 0, width, height ), DXBorder, True, 150 );
     DXBorder := nil; //release DXBorder
-
-    BMBack.Free;
 
     DXLeftGeeble := nil;
     DXRightGeeble := nil;
@@ -256,13 +234,9 @@ begin
       lpDDSBack.BltFast( 500, 424, DXNext, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     end;
 
-
     ShowText( PageNumber );
 
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, 800, 600 );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -357,10 +331,7 @@ begin
       lpDDSBack.BltFast( 588, 407, DXBackToGame, @pr, DDBLTFAST_WAIT );
     end;
 
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName + E.Message );

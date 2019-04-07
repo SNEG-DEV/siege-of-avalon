@@ -124,7 +124,8 @@ uses
   strFunctions in 'engine\strFunctions.pas',
   Transit in 'interface\Transit.pas',
   MMTimer in 'engine\MMTimer.pas',
-  SoAOS.Types in 'engine\SoAOS.Types.pas';
+  SoAOS.Types in 'engine\SoAOS.Types.pas',
+  SoAOS.Graphics.Draw in 'graphics\SoAOS.Graphics.Draw.pas';
 
 {$R *.RES}
 

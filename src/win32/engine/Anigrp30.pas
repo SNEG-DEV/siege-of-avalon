@@ -680,6 +680,7 @@ uses
 {$IFDEF DirectX}
   DXUtil,
 {$ENDIF}
+  SoAOS.Graphics.Draw,
   AniDemo,
   Character,
   LogFile;
@@ -7709,6 +7710,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
 
   procedure TAniView.SetAutoTransparentMask( const Value : TBitmap );
   begin
+  //TODO: Refactor
     if Assigned( Value ) then
     begin
 {$IFNDEF DirectX}
@@ -7718,7 +7720,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
 {$ENDIF}
 {$IFDEF DirectX}
       XRayImage := nil;
-      XRayImage := DDGetImage( lpDD, Value, clBlack, True );
+      XRayImage := SoAOS_DX_SurfaceFromBMP( Value, clBlack );
 {$ENDIF}
       XRayWidth := Value.width;
       XRayHeight := Value.Height;

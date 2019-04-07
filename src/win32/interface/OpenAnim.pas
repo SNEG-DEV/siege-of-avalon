@@ -70,7 +70,6 @@ uses
   System.SysUtils,
   System.Types,
   System.Classes,
-  Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
   Display,
@@ -85,7 +84,6 @@ type
     LoopCounter : integer;
     KeepOnPlaying : boolean;
     //Bitmap stuff
-    BMBack : TBitmap;
     DXBack : IDirectDrawSurface;
     DXSiege : IDirectDrawSurface;
     DXLogo : IDirectDrawSurface;
@@ -109,6 +107,7 @@ implementation
 
 uses
   SoAOS.Types,
+  SoAOS.Graphics.Draw,
   AniDemo;
 
 { TOpenAnim }
@@ -175,26 +174,15 @@ begin
     XAdj := 0;
     YAdj := -20;
 
-    BMBack := TBitmap.Create;
-    BMBack.LoadFromFile( InterfacePath + 'aniSiege.bmp' );
-    DXSiege := DDGetImage( lpDD, BMBack, cInvisColor, false );
-
-    BMBack.LoadFromFile( InterfacePath + 'aniDTIPresents.bmp' );
-    DXLogo := DDGetImage( lpDD, BMBack, cInvisColor, false );
-
-    BMBack.LoadFromFile( InterfacePath + 'aniBack.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, cInvisColor, true );
+    DXSiege := SoAOS_DX_LoadBMP( InterfacePath + 'aniSiege.bmp', cInvisColor );
+    DXLogo := SoAOS_DX_LoadBMP( InterfacePath + 'aniDTIPresents.bmp', cInvisColor );
+    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'aniBack.bmp', cInvisColor );
     pr := Rect( 0, 0, 800, 600 ); //NOHD
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_WAIT );
 
-    BMBack.Free;
-
   //DrawAlpha(lpDDSBack,rect(0,0,800,600),rect(0,0,25,25),DXSiege,false,255);
   //DrawSub(lpDDSBack,rect(0,0,800,600),rect(0,0,25,25),DXSiege,false,255);
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-
+    SoAOS_DX_BltFront;
     KeepOnPlaying := true;
     PlayAnim;
   except
@@ -330,8 +318,7 @@ begin
           application.ProcessMessages;
           lpDDSFront.Flip( nil, DDFLIP_WAIT );
           application.ProcessMessages;
-          pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-          lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
+          SoAOS_DX_BltFastWaitXY( lpDDSFront, Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight ) );
           application.ProcessMessages;
         end;
         if Alpha >= 254 then
@@ -374,8 +361,7 @@ begin
           Adj := Adj - Trunc( Adj );
           lpDDSFront.Flip( nil, DDFLIP_WAIT );
           application.ProcessMessages;
-          pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-          lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
+          SoAOS_DX_BltFastWaitXY( lpDDSFront, Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight ) );
           application.ProcessMessages;
         end;
         if Alpha <= 0 then
@@ -425,8 +411,7 @@ begin
           application.ProcessMessages;
           lpDDSFront.Flip( nil, DDFLIP_WAIT );
           application.ProcessMessages;
-          pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-          lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
+          SoAOS_DX_BltFastWaitXY( lpDDSFront, Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight ) );
           application.ProcessMessages;
         end;
         if TThread.GetTickCount - StartFinalCount > 9000 then

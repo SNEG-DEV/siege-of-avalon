@@ -65,10 +65,9 @@ uses
 {$IFDEF DirectX}
   DirectX,
 {$ENDIF}
-  Types,
-  Classes,
-  Graphics,
-  Controls,
+  System.Types,
+  System.Classes,
+  Vcl.Controls,
   Character,
   Display,
   Anigrp30;
@@ -82,7 +81,6 @@ type
 
   TStatistics = class( TDisplay )
   private
-    BMBack : TBitmap; //The inventory screen bitmap used for loading
     DXBack : IDirectDrawSurface; //DD surface that holds the statistics screen before blit
     DXRightArrow : IDirectDrawSurface;
     DXLeftArrow : IDirectDrawSurface;
@@ -130,12 +128,13 @@ implementation
 
 uses
   SoAOS.Types,
+  SoAOS.Graphics.Draw,
   AniDemo,
 {$IFDEF DirectX}
   DXUtil,
   DXEffects,
 {$ENDIF}
-  SysUtils,
+  System.SysUtils,
   GameText,
   Engine,
   Resource,
@@ -182,7 +181,7 @@ end;
 procedure TStatistics.Init;
 var
   DXBorder : IDirectDrawSurface;
-  i : integer;
+  i, width, height : integer;
   pr : TRect;
 const
   FailName : string = 'TStatistics.init';
@@ -209,57 +208,36 @@ begin
     LoadNames;
     CreateCollisionRects;
     LoadBaseValues;
-    BMBack := TBitmap.Create;
+
   //Load the Background Bitmap and plot it
 {$IFDEF DirectX}
-//  BMBack.LoadFromFile(DefaultPath + '\BaseInterface.bmp');
-//  DXBack := DDGetImage(lpDD, BMBack, InvisColor, False);
-//  lpDDSBack.BltFast(0,0,DXBack,rect(0,0,800,600),DDBLTFAST_WAIT);
-    BMBack.LoadFromFile( InterfacePath + 'staRightArrow.bmp' );
-    DXRightArrow := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    BMBack.LoadFromFile( InterfacePath + 'staLeftArrow.bmp' );
-    DXLeftArrow := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    BMBack.LoadFromFile( InterfacePath + 'staBackToGame.bmp' );
-    DXBackToGame := DDGetImage( lpDD, BMBack, cInvisColor, False );
-
-    BMBack.LoadFromFile( InterfacePath + 'Statistics.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, cInvisColor, False );
+    DXRightArrow := SoAOS_DX_LoadBMP( InterfacePath + 'staRightArrow.bmp', cInvisColor );
+    DXLeftArrow := SoAOS_DX_LoadBMP( InterfacePath + 'staLeftArrow.bmp', cInvisColor );
+    DXBackToGame := SoAOS_DX_LoadBMP( InterfacePath + 'staBackToGame.bmp', cInvisColor );
+    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'Statistics.bmp', cInvisColor, width, height );
   //Plot the arrows on the background
     for i := 0 to 15 do
     begin
       if i < 8 then
-        //DXBack.BltFast(ArrowRect[i].rect.left, ArrowRect[i].rect.top, DXLeftArrow, Rect(0, 0, 20, 15), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT) //plot the highlight
         DrawAlpha( DXBack, rect( ArrowRect[ i ].rect.left, ArrowRect[ i ].rect.top, ArrowRect[ i ].rect.left + 20, ArrowRect[ i ].rect.top + 15 ), rect( 0, 0, 20, 15 ), DXLeftArrow, True, 100 )
       else
         DrawAlpha( DXBack, rect( ArrowRect[ i ].rect.left - 4, ArrowRect[ i ].rect.top, ArrowRect[ i ].rect.left - 4 + 20, ArrowRect[ i ].rect.top + 15 ), rect( 0, 0, 20, 15 ), DXRightArrow, True, 100 );
-        //DXBack.BltFast(ArrowRect[i].rect.left-4, ArrowRect[i].rect.top, DXRightArrow, Rect(0, 0, 20, 15), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT); //plot the highlight
     end; //end for
 
-    pr := Rect( 0, 0, BMBack.width, BMBack.Height );
+    pr := Rect( 0, 0, width, height );
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   //Now for the Alpha'ed edges
-    BMBack.LoadFromFile( InterfacePath + 'staRightshad.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    DrawSub( lpDDSBack, Rect( 647, 0, 647 + BMBack.Width, BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, 128 );
-
+    DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'staRightshad.bmp', cInvisColor, width, height );
+    DrawSub( lpDDSBack, Rect( 647, 0, 647 + width, height ), Rect( 0, 0, width, height ), DXBorder, True, 128 );
     DXBorder := nil;
 
-    BMBack.LoadFromFile( InterfacePath + 'staBottomshad.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    DrawSub( lpDDSBack, Rect( 0, 455, BMBack.Width, 455 + BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, 128 );
-
+    DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'staBottomshad.bmp', cInvisColor, width, height );
+    DrawSub( lpDDSBack, Rect( 0, 455, width, 455 + height ), Rect( 0, 0, width, height ), DXBorder, True, 128 );
     DXBorder := nil; //release DXBorder
-{$ENDIF}
 
-{$IFDEF DirectX}
-  //release the bitmap
-    BMBack.Free;
     ShowStats;
   //Whew! Now we flip it all to the screen
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
 {$ENDIF}
   except
     on E : Exception do
@@ -575,16 +553,12 @@ begin
 {$ENDIF}
   try
 
-     //Clean up arrows and back to game
-    pr := Rect( 103, 105, 123, 321 );
-    lpDDSBack.BltFast( 103, 105, DXBack, @pr, DDBLTFAST_WAIT );
-    pr := Rect( 188, 105, 210, 315 );
-    lpDDSBack.BltFast( 188, 105, DXBack, @pr, DDBLTFAST_WAIT );
-    pr := Rect( 581, 414, 581 + 81, 414 + 57 );
-    lpDDSBack.BltFast( 581, 414, DXBack, @pr, DDBLTFAST_WAIT );
-   //clear text
-    pr := Rect( 10, 338, 587, 470 );
-    lpDDSBack.BltFast( 10, 338, DXBack, @pr, DDBLTFAST_WAIT );
+    //Clean up arrows and back to game
+    SoAOS_DX_BltFastWaitXY( DXBack, Rect( 103, 105, 123, 321 ) );
+    SoAOS_DX_BltFastWaitXY( DXBack, Rect( 188, 105, 210, 315 ) );
+    SoAOS_DX_BltFastWaitXY( DXBack, Rect( 581, 414, 581 + 81, 414 + 57 ) );
+    //clear text
+    SoAOS_DX_BltFastWaitXY( DXBack, Rect( 10, 338, 587, 470 ) );
     i := 0;
     j := 0;
     while i < 16 do
@@ -684,10 +658,7 @@ begin
       end;
     end;
 
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenHeight, ScreenMetrics.ScreenWidth );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -730,10 +701,7 @@ begin
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   //replot the entire screen statistics
     ShowStats;
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName + E.Message );

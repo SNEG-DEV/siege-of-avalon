@@ -70,7 +70,6 @@ uses
   System.IOUtils,
   System.Classes,
   System.Types,
-  Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
   Display,
@@ -80,7 +79,6 @@ uses
 type
   TShowGraphic = class( TDisplay )
   private
-    BMBack : TBitmap;
     DXBack : IDirectDrawSurface;
     procedure FormMouseDown( Sender : TObject; Button : TMouseButton; Shift : TShiftState; X, Y : Integer );
   protected
@@ -102,6 +100,7 @@ implementation
 
 uses
   SoAOS.Types,
+  SoAOS.Graphics.Draw,
   AniDemo,
   Resource,
   Engine,
@@ -162,18 +161,11 @@ begin
 
     frmMain.OnMouseDown := FormMouseDown;
 
-    BMBack := TBitmap.Create;
-    BMBack.LoadFromFile( InterfacePath + FileName );
-    DXBack := DDGetImage( lpDD, BMBack, cInvisColor, False );
+    DXBack := SoAOS_DX_LoadBMP( InterfacePath + FileName, cInvisColor );
     pr := Rect( 0, 0, 800, 600 ); //NOHD
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_WAIT );
 
-    BMBack.Free;
-
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
 
     if assigned( pMusic ) then
     begin

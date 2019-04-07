@@ -112,6 +112,7 @@ implementation
 
 uses
   SoAOS.Types,
+  SoAOS.Graphics.Draw,
   AniDemo;
 
 const
@@ -207,7 +208,7 @@ begin
     BM := TBitmap.Create;
     try
       BM.LoadFromFile( InterfacePath + 'gMainMenuBlank.bmp' );
-      DXBack := DDGetImage( lpDD, BM, cInvisColor, true );
+      DXBack := SoAOS_DX_SurfaceFromBMP( BM, cInvisColor );
 
       BM.LoadFromFile( InterfacePath + 'gMainMenuText.bmp' );
       DXBack.GetDC( DC );
@@ -249,11 +250,7 @@ begin
       BM.Free;
     end;
 
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
-
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -311,10 +308,7 @@ begin
         AreYouSureBoxVisible := false;
         pr := Rect( 0, 0, 800, 600 );  //NOHD
         lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_WAIT ); //clear screen
-        lpDDSFront.Flip( nil, DDFLIP_WAIT );
-        pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-        lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-        MouseCursor.PlotDirty := false;
+        SoAOS_DX_BltFront;
       end; //endif PtInRect
     end;
   except
@@ -377,7 +371,7 @@ end;
 
 procedure TIntro.AreYouSure;
 var
-  BM : TBitmap;
+  width, height : Integer;
   DXBorders : IDirectDrawSurface;
   nRect : TRect;
   pr : TRect;
@@ -390,36 +384,26 @@ begin
     Log.LogEntry( FailName );
 {$ENDIF}
   try
-    BM := TBitmap.Create;
-
-    BM.LoadFromFile( InterfacePath + 'ldChooseBox.bmp' );
-    DXBorders := DDGetImage( lpDD, BM, cInvisColor, False );
+    DXBorders := SoAOS_DX_LoadBMP( InterfacePath + 'ldChooseBox.bmp', cInvisColor, width, height );
     nRect := Captions[ 7 ].Rect; //Exit
 
     pr := Rect( 0, 0, 800, 600 ); //NOHD
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_WAIT );
-    pr := Rect( 0, 0, BM.width, BM.Height );
-    lpDDSBack.BltFast( 400 - BM.width div 2, nRect.top + 32, DXBorders, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, width, height );
+    lpDDSBack.BltFast( 400 - width div 2, nRect.top + 32, DXBorders, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
     DXBorders := nil;
 
-    pText.PlotTextBlock( txtMessage[ 0 ], 400 - BM.width div 2 + 23, 400 - BM.width div 2 + 281, nRect.top + 52, 240 );
+    pText.PlotTextBlock( txtMessage[ 0 ], 400 - width div 2 + 23, 400 - width div 2 + 281, nRect.top + 52, 240 );
 
     AreYouSureBoxVisible := true;
 
-    BM.Free;
-
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
-
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
   end;
 end; //AreYouSure
-
 
 procedure TIntro.Release;
 var

@@ -67,7 +67,6 @@ uses
 {$ENDIF}
   System.Types,
   System.Classes,
-  Vcl.Graphics,
   Vcl.Controls,
   Character,
   Display,
@@ -100,7 +99,6 @@ type
   private
     FOnDraw : TDrawTheGuyEvent;
     //Bitmap stuff
-    BMBack : TBitmap;
     DXBack : IDirectDrawSurface;
     DXBackToGame : IDirectDrawSurface;
     DXLeftGeeble : IDirectDrawSurface;
@@ -138,6 +136,7 @@ uses
   DXEffects,
 {$ENDIF}
   SoAOS.Types,
+  SoAOS.Graphics.Draw,
   Engine,
   Resource,
   Logfile,
@@ -182,7 +181,7 @@ end; //Destroy
 
 procedure TAddKickNPC.Init;
 var
-  i : integer;
+  i, width, height : integer;
   DXBorder : IDirectDrawSurface;
   pr : TRect;
 const
@@ -203,8 +202,6 @@ begin
     for i := 0 to 23 do
       txtMessage[ i ] := ExText.GetText( 'Message' + inttostr( i ) );
 
-    BMBack := TBitmap.Create;
-
     for i := 0 to 4 do
     begin
       CheckBox[ i ] := false;
@@ -217,47 +214,29 @@ begin
     pText.LoadFontGraphic( 'inventory' ); //load the inventory font graphic in
     pText.LoadTinyFontGraphic;
 
-    BMBack.LoadFromFile( InterfacePath + 'AddBox.bmp' );
-    DXBox := DDGetImage( lpDD, BMBack, cTransparent, False );
-
-    BMBack.LoadFromFile( InterfacePath + 'AddBoxX.bmp' );
-    DXBox2 := DDGetImage( lpDD, BMBack, cTransparent, False );
-
-    BMBack.LoadFromFile( InterfacePath + 'obInvBackToGame.bmp' );
-    DXBackToGame := DDGetImage( lpDD, BMBack, cInvisColor, False );
-
-    BMBack.LoadFromFile( InterfacePath + 'LogLeftGeeble.bmp' );
-    DXLeftGeeble := DDGetImage( lpDD, BMBack, cTransparent, False );
-    BMBack.LoadFromFile( InterfacePath + 'LogRightGeeble.bmp' );
-    DXRightGeeble := DDGetImage( lpDD, BMBack, cTransparent, False );
-
-
-    BMBack.LoadFromFile( InterfacePath + 'LogScreen.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, cTransparent, False );
+    DXBox := SoAOS_DX_LoadBMP( InterfacePath + 'AddBox.bmp', cTransparent );
+    DXBox2 := SoAOS_DX_LoadBMP( InterfacePath + 'AddBoxX.bmp', cTransparent );
+    DXBackToGame := SoAOS_DX_LoadBMP( InterfacePath + 'obInvBackToGame.bmp', cInvisColor );
+    DXLeftGeeble := SoAOS_DX_LoadBMP( InterfacePath + 'LogLeftGeeble.bmp', cTransparent );
+    DXRightGeeble := SoAOS_DX_LoadBMP( InterfacePath + 'LogRightGeeble.bmp', cTransparent );
+    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'LogScreen.bmp', cTransparent, width, height );
 
     DrawAlpha( DXBack, Rect( 0, 380, 213, 380 + 81 ), Rect( 0, 0, 213, 81 ), DXLeftGeeble, True, 60 );
     DrawAlpha( DXBack, Rect( 452, 0, 452 + 213, 81 ), Rect( 0, 0, 213, 81 ), DXRightGeeble, True, 60 );
 
-    pr := Rect( 0, 0, BMBack.width, BMBack.Height );
+    pr := Rect( 0, 0, width, height );
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
   //Now for the Alpha'ed edges
-    BMBack.LoadFromFile( InterfacePath + 'obInvRightShadow.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    DrawSub( lpDDSBack, Rect( 659, 0, 659 + BMBack.Width, BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, 150 );
-
+    DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'obInvRightShadow.bmp', cInvisColor, width, height );
+    DrawSub( lpDDSBack, Rect( 659, 0, 659 + width, height ), Rect( 0, 0, width, height ), DXBorder, True, 150 );
     DXBorder := nil;
 
-    BMBack.LoadFromFile( InterfacePath + 'obInvBottomShadow.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    DrawSub( lpDDSBack, Rect( 0, 456, BMBack.Width, 456 + BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, 150 );
-
+    DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'obInvBottomShadow.bmp', cInvisColor, width, height );
+    DrawSub( lpDDSBack, Rect( 0, 456, width, 456 + height ), Rect( 0, 0, width, height ), DXBorder, True, 150 );
     DXBorder := nil; //release DXBorder
 
-    BMBack.LoadFromFile( InterfacePath + 'CommandTree.bmp' );
-    AIImage := DDGetImage( lpDD, BMBack, cTransparent, true );
-
-    BMBack.Free;
+    AIImage := SoAOS_DX_LoadBMP( InterfacePath + 'CommandTree.bmp', cTransparent );
 
     DXLeftGeeble := nil;
     DXRightGeeble := nil;
@@ -282,10 +261,7 @@ begin
     SetUpCollRects;
     ShowChars;
 
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -325,10 +301,7 @@ begin
             lpDDSBack.BltFast( 40, 174, DXBack, @pr, DDBLTFAST_WAIT );
           end;
           ShowChars;
-          lpDDSFront.Flip( nil, DDFLIP_WAIT );
-          pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-          lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-          MouseCursor.PlotDirty := false;
+          SoAOS_DX_BltFront;
         end;
       end;
     end;
@@ -353,10 +326,7 @@ begin
             lpDDSBack.BltFast( 40, 174, DXBack, @pr, DDBLTFAST_WAIT );
           end;
           ShowChars;
-          lpDDSFront.Flip( nil, DDFLIP_WAIT );
-          pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-          lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-          MouseCursor.PlotDirty := false;
+          SoAOS_DX_BltFront;
         end; //endif
       end; //end if
     end;
@@ -379,10 +349,7 @@ begin
             lpDDSBack.BltFast( 40, 174, DXBack, @pr, DDBLTFAST_WAIT );
           end;
           ShowChars;
-          lpDDSFront.Flip( nil, DDFLIP_WAIT );
-          pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-          lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-          MouseCursor.PlotDirty := false;
+          SoAOS_DX_BltFront;
         end; //endif
       end; //end if
     end;
@@ -405,10 +372,7 @@ begin
             lpDDSBack.BltFast( 40, 174, DXBack, @pr, DDBLTFAST_WAIT );
           end;
           ShowChars;
-          lpDDSFront.Flip( nil, DDFLIP_WAIT );
-          pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-          lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-          MouseCursor.PlotDirty := false;
+          SoAOS_DX_BltFront;
         end; //endif
       end; //end if
     end;
@@ -431,10 +395,7 @@ begin
             lpDDSBack.BltFast( 40, 174, DXBack, @pr, DDBLTFAST_WAIT );
           end;
           ShowChars;
-          lpDDSFront.Flip( nil, DDFLIP_WAIT );
-          pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-          lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-          MouseCursor.PlotDirty := false;
+          SoAOS_DX_BltFront;
         end; //endif
       end; //end if
     end; //end if
@@ -446,10 +407,7 @@ begin
       begin
         TAIOptions( AIBoxList.items[ i ] ).Click( X, Y );
         ShowChars;
-        lpDDSFront.Flip( nil, DDFLIP_WAIT );
-        pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-        lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-        MouseCursor.PlotDirty := false;
+        SoAOS_DX_BltFront;
         break;
       end;
     end;
@@ -515,10 +473,7 @@ begin
 
     ShowChars;
 
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName + E.Message );

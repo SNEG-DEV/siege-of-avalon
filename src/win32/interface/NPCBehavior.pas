@@ -70,7 +70,6 @@ uses
   Winapi.Windows,
   System.Types,
   System.Classes,
-  Vcl.Graphics,
   Vcl.Controls,
   Vcl.ExtCtrls,
   Character,
@@ -117,7 +116,6 @@ type
     CurrentSelectedType : integer;
     Tx, Ty : integer;
     //Bitmap stuff
-    BMBack : TBitmap;
     DXBack : IDirectDrawSurface;
     DXBackToGame : IDirectDrawSurface;
     DXTarget : array[ 0..3 ] of IDirectDrawSurface;
@@ -155,6 +153,7 @@ implementation
 
 uses
   SoAOS.Types,
+  SoAOS.Graphics.Draw,
   AniDemo;
 
 { TNPCBehavior }
@@ -171,8 +170,8 @@ end; //Destroy
 
 procedure TNPCBehavior.Init;
 var
+  width, height : Integer;
   DXBorders : IDirectDrawSurface;
-  BM : TBitmap;
   pr : TRect;
 begin
   if Loaded then
@@ -201,34 +200,22 @@ begin
     CharSpellList := CharAI.character.SpellList;
 
   pText.LoadFontGraphic( 'statistics' ); //load the statistics font graphic in
-  BMBack := TBitmap.Create;
-  BM := TBitmap.create;
 
   //create the dirty surface
   DXDirty := DDGetSurface( lpDD, 35, 35, cInvisColor, true );
 
-  BMBack.LoadFromFile( InterfacePath + 'NPC.bmp' );
-  DXBack := DDGetImage( lpDD, BMBack, cInvisColor, False );
+  DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'NPC.bmp', cInvisColor, width, height );
 
-  BM.LoadFromFile( InterfacePath + 'NPCTarget1.bmp' );
-  DXTarget[ 0 ] := DDGetImage( lpDD, BM, cInvisColor, False );
-  BM.LoadFromFile( InterfacePath + 'NPCTarget2.bmp' );
-  DXTarget[ 1 ] := DDGetImage( lpDD, BM, cInvisColor, False );
-  BM.LoadFromFile( InterfacePath + 'NPCTarget3.bmp' );
-  DXTarget[ 2 ] := DDGetImage( lpDD, BM, cInvisColor, False );
-  BM.LoadFromFile( InterfacePath + 'NPCTarget4.bmp' );
-  DXTarget[ 3 ] := DDGetImage( lpDD, BM, cInvisColor, False );
+  DXTarget[ 0 ] := SoAOS_DX_LoadBMP( InterfacePath + 'NPCTarget1.bmp', cInvisColor);
+  DXTarget[ 1 ] := SoAOS_DX_LoadBMP( InterfacePath + 'NPCTarget2.bmp', cInvisColor );
+  DXTarget[ 2 ] := SoAOS_DX_LoadBMP( InterfacePath + 'NPCTarget3.bmp', cInvisColor );
+  DXTarget[ 3 ] := SoAOS_DX_LoadBMP( InterfacePath + 'NPCTarget4.bmp', cInvisColor );
 
-  BM.LoadFromFile( InterfacePath + 'NPCActionIcons.bmp' );
-  DXIcons := DDGetImage( lpDD, BM, cTransparent, False );
-
-  BM.LoadFromFile( InterfacePath + 'NPCBackToGame.bmp' );
-  DXBackToGame := DDGetImage( lpDD, BM, cTransparent, False );
-
-  BM.Free;
+  DXIcons := SoAOS_DX_LoadBMP( InterfacePath + 'NPCActionIcons.bmp', cTransparent );
+  DXBackToGame := SoAOS_DX_LoadBMP( InterfacePath + 'NPCBackToGame.bmp', cTransparent );
 
   LoadTargetActionIcons;
-  pr := Rect( 0, 0, BMBack.width, BMBack.Height );
+  pr := Rect( 0, 0, width, height );
   lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   LoadAIData;
   //Now for the Alpha'ed edges
@@ -237,14 +224,10 @@ begin
   //DrawSub(lpDDSBack, Rect(190+XAdj, 130+YAdj, 190+XAdj + BMBack.Width, 130+YAdj+BMBack.Height), Rect(0, 0, BMBack.Width, BMBack.Height), DXBorders, True, 128);
 
   DXBorders := nil;
-  BMBack.Free;
 
   pText.PlotText( CharAI.character.name, 9, 41, 240 );
   PlotMenu;
-  lpDDSFront.Flip( nil, DDFLIP_WAIT );
-  pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-  lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-  MouseCursor.PlotDirty := false;
+  SoAOS_DX_BltFront;
 end; //Init
 
 procedure TNPCBehavior.LoadTargetActionIcons;
@@ -1261,10 +1244,7 @@ begin
 
   end; //endif CurrentSelectedItem
 
-  lpDDSFront.Flip( nil, DDFLIP_WAIT );
-  pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-  lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-  MouseCursor.PlotDirty := false;
+  SoAOS_DX_BltFront;
 end; //MouseMove
 
 
@@ -1317,8 +1297,6 @@ begin
 end;
 
 procedure TNPCBehavior.FadeTimerEvent( Sender : TObject );
-var
-  pr : TRect;
 begin
   if FadeAlpha < 115 then
   begin
@@ -1331,10 +1309,7 @@ begin
     lpDDSBack.BltFast( DestRect[ FadeIn + 4 ].dr.left, DestRect[ FadeIn + 4 ].dr.top, DXTarget[ FadeIn ], @DestRect[ FadeIn + 4 ].sr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     FadeTimer.enabled := false;
   end;
-  lpDDSFront.Flip( nil, DDFLIP_WAIT );
-  pr := Rect( 0, 0, 800, 600 );  //NOHD
-  lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-  MouseCursor.PlotDirty := false;
+  SoAOS_DX_BltFront;
 end; //FadeTimerEvent
 
 

@@ -71,7 +71,6 @@ uses
   System.Types,
   System.Classes,
   System.IOUtils,
-  Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
   Vcl.ExtCtrls,
@@ -104,7 +103,6 @@ type
     LoopCounter : integer;
     CaratTimer : TTimer;
     //Bitmap stuff
-    BMBack : TBitmap; //The inventory screen bitmap used for loading
     DXBack : IDirectDrawSurface;
     DXBackHighlight : IDirectDrawSurface; //so we know which file is selected for loading
     DXLoad : IDirectDrawSurface;
@@ -169,6 +167,7 @@ implementation
 
 uses
   SoAOS.Types,
+  SoAOS.Graphics.Draw,
   AniDemo,
   Resource,
   SaveFile;
@@ -219,8 +218,7 @@ end; //Destroy
 procedure TLoadGame.Init;
 var
   DXTemp : IDirectDrawSurface;
-  BM : TBitmap;
-  i : integer;
+  i, width, height, widthBack, heightBack : integer;
   pr : TRect;
 const
   FailName : string = 'TLoadGame.init ';
@@ -271,49 +269,40 @@ begin
     pText.LoadFontGraphic( 'createchar' ); //load the statisctics font graphic in
     pText.LoadGoldFontGraphic;
 
-    BMBack := TBitmap.Create;
-    BM := TBitmap.Create;
-
+    //TODO: The rects are defined identical - clean
     if LoadFile then
     begin
-      BMBack.LoadFromFile( InterfacePath + 'ldLoadLight.bmp' );
+      DXLoad := SoAOS_DX_LoadBMP( InterfacePath + 'ldLoadLight.bmp', cInvisColor, width, height );
       DXLoadRect := ldLoadLightRect;
     end
     else
     begin
-      BMBack.LoadFromFile( InterfacePath + 'ldSaveLight.bmp' );
+      DXLoad := SoAOS_DX_LoadBMP( InterfacePath + 'ldSaveLight.bmp', cInvisColor, width, height );
       DXLoadRect := ldSaveLightRect;
     end;
-    DXLoadRect.Right := BMBack.Width;
-    DXLoadRect.Bottom := BMBack.Height;
-    DXLoad := DDGetImage( lpDD, BMBack, cInvisColor, False );
+    DXLoadRect.Right := width;
+    DXLoadRect.Bottom := height;
 
-    BMBack.LoadFromFile( InterfacePath + 'ldCancel.bmp' );
-    ldCancelRect.Right := BMBack.Width;
-    ldCancelRect.Bottom := BMBack.Height;
-    DXCancel := DDGetImage( lpDD, BMBack, cInvisColor, False );
+    DXCancel := SoAOS_DX_LoadBMP( InterfacePath + 'ldCancel.bmp', cInvisColor, width, height );
+    ldCancelRect.Right := width;
+    ldCancelRect.Bottom := height;
 
-    BMBack.LoadFromFile( InterfacePath + 'ldOk.bmp' );
-    DXok := DDGetImage( lpDD, BMBack, cInvisColor, False );
+    DXok := SoAOS_DX_LoadBMP( InterfacePath + 'ldOk.bmp', cInvisColor );
 
-    BMBack.LoadFromFile( InterfacePath + 'opYellow.bmp' );
-    DXBackHighlight := DDGetImage( lpDD, BMBack, cInvisColor, False );
+    DXBackHighlight := SoAOS_DX_LoadBMP( InterfacePath + 'opYellow.bmp', cInvisColor );
 
-    BMBack.LoadFromFile( InterfacePath + 'ldLoadSave.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, cInvisColor, False );
+    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'ldLoadSave.bmp', cInvisColor, widthBack, heightBack );
 
     if LoadFile then
     begin
-      BM.LoadFromFile( InterfacePath + 'ldLoadDark.bmp' );
-      DXTemp := DDGetImage( lpDD, BM, cInvisColor, False );
-      pr := Rect( 0, 0, BM.width, BM.height );
+      DXTemp := SoAOS_DX_LoadBMP( InterfacePath + 'ldLoadDark.bmp', cInvisColor, width, height );
+      pr := Rect( 0, 0, width, height );
       DXBack.BltFast( ldLoadDarkRect.Left, ldLoadDarkRect.Top, DXTemp, @pr, DDBLTFAST_WAIT );
     end
     else
     begin
-      BM.LoadFromFile( InterfacePath + 'ldSaveDark.bmp' );
-      DXTemp := DDGetImage( lpDD, BM, cInvisColor, False );
-      pr := Rect( 0, 0, BM.width, BM.height );
+      DXTemp := SoAOS_DX_LoadBMP( InterfacePath + 'ldSaveDark.bmp', cInvisColor, width, height );
+      pr := Rect( 0, 0, width, height );
       DXBack.BltFast( ldSaveDarkRect.Left, ldSaveDarkRect.Top, DXTemp, @pr, DDBLTFAST_WAIT );
     end;
 
@@ -321,25 +310,21 @@ begin
 
     if LoadFile then
     begin
-      BM.LoadFromFile( InterfacePath + 'ldLoadUpper.bmp' );
-      DXTemp := DDGetImage( lpDD, BM, cInvisColor, False );
-      pr := Rect( 0, 0, BM.width, BM.height );
+      DXTemp := SoAOS_DX_LoadBMP( InterfacePath + 'ldLoadUpper.bmp', cInvisColor, width, height );
+      pr := Rect( 0, 0, width, height );
       DXBack.BltFast( ldLoadUpperRect.Left, ldLoadUpperRect.Top, DXTemp, @pr, DDBLTFAST_WAIT );
     end
     else
     begin
-      BM.LoadFromFile( InterfacePath + 'ldSaveUpper.bmp' );
-      DXTemp := DDGetImage( lpDD, BM, cInvisColor, False );
-      pr := Rect( 0, 0, BM.width, BM.height );
+      DXTemp := SoAOS_DX_LoadBMP( InterfacePath + 'ldSaveUpper.bmp', cInvisColor, width, height );
+      pr := Rect( 0, 0, width, height );
       DXBack.BltFast( ldSaveUpperRect.Left, ldSaveUpperRect.Top, DXTemp, @pr, DDBLTFAST_WAIT );
     end;
 
-    pr := Rect( 0, 0, BMBack.width, BMBack.Height );
+    pr := Rect( 0, 0, widthBack, heightBack );
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
     DXTemp := nil;
-    BMBack.Free;
-    BM.free;
     PlotMenu;
 
     if LoadFile then
@@ -358,10 +343,7 @@ begin
     end;
 
 
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -653,10 +635,7 @@ begin
       pText.PlotText( SavedFileName, X1, Y1, 240 );
          //plot the Carat
       pText.PlotText( '|', CaratPosition + X1, Y1, 240 );
-      lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-      lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-      MouseCursor.PlotDirty := false;
+      SoAOS_DX_BltFront;
     end //endif
     else if key = 13 then
     begin
@@ -750,10 +729,7 @@ begin
         end;
         pText.PlotText( SavedFileName, X1, Y1, 240 );
 
-        lpDDSFront.Flip( nil, DDFLIP_WAIT );
-        pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-        lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-        MouseCursor.PlotDirty := false;
+        SoAOS_DX_BltFront;
       end;
     end;
   except
@@ -1020,10 +996,7 @@ begin
     end;
 
 //  if LoadFile then begin
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
 //  end;
   except
     on E : Exception do
@@ -1087,10 +1060,7 @@ begin
       lpDDSBack.BltFast( 111, 65, DXBack, @pr, DDBLTFAST_WAIT );
     end;
 
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -1100,7 +1070,7 @@ end; //paint
 
 procedure TLoadGame.DeleteSavedFile;
 var
-  BM : TBitmap;
+  width, height : Integer;
   DXBorders : IDirectDrawSurface;
   nRect : TRect;
   pr : TRect;
@@ -1114,13 +1084,9 @@ begin
 {$ENDIF}
   try
 
-    BM := TBitmap.Create;
-
-    BM.LoadFromFile( InterfacePath + 'ldChooseBox.bmp' );
-    DXBorders := DDGetImage( lpDD, BM, cInvisColor, False );
-  //lpDDSBack.BltFast(369, 431, DXBorders, Rect(0, 0, BM.width, BM.Height), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
+    DXBorders := SoAOS_DX_LoadBMP( InterfacePath + 'ldChooseBox.bmp', cInvisColor, width, height );
     nRect := pItem( SelectRect.Items[ CurrentSelectedListItem ] ).Rect;
-    pr := Rect( 0, 0, BM.width, BM.Height );
+    pr := Rect( 0, 0, width, height );
     lpDDSBack.BltFast( nRect.left - 10, nRect.top + 32, DXBorders, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
     DXBorders := nil;
@@ -1130,13 +1096,8 @@ begin
     else
       pText.PlotTextBlock( txtMessage[ 0 ], nRect.left - 10 + 23, nRect.left - 10 + 281, nRect.top + 52, 240 ); //392,650,451,240);
 
-  //DXDirty:= DDGetSurface(lpDD,300,117, InvisColor,true);
-  //DXDirty.BltFast(0, 0, lpDDSBack, rect(369,431,669,548), DDBLTFAST_WAIT);
-  //DXDirty.BltFast(0, 0, lpDDSBack, rect(nRect.left-10,nRect.top+32,nRect.left-10+300,nRect.top+32+117), DDBLTFAST_WAIT);
-
     DeleteBoxVisible := true;
 
-    BM.Free;
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -1145,7 +1106,7 @@ end; //DeleteSavedFile
 
 procedure TLoadGame.OverwriteSavedFile;
 var
-  BM : TBitmap;
+  width, height : Integer;
   DXBorders : IDirectDrawSurface;
   nRect : TRect;
   pr : TRect;
@@ -1159,13 +1120,9 @@ begin
 {$ENDIF}
   try
 
-    BM := TBitmap.Create;
-
-    BM.LoadFromFile( InterfacePath + 'ldChooseBox.bmp' );
-    DXBorders := DDGetImage( lpDD, BM, cInvisColor, False );
-  //lpDDSBack.BltFast(369, 431, DXBorders, Rect(0, 0, BM.width, BM.Height), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
+    DXBorders := SoAOS_DX_LoadBMP( InterfacePath + 'ldChooseBox.bmp', cInvisColor, width, height );
     nRect := pItem( SelectRect.Items[ CurrentSelectedListItem ] ).Rect;
-    pr := Rect( 0, 0, BM.width, BM.Height );
+    pr := Rect( 0, 0, width, height );
     lpDDSBack.BltFast( nRect.left - 10, nRect.top + 32, DXBorders, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
     DXBorders := nil;
@@ -1175,13 +1132,8 @@ begin
     else
       pText.PlotTextBlock( txtMessage[ 1 ], nRect.left - 10 + 23, nRect.left - 10 + 281, nRect.top + 52, 240 ); //392,650,451,240);
 
-  //DXDirty:= DDGetSurface(lpDD,300,117, InvisColor,true);
-  //DXDirty.BltFast(0, 0, lpDDSBack, rect(369,431,669,548), DDBLTFAST_WAIT);
-  //DXDirty.BltFast(0, 0, lpDDSBack, rect(nRect.left-10,nRect.top+32,nRect.left-10+300,nRect.top+32+117), DDBLTFAST_WAIT);
-
     OverwriteBoxVisible := true;
 
-    BM.Free;
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -1190,18 +1142,14 @@ end; //OverwriteSavedFile
 
 procedure TLoadGame.MustEnterName;
 var
-  BM : TBitmap;
+  width, height : Integer;
   DXBorders : IDirectDrawSurface;
   nRect : TRect;
   pr : TRect;
 begin
-  BM := TBitmap.Create;
-
-  BM.LoadFromFile( InterfacePath + 'ldChooseBox.bmp' );
-  DXBorders := DDGetImage( lpDD, BM, cInvisColor, False );
-
+  DXBorders := SoAOS_DX_LoadBMP( InterfacePath + 'ldChooseBox.bmp', cInvisColor, width, height );
   nRect := pItem( SelectRect.Items[ CurrentSelectedListItem ] ).Rect;
-  pr := Rect( 0, 0, BM.width, BM.Height );
+  pr := Rect( 0, 0, width, height );
   lpDDSBack.BltFast( nRect.left - 10, nRect.top + 32, DXBorders, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   pr := Rect( 0, 0, 300, 42 );
   lpDDSBack.BltFast( nRect.left - 10, nRect.top + 32 + 75, DXok, @pr, DDBLTFAST_WAIT );
@@ -1212,20 +1160,13 @@ begin
   else
     pText.PlotTextBlock( txtMessage[ 2 ], nRect.left - 10 + 23, nRect.left - 10 + 281, nRect.top + 52, 240 ); //392,650,451,240);
 
-  //DXDirty:= DDGetSurface(lpDD,300,117, InvisColor,true);
-  //DXDirty.BltFast(0, 0, lpDDSBack, rect(369,431,669,548), DDBLTFAST_WAIT);
-  //DXDirty.BltFast(0, 0, lpDDSBack, rect(nRect.left-10,nRect.top+32,nRect.left-10+300,nRect.top+32+117), DDBLTFAST_WAIT);
-
   MustEnterNameBoxVisible := true;
-
-  BM.Free;
 
 end; //MustEnterName
 
 procedure TLoadGame.ShowScreen;
 var
   PicName : string;
-  BM : TBitmap;
   DXTemp : IDirectDrawSurface;
   i : integer;
   nRect : TRect;
@@ -1239,7 +1180,6 @@ begin
     Log.LogEntry( FailName );
 {$ENDIF}
   try
-
 
     if ( DeleteBoxVisible = false ) and ( OverwriteBoxVisible = false ) then
     begin
@@ -1272,12 +1212,9 @@ begin
 
     if ( PicName <> '' ) and TFile.Exists( PicName ) then
     begin
-      BM := TBitmap.Create;
-      BM.LoadFromFile( PicName );
-      DXTemp := DDGetImage( lpDD, BM, cInvisColor, False );
+      DXTemp := SoAOS_DX_LoadBMP( PicName, cInvisColor );
       pr := Rect( 0, 0, 225, 162 );
       lpDDSBack.BltFast( 114, 257, DXTemp, @pr, DDBLTFAST_WAIT );
-      BM.free;
       DXTemp := nil;
     end
     else
@@ -1286,11 +1223,7 @@ begin
       lpDDSBack.BltFast( 114, 257, DXBack, @pr, DDBLTFAST_WAIT );
     end; //endif
 
-
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );

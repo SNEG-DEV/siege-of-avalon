@@ -88,7 +88,6 @@ type
   TJournal = class( TDisplay )
   private
     //Bitmap stuff
-    BMBack : TBitmap;
     DXBack : IDirectDrawSurface;
     DXPic : IDirectDrawSurface;
     PicWidth : integer;
@@ -122,6 +121,7 @@ implementation
 
 uses
   SoAOS.Types,
+  SoAOS.Graphics.Draw,
   AniDemo;
 
 { TJournal }
@@ -211,11 +211,8 @@ begin
     frmMain.OnMouseMove := FormMouseMove;
 
     pText.LoadFontGraphic( 'inventory' ); //load the statistics font graphic in
-    BMBack := TBitmap.Create;
 
-    BMBack.LoadFromFile( InterfacePath + 'Journal.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, cInvisColor, False );
-  //lpDDSBack.BltFast(0, 0, DXBack, Rect(0, 0, BMBack.width, BMBack.Height), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
+    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'Journal.bmp', cInvisColor );
 
   {//Now for the Alpha'ed edges
   BMBack.LoadFromFile(ExtractFilePath(Application.ExeName) + 'Options\Dialog-Shadow.bmp');
@@ -224,13 +221,9 @@ begin
 
   DXBorders:=nil;
   }
-    BMBack.Free;
 
     ShowText;
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -373,6 +366,7 @@ end;
 procedure TJournal.ShowText;
 var
   BM : TBitmap;
+  width, height : Integer;
   PicName : string;
   jpg : TJPEGImage;
   pr : TRect;
@@ -398,7 +392,7 @@ begin
   //Show Latest Log
     LogText := JournalLog.ReadLogByIndex( CurrentLogIndex );
 
-    BM := TBitmap.create;
+//TODO: JPEG code should go - or be interchangable with BMP (and PNG)
   //get the pic, if it exists
     if ( CurrentLogIndex >= 0 ) and ( CurrentLogIndex < JournalLog.LogFileList.count ) then
     begin
@@ -409,11 +403,10 @@ begin
           PicXY := point( 20, 20 )
         else
           PicXY := point( 0, 0 );
-        BM.LoadFromFile( PicName );
-        DXPic := DDGetImage( lpDD, BM, cInvisColor, False );
-        PicWidth := BM.width;
-        PicHeight := BM.height;
-        pr := Rect( 0, 0, BM.width, BM.Height );
+        DXPic := SoAOS_DX_LoadBMP( PicName, cInvisColor, width, height );
+        PicWidth := width;
+        PicHeight := height;
+        pr := Rect( 0, 0, width, Height );
         lpDDSBack.BltFast( PicXY.X, PicXY.Y, DXPic, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         if LogText <> '' then
           pText.PlotTextBlockAroundBox( Logtext, 50, 750, 50, 240, rect( PicXY.X, PicXY.Y, PicXY.X + PicWidth + 20, PicXY.Y + PicHeight + 20 ) );
@@ -426,18 +419,24 @@ begin
         else
           PicXY := point( 0, 0 );
 
-        jpg := TJPEGImage.create;
-        jpg.LoadFromFile( picname );
+        BM := TBitmap.create;
+        try
+          jpg := TJPEGImage.create;
+          jpg.LoadFromFile( picname );
 
-        BM.width := jpg.width;
-        BM.Height := jpg.height;
-        Bm.Canvas.Draw( 0, 0, jpg );
+          BM.width := jpg.width;
+          BM.Height := jpg.height;
+          Bm.Canvas.Draw( 0, 0, jpg );
 
-        jpg.Free;
+          jpg.Free;
 
-        DXPic := DDGetImage( lpDD, BM, cInvisColor, False );
-        PicWidth := BM.width;
-        PicHeight := BM.height;
+          DXPic := SoAOS_DX_SurfaceFromBMP( BM, cInvisColor );
+          PicWidth := BM.width;
+          PicHeight := BM.height;
+        finally
+          BM.Free;
+        end;
+
         pr := Rect( 0, 0, BM.width, BM.Height );
         lpDDSBack.BltFast( PicXY.X, PicXY.Y, DXPic, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         if LogText <> '' then
@@ -451,11 +450,8 @@ begin
 
     if not NoPageNumbers then
       pText.plotText( txtMessage[ 0 ] + intToStr( CurrentLogIndex + 1 ) + txtMessage[ 1 ] + IntToStr( JournalLog.LogFileList.count ), 81, 575, 255 );
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
-    BM.Free;
+    SoAOS_DX_BltFront;
+
     DXPic := nil;
   except
     on E : Exception do

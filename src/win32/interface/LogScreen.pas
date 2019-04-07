@@ -71,7 +71,6 @@ uses
   System.IOUtils,
   System.Types,
   System.Classes,
-  Vcl.Graphics,
   Vcl.Controls,
   GameText,
   Display,
@@ -85,7 +84,6 @@ type
   TLogScreen = class( TDisplay )
   private
     //Bitmap stuff
-    BMBack : TBitmap; //The inventory screen bitmap used for loading
     DXBack : IDirectDrawSurface;
     DXBackToGame : IDirectDrawSurface; //Back To Game highlight
     DXPrev : IDirectDrawSurface;
@@ -130,6 +128,7 @@ implementation
 
 uses
   SoAOS.Types,
+  SoAOS.Graphics.Draw,
   AniDemo;
 
 { TLogScreen }
@@ -170,7 +169,7 @@ end; //Destroy
 procedure TLogScreen.Init;
 var
   DXBorder : IDirectDrawSurface;
-  i : integer;
+  i, width, height : integer;
   pr : TRect;
 const
   FailName : string = 'TLogScreen.init';
@@ -237,47 +236,31 @@ begin
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 
-    BMBack := TBitmap.Create;
-
   //ShowText(PageNumber); //to see if we have more than 1 page
 
     if IniFileFound and ( MaxPages > 0 ) then
     begin //(LogInfo.count > 15) then begin
-      BMBack.LoadFromFile( InterfacePath + 'logPrevious.bmp' );
-      DXPrev := DDGetImage( lpDD, BMBack, cTransparent, False );
-
-      BMBack.LoadFromFile( InterfacePath + 'logPrevious2.bmp' );
-      DXPrev2 := DDGetImage( lpDD, BMBack, cTransparent, False );
-
-      BMBack.LoadFromFile( InterfacePath + 'logNext.bmp' );
-      DXNext := DDGetImage( lpDD, BMBack, cTransparent, False );
-
-      BMBack.LoadFromFile( InterfacePath + 'logNext2.bmp' );
-      DXNext2 := DDGetImage( lpDD, BMBack, cTransparent, False );
+      DXPrev := SoAOS_DX_LoadBMP( InterfacePath + 'logPrevious.bmp', cTransparent );
+      DXPrev2 := SoAOS_DX_LoadBMP( InterfacePath + 'logPrevious2.bmp', cTransparent );
+      DXNext := SoAOS_DX_LoadBMP( InterfacePath + 'logNext.bmp', cTransparent );
+      DXNext2 := SoAOS_DX_LoadBMP( InterfacePath + 'logNext2.bmp', cTransparent );
     end;
 
-    BMBack.LoadFromFile( InterfacePath + 'obInvBackToGame.bmp' );
-    DXBackToGame := DDGetImage( lpDD, BMBack, cInvisColor, False );
-
-    BMBack.LoadFromFile( InterfacePath + 'LogScreen.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, cTransparent, False );
-    pr := Rect( 0, 0, BMBack.width, BMBack.Height );
+    DXBackToGame := SoAOS_DX_LoadBMP( InterfacePath + 'obInvBackToGame.bmp', cInvisColor );
+    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'LogScreen.bmp', cTransparent, width, height );
+    pr := Rect( 0, 0, width, height );
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
   //Now for the Alpha'ed edges
-    BMBack.LoadFromFile( InterfacePath + 'obInvRightShadow.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    DrawSub( lpDDSBack, Rect( 659, 0, 659 + BMBack.Width, BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, 150 );
+    DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'obInvRightShadow.bmp', cInvisColor, width, height );
+    DrawSub( lpDDSBack, Rect( 659, 0, 659 + width, height ), Rect( 0, 0, width, height ), DXBorder, True, 150 );
 
     DXBorder := nil;
 
-    BMBack.LoadFromFile( InterfacePath + 'obInvBottomShadow.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    DrawSub( lpDDSBack, Rect( 0, 456, BMBack.Width, 456 + BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, 150 );
+    DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'obInvBottomShadow.bmp', cInvisColor, width, height );
+    DrawSub( lpDDSBack, Rect( 0, 456, width, 456 + height ), Rect( 0, 0, width, height ), DXBorder, True, 150 );
 
     DXBorder := nil; //release DXBorder
-
-    BMBack.Free;
 
     if IniFileFound and ( MaxPages > 0 ) then
     begin //(LogInfo.count > 15) then begin
@@ -292,10 +275,7 @@ begin
     ShowText( PageNumber );
     pText.plotText( txtMessage[ 0 ] + inttostr( PageNumber + 1 ) + txtMessage[ 1 ] + inttostr( MaxPages + 1 ), 20, 424, 240 );
 
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -401,10 +381,7 @@ begin
       lpDDSBack.BltFast( 588, 407, DXBackToGame, @pr, DDBLTFAST_WAIT );
     end;
 
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );  // 1920, 1080
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName + E.Message );

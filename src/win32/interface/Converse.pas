@@ -133,10 +133,10 @@ implementation
 
 uses
   System.SysUtils,
-  Vcl.Graphics,
   DXUtil,
   DXEffects,
   SoAOS.Types,
+  SoAOS.Graphics.Draw,
   Engine,
   LogFile,
   strFunctions,
@@ -185,10 +185,9 @@ end;
 
 procedure TConverseBox.Init;
 var
+  width, height : Integer;
   Filename : string;
-  BM : TBitmap;
   Shadow : IDirectDrawSurface;
-  pr : TRect;
 const
   FailName : string = 'TConverseBox.Init';
 begin
@@ -199,18 +198,13 @@ begin
   try
     inherited;
 
-    BM := TBitmap.Create;
-    try
-      BM.LoadFromFile( InterfacePath + 'DialogueBox.bmp' );
-      Image := DDGetImage( lpDD, BM, cTransparent, true );
-      ReEntry := True;
-      X1 := 65;
-      Y1 := 40;
-      X2 := X1 + BM.width;
-      Y2 := Y1 + BM.Height;
-    finally
-      BM.free;
-    end;
+    Image := SoAOS_DX_LoadBMP( InterfacePath + 'DialogueBox.bmp', cTransparent, width, height );
+    ReEntry := True;
+    X1 := 65;
+    Y1 := 40;
+    X2 := X1 + width;
+    Y2 := Y1 + height;
+
     HLText := -1;
     pText.LoadFontGraphic( 'Inventory' );
 
@@ -227,22 +221,14 @@ begin
     LoadConversation;
 
   //DrawShadow
-    BM := TBitmap.Create;
+    Shadow := SoAOS_DX_LoadBMP( InterfacePath + 'DialogueBoxshadowmap.bmp', cTransparent, width, height );
     try
-      BM.LoadFromFile( InterfacePath + 'DialogueBoxshadowmap.bmp' );
-      Shadow := DDGetImage( lpDD, BM, cTransparent, false );
-      try
-        DrawSub( lpDDSBack, Rect( X1, Y1, X2, Y2 ), Rect( 0, 0, BM.width, BM.height ), Shadow, true, 170 );
-      finally
-        Shadow := nil;
-      end;
+      DrawSub( lpDDSBack, Rect( X1, Y1, X2, Y2 ), Rect( 0, 0, width, height ), Shadow, true, 170 );
     finally
-      BM.free;
+      Shadow := nil;
     end;
-    MouseCursor.Cleanup;
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );  // 1920, 1080
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+
+    SoAOS_DX_BltFront;
     pText.LoadTinyFontGraphic;
 
     Paint;
@@ -712,10 +698,7 @@ begin
       TTextRect( Responses.items[ i ] ).Rect := R;
       Inc( j, 10 );
     end;
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );

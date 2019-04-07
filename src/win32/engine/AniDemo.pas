@@ -214,7 +214,6 @@ type
     NextSong : string;
     SongCounter : Longint;
     SoundOK : Boolean;
-    //    ResumeSound: boolean;
     Spinner : Integer;
     NewGame : Boolean;
 {$IFDEF DirectX}
@@ -352,6 +351,7 @@ procedure ForceNotReadOnly( const FileName : string );
 implementation
 
 uses
+  SoAOS.Graphics.Draw,
   strFunctions,
   digifx,
   DFX,
@@ -405,7 +405,6 @@ begin
     begin
       if DlgMerchant.Loaded then
       begin
-        //      DlgConverse.Release;  //Removed because Converse was getting released twice, causing problems with TinyFont
         Exit;
       end
       else if Assigned( NewPartyMember ) and DlgConverse.Loaded then
@@ -503,10 +502,6 @@ begin
       DoNotRestartTimer := False
     else
       Active := True;
-
-    {  if ResumeSound then
-        SoundTimer.enabled:=true;   }
-
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -525,13 +520,6 @@ begin
 
     Active := False;
     Paused := False;
-
-    {  if assigned(SoundTimer) and SoundTimer.enabled then begin
-        ResumeSound:=true;
-        SoundTimer.enabled:=false;
-      end
-      else
-        ResumeSound:=false;   }
 
     if DlgInventory.Loaded then
       DlgInventory.Release;
@@ -978,7 +966,6 @@ begin
 
     Log.Log( 'Read Settings' );
     Log.flush;
-    //  CurrDbgLvl := INI.ReadInteger('Settings', 'Debug', 0);
 
     GetChapters( INI );
 
@@ -1117,9 +1104,7 @@ begin
     Log.Log( 'Initializing event timer' );
     Log.flush;
     SoundTimer := TTimer.Create( nil );
-    //    SoundTimer.TimerPriority:=tpLowest;
     SoundTimer.Interval := 100;
-    //    SoundTimer.resolution := 1;
 
     MasterSoundVolume := INI.ReadInteger( 'Settings', 'SoundVolume', 50 );
     MasterMusicVolume := INI.ReadInteger( 'Settings', 'MusicVolume', 50 );
@@ -1311,10 +1296,6 @@ begin
   try
 
     SoundTimer.OnTimer := nil;
-
-    //  if assigned(MusicLib) then begin
-    //    if MusicLib.Looping then MusicLib.SongTimerEvent;
-    //  end;
 
     if SoundOK then
     begin
@@ -1649,11 +1630,11 @@ begin
             HPDistance := HPDistance * ( 66 / TCharacter( NPCList[ i ] ).HitPoints );
             ManaDistance := ManaDistance * ( 66 / TCharacter( NPCList[ i ] ).Mana );
             pr := Rect( NPCBarXCoord[ i ], ScreenMetrics.NPCBarY - Round( HPDistance ), NPCBarXCoord[ i ] + 5, ScreenMetrics.NPCBarY );
-			
+
             pr0 := Rect( 0, 0, 0, 0 );
             lpDDSFront.Blt( @pr, nil, @pr0, DDBLT_COLORFILL + DDBLT_WAIT, @NPCHealthBltFx );
             pr := Rect( NPCBarXCoord[ i ] + 7, ScreenMetrics.NPCBarY - Round( ManaDistance ), NPCBarXCoord[ i ] + 7 + 5, ScreenMetrics.NPCBarY );
-			
+
             lpDDSFront.Blt( @pr, nil, @pr0, DDBLT_COLORFILL + DDBLT_WAIT, @NPCManaBltFx );
           end;
         end
@@ -2398,7 +2379,7 @@ begin
     else if i < 0 then
       i := 0;
     pr := Rect( 0, 0, 78, i );
-	
+
     lpDDSBack.BltFast( ScreenMetrics.ManaEmptyX, 134, ManaEmpty, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
     if Life > 0 then
       i := Round( 107 * ( Wounds / Life ) )
@@ -2411,7 +2392,7 @@ begin
     pr := Rect( 0, 0, 52, i );
 
     lpDDSBack.BltFast( ScreenMetrics.LifeEmptyX, 248, LifeEmpty, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );  //SD
-	
+
     if not SpellbarActive then
     begin
       for i := 1 to NPCList.Count - 1 do
@@ -3887,7 +3868,6 @@ end;
 
 function TfrmMain.LoadResources : Boolean;
 var
-  BM : TBitmap;
   pr : TRect;
 const
   FailName : string = 'Main.LoadResources';
@@ -3902,45 +3882,30 @@ begin
 
     try
       Log.Log( 'Loading console...' );
-      BM := TBitmap.Create;
-      try
-        BM.LoadFromFile( InterfacePath + 'SpellGlyphs.bmp' );
-        SpellGlyphs := DDGetImage( lpDD, BM, ColorToRGB( clBlack ), False );
-      finally
-        BM.Free;
-      end;
+      SpellGlyphs := SoAOS_DX_LoadBMP( InterfacePath + 'SpellGlyphs.bmp', ColorToRGB( clBlack ) );
       imgCombat.Picture.BITMAP.LoadFromFile( InterfacePath + 'combat.bmp' );
-	  //TODO get correct HD/FullHD bmps
+
       imgBottomBar.Picture.BITMAP.LoadFromFile( InterfacePath + ScreenMetrics.bottombarFile );
-      OverlayB := DDGetImage( lpDD, imgBottomBar.Picture.BITMAP,
-        ColorToRGB( clFuchsia ), True );
+      OverlayB := SoAOS_DX_LoadBMP( InterfacePath + ScreenMetrics.bottombarFile, ColorToRGB( clFuchsia ) );
       imgSidebar.Picture.BITMAP.LoadFromFile( InterfacePath + ScreenMetrics.sidebarFile );
-      OverlayR := DDGetImage( lpDD, imgSidebar.Picture.BITMAP,
-        ColorToRGB( clFuchsia ), True );
+      OverlayR := SoAOS_DX_LoadBMP( InterfacePath + ScreenMetrics.sidebarFile, ColorToRGB( clFuchsia ) );
       imgMana.Picture.BITMAP.LoadFromFile( InterfacePath + 'mana.bmp' );
-
-      ManaEmpty := DDGetImage( lpDD, imgMana.Picture.BITMAP, ColorToRGB( clBlack ), True );
+      ManaEmpty := SoAOS_DX_LoadBMP( InterfacePath + 'mana.bmp', ColorToRGB( clBlack ) );
       imgLife.Picture.BITMAP.LoadFromFile( InterfacePath + 'health.bmp' );
-
-      LifeEmpty := DDGetImage( lpDD, imgLife.Picture.BITMAP, ColorToRGB( clBlack ), True );
+      LifeEmpty := SoAOS_DX_LoadBMP( InterfacePath + 'health.bmp', ColorToRGB( clBlack ) );
       imgSpellBar.Picture.BITMAP.LoadFromFile( InterfacePath + ScreenMetrics.spellbarFile );
-      SpellBar := DDGetImage( lpDD, imgSpellBar.Picture.BITMAP,
-        ColorToRGB( clFuchsia ), True );
-      ShadowImage := DDGetImage( lpDD, imgShadow.Picture.BITMAP,
-        ColorToRGB( clBlack ), False );
+      SpellBar := SoAOS_DX_LoadBMP( InterfacePath + ScreenMetrics.spellbarFile, ColorToRGB( clFuchsia ) );
+      ShadowImage := SoAOS_DX_LoadBMP( InterfacePath + 'shadow.bmp', ColorToRGB( clBlack ) );
       Game.AutoTransparentMask := imgAutoTransparent.Picture.BITMAP;
+
       NoSpellIcon := DDGetSurface( lpDD, 32, 32, clBlack, False );
 
       pr := Rect( 456, 64, 456 + 32, 64 + 32 );
-      NoSpellIcon.BltFast( 0, 0, OverlayB, @pr, DDBLTFAST_NOCOLORKEY
-        or DDBLTFAST_WAIT );
+      NoSpellIcon.BltFast( 0, 0, OverlayB, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
       imgHelp.Picture.BITMAP.LoadFromFile( InterfacePath + 'spellinfo.bmp' );
-      HelpBox := DDGetImage( lpDD, imgHelp.Picture.BITMAP,
-        ColorToRGB( clFuchsia ), True );
+      HelpBox := SoAOS_DX_LoadBMP( InterfacePath + 'spellinfo.bmp', ColorToRGB( clFuchsia ) );
       imgPaused.Picture.BITMAP.LoadFromFile( InterfacePath + 'paused.bmp' );
-      PauseImage := DDGetImage( lpDD, imgPaused.Picture.BITMAP,
-        ColorToRGB( clFuchsia ), False );
-
+      PauseImage := SoAOS_DX_LoadBMP( InterfacePath + 'paused.bmp', ColorToRGB( clFuchsia ) );
       GlowImage := TRLESprite.Create;
 
       GlowImage.LoadFromBitmap( imgGlow.Picture.BITMAP, imgGlow.width, imgGlow.Height, 0 );
@@ -3993,165 +3958,6 @@ begin
       Log.log( FailName, E.Message, [ ] );
   end;
 end;
-
-(* Old Interface Art version, uses Coordinates.dat file
-function TForm1.LoadResources: boolean;
-var
-  INI: TINIFile;
-  Group: string;
-
-  procedure LoadCoord(p: PPoint; const Item: string; DefaultX,DefaultY: integer);
-  var
-    S: string;
-  begin
-    if assigned(INI) then begin
-      S:=INI.ReadString(Group,Item,'');
-      if S='' then begin
-        p.X:=DefaultX;
-        p.Y:=DefaultY;
-      end
-      else begin
-        try
-          p.X:=StrToInt(Parse(S,0,','));
-        except
-          p.X:=DefaultX;
-        end;
-        try
-          p.Y:=StrToInt(Parse(S,1,','));
-        except
-          p.Y:=DefaultY;
-        end;
-      end;
-    end
-    else begin
-      p.X:=DefaultX;
-      p.Y:=DefaultY;
-    end;
-  end;
-
-var
-  BM: TBitmap;
-  S: string;
-const
-  FailName: string = 'Main.LoadResources';
-begin
-  result:=false;
-
-{$IFDEF DODEBUG}
-if (CurrDbgLvl >= DbgLvlSevere) then
-  Log.LogEntry(FailName);
-{$ENDIF}
-try
-
-  try
-    Log.Log('Loading console...');
-    BM:=TBitmap.create;
-    try
-      BM.LoadFromFile(InterfacePath+'SpellGlyphs.bmp');
-      SpellGlyphs:=DDGetImage(lpDD, BM, ColorToRGB(clBlack), false);
-    finally
-      BM.free;
-    end;
-    Image6.picture.bitmap.LoadFromFile(InterfacePath+'combat.bmp');
-    Image4.picture.bitmap.LoadFromFile(InterfacePath+'bottombar.bmp');
-    OverlayB := DDGetImage(lpDD, Image4.Picture.BITMAP, ColorToRGB(clFuchsia), True);
-    Image2.picture.bitmap.LoadFromFile(InterfacePath+'sidebar.bmp');
-    OverlayR := DDGetImage(lpDD, Image2.Picture.BITMAP, ColorToRGB(clFuchsia), True);
-    imgMana.picture.bitmap.LoadFromFile(InterfacePath+'mana.bmp');
-    ManaEmpty:=DDGetImage(lpDD,imgMana.picture.bitmap,ColorToRGB(clBlack),true);
-    imgLife.picture.bitmap.LoadFromFile(InterfacePath+'health.bmp');
-    LifeEmpty:=DDGetImage(lpDD,imgLife.picture.bitmap,ColorToRGB(clBlack),true);
-    imgSpellBar.picture.bitmap.LoadFromFile(InterfacePath+'spellbar.bmp');
-    SpellBar := DDGetImage(lpDD, imgSpellBar.Picture.BITMAP, ColorToRGB(clFuchsia), True);
-    ShadowImage:=DDGetImage(lpDD, Image3.Picture.BITMAP, ColorToRGB(clBlack), false);
-    NoSpellIcon:=DDGetSurface(lpDD, 32, 32, clBlack, false);
-    NoSpellIcon.BltFast(0,0,OverlayB,Rect(456,64,456+32,64+32),DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT);
-    imgHelp.picture.bitmap.LoadFromFile(InterfacePath+'spellinfo.bmp');
-    HelpBox := DDGetImage(lpDD, imgHelp.Picture.BITMAP, ColorToRGB(clFuchsia), True);
-    imgPaused.picture.bitmap.LoadFromFile(InterfacePath+'paused.bmp');
-    PauseImage := DDGetImage(lpDD, imgPaused.Picture.BITMAP, ColorToRGB(clFuchsia), False);
-
-    GlowImage:=TRLESprite.Create;
-    GlowImage.LoadFromBitmap(Image5.Picture.BITMAP,Image5.width,Image5.height,0);
-    Log.Log('Console load Complete');
-
-    ScreenShot:=TBitmap.create;
-    ScreenShot.width:=225;
-    ScreenShot.height:=162;
-
-    Log.Log('Loading interface...');
-    DlgConverse := TConverseBox.Create;
-    DlgInventory:=TInventory.create;
-    DlgMerchant:=TMerchant.create;
-    DlgLoot:=TLootCorpse.create;
-    DlgObjInventory:=TObjInventory.create;
-    DlgMap:=TMap.create;
-    DlgTitles:=TAward.create;
-    DlgJournal:=TJournal.create;
-    DlgOptions:=TOptions.create;
-    DlgLoad:=TLoadGame.create;
-    DlgProgress:=TLoaderBox.create;
-    DlgIntro:=TIntro.Create;
-
-    DlgNPC:=TNPCBehavior.create;
-    DlgShow:=TShowGraphic.Create;
-    DlgCreation:=TCreation.Create;
-    DlgText:=TGameText.create;
-    DlgText.Load13Graphic;
-    DlgStatistics:=TStatistics.create;
-    DlgQuestLog:=TQuestLog.create;
-    DlgAdvLog:=TAdvLog.create;
-    DlgRoster:=TAddKickNPC.Create;
-    DlgTransit:=TTransit.Create;
-
-    S:=InterfacePath+'coordinates.dat';
-    if TFile.Exists(S) then
-      INI:=TINIFile.create(S)
-    else
-      INI:=nil;
-    try
-      Group:='CharCreate';
-      LoadCoord(@DlgCreation.chaCancelRect,'chaCancel',102,450);
-      LoadCoord(@DlgCreation.chaContinueRect,'chaContinue',498,450);
-      Group:='Options';
-      LoadCoord(@DlgOptions.opContinueRect,'opContinue',502, 450);
-      Group:='LoadSave';
-      LoadCoord(@DlgLoad.ldCancelRect,'ldCancel',95,443);
-      LoadCoord(@DlgLoad.ldLoadLightRect,'ldLoadLight',581,445);
-      LoadCoord(@DlgLoad.ldLoadUpperRect,'ldLoadUpper',93,12);
-      LoadCoord(@DlgLoad.ldLoadDarkRect,'ldLoadDark',581,445);
-      LoadCoord(@DlgLoad.ldSaveDarkRect,'ldSaveDark',581,445);
-      LoadCoord(@DlgLoad.ldSaveLightRect,'ldSaveLight',581,445);
-      LoadCoord(@DlgLoad.ldSaveUpperRect,'ldSaveUpper',93,12);
-      Group:='Intro';
-      LoadCoord(@DlgIntro.gNEWPt,'gNEW',255,49);
-      LoadCoord(@DlgIntro.gLOADPt,'gLOAD',323,94);
-      LoadCoord(@DlgIntro.gSAVEPt,'gSAVE',294,148);
-      LoadCoord(@DlgIntro.gOPTIONSPt,'gOPTIONS',284,191);
-      LoadCoord(@DlgIntro.gUPDATEPt,'gUPDATE',260,254);
-      LoadCoord(@DlgIntro.gCREDITSPt,'gCREDITS',294,297);
-      LoadCoord(@DlgIntro.gEXITPt,'gEXIT',300,353);
-      LoadCoord(@DlgIntro.gRESUMEPt,'gRESUME',197,400);
-    finally
-      INI.free;
-    end;
-    Log.Log('Interface load Complete');
-
-    if not LoadSpells then exit;
-
-    Game.Interval := Interval;
-
-  finally
-//    Screen.Cursor := crDefault;
-  end;
-
-  result:=true;
-
-except
-  on E: Exception do Log.log(FailName,E.Message,[]);
-end;
-end;
-*)
 
 procedure TfrmMain.LoadNewMapFile;
 var

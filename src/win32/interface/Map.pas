@@ -68,7 +68,6 @@ uses
   SoAOS.Types,
   Vcl.Controls,
   Gametext,
-  Vcl.Graphics,
   DirectX,
   Anigrp30,
   AniDec30,
@@ -104,6 +103,7 @@ type
 implementation
 
 uses
+  SoAOS.Graphics.Draw,
   AniDemo;
 
 { TMap }
@@ -111,8 +111,7 @@ uses
 procedure TMap.Init;
 var
   Image : IDirectDrawSurface;
-  BM : TBitmap;
-  W, H : integer;
+  W, H, width, height : integer;
   OffsetX, OffsetY : integer;
   i, j, k : longint;
   Tile : PGridInfo;
@@ -149,28 +148,24 @@ begin
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 
-    BM := TBitmap.create;
-    BM.LoadFromFile( InterfacePath + 'MapBack.bmp' );
-    DXBack := DDGetImage( lpDD, BM, cInvisColor, false );
-    DXDirty := DDGetImage( lpDD, BM, cInvisColor, false );
+    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'MapBack.bmp', cInvisColor );
+    DXDirty := SoAOS_DX_LoadBMP( InterfacePath + 'MapBack.bmp', cInvisColor );
 
-    BM.LoadFromFile( InterfacePath + 'MapMaskedShadowLayer.bmp' );
-    Image := DDGetImage( lpDD, BM, clBlack, false );
+    Image := SoAOS_DX_LoadBMP( InterfacePath + 'MapMaskedShadowLayer.bmp', cBlackBackground, width, height );
     try
       if assigned( Image ) then
       begin
-        DrawSub( lpDDSBack, Rect( 0, 0, BM.Width, BM.Height ), Rect( 0, 0, BM.Width, BM.Height ), Image, True, 170 );
+        DrawSub( lpDDSBack, Rect( 0, 0, width, height ), Rect( 0, 0, width, height ), Image, True, 170 );
       end;
     finally
       Image := nil;
     end;
 
-    BM.LoadFromFile( InterfacePath + 'MapColorLayer.bmp' );
-    Image := DDGetImage( lpDD, BM, cInvisColor, true );
+    Image := SoAOS_DX_LoadBMP( InterfacePath + 'MapColorLayer.bmp', cInvisColor, width, height );
     try
       if assigned( Image ) then
       begin
-        pr := Rect( 0, 0, BM.width, BM.height );
+        pr := Rect( 0, 0, width, height );
         lpDDSBack.BltFast( 0, 0, Image, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         pr := Rect( 560, 378, 560 + 61, 378 + 45 );
         DXDirty.BltFast( 0, 0, lpDDSBack, @pr, DDBLTFAST_WAIT );
@@ -181,12 +176,8 @@ begin
 
     ShowAll := MapKnown or Character.TitleExists( 'MapAllKnown' );
 
-    BM.LoadFromFile( InterfacePath + 'MapMaskLayer.bmp' );
-    Image := DDGetImage( lpDD, BM, clBlack, false );
+    Image := SoAOS_DX_LoadBMP( InterfacePath + 'MapMaskLayer.bmp', cBlackBackground, W, H );
     try
-      W := BM.Width;
-      H := BM.height;
-      BM.free;
       if assigned( Image ) then
       begin
         ddsd.dwSize := SizeOf( ddsd );
@@ -461,10 +452,8 @@ begin
     begin
       if not MouseOverBack then
       begin
-        //lpDDSFront.Flip(nil, DDFLIP_WAIT);
         MouseCursor.Cleanup;
-        pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-        lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
+        SoAOS_DX_BltFastWaitXY( lpDDSFront, Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight ) );
         if assigned( DXBack ) then
         begin
           pr := Rect( 0, 0, 61, 45 );
@@ -481,8 +470,7 @@ begin
       begin
        //clean up
         MouseCursor.Cleanup;
-        pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-        lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
+        SoAOS_DX_BltFastWaitXY( lpDDSFront, Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight ) );
         if assigned( DXDirty ) then
         begin
           pr := Rect( 0, 0, 61, 45 );

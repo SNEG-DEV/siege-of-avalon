@@ -71,7 +71,6 @@ uses
   System.SysUtils,
   System.Types,
   System.Classes,
-  Vcl.Graphics,
   Vcl.Controls,
   Character,
   Resource,
@@ -104,7 +103,6 @@ type
     CheckForGroundDrop : boolean;
     PlotArray : array[ 0..11, 0..13 ] of integer;
     PlotArray2 : array[ 0..20, 0..20 ] of integer;
-    BMBack : TBitmap; //The inventory screen bitmap used for loading
     ItemList : TList; //the list of items
     pInventoryItem : pTempItems; //The temporary inventory and equipment items combined
     CurrentSelectedItem : Integer; //Current Item being dragged about
@@ -161,6 +159,7 @@ implementation
 
 uses
   SoAOS.Types,
+  SoAOS.Graphics.Draw,
   AniDemo;
 
 { TObjInventory }
@@ -212,7 +211,7 @@ end;
 
 procedure TObjInventory.Init;
 var
-  i : Integer;
+  i, width, height : Integer;
   DXBorder : IDirectDrawSurface;
   GreatestWidth, GreatestHeight : integer; //used to create the dirty rect surface
   pr : TRect;
@@ -247,41 +246,29 @@ begin
     CurrentSelectedItem := -1; //We aren't dragging anything
     DlgScroll.ScrollIsShowing := False; //stats screen isnt showing
     Alpha := 220; //alpha value for all alphabet plots
-    BMBack := TBitmap.Create;
 
   //We have to do this part up here in order to get coordinated from buildgrid
-    BMBack.LoadFromFile( InterfacePath + 'merBackHighlight.bmp' );
-    DXBrown := DDGetImage( lpDD, BMBack, cInvisColor, False );
-
-    BMBack.LoadFromFile( InterfacePath + 'invRightArrow.bmp' );
-    DXRightArrow := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    BMBack.LoadFromFile( InterfacePath + 'invLeftArrow.bmp' );
-    DXLeftArrow := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    BMBack.LoadFromFile( InterfacePath + 'obInvBackToGame.bmp' );
-    DXBackToGame := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    BMBack.LoadFromFile( InterfacePath + 'obInvRightAll.bmp' );
-    DXRightAll := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    BMBack.LoadFromFile( InterfacePath + 'obInvLeftAll.bmp' );
-    DXLeftAll := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    BMBack.LoadFromFile( InterfacePath + 'obInvCharacterToObjectInventory.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, cInvisColor, False );
+    DXBrown := SoAOS_DX_LoadBMP( InterfacePath + 'merBackHighlight.bmp', cInvisColor );
+    DXRightArrow := SoAOS_DX_LoadBMP( InterfacePath + 'invRightArrow.bmp', cInvisColor );
+    DXLeftArrow := SoAOS_DX_LoadBMP( InterfacePath + 'invLeftArrow.bmp', cInvisColor );
+    DXBackToGame := SoAOS_DX_LoadBMP( InterfacePath + 'obInvBackToGame.bmp', cInvisColor );
+    DXRightAll := SoAOS_DX_LoadBMP( InterfacePath + 'obInvRightAll.bmp', cInvisColor );
+    DXLeftAll := SoAOS_DX_LoadBMP( InterfacePath + 'obInvLeftAll.bmp', cInvisColor );
+    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'obInvCharacterToObjectInventory.bmp', cInvisColor, width, height );
   //DxDirty := DDGetImage(lpDD, BMBack, InvisColor, False); //for now this is how we will do it
   //build the left side inventory space
     BuildGrid;
   //now we blit the screen to the backbuffer
-    pr := Rect( 0, 0, BMBack.width, BMBack.Height );
+    pr := Rect( 0, 0, width, height );
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   //Now for the Alpha'ed edges
-    BMBack.LoadFromFile( InterfacePath + 'obInvRightShadow.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    DrawSub( lpDDSBack, Rect( 659, 0, 659 + BMBack.Width, BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, Alpha );
+    DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'obInvRightShadow.bmp', cInvisColor, width, height );
+    DrawSub( lpDDSBack, Rect( 659, 0, 659 + width, height ), Rect( 0, 0, width, height ), DXBorder, True, Alpha );
 
     DXBorder := nil;
 
-    BMBack.LoadFromFile( InterfacePath + 'obInvBottomShadow.bmp' );
-    DXBorder := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    DrawSub( lpDDSBack, Rect( 0, 456, BMBack.Width, 456 + BMBack.Height ), Rect( 0, 0, BMBack.Width, BMBack.Height ), DXBorder, True, Alpha );
-
+    DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'obInvBottomShadow.bmp', cInvisColor, width, height );
+    DrawSub( lpDDSBack, Rect( 0, 456, width, 456 + height ), Rect( 0, 0, width, height ), DXBorder, True, Alpha );
     DXBorder := nil; //release DXBorder
 
   //Now put the names up
@@ -373,8 +360,6 @@ begin
     DXDirty := DDGetSurface( lpDD, GreatestWidth, GreatestHeight, cInvisColor, true );
 
 {$IFDEF DirectX}
-  //release the bitmap
-    BMBack.Free;
   //Now plot all of the items on the grid
     for i := 0 to ItemList.Count - 1 do
     begin
@@ -392,10 +377,7 @@ begin
       end;
     end;
   //Whew! Now we flip it all to the screen
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
 {$ENDIF}
   except
     on E : Exception do
@@ -777,10 +759,7 @@ begin
         end;
       end;
     end; //endif
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -829,10 +808,7 @@ begin
       DrawSub( lpDDSBack, rect( Tx, Ty, Tx + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, Ty + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ), Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ), pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXShadow, True, ShadowAlpha );
       pr := Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H );
       lpDDSBack.BltFast( Tx, Ty, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-      lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      pr := Rect( 0, 0, 800, 600 );
-      lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-      MouseCursor.PlotDirty := false;
+      SoAOS_DX_BltFront;
     end
     else if Assigned( DXBack ) and ( DlgScroll.ScrollIsShowing = False ) then
     begin //do the rollover
@@ -959,10 +935,7 @@ begin
       end; //endif CurrentSelectedItem
 
       CurrentSelectedItem := -1; //deassign it
-      lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-      lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-      MouseCursor.PlotDirty := false;
+      SoAOS_DX_BltFront;
     end;
 
   except
@@ -1027,10 +1000,7 @@ begin
     else
       pText.PlotTextCentered( TContainer( OtherOb ).name, 417, 633, 10, Alpha );
 
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -1297,7 +1267,6 @@ var
   i, j : integer;
   StartX, StartY : integer;
   DXGrid : IDirectDrawSurface; //DD surface holding our chunk O' grid to draw right grid with
-  BM : TBitmap;
   pr : TRect;
 const
   FailName : string = 'TObjInventory.BuildGrid';
@@ -1308,11 +1277,7 @@ begin
 {$ENDIF}
   try
 
-  //Load the grid graphic, and draw the left inventory area before we blit the screen to the backbuffer
-    BM := TBitmap.create;
-    BM.LoadFromFile( InterfacePath + 'obInvGrid.bmp' );
-    DXGrid := DDGetImage( lpDD, BM, cInvisColor, False );
-    BM.free;
+    DXGrid := SoAOS_DX_LoadBMP( InterfacePath + 'obInvGrid.bmp', cInvisColor );
 
     if OtherOb is TCharacter then
     begin

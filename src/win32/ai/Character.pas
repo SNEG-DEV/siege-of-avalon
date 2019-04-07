@@ -1103,6 +1103,7 @@ uses
 {$IFDEF DirectX}
   DXUtil,
 {$ENDIF}
+  SoAOS.Graphics.Draw,
   LogFile,
   Engine,
   Titles,
@@ -11148,6 +11149,7 @@ var
 const
   FailName : string = 'TSpriteObject.Say';
 begin
+//TODO: Cleanup
 {$IFDEF DODEBUG}
   if ( CurrDbgLvl >= DbgLvlSevere ) then
     Log.LogEntry( FailName );
@@ -11193,7 +11195,7 @@ begin
     PatBlt( BM.Canvas.Handle, 0, 0, MsgWidth, MsgHeight, BLACKNESS );
     DrawText( BM.Canvas.Handle, PChar( Msg ), -1, R, DT_CENTER or DT_NOCLIP or DT_NOPREFIX or DT_WORDBREAK );
 {$IFDEF DirectX}
-    MsgImage := DDGetImage( lpDD, BM, clBlack, True );
+    MsgImage := SoAOS_DX_SurfaceFromBMP( BM, clBlack );
 {$ENDIF}
 {$IFNDEF DirectX}
     BM.TransparentMode := tmFixed;

@@ -69,7 +69,6 @@ uses
   System.Types,
   System.SysUtils,
   System.Classes,
-  Vcl.Graphics,
   Vcl.Controls,
   Vcl.ExtCtrls,
   Anigrp30,
@@ -78,7 +77,6 @@ uses
 type
   TMousePtr = class( TObject )
   private
-    BMBack : TBitmap;
     DXMousePtr : IDirectDrawSurface;
     DXDirty : IDirectDrawSurface;
     MouseTimer : TTimer;
@@ -115,12 +113,14 @@ implementation
 
 uses
   SoAOS.Types,
+  SoAOS.Graphics.Draw,
   AniDemo;
 
 const
   PtrWidth = 32;
   PtrHeight = 32;
   SheetWidth = 6;
+
 { TMousePtr }
 
 constructor TMousePtr.Create;
@@ -135,18 +135,12 @@ begin
 {$ENDIF}
   try
     inherited;
-    BMBack := TBitmap.Create;
-    BMBack.LoadFromFile( InterfacePath + 'siegecursorsheet.bmp' );
-    DXMousePtr := DDGetImage( lpDD, BMBack, cTransparent, False );
-  //lpDDSBack.BltFast(0, 0, DXMousePtr, Rect(0, 0, PtrWidth, PtrHeight), DDBLTFAST_WAIT);
-
-    BMBack.Free;
+    DXMousePtr := SoAOS_DX_LoadBMP( InterfacePath + 'siegecursorsheet.bmp', cTransparent );
     DXDirty := DDGetSurface( lpDD, PtrWidth, PtrHeight, cTransparent, true );
   //pre-load Dirty
 
     FPlotDirty := false;
     DXSurface := lpDDSFront;
-    // GetCursorPos( mPt );
     mPt := Mouse.CursorPos;
     pr := Rect( mPt.x, mPt.y, mPt.x + PtrWidth, mPt.y + PtrHeight );
     DXDirty.BltFast( 0, 0, DXSurface, @pr, DDBLTFAST_WAIT );
@@ -159,7 +153,6 @@ begin
     on E : Exception do
       Log.log( FailName + E.Message );
   end;
-
 end; //Create
 
 destructor TMousePtr.Destroy;
@@ -195,7 +188,6 @@ begin
     exit;
 
   PrevPt := mPt;
-//  GetCursorPos( mPt );
   mPt := Mouse.CursorPos;
   if ( MouseAnimationCycle > 0 ) and ( MouseCounter > MouseAnimationCycle ) then
   begin

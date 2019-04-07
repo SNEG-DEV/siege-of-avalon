@@ -70,8 +70,6 @@ uses
   LogFile;
 
 function DDColorMatch( pdds : IDirectDrawSurface; Color : TColor ) : Longint;
-function DDGetImage( lpDD : IDirectDraw; BITMAP : TBitmap; Color : TColor; Video : Boolean ) : IDirectDrawSurface;
-//function DDGetOverlay( lpDD : IDirectDraw; BITMAP : TBitmap; Color : TColor ) : IDirectDrawSurface;
 procedure GetSurfaceDims( var W, H : Integer; Surface : IDirectDrawSurface );
 function DDGetSurface( lpDD : IDirectDraw; W, H : integer; Color : TColor; Video : Boolean; var ColorMatch : integer ) : IDirectDrawSurface; overload;
 function DDGetSurface( lpDD : IDirectDraw; W, H : integer; Color : TColor; Video : Boolean ) : IDirectDrawSurface; overload;
@@ -133,93 +131,6 @@ begin
       Log.log( FailName + E.Message );
   end;
 end;
-
-function DDGetImage( lpDD : IDirectDraw; BITMAP : TBitmap; Color : TColor; Video : Boolean ) : IDirectDrawSurface;
-var
-  ddsd : TDDSurfaceDesc;
-  pdds : IDirectDrawSurface;
-  DC : HDC;
-  ddck : TDDCOLORKEY;
-const
-  FailName : string = 'DXUtil.DDGetImage';
-begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
-  try
-    ddsd.dwSize := SizeOf( ddsd );
-    ddsd.dwFlags := DDSD_CAPS + DDSD_HEIGHT + DDSD_WIDTH;
-    if Video then
-      ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_VIDEOMEMORY
-    else
-      ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_SYSTEMMEMORY;
-    ddsd.dwWidth := BITMAP.Width;
-    ddsd.dwHeight := BITMAP.Height;
-    Result := nil;
-    if ( lpdd.CreateSurface( ddsd, pdds, nil ) <> DD_OK ) then
-    begin
-      ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_SYSTEMMEMORY;
-      if ( lpdd.CreateSurface( ddsd, pdds, nil ) <> DD_OK ) then
-        Exit;
-    end;
-    pdds.GetDC( DC );
-    BitBlt( DC, 0, 0, BITMAP.width, BITMAP.Height, BITMAP.Canvas.Handle, 0, 0, SRCCOPY );
-    pdds.ReleaseDC( DC );
-    ddck.dwColorSpaceLowValue := DDColorMatch( pdds, Color );
-    ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
-    pdds.SetColorKey( DDCKEY_SRCBLT, @ddck );
-    Result := pdds;
-  except
-    on E : Exception do
-      Log.log( FailName + E.Message );
-  end;
-end;
-
-//function DDGetOverlay( lpDD : IDirectDraw; BITMAP : TBitmap; Color : TColor ) : IDirectDrawSurface;
-//var
-//  ddsd : TDDSurfaceDesc;
-//  pdds : IDirectDrawSurface;
-//  DC : HDC;
-//  ddck : TDDCOLORKEY;
-//const
-//  FailName : string = 'DXUtil.DDGetOverlay';
-//begin
-//{$IFDEF DODEBUG}
-//  if ( CurrDbgLvl >= DbgLvlSevere ) then
-//    Log.LogEntry( FailName );
-//{$ENDIF}
-//  try
-//    ZeroMemory( @ddsd, SizeOf( ddsd ) );
-//    ddsd.dwSize := SizeOf( ddsd );
-//    ddsd.dwFlags := DDSD_CAPS + DDSD_HEIGHT + DDSD_WIDTH + DDSD_PIXELFORMAT;
-//    ddsd.ddsCaps.dwCaps := DDSCAPS_VIDEOMEMORY or DDSCAPS_OVERLAY;
-//    ddsd.dwWidth := BITMAP.Width;
-//    ddsd.dwHeight := BITMAP.Height;
-//    ddsd.ddpfPixelFormat.dwSize := SizeOf( TDDPIXELFORMAT );
-//    ddsd.ddpfPixelFormat.dwFlags := DDPF_RGB;
-//    ddsd.ddpfPixelFormat.dwRGBBitCount := 16;
-//    ddsd.ddpfPixelFormat.dwRBitMask := $0000F800;
-//    ddsd.ddpfPixelFormat.dwGBitMask := $000007E0;
-//    ddsd.ddpfPixelFormat.dwBBitMask := $0000001F;
-//
-//    Result := nil;
-//
-//    if ( lpdd.CreateSurface( ddsd, pdds, nil ) <> DD_OK ) then
-//      Exit;
-//
-//    pdds.GetDC( DC );
-//    BitBlt( DC, 0, 0, BITMAP.width, BITMAP.Height, BITMAP.Canvas.Handle, 0, 0, SRCCOPY );
-//    pdds.ReleaseDC( DC );
-//    ddck.dwColorSpaceLowValue := DDColorMatch( pdds, Color );
-//    ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
-//    pdds.SetColorKey( DDCKEY_SRCBLT, @ddck );
-//    Result := pdds;
-//  except
-//    on E : Exception do
-//      Log.log( FailName + E.Message );
-//  end;
-//end;
 
 procedure GetSurfaceDims( var W, H : Integer; Surface : IDirectDrawSurface );
 var

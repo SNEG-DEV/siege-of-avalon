@@ -70,7 +70,6 @@ uses
   System.SysUtils,
   System.Types,
   System.Classes,
-  Vcl.Graphics,
   Vcl.Controls,
   Vcl.ExtCtrls,
   Character,
@@ -84,7 +83,6 @@ type
   TOptions = class( TDisplay )
   private
     //Bitmap stuff
-    BMBack : TBitmap; //The inventory screen bitmap used for loading
     DXBack : IDirectDrawSurface; //DD surface that holds the statistics screen before blit
     DXContinue : IDirectDrawSurface;
     DXYellow : IDirectDrawSurface; //used to draw lines
@@ -127,6 +125,7 @@ implementation
 
 uses
   SoAOS.Types,
+  SoAOS.Graphics.Draw,
   AniDemo;
 
 { TOptions }
@@ -168,7 +167,7 @@ end; //Destroy
 
 procedure TOptions.Init;
 var
-  i : integer;
+  i, width, height : integer;
   pr : TRect;
 const
   FailName : string = 'TOptions.init';
@@ -202,34 +201,20 @@ begin
     pText.LoadFontGraphic( 'createchar' ); //load the GoldFont font graphic in
     if UseSmallFont then
       pText.LoadGoldFontGraphic;
-    BMBack := TBitmap.Create;
-    BMBack.LoadFromFile( InterfacePath + 'opContinue.bmp' );
-    opContinueRect.Right := BMBack.Width;
-    opContinueRect.Bottom := BMBack.Height;
-    DXContinue := DDGetImage( lpDD, BMBack, cInvisColor, False );
-
-    BMBack.LoadFromFile( InterfacePath + 'opScreenRes.bmp' );
-    opScreenResRect.Right := BMBack.Width;
-    opScreenResRect.Bottom := BMBack.Height;
-    DXScreenResolution := DDGetImage( lpDD, BMBack, cInvisColor, False );
-
-    BMBack.LoadFromFile( InterfacePath + 'opYellow.bmp' );
-    DXYellow := DDGetImage( lpDD, BMBack, cInvisColor, False );
-
-    BMBack.LoadFromFile( InterfacePath + 'opVolume.bmp' );
-    DXVolumeSlider := DDGetImage( lpDD, BMBack, cInvisColor, False );
-    BMBack.LoadFromFile( InterfacePath + 'opVolumeShadow.bmp' );
-    DXVolumeShadow := DDGetImage( lpDD, BMBack, cInvisColor, False );
-
-    BMBack.LoadFromFile( InterfacePath + 'options.bmp' );
-    DXBack := DDGetImage( lpDD, BMBack, cInvisColor, False );
-
+    DXContinue := SoAOS_DX_LoadBMP( InterfacePath + 'opContinue.bmp', cInvisColor, width, height );
+    opContinueRect.Right := width;
+    opContinueRect.Bottom := height;
+    DXScreenResolution := SoAOS_DX_LoadBMP( InterfacePath + 'opScreenRes.bmp', cInvisColor, width, height );
+    opScreenResRect.Right := width;
+    opScreenResRect.Bottom := height;
+    DXYellow := SoAOS_DX_LoadBMP( InterfacePath + 'opYellow.bmp', cInvisColor );
+    DXVolumeSlider := SoAOS_DX_LoadBMP( InterfacePath + 'opVolume.bmp', cInvisColor );
+    DXVolumeShadow := SoAOS_DX_LoadBMP( InterfacePath + 'opVolumeShadow.bmp', cInvisColor );
+    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'options.bmp', cInvisColor, width, height );
 
   //now we blit the screen to the backbuffer
-    pr := Rect( 0, 0, BMBack.width, BMBack.Height );
+    pr := Rect( 0, 0, width, height );
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-
-    BMBack.Free;
 
     PlotMenu;
 
@@ -261,19 +246,14 @@ begin
   try
 
   //clear Volume bars
-    pr := Rect( 116, 92, 315, 105 );
-    lpDDSBack.BltFast( 116, 92, DXBack, @pr, DDBLTFAST_WAIT );
-    pr := Rect( 116, 175, 315, 188 );
-    lpDDSBack.BltFast( 116, 175, DXBack, @pr, DDBLTFAST_WAIT );
+    SoAOS_DX_BltFastWaitXY( DXBack, Rect( 116, 92, 315, 105 ) );
+    SoAOS_DX_BltFastWaitXY( DXBack, Rect( 116, 175, 315, 188 ) );
   //clear menu
-    pr := Rect( 114, 259, 663, 431 );
-    lpDDSBack.BltFast( 114, 259, DXBack, @pr, DDBLTFAST_WAIT );
+    SoAOS_DX_BltFastWaitXY( DXBack, Rect( 114, 259, 663, 431 ) );
   //clear Yes/no
-    pr := Rect( 556, 70, 650, 90 );
-    lpDDSBack.BltFast( 556, 70, DXBack, @pr, DDBLTFAST_WAIT );
+    SoAOS_DX_BltFastWaitXY( DXBack, Rect( 556, 70, 650, 90 ) );
   //clear resolution
-    pr := Rect( 108, 463, 313, 483 );
-    lpDDSBack.BltFast( 108, 463, DXBack, @pr, DDBLTFAST_WAIT );
+    SoAOS_DX_BltFastWaitXY( DXBack, Rect( 108, 463, 313, 483 ) );
 
     if PlotShadows then
       DrawAlpha( lpDDSBack, rect( 560, 75, 573, 86 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 )
@@ -343,10 +323,7 @@ begin
         end
       end; //end for
     end;
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -506,22 +483,16 @@ begin
   try
 
   //Clear rollover text area
-    pr := Rect( 351, 113, 684, 206 );
-    lpDDSBack.Bltfast( 351, 113, DXBack, @pr, DDBLTFAST_WAIT );
+    SoAOS_DX_BltFastWaitXY( DXBack, Rect( 351, 113, 684, 206 ) );
   //clear Volume bars
-    pr := Rect( 100, 92, 336, 155 );
-    lpDDSBack.BltFast( 100, 92, DXBack, @pr, DDBLTFAST_WAIT );
-    pr := Rect( 100, 175, 336, 230 );
-    lpDDSBack.BltFast( 100, 175, DXBack, @pr, DDBLTFAST_WAIT );
+    SoAOS_DX_BltFastWaitXY( DXBack, Rect( 100, 92, 336, 155 ) );
+    SoAOS_DX_BltFastWaitXY( DXBack, Rect( 100, 175, 336, 230 ) );
   //clear menu
-    pr := Rect( 114, 259, 663, 434 );
-    lpDDSBack.BltFast( 114, 259, DXBack, @pr, DDBLTFAST_WAIT );
+    SoAOS_DX_BltFastWaitXY( DXBack, Rect( 114, 259, 663, 434 ) );
   //clear Yes/no
-    pr := Rect( 556, 70, 650, 90 );
-    lpDDSBack.BltFast( 556, 70, DXBack, @pr, DDBLTFAST_WAIT );
+    SoAOS_DX_BltFastWaitXY( DXBack, Rect( 556, 70, 650, 90 ) );
   //clear back To Game
-    pr := Rect( opContinueRect.Left, opContinueRect.Top, opContinueRect.Left + opContinueRect.Right, opContinueRect.Top + opContinueRect.Bottom );
-    lpDDSBack.BltFast( opContinueRect.Left, opContinueRect.Top, DXBack, @pr, DDBLTFAST_WAIT );
+    SoAOS_DX_BltFastWaitXY( DXBack, Rect( opContinueRect.Left, opContinueRect.Top, opContinueRect.Left + opContinueRect.Right, opContinueRect.Top + opContinueRect.Bottom ) );
 
     if True then  // HDAvail
     begin
@@ -641,10 +612,7 @@ pText.PlotText( intToStr( k - 1 ), 611, 264 + j * 35, 240 );
       end;
     end;
 
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+    SoAOS_DX_BltFront;
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -696,7 +664,6 @@ procedure TOptions.TimerEvent( Sender : TObject );
   var
     i, j, k : integer;
     pt : TPoint;
-    pr : TRect;
   begin
     if CurrentSelectedListItem <> -1 then
     begin
@@ -704,8 +671,7 @@ procedure TOptions.TimerEvent( Sender : TObject );
     end;
     if Character <> nil then
     begin
-      pr := Rect( 114, 259, 663, 434 );
-      lpDDSBack.BltFast( 114, 259, DXBack, @pr, DDBLTFAST_WAIT );
+      SoAOS_DX_BltFastWaitXY( DXBack, Rect( 114, 259, 663, 434 ) );
       j := 0;
       for i := 0 to SpellList.count - 1 do
       begin
@@ -728,10 +694,7 @@ pText.PlotText( intToStr( k - 1 ), 611, 264 + j * 35, 240 );
           j := j + 1;
         end
       end; //end for
-      lpDDSFront.Flip( nil, DDFLIP_WAIT );
-      pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-      lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
-      MouseCursor.PlotDirty := false;
+      SoAOS_DX_BltFront;
     end;
   end;
 
