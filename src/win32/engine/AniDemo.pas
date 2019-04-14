@@ -148,18 +148,7 @@ type
   end;
 
   TfrmMain = class( TForm )
-    imgBottomBar : TImage;
-    imgAutoTransparent : TImage;
-    imgSidebar : TImage;
-    imgLife : TImage;
-    imgMana : TImage;
-    imgSpellBar : TImage;
-    imgShadow : TImage;
-    imgGlow : TImage;
     Timer2 : TTimer;
-    imgCombat : TImage;
-    imgHelp : TImage;
-    imgPaused : TImage;
     Timer3 : TTimer;
     procedure FormShow( Sender : TObject );
     procedure Timer1Timer( Sender : TObject );
@@ -229,6 +218,14 @@ type
 {$ENDIF}
     FCurrentTheme : string;
     ScreenShot : TBitmap;
+    imgGlow : TBitmap;
+    imgHelp : TBitmap;
+    imgCombat : TBitmap;
+    imgAutoTransparent : TBitmap;
+    imgSidebar : TBitmap;
+    imgSpellBar : TBitmap;
+    imgBottomBar : TBitmap;
+
     LastFileSaved : string;
     UseVideoRAM : Boolean;
     UseTimer : Boolean;
@@ -1608,8 +1605,8 @@ begin
           finally
             OverlayB.ReleaseDC( DC );
           end;
-          DrawAlpha( OverlayB, Rect( 456, 53, 456 + imgPaused.width, 53 + imgPaused.Height ),
-            Rect( 0, 0, imgPaused.width, imgPaused.Height ), PauseImage, True, 170 );
+          DrawAlpha( OverlayB, Rect( 456, 53, 456 + 73 {imgPaused.width}, 53 + 23 {imgPaused.Height} ),
+            Rect( 0, 0, 73 {imgPaused.width}, 23 {imgPaused.Height} ), PauseImage, True, 170 );
           pr := Rect( 0, 0, 800, 114 );
           lpDDSFront.BltFast( 0, 486, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
@@ -2523,6 +2520,13 @@ begin
       SetWindowLong( Application.Handle, GWL_EXSTYLE, ExStyle );
     end;
 
+    imgHelp.Free;
+    imgCombat.Free;
+    imgAutoTransparent.Free;
+    imgSidebar.Free;
+    imgSpellBar.Free;
+    imgBottomBar.Free;
+
     AdventureLog1.free;
     HistoryLog.free;
 
@@ -2544,6 +2548,13 @@ begin
   BorderStyle := bsNone;
   BorderIcons := [];
   FormStyle := fsStayOnTop;
+
+  imgHelp := TBitmap.Create;
+  imgCombat := TBitmap.Create;
+  imgAutoTransparent := TBitmap.Create;
+  imgSidebar := TBitmap.Create;
+  imgSpellBar := TBitmap.Create;
+  imgBottomBar := TBitmap.Create;
 
   ScreenMetrics := cOriginal; // cOriginal or  cHD or cFullHD - TBA
   Keymap := cKeyOrig; // cKeyGerman .. - TBA
@@ -2574,10 +2585,10 @@ begin
 
 
   GameMap := TAniMap.Create( frmMain );
-  GameMap.AmbientColor := clBlack;
+  GameMap.AmbientColor := cBlackBackground;
   GameMap.AmbientIntensity := 0;
   GameMap.Height := 400;
-  GameMap.TransparentColor := clFuchsia;
+  GameMap.TransparentColor := cTransparent;
   GameMap.UseAmbientOnly := False;
   GameMap.UseLighting := True;
   GameMap.Width := 200;
@@ -3635,7 +3646,7 @@ procedure TfrmMain.PaintCharacterOnBorder( Figure : TSpriteObject; Slot : Intege
 var
   SrcX, SrcY, DstX, DstY : Integer;
   W, H : Integer;
-  Image : TImage;
+  Image : TBitmap;
   Surface : IDirectDrawSurface;
   DC : HDC;
   ddsd : TDDSurfaceDesc;
@@ -3882,33 +3893,38 @@ begin
 
     try
       Log.Log( 'Loading console...' );
-      SpellGlyphs := SoAOS_DX_LoadBMP( InterfacePath + 'SpellGlyphs.bmp', ColorToRGB( clBlack ) );
-      imgCombat.Picture.BITMAP.LoadFromFile( InterfacePath + 'combat.bmp' );
+      SpellGlyphs := SoAOS_DX_LoadBMP( InterfacePath + 'SpellGlyphs.bmp', cBlackBackground );
+      imgCombat.LoadFromFile( InterfacePath + 'combat.bmp' );
 
-      imgBottomBar.Picture.BITMAP.LoadFromFile( InterfacePath + ScreenMetrics.bottombarFile );
-      OverlayB := SoAOS_DX_LoadBMP( InterfacePath + ScreenMetrics.bottombarFile, ColorToRGB( clFuchsia ) );
-      imgSidebar.Picture.BITMAP.LoadFromFile( InterfacePath + ScreenMetrics.sidebarFile );
-      OverlayR := SoAOS_DX_LoadBMP( InterfacePath + ScreenMetrics.sidebarFile, ColorToRGB( clFuchsia ) );
-      imgMana.Picture.BITMAP.LoadFromFile( InterfacePath + 'mana.bmp' );
-      ManaEmpty := SoAOS_DX_LoadBMP( InterfacePath + 'mana.bmp', ColorToRGB( clBlack ) );
-      imgLife.Picture.BITMAP.LoadFromFile( InterfacePath + 'health.bmp' );
-      LifeEmpty := SoAOS_DX_LoadBMP( InterfacePath + 'health.bmp', ColorToRGB( clBlack ) );
-      imgSpellBar.Picture.BITMAP.LoadFromFile( InterfacePath + ScreenMetrics.spellbarFile );
-      SpellBar := SoAOS_DX_LoadBMP( InterfacePath + ScreenMetrics.spellbarFile, ColorToRGB( clFuchsia ) );
-      ShadowImage := SoAOS_DX_LoadBMP( InterfacePath + 'shadow.bmp', ColorToRGB( clBlack ) );
-      Game.AutoTransparentMask := imgAutoTransparent.Picture.BITMAP;
+      imgBottomBar.LoadFromFile( InterfacePath + ScreenMetrics.bottombarFile );
+      OverlayB := SoAOS_DX_LoadBMP( InterfacePath + ScreenMetrics.bottombarFile, cTransparent );
+      imgSidebar.LoadFromFile( InterfacePath + ScreenMetrics.sidebarFile );
+      OverlayR := SoAOS_DX_LoadBMP( InterfacePath + ScreenMetrics.sidebarFile, cTransparent );
+      ManaEmpty := SoAOS_DX_LoadBMP( InterfacePath + 'mana.bmp', cBlackBackground );
+      LifeEmpty := SoAOS_DX_LoadBMP( InterfacePath + 'health.bmp', cBlackBackground );
+      imgSpellBar.LoadFromFile( InterfacePath + ScreenMetrics.spellbarFile );
+      SpellBar := SoAOS_DX_LoadBMP( InterfacePath + ScreenMetrics.spellbarFile, cTransparent );
+      ShadowImage := SoAOS_DX_LoadBMP( InterfacePath + 'shadow.bmp', cBlackBackground );
+      imgAutoTransparent.LoadFromFile( InterfacePath + 'XRay.bmp' );
+      Game.AutoTransparentMask := imgAutoTransparent;
 
       NoSpellIcon := DDGetSurface( lpDD, 32, 32, clBlack, False );
 
       pr := Rect( 456, 64, 456 + 32, 64 + 32 );
       NoSpellIcon.BltFast( 0, 0, OverlayB, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
-      imgHelp.Picture.BITMAP.LoadFromFile( InterfacePath + 'spellinfo.bmp' );
-      HelpBox := SoAOS_DX_LoadBMP( InterfacePath + 'spellinfo.bmp', ColorToRGB( clFuchsia ) );
-      imgPaused.Picture.BITMAP.LoadFromFile( InterfacePath + 'paused.bmp' );
-      PauseImage := SoAOS_DX_LoadBMP( InterfacePath + 'paused.bmp', ColorToRGB( clFuchsia ) );
-      GlowImage := TRLESprite.Create;
+      imgHelp.LoadFromFile( InterfacePath + 'spellinfo.bmp' );
+      HelpBox := SoAOS_DX_LoadBMP( InterfacePath + 'spellinfo.bmp', cTransparent );
+      PauseImage := SoAOS_DX_LoadBMP( InterfacePath + 'paused.bmp', cTransparent );
 
-      GlowImage.LoadFromBitmap( imgGlow.Picture.BITMAP, imgGlow.width, imgGlow.Height, 0 );
+      imgGlow := TBitmap.Create;
+      try
+        imgGlow.LoadFromFile( InterfacePath + 'glow.bmp' );
+        GlowImage := TRLESprite.Create;   // Loadfrom BMP
+        GlowImage.LoadFromBitmap( imgGlow, imgGlow.width, imgGlow.Height, 0 );
+      finally
+        imgGlow.Free;
+      end;
+
       Log.Log( 'Console load Complete' );
 
       ScreenShot := TBitmap.Create;
