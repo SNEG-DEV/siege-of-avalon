@@ -90,7 +90,7 @@ uses
   Anigrp30,
   strFunctions,
   Resource,
-  digifx,
+  SoAOS.Graphics.Types,
   anidemo,
   spells1;
 

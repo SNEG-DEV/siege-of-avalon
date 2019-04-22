@@ -167,6 +167,7 @@ implementation
 uses
   SoAOS.Types,
   SoAOS.Graphics.Draw,
+  SoAOS.Graphics.Types,
   AniDemo,
   System.SysUtils,
   Gametext,
@@ -174,7 +175,6 @@ uses
   Engine,
   DXEffects,
   DXUtil,
-  digifx,
   DFX,
   LogFile;
 

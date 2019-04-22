@@ -67,70 +67,14 @@ uses
   DirectX,
   Graphics,
   Sysutils,
-  LogFile;
+  LogFile,
+  SoAOS.Graphics.Draw;
 
-function DDColorMatch( pdds : IDirectDrawSurface; Color : TColor ) : Longint;
 procedure GetSurfaceDims( var W, H : Integer; Surface : IDirectDrawSurface );
 function DDGetSurface( lpDD : IDirectDraw; W, H : integer; Color : TColor; Video : Boolean; var ColorMatch : integer ) : IDirectDrawSurface; overload;
 function DDGetSurface( lpDD : IDirectDraw; W, H : integer; Color : TColor; Video : Boolean ) : IDirectDrawSurface; overload;
 
 implementation
-
-function DDColorMatch( pdds : IDirectDrawSurface; Color : TColor ) : Longint;
-var
-  RGB, rgbT : COLORREF;
-  DC : HDC;
-  dw : Longint;
-  ddsd : TDDSurfaceDesc;
-  hres : HRESULT;
-const
-  FailName : string = 'DXUtil.DDColorMatch';
-begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
-  Result := 0;
-  try
-    dw := 0;
-    rgbT := 0;
-    RGB := ColorToRGB( Color );
-    if ( RGB <> CLR_INVALID ) then
-    begin
-      if ( pdds.GetDC( DC ) = DD_OK ) then
-      begin
-        rgbT := GetPixel( DC, 0, 0 ); // Save current pixel value
-        SetPixel( DC, 0, 0, RGB ); // Set our value
-        pdds.ReleaseDC( DC );
-      end;
-    end;
-
-    ddsd.dwSize := SizeOf( ddsd );
-    hres := pdds.Lock( nil, ddsd, 0, 0 );
-    while ( hres = DDERR_WASSTILLDRAWING ) do
-      hres := pdds.Lock( nil, ddsd, 0, 0 );
-    if ( hres = DD_OK ) then
-    begin
-      dw := Longint( ddsd.lpSurface^ ); // Get DWORD
-      if ( ddsd.ddpfPixelFormat.dwRGBBitCount < 32 ) then
-        dw := dw and ( ( 1 shl ddsd.ddpfPixelFormat.dwRGBBitCount ) - 1 ); // Mask it to bpp
-      pdds.Unlock( nil );
-    end;
-
-    if ( RGB <> CLR_INVALID ) then
-    begin
-      if ( pdds.GetDC( DC ) = DD_OK ) then
-      begin
-        SetPixel( DC, 0, 0, rgbT );
-        pdds.ReleaseDC( DC );
-      end;
-    end;
-    Result := dw;
-  except
-    on E : Exception do
-      Log.log( FailName + E.Message );
-  end;
-end;
 
 procedure GetSurfaceDims( var W, H : Integer; Surface : IDirectDrawSurface );
 var
@@ -187,7 +131,7 @@ begin
         Exit;
     end;
 
-    ColorMatch := DDColorMatch( pdds, ColorToRGB( Color ) );
+    ColorMatch := SoAOS_DX_ColorMatch( pdds, ColorToRGB( Color ) );
 
     ddck.dwColorSpaceLowValue := ColorMatch;
     ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
@@ -236,7 +180,7 @@ begin
       if ( lpdd.CreateSurface( ddsd, pdds, nil ) <> DD_OK ) then
         Exit;
     end;
-    ColorMatch := DDColorMatch( pdds, ColorToRGB( Color ) );
+    ColorMatch := SoAOS_DX_ColorMatch( pdds, ColorToRGB( Color ) );
     ddck.dwColorSpaceLowValue := ColorMatch;
     ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
     pdds.SetColorKey( DDCKEY_SRCBLT, @ddck );

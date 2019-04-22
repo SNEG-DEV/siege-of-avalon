@@ -67,7 +67,7 @@ uses
   Resource,
   Character,
   Anigrp30,
-  digifx,
+  SoAOS.Graphics.Types,
   Spells;
 
 type

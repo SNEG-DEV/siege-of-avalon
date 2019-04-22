@@ -195,7 +195,7 @@ procedure Clip2( ClipX1, ClipX2 : Integer; var DestX1, SrcX1, W : Integer );
 implementation
 
 uses
-  SysUtils,
+  System.SysUtils,
   LogFile;
 
 procedure CreateMask( var Picture, Mask : HBITMAP; BITMAP : TBitmap; Color : TColor );

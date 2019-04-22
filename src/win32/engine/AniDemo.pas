@@ -349,8 +349,8 @@ implementation
 
 uses
   SoAOS.Graphics.Draw,
+  SoAOS.Graphics.Types,
   strFunctions,
-  digifx,
   DFX,
   Parts,
   Sound,
@@ -1234,10 +1234,10 @@ begin
     end;
 
     NPCHealthBltFx.dwSize := SizeOf( TDDBLTFX );
-    NPCHealthBltFx.dwFillColor := DDColorMatch( lpDDSFront, cHealthColor );
+    NPCHealthBltFx.dwFillColor := SoAOS_DX_ColorMatch( lpDDSFront, cHealthColor );
 
     NPCManaBltFx.dwSize := SizeOf( TDDBLTFX );
-    NPCManaBltFx.dwFillColor := DDColorMatch( lpDDSFront, cManaColor );
+    NPCManaBltFx.dwFillColor := SoAOS_DX_ColorMatch( lpDDSFront, cManaColor );
 
     NPCBarXCoord[ 1 ] := 67;
     NPCBarXCoord[ 2 ] := 153;
@@ -3929,7 +3929,9 @@ begin
 
       ScreenShot := TBitmap.Create;
       ScreenShot.width := 225;
-      ScreenShot.Height := 162;
+      // Beware below fix is temporary - due to issue with DDrawCompat ddraw.dll
+      ScreenShot.Height := -162;
+      // was: ScreenShot.Height := 162;
 
       Log.Log( 'Loading interface...' );
       DlgConverse := TConverseBox.Create;
@@ -4041,7 +4043,7 @@ var
   S : string;
   Stream : TFileStream;
   IgnoreDefaultObjects, IgnoreSceneObjects : Boolean;
-  Level : string;
+  Level : AnsiString;
   ZoneTotal, ZoneMem : LongWord;
   CacheFileA, CacheFileB, CacheFileC, CacheFileD : string;
   CacheExists : Boolean;
@@ -4084,7 +4086,7 @@ begin
     try
       Game.KeyFigure := nil;
       SpawnList.Clear;
-      Level := LowerCase( ChangeFileExt( ExtractFileName( LVLFile ), '' ) );
+      Level := AnsiString( LowerCase( ChangeFileExt( ExtractFileName( LVLFile ), '' ) ) );
 
       if ( CurrentScene = '' ) or ( LowerCase( CurrentScene ) = 'default' ) then
         SceneName := 'Default Scene'
@@ -4511,7 +4513,7 @@ end;
 function TfrmMain.SaveGame : Boolean;
 var
   EOB : Word;
-  Level : string;
+  Level : AnsiString;
 
   function GetPlayerData : TMemoryStream;
   var
@@ -4677,7 +4679,7 @@ begin
     Log.LogEntry( FailName );
 {$ENDIF}
   try
-    Level := LowerCase( ChangeFileExt( ExtractFileName( LVLFile ), '' ) );
+    Level := AnsiString( LowerCase( ChangeFileExt( ExtractFileName( LVLFile ), '' ) ) );
 
     i := TravelList.IndexOf( Level );
     if i < 0 then
@@ -6171,18 +6173,21 @@ begin
         ForceNotReadOnly( S2 );
         ForceNotReadOnly( ChangeFileExt( S2, '.idx' ) );
         ForceNotReadOnly( ChangeFileExt( S2, '.map' ) );
-        try
-          TFile.Delete( S1 );
-        except
-        end;
-        try
-          TFile.Delete( ChangeFileExt( S1, '.idx' ) );
-        except
-        end;
-        try
-          TFile.Delete( ChangeFileExt( S1, '.map' ) );
-        except
-        end;
+        DeleteFile( S1 );
+        DeleteFile( ChangeFileExt( S1, '.idx' ) );
+        DeleteFile( ChangeFileExt( S1, '.map' ) );
+//        try
+//          TFile.Delete( S1 );
+//        except
+//        end;
+//        try
+//          TFile.Delete( ChangeFileExt( S1, '.idx' ) );
+//        except
+//        end;
+//        try
+//          TFile.Delete( ChangeFileExt( S1, '.map' ) );
+//        except
+//        end;
 
         try
           TFile.Copy( S2, S1, True );

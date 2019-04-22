@@ -22,6 +22,7 @@ procedure SoAOS_DX_BltFastWaitXY( srcSur: IDirectDrawSurface; srcRect: TRect );
 function SoAOS_DX_SurfaceFromBMP ( bmp: TBitmap; color: TColor; video: Boolean = True ) : IDirectDrawSurface;
 function SoAOS_DX_LoadBMP( filename: string; color: TColor; video: Boolean = True ) : IDirectDrawSurface; overload;
 function SoAOS_DX_LoadBMP( filename: string; color: TColor; out width, height: integer; video: Boolean = True ) : IDirectDrawSurface; overload;
+function SoAOS_DX_ColorMatch( pdds : IDirectDrawSurface; Color : TColor ) : Longint;
 
 implementation
 
@@ -75,7 +76,7 @@ begin
       pdds.GetDC( DC );
       BitBlt( DC, 0, 0, bmp.width, bmp.height, bmp.Canvas.Handle, 0, 0, SRCCOPY );
       pdds.ReleaseDC( DC );
-      ddck.dwColorSpaceLowValue := DDColorMatch( pdds, Color );
+      ddck.dwColorSpaceLowValue := SoAOS_DX_ColorMatch( pdds, Color );
       ddck.dwColorSpaceHighValue := ddck.dwColorSpaceLowValue;
       pdds.SetColorKey( DDCKEY_SRCBLT, @ddck );
       Result := pdds;
@@ -105,6 +106,62 @@ var
   w, h : Integer;
 begin
   Result := SoAOS_DX_LoadBMP( filename, color, w, h, video );
+end;
+
+function SoAOS_DX_ColorMatch( pdds : IDirectDrawSurface; Color : TColor ) : Longint;
+var
+  RGB, rgbT : COLORREF;
+  DC : HDC;
+  dw : Longint;
+  ddsd : TDDSurfaceDesc;
+  hres : HRESULT;
+const
+  FailName : string = 'DXUtil.DDColorMatch';
+begin
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    Log.LogEntry( FailName );
+{$ENDIF}
+  Result := 0;
+  try
+    dw := 0;
+    rgbT := 0;
+    RGB := ColorToRGB( Color );
+    if ( RGB <> CLR_INVALID ) then
+    begin
+      if ( pdds.GetDC( DC ) = DD_OK ) then
+      begin
+        rgbT := GetPixel( DC, 0, 0 ); // Save current pixel value
+        SetPixel( DC, 0, 0, RGB ); // Set our value
+        pdds.ReleaseDC( DC );
+      end;
+    end;
+
+    ddsd.dwSize := SizeOf( ddsd );
+    hres := pdds.Lock( nil, ddsd, 0, 0 );
+    while ( hres = DDERR_WASSTILLDRAWING ) do
+      hres := pdds.Lock( nil, ddsd, 0, 0 );
+    if ( hres = DD_OK ) then
+    begin
+      dw := Longint( ddsd.lpSurface^ ); // Get DWORD
+      if ( ddsd.ddpfPixelFormat.dwRGBBitCount < 32 ) then
+        dw := dw and ( ( 1 shl ddsd.ddpfPixelFormat.dwRGBBitCount ) - 1 ); // Mask it to bpp
+      pdds.Unlock( nil );
+    end;
+
+    if ( RGB <> CLR_INVALID ) then
+    begin
+      if ( pdds.GetDC( DC ) = DD_OK ) then
+      begin
+        SetPixel( DC, 0, 0, rgbT );
+        pdds.ReleaseDC( DC );
+      end;
+    end;
+    Result := dw;
+  except
+    on E : Exception do
+      Log.log( FailName + E.Message );
+  end;
 end;
 
 end.

@@ -125,7 +125,8 @@ uses
   Transit in 'interface\Transit.pas',
   MMTimer in 'engine\MMTimer.pas',
   SoAOS.Types in 'engine\SoAOS.Types.pas',
-  SoAOS.Graphics.Draw in 'graphics\SoAOS.Graphics.Draw.pas';
+  SoAOS.Graphics.Draw in 'graphics\SoAOS.Graphics.Draw.pas',
+  SoAOS.Graphics.Types in 'graphics\SoAOS.Graphics.Types.pas';
 
 {$R *.RES}
 

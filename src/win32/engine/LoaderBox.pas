@@ -108,7 +108,7 @@ begin
 {$ENDIF}
   try
     BltFx.dwSize := SizeOf( BltFx ); //RGB(244,164,4)
-    BltFx.dwFillColor := DDColorMatch( lpDDSFront, cLoadBackColor );  //TODO: Make const RGB(100,100,255) blue, RGB(244,164,4) yellow, RGB( 32, 128, 16 ) green
+    BltFx.dwFillColor := SoAOS_DX_ColorMatch( lpDDSFront, cLoadBackColor );  //TODO: Make const RGB(100,100,255) blue, RGB(244,164,4) yellow, RGB( 32, 128, 16 ) green
     inherited;
   except
     on E : Exception do
@@ -152,7 +152,7 @@ begin
 
     DXBox := SoAOS_DX_LoadBMP( FileName, cInvisColor, width, height );
     BltFx.dwSize := SizeOf( BltFx );
-    BltFx.dwFillColor := DDColorMatch( DXBox, cLoadColor ); // RGB( 205, 205, 205 )
+    BltFx.dwFillColor := SoAOS_DX_ColorMatch( DXBox, cLoadColor ); // RGB( 205, 205, 205 )
     pr := Rect( 0, 0, width, height );
     lpDDSBack.BltFast( 0, 0, DXBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
  { for i:=0 to 9 do begin

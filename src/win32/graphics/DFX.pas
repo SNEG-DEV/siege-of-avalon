@@ -67,6 +67,8 @@ uses
   System.IOUtils,
   System.Classes,
   Vcl.Graphics,
+  SoAOS.Graphics.Types,
+  SoAOS.Graphics.Draw,
   digifx;
 
 const
@@ -93,7 +95,7 @@ type
 //    procedure LoadFromRLE( FileName : string );
 //    procedure SaveToRLE( FileName : string );
     procedure LoadFromStream( Stream : TStream );
-    procedure SaveToStream( Stream : TStream );
+//    procedure SaveToStream( Stream : TStream );
     procedure LoadFromBitPlane( BitPlane : TBitPlane );
     procedure LoadFromBitPlaneBits( Bits : PBITPLANE; Color : TColor );
     procedure LoadMoreFromBitPlane( BitPlane : TBitPlane );
@@ -212,12 +214,12 @@ begin
 {$IFDEF DirectX}
     if dfx_pixelformat = PIXFMT_555 then
     begin
-      if DDColorMatch( lpDDSBack, clWhite ) <= 32767 then
+      if SoAOS_DX_ColorMatch( lpDDSBack, clWhite ) <= 32767 then
         exit;
     end
     else if dfx_pixelformat = PIXFMT_565 then
     begin
-      if DDColorMatch( lpDDSBack, clWhite ) > 32767 then
+      if SoAOS_DX_ColorMatch( lpDDSBack, clWhite ) > 32767 then
         exit;
     end
 {$ENDIF}
@@ -556,17 +558,17 @@ begin
   end;
 end;
 
-procedure TRLESprite.SaveToStream( Stream : TStream );
-var
-  BuffSize : DWORD;
-begin
-  BuffSize := FMemSize;
-
-  Stream.Write( PicCnt, SizeOf( PicCnt ) );
-  Stream.Write( BuffSize, SizeOf( BuffSize ) );
-  Stream.Write( lpSpr^, PicCnt * SizeOf( RLEHDR ) );
-  Stream.Write( lpSpr.DataPtr^, BuffSize );
-end;
+//procedure TRLESprite.SaveToStream( Stream : TStream );
+//var
+//  BuffSize : DWORD;
+//begin
+//  BuffSize := FMemSize;
+//
+//  Stream.Write( PicCnt, SizeOf( PicCnt ) );
+//  Stream.Write( BuffSize, SizeOf( BuffSize ) );
+//  Stream.Write( lpSpr^, PicCnt * SizeOf( RLEHDR ) );
+//  Stream.Write( lpSpr.DataPtr^, BuffSize );
+//end;
 
 procedure TRLESprite.LoadMoreFromBitPlane( BitPlane : TBitPlane );
 var

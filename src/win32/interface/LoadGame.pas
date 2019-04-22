@@ -147,7 +147,7 @@ type
     LoadFile : boolean;
     SceneName : string;
     MapName : string;
-    TravelBlock : string;
+    TravelBlock : AnsiString;
     ldLoadLightRect : TRect;
     ldSaveLightRect : TRect;
     DXLoadRect : TRect;
@@ -1377,7 +1377,7 @@ end;
 function TLoadGame.LoadGame( GameName : string ) : boolean;
 var
   List : TStringList;
-  S : string;
+  S : AnsiString;
   Stream : TFileStream;
   EOB, BB : word;
   P, L : LongWord;
@@ -1387,89 +1387,89 @@ var
 const
   FailName : string = 'TCharacter.Attack ';
 begin
-
 {$IFDEF DODEBUG}
   if ( CurrDbgLvl >= DbgLvlSevere ) then
     Log.LogEntry( FailName );
 {$ENDIF}
   result := false;
-  try
-
-    EOB := EOBMarker;
-    CharacterCount := 0;
-    TravelBlock := '';
-    FoundCharacters := false;
+  if GameName<>'' then
+  begin
     try
-      Filename := DefaultPath + 'games\' + GameName + '.idx';
-      if not TFile.Exists( Filename ) then
-        Filename := DefaultPath + 'games\' + GameName + '.sav';
-    //Level:=lowercase(ChangeFileExt(ExtractFilename(LVLFile),''));
-    //Scene:=CurrentScene;
-      Stream := TFileStream.Create( Filename, fmOpenRead or fmShareCompat );
+      EOB := EOBMarker;
+      CharacterCount := 0;
+      TravelBlock := '';
+      FoundCharacters := false;
       try
-        List := TStringList.create;
+        Filename := DefaultPath + 'games\' + GameName + '.idx';
+        if not TFile.Exists( Filename ) then
+          Filename := DefaultPath + 'games\' + GameName + '.sav';
+      //Level:=lowercase(ChangeFileExt(ExtractFilename(LVLFile),''));
+      //Scene:=CurrentScene;
+        Stream := TFileStream.Create( Filename, fmOpenRead or fmShareCompat );
         try
-          while Stream.Position < Stream.Size do
-          begin
-            Stream.Read( Block, sizeof( Block ) );
-            Stream.Read( L, sizeof( L ) );
-            P := Stream.Position;
-            case Block of
-              sbMap :
+          List := TStringList.create;
+          try
+            while Stream.Position < Stream.Size do
+            begin
+              Stream.Read( Block, sizeof( Block ) );
+              Stream.Read( L, sizeof( L ) );
+              P := Stream.Position;
+              case Block of
+                sbMap :
+                  begin
+                    SetLength( S, L );
+                    Stream.Read( S[ 1 ], L );
+                    List.Text := S;
+                    MapName := List.Values[ 'Map' ];
+                    SceneName := List.Values[ 'Scene' ];
+                  end;
+                sbTravel :
+                  begin
+                    SetLength( TravelBlock, L );
+                    Stream.Read( TravelBlock[ 1 ], L );
+                  end;
+                sbCharacter :
+                  begin
+                  //Log.Log('  Loading character block');
+                    SetLength( S, L );
+                    Stream.Read( S[ 1 ], L );
+                    List.Text := S;
+                    inc( CharacterCount );
+                    CharacterName[ CharacterCount ] := List.Values[ 'CharacterName' ];
+                    CharacterGif := List.Values[ 'Resource' ];
+                    FoundCharacters := true;
+                  end;
+                sbItem :
+                  begin
+                  end;
+              else
                 begin
-                  SetLength( S, L );
-                  Stream.Read( S[ 1 ], L );
-                  List.Text := S;
-                  MapName := List.Values[ 'Map' ];
-                  SceneName := List.Values[ 'Scene' ];
+                  if FoundCharacters then
+                    break;
                 end;
-              sbTravel :
-                begin
-                  SetLength( TravelBlock, L );
-                  Stream.Read( TravelBlock[ 1 ], L );
-                end;
-              sbCharacter :
-                begin
-                //Log.Log('  Loading character block');
-                  SetLength( S, L );
-                  Stream.Read( S[ 1 ], L );
-                  List.Text := S;
-                  inc( CharacterCount );
-                  CharacterName[ CharacterCount ] := List.Values[ 'CharacterName' ];
-                  CharacterGif := List.Values[ 'Resource' ];
-                  FoundCharacters := true;
-                end;
-              sbItem :
-                begin
-                end;
-            else
+              end;
+              Stream.Position := P + L; // Seek( P + L, soFromBeginning );
+              Stream.Read( BB, sizeof( BB ) );
+              if BB <> EOB then
               begin
-                if FoundCharacters then
-                  break;
+              //Log.Log('*** Error:  EOB not found');
+                exit;
               end;
             end;
-            Stream.Position := P + L; // Seek( P + L, soFromBeginning );
-            Stream.Read( BB, sizeof( BB ) );
-            if BB <> EOB then
-            begin
-            //Log.Log('*** Error:  EOB not found');
-              exit;
-            end;
+          finally
+            List.free;
           end;
         finally
-          List.free;
+          Stream.free;
         end;
-      finally
-        Stream.free;
+      except
+        exit;
       end;
+      Result := True;
     except
-      exit;
+      on E : Exception do
+        Log.log( FailName, E.Message, [ ] );
     end;
-
-    Result := True;
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
   end;
 end;
 

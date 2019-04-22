@@ -2,10 +2,8 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
-- Remove all none-critical warnings in code compilation under DX 10.3.1, all due to unicode
 - Refactor all save/load rutines - honor file-formats
 - Reduce the file I/O overhead
-- Merge the non HD-related fixes from gondur repo
 - Add documentation on the assets file-formats used.
 - Evaluate the tools - maybe redo/merge them - and include them in the repository.
 - Getting rid of need for custem ddraw.dll
@@ -15,6 +13,21 @@ All notable changes to this project will be documented in this file.
 - Mod selection - more DLC style - extendable instead of destructive copy/paste exercises.
 - Better multi-language support - right now it is crippled, like other parts of the UI code.
 
+## 2019-04-22
+### Fixed
+- Save/Load game now working again.
+- Temporary fix for DDrawCompat lastest ddraw.dll issue - save game/screenshot and arrow incorrect drawn due to upside-down bitmap context.
+
+### Removed
+- A few digifx references
+
+### Added
+- A few units for the sake of separation
+
+## 2019-04-14
+### Removed
+- A few TImage gone
+
 ## 2019-04-07
 ### Changed
 - Cleaned out a bit of TBitmaps and wrapped some DD code.
@@ -22,6 +35,8 @@ All notable changes to this project will be documented in this file.
 
 ### Removed
 - Some VCL dependency
+- Unused GIF to POX conversion code - will be back in a different form.
+
 
 ## 2019-04-06
 ### Added

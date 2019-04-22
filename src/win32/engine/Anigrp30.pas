@@ -333,7 +333,7 @@ type
     destructor Destroy; override;
     procedure Render( Figure : TAniFigure ); virtual; abstract;
     procedure EnumLightSource( Figure : TAniFigure; Index, X, Y, Z : longint; Intensity : double; Radius : integer ); virtual;
-    procedure Draw( Canvas : TCanvas; X, Y : Integer; Frame : Word ); virtual; abstract;
+//    procedure Draw( Canvas : TCanvas; X, Y : Integer; Frame : Word ); virtual; abstract;
     procedure FreeResources; virtual; abstract;
     function AddScript( const Name : string; Script : TScript ) : Integer;
     property Script[ const Name : string ] : TScript read GetScript;
@@ -496,7 +496,7 @@ type
     FramesHigh : Longint;
     TransparentColor : TColor;
     constructor Create;
-    procedure Draw( Canvas : TCanvas; X, Y : Integer; Frame : Word ); override;
+//    procedure Draw( Canvas : TCanvas; X, Y : Integer; Frame : Word ); override;
     procedure FreeResources; override;
     procedure Render( Figure : TAniFigure ); override;
     property Frames : Longint read GetFrames;
@@ -700,7 +700,7 @@ end;
 
 function FindColorMatch( Color : TColor ) : word;
 begin
-  result := DDColorMatch( lpDDSBack, Color );
+  result := SoAOS_DX_ColorMatch( lpDDSBack, Color );
 end;
 
 //------------------------------------------------------------------------------
@@ -9548,10 +9548,10 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
           inherited;
         end;
 
-        procedure TImageSheet.Draw( Canvas : TCanvas; X, Y : Integer; Frame : Word );
-        begin
-
-        end;
+//        procedure TImageSheet.Draw( Canvas : TCanvas; X, Y : Integer; Frame : Word );
+//        begin
+//
+//        end;
 
         procedure TImageSheet.FreeResources;
         begin

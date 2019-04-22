@@ -66,7 +66,7 @@ uses
   Winapi.Windows,
   System.Types,
   Anigrp30,
-  digifx,
+  SoAOS.Graphics.Types,
   Character,
   Resource;
 

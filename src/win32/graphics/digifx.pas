@@ -70,7 +70,8 @@ unit digifx;
 interface
 
 uses
-  Winapi.Windows;
+  Winapi.Windows,
+  SoAOS.Graphics.Types;
 
 const
   BLITFX_NONE = 0;
@@ -124,16 +125,16 @@ type
     Unused : BYTE;
   end;
 
-  PBITPLANE = ^BITPLANE;
-  BITPLANE = record
-    bitsPtr : PBYTE;
-    bitsWdh : DWORD;
-    bitsHgh : DWORD;
-    bitsFmt : DWORD;
-    bitsPitch : DWORD;
-    BaseX : integer;
-    BaseY : integer;
-  end;
+//  PBITPLANE = ^BITPLANE;
+//  BITPLANE = record
+//    bitsPtr : PBYTE;
+//    bitsWdh : DWORD;
+//    bitsHgh : DWORD;
+//    bitsFmt : DWORD;
+//    bitsPitch : DWORD;
+//    BaseX : integer;
+//    BaseY : integer;
+//  end;
 
   PBLITFX = ^BLITFX;
   BLITFX = record

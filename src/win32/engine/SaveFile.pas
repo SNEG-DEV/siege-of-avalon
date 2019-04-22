@@ -770,7 +770,7 @@ procedure TSavFile.Save;
 var
   Stream : TFileStream;
   Mem : TMemoryStream;
-  S : string;
+  S : AnsiString;
   SavFileName : string;
   MapFilename : string;
   List : TStringList;

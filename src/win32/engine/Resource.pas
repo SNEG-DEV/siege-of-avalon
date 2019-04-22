@@ -66,7 +66,8 @@ uses
   System.Types,
   System.SysUtils,
   System.IOUtils,
-  Vcl.Graphics,
+  System.UITypes,
+//  Vcl.Graphics,
   SoAOS.Types,
   Anigrp30,
   AniDec30,
@@ -77,7 +78,7 @@ uses
   DXEffects,
 {$ENDIF}
   DFX,
-  digifx,
+  SoAOS.Graphics.Types,
   LogFile;
 
 type
@@ -156,7 +157,7 @@ type
     Filename : String;
     procedure EnumLightSource( Figure : TAniFigure; Index, X, Y, Z : longint; Intensity : double; Radius : integer ); override;
     procedure LoadData( INI : TStringINIFile ); virtual;
-    procedure Draw( Canvas : TCanvas; X, Y : Integer; Frame : Word ); override;
+//    procedure Draw( Canvas : TCanvas; X, Y : Integer; Frame : Word ); override;
     procedure FreeResources; override;
     procedure Render( Figure : TAniFigure ); override;
     procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); virtual;
@@ -289,7 +290,7 @@ var
 
 
 function Parse( const S : String; Index : integer; ParseChar : Char ) : string;
-function GetFile( const FileName : string; var BM : TBitmap; var INI : TStringIniFile; var FrameCount : Integer ) : Boolean;
+//function GetFile( const FileName : string; var BM : TBitmap; var INI : TStringIniFile; var FrameCount : Integer ) : Boolean;
 function LoadResource( const Filename : string ) : TResource; overload;
 function LoadResource( const Filename : string; OnDemand : boolean ) : TResource; overload;
 function LoadArtResource( const ResourceFile : string ) : TResource; overload;
@@ -399,18 +400,18 @@ end;
 function LoadResource( const Filename : string; OnDemand : boolean ) : TResource;
 var
   POXFile : string;
-  GIFDate, POXDate : TDateTime;
+//  GIFDate, POXDate : TDateTime;
   INI : TStringINIFile;
-  FrameCount : integer;
+//  FrameCount : integer;
   Stream : TMemoryStream;
-  BM : TBitmap;
+//  BM : TBitmap;
   S : AnsiString;
   TextOnly : boolean;
   L : longword;
   M : array[ 1..2 ] of AnsiChar;
   EOB, BB : word;
-  C : TColor;
-  Convert : boolean;
+//  C : TColor;
+//  Convert : boolean;
 const
   FailName : string = 'Resource.LoadResource';
 begin
@@ -421,236 +422,112 @@ begin
     Log.LogEntry( FailName );
 {$ENDIF}
   try
-
     EOB := $4242;
     POXFile := ChangeFileExt( Filename, '.pox' );
-    if GIFToPOX then
-    begin
-      GIFDate := GetFileDate( Filename );
-      POXDate := GetFileDate( POXFile );
-      if ( GIFDate = -1 ) and ( POXDate = -1 ) then
-        exit;
-      Convert := GIFDate > POXDate;
-    end
-    else
-    begin
-      if not TFile.Exists( POXFile ) then
-        exit;
-      Convert := false;
-    end;
-
-    if Convert then
-    begin
-      Log.Log( '  Converting file ' + Filename + '...' );
-
-      if GetFile( Filename, BM, INI, FrameCount ) then
-      begin
-        try
-          Stream := TMemoryStream.create;
-//        Stream:=TFileStream.create(POXFile,fmCreate or fmShareExclusive);
-          try
-            Stream.LoadFromFile( POXFile );
-            TextOnly := false;
-            Stream.write( #80#79#88#65, 4 ); //POX vA - Proprietary Object eXtension
-            S := AnsiString( AnsiLowerCase( Trim( INI.ReadString( 'Header', 'GameClass', '' ) ) ) );
-            if S = 'staticobject' then
-            begin
-              Stream.write( #83#84, 2 ); //fmt ST
-              result := TStaticResource.Create;
-            end
-            else if ( S = 'character' ) or ( S = 'charactersprite' ) then
-            begin
-              S := AnsiString( AnsiLowerCase( Trim( INI.ReadString( 'Header', 'LayeredParts', '' ) ) ) );
-              if ( S = 'yes' ) or ( S = 'base' ) then
-              begin
-                Stream.write( #76#76, 2 ); //fmt LL
-                result := TLayerResource.Create;
-                TLayerResource( result ).LinkPath := Filename;
-              end
-              else
-              begin
-                if INI.SectionExists( 'Layers' ) then
-                begin
-                  Stream.write( #76#67, 2 ); //fmt LC
-                  result := TCharacterResource.Create;
-                  TCharacterResource( result ).Layered := true;
-                  TextOnly := true;
-                end
-                else
-                begin
-                  Stream.write( #67#67, 2 ); //fmt CC
-                  result := TCharacterResource.Create;
-                  TCharacterResource( result ).Layered := false;
-                end;
-              end;
-            end
-            else if S = 'doorsprite' then
-            begin
-              Stream.write( #68#83, 2 ); //fmt DS
-              result := TDoorResource.Create;
-            end
-            else if S = 'multiimagetile' then
-            begin
-              Stream.write( #84#84, 2 ); //fmt TT
-              result := TTileResource.Create;
-            end
-            else if S = 'projectile' then
-            begin
-              Stream.write( #80#82, 2 ); //fmt PR
-              result := TProjectileResource.Create
-            end
-            else if S = 'spellcast' then
-            begin
-              Stream.write( #83#67, 2 ); //fmt SC
-              result := TCastResource.Create
-            end
-            else if S = 'inventoryitem' then
-            begin
-              Stream.write( #73#73, 2 ); //fmt II
-              result := TInventoryResource.Create
-            end
-            else if S = 'spriteobject' then
-            begin
-              Stream.write( #83#80, 2 ); //fmt SP
-              result := TResource.Create;
-            end;
-            result.LoadData( INI );
-
-            Stream.write( #13#10, 2 );
-            S := INI.Data;
-            L := Length( S );
-            if TextOnly then
-            begin
-              Stream.write( S[ 1 ], L );
-            end
-            else
-            begin
-              Stream.write( L, sizeof( L ) );
-              Stream.write( S[ 1 ], L );
-              Stream.write( EOB, sizeof( EOB ) );
-              C := StrToInt( lowercase( trim( INI.ReadString( 'Header', 'TransparentColor', '16776960' ) ) ) );   // cInvisColor
-              result.RLE := TRLESprite.create;
-              result.RLE.LoadFromBitmap( BM, result.FrameWidth, result.FrameHeight, C );
-              result.RLE.SaveToStream( Stream );
-              Stream.write( EOB, sizeof( EOB ) );
-            end;
-            result.Loaded := true;
-            result.Reload := true;
-          finally
-            Stream.free;
-          end;
-        finally
-          INI.free;
-          BM.free;
-        end;
-      end;
-    end
-    else
-    begin
+    if not TFile.Exists( POXFile ) then
+      exit;
     //Load POX
-      Stream := TMemoryStream.create;
-//    Stream:=TFileStream.create(POXFile,fmOpenRead or fmShareCompat);
-      try
-        Stream.LoadFromFile( POXFile );
-        TextOnly := false;
+    Stream := TMemoryStream.create;
+    try
+      Stream.LoadFromFile( POXFile );
+      TextOnly := false;
+      Stream.Read( L, sizeof( L ) );
+      if ( L <> $41584F50 ) then
+        exit;
+      Stream.Read( M, sizeof( M ) );
+      Stream.Read( BB, sizeof( BB ) ); //CRLF
+      if ( M = #83#84 ) then
+      begin //ST
+        result := TStaticResource.Create;
         Stream.Read( L, sizeof( L ) );
-        if ( L <> $41584F50 ) then
-          exit;
-        Stream.Read( M, sizeof( M ) );
-        Stream.Read( BB, sizeof( BB ) ); //CRLF
-        if ( M = #83#84 ) then
-        begin //ST
-          result := TStaticResource.Create;
-          Stream.Read( L, sizeof( L ) );
-        end
-        else if ( M = #67#67 ) then
-        begin //CC
-          result := TCharacterResource.Create;
-          Stream.Read( L, sizeof( L ) );
-          TCharacterResource( result ).Layered := false;
-        end
-        else if ( M = #76#67 ) then
-        begin //LC
-          result := TCharacterResource.Create;
-          L := Stream.Size - Stream.Position;
-          TCharacterResource( result ).Layered := true;
-          TextOnly := true;
-        end
-        else if ( M = #68#83 ) then
-        begin //DS
-          result := TDoorResource.Create;
-          Stream.Read( L, sizeof( L ) );
-        end
-        else if ( M = #84#84 ) then
-        begin //TT
-          result := TTileResource.Create;
-          Stream.Read( L, sizeof( L ) );
-        end
-        else if ( M = #80#82 ) then
-        begin //PR
-          result := TProjectileResource.Create;
-          Stream.Read( L, sizeof( L ) );
-        end
-        else if ( M = #83#67 ) then
-        begin //SC
-          result := TCastResource.Create;
-          Stream.Read( L, sizeof( L ) );
-        end
-        else if ( M = #76#76 ) then
-        begin //LL
-          result := TLayerResource.Create;
-          TLayerResource( result ).LinkPath := Filename;
-          Stream.Read( L, sizeof( L ) );
-        end
-        else if ( M = #73#73 ) then
-        begin //II
-          result := TInventoryResource.Create;
-          Stream.Read( L, sizeof( L ) );
-        end
-        else if ( M = #83#80 ) then
-        begin //SP
-          result := TResource.Create;
-          Stream.Read( L, sizeof( L ) );
-        end
-        else
-          exit;
-        SetLength( S, L );
-        Stream.Read( S[ 1 ], L );
-        INI := TStringINIFile.Create( S );
-        result.LoadData( INI );
-        INI.free;
+      end
+      else if ( M = #67#67 ) then
+      begin //CC
+        result := TCharacterResource.Create;
+        Stream.Read( L, sizeof( L ) );
+        TCharacterResource( result ).Layered := false;
+      end
+      else if ( M = #76#67 ) then
+      begin //LC
+        result := TCharacterResource.Create;
+        L := Stream.Size - Stream.Position;
+        TCharacterResource( result ).Layered := true;
+        TextOnly := true;
+      end
+      else if ( M = #68#83 ) then
+      begin //DS
+        result := TDoorResource.Create;
+        Stream.Read( L, sizeof( L ) );
+      end
+      else if ( M = #84#84 ) then
+      begin //TT
+        result := TTileResource.Create;
+        Stream.Read( L, sizeof( L ) );
+      end
+      else if ( M = #80#82 ) then
+      begin //PR
+        result := TProjectileResource.Create;
+        Stream.Read( L, sizeof( L ) );
+      end
+      else if ( M = #83#67 ) then
+      begin //SC
+        result := TCastResource.Create;
+        Stream.Read( L, sizeof( L ) );
+      end
+      else if ( M = #76#76 ) then
+      begin //LL
+        result := TLayerResource.Create;
+        TLayerResource( result ).LinkPath := Filename;
+        Stream.Read( L, sizeof( L ) );
+      end
+      else if ( M = #73#73 ) then
+      begin //II
+        result := TInventoryResource.Create;
+        Stream.Read( L, sizeof( L ) );
+      end
+      else if ( M = #83#80 ) then
+      begin //SP
+        result := TResource.Create;
+        Stream.Read( L, sizeof( L ) );
+      end
+      else
+        exit;
+      SetLength( S, L );
+      Stream.Read( S[ 1 ], L );
+      INI := TStringINIFile.Create( S );
+      result.LoadData( INI );
+      INI.free;
 
-        if TextOnly then
+      if TextOnly then
+      begin
+        result.Loaded := true;
+        result.Reload := true;
+      end
+      else if OnDemand then
+      begin
+        result.OnDemand := true;
+        result.Loaded := true;
+        result.Reload := true;
+      end
+      else
+      begin
+        Stream.Read( BB, sizeof( BB ) );
+        if BB = EOB then
         begin
-          result.Loaded := true;
-          result.Reload := true;
-        end
-        else if OnDemand then
-        begin
-          result.OnDemand := true;
+          result.RLE := TRLESprite.create;
+          result.RLE.LoadFromStream( Stream );
           result.Loaded := true;
           result.Reload := true;
         end
         else
         begin
-          Stream.Read( BB, sizeof( BB ) );
-          if BB = EOB then
-          begin
-            result.RLE := TRLESprite.create;
-            result.RLE.LoadFromStream( Stream );
-            result.Loaded := true;
-            result.Reload := true;
-          end
-          else
-          begin
-            result.free;
-            result := nil;
-            exit;
-          end;
+          result.free;
+          result := nil;
+          exit;
         end;
-      finally
-        Stream.free;
       end;
+    finally
+      Stream.free;
     end;
 
   except
@@ -679,44 +556,6 @@ begin
       A[ i - 1 ] := StrToInt( C );
     end;
   end;
-end;
-
-//This function was for development and is obsololete
-
-function GetFile( const FileName : string; var BM : TBitmap; var INI : TStringIniFile; var FrameCount : Integer ) : Boolean;
-{var
-  GIF: TGIF;
-  Comments: string;
-  S: string;  }
-begin
-  Result := False;
-
-{try
-
-  S := FileName;
-  INI := nil;
-  BM := nil;
-  if TFile.Exists(S) then begin
-    GIF := TGIF.Create;
-    try
-      GIF.GifConvert(S);
-      BM := GIF.Render(RenderWidth);
-      FrameCount := GIF.Frames;
-      Comments := GIF.Comments;
-      INI := TStringIniFile.Create(Comments);
-      Result := True;
-    except
-      Log.Log('  *** Error: Could not process file.');
-    end;
-    GIF.Free;
-  end
-  else begin
-    Log.Log('  *** Error: File missing.');
-  end;
-
-except
-  on E: Exception do Log.log(FailName,E.Message,[]);
-end; }
 end;
 
 { TResource }
@@ -943,10 +782,10 @@ begin
   end;
 end;
 
-procedure TResource.Draw( Canvas : TCanvas; X, Y : Integer; Frame : Word );
-begin
-
-end;
+//procedure TResource.Draw( Canvas : TCanvas; X, Y : Integer; Frame : Word );
+//begin
+//
+//end;
 
 procedure TResource.EnumLightSource( Figure : TAniFigure; Index, X, Y, Z : longint; Intensity : double; Radius : integer );
 begin
