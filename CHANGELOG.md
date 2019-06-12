@@ -13,6 +13,17 @@ All notable changes to this project will be documented in this file.
 - Mod selection - more DLC style - extendable instead of destructive copy/paste exercises.
 - Better multi-language support - right now it is crippled, like other parts of the UI code.
 
+## 2019-06-12
+### Removed
+- Old SoAOS folder - the unfinished SDL (only Menues done)
+
+### Added
+- New Tools folder - including new cross-platform POX viewer
+
+## 2019-06-07
+### Added
+- POX File documentation
+
 ## 2019-04-22
 ### Fixed
 - Save/Load game now working again.

@@ -1,3 +1,0 @@
-This is a dummy text files put here so that the DCU directory is created when pulled from CVS.
-
-If a directory is empty it does not pull it down.

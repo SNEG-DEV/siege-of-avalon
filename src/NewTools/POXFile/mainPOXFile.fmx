@@ -1,0 +1,494 @@
+object frmMain: TfrmMain
+  Left = 0
+  Top = 0
+  Caption = 'POX File Viewer'
+  ClientHeight = 539
+  ClientWidth = 778
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  OnCloseQuery = FormCloseQuery
+  DesignerMasterStyle = 0
+  object pnlTop: TPanel
+    Align = Top
+    Size.Width = 778.000000000000000000
+    Size.Height = 41.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object btnLoad: TButton
+      Position.X = 8.000000000000000000
+      Position.Y = 8.000000000000000000
+      TabOrder = 1
+      Text = 'Load'
+      OnClick = btnLoadClick
+    end
+    object lblFilename: TLabel
+      AutoSize = True
+      Position.X = 184.000000000000000000
+      Position.Y = 11.000000000000000000
+      Size.Height = 16.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.WordWrap = False
+      TabOrder = 2
+    end
+    object lblResType: TLabel
+      Anchors = [akTop, akRight]
+      Position.X = 531.000000000000000000
+      Position.Y = 11.000000000000000000
+      Size.Width = 233.000000000000000000
+      Size.Height = 16.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.HorzAlign = Trailing
+      TextSettings.WordWrap = False
+      TabOrder = 3
+    end
+    object btnExport: TButton
+      Enabled = False
+      Position.X = 96.000000000000000000
+      Position.Y = 8.000000000000000000
+      TabOrder = 0
+      Text = 'Export'
+      OnClick = btnExportClick
+    end
+  end
+  object lblINIData: TLabel
+    AutoSize = True
+    Position.X = 8.000000000000000000
+    Position.Y = 48.000000000000000000
+    Size.Width = 169.000000000000000000
+    Size.Height = 16.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Ini data from POX'
+    TabOrder = 1
+  end
+  object lblRLE: TLabel
+    AutoSize = True
+    Position.X = 440.000000000000000000
+    Position.Y = 48.000000000000000000
+    Size.Width = 209.000000000000000000
+    Size.Height = 16.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Decoded RLE image data from POX'
+    TabOrder = 2
+  end
+  object memINI: TMemo
+    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+    DataDetectorTypes = []
+    ReadOnly = True
+    Anchors = [akLeft, akTop, akBottom]
+    Position.X = 8.000000000000000000
+    Position.Y = 64.000000000000000000
+    Size.Width = 305.000000000000000000
+    Size.Height = 444.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 3
+    Viewport.Width = 301.000000000000000000
+    Viewport.Height = 440.000000000000000000
+  end
+  object sbrStatus: TStatusBar
+    Position.Y = 517.000000000000000000
+    ShowSizeGrip = True
+    Size.Width = 778.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 4
+  end
+  object imgRLE: TImage
+    MultiResBitmap = <
+      item
+      end>
+    Position.X = 440.000000000000000000
+    Position.Y = 64.000000000000000000
+    Size.Width = 113.000000000000000000
+    Size.Height = 137.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object tkbFrames: TTrackBar
+    Anchors = [akLeft, akRight, akBottom]
+    CanParentFocus = True
+    Max = 0.000000000000000000
+    Orientation = Horizontal
+    Position.X = 376.000000000000000000
+    Position.Y = 491.000000000000000000
+    Size.Width = 395.000000000000000000
+    Size.Height = 19.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 7
+    OnChange = tkbFramesChange
+    object playFrames: TFloatAnimation
+      Duration = 0.000000000000000000
+      Loop = True
+      PropertyName = 'Value'
+      StartValue = 0.000000000000000000
+      StopValue = 0.000000000000000000
+    end
+  end
+  object sbPlay: TSpeedButton
+    StaysPressed = True
+    Anchors = [akLeft, akBottom]
+    GroupName = 'ctrl'
+    Position.X = 320.000000000000000000
+    Position.Y = 491.000000000000000000
+    Size.Width = 25.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    StyleLookup = 'playtoolbuttonbordered'
+    Text = 'sbPlay'
+    OnClick = sbPlayClick
+  end
+  object sbPause: TSpeedButton
+    StaysPressed = True
+    Anchors = [akLeft, akBottom]
+    GroupName = 'ctrl'
+    IsPressed = True
+    Position.X = 344.000000000000000000
+    Position.Y = 491.000000000000000000
+    Size.Width = 25.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    StyleLookup = 'pausetoolbutton'
+    Text = 'sbPause'
+    OnClick = sbPauseClick
+  end
+  object OpenDialog1: TOpenDialog
+    Left = 424
+    Top = 168
+  end
+  object Panel1: TPanel
+    Anchors = [akLeft, akTop, akBottom]
+    Position.X = 320.000000000000000000
+    Position.Y = 64.000000000000000000
+    Size.Width = 113.000000000000000000
+    Size.Height = 425.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 10
+    object Action: TLabel
+      Position.X = 8.000000000000000000
+      Position.Y = 8.000000000000000000
+      Size.Width = 73.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Action'
+      TabOrder = 1
+    end
+    object Label1: TLabel
+      Position.X = 8.000000000000000000
+      Position.Y = 304.000000000000000000
+      Size.Width = 73.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Direction'
+      TabOrder = 2
+    end
+    object rbStand: TRadioButton
+      Enabled = False
+      GroupName = 'action'
+      Position.X = 8.000000000000000000
+      Position.Y = 24.000000000000000000
+      Size.Width = 73.000000000000000000
+      Size.Height = 19.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 15
+      Text = 'Stand'
+      OnChange = actionChange2
+    end
+    object rbAttack1: TRadioButton
+      Enabled = False
+      GroupName = 'action'
+      Position.X = 8.000000000000000000
+      Position.Y = 42.000000000000000000
+      Size.Width = 105.000000000000000000
+      Size.Height = 19.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 14
+      Text = 'Attack1'
+      OnChange = actionChange2
+    end
+    object rbBowAttack: TRadioButton
+      Enabled = False
+      GroupName = 'action'
+      Position.X = 8.000000000000000000
+      Position.Y = 60.000000000000000000
+      Size.Width = 105.000000000000000000
+      Size.Height = 19.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 13
+      Text = 'BowAttack'
+      OnChange = actionChange2
+    end
+    object rbCast: TRadioButton
+      Enabled = False
+      GroupName = 'action'
+      Position.X = 8.000000000000000000
+      Position.Y = 78.000000000000000000
+      Size.Width = 73.000000000000000000
+      Size.Height = 19.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 12
+      Text = 'Cast'
+      OnChange = actionChange2
+    end
+    object rbPain: TRadioButton
+      Enabled = False
+      GroupName = 'action'
+      Position.X = 8.000000000000000000
+      Position.Y = 96.000000000000000000
+      Size.Width = 73.000000000000000000
+      Size.Height = 19.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 11
+      Text = 'Pain'
+      OnChange = actionChange2
+    end
+    object rbDeath: TRadioButton
+      Enabled = False
+      GroupName = 'action'
+      Position.X = 8.000000000000000000
+      Position.Y = 114.000000000000000000
+      Size.Width = 73.000000000000000000
+      Size.Height = 19.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 10
+      Text = 'Death'
+      OnChange = actionChange2
+    end
+    object rbWalk: TRadioButton
+      Enabled = False
+      GroupName = 'action'
+      Position.X = 8.000000000000000000
+      Position.Y = 132.000000000000000000
+      Size.Width = 73.000000000000000000
+      Size.Height = 19.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 9
+      Text = 'Walk'
+      OnChange = actionChange2
+    end
+    object rbRun: TRadioButton
+      Enabled = False
+      GroupName = 'action'
+      Position.X = 8.000000000000000000
+      Position.Y = 150.000000000000000000
+      Size.Width = 73.000000000000000000
+      Size.Height = 19.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 8
+      Text = 'Run'
+      OnChange = actionChange2
+    end
+    object rbDefault: TRadioButton
+      Enabled = False
+      GroupName = 'action'
+      Position.X = 8.000000000000000000
+      Position.Y = 168.000000000000000000
+      Size.Width = 73.000000000000000000
+      Size.Height = 19.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 7
+      Text = 'Default'
+      OnChange = actionChange2
+    end
+    object rbExplode: TRadioButton
+      Enabled = False
+      GroupName = 'action'
+      Position.X = 8.000000000000000000
+      Position.Y = 186.000000000000000000
+      Size.Width = 73.000000000000000000
+      Size.Height = 19.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 6
+      Text = 'Explode'
+      OnChange = actionChange2
+    end
+    object rbSit: TRadioButton
+      Enabled = False
+      GroupName = 'action'
+      Position.X = 8.000000000000000000
+      Position.Y = 204.000000000000000000
+      Size.Width = 73.000000000000000000
+      Size.Height = 19.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 4
+      Text = 'Sit'
+      OnChange = actionChange2
+    end
+    object sbNW: TSpeedButton
+      StaysPressed = True
+      Enabled = False
+      GroupName = 'direction'
+      Position.X = 8.000000000000000000
+      Position.Y = 320.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'NW'
+      OnClick = directionClick
+    end
+    object sbN: TSpeedButton
+      Tag = 1
+      StaysPressed = True
+      Enabled = False
+      GroupName = 'direction'
+      Position.X = 40.000000000000000000
+      Position.Y = 320.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'N'
+      OnClick = directionClick
+    end
+    object sbNE: TSpeedButton
+      Tag = 2
+      StaysPressed = True
+      Enabled = False
+      GroupName = 'direction'
+      Position.X = 72.000000000000000000
+      Position.Y = 320.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'NE'
+      OnClick = directionClick
+    end
+    object sbW: TSpeedButton
+      Tag = 7
+      StaysPressed = True
+      Enabled = False
+      GroupName = 'direction'
+      Position.X = 8.000000000000000000
+      Position.Y = 352.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'W'
+      OnClick = directionClick
+    end
+    object sbAll: TSpeedButton
+      StaysPressed = True
+      Enabled = False
+      GroupName = 'direction'
+      Position.X = 40.000000000000000000
+      Position.Y = 352.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      Text = '*'
+      OnClick = sbAllClick
+    end
+    object sbE: TSpeedButton
+      Tag = 3
+      StaysPressed = True
+      Enabled = False
+      GroupName = 'direction'
+      Position.X = 72.000000000000000000
+      Position.Y = 352.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'E'
+      OnClick = directionClick
+    end
+    object sbSW: TSpeedButton
+      Tag = 6
+      StaysPressed = True
+      Enabled = False
+      GroupName = 'direction'
+      Position.X = 8.000000000000000000
+      Position.Y = 384.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'SW'
+      OnClick = directionClick
+    end
+    object sbS: TSpeedButton
+      Tag = 5
+      StaysPressed = True
+      Enabled = False
+      GroupName = 'direction'
+      Position.X = 40.000000000000000000
+      Position.Y = 384.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'S'
+      OnClick = directionClick
+    end
+    object sbSE: TSpeedButton
+      Tag = 4
+      StaysPressed = True
+      Enabled = False
+      GroupName = 'direction'
+      Position.X = 72.000000000000000000
+      Position.Y = 384.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'SE'
+      OnClick = directionClick
+    end
+    object rbReveal: TRadioButton
+      Enabled = False
+      GroupName = 'action'
+      Position.X = 8.000000000000000000
+      Position.Y = 222.000000000000000000
+      Size.Width = 73.000000000000000000
+      Size.Height = 19.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 5
+      Text = 'Reveal'
+      OnChange = actionChange2
+    end
+    object rbHide: TRadioButton
+      Enabled = False
+      GroupName = 'action'
+      Position.X = 8.000000000000000000
+      Position.Y = 240.000000000000000000
+      Size.Width = 73.000000000000000000
+      Size.Height = 19.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 3
+      Text = 'Hide'
+      OnChange = actionChange2
+    end
+  end
+  object rbX1: TRadioButton
+    GroupName = 'zoom'
+    IsChecked = True
+    Position.X = 640.000000000000000000
+    Position.Y = 46.000000000000000000
+    Size.Width = 41.000000000000000000
+    Size.Height = 19.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 14
+    Text = 'x1'
+    OnChange = rbX1Change
+  end
+  object rbX2: TRadioButton
+    GroupName = 'zoom'
+    Position.X = 680.000000000000000000
+    Position.Y = 46.000000000000000000
+    Size.Width = 41.000000000000000000
+    Size.Height = 19.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 13
+    Text = 'x2'
+    OnChange = rbX2Change
+  end
+  object rbX3: TRadioButton
+    GroupName = 'zoom'
+    Position.X = 720.000000000000000000
+    Position.Y = 46.000000000000000000
+    Size.Width = 41.000000000000000000
+    Size.Height = 19.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 12
+    Text = 'x3'
+    OnChange = rbX3Change
+  end
+  object SaveDialog1: TSaveDialog
+    Left = 464
+    Top = 232
+  end
+end
