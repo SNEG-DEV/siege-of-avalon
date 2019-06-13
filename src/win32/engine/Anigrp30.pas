@@ -8328,11 +8328,12 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
             NewBitHeight := MaxZoneHeight
           else
             NewBitHeight := NewMaxIndex * FMap.FTileHeight;
-          X := ( ( FTileMaxIndex - 1 ) div FTileMaxColumnIndex ) * FMap.FTileWidth;
-//          X := ( ( FTileMaxIndex  ) div FTileMaxColumnIndex ) * FMap.FTileWidth ;  // from gondurs
+//          X := ( ( FTileMaxIndex - 1 ) div FTileMaxColumnIndex ) * FMap.FTileWidth; // original - seems to cause pink artifacts
+          X := ( FTileMaxIndex div FTileMaxColumnIndex ) * FMap.FTileWidth ;  // fix by rucksacksepp
           Y := ( FTileMaxIndex mod FTileMaxColumnIndex ) * FMap.FTileHeight;
-          if ( ( FTileMaxIndex mod FTileMaxColumnIndex ) = 0 ) and ( FTileMaxIndex > 0 ) then
-//            if ( ( FTileMaxIndex mod FTileMaxColumnIndex ) < 0 ) and ( FTileMaxIndex > 0 ) then   // from gondurs
+//          if ( ( FTileMaxIndex mod FTileMaxColumnIndex ) = 0 ) and ( FTileMaxIndex > 0 ) then // original - seems to cause pink artifacts
+//TODO: Check if below condition ever ends up true - otherwise remove.
+          if ( ( FTileMaxIndex mod FTileMaxColumnIndex ) < 0 ) and ( FTileMaxIndex > 0 ) then   // fix by rucksacksepp
             inc( X, FMap.FTileWidth );
           Tile[ Index ] := NewTile;
     {$IFDEF DirectX}

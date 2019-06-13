@@ -81,15 +81,15 @@ type
     DXDirty : IDirectDrawSurface;
     MouseTimer : TTimer;
     Mpt : TPoint;
-    MouseCounter : integer;
+//    MouseCounter : integer;
     MouseFrame : integer;
-    MouseAnimationCycle : integer; //speed of frame change
-    StartFrame : integer;
-    PlayFrames : integer;
-    Loop : boolean;
-    OldStartFrame : integer;
-    OldSpeed : integer;
-    OldLoop : boolean;
+//    MouseAnimationCycle : integer; //speed of frame change
+//    StartFrame : integer;
+//    PlayFrames : integer;
+//    Loop : boolean;
+//    OldStartFrame : integer;
+//    OldSpeed : integer;
+//    OldLoop : boolean;
     FPlotDirty : boolean; //plot cleanup or no?
     WAdj, HAdj, OldWAdj, OldHAdj : integer;
     FEnabled : boolean;
@@ -101,9 +101,9 @@ type
     DxSurface : IDirectDrawSurface; //surface to draw pointer to
     constructor Create;
     destructor Destroy; override;
-    procedure SetAnim( Frame, Frames, Speed : integer );
+//    procedure SetAnim( Frame, Frames, Speed : integer );
     procedure Cleanup;
-    procedure SetLoopAnim( Frame, Frames, Speed : integer );
+//    procedure SetLoopAnim( Frame, Frames, Speed : integer );
     procedure SetFrame( Frame : integer );
     property PlotDirty : boolean read FPlotDirty write SetPlotDirty; //plot cleanup or no?
     property Enabled : boolean read FEnabled write SetEnabled;
@@ -189,28 +189,28 @@ begin
 
   PrevPt := mPt;
   mPt := Mouse.CursorPos;
-  if ( MouseAnimationCycle > 0 ) and ( MouseCounter > MouseAnimationCycle ) then
-  begin
-    inc( MouseFrame );
-    if MouseFrame >= PlayFrames then
-    begin
-      if Loop then
-      begin
-        MouseFrame := StartFrame;
-      end
-      else
-      begin
-        StartFrame := OldStartFrame;
-        MouseAnimationCycle := OldSpeed;
-        Loop := OldLoop;
-        MouseFrame := StartFrame;
-      end;
-    end;
-    MouseCounter := 0;
-  end;
-
-  if assigned( Sender ) then
-    inc( MouseCounter );
+//  if ( MouseAnimationCycle > 0 ) and ( MouseCounter > MouseAnimationCycle ) then
+//  begin
+//    inc( MouseFrame );
+//    if MouseFrame >= PlayFrames then
+//    begin
+//      if Loop then
+//      begin
+//        MouseFrame := StartFrame;
+//      end
+//      else
+//      begin
+//        StartFrame := OldStartFrame;
+//        MouseAnimationCycle := OldSpeed;
+//        Loop := OldLoop;
+//        MouseFrame := StartFrame;
+//      end;
+//    end;
+//    MouseCounter := 0;
+//  end;
+//
+//  if assigned( Sender ) then
+//    inc( MouseCounter );
 
   OldWAdj := WAdj;
   OldHAdj := HAdj;
@@ -245,56 +245,56 @@ begin
 end; //MouseTimerEvent
 
 
-procedure TMousePtr.SetAnim( Frame, Frames, Speed : integer );
-const
-  FailName : string = 'TMousePtr.SetAnim';
-begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
-  try
-    if MouseAnimationCycle > 0 then
-      exit;
-    OldStartFrame := StartFrame;
-    OldSpeed := MouseAnimationCycle;
-    OldLoop := Loop;
-    StartFrame := Frame;
-    PlayFrames := Frame + Frames;
-    MouseAnimationCycle := Speed;
-    Loop := false;
-    MouseCounter := 0;
-    MouseFrame := StartFrame;
-  except
-    on E : Exception do
-      Log.log( FailName + E.Message );
-  end;
+//procedure TMousePtr.SetAnim( Frame, Frames, Speed : integer );
+//const
+//  FailName : string = 'TMousePtr.SetAnim';
+//begin
+//{$IFDEF DODEBUG}
+//  if ( CurrDbgLvl >= DbgLvlSevere ) then
+//    Log.LogEntry( FailName );
+//{$ENDIF}
+//  try
+//    if MouseAnimationCycle > 0 then
+//      exit;
+//    OldStartFrame := StartFrame;
+//    OldSpeed := MouseAnimationCycle;
+//    OldLoop := Loop;
+//    StartFrame := Frame;
+//    PlayFrames := Frame + Frames;
+//    MouseAnimationCycle := Speed;
+//    Loop := false;
+//    MouseCounter := 0;
+//    MouseFrame := StartFrame;
+//  except
+//    on E : Exception do
+//      Log.log( FailName + E.Message );
+//  end;
+//
+//end;
 
-end;
-
-procedure TMousePtr.SetLoopAnim( Frame, Frames, Speed : integer );
-const
-  FailName : string = 'TMousePtr.SetloopAnim';
-begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
-  try
-    if MouseAnimationCycle > 0 then
-      exit;
-    StartFrame := Frame;
-    PlayFrames := Frame + Frames;
-    MouseAnimationCycle := Speed;
-    Loop := true;
-    MouseCounter := 0;
-    MouseFrame := StartFrame;
-  except
-    on E : Exception do
-      Log.log( FailName + E.Message );
-  end;
-
-end;
+//procedure TMousePtr.SetLoopAnim( Frame, Frames, Speed : integer );
+//const
+//  FailName : string = 'TMousePtr.SetloopAnim';
+//begin
+//{$IFDEF DODEBUG}
+//  if ( CurrDbgLvl >= DbgLvlSevere ) then
+//    Log.LogEntry( FailName );
+//{$ENDIF}
+//  try
+//    if MouseAnimationCycle > 0 then
+//      exit;
+//    StartFrame := Frame;
+//    PlayFrames := Frame + Frames;
+//    MouseAnimationCycle := Speed;
+//    Loop := true;
+//    MouseCounter := 0;
+//    MouseFrame := StartFrame;
+//  except
+//    on E : Exception do
+//      Log.log( FailName + E.Message );
+//  end;
+//
+//end;
 
 procedure TMousePtr.SetPlotDirty( const Value : boolean );
 const
@@ -371,9 +371,9 @@ end;
 
 procedure TMousePtr.SetFrame( Frame : integer );
 begin
-  StartFrame := Frame;
-  MouseAnimationCycle := 0;
-  Loop := false;
+//  StartFrame := Frame;
+//  MouseAnimationCycle := 0;
+//  Loop := false;
   MouseFrame := Frame;
 end;
 

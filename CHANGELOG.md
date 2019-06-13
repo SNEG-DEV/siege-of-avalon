@@ -13,9 +13,16 @@ All notable changes to this project will be documented in this file.
 - Mod selection - more DLC style - extendable instead of destructive copy/paste exercises.
 - Better multi-language support - right now it is crippled, like other parts of the UI code.
 
+## 2019-06-13
+### Fixed
+- Included bug fixes by Rucksacksepp - on pink tile artifacts - a great thanks for finding these.
+
+### Removed
+- Commented out unused Mouse pointer animation code
+
 ## 2019-06-12
 ### Removed
-- Old SoAOS folder - the unfinished SDL (only Menues done)
+- Old SoAOS folder - the unfinished SDL (only Menus done)
 
 ### Added
 - New Tools folder - including new cross-platform POX viewer
@@ -27,7 +34,7 @@ All notable changes to this project will be documented in this file.
 ## 2019-04-22
 ### Fixed
 - Save/Load game now working again.
-- Temporary fix for DDrawCompat lastest ddraw.dll issue - save game/screenshot and arrow incorrect drawn due to upside-down bitmap context.
+- Temporary fix for DDrawCompat latest ddraw.dll issue - save game/screenshot and arrow incorrect drawn due to upside-down bitmap context.
 
 ### Removed
 - A few digifx references
