@@ -14,6 +14,9 @@ All notable changes to this project will be documented in this file.
 - Better multi-language support - right now it is crippled, like other parts of the UI code.
 
 ## 2019-06-13
+### Added
+- New Tools: added more actions and fixed several bugs in POX Viewer
+
 ### Fixed
 - Included bug fixes by Rucksacksepp - on pink tile artifacts - a great thanks for finding these.
 

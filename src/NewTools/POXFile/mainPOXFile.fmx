@@ -2,7 +2,7 @@ object frmMain: TfrmMain
   Left = 0
   Top = 0
   Caption = 'POX File Viewer'
-  ClientHeight = 539
+  ClientHeight = 595
   ClientWidth = 778
   FormFactor.Width = 320
   FormFactor.Height = 480
@@ -80,19 +80,27 @@ object frmMain: TfrmMain
     Position.X = 8.000000000000000000
     Position.Y = 64.000000000000000000
     Size.Width = 305.000000000000000000
-    Size.Height = 444.000000000000000000
+    Size.Height = 500.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 3
     Viewport.Width = 301.000000000000000000
-    Viewport.Height = 440.000000000000000000
+    Viewport.Height = 496.000000000000000000
   end
   object sbrStatus: TStatusBar
-    Position.Y = 517.000000000000000000
+    Position.Y = 573.000000000000000000
     ShowSizeGrip = True
     Size.Width = 778.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 4
+    object lblFrameCnt: TLabel
+      Position.X = 8.000000000000000000
+      Size.Width = 137.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Frame'
+      TabOrder = 0
+    end
   end
   object imgRLE: TImage
     MultiResBitmap = <
@@ -107,10 +115,11 @@ object frmMain: TfrmMain
   object tkbFrames: TTrackBar
     Anchors = [akLeft, akRight, akBottom]
     CanParentFocus = True
+    Frequency = 1.000000000000000000
     Max = 0.000000000000000000
     Orientation = Horizontal
     Position.X = 376.000000000000000000
-    Position.Y = 491.000000000000000000
+    Position.Y = 547.000000000000000000
     Size.Width = 395.000000000000000000
     Size.Height = 19.000000000000000000
     Size.PlatformDefault = False
@@ -127,9 +136,10 @@ object frmMain: TfrmMain
   object sbPlay: TSpeedButton
     StaysPressed = True
     Anchors = [akLeft, akBottom]
+    Enabled = False
     GroupName = 'ctrl'
     Position.X = 320.000000000000000000
-    Position.Y = 491.000000000000000000
+    Position.Y = 547.000000000000000000
     Size.Width = 25.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
@@ -143,7 +153,7 @@ object frmMain: TfrmMain
     GroupName = 'ctrl'
     IsPressed = True
     Position.X = 344.000000000000000000
-    Position.Y = 491.000000000000000000
+    Position.Y = 547.000000000000000000
     Size.Width = 25.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
@@ -152,15 +162,15 @@ object frmMain: TfrmMain
     OnClick = sbPauseClick
   end
   object OpenDialog1: TOpenDialog
-    Left = 424
-    Top = 168
+    Left = 656
+    Top = 104
   end
   object Panel1: TPanel
     Anchors = [akLeft, akTop, akBottom]
     Position.X = 320.000000000000000000
     Position.Y = 64.000000000000000000
     Size.Width = 113.000000000000000000
-    Size.Height = 425.000000000000000000
+    Size.Height = 479.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 10
     object Action: TLabel
@@ -174,14 +184,14 @@ object frmMain: TfrmMain
     end
     object Label1: TLabel
       Position.X = 8.000000000000000000
-      Position.Y = 304.000000000000000000
+      Position.Y = 359.000000000000000000
       Size.Width = 73.000000000000000000
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'Direction'
       TabOrder = 2
     end
-    object rbStand: TRadioButton
+    object rbDefault: TRadioButton
       Enabled = False
       GroupName = 'action'
       Position.X = 8.000000000000000000
@@ -189,11 +199,11 @@ object frmMain: TfrmMain
       Size.Width = 73.000000000000000000
       Size.Height = 19.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 15
-      Text = 'Stand'
+      TabOrder = 19
+      Text = 'Default'
       OnChange = actionChange2
     end
-    object rbAttack1: TRadioButton
+    object rbStand: TRadioButton
       Enabled = False
       GroupName = 'action'
       Position.X = 8.000000000000000000
@@ -201,11 +211,11 @@ object frmMain: TfrmMain
       Size.Width = 105.000000000000000000
       Size.Height = 19.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 14
-      Text = 'Attack1'
+      TabOrder = 18
+      Text = 'Stand'
       OnChange = actionChange2
     end
-    object rbBowAttack: TRadioButton
+    object rbAttack1: TRadioButton
       Enabled = False
       GroupName = 'action'
       Position.X = 8.000000000000000000
@@ -213,7 +223,19 @@ object frmMain: TfrmMain
       Size.Width = 105.000000000000000000
       Size.Height = 19.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 13
+      TabOrder = 17
+      Text = 'Attack1'
+      OnChange = actionChange2
+    end
+    object rbBowAttack: TRadioButton
+      Enabled = False
+      GroupName = 'action'
+      Position.X = 8.000000000000000000
+      Position.Y = 78.000000000000000000
+      Size.Width = 97.000000000000000000
+      Size.Height = 19.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 16
       Text = 'BowAttack'
       OnChange = actionChange2
     end
@@ -221,11 +243,11 @@ object frmMain: TfrmMain
       Enabled = False
       GroupName = 'action'
       Position.X = 8.000000000000000000
-      Position.Y = 78.000000000000000000
+      Position.Y = 96.000000000000000000
       Size.Width = 73.000000000000000000
       Size.Height = 19.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 12
+      TabOrder = 15
       Text = 'Cast'
       OnChange = actionChange2
     end
@@ -233,11 +255,11 @@ object frmMain: TfrmMain
       Enabled = False
       GroupName = 'action'
       Position.X = 8.000000000000000000
-      Position.Y = 96.000000000000000000
+      Position.Y = 114.000000000000000000
       Size.Width = 73.000000000000000000
       Size.Height = 19.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 11
+      TabOrder = 14
       Text = 'Pain'
       OnChange = actionChange2
     end
@@ -245,11 +267,11 @@ object frmMain: TfrmMain
       Enabled = False
       GroupName = 'action'
       Position.X = 8.000000000000000000
-      Position.Y = 114.000000000000000000
+      Position.Y = 132.000000000000000000
       Size.Width = 73.000000000000000000
       Size.Height = 19.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 10
+      TabOrder = 13
       Text = 'Death'
       OnChange = actionChange2
     end
@@ -257,11 +279,11 @@ object frmMain: TfrmMain
       Enabled = False
       GroupName = 'action'
       Position.X = 8.000000000000000000
-      Position.Y = 132.000000000000000000
+      Position.Y = 150.000000000000000000
       Size.Width = 73.000000000000000000
       Size.Height = 19.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 9
+      TabOrder = 12
       Text = 'Walk'
       OnChange = actionChange2
     end
@@ -269,24 +291,12 @@ object frmMain: TfrmMain
       Enabled = False
       GroupName = 'action'
       Position.X = 8.000000000000000000
-      Position.Y = 150.000000000000000000
-      Size.Width = 73.000000000000000000
-      Size.Height = 19.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 8
-      Text = 'Run'
-      OnChange = actionChange2
-    end
-    object rbDefault: TRadioButton
-      Enabled = False
-      GroupName = 'action'
-      Position.X = 8.000000000000000000
       Position.Y = 168.000000000000000000
       Size.Width = 73.000000000000000000
       Size.Height = 19.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 7
-      Text = 'Default'
+      TabOrder = 11
+      Text = 'Run'
       OnChange = actionChange2
     end
     object rbExplode: TRadioButton
@@ -297,7 +307,7 @@ object frmMain: TfrmMain
       Size.Width = 73.000000000000000000
       Size.Height = 19.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 6
+      TabOrder = 10
       Text = 'Explode'
       OnChange = actionChange2
     end
@@ -309,16 +319,17 @@ object frmMain: TfrmMain
       Size.Width = 73.000000000000000000
       Size.Height = 19.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 4
+      TabOrder = 8
       Text = 'Sit'
       OnChange = actionChange2
     end
     object sbNW: TSpeedButton
+      Tag = 1
       StaysPressed = True
       Enabled = False
       GroupName = 'direction'
       Position.X = 8.000000000000000000
-      Position.Y = 320.000000000000000000
+      Position.Y = 375.000000000000000000
       Size.Width = 32.000000000000000000
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
@@ -326,12 +337,12 @@ object frmMain: TfrmMain
       OnClick = directionClick
     end
     object sbN: TSpeedButton
-      Tag = 1
+      Tag = 2
       StaysPressed = True
       Enabled = False
       GroupName = 'direction'
       Position.X = 40.000000000000000000
-      Position.Y = 320.000000000000000000
+      Position.Y = 375.000000000000000000
       Size.Width = 32.000000000000000000
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
@@ -339,12 +350,12 @@ object frmMain: TfrmMain
       OnClick = directionClick
     end
     object sbNE: TSpeedButton
-      Tag = 2
+      Tag = 3
       StaysPressed = True
       Enabled = False
       GroupName = 'direction'
       Position.X = 72.000000000000000000
-      Position.Y = 320.000000000000000000
+      Position.Y = 375.000000000000000000
       Size.Width = 32.000000000000000000
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
@@ -352,37 +363,37 @@ object frmMain: TfrmMain
       OnClick = directionClick
     end
     object sbW: TSpeedButton
-      Tag = 7
+      Tag = 8
       StaysPressed = True
       Enabled = False
       GroupName = 'direction'
       Position.X = 8.000000000000000000
-      Position.Y = 352.000000000000000000
+      Position.Y = 407.000000000000000000
       Size.Width = 32.000000000000000000
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       Text = 'W'
       OnClick = directionClick
     end
-    object sbAll: TSpeedButton
+    object sbStatic: TSpeedButton
       StaysPressed = True
       Enabled = False
       GroupName = 'direction'
       Position.X = 40.000000000000000000
-      Position.Y = 352.000000000000000000
+      Position.Y = 407.000000000000000000
       Size.Width = 32.000000000000000000
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       Text = '*'
-      OnClick = sbAllClick
+      OnClick = directionClick
     end
     object sbE: TSpeedButton
-      Tag = 3
+      Tag = 4
       StaysPressed = True
       Enabled = False
       GroupName = 'direction'
       Position.X = 72.000000000000000000
-      Position.Y = 352.000000000000000000
+      Position.Y = 407.000000000000000000
       Size.Width = 32.000000000000000000
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
@@ -390,12 +401,12 @@ object frmMain: TfrmMain
       OnClick = directionClick
     end
     object sbSW: TSpeedButton
-      Tag = 6
+      Tag = 7
       StaysPressed = True
       Enabled = False
       GroupName = 'direction'
       Position.X = 8.000000000000000000
-      Position.Y = 384.000000000000000000
+      Position.Y = 439.000000000000000000
       Size.Width = 32.000000000000000000
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
@@ -403,12 +414,12 @@ object frmMain: TfrmMain
       OnClick = directionClick
     end
     object sbS: TSpeedButton
-      Tag = 5
+      Tag = 6
       StaysPressed = True
       Enabled = False
       GroupName = 'direction'
       Position.X = 40.000000000000000000
-      Position.Y = 384.000000000000000000
+      Position.Y = 439.000000000000000000
       Size.Width = 32.000000000000000000
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
@@ -416,12 +427,12 @@ object frmMain: TfrmMain
       OnClick = directionClick
     end
     object sbSE: TSpeedButton
-      Tag = 4
+      Tag = 5
       StaysPressed = True
       Enabled = False
       GroupName = 'direction'
       Position.X = 72.000000000000000000
-      Position.Y = 384.000000000000000000
+      Position.Y = 439.000000000000000000
       Size.Width = 32.000000000000000000
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
@@ -436,7 +447,7 @@ object frmMain: TfrmMain
       Size.Width = 73.000000000000000000
       Size.Height = 19.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 5
+      TabOrder = 9
       Text = 'Reveal'
       OnChange = actionChange2
     end
@@ -448,8 +459,56 @@ object frmMain: TfrmMain
       Size.Width = 73.000000000000000000
       Size.Height = 19.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 3
+      TabOrder = 6
       Text = 'Hide'
+      OnChange = actionChange2
+    end
+    object rbClose: TRadioButton
+      Enabled = False
+      GroupName = 'action'
+      Position.X = 8.000000000000000000
+      Position.Y = 276.000000000000000000
+      Size.Width = 73.000000000000000000
+      Size.Height = 19.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 4
+      Text = 'Close'
+      OnChange = actionChange2
+    end
+    object rbOpen: TRadioButton
+      Enabled = False
+      GroupName = 'action'
+      Position.X = 8.000000000000000000
+      Position.Y = 258.000000000000000000
+      Size.Width = 73.000000000000000000
+      Size.Height = 19.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 7
+      Text = 'Open'
+      OnChange = actionChange2
+    end
+    object rbStop: TRadioButton
+      Enabled = False
+      GroupName = 'action'
+      Position.X = 8.000000000000000000
+      Position.Y = 312.000000000000000000
+      Size.Width = 73.000000000000000000
+      Size.Height = 19.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 3
+      Text = 'Stop'
+      OnChange = actionChange2
+    end
+    object rbStart: TRadioButton
+      Enabled = False
+      GroupName = 'action'
+      Position.X = 8.000000000000000000
+      Position.Y = 294.000000000000000000
+      Size.Width = 73.000000000000000000
+      Size.Height = 19.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 5
+      Text = 'Start'
       OnChange = actionChange2
     end
   end
@@ -486,9 +545,5 @@ object frmMain: TfrmMain
     TabOrder = 12
     Text = 'x3'
     OnChange = rbX3Change
-  end
-  object SaveDialog1: TSaveDialog
-    Left = 464
-    Top = 232
   end
 end

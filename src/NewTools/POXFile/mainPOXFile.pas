@@ -71,8 +71,8 @@ type
     destructor Destroy; override;
   end;
 
-  TActionEnum = ( Stand, Attack1, BowAttack, Cast, Pain, Death, Walk, Run, Default, Explode, Sit, Reveal, Hide );
-  TDirectionEnum = ( NWFrames, NNFrames, NEFrames, EEFrames, SEFrames, SSFrames, SWFrames, WWFrames );
+  TActionEnum = ( Default, Stand, Attack1, BowAttack, Cast, Pain, Death, Walk, Run, Explode, Sit, Reveal, Hide, Open, Close, Start, Stop );
+  TDirectionEnum = ( Frames, NWFrames, NNFrames, NEFrames, EEFrames, SEFrames, SSFrames, SWFrames, WWFrames );
 
   TFrameList = class(TList<Integer>);
 
@@ -94,6 +94,7 @@ type
     Panel1: TPanel;
     Action: TLabel;
     Label1: TLabel;
+    rbDefault: TRadioButton;
     rbStand: TRadioButton;
     rbAttack1: TRadioButton;
     rbBowAttack: TRadioButton;
@@ -102,14 +103,13 @@ type
     rbDeath: TRadioButton;
     rbWalk: TRadioButton;
     rbRun: TRadioButton;
-    rbDefault: TRadioButton;
     rbExplode: TRadioButton;
     rbSit: TRadioButton;
     sbNW: TSpeedButton;
     sbN: TSpeedButton;
     sbNE: TSpeedButton;
     sbW: TSpeedButton;
-    sbAll: TSpeedButton;
+    sbStatic: TSpeedButton;
     sbE: TSpeedButton;
     sbSW: TSpeedButton;
     sbS: TSpeedButton;
@@ -120,7 +120,11 @@ type
     rbReveal: TRadioButton;
     rbHide: TRadioButton;
     btnExport: TButton;
-    SaveDialog1: TSaveDialog;
+    rbClose: TRadioButton;
+    rbOpen: TRadioButton;
+    lblFrameCnt: TLabel;
+    rbStop: TRadioButton;
+    rbStart: TRadioButton;
     procedure btnLoadClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -132,14 +136,14 @@ type
     procedure rbX3Change(Sender: TObject);
     procedure directionClick(Sender: TObject);
     procedure actionChange2(Sender: TObject);
-    procedure sbAllClick(Sender: TObject);
     procedure btnExportClick(Sender: TObject);
   private
     { Private declarations }
-    actionsEnabled: Word; // bitset
+    actionsEnabled: DWord; // bitset
     currentAction: Word;
     currentDirection: Byte;
     currentObjectName: string;
+    frameMultiplier: integer;
     movements: TObjectDictionary<Byte, TFrameList>;
     bmpList: TObjectList<TBitmap>;
     procedure zoom(factor: single);
@@ -167,12 +171,13 @@ uses
 
 procedure TfrmMain.btnExportClick(Sender: TObject);
 begin
- if SaveDialog1.Execute then
- begin
-   var exportpath: string := ExtractFilePath(SaveDialog1.FileName);
-   for var i:integer := 0 to bmpList.Count-1 do
-     bmplist[i].SaveToFile( exportpath+currentObjectName+'_frame'+(i+1).ToString+'.bmp' );
- end;
+  var exportpath : string := TPath.GetPicturesPath;
+  if SelectDirectory('Select a directory', exportPath, exportPath) then
+  begin
+    exportpath := IncludeTrailingPathDelimiter(exportpath);
+    for var i:integer := 0 to bmpList.Count-1 do
+      bmplist[i].SaveToFile( exportpath+currentObjectName+'_frame'+(i+1).ToString+'.bmp' );
+  end;
 end;
 
 procedure TfrmMain.btnLoadClick(Sender: TObject);
@@ -183,9 +188,11 @@ begin
     memINI.Lines.Clear;
     rbX1.IsChecked := True;
     movements.Clear;
+    tkbFrames.Value := 0;
     LoadPOXFile(OpenDialog1.FileName);
     imgRLE.Bitmap := bmpList[0];
     updActions;
+    updDirections;
     btnExport.Enabled := True;
   end;
 end;
@@ -366,8 +373,8 @@ begin
       for i := 1 to PicCnt do
       begin
         bitmap := TBitmap.Create;
-        bitmap.Width := floor(imgRLE.Width);
-        bitmap.Height := floor(imgRLE.Height);
+        bitmap.Width := Trunc(imgRLE.Width);
+        bitmap.Height := Trunc(imgRLE.Height);
 //        bitmap.PixelFormat := TPixelFormat.BGR_565; // pf16bit;  // Should be bgr565
         p.DataPtr := PChar( p.DataPtr + DWORD( RelocOffset ) );
 
@@ -414,22 +421,27 @@ begin
   try
     ini.SetStrings(iniData);
     var actionStr := ini.ReadString('HEADER', 'Actions', '');
-    if ContainsText(actionStr, 'Stand') then Inc(actionsEnabled, 1);
-    if ContainsText(actionStr, 'Attack1') then Inc(actionsEnabled, 2);
-    if ContainsText(actionStr, 'BowAttack') then Inc(actionsEnabled, 4);
-    if ContainsText(actionStr, 'Cast') then Inc(actionsEnabled, 8);
-    if ContainsText(actionStr, 'Pain') then Inc(actionsEnabled, 16);
-    if ContainsText(actionStr, 'Death') then Inc(actionsEnabled, 32);
-    if ContainsText(actionStr, 'Walk') then Inc(actionsEnabled, 64);
-    if ContainsText(actionStr, 'Run') then Inc(actionsEnabled, 128);
-    if ContainsText(actionStr, 'Default') then Inc(actionsEnabled, 256);
-    if ContainsText(actionStr, 'Explode') then Inc(actionsEnabled, 512);
-    if ContainsText(actionStr, 'Sit') then Inc(actionsEnabled, 1024);
-    if ContainsText(actionStr, 'Reveal') then Inc(actionsEnabled, 2048);
-    if ContainsText(actionStr, 'Hide') then Inc(actionsEnabled, 4096);
+    if ContainsText(actionStr, 'Default') then Inc(actionsEnabled, 1);
+    if ContainsText(actionStr, 'Stand') then Inc(actionsEnabled, 2);
+    if ContainsText(actionStr, 'Attack1') then Inc(actionsEnabled, 4);
+    if ContainsText(actionStr, 'BowAttack') then Inc(actionsEnabled, 8);
+    if ContainsText(actionStr, 'Cast') then Inc(actionsEnabled, $10);
+    if ContainsText(actionStr, 'Pain') then Inc(actionsEnabled, $20);
+    if ContainsText(actionStr, 'Death') then Inc(actionsEnabled, $40);
+    if ContainsText(actionStr, 'Walk') then Inc(actionsEnabled, $80);
+    if ContainsText(actionStr, 'Run') then Inc(actionsEnabled, $100);
+    if ContainsText(actionStr, 'Explode') then Inc(actionsEnabled, $200);
+    if ContainsText(actionStr, 'Sit') then Inc(actionsEnabled, $400);
+    if ContainsText(actionStr, 'Reveal') then Inc(actionsEnabled, $800);
+    if ContainsText(actionStr, 'Hide') then Inc(actionsEnabled, $1000);
+    if ContainsText(actionStr, 'Open') then Inc(actionsEnabled, $2000);
+    if ContainsText(actionStr, 'Close') then Inc(actionsEnabled, $4000);
+    if ContainsText(actionStr, 'Start') then Inc(actionsEnabled, $8000);
+    if ContainsText(actionStr, 'Stop') then Inc(actionsEnabled, $10000);
 
     imgRLE.Width := ini.ReadInteger('HEADER', 'ImageWidth', 0);
     imgRLE.Height := ini.ReadInteger('HEADER', 'ImageHeight', 0);
+    frameMultiplier := ini.ReadInteger('HEADER','FrameMultiplier', 1);
 
     for var action := Low(TActionEnum) to High(TActionEnum) do
       addFrames(action);
@@ -441,6 +453,7 @@ end;
 
 procedure TfrmMain.actionChange2(Sender: TObject);
 begin
+  playFrames.Stop;
   currentAction := ord( TRttiEnumerationType.GetValue<TActionEnum>(TRadioButton(Sender).Text) );
   updDirections;
   updateTrackBar;
@@ -465,17 +478,13 @@ procedure TfrmMain.sbPlayClick(Sender: TObject);
 begin
   playFrames.StartValue := 0;
   playFrames.StopValue := tkbFrames.Max;
-  playFrames.Duration := tkbFrames.Max * 0.1; // 100 msec per frame
+  playFrames.Duration := tkbFrames.Max * 0.1 * frameMultiplier; // 100 msec per frame
   playFrames.Start;
-end;
-
-procedure TfrmMain.sbAllClick(Sender: TObject);
-begin
-  // set Track to full bmplist.
 end;
 
 procedure TfrmMain.directionClick(Sender: TObject);
 begin
+  playFrames.Stop;
   currentDirection := TSpeedButton(Sender).Tag;
   updateTrackBar;
 end;
@@ -487,7 +496,9 @@ end;
 
 procedure TfrmMain.tkbFramesChange(Sender: TObject);
 begin
-  imgRLE.Bitmap := bmpList[movements[(currentAction*10)+currentDirection][Floor(tkbFrames.Value)]];
+  var frame := movements[(currentAction*10)+currentDirection][Trunc(tkbFrames.Value)];
+  imgRLE.Bitmap := bmpList[frame-1];
+  lblFrameCnt.Text := 'Frame: '+frame.ToString;
 end;
 
 procedure TfrmMain.updActions;
@@ -506,40 +517,60 @@ begin
   rbSit.IsChecked := False;
   rbReveal.IsChecked := False;
   rbHide.IsChecked := False;
+  rbOpen.IsChecked := False;
+  rbClose.IsChecked := False;
+  rbStart.IsChecked := False;
+  rbStop.IsChecked := False;
 
-  rbStand.Enabled := (actionsEnabled and 1) <> 0;
-  rbAttack1.Enabled := (actionsEnabled and 2) <> 0;
-  rbBowAttack.Enabled := (actionsEnabled and 4) <> 0;
-  rbCast.Enabled := (actionsEnabled and 8) <> 0;
-  rbPain.Enabled := (actionsEnabled and 16) <> 0;
-  rbDeath.Enabled := (actionsEnabled and 32) <> 0;
-  rbWalk.Enabled := (actionsEnabled and 64) <> 0;
-  rbRun.Enabled := (actionsEnabled and 128) <> 0;
-  rbDefault.Enabled := (actionsEnabled and 256) <> 0;
-  rbExplode.Enabled := (actionsEnabled and 512) <> 0;
-  rbSit.Enabled := (actionsEnabled and 1024) <> 0;
-  rbReveal.Enabled := (actionsEnabled and 2048) <> 0;
-  rbHide.Enabled := (actionsEnabled and 4096) <> 0;
+  rbDefault.Enabled := (actionsEnabled and 1) <> 0;
+  rbStand.Enabled := (actionsEnabled and 2) <> 0;
+  rbAttack1.Enabled := (actionsEnabled and 4) <> 0;
+  rbBowAttack.Enabled := (actionsEnabled and 8) <> 0;
+  rbCast.Enabled := (actionsEnabled and $10) <> 0;
+  rbPain.Enabled := (actionsEnabled and $20) <> 0;
+  rbDeath.Enabled := (actionsEnabled and $40) <> 0;
+  rbWalk.Enabled := (actionsEnabled and $80) <> 0;
+  rbRun.Enabled := (actionsEnabled and $100) <> 0;
+  rbExplode.Enabled := (actionsEnabled and $200) <> 0;
+  rbSit.Enabled := (actionsEnabled and $400) <> 0;
+  rbReveal.Enabled := (actionsEnabled and $800) <> 0;
+  rbHide.Enabled := (actionsEnabled and $1000) <> 0;
+  rbOpen.Enabled := (actionsEnabled and $2000) <> 0;
+  rbClose.Enabled := (actionsEnabled and $4000) <> 0;
+  rbStart.Enabled := (actionsEnabled and $8000) <> 0;
+  rbStop.Enabled := (actionsEnabled and $10000) <> 0;
 end;
 
 procedure TfrmMain.updDirections;
 begin
   // TODO: Set based on direction available currentAction
-  sbNW.Enabled := True;
-  sbN.Enabled := True;
-  sbNE.Enabled := True;
-  sbE.Enabled := True;
-  sbSE.Enabled := True;
-  sbS.Enabled := True;
-  sbSW.Enabled := True;
-  sbW.Enabled := True;
+  sbStatic.Enabled := movements.ContainsKey(currentAction*10+0);
+  sbNW.Enabled := movements.ContainsKey(currentAction*10+1);
+  sbN.Enabled := movements.ContainsKey(currentAction*10+2);
+  sbNE.Enabled := movements.ContainsKey(currentAction*10+3);
+  sbE.Enabled := movements.ContainsKey(currentAction*10+4);
+  sbSE.Enabled := movements.ContainsKey(currentAction*10+5);
+  sbS.Enabled := movements.ContainsKey(currentAction*10+6);
+  sbSW.Enabled := movements.ContainsKey(currentAction*10+7);
+  sbW.Enabled := movements.ContainsKey(currentAction*10+8);
 end;
 
 procedure TfrmMain.updateTrackBar;
+var
+  frames: TFrameList;
 begin
-  tkbFrames.Value := 0.0;
-  tkbFrames.Max := movements[(currentAction*10)+currentDirection].Count-1;
-  imgRLE.Bitmap := bmpList[movements[(currentAction*10)+currentDirection][Floor(tkbFrames.Value)]];
+  tkbFrames.Value := 0;
+  if movements.TryGetValue((currentAction*10)+currentDirection, frames) then
+  begin
+    tkbFrames.Max := frames.Count-1;
+    imgRLE.Bitmap := bmpList[frames[Trunc(tkbFrames.Value)]-1];
+  end
+  else
+  begin
+    tkbFrames.Max := tkbFrames.Min;
+    imgRLE.Bitmap := bmpList[0];
+  end;
+  sbPlay.Enabled := tkbFrames.Max <> tkbFrames.Min;
 end;
 
 procedure TfrmMain.zoom(factor: single);
