@@ -19,8 +19,6 @@
 |12|*iniLength*|Ini file content - ansi encoded
 |12+*iniLength*|2|`BB` - Begin of RLE bitmap data stream (TRLESprite) marker
 ...	RLE bitmap data stream
-| Offset | Bytes | Description
-| ------ | ----- | -----------
 |0|4| Picture Count - *picCnt*
 |4|4| RLE data size - *rleSize*
 |8|*picCnt* * RLEHDR record size| RLEHDR records - with pointer to RLE data offset
