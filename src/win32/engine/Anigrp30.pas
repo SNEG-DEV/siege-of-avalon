@@ -5780,36 +5780,38 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
       begin
         if ZoneTile.FullRefresh then
         begin
-          if Dest = lpDDSMap then
+          if Dest <> lpDDSMap then
           begin
-            if Layer = 1 then
-              Exit;
-            DstX := X + FMap.FTileWidth;
-            DstY := Y + FMap.FTileHeight;
-            if Assigned( ClipRect ) then
-            begin
-              if ( X < ClipRect.Left ) then
-                X := ClipRect.Left;
-              if ( DstX > ClipRect.Right ) then
-                DstX := ClipRect.Right;
-              if ( Y < ClipRect.Top ) then
-                Y := ClipRect.Top;
-              if ( DstY > ClipRect.Bottom ) then
-                DstY := ClipRect.Bottom;
-            end;
-            BltFx.dwSize := SizeOf( BltFx );
-            BltFx.dwFillColor := FMap.FColorMatch;
-            pr := Rect( X, Y, DstX, DstY );
-            Dest.Blt( @pr, nil, @pr, DDBLT_COLORFILL + DDBLT_WAIT, @BltFx );
-            Exit;
-          end
-          else
-          begin
+//            if Layer = 1 then
+//              Exit;
+//
+//            DstX := X + FMap.FTileWidth;
+//            DstY := Y + FMap.FTileHeight;
+//            if Assigned( ClipRect ) then
+//            begin
+//              if ( X < ClipRect.Left ) then
+//                X := ClipRect.Left;
+//              if ( DstX > ClipRect.Right ) then
+//                DstX := ClipRect.Right;
+//              if ( Y < ClipRect.Top ) then
+//                Y := ClipRect.Top;
+//              if ( DstY > ClipRect.Bottom ) then
+//                DstY := ClipRect.Bottom;
+//            end;
+//            BltFx.dwSize := SizeOf( BltFx );
+//            BltFx.dwFillColor := FMap.FColorMatch;
+//            pr :=  Rect( X, Y, DstX, DstY );
+//            Dest.Blt( @pr, nil, @pr, DDBLT_COLORFILL + DDBLT_WAIT, @BltFx );
+//            Exit;
+//          end
+//          else
+//          begin
             Offset := ( TLightZone( ZoneTile ).States - TLightZone( ZoneTile ).State ) * TLightZone( ZoneTile ).TileStateOffset;
             Dec( Index, Offset );
           end;
         end;
       end;
+
 {$ENDIF}
       SrcX := ( Index div ZoneTile.FTileMaxColumnIndex ) * FMap.FTileWidth;
       SrcY := ( Index mod ZoneTile.FTileMaxColumnIndex ) * FMap.FTileHeight;
