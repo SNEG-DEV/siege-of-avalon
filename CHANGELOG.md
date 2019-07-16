@@ -5,13 +5,19 @@ All notable changes to this project will be documented in this file.
 - Refactor all save/load rutines - honor file-formats
 - Reduce the file I/O overhead
 - Add documentation on the assets file-formats used.
-- Evaluate the tools - maybe redo/merge them - and include them in the repository.
 - Getting rid of need for custem ddraw.dll
 - Replacing DirectDraw with cross-platform library
 - Add a character selector - again probably re-organizing the "Character Creator" dialog
 - Character in the center - add male/female choices.
 - Mod selection - more DLC style - extendable instead of destructive copy/paste exercises.
 - Better multi-language support - right now it is crippled, like other parts of the UI code.
+
+## 2019-07-16
+### Changed
+- New Tools: discontinued - and continued as POXStudio at: https://github.com/SteveNew/POXStudio 
+
+### Added
+- Pure DirectX branch - cleared of IFDEFS
 
 ## 2019-06-14
 ### Fixed

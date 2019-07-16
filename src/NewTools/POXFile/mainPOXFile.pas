@@ -38,6 +38,8 @@ unit mainPOXFile;
 { Revision History                                                             }
 { ----------------                                                             }
 {   Juni    12 2019 - SN : Initial Upload to GitHub                            }
+{   Juli    16 2019 - discontinued - and continued as POXStudio at:            }
+{                     https://github.com/SteveNew/POXStudio                    }
 {                                                                              }
 {******************************************************************************}
 
@@ -71,7 +73,6 @@ type
     destructor Destroy; override;
   end;
 
-  TActionEnum = ( Default, Stand, Attack1, BowAttack, Cast, Pain, Death, Walk, Run, Explode, Sit, Reveal, Hide, Open, Close, Start, Stop );
   TDirectionEnum = ( Frames, NWFrames, NNFrames, NEFrames, EEFrames, SEFrames, SSFrames, SWFrames, WWFrames );
 
   TFrameList = class(TList<Integer>);
@@ -94,17 +95,6 @@ type
     Panel1: TPanel;
     Action: TLabel;
     Label1: TLabel;
-    rbDefault: TRadioButton;
-    rbStand: TRadioButton;
-    rbAttack1: TRadioButton;
-    rbBowAttack: TRadioButton;
-    rbCast: TRadioButton;
-    rbPain: TRadioButton;
-    rbDeath: TRadioButton;
-    rbWalk: TRadioButton;
-    rbRun: TRadioButton;
-    rbExplode: TRadioButton;
-    rbSit: TRadioButton;
     sbNW: TSpeedButton;
     sbN: TSpeedButton;
     sbNE: TSpeedButton;
@@ -117,14 +107,8 @@ type
     rbX1: TRadioButton;
     rbX2: TRadioButton;
     rbX3: TRadioButton;
-    rbReveal: TRadioButton;
-    rbHide: TRadioButton;
     btnExport: TButton;
-    rbClose: TRadioButton;
-    rbOpen: TRadioButton;
     lblFrameCnt: TLabel;
-    rbStop: TRadioButton;
-    rbStart: TRadioButton;
     procedure btnLoadClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -139,8 +123,9 @@ type
     procedure btnExportClick(Sender: TObject);
   private
     { Private declarations }
-    actionsEnabled: DWord; // bitset
-    currentAction: Word;
+    actions: TStringList;
+    actionButtons: TObjectList<TRadioButton>;
+    currentActionIdx: Byte;
     currentDirection: Byte;
     currentObjectName: string;
     frameMultiplier: integer;
@@ -170,12 +155,15 @@ uses
 { TForm8 }
 
 procedure TfrmMain.btnExportClick(Sender: TObject);
+var
+  i: integer;
+  exportpath: string;
 begin
-  var exportpath : string := TPath.GetPicturesPath;
+  exportpath := TPath.GetPicturesPath;
   if SelectDirectory('Select a directory', exportPath, exportPath) then
   begin
     exportpath := IncludeTrailingPathDelimiter(exportpath);
-    for var i:integer := 0 to bmpList.Count-1 do
+    for i := 0 to bmpList.Count-1 do
       bmplist[i].SaveToFile( exportpath+currentObjectName+'_frame'+(i+1).ToString+'.bmp' );
   end;
 end;
@@ -199,7 +187,7 @@ end;
 
 procedure TfrmMain.decodeRLE(rle: PRLEHDR; rleSize: integer; var bitmap: TBitmap);
 var
-  i : integer;
+  i, x, y : integer;
   c : byte;
   colour: word;
   pxCol: TAlphaColorRec;
@@ -209,8 +197,8 @@ begin
   pxCol.A := $FF;
   if bitmap.Map(TMapAccess.Write, bmpData) then
   begin
-    var x: Integer := 0;
-    var y: Integer := 0;
+    x := 0;
+    y := 0;
     rleData := TROMemoryStream.Create;
     rleData.SetMemPointer(rle.DataPtr, rleSize);
     rleData.Position := 0;
@@ -250,9 +238,13 @@ begin
 end;
 
 procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+var
+  framelst: TFrameList;
 begin
   bmpList.Free;
-  for var framelst: TFrameList in movements.Values do
+  actions.Free;
+  actionButtons.Free;
+  for framelst in movements.Values do
   begin
     framelst.Free;
   end;
@@ -263,6 +255,10 @@ end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
+  actions := TStringList.Create;
+  actions.Duplicates := dupIgnore;
+  actions.Sorted := True;
+  actionButtons := TObjectList<TRadioButton>.Create(false);
   bmpList := TObjectList<TBitmap>.Create();
   movements := TObjectDictionary<Byte, TFrameList>.Create();
 end;
@@ -395,56 +391,54 @@ end;
 procedure TfrmMain.parseIni(iniData: TStrings);
 var
   ini: TMemIniFile;
+  actionStr: string;
+  frameList: TFrameList;
 
-  procedure addFrames(action: TActionEnum);
+  procedure addFrames;
+  var
+    a, i: integer;
+    direction: TDirectionEnum;
+    frames, str: string;
+    frameList: TFrameList;
   begin
-    for var direction := Low(TDirectionEnum) to High(TDirectionEnum) do
+    for a := 0 to actions.Count-1 do
     begin
-      var Frames := ini.ReadString('Action '+TRttiEnumerationType.GetName(action), TRttiEnumerationType.GetName(direction), '');
-      var i: integer;
-      if Frames<>'' then
+      for direction := Low(TDirectionEnum) to High(TDirectionEnum) do
       begin
-        var frameList: TFrameList := TFrameList.Create;
-        for var str: string in Frames.Split([',']) do
+        frames := ini.ReadString('Action '+actions[a], TRttiEnumerationType.GetName(direction), '');
+        if Frames<>'' then
         begin
-          if TryStrToInt(str, i) then
-            frameList.Add(i);
+          frameList := TFrameList.Create;
+          for str in Frames.Split([',']) do
+          begin
+            if TryStrToInt(str, i) then
+              frameList.Add(i);
+          end;
+          movements.Add(a*10+ord(direction), frameList);
         end;
-        movements.Add(ord(action)*10+ord(direction), frameList);
       end;
     end;
   end;
 
 begin
-  actionsEnabled := 0;
   ini := TMemIniFile.Create('');
   try
     ini.SetStrings(iniData);
-    var actionStr := ini.ReadString('HEADER', 'Actions', '');
-    if ContainsText(actionStr, 'Default') then Inc(actionsEnabled, 1);
-    if ContainsText(actionStr, 'Stand') then Inc(actionsEnabled, 2);
-    if ContainsText(actionStr, 'Attack1') then Inc(actionsEnabled, 4);
-    if ContainsText(actionStr, 'BowAttack') then Inc(actionsEnabled, 8);
-    if ContainsText(actionStr, 'Cast') then Inc(actionsEnabled, $10);
-    if ContainsText(actionStr, 'Pain') then Inc(actionsEnabled, $20);
-    if ContainsText(actionStr, 'Death') then Inc(actionsEnabled, $40);
-    if ContainsText(actionStr, 'Walk') then Inc(actionsEnabled, $80);
-    if ContainsText(actionStr, 'Run') then Inc(actionsEnabled, $100);
-    if ContainsText(actionStr, 'Explode') then Inc(actionsEnabled, $200);
-    if ContainsText(actionStr, 'Sit') then Inc(actionsEnabled, $400);
-    if ContainsText(actionStr, 'Reveal') then Inc(actionsEnabled, $800);
-    if ContainsText(actionStr, 'Hide') then Inc(actionsEnabled, $1000);
-    if ContainsText(actionStr, 'Open') then Inc(actionsEnabled, $2000);
-    if ContainsText(actionStr, 'Close') then Inc(actionsEnabled, $4000);
-    if ContainsText(actionStr, 'Start') then Inc(actionsEnabled, $8000);
-    if ContainsText(actionStr, 'Stop') then Inc(actionsEnabled, $10000);
+    actionStr := ini.ReadString('HEADER', 'Actions', '');
+    actions.Clear;
+    actions.AddStrings(actionStr.Split([',']));
 
     imgRLE.Width := ini.ReadInteger('HEADER', 'ImageWidth', 0);
     imgRLE.Height := ini.ReadInteger('HEADER', 'ImageHeight', 0);
     frameMultiplier := ini.ReadInteger('HEADER','FrameMultiplier', 1);
 
-    for var action := Low(TActionEnum) to High(TActionEnum) do
-      addFrames(action);
+    for frameList in movements.Values do
+    begin
+      frameList.Free;
+    end;
+    movements.Clear;
+
+    addFrames;
 
   finally
     ini.Free;
@@ -454,7 +448,7 @@ end;
 procedure TfrmMain.actionChange2(Sender: TObject);
 begin
   playFrames.Stop;
-  currentAction := ord( TRttiEnumerationType.GetValue<TActionEnum>(TRadioButton(Sender).Text) );
+  currentActionIdx := actions.IndexOf(TRadioButton(Sender).Text);
   updDirections;
   updateTrackBar;
 end;
@@ -495,64 +489,47 @@ begin
 end;
 
 procedure TfrmMain.tkbFramesChange(Sender: TObject);
+var
+  frame: integer;
 begin
-  var frame := movements[(currentAction*10)+currentDirection][Trunc(tkbFrames.Value)];
+  frame := movements[(currentActionIdx*10)+currentDirection][Trunc(tkbFrames.Value)];
   imgRLE.Bitmap := bmpList[frame-1];
   lblFrameCnt.Text := 'Frame: '+frame.ToString;
 end;
 
 procedure TfrmMain.updActions;
+var
+  rb: TRadioButton;
+  a: integer;
 begin
-// TODO: Change to use TActionEnum
-  rbStand.IsChecked := False;
-  rbAttack1.IsChecked := False;
-  rbBowAttack.IsChecked := False;
-  rbCast.IsChecked := False;
-  rbPain.IsChecked := False;
-  rbDeath.IsChecked := False;
-  rbWalk.IsChecked := False;
-  rbRun.IsChecked := False;
-  rbDefault.IsChecked := False;
-  rbExplode.IsChecked := False;
-  rbSit.IsChecked := False;
-  rbReveal.IsChecked := False;
-  rbHide.IsChecked := False;
-  rbOpen.IsChecked := False;
-  rbClose.IsChecked := False;
-  rbStart.IsChecked := False;
-  rbStop.IsChecked := False;
+  for rb in actionButtons do
+    rb.Free;
 
-  rbDefault.Enabled := (actionsEnabled and 1) <> 0;
-  rbStand.Enabled := (actionsEnabled and 2) <> 0;
-  rbAttack1.Enabled := (actionsEnabled and 4) <> 0;
-  rbBowAttack.Enabled := (actionsEnabled and 8) <> 0;
-  rbCast.Enabled := (actionsEnabled and $10) <> 0;
-  rbPain.Enabled := (actionsEnabled and $20) <> 0;
-  rbDeath.Enabled := (actionsEnabled and $40) <> 0;
-  rbWalk.Enabled := (actionsEnabled and $80) <> 0;
-  rbRun.Enabled := (actionsEnabled and $100) <> 0;
-  rbExplode.Enabled := (actionsEnabled and $200) <> 0;
-  rbSit.Enabled := (actionsEnabled and $400) <> 0;
-  rbReveal.Enabled := (actionsEnabled and $800) <> 0;
-  rbHide.Enabled := (actionsEnabled and $1000) <> 0;
-  rbOpen.Enabled := (actionsEnabled and $2000) <> 0;
-  rbClose.Enabled := (actionsEnabled and $4000) <> 0;
-  rbStart.Enabled := (actionsEnabled and $8000) <> 0;
-  rbStop.Enabled := (actionsEnabled and $10000) <> 0;
+  panel1.Repaint;
+  for a := 0 to actions.Count-1 do
+  begin
+    rb := TRadioButton.Create(nil);
+    rb.Parent := Panel1;
+    rb.Text := actions[a];
+    rb.Position.X := 8;
+    rb.Position.Y := 24 + ( 18 * a );
+    rb.GroupName := 'action';
+    rb.OnChange := actionChange2;
+    actionButtons.add(rb);
+  end;
 end;
 
 procedure TfrmMain.updDirections;
 begin
-  // TODO: Set based on direction available currentAction
-  sbStatic.Enabled := movements.ContainsKey(currentAction*10+0);
-  sbNW.Enabled := movements.ContainsKey(currentAction*10+1);
-  sbN.Enabled := movements.ContainsKey(currentAction*10+2);
-  sbNE.Enabled := movements.ContainsKey(currentAction*10+3);
-  sbE.Enabled := movements.ContainsKey(currentAction*10+4);
-  sbSE.Enabled := movements.ContainsKey(currentAction*10+5);
-  sbS.Enabled := movements.ContainsKey(currentAction*10+6);
-  sbSW.Enabled := movements.ContainsKey(currentAction*10+7);
-  sbW.Enabled := movements.ContainsKey(currentAction*10+8);
+  sbStatic.Enabled := movements.ContainsKey(currentActionIdx*10+0);
+  sbNW.Enabled := movements.ContainsKey(currentActionIdx*10+1);
+  sbN.Enabled := movements.ContainsKey(currentActionIdx*10+2);
+  sbNE.Enabled := movements.ContainsKey(currentActionIdx*10+3);
+  sbE.Enabled := movements.ContainsKey(currentActionIdx*10+4);
+  sbSE.Enabled := movements.ContainsKey(currentActionIdx*10+5);
+  sbS.Enabled := movements.ContainsKey(currentActionIdx*10+6);
+  sbSW.Enabled := movements.ContainsKey(currentActionIdx*10+7);
+  sbW.Enabled := movements.ContainsKey(currentActionIdx*10+8);
 end;
 
 procedure TfrmMain.updateTrackBar;
@@ -560,7 +537,7 @@ var
   frames: TFrameList;
 begin
   tkbFrames.Value := 0;
-  if movements.TryGetValue((currentAction*10)+currentDirection, frames) then
+  if movements.TryGetValue((currentActionIdx*10)+currentDirection, frames) then
   begin
     tkbFrames.Max := frames.Count-1;
     imgRLE.Bitmap := bmpList[frames[Trunc(tkbFrames.Value)]-1];
