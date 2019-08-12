@@ -10347,15 +10347,15 @@ begin
     with BM.Canvas do
     begin
       // Beware below fix is temporary - due to issue with DDrawCompat ddraw.dll
-      Y1 := Height-Y1;
-      Y2 := Height-Y2;
+//      Y1 := Height-Y1;
+//      Y2 := Height-Y2;
       //
 
       PatBlt( Handle, 0, 0, BM.width, BM.Height, BLACKNESS );
       X0 := R - Round( ( R - 4 ) * CosT );
       // Beware below fix is temporary - due to issue with DDrawCompat ddraw.dll
-      Y0 := Height - ( R div 2 - Round( ( R - 4 ) * SinT ) );
-      // was: Y0 := R div 2 - Round( ( R - 4 ) * SinT );
+//      Y0 := Height - ( R div 2 - Round( ( R - 4 ) * SinT ) );
+      Y0 := R div 2 - Round( ( R - 4 ) * SinT );
       Pen.Color := FletchingColor;
       Pen.Width := 3;
       MoveTo( X0, Y0 );
@@ -10367,8 +10367,8 @@ begin
       Pen.Color := clSilver;
       X0 := Height + Round( ( R - 2 ) * CosT );
       // Beware below fix is temporary - due to issue with DDrawCompat ddraw.dll
-      Y0 := Height - ( Height div 2 + Round( ( R - 2 ) * SinT ) );
-      // was: Y0 := Height div 2 + Round( ( R - 2 ) * SinT );
+//      Y0 := Height - ( Height div 2 + Round( ( R - 2 ) * SinT ) );
+      Y0 := Height div 2 + Round( ( R - 2 ) * SinT );
       MoveTo( X0, Y0 );
       LineTo( X2, Y2 );
     end;
