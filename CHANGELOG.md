@@ -12,6 +12,10 @@ All notable changes to this project will be documented in this file.
 - Mod selection - more DLC style - extendable instead of destructive copy/paste exercises.
 - Better multi-language support - right now it is crippled, like other parts of the UI code.
 
+## 2019-08-12
+### Removed
+- Temporary fix for DDrawCompat draw.dll issue (see 2019-04-22) - fixed in newest experimental builds. 
+
 ## 2019-07-16
 ### Changed
 - New Tools: discontinued - and continued as POXStudio at: https://github.com/SteveNew/POXStudio 

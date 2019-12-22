@@ -3930,8 +3930,8 @@ begin
       ScreenShot := TBitmap.Create;
       ScreenShot.width := 225;
       // Beware below fix is temporary - due to issue with DDrawCompat ddraw.dll
-      ScreenShot.Height := -162;
-      // was: ScreenShot.Height := 162;
+      // ScreenShot.Height := -162;
+      ScreenShot.Height := 162;
 
       Log.Log( 'Loading interface...' );
       DlgConverse := TConverseBox.Create;

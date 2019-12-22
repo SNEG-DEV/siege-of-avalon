@@ -532,7 +532,7 @@ begin
 
   except
     on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+      Log.log( FailName, E.Message+ #13#10+E.StackTrace, [ ] );
   end;
 end;
 
