@@ -18,7 +18,9 @@
 |8|4|Size in bytes of Ini Data Block - *iniLength*
 |12|*iniLength*|Ini file content - ansi encoded
 |12+*iniLength*|2|`BB` - Begin of RLE bitmap data stream (TRLESprite) marker
+
 ...	RLE bitmap data stream
+
 | Offset | Bytes | Description
 | ------ | ----- | -----------
 |0|4| Picture Count - *picCnt*
@@ -120,7 +122,8 @@ var
 <sub>13</sub>Not used/read  
 
 **[Header]**
-|Property | Values | Description | Default|Use
+
+| Property | Values | Description | Default| Use
 | ------ | ----- | ----------- | ---- | ---
 |ImageWidth|int|set FrameWidth|96, 0<sub>8</sub>|<sub>1,11</sub>
 |ImageHeight|int|set FrameHeight|86, 0<sub>8</sub>|<sub>1,11</sub>
@@ -156,37 +159,41 @@ var
 |ValidLayers|string|||<sub>12,13</sub>
 |LayeredParts|string|||<sub>12,13</sub>
 
-
-
 >**MultiImage sections:**
 >
 >**[CollisionMasks]**<sub>7</sub>
+>
 >|Property | Values | Description | Default|Use
 >| ------ | ----- | ----------- | ---- | --
 >|Frame<ImageIndex + 1>|'','XX',\<else>|call LoadArray( S, CollisionMasks )||<sub>7</sub>
 >
 >**[LineOfSightMasks]**<sub>7</sub>
+>
 >|Property | Values | Description | Default|Use
 >| ------ | ----- | ----------- | ---- | --
 >|Frame<ImageIndex + 1>|'','XX',\<else>|call LoadArray( S, >LineOfSightMasks )||<sub>7</sub>
 >
 >**[DepthAnchors]**<sub>6, 7</sub>
+>
 >|Property | Values | Description | Default|Use
 >| ------ | ----- | ----------- | ---- | --
 >|Frame<ImageIndex + 1>|'','XX',\<else>|call LoadArray( S, DepthAnchors )||<sub>6, 7</sub>
 >
 >**[LightPoints]**<sub>6, 7</sub>
+>
 >|Property | Values | Description | Default|Use
 >| ------ | ----- | ----------- | ---- | --
 >|Frame<ImageIndex + 1>|'','XX',\<else>|call LoadArray( S, LightPoints )||<sub>6, 7</sub>
 >
 >**[XRayable]**<sub>6, 7</sub>
+>
 >|Property | Values | Description | Default|Use
 >| ------ | ----- | ----------- | ---- | --
 >|Frame<ImageIndex + 1>|'no','',\<else>|if \<else>: calculate Slope for Map.DefineItem - !!Only last frame is used!!||<sub>6, 7</sub>
 >
 
 **[Action\<X>]**<sub>2</sub>
+
 |Property | Values | Description | Default|Use
 | ------ | ----- | ----------- | ---- | ---
 |FrameMultiplier|int|set Multiplier|FrameMultiplier|<sub>2</sub>
@@ -199,45 +206,53 @@ var
 |NWFrames|string|if <>'' load script with list of frames<sup>*</sup> for \<X>NW with Multiplier||<sub>2</sub>
 |WWFrames|string|if <>'' load script with list of frames<sup>*</sup> for \<X>WW with Multiplier||<sub>2</sub>
 |SWFrames|string|if <>'' load script with list of frames<sup>*</sup> for \<X>SW with Multiplier||<sub>2</sub>
+
 <sup>*</sup>list of frames is a comma seperated list of number with a end marker/script tag. - 'loop', 'random', 'die', <'end',''>
 
-
 **[Action Walk]**<sub>1</sub>
+
 |Property | Values | Description | Default|Use
 | ------ | ----- | ----------- | ---- | ---
 |MovementPerFrame|string|set Speed - if <>''||<sub>1</sub>
 
 **[Action Run]**<sub>1</sub>
+
 |Property | Values | Description | Default|Use
 | ------ | ----- | ----------- | ---- | ---
 |MovementPerFrame|string|set RunSpeed - if <>''||<sub>1</sub>
 
 **[Action Death]**<sub>1</sub>
+
 |Property | Values | Description | Default|Use
 | ------ | ----- | ----------- | ---- | ---
 |MovementPerFrame|string|set DeathSlide (false = '-1' else true)||<sub>1</sub>
 
 **[Action Attack1]**<sub>3</sub>
+
 |Property | Values | Description | Default|Use
 | ------ | ----- | ----------- | ---- | ---
 |TriggerFrame|int|set FContactFrame|1|<sub>3</sub>
 
 **[Action BowAttack]**<sub>3</sub>
+
 |Property | Values | Description | Default|Use
 | ------ | ----- | ----------- | ---- | ---
 |TriggerFrame|int|set FReleaseFrame|1|<sub>3</sub>
 
 **[Action Cast]**<sub>3</sub>
+
 |Property | Values | Description | Default|Use
 | ------ | ----- | ----------- | ---- | ---
 |TriggerFrame|int|set FCastFrame|1|<sub>3</sub>
 
 **[Action Explode]**<sub>4</sub>
+
 |Property | Values | Description | Default|Use
 | ------ | ----- | ----------- | ---- | ---
 |TriggerFrame|int|set FContactFrame|1|<sub>4</sub>
 
 **[Layers]**<sub>3</sub>
+
 |Property | Values | Description | Default|Use
 | ------ | ----- | ----------- | ---- | ---
 |leg1|string|set Equipment[ slLeg1 ]|''|<sub>3</sub>
@@ -259,9 +274,11 @@ var
 |misc3|string|set Equipment[ slMisc3 ]|''|<sub>3</sub>
 |naked|string|set NakedResource, UseDefaultPants and Female ('humanmalelayers\basehumanmale.gif', 'humanfemale2layers\basehumanfemale.gif', 'elfmalelayers\baseelf.gif')|''|<sub>3</sub>
 |head|string|set HeadResource|''|<sub>3</sub>
+
 <sup>*</sup>set FAttackVariations based on number of [Action Attack\<N>] sections<sub>3</sub>
 
 **[Properties]**<sub>3</sub>
+
 |Property | Values | Description | Default|Use
 | ------ | ----- | ----------- | ---- | ---
 |% - read section into Defaults strings
@@ -307,6 +324,7 @@ var
 |CharacterName=#Charactername.Scout#
 
 **[ImageList]**<sub>9</sub>
+
 |Property | Values | Description | Default|Use
 | ------ | ----- | ----------- | ---- | ---
 |Center|string|set DVariations[ i, ord( dqCenter ) ] := LoadIndexes( S )||<sub>9</sub>
