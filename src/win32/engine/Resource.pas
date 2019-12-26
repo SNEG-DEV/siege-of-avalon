@@ -82,7 +82,6 @@ uses
   LogFile;
 
 type
-  TDynamicWordArray = array of Word;
   TDynamicSmallIntArray = array of SmallInt;
 
   TFacing = ( fNW, fNN, fNE, fEE, fSE, fSS, fSW, fWW );
@@ -305,44 +304,11 @@ uses
   Parts;
 
 function Parse( const S : String; Index : integer; ParseChar : Char ) : string;
-var
-  i, j, k : integer;
 begin
   result := '';
-  j := Pos( ParseChar, S );
-  if ( Index = 0 ) then
-  begin
-    if j = 0 then
-      result := S
-    else
-      result := Copy( S, 1, j - 1 );
-    exit;
-  end;
-
-  if j = 0 then
-    exit;
-
-  i := 0;
-
-  for k := j + 1 to Length( S ) do
-  begin
-    if S[ k ] = ParseChar then
-    begin
-      inc( i );
-      if i = Index then
-      begin
-        result := copy( S, j + 1, k - j - 1 );
-        exit;
-      end
-      else
-      begin
-        j := k;
-      end;
-    end;
-  end;
-
-  if i = Index - 1 then
-    result := copy( S, j + 1, length( S ) - j );
+  var arr: TArray<string> := S.Split([ParseChar]);
+  if Length(arr)-1>=Index then
+    result := arr[Index];
 end;
 
 function GetFileDate( cFile : string ) : TDateTime;
@@ -536,26 +502,12 @@ begin
   end;
 end;
 
-procedure LoadArray( S : string; var A : TDynamicWordArray );
-var
-  C : AnsiString;
-  i : Integer;
+procedure LoadArray( S : string; var A : TArray<Word> );
 begin
-  i := 0;
-  while True do
-  begin
-    C := AnsiString( AnsiLowerCase( Parse( S, i, ',' ) ) );
-    if C = '' then
-    begin
-      Break;
-    end
-    else
-    begin
-      Inc( i );
-      SetLength( A, i );
-      A[ i - 1 ] := StrToInt( C );
-    end;
-  end;
+  var arr: TArray<string> := S.Split([',']);
+  setLength(A, Length(arr));
+  for var i: integer := 0 to Length(arr)-1 do
+    A[i] := StrToIntDef(arr[i], 0);
 end;
 
 { TResource }
@@ -2117,7 +2069,7 @@ end;
 function TDoorResource.Define( Map : TAniMap; Zone : byte; Index : Word ) : integer;
 var
   S : string;
-  CollisionMask, DepthAnchors, LineOfSightMask, LightPoints : TDynamicWordArray;
+  CollisionMask, DepthAnchors, LineOfSightMask, LightPoints : TArray<Word>;
   Slope, Angle : Single;
   AutoTransparent : Boolean;
   pItem : PItemInfo;
@@ -2255,7 +2207,7 @@ end;
 function TStaticResource.Define( Map : TAniMap; Zone : byte; Index : word ) : integer;
 var
   S : string;
-  CollisionMask, LineOfSightMask, DepthAnchors, LightPoints : TDynamicWordArray;
+  CollisionMask, LineOfSightMask, DepthAnchors, LightPoints : TArray<Word>;
   Slope, Angle : Single;
   AutoTransparent : Boolean;
   ImageIndex : integer;
@@ -2690,6 +2642,7 @@ end;
 procedure TLayerResource.LoadData( INI : TStringINIFile );
 var
   S, S1 : string;
+  arr: TArray<string>;
   i, j : integer;
 const
   FailName : string = 'TLayerResource.LoadData';
@@ -2712,21 +2665,17 @@ begin
     end;
     LinkPath := '';
     S := INI.ReadString( 'Header', 'LayeredFramesToBack', '' );
-    i := 0;
-    S1 := Parse( S, i, ',' );
-    while ( S1 <> '' ) do
+    arr := S.Split([',']);
+    for i := 0 to Length(arr)-1 do
     begin
       try
-        j := StrToInt( S1 );
+        j := StrToInt( arr[i] );
       except
         j := -1;
       end;
       if j >= 0 then
-        BackLayer[ j ] := true;
-      inc( i );
-      S1 := Parse( S, i, ',' );
+        BackLayer[ j ] := True;
     end;
-
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
