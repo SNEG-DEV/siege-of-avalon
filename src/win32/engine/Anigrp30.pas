@@ -5568,7 +5568,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
     ZoneTile : TZone;
     HalfWidth, HalfHeight : Integer;
   {$IFDEF DirectX}
-    BltFx : TDDBLTFX;
+//    BltFx : TDDBLTFX;
     SrcX2, SrcY2 : Longint;
     Offset : Integer;
   {$ENDIF}

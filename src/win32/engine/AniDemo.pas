@@ -2545,6 +2545,7 @@ procedure TfrmMain.FormCreate( Sender : TObject );
 var
   ExStyle : Integer;
 begin
+  Scaled := False;
   BorderStyle := bsNone;
   BorderIcons := [];
   FormStyle := fsStayOnTop;
@@ -3139,26 +3140,26 @@ begin
       if SpellBarActive then
       begin
         //TODO: Refactor - code smell below - I even added more stupidity
-        if ScreenMetrics.IniIdent='Original' then
-        begin
-          Ymin1 := 486;
-          Ymin2 := 519;
-          Ymax := 595;
-          Yorg := 520;
-        end;
         if ScreenMetrics.IniIdent='HD' then
         begin
           Ymin1 := 606;
           Ymin2 := 639;
           Ymax := 715;
           Yorg := 640;
-        end;
-        if ScreenMetrics.IniIdent='FullHD' then
+        end
+        else if ScreenMetrics.IniIdent='FullHD' then
         begin
           Ymin1 := 966;
           Ymin2 := 999;
           Ymax := 1075;
           Yorg := 1000;
+        end
+        else
+        begin
+          Ymin1 := 486;
+          Ymin2 := 519;
+          Ymax := 595;
+          Yorg := 520;
         end;
 
         if ( X >= 0 ) and ( X < 696 ) and ( Y >= Ymin1 ) and ( Y < Ymax ) then
@@ -3458,26 +3459,26 @@ begin
       //TODO: Refactor - code smell below - I even added more stupidity
       S := '';
       Info := '';  // Game info area
-      if ScreenMetrics.IniIdent='Original' then
-      begin
-        Ymin1 := 486;
-        Ymin2 := 519;
-        Ymax := 595;
-        Yorg := 520;
-      end;
       if ScreenMetrics.IniIdent='HD' then
       begin
         Ymin1 := 606;
         Ymin2 := 639;
         Ymax := 715;
         Yorg := 640;
-      end;
-      if ScreenMetrics.IniIdent='FullHD' then
+      end
+      else if ScreenMetrics.IniIdent='FullHD' then
       begin
         Ymin1 := 966;
         Ymin2 := 999;
         Ymax := 1075;
         Yorg := 1000;
+      end
+      else
+      begin
+        Ymin1 := 486;
+        Ymin2 := 519;
+        Ymax := 595;
+        Yorg := 520;
       end;
 
       if ( X >= 0 ) and ( X < 696 ) and ( Y >= Ymin1 ) and ( Y < Ymax ) then
