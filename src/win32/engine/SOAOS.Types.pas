@@ -56,6 +56,22 @@ type
     bottombarFile: string;
 //    MagicRange: integer;
     IniIdent: string;
+    popInventoryRect: TRect;
+    popMapRect: TRect;
+    popQuestRect: TRect;
+    popAdventureRect: TRect;
+    popJournalRect: TRect;
+    popAwardsRect: TRect;
+    popMessageRect: TRect;
+    popStatsRect: TRect;
+    popManaRect: TRect;
+    popHealthRect: TRect;
+    popSpellRect: TRect;
+    popRosterRect: TRect;
+    popParty1Rect: TRect;
+    popParty2Rect: TRect;
+    popParty3Rect: TRect;
+    popParty4Rect: TRect;
   end;
 
 const
@@ -87,6 +103,22 @@ const
      sidebarFile: 'sidebar.bmp';
      bottombarFile: 'bottombar.bmp';
      IniIdent : 'Original';
+     popInventoryRect: ( Left: 726; Top: 429; Right: 772; Bottom: 473 );
+     popMapRect: ( Left: 732; Top: 511; Right: 781; Bottom: 555 );
+     popQuestRect: ( Left: 666; Top: 511; Right: 715; Bottom: 531 );
+     popAdventureRect: ( Left: 660; Top: 535; Right: 725; Bottom: 556 );
+     popJournalRect: ( Left: 663; Top: 560; Right: 722; Bottom: 578 );
+     popAwardsRect: ( Left: 609; Top: 543; Right: 647; Bottom: 583 );
+     popMessageRect: ( Left: 392; Top: 517; Right: 591; Bottom: 582 );
+     popStatsRect: ( Left: 715; Top: 10; Right: 778; Bottom: 104 );
+     popManaRect: ( Left: 708; Top: 146; Right: 765; Bottom: 203 );
+     popHealthRect: ( Left: 711; Top: 258; Right: 759; Bottom: 348 );
+     popSpellRect: ( Left: 337; Top: 547; Right: 371; Bottom: 582 );
+     popRosterRect: ( Left: 175; Top: 539; Right: 256; Bottom: 571 );
+     popParty1Rect: ( Left: 3; Top: 510; Right: 65; Bottom: 586 );
+     popParty2Rect: ( Left: 80; Top: 510; Right: 151; Bottom: 586 );
+     popParty3Rect: ( Left: -1; Top: -1; Right: -1; Bottom: -1 );
+     popParty4Rect: ( Left: -1; Top: -1; Right: -1; Bottom: -1 );
     );
   cHD : TScreenResolutionData =
     (ScreenWidth : 1280;
@@ -116,6 +148,22 @@ const
      sidebarFile: 'sidebarHD.bmp';
      bottombarFile: 'bottombarHD.bmp';
      IniIdent : 'HD';
+     popInventoryRect: ( Left: 1206; Top: 429; Right: 1254; Bottom: 473 );
+     popMapRect: ( Left: 1212; Top: 631; Right: 1263; Bottom: 675 );
+     popQuestRect: ( Left: 1148; Top: 631; Right: 1196; Bottom: 651 );
+     popAdventureRect: ( Left: 1139; Top: 655; Right: 1205; Bottom: 676 );
+     popJournalRect: ( Left: 1142; Top: 680; Right: 1206; Bottom: 698 );
+     popAwardsRect: ( Left: 1088; Top: 663; Right: 1127; Bottom: 703 );
+     popMessageRect: ( Left: 561; Top: 637; Right: 1072; Bottom: 702 );
+     popStatsRect: ( Left: 1195; Top: 10; Right: 1258; Bottom: 104 );
+     popManaRect: ( Left: 1188; Top: 146; Right: 1245; Bottom: 203 );
+     popHealthRect: ( Left: 1191; Top: 258; Right: 1239; Bottom: 348 );
+     popSpellRect: ( Left: 506; Top: 667; Right: 541; Bottom: 702 );
+     popRosterRect: ( Left: 344; Top: 659; Right: 425; Bottom: 691 );
+     popParty1Rect: ( Left: 3; Top: 630; Right: 65; Bottom: 706 );
+     popParty2Rect: ( Left: 80; Top: 630; Right: 151; Bottom: 706 );
+     popParty3Rect: ( Left: 166; Top: 630; Right: 233; Bottom: 706 );
+     popParty4Rect: ( Left: 248; Top: 630; Right: 319; Bottom: 706 );
     );
   cFullHD : TScreenResolutionData =
     (ScreenWidth : 1920;
@@ -145,6 +193,22 @@ const
      sidebarFile: 'sidebarFullHD.bmp';
      bottombarFile: 'bottombarFullHD.bmp';
      IniIdent : 'FullHD';
+     popInventoryRect: ( Left: 1846; Top: 885; Right: 1894; Bottom: 931 );
+     popMapRect: ( Left: 1852; Top: 991; Right: 1903; Bottom: 1035 );
+     popQuestRect: ( Left: 1148; Top: 991; Right: 1196; Bottom: 1011 );
+     popAdventureRect: ( Left: 1139; Top: 1015; Right: 1205; Bottom: 1036 );
+     popJournalRect: ( Left: 1142; Top: 1040; Right: 1206; Bottom: 1058 );
+     popAwardsRect: ( Left: 1088; Top: 1023; Right: 1127; Bottom: 1063 );
+     popMessageRect: ( Left: 561; Top: 997; Right: 1072; Bottom: 1062 );
+     popStatsRect: ( Left: 1835; Top: 10; Right: 1898; Bottom: 104 );
+     popManaRect: ( Left: 1828; Top: 146; Right: 1885; Bottom: 203 );
+     popHealthRect: ( Left: 1831; Top: 258; Right: 1879; Bottom: 348 );
+     popSpellRect: ( Left: 506; Top: 1027; Right: 541; Bottom: 1062 );
+     popRosterRect: ( Left: 344; Top: 1019; Right: 425; Bottom: 1051 );
+     popParty1Rect: ( Left: 3; Top: 990; Right: 65; Bottom: 1066 );
+     popParty2Rect: ( Left: 80; Top: 990; Right: 151; Bottom: 1066 );
+     popParty3Rect: ( Left: 166; Top: 990; Right: 233; Bottom: 1066 );
+     popParty4Rect: ( Left: 248; Top: 990; Right: 319; Bottom: 1066 );
     );
 
 type

@@ -12,6 +12,15 @@ All notable changes to this project will be documented in this file.
 - Mod selection - more DLC style - extendable instead of destructive copy/paste exercises.
 - Better multi-language support - right now it is crippled, like other parts of the UI code.
 
+## 2019-12-28
+### Changed
+- $DODEBUG "noise" isolated
+- A bit of INI parsing refactor
+- ScreenMetrics includes popup rects for Original/HD/FullHD
+
+### Fixed
+- Popup working for Original/HD/FullHD
+
 ## 2019-08-12
 ### Removed
 - Temporary fix for DDrawCompat draw.dll issue (see 2019-04-22) - fixed in newest experimental builds. 

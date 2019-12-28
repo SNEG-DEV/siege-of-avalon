@@ -80,6 +80,7 @@ uses
   DXEffects,
 {$ENDIF}
   SoAOS.Types,
+  SoAOS.Intrface.Popup,
   Anigrp30,
   AniDec30,
   Character,
@@ -132,21 +133,6 @@ var
   ClosingMovie : string;
 
 type
-  TPopup = class( TObject )
-  private
-    Surface : IDirectDrawSurface;
-    Count : Integer;
-    FX, FY : Integer;
-    FMsgID : Integer;
-    FMsgCount : Integer;
-    FWidth : Integer;
-    Messages : TStringList;
-  public
-    constructor Create;
-    destructor Destroy; override;
-    procedure Draw;
-  end;
-
   TfrmMain = class( TForm )
     Timer2 : TTimer;
     Timer3 : TTimer;
@@ -192,7 +178,7 @@ type
     Drain : Double;
     Life : Double;
     Wounds : Double;
-    SpellBarActive : Boolean;
+    FSpellBarActive : Boolean;
     XRayOn : Boolean;
     LoadNewLevel : Integer;
     NewLVLFile : string;
@@ -332,6 +318,7 @@ type
     procedure SaveAGame( const Name : string );
     property CurrentTheme : string read FCurrentTheme write SetCurrentTheme;
     property Active : Boolean read FActive write SetActive;
+    property SpellBarActive : Boolean read FSpellBarActive;
   end;
 
 var
@@ -745,7 +732,7 @@ begin
     DisableConsole := False;
     NewGame := False;
     Game.ForceRefresh := True;
-    SpellbarActive := False;
+    FSpellbarActive := False;
     ClearOverlayB;
     BeginJournal;
 
@@ -1547,8 +1534,8 @@ begin
       Exit;
     if ( key = Keymap.Spell ) then
     begin //S
-      SpellBarActive := not SpellBarActive;
-      if SpellBarActive then
+      FSpellBarActive := not FSpellBarActive;
+      if FSpellBarActive then
         DrawSpellGlyphs;
     end
     else if ( key = Keymap.XRay ) then
@@ -2039,7 +2026,7 @@ begin
         Current.CurrentSpell := Current.HotKey[ key - 47 ];
         DrawCurrentSpell;
       end;
-      if SpellbarActive then
+      if FSpellbarActive then
         DrawSpellGlyphs;
     end
     else if ( key = Keymap.Help ) then
@@ -2357,7 +2344,7 @@ begin
 
     lpDDSBack.BltFast( ScreenMetrics.LifeEmptyX, 248, LifeEmpty, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );  //SD
 
-    if not SpellbarActive then
+    if not FSpellbarActive then
     begin
       for i := 1 to NPCList.Count - 1 do
       begin
@@ -2405,7 +2392,7 @@ begin
       TSpriteObject( SayList.Items[ i ] ).UpdateSay;
 
 {$IFDEF DirectX}
-    if SpellBarActive then
+    if FSpellBarActive then
     begin
       pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, 114 );
       lpDDSBack.BltFast( 0, ScreenMetrics.SpellBarY, SpellBar, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
@@ -3059,7 +3046,7 @@ begin
       Exit;
     if Game.Enabled then
     begin
-      if SpellBarActive then
+      if FSpellBarActive then
       begin
         //TODO: Refactor - code smell below - I even added more stupidity
         if ScreenMetrics.IniIdent='HD' then
@@ -3098,7 +3085,7 @@ begin
               end;
             end;
           end;
-          SpellBarActive := False;
+          FSpellBarActive := False;
           Exit;
         end
         else
@@ -3350,10 +3337,10 @@ begin
           Exit;
         end
         else if ((ScreenMetrics.ScreenWidth=800) and ( X >= 324 ) and ( X < 385 ) and ( Y >= 512 ) and ( Y < 588 )) or
-                (( X >= 507 ) and ( X < 541 ) and ( Y >= 992 ) and ( Y < 1068 )) and not SpellBarActive then  //Both HD and FullHD?
+                (( X >= 507 ) and ( X < 541 ) and ( Y >= 992 ) and ( Y < 1068 )) and not FSpellBarActive then  //Both HD and FullHD?
         begin
-          SpellBarActive := not SpellBarActive;
-          if SpellBarActive then
+          FSpellBarActive := not FSpellBarActive;
+          if FSpellBarActive then
             DrawSpellGlyphs;
         end;
       end;
@@ -3376,7 +3363,7 @@ const
   FailName : string = 'Main.FormMouseMove';
 begin
   try
-    if SpellBarActive then
+    if FSpellBarActive then
     begin
       //TODO: Refactor - code smell below - I even added more stupidity
       S := '';
@@ -3447,7 +3434,7 @@ begin
   Log.DebugLog(FailName);
   try
 
-    SpellBarActive := False; //This prevents the player from choosing a spell for the wrong character
+    FSpellBarActive := False; //This prevents the player from choosing a spell for the wrong character
 
     Current.Highlightable := True;
     Current.AIMode := aiParty;
@@ -3920,7 +3907,7 @@ begin
       ClearResources( True );
       Log.Log( 'ReAlloc' );
       Sprites.Realloc;
-      SpellBarActive := False;
+      FSpellBarActive := False;
 
       LVLFile := NewLVLFile;
       CurrentScene := NewScene;
@@ -5223,7 +5210,7 @@ begin
       pr := Rect( 0, 0, ResWidth, ResHeight );
       lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
       FillRectSub( lpDDSBack, Rect( 0, 0, 703, 511 ), $202020 );
-      if SpellBarActive then
+      if FSpellBarActive then
       begin
         pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, 114 );
         lpDDSBack.BltFast( 0, ScreenMetrics.SpellBarY, SpellBar, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
@@ -6064,7 +6051,7 @@ begin
         ClearOnDemandResources;
         ClearResources( True );
         Sprites.Realloc;
-        SpellBarActive := False;
+        FSpellBarActive := False;
         ClearOverlayB;
 
         TransitionScreen := '';
@@ -6393,7 +6380,7 @@ begin
     end
     else if i >= 1 then
     begin
-      if not SpellBarActive then
+      if not FSpellBarActive then
       begin
         PaintCharacterOnBorder( Current, i );
         pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, 114 );
@@ -6682,7 +6669,7 @@ begin
       begin
         Current.Highlightable := True;
         Current := Player;
-        SpellBarActive := False; //This prevents the player from choosing a spell for the wrong character
+        FSpellBarActive := False; //This prevents the player from choosing a spell for the wrong character
         DrawCurrentSpell;
         Game.KeyFigure := Current;
         Current.AutoTransparent := XRayOn;
@@ -6906,7 +6893,7 @@ begin
   finally
     OverlayB.ReleaseDC( DC );
   end;
-  if not SpellBarActive then
+  if not FSpellBarActive then
   begin
     MouseCursor.cleanup;
     pr := Rect( ScreenMetrics.LogX, 50, ScreenMetrics.LogX + 68, 50 + 24 );
@@ -6937,7 +6924,7 @@ begin
   finally
     OverlayB.ReleaseDC( DC );
   end;
-  if not SpellBarActive then
+  if not FSpellBarActive then
   begin
     MouseCursor.cleanup;
     pr := Rect( ScreenMetrics.LogX, 26, ScreenMetrics.LogX + 68, 26 + 24 );
@@ -7679,7 +7666,7 @@ begin
         pr := Rect( 0, 0, ResWidth, ResHeight );
         lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
         FillRectSub( lpDDSBack, Rect( 0, 0, 703, 511 ), $202020 );
-        if SpellBarActive then
+        if FSpellBarActive then
         begin
           pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, 114 );
           lpDDSBack.BltFast( 0, ScreenMetrics.SpellBarY, SpellBar, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
@@ -7837,157 +7824,6 @@ begin
     Attr := Attr and ( not faReadOnly );
     FileSetAttr( FileName, Attr );
   end;
-end;
-
-{ TPopup }
-
-constructor TPopup.Create;
-begin
-  inherited;
-  Messages := TStringList.Create;
-  ExText.Open( 'Popup' );
-  ExText.GetSection( Messages );
-  ExText.Close;
-  Count := 0;
-end;
-
-destructor TPopup.Destroy;
-begin
-  Messages.Free;
-  Surface := nil;
-  inherited;
-end;
-
-procedure TPopup.Draw;
-var
-  DC : HDC;
-  P : TPoint;
-  MsgID : Integer;
-  Msg : string;
-  R, pr : TRect;
-  BM : TBitmap;
-const
-  Height = 20;
-begin
-  Inc( Count );
-  if ( Count >= 30 ) and MouseCursor.Enabled then
-  begin
-    Count := 0;
-//    GetCursorPos( P );
-    P := Mouse.CursorPos;
-	//TODO: Adjust points to HD? Does disabled make a differnce?
-    {if PtInRect( Rect( ScreenMetrics.726, 429, ScreenMetrics.772, 473 ), P ) then  //HD 1206
-      MsgID := 1 //Inventory
-    else if PtInRect( Rect( 732, 511, 781, 555 ), P ) then
-      MsgID := 2 //Map
-    else if PtInRect( Rect( 666, 511, 715, 531 ), P ) then
-      MsgID := 3 //Quest
-    else if PtInRect( Rect( 660, 535, 725, 556 ), P ) then
-      MsgID := 4 //Adventure
-    else if PtInRect( Rect( 663, 560, 722, 578 ), P ) then
-      MsgID := 5 //Journal
-    else if PtInRect( Rect( 609, 543, 647, 583 ), P ) and not frmMain.SpellBarActive then
-      MsgID := 6 //Awards
-    else if PtInRect( Rect( 392, 517, 591, 582 ), P ) and not frmMain.SpellBarActive then
-      MsgID := 7 //Message Area
-    else if PtInRect( Rect( 715, 10, 778, 104 ), P ) then
-      MsgID := 8 //Player Stats
-    else if PtInRect( Rect( 708, 146, 765, 203 ), P ) then
-      MsgID := 9 //Mana
-    else if PtInRect( Rect( 711, 258, 759, 348 ), P ) then
-      MsgID := 10 //Health
-    else if PtInRect( Rect( 337, 547, 371, 582 ), P ) and not frmMain.SpellBarActive then
-      MsgID := 11 //Spell
-    else if PtInRect( Rect( 175, 539, 256, 571 ), P ) and not frmMain.SpellBarActive then
-      MsgID := 12 //Roster
-    else if PtInRect( Rect( 3, 510, 65, 586 ), P ) and not frmMain.SpellBarActive then
-      MsgID := 13 //Party Member 1
-    else if PtInRect( Rect( 80, 510, 151, 586 ), P ) and not frmMain.SpellBarActive then
-      MsgID := 14 //Party Member 2
-    else }
-    MsgID := 0;
-    if MsgID = 0 then
-    begin
-      if FMsgID > 0 then
-      begin
-        FMsgCount := 0;
-        FMsgID := 0;
-        if Assigned( Surface ) then
-          Surface := nil;
-      end;
-    end
-    else if FMsgID = MsgID then
-    begin
-      Inc( FMsgCount );
-      if FMsgCount = 2 then
-      begin
-        case MsgID of
-          1 : Msg := Messages.Values[ 'Inventory' ];
-          2 : Msg := Messages.Values[ 'Map' ];
-          3 : Msg := Messages.Values[ 'Quest' ];
-          4 : Msg := Messages.Values[ 'Adventure' ];
-          5 : Msg := Messages.Values[ 'Journal' ];
-          6 : Msg := Messages.Values[ 'Awards' ];
-          7 : Msg := Messages.Values[ 'Message' ];
-          8 : Msg := Messages.Values[ 'Player' ];
-          9 : Msg := Messages.Values[ 'Mana' ];
-          10 : Msg := Messages.Values[ 'Health' ];
-          11 : Msg := Messages.Values[ 'Spell' ];
-          12 : Msg := Messages.Values[ 'Roster' ];
-          13 : Msg := Messages.Values[ 'Party' ];
-          14 : Msg := Messages.Values[ 'Party' ];
-        else
-          Msg := '';
-        end;
-
-        if Msg <> '' then
-        begin
-          BM := TBitmap.Create;
-          try
-            //            BM.Canvas.Font.Name:='fixedsys';
-            BM.Canvas.Font.Style := [ fsBold ];
-            R := Rect( 0, 0, 0, Height );
-            DrawText( BM.Canvas.Handle, PChar( Msg ), Length( Msg ), R, DT_SINGLELINE or DT_CALCRECT or DT_NOPREFIX );
-            Inc( R.Right, 8 );
-            R.Bottom := Height;
-            FWidth := R.Right;
-            BM.width := FWidth;
-            BM.Height := Height;
-            DrawText( BM.Canvas.Handle, PChar( Msg ), Length( Msg ), R, DT_CENTER or DT_SINGLELINE or DT_VCENTER or DT_NOPREFIX );
-
-            Surface := DDGetSurface( lpDD, FWidth, Height, $C0FFE0, True );
-            Surface.GetDC( DC );
-            try
-              BitBlt( DC, 0, 0, FWidth, Height, BM.Canvas.Handle, 0, 0, SRCAND );
-            finally
-              Surface.ReleaseDC( DC );
-            end;
-          finally
-            BM.Free;
-          end;
-          if P.X < 200 then
-            FX := P.X - 10
-          else
-            FX := P.X - FWidth + 10;
-          FY := P.Y - Height + 10;
-        end;
-      end;
-    end
-    else
-    begin
-      FMsgID := MsgID;
-      FMsgCount := 1;
-      if Assigned( Surface ) then
-        Surface := nil;
-    end;
-  end;
-
-  if ( FMsgID > 0 ) and Assigned( Surface ) then
-  begin
-    pr := Rect( 0, 0, FWidth, Height );
-    lpDDSBack.BltFast( FX, FY, Surface, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
-  end;
-
 end;
 
 procedure TfrmMain.ShowHistroy;
