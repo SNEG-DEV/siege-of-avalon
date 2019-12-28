@@ -186,10 +186,7 @@ const
 var
   NewHotspot : THotspot;
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     Locked := false;
     ResultIndex := -1;
@@ -368,10 +365,7 @@ var
   LastSelected : THotspot;
   i : integer;
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     if Locked then
       exit;
@@ -484,10 +478,7 @@ const
 var
   pr : TRect;
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     if Locked then
       exit;

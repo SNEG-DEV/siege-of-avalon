@@ -179,10 +179,7 @@ const
   FailName : string = 'TLoadGame.create ';
 begin
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     ldCancelRect := Rect( 101, 450, 101 + 300, 450 + 45 );
@@ -203,10 +200,7 @@ const
   FailName : string = 'TLoadGame.Destory ';
 begin
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
   except
@@ -224,10 +218,7 @@ const
   FailName : string = 'TLoadGame.init ';
 begin
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if Loaded then
       Exit;
@@ -364,10 +355,7 @@ const
   FailName : string = 'TLoadGame.LoadText ';
 begin
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
    //Search for the first file meeting our criteria - create a Find file structure, and assign it a handle
     FileNotFound := FindFirst( DefaultPath + 'Games\*.sav', faAnyFile, FileData );
@@ -440,10 +428,7 @@ const
   FailName : string = 'TLoadGame.PlotMenu ';
 begin
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
 
@@ -476,10 +461,7 @@ const
   FailName : string = 'TLoadGame.MoveList ';
 begin
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
 
@@ -519,10 +501,7 @@ const
   FailName : string = 'TLoadGame.Keydown ';
 begin
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if ( CurrentSelectedListItem > -1 ) and ( LoadFile = false ) and ( DeleteBoxVisible = false ) and ( OverwriteBoxVisible = false ) and ( MustEnterNameBoxVisible = false ) then
     begin
@@ -657,10 +636,7 @@ const
   FailName : string = 'TLoadGame.Carattimereven';
 begin
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) { and (CurrDbgGroup in Dbg????) } then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if ScrollState < 0 then
     begin
@@ -750,10 +726,7 @@ const
   FailName : string = 'TLoadGame.MouseDown ';
 begin
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
 
@@ -945,10 +918,7 @@ var
   pr : TRect;
 begin
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
 
@@ -1011,10 +981,7 @@ var
   pr : TRect;
 begin
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     //clear Cancel
     pr := Rect( 95, 443, 95 + 165, 443 + 58 );
@@ -1036,10 +1003,7 @@ var
   pr : TRect;
 begin
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     pr := Rect( 0, 0, 800, 600 );  //NOHD
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
@@ -1078,10 +1042,7 @@ const
   FailName : string = 'TLoadGame.DeleteSavedFile ';
 begin
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     DXBorders := SoAOS_DX_LoadBMP( InterfacePath + 'ldChooseBox.bmp', cInvisColor, width, height );
@@ -1114,10 +1075,7 @@ const
   FailName : string = 'TCharacter.Attack ';
 begin
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     DXBorders := SoAOS_DX_LoadBMP( InterfacePath + 'ldChooseBox.bmp', cInvisColor, width, height );
@@ -1175,10 +1133,7 @@ const
   FailName : string = 'TLoadGame.ShowScreen ';
 begin
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if ( DeleteBoxVisible = false ) and ( OverwriteBoxVisible = false ) then
@@ -1239,10 +1194,7 @@ const
   FailName : string = 'TLoadGame.Showinfo ';
 begin
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     pr := Rect( 111, 65, 344, 231 );
     lpDDSBack.BltFast( 111, 65, DXBack, @pr, DDBLTFAST_WAIT );
@@ -1264,10 +1216,7 @@ const
   FailName : string = 'TLoadGame.AttemptToLoadGame';
 begin
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) { and (CurrDbgGroup in Dbg????) } then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if LoadFile then
     begin
@@ -1291,10 +1240,7 @@ const
   FailName : string = 'TLoadGame.Attempt tosave';
 begin
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) { and (CurrDbgGroup in Dbg????) } then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if CurrentSelectedListItem > -1 then
     begin
@@ -1336,10 +1282,7 @@ const
   FailName : string = 'TLoadGame.release ';
 begin
   ExText.close;
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
 
@@ -1387,10 +1330,7 @@ var
 const
   FailName : string = 'TCharacter.Attack ';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   result := false;
   if GameName<>'' then
   begin

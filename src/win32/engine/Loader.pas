@@ -142,10 +142,7 @@ var
   const
     FailName : string = 'Loader.readHeaderBlock';
   begin
-{$IFDEF DODEBUG}
-    if ( CurrDbgLvl >= DbgLvlSevere ) then
-      Log.LogEntry( FailName );
-{$ENDIF}
+    Log.DebugLog(FailName);
     try
       Log.Log( 'Reading header block' );
       Stream.Read( L, sizeof( L ) );
@@ -163,10 +160,7 @@ var
   const
     FailName : string = 'Loader.ReadMapheaderBlock';
   begin
-{$IFDEF DODEBUG}
-    if ( CurrDbgLvl >= DbgLvlSevere ) then
-      Log.LogEntry( FailName );
-{$ENDIF}
+    Log.DebugLog(FailName);
     try
 
       Log.Log( 'Reading map header block' );
@@ -207,10 +201,7 @@ var
   const
     FailName : string = 'Loader.ReadResourcesList';
   begin
-{$IFDEF DODEBUG}
-    if ( CurrDbgLvl >= DbgLvlSevere ) then
-      Log.LogEntry( FailName );
-{$ENDIF}
+    Log.DebugLog(FailName);
     try
       Log.Log( 'Reading resource list' );
       FResources.Clear;
@@ -239,10 +230,7 @@ var
   const
     FailName : string = 'Loader.ReadLayer0Block';
   begin
-{$IFDEF DODEBUG}
-    if ( CurrDbgLvl >= DbgLvlSevere ) then
-      Log.LogEntry( FailName );
-{$ENDIF}
+    Log.DebugLog(FailName);
     try
 
       Log.Log( 'Reading layer 0 data block' );
@@ -277,10 +265,7 @@ var
   const
     FailName : string = 'Loader.ReadLayer1Block';
   begin
-{$IFDEF DODEBUG}
-    if ( CurrDbgLvl >= DbgLvlSevere ) then
-      Log.LogEntry( FailName );
-{$ENDIF}
+    Log.DebugLog(FailName);
     try
       Log.Log( 'Reading layer 1 data block' );
       MaxPos := Position + BlockSize;
@@ -317,10 +302,7 @@ var
   const
     FailName : string = 'Loader.readDiamondBlock';
   begin
-{$IFDEF DODEBUG}
-    if ( CurrDbgLvl >= DbgLvlSevere ) then
-      Log.LogEntry( FailName );
-{$ENDIF}
+    Log.DebugLog(FailName);
     try
 
       Log.Log( 'Reading diamond data block' );
@@ -408,10 +390,7 @@ var
     const
       FailName : string = 'Loader.Addlight';
     begin
-  {$IFDEF DODEBUG}
-      if ( CurrDbgLvl >= DbgLvlSevere ) then
-        Log.LogEntry( FailName );
-  {$ENDIF}
+      Log.DebugLog(FailName);
       try
 
         try
@@ -473,10 +452,7 @@ var
   const
     FailName : string = 'Loader.ReadObjectBlock';
   begin
-{$IFDEF DODEBUG}
-    if ( CurrDbgLvl >= DbgLvlSevere ) then
-      Log.LogEntry( FailName );
-{$ENDIF}
+    Log.DebugLog(FailName);
     try
 
       if StartObjectBlocks then
@@ -894,10 +870,7 @@ var
   const
     FailName : string = 'Loader.LoadIndexes';
   begin
-{$IFDEF DODEBUG}
-    if ( CurrDbgLvl >= DbgLvlSevere ) then
-      Log.LogEntry( FailName );
-{$ENDIF}
+    Log.DebugLog(FailName);
     try
       i := 0;
       repeat
@@ -928,10 +901,7 @@ var
   const
     FailName : string = 'Loader.readSceneBlock';
   begin
-{$IFDEF DODEBUG}
-    if ( CurrDbgLvl >= DbgLvlSevere ) then
-      Log.LogEntry( FailName );
-{$ENDIF}
+    Log.DebugLog(FailName);
     try
       Log.Log( 'Reading scene' );
       inc( SceneCount );
@@ -968,10 +938,7 @@ var
   const
     FailName : string = 'Loader.readSceneBlock';
   begin
-{$IFDEF DODEBUG}
-    if ( CurrDbgLvl >= DbgLvlSevere ) then
-      Log.LogEntry( FailName );
-{$ENDIF}
+    Log.DebugLog(FailName);
     try
 
       Log.Log( 'Reading map known block' );
@@ -999,10 +966,7 @@ var
   const
     FailName : string = 'Loader.readThemeBlock';
   begin
-{$IFDEF DODEBUG}
-    if ( CurrDbgLvl >= DbgLvlSevere ) then
-      Log.LogEntry( FailName );
-{$ENDIF}
+    Log.DebugLog(FailName);
     try
 
       Log.Log( 'Reading theme block' );
@@ -1053,10 +1017,7 @@ var
   const
     FailName : string = 'Loader.ReadZonesBlock';
   begin
-{$IFDEF DODEBUG}
-    if ( CurrDbgLvl >= DbgLvlSevere ) then
-      Log.LogEntry( FailName );
-{$ENDIF}
+    Log.DebugLog(FailName);
     try
 
       Log.Log( 'Reading zone block' );
@@ -1184,10 +1145,7 @@ var
 const
   FailName : string = 'Loader.Main';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   result := false;
   try
     Log.Log( 'Map File=' + Filename );

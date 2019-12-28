@@ -149,10 +149,7 @@ constructor TConverseBox.Create;
 const
   FailName : string = 'TConverseBox.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     Responses := TList.Create;
@@ -167,10 +164,7 @@ destructor TConverseBox.Destroy;
 const
   FailName : string = 'TConverseBox.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Responses.Free;
     Responses := nil;
@@ -191,10 +185,7 @@ var
 const
   FailName : string = 'TConverseBox.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
 
@@ -354,10 +345,7 @@ var
 const
   FailName : string = 'TConverseBox.LoadConversation';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     ExText.Open( 'converse' );
     Return := ExText.GetText( 'Return' );
@@ -641,10 +629,7 @@ var
 const
   FailName : string = 'TConverseBox.Paint';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     j := Y1 + 30;
     if assigned( Image ) then
@@ -711,10 +696,7 @@ var
 const
   FailName : string = 'TConverseBox.Release';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     INI.Free;
@@ -741,10 +723,7 @@ var
 const
   FailName : string = 'Converse.ParseStat';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Result := '';
     if sTmp = '' then
@@ -773,10 +752,7 @@ var
 const
   FailName : string = 'Converse.ParseTitle';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Result := '';
     if sTmp = '' then
@@ -806,10 +782,7 @@ var
 const
   FailName : string = 'Converse.ParseChapter';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Result := '';
     if sTmp = '' then
@@ -839,10 +812,7 @@ var
 const
   FailName : string = 'Converse.ParseObject';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Result := '';
     if sTmp = '' then
@@ -872,10 +842,7 @@ var
 const
   FailName : string = 'Converse.ParseWorn';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Result := '';
     if sTmp = '' then
@@ -905,10 +872,7 @@ var
 const
   FailName : string = 'Converse.ParseParty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Result := '';
     if sTmp = '' then
@@ -945,10 +909,7 @@ begin
   Result := true;
   b1 := true;
   b2 := false;
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if sTmp = '' then
       exit;
@@ -997,10 +958,7 @@ const
 begin
   Result := true;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if sTmp = '' then
       exit;
@@ -1035,10 +993,7 @@ const
 begin
   Result := true;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if sTmp = '' then
       exit;
@@ -1073,10 +1028,7 @@ const
 begin
   Result := true;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if sTmp = '' then
       exit;
@@ -1262,10 +1214,7 @@ const
 begin
   Result := true;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if sTmp = '' then
       exit;
@@ -1301,10 +1250,7 @@ const
 begin
   Result := true;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if sTmp = '' then
       exit;
@@ -1346,10 +1292,7 @@ begin
   b1 := false;
   b2 := true;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if sTmp = '' then
       exit;
@@ -1405,10 +1348,7 @@ const
 begin
   Result := false;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if sTmp = '' then
       exit;
@@ -1444,10 +1384,7 @@ const
 begin
   Result := false;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if sTmp = '' then
       exit;
@@ -1488,10 +1425,7 @@ const
 begin
   Result := false;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if sTmp = '' then
       exit;
@@ -1654,10 +1588,7 @@ const
   FailName : string = 'Converse.CheckObjectOne';
 begin
   Result := false;
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if sTmp = '' then
       exit;
@@ -1696,10 +1627,7 @@ const
   FailName : string = 'Converse.CheckObjectOne';
 begin
   Result := false;
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if sTmp = '' then
       exit;

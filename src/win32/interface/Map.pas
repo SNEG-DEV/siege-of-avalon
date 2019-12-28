@@ -131,10 +131,7 @@ var
 const
   FailName : string = 'TMap.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     inherited;
     X1 := 0;

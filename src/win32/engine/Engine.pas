@@ -171,10 +171,7 @@ procedure CreateGlobals;
 const
   FailName : string = 'Engine.CreateGlobals';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Sprites := TSpriteManager.create( 400 );
@@ -224,10 +221,7 @@ procedure FreeGlobals;
 const
   FailName : string = 'Engine.FreeGlobals';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Sprites.free; Sprites := nil;
@@ -260,10 +254,7 @@ const
 begin
   result := nil;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     List := Game.FindInRadius( X, Y, Radius );
@@ -418,10 +409,7 @@ var
 const
   FailName : string = 'Engine.RunScript.';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     try
       if Script = '' then
@@ -1436,10 +1424,7 @@ procedure Converse( ObjectRef : TObject; Conversation : string );
 const
   FailName : string = 'Engine.Converse.';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     frmMain.BeginConverse( TGameObject( ObjectRef ), Conversation );

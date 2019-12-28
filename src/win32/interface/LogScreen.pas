@@ -137,10 +137,7 @@ constructor TLogScreen.Create;
 const
   FailName : string = 'TLogScreen.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
   except
@@ -153,10 +150,7 @@ destructor TLogScreen.Destroy;
 const
   FailName : string = 'TLogScreen.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -174,10 +168,7 @@ var
 const
   FailName : string = 'TLogScreen.init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Loaded then
@@ -289,10 +280,7 @@ const
 var
   pr : TRect;
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if IniFileFound and ( MaxPages > 0 ) then
@@ -347,10 +335,7 @@ const
 var
   pr : TRect;
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     pr := Rect( 588, 407, 588 + 77, 407 + 54 );
     lpDDSBack.BltFast( 588, 407, DXBack, @pr, DDBLTFAST_WAIT );
@@ -396,10 +381,7 @@ var
 const
   FailName : string = 'TLogScreen.ShowText';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
   //DebugPrint(inttostr(LogInfo.count-1));
     if IniFileFound then
@@ -457,10 +439,7 @@ procedure TLogScreen.Release;
 const
   FailName : string = 'TLogScreen.Release';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     ExText.close;
     DXBack := nil;

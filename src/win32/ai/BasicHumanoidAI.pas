@@ -546,10 +546,7 @@ const
 begin
   Result := nil;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := LowerCase( AIName );
@@ -600,10 +597,7 @@ const
 begin
   Result := false;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Result := false;
     D := sqrt( sqr( Target.X - Source.X ) + sqr( 2 * ( Target.Y - Source.Y ) ) );
@@ -679,10 +673,7 @@ procedure THumanoidIdle.Execute;
 const
   FailName : string = 'THumanoidIdle.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -993,10 +984,7 @@ var
 const
   FailName : string = 'THumanoidIdle.DetectChar';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     tmp := 150;
@@ -1102,10 +1090,7 @@ var
 const
   FailName : string = 'THumanoidIdle.FindTarget';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 //  exit;
     if ( FrameCount mod 33 ) = 0 then
@@ -1229,10 +1214,7 @@ procedure THumanoidIdle.Talk;
 const
   FailName : string = 'THumanoidIdle.Talk';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if ReadyToTalk then
@@ -1282,10 +1264,7 @@ var
 const
   FailName : string = 'THumanoidIdle.Meander';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     //Pick A random direction
@@ -1327,10 +1306,7 @@ procedure THumanoidIdle.WalkPath;
 const
   FailName : string = 'THumanoidIdle.WalkPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not ( assigned( GroupList ) ) then
@@ -1381,10 +1357,7 @@ var
 const
   FailName : string = 'THumanoidIdle.Work';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not ( assigned( GroupList ) ) then
@@ -1467,10 +1440,7 @@ var
 const
   FailName : string = 'THumanoidIdle.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
  //  Halo := true;
  // Character.SpecialEffect:=seAdd;
@@ -2190,10 +2160,7 @@ procedure THumanoidIdle.Follow( Source, Target : TAniFigure );
 const
   FailName : string = 'THumanoidIdle.Follow';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     character.WalkTo( Target.x, Target.y, 64 );
@@ -2209,10 +2176,7 @@ procedure THumanoidIdle.OnNoPath;
 const
   FailName : string = 'THumanoidIdle.OnNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     Walking := False;
@@ -2242,10 +2206,7 @@ procedure THumanoidIdle.OnStop;
 const
   FailName : string = 'THumanoidIdle.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Walking := False;
@@ -2321,10 +2282,7 @@ var
 const
   FailName : string = 'THumanoidIdle.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
 //  Delay := 0;
   try
@@ -2418,10 +2376,7 @@ function THumanoidIdle.OnCollideFigure( Target : TAniFigure ) : boolean;
 const
   FailName : string = 'THumanoidIdle.OnCollideFigure';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   Result := False;
   try
@@ -2465,10 +2420,7 @@ var
 const
   FailName : string = 'THumanoidIdle.WasKilled';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   inherited;
   try
@@ -2564,10 +2516,7 @@ function THumanoidIdle.OnCollideObject( Target : TAniFigure ) : Boolean;
 const
   FailName : string = 'THumanoidIdle.OnCollideObject';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   result := false;
   try
@@ -2592,10 +2541,7 @@ var
 const
   FailName : string = 'THumanoidIdle.Clicked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     walking := false;
@@ -2623,10 +2569,7 @@ destructor THumanoidIdle.Destroy;
 const
   FailName : string = 'THumanoidIdle.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if OldStand <> '' then
       character.StandAction := OldStand;
@@ -2663,10 +2606,7 @@ var
 const
   FailName : string = 'THumanoidMeleeCombat.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   inherited;
   try
@@ -2777,10 +2717,7 @@ var
 const
   FailName : string = 'THumanoidMeleeCombat.FindNextTarget';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     if ( FrameCount mod 40 ) = 0 then
@@ -2812,10 +2749,7 @@ procedure THumanoidMeleeCombat.CallToArms( Source, Target : TAniFigure );
 const
   FailName : string = 'THumanoidMeleeCombat.CallToArms';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if bTakeOrders then
       Character.Track := TCharacter( Target );
@@ -2830,10 +2764,7 @@ procedure THumanoidMeleeCombat.Attack;
 const
   FailName : string = 'THumanoidMeleeCombat.Attack';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
  //  character.say('Found target', clwhite);
   try
     if ReadyToAttack then
@@ -2888,10 +2819,7 @@ var
 const
   FailName : string = 'THumanoidMeleeCombat.RunAway';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     Walking := True;
@@ -3016,10 +2944,7 @@ procedure THumanoidMeleeCombat.Regroup( Source : TAniFigure; NewX, NewY : Intege
 const
   FailName : string = 'THumanoidMeleeCombat.Regroup';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     if bTakeOrders then
@@ -3042,10 +2967,7 @@ var
 const
   FailName : string = 'THumanoidMeleeCombat.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     OldRadius := Character.Radius;
@@ -3328,10 +3250,7 @@ function THumanoidMeleeCombat.OnCollideFigure( Target : TAniFigure ) : boolean;
 const
   FailName : string = 'THumanoidMeleeCombat.OnCollideFigure';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   Result := False;
   Character.Radius := OldRadius;
@@ -3377,10 +3296,7 @@ procedure THumanoidMeleeCombat.OnNoPath;
 const
   FailName : string = 'THumanoidMeleeCombat.OnNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     Walking := False;
@@ -3418,10 +3334,7 @@ var
 const
   FailName : string = 'THumanoidMeleeCombat.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if Source is TCharacter then
       character.Face( TCharacter( Source ).x, TCharacter( Source ).y )
@@ -3516,10 +3429,7 @@ var
 const
   FailName : string = 'THumanoidMeleeCombat.WasKilled';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -3583,10 +3493,7 @@ var
 const
   FailName : string = 'THumanoidMeleeCombat.NotifyOfDeath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     Waiting := false;
@@ -3640,10 +3547,7 @@ destructor THumanoidMeleeCombat.Destroy;
 const
   FailName : string = 'THumanoidMeleeCombat.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -3661,10 +3565,7 @@ function THumanoidMeleeCombat.OnCollideObject( Target : TAniFigure ) : Boolean;
 const
   FailName : string = 'THumanoidMeleeCombat.OnCollideObject';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   result := false;
   try
@@ -3687,10 +3588,7 @@ procedure THumanoidArcherCombat.CallToArms( Source, Target : TAniFigure );
 const
   FailName : string = 'THumanoidArcherCombat.CallToArms';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     if bTakeOrders then
@@ -3710,10 +3608,7 @@ procedure THumanoidArcherCombat.Execute;
 const
   FailName : string = 'THumanoidArcherCombat.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -3781,10 +3676,7 @@ var
 const
   FailName : string = 'THumanoidArcherCombat.BattleTactic';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     if not Walking then
@@ -3812,10 +3704,7 @@ procedure THumanoidArcherCombat.MoveAway;
 const
   FailName : string = 'THumanoidArcherCombat.MoveAway';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     Walking := True;
@@ -3896,10 +3785,7 @@ procedure THumanoidArcherCombat.Attack;
 const
   FailName : string = 'THumanoidArcherCombat.Attack';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if TCharacter( Character.Track ).Dead or not ( TCharacter( Character.Track ).enabled ) then
       Character.Track := nil
@@ -3964,10 +3850,7 @@ var
 const
   FailName : string = 'THumanoidArcherCombat.FindTarget';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     List := GetPerceptibleEnemies( Character, 2 );
@@ -3997,10 +3880,7 @@ var
 const
   FailName : string = 'THumanoidArcherCombat.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
      //   RunOrFight := true;
@@ -4238,10 +4118,7 @@ var
 const
   FailName : string = 'THumanoidArcherCombat.NotifyOfDeath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     tmpPartyTotal := 0;
@@ -4294,10 +4171,7 @@ function THumanoidArcherCombat.OnCollideFigure(
 const
   FailName : string = 'THumanoidArcherCombat.OnCollideFigure';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   Result := False;
   try
@@ -4330,10 +4204,7 @@ procedure THumanoidArcherCombat.OnNoPath;
 const
   FailName : string = 'THumanoidArcherCombat.OnNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     RunOrFight := False;
@@ -4352,10 +4223,7 @@ procedure THumanoidArcherCombat.OnStop;
 const
   FailName : string = 'THumanoidArcherCombat.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     if ( character.X <> character.StartX ) and ( character.Y <> character.StartY ) then
@@ -4378,10 +4246,7 @@ procedure THumanoidArcherCombat.Regroup( Source : TAniFigure; NewX, NewY : Integ
 const
   FailName : string = 'THumanoidArcherCombat.Regroup';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     if bTakeOrders then
@@ -4408,10 +4273,7 @@ var
 const
   FailName : string = 'THumanoidArcherCombat.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Source is TCharacter then
@@ -4486,10 +4348,7 @@ var
 const
   FailName : string = 'THumanoidArcherCombat.WasKilled';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Source is TCharacter then
@@ -4524,10 +4383,7 @@ destructor THumanoidArcherCombat.Destroy;
 const
   FailName : string = 'THumanoidArcherCombat.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -4547,10 +4403,7 @@ function THumanoidArcherCombat.OnCollideObject(
 const
   FailName : string = 'THumanoidArcherCombat.OnCollideObject';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   result := false;
   try
@@ -4571,10 +4424,7 @@ var
 const
   FailName : string = 'THumanoidArcherCombat.InRange';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   Result := False;
   try
     D := sqrt( sqr( Target.X - Character.X ) + sqr( 2 * ( Target.Y - Character.Y ) ) );
@@ -4592,10 +4442,7 @@ var
 const
   FailName : string = 'THumanoidCasterCombat.CallToArms';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     if bTakeOrders then
@@ -4619,10 +4466,7 @@ procedure THumanoidCasterCombat.Execute;
 const
   FailName : string = 'THumanoidCasterCombat.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
    // exit;
@@ -5008,10 +4852,7 @@ var
 const
   FailName : string = 'THumanoidCasterCombat.BattleTactic';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     if not Walking and bMove then
@@ -5073,10 +4914,7 @@ procedure THumanoidCasterCombat.CastHeal;
 const
   FailName : string = 'THumanoidCasterCombat.CastHeal';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     if Walking then
@@ -5113,10 +4951,7 @@ procedure THumanoidCasterCombat.MoveAway;
 const
   FailName : string = 'THumanoidCasterCombat.MoveAway';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     Walking := True;
@@ -5203,10 +5038,7 @@ var
 const
   FailName : string = 'THumanoidCasterCombat.Attack';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if TCharacter( Character.Track ).Dead or not ( TCharacter( Character.Track ).enabled ) then
       Character.Track := nil
@@ -5505,10 +5337,7 @@ var
 const
   FailName : string = 'THumanoidCasterCombat.FindFriendly';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     if not Assigned( FriendsList ) then
@@ -5552,11 +5381,7 @@ var
 const
   FailName : string = 'THumanoidCasterCombat.FindTarget';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
-
+  Log.DebugLog( FailName );
   try
     List := GetPerceptibleEnemies( Character, 2 );
     if assigned( List ) then
@@ -5587,10 +5412,7 @@ var
 const
   FailName : string = 'THumanoidCasterCombat.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     PauseAndExit := -1;
     RunOrFight := true;
@@ -6031,10 +5853,7 @@ var
 const
   FailName : string = 'THumanoidCasterCombat.NotifyOfDeath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     tmpPartyTotal := 0;
@@ -6087,10 +5906,7 @@ function THumanoidCasterCombat.OnCollideFigure(
 const
   FailName : string = 'THumanoidCasterCombat.OnCollideFigure';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   Result := False;
   try
@@ -6123,10 +5939,7 @@ procedure THumanoidCasterCombat.OnNoPath;
 const
   FailName : string = 'THumanoidCasterCombat.OnNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     RunOrFight := False;
@@ -6146,10 +5959,7 @@ procedure THumanoidCasterCombat.OnStop;
 const
   FailName : string = 'THumanoidCasterCombat.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     if ( character.X <> character.StartX ) and ( character.Y <> character.StartY ) then
@@ -6172,10 +5982,7 @@ procedure THumanoidCasterCombat.Regroup( Source : TAniFigure; NewX, NewY : Integ
 const
   FailName : string = 'THumanoidCasterCombat.Regroup';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     if bTakeOrders then
@@ -6202,10 +6009,7 @@ var
 const
   FailName : string = 'THumanoidCasterCombat.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if Source is TCharacter then
       character.Face( TCharacter( Source ).x, TCharacter( Source ).y )
@@ -6309,10 +6113,7 @@ var
 const
   FailName : string = 'THumanoidCasterCombat.WasKilled';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   character.removeTitle( 'cancelspelleffect' );
   if character.TitleExists( 'cancelinvis' ) then
     character.removetitle( 'cancelinvis' );
@@ -6385,10 +6186,7 @@ destructor THumanoidCasterCombat.Destroy;
 const
   FailName : string = 'THumanoidCasterCombat.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -6417,10 +6215,7 @@ function THumanoidCasterCombat.OnCollideObject(
 const
   FailName : string = 'THumanoidCasterCombat.OnCollideObject';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   result := false;
   try
@@ -6442,10 +6237,7 @@ var
 const
   FailName : string = 'THumanoidCasterCombat.InRange';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   Result := False;
   try
     D := sqrt( sqr( Target.X - Character.X ) + sqr( 2 * ( Target.Y - Character.Y ) ) );
@@ -6461,10 +6253,7 @@ procedure THumanoidHeroCombat.Execute;
 const
   FailName : string = 'THumanoidHeroCombat.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -6506,10 +6295,7 @@ procedure THumanoidHeroCombat.Attack;
 const
   FailName : string = 'THumanoidHeroCombat.Attack';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     if TCharacter( Character.Track ).Dead then
@@ -6546,10 +6332,7 @@ var
 const
   FailName : string = 'THumanoidHeroCombat.FindTarget';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     tmp := 0;
@@ -6641,10 +6424,7 @@ procedure THumanoidHeroCombat.RunAway;
 const
   FailName : string = 'THumanoidHeroCombat.RunAway';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     if assigned( Character.track ) then
@@ -6670,10 +6450,7 @@ procedure THumanoidHeroCombat.CallToArms( Source, Target : TAniFigure );
 const
   FailName : string = 'THumanoidHeroCombat.CallToArms';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     if bTakeOrders then
@@ -6689,10 +6466,7 @@ procedure THumanoidHeroCombat.Regroup( Source : TAniFigure; NewX, NewY : Integer
 const
   FailName : string = 'THumanoidHeroCombat.Regroup';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     exit;
@@ -6712,10 +6486,7 @@ var
 const
   FailName : string = 'THumanoidHeroCombat.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     GoodCollideCount := 0;
@@ -6912,10 +6683,7 @@ var
 const
   FailName : string = 'THumanoidHeroCombat.OnCollideFigure';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   Result := False;
   try
@@ -6990,10 +6758,7 @@ procedure THumanoidHeroCombat.OnStop;
 const
   FailName : string = 'THumanoidHeroCombat.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   Walking := false;
 end;
@@ -7002,10 +6767,7 @@ procedure THumanoidHeroCombat.OnNoPath;
 const
   FailName : string = 'THumanoidHeroCombat.OnNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Walking := false;
@@ -7020,10 +6782,7 @@ procedure THumanoidHeroCombat.WasAttacked( Source : TAniFigure; Damage : single 
 const
   FailName : string = 'THumanoidHeroCombat.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -7043,10 +6802,7 @@ var
 const
   FailName : string = 'THumanoidHeroCombat.WasKilled';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Source is TCharacter then
@@ -7075,8 +6831,6 @@ begin
   end;
 end;
 
-
-
 procedure THumanoidHeroCombat.NotifyOfDeath( Source : TAniFigure );
 var
   tmpPartyTotal : integer;
@@ -7084,10 +6838,7 @@ var
 const
   FailName : string = 'THumanoidHeroCombat.NotifyOfDeath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     tmpPartyTotal := 0;
@@ -7139,11 +6890,7 @@ destructor THumanoidHeroCombat.Destroy;
 const
   FailName : string = 'THumanoidHeroCombat.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -7158,10 +6905,7 @@ function THumanoidHeroCombat.OnCollideObject( Target : TAniFigure ) : Boolean;
 const
   FailName : string = 'THumanoidHeroCombat.OnCollideObject';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   result := false;
   try
@@ -7183,10 +6927,7 @@ procedure THumanoidHunterCombat.Execute;
 const
   FailName : string = 'THumanoidHunterCombat.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if bRunaway then
       RunAway;
@@ -7215,10 +6956,7 @@ procedure THumanoidHunterCombat.Runaway;
 const
   FailName : string = 'THumanoidHunterCombat.Runaway';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     //Better runAway code
@@ -7252,10 +6990,7 @@ var
 const
   FailName : string = 'THumanoidHunterCombat.FindTarget';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     tmp := 0;
@@ -7359,10 +7094,7 @@ var
 const
   FailName : string = 'THumanoidHunterCombat.Attack';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if RangeTest( Character.Track, Character, iDistance ) then
@@ -7450,10 +7182,7 @@ procedure THumanoidHunterCombat.CallToArms( Source, Target : TAniFigure );
 const
   FailName : string = 'THumanoidHunterCombat.CallToArms';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if bTakeOrders then
@@ -7469,10 +7198,7 @@ procedure THumanoidHunterCombat.Regroup( Source : TAniFigure; NewX, NewY : Integ
 const
   FailName : string = 'THumanoidHunterCombat.Regroup';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     exit;
@@ -7492,10 +7218,7 @@ var
 const
   FailName : string = 'THumanoidHunterCombat.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     RangeAttack := true;
@@ -7637,7 +7360,6 @@ begin
       FBonusCourage := 0;
     end;
 
-
     S := Character.Properties[ 'Distance' ];
     try
       if S = '' then
@@ -7668,8 +7390,6 @@ begin
       MainStat := msCombat
     end;
 
-
-
     List := GetPerceptibleAllies( Character, 1.5 );
     if Assigned( List ) then
     begin
@@ -7678,13 +7398,11 @@ begin
     end;
 
     Delay := random( 60 );
-
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
   end;
 end;
-
 
 function THumanoidHunterCombat.OnCollideFigure( Target : TAniFigure ) : boolean;
 var
@@ -7695,10 +7413,7 @@ const
 begin
   Result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Target = Character.Track then
@@ -7757,10 +7472,7 @@ procedure THumanoidHunterCombat.OnNoPath;
 const
   FailName : string = 'THumanoidHunterCombat.OnNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Walking := False;
@@ -7775,10 +7487,7 @@ procedure THumanoidHunterCombat.OnStop;
 const
   FailName : string = 'THumanoidHunterCombat.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Walking := false;
@@ -7793,10 +7502,7 @@ procedure THumanoidHunterCombat.WasAttacked( Source : TAniFigure; Damage : singl
 const
   FailName : string = 'THumanoidHunterCombat.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -7817,10 +7523,7 @@ var
 const
   FailName : string = 'THumanoidHunterCombat.WasKilled';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Source is TCharacter then
@@ -7844,8 +7547,6 @@ begin
   end;
 end;
 
-
-
 procedure THumanoidHunterCombat.NotifyOfDeath( Source : TAniFigure );
 var
   tmpPartyTotal : integer;
@@ -7853,10 +7554,7 @@ var
 const
   FailName : string = 'THumanoidHunterCombat.NotifyOfDeath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     tmpPartyTotal := 0;
@@ -7907,16 +7605,9 @@ destructor THumanoidHunterCombat.Destroy;
 const
   FailName : string = 'THumanoidHunterCombat.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
-
     inherited;
-
-
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -7928,10 +7619,7 @@ function THumanoidHunterCombat.OnCollideObject(
 const
   FailName : string = 'THumanoidHunterCombat.OnCollideObject';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   result := false;
   try
@@ -7947,21 +7635,13 @@ begin
 
 end;
 
-
-
-
-
 { THumanoidCombat }
-
 
 destructor THumanoidCombat.Destroy;
 const
   FailName : string = 'THumanoidCombat.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -7976,10 +7656,7 @@ procedure THumanoidCombat.WasAttacked( Source : TAniFigure; Damage : Single );
 const
   FailName : string = 'THumanoidCombat.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if random( 6 ) = 0 then
@@ -7995,10 +7672,7 @@ procedure THumanoidCombat.WasKilled( Source : TAniFigure );
 const
   FailName : string = 'THumanoidCombat.WasKilled';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if random( 3 ) = 0 then
@@ -8177,7 +7851,6 @@ end;
 
 (**************************************************************************************)
 
-
 procedure TColorMeEffect.Adjust( Character : TCharacter );
 begin
   inherited;
@@ -8192,7 +7865,6 @@ function TColorMeEffect.DoFrame : boolean;
 begin
   result := false;
 end;
-
 
 { TGlowEffect }
 

@@ -153,10 +153,7 @@ constructor TGameText.Create;
 const
   FailName : string = 'TGameText.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     LoadText;
     LoadFontGraphic( 'Inventory' );
@@ -171,10 +168,7 @@ destructor TGameText.Destroy;
 const
   FailName : string = 'TGameText.destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     if assigned( DXSurface ) then
       DXSurface := nil;
@@ -201,10 +195,7 @@ var
 const
   FailName : string = 'TGameText.LoadOfntGraphic';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if Assigned( DXSurface ) then
@@ -227,10 +218,7 @@ procedure TGameText.LoadDarkFontGraphic( ScreenName : string );
 const
   FailName : string = 'TGameText.LoadDarkFontGraphic';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if assigned( DXDarkSurface ) then
@@ -288,10 +276,7 @@ var
 const
   FailName : string = 'TGameText.LoadText';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if TFile.Exists( InterfacePath + 'fntAlphaCoords.dat' ) then
@@ -417,10 +402,7 @@ var
 const
   FailName : string = 'TGameText.PLotDarkText';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     XStart := 0;
     for i := 1 to Length( Sentence ) do
@@ -444,10 +426,7 @@ var
 const
   FailName : string = 'TGameText.PlotTinyText';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     XStart := 0;
     for i := 1 to Length( Sentence ) do
@@ -475,10 +454,7 @@ var
 const
   FailName : string = 'TGameText.PlotMegaTinyText';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     XStart := 0;
     for i := 1 to Length( Sentence ) do
@@ -501,10 +477,7 @@ var
 const
   FailName : string = 'TGameText.PlotF13Text';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     XStart := 0;
     for i := 1 to Length( Sentence ) do
@@ -528,10 +501,7 @@ var
 const
   FailName : string = 'TGameText.Plottext';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     XStart := 0;
     for i := 1 to Length( Sentence ) do
@@ -561,10 +531,7 @@ var
 const
   FailName : string = 'TGameText.PlotText2';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     XStart := 0;
     for i := 1 to Length( Sentence ) do
@@ -594,10 +561,7 @@ var
 const
   FailName : string = 'TGameText.PlotSquishedText';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     XStart := 0;
     for i := 1 to Length( Sentence ) do
@@ -631,10 +595,7 @@ var
 const
   FailName : string = 'TGameText.PlotTextCentered';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   Result := false;
   try
     TheLength := 0;
@@ -683,10 +644,7 @@ var
 const
   FailName : string = 'TGameText.PlotTextCentered2';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   Result := false;
   try
     TheLength := 0;
@@ -735,10 +693,7 @@ var
 const
   FailName : string = 'TGameText.PlotDarktextCentered2';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   Result := false;
   try
 
@@ -792,10 +747,7 @@ var
 const
   FailName : string = 'TGameText.PlotTextBlock';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   Result := 0;
   try
     i := 1;
@@ -892,10 +844,7 @@ var
 const
   FailName : string = 'TGameText.PlotTextBlock';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   Result := 0;
   try
 
@@ -987,10 +936,7 @@ var
 const
   FailName : string = 'TGameText.Plotf13block';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   Result := 0;
   try
 
@@ -1091,10 +1037,7 @@ var
 const
   FailName : string = 'TGameText.PlotTextAroundBlock';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   Result := 0;
   try
 
@@ -1208,10 +1151,7 @@ var
 const
   FailName : string = 'TGameText.TextLength';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   Result := 0;
   try
 
@@ -1237,10 +1177,7 @@ var
 const
   FailName : string = 'TGameText.TinyTextlength';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   Result := 0;
   try
 
@@ -1273,10 +1210,7 @@ var
 const
   FailName : string = 'TGameText.BreakTextIntoAStringList';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     i := 1;
@@ -1379,10 +1313,7 @@ var
 const
   FailName : string = 'TGameText.PlotTextCentered2';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     TheLength := 0;
@@ -1431,10 +1362,7 @@ var
 const
   FailName : string = 'TGameText.PlotText2';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     XStart := 0;
@@ -1472,10 +1400,7 @@ var
 const
   FailName : string = 'TGameText.PlotTextBlock';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   Result := 0;
   try
     i := 1;
@@ -1572,10 +1497,7 @@ var
 const
   FailName : string = 'TGameText.PlotTextCentered2';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   Result := false;
   try
 
@@ -1636,10 +1558,7 @@ var
 const
   FailName : string = 'TGameText.PlotTextBlock';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   Result := 0;
   try
     i := 1;

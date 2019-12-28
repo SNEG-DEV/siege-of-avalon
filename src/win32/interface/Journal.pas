@@ -130,10 +130,7 @@ constructor TJournal.Create;
 const
   FailName : string = 'TJournal.create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     inherited;
@@ -147,10 +144,7 @@ destructor TJournal.Destroy;
 const
   FailName : string = 'TJournal.destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     inherited;
@@ -168,10 +162,7 @@ var
 const
   FailName : string = 'TJournal.init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if Loaded then
@@ -346,10 +337,7 @@ procedure TJournal.Release;
 const
   FailName : string = 'TJournal.release';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     ExText.close;
 //   StartLogIndex:=JournalLog.LogFileList.count-1;
@@ -373,10 +361,7 @@ var
 const
   FailName : string = 'TJournal.showtext';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if CurrentLogIndex > StartLogIndex then

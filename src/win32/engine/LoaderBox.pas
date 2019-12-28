@@ -102,10 +102,7 @@ constructor TLoaderBox.Create;
 const
   FailName : string = 'TLoaderBox.create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     BltFx.dwSize := SizeOf( BltFx ); //RGB(244,164,4)
     BltFx.dwFillColor := SoAOS_DX_ColorMatch( lpDDSFront, cLoadBackColor );  //TODO: Make const RGB(100,100,255) blue, RGB(244,164,4) yellow, RGB( 32, 128, 16 ) green
@@ -120,10 +117,7 @@ destructor TLoaderBox.Destroy;
 const
   FailName : string = 'TLoaderBox.destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     inherited;
   except
@@ -140,10 +134,7 @@ var
 const
   FailName : string = 'TLoaderBox.init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     if Loaded then
       Exit;
@@ -178,10 +169,7 @@ procedure TLoaderBox.Release;
 const
   FailName : string = 'TLoaderBox.release';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     DXBox := nil;
 
@@ -199,10 +187,7 @@ var
 const
   FailName : string = 'TLoaderBox.setbar';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
   //Value:=round(CurrentValue*(200.0/MaxValue));
 //  Value:=round(CurrentValue*(680.0/MaxValue));

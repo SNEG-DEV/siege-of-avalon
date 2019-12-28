@@ -150,10 +150,7 @@ constructor TStatistics.Create;
 const
   FailName : string = 'TStatistics.create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
   except
@@ -166,10 +163,7 @@ destructor TStatistics.Destroy;
 const
   FailName : string = 'TStatistics.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
   except
@@ -186,10 +180,7 @@ var
 const
   FailName : string = 'TStatistics.init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if Loaded then
       Exit;
@@ -250,10 +241,7 @@ procedure TStatistics.Release;
 const
   FailName : string = 'TStatistics.release';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     pText.UnloadTinyFontGraphic;
@@ -281,10 +269,7 @@ var
 const
   FailName : string = 'TStatistics.Mousedown';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     i := 0;
@@ -547,10 +532,7 @@ var
 const
   FailName : string = 'TStatistics.MouseMove';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     //Clean up arrows and back to game
@@ -671,10 +653,7 @@ procedure TStatistics.MouseUp( Sender : TAniview; Button : TMouseButton;
 const
   FailName : string = 'TStatistics.Mouseup';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
   except
@@ -690,10 +669,7 @@ const
 var
   pr : TRect;
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
   //clear the back down to the text - but dont clear the info block
@@ -716,10 +692,7 @@ var
 const
   FailName : string = 'TStatistics.CreateCollisonrects';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     LineHeight := 24;
    //first the ArrowRects
@@ -920,10 +893,7 @@ var
 const
   FailName: string = 'TStatistics.Debugplot';
 begin
-{$IFDEF DODEBUG}
-{  if (CurrDbgLvl >= DbgLvlSevere) then
-    Log.LogEntry(FailName);
-{$ENDIF}
+  Log.DebugLog( FailName );
 {try
 
 lpDDSBack.BltFast(20,237,DXBack,Rect(20,237,20+50,237+25),DDBLTFAST_WAIT); //clean up before we plot text
@@ -939,10 +909,7 @@ procedure TStatistics.LoadNames;
 const
   FailName : string = 'TStatistics.LoadNames';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
   //Loads all the names we use in the Mouseover help
@@ -979,10 +946,7 @@ var
 const
   FailName : string = 'TStatistics.LoadBaseValues';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
   //we store thse values so that we can keep the player from lowering his score beyon its start
     Damage := Character.Damage;
@@ -1017,10 +981,7 @@ var
 const
   FailName : string = 'TStatistics.Showstats';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Alpha := 240; //blend value

@@ -90,10 +90,7 @@ function CreateMidiPlayer : integer;
 const
   FailName : string = 'Midi.CreateMidiPlayer';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   result := 0;
   try
     MidiIsAvailable := CreateMidi;
@@ -108,10 +105,7 @@ procedure StopMidiSong;
 const
   FailName : string = 'Midi.StopMidiSong';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if MidiIsAvailable = 1 then
       StopMidi;
@@ -125,10 +119,7 @@ function OpenMidiSong( FileName : AnsiString ) : integer;
 const
   FailName : string = 'Midi.OpenMidiSong';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   result := 0;
   try
     if MidiIsAvailable = 1 then
@@ -145,10 +136,7 @@ function PlayMidiSong : integer;
 const
   FailName : string = 'Midi.PlayMidiSong';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   result := 0;
   try
     result := PlayMidi;
@@ -162,10 +150,7 @@ function GetMidiSongVolume : integer;
 const
   FailName : string = 'Midi.GetMidiSongVolume';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   result := 0;
   try
     if MidiIsAvailable = 1 then
@@ -183,10 +168,7 @@ function SetMidiSongVolume( Volume : integer ) : integer;
 const
   FailName : string = 'Midi.SetMidiSongVolume';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   result := 0;
   try
     if MidiIsAvailable = 1 then

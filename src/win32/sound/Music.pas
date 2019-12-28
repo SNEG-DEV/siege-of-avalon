@@ -130,10 +130,7 @@ destructor TMusic.Destroy;
 const
   FailName : string = 'TMusic.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
   //DestroyDirectSound;
     if DaSoundCardAvailable then

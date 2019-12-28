@@ -254,10 +254,7 @@ const
 begin
   result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     result := False;
@@ -302,10 +299,7 @@ constructor TGreatFoot.Create;
 const
   FailName : string = 'TGreatFoot.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     CastingType := ctCombat;
@@ -326,10 +320,7 @@ destructor TGreatFoot.Destroy;
 const
   FailName : string = 'TGreatFoot.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Resource.Free;
@@ -347,10 +338,7 @@ const
 begin
   result := 0;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     result := 25 + round( Source.Restriction / 10 );
@@ -365,10 +353,7 @@ function TGreatFoot.GetIconXY( Source : TCharacter ) : TPoint;
 const
   FailName : string = 'TGreatFoot.GetIconXY';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     result.X := 19 * 32;
@@ -391,14 +376,9 @@ const
 begin
   result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
-
     result := Resource.Loaded;
-
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -416,14 +396,9 @@ const
 begin
   result := 0;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
-
     result := round( Source.Mysticism * 50 * ( 24 + Source.Mysticism / 10 ) );
-
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -436,10 +411,7 @@ const
 begin
   result := 0;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     result := 40 - ( ( Source.Coordination + Source.Mysticism ) div 4 );
@@ -463,10 +435,7 @@ const
 begin
   result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
  // if assigned(Target) then exit;
@@ -560,10 +529,7 @@ constructor TMirrorImage.Create;
 const
   FailName : string = 'TMirrorImage.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     CastingType := ctSummoning;
     TargetType := ttNone;
@@ -583,10 +549,7 @@ destructor TMirrorImage.Destroy;
 const
   FailName : string = 'TMirrorImage.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Resource.Free;
     inherited;
@@ -603,10 +566,7 @@ const
 begin
   result := 0;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     result := Source.Mana;
 
@@ -620,10 +580,7 @@ function TMirrorImage.GetIconXY( Source : TCharacter ) : TPoint;
 const
   FailName : string = 'TMirrorImage.GetIconXY';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     result.X := 23 * 32;
     result.Y := 32;
@@ -646,10 +603,7 @@ const
 begin
   result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( Resource ) then
@@ -672,10 +626,7 @@ const
 begin
   result := 0;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     result := 200;
 
@@ -691,10 +642,7 @@ const
 begin
   result := 0;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     result := 20;
 
@@ -718,10 +666,7 @@ const
 begin
   result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     for iLoop := 0 to NPCList.Count - 1 do
     begin
@@ -762,10 +707,7 @@ constructor THealAll.Create;
 const
   FailName : string = 'THealAll.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -787,10 +729,7 @@ destructor THealAll.Destroy;
 const
   FailName : string = 'THealAll.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Resource.Free;
@@ -808,10 +747,7 @@ const
 begin
   result := 0;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     result := ( 10 * NPCList.Count ) + round( Source.Restriction / 10 );
@@ -826,10 +762,7 @@ function THealAll.GetIconXY( Source : TCharacter ) : TPoint;
 const
   FailName : string = 'THealAll.GetIconXY';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     result.X := 16 * 32;
@@ -853,10 +786,7 @@ const
 begin
   result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( Resource ) then
@@ -879,10 +809,7 @@ const
 begin
   result := 0;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     result := 10 * ( Source.Constitution + Source.Mysticism );
@@ -899,10 +826,7 @@ const
 begin
   result := 0;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     result := 40 - ( Source.Constitution div 2 );
@@ -927,10 +851,7 @@ const
 begin
   result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     result := inherited Cast( Source, Target );
     if not result then
@@ -970,10 +891,7 @@ constructor TRotatingBlades.Create;
 const
   FailName : string = 'TRotatingBlades.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -993,10 +911,7 @@ destructor TRotatingBlades.Destroy;
 const
   FailName : string = 'TRotatingBlades.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
  // Resource.Free;
@@ -1014,10 +929,7 @@ const
 begin
   result := 0;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
 //  result := source.mana;
@@ -1034,10 +946,7 @@ function TRotatingBlades.GetIconXY( Source : TCharacter ) : TPoint;
 const
   FailName : string = 'TRotatingBlades.GetIconXY';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     result.X := 13 * 32;
     result.Y := 32;
@@ -1060,10 +969,7 @@ const
 begin
   result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     result := true;
 
@@ -1084,10 +990,7 @@ const
 begin
   result := 0;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
 //  result := 10*(Source.Constitution + Source.Mysticism);
@@ -1104,10 +1007,7 @@ const
 begin
   result := 0;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     result := 0;

@@ -1200,10 +1200,7 @@ var
 const
   FailName : string = 'Character.PlaySound';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not assigned( Sounds ) then
@@ -1243,10 +1240,7 @@ var
 const
   FailName : string = 'Character.PlaySingleSound';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     HearingRange := 400;
@@ -1281,10 +1275,7 @@ const
 begin
   Result := 0;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Result := random * ( Range.Max - Range.Min ) + Range.Min;
@@ -1304,10 +1295,7 @@ const
 begin
   Result := 0;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Critical then
@@ -1501,10 +1489,7 @@ const
 begin
   Result := fSS;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if ( GridX = SrcX ) then
@@ -1557,10 +1542,7 @@ const
 begin
   result := false;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     C1 := Parse( S, 0, '.' );
@@ -1694,10 +1676,7 @@ begin
   result := false;
   Value := '';
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     C1 := Parse( S, 0, '.' );
     if C1 <> 'damage' then
@@ -1827,10 +1806,7 @@ var
 const
   FailName : string = 'Character.SaveDamageProps';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := 'damage.piercingmin=' + FormatFP( Damage.Piercing.Min ); List.add( S );
@@ -1870,10 +1846,7 @@ const
 begin
   result := false;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     C1 := Parse( S, 0, '.' );
@@ -1997,10 +1970,7 @@ begin
   Value := '';
   Result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     C1 := Parse( S, 0, '.' );
@@ -2121,10 +2091,7 @@ var
 const
   FailName : string = 'Character.SaveResistanceProps';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := 'resistance.piercinginv=' + FormatFP( Resistance.Piercing.Invulnerability ); List.add( S );
@@ -2225,10 +2192,7 @@ procedure TAI.WasAttacked( Source : TAniFigure; Damage : Single );
 const
   FailName : string = 'TAI.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not Character.InPain then
@@ -2247,10 +2211,7 @@ procedure TAI.WasKilled( Source : TAniFigure );
 const
   FailName : string = 'TAI.WasKilled';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     PlaySound( Character.DeathSounds, Character.X, Character.Y );
@@ -2267,10 +2228,7 @@ function TCharacter.GetName : string;
 const
   FailName : string = 'TCharacter.GetName';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     result := FName;
@@ -2285,10 +2243,7 @@ procedure TCharacter.SetFrozen( const Value : boolean );
 const
   FailName : string = 'TCharacter.SetFrozen';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Value <> FFrozen then
@@ -2308,10 +2263,7 @@ procedure TCharacter.SetCombatMode( const Value : boolean );
 const
   FailName : string = 'TCharacter.SetCombatMode';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Value <> FCombatMode then
@@ -2330,10 +2282,7 @@ procedure TCharacter.SetDead( const Value : boolean );
 const
   FailName : string = 'TCharacter.SetDead';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     FDead := Value;
@@ -2356,10 +2305,7 @@ const
   FailName : string = 'TCharacter.SetResource';
   Action = 'Run';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -2425,10 +2371,7 @@ var
 const
   FailName : string = 'TCharacter.CalcStats';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Loading then
@@ -2542,10 +2485,7 @@ constructor TCharacter.Create( X, Y, Z : Integer;
 const
   FailName : string = 'TCharacter.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -2609,10 +2549,7 @@ var
 const
   FailName : string = 'TCharacter.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     AI.Free;
@@ -2663,10 +2600,7 @@ const
 begin
   result := false;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not assigned( Item ) then
@@ -2735,10 +2669,7 @@ var
 const
   FailName : string = 'TCharacter.Die';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited Stop;
@@ -2818,10 +2749,7 @@ var
 const
   FailName : string = 'TCharacter.DoFrame';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -3276,10 +3204,7 @@ procedure TCharacter.Face( X, Y : Integer );
 const
   FailName : string = 'TCharacter.Face';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     FFacing := GetFacing( Self.X, Self.Y, X, Y );
@@ -3299,10 +3224,7 @@ procedure TCharacter.SetAI( const Value : TAI );
 const
   FailName : string = 'TCharacter.SetAI';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Assigned( FAI ) then
@@ -3327,10 +3249,7 @@ var
 const
   FailName : string = 'TCharacter.SetEquipment';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     FEquipment[ Slot ] := Value;
@@ -3384,10 +3303,7 @@ procedure TCharacter.Stand;
 const
   FailName : string = 'TCharacter.Stand';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     FTarget := nil;
@@ -3411,10 +3327,7 @@ const
   FailName : string = 'TCharacter.TakeDamage';
 begin
   result := 0;
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if FDead then
@@ -3592,10 +3505,7 @@ procedure TCharacter.WalkTo( X, Y, Deviance : Integer );
 const
   FailName : string = 'TCharacter.WalkTo';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if FFrozen then
@@ -3647,10 +3557,7 @@ procedure TCharacter.RunTo( X, Y, Deviance : Integer );
 const
   FailName : string = 'TCharacter.RunTo';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not RunExists then
@@ -3707,10 +3614,7 @@ procedure TCharacter.ScriptEnd( Sender : TObject );
 const
   FailName : string = 'TCharacter.ScriptEnd';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if FAttacking then
@@ -3753,10 +3657,7 @@ const
 var
   OldDelay : longint;
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     FFacing := GetFacing( Self.X, Self.Y, X, Y );
@@ -3776,10 +3677,7 @@ procedure TCharacter.Attack( Target : TCharacter );
 const
   FailName : string = 'TCharacter.Attack';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if FFrozen then
@@ -3876,10 +3774,7 @@ procedure TCharacter.AttackPoint( X, Y : Integer );
 const
   FailName : string = 'TCharacter.AttackPoint';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if FFrozen then
@@ -3946,10 +3841,7 @@ procedure TCharacter.ApplyModifier( Modifier : PStatModifier );
 const
   FailName : string = 'TCharacter.ApplyModifier';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Inc( FStrength, Modifier.Strength );
@@ -3987,10 +3879,7 @@ procedure TCharacter.ApplyResistance( Profile : PDamageResistanceProfile );
 const
   FailName : string = 'TCharacter.ApplyResistance';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     ResCalc( Resistance.Piercing, Profile.Piercing );
@@ -4018,10 +3907,7 @@ var
 const
   FailName : string = 'TCharacter.CollideFigure';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if FDead then
@@ -4130,10 +4016,7 @@ procedure TCharacter.CollideItem( Source : TAniFigure;
 const
   FailName : string = 'TCharacter.CollideItem';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if AntiPathMode then
@@ -4161,10 +4044,7 @@ procedure TCharacter.Stop( Sender : TObject );
 const
   FailName : string = 'TCharacter.Stop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if FDead then
@@ -4197,10 +4077,7 @@ procedure TCharacter.NoPath( Sender : TObject );
 const
   FailName : string = 'TCharacter.NoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if FindAgain then
@@ -4231,10 +4108,7 @@ var
 const
   FailName : string = 'TCharacter.Trigger';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if ID <= 0 then
@@ -4255,10 +4129,7 @@ procedure TCharacter.Filter( Source : TAniFigure; ID, PrevID : SmallInt );
 const
   FailName : string = 'TCharacter.Filter';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Self = View.KeyFigure then
@@ -4278,10 +4149,7 @@ var
 const
   FailName : string = 'TCharacter.Approach';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     IntendToZone := false;
@@ -4318,10 +4186,7 @@ var
 const
   FailName : string = 'TCharacter.ApproachRun';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not RunExists then
@@ -4362,10 +4227,7 @@ procedure TCharacter.ShiftApproach( ATarget : TSpriteObject );
 const
   FailName : string = 'TCharacter.ShiftApproach';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Approach( ATarget );
@@ -4381,10 +4243,7 @@ procedure TCharacter.ShiftApproachRun( ATarget : TSpriteObject );
 const
   FailName : string = 'TCharacter.ShiftApproachRun';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     ApproachRun( ATarget );
@@ -4403,10 +4262,7 @@ var
 const
   FailName : string = 'TCharacter.SaveProperties';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := 'strength=' + IntToStr( BaseStrength ); List.add( S );
@@ -4655,10 +4511,7 @@ var
 const
   FailName : string = 'TCharacter.GetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := LowerCase( Name );
@@ -4884,10 +4737,7 @@ var
 const
   FailName : string = 'TCharacter.SetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     NoProp := false;
@@ -5336,10 +5186,7 @@ var
 const
   FailName : string = 'TCharacter.LoadEquipment';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     for i := slLeg1 to slMisc3 do
@@ -5438,10 +5285,7 @@ const
 begin
   Result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := LowerCase( Action );
@@ -5697,10 +5541,7 @@ procedure TCharacter.Cast( Target : TSpriteObject );
 const
   FailName : string = 'TCharacter.Cast';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if FFrozen then
@@ -5759,10 +5600,7 @@ procedure TCharacter.CastPoint( X, Y : Integer );
 const
   FailName : string = 'TCharacter.CastPoint';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if FFrozen then
@@ -5819,10 +5657,7 @@ procedure TCharacter.SetTrack( Character : TCharacter );
 const
   FailName : string = 'TCharacter.SetTrack';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     FTrack := Character;
@@ -5839,10 +5674,7 @@ procedure TCharacter.SetTrainingPoints( const Value : Integer );
 const
   FailName : string = 'TCharacter.SetTrainingPoints';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Inc( FTrainingPoints, Value );
@@ -5859,10 +5691,7 @@ procedure TCharacter.SetMoney( const Value : Integer );
 const
   FailName : string = 'TCharacter.SetMoney';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if PartyMember and assigned( Player ) then
@@ -5888,10 +5717,7 @@ procedure TCharacter.DoBattleCry;
 const
   FailName : string = 'TCharacter.DoBattleCry';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     PlaySound( BattleCries, X, Y );
@@ -5957,10 +5783,7 @@ const
   FailName : string = 'TCharacter.InRange';
 begin
   Result := False; ;
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     D := sqrt( sqr( Target.X - X ) + sqr( 2 * ( Target.Y - Y ) ) );
@@ -5979,10 +5802,7 @@ const
   FailName : string = 'TCharacter.RangeTo';
 begin
   Result := 0;
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     A := X - self.X;
@@ -6002,10 +5822,7 @@ var
 const
   FailName : string = 'TCharacter.AddEffect';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Found := false;
@@ -6047,10 +5864,7 @@ var
 const
   FailName : string = 'TCharacter.AddTitle';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if ( Titles.IndexOf( Title ) < 0 ) then
@@ -6073,10 +5887,7 @@ var
 const
   FailName : string = 'TCharacter.RemoveTitle';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Title = '' then
@@ -6105,10 +5916,7 @@ const
 begin
   Result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Result := ( Titles.IndexOf( Title ) >= 0 );
@@ -6141,10 +5949,7 @@ var
 const
   FailName : string = 'TCharacter.SetTitleList';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     for i := 0 to Titles.count - 1 do
@@ -6176,10 +5981,7 @@ var
 const
   FailName : string = 'TCharacter.GetTitleList';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Titles.count = 0 then
@@ -6197,7 +5999,6 @@ begin
   end;
 end;
 
-
 function TCharacter.InInventory( const ItemName : string ) : Boolean;
 var
   i : integer;
@@ -6208,10 +6009,7 @@ const
 begin
   Result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := lowercase( ItemName );
@@ -6251,10 +6049,7 @@ const
 begin
   Result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := lowercase( ItemName );
@@ -6282,10 +6077,7 @@ const
 begin
   Result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not assigned( Target ) then
@@ -6323,10 +6115,7 @@ const
 begin
   Result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not assigned( Target ) then
@@ -6364,10 +6153,7 @@ const
 begin
   Result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not assigned( Target ) then
@@ -6405,10 +6191,7 @@ var
 const
   FailName : string = 'TCharacter.GetFriends';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if FFriends.count = 0 then
@@ -6433,10 +6216,7 @@ var
 const
   FailName : string = 'TCharacter.SetFriends';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     FFriends.Clear;
@@ -6462,10 +6242,7 @@ var
 const
   FailName : string = 'TCharacter.GetEnemies';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if FEnemies.count = 0 then
@@ -6490,10 +6267,7 @@ var
 const
   FailName : string = 'TCharacter.SetEnemies';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     FEnemies.Clear;
@@ -6519,10 +6293,7 @@ var
 const
   FailName : string = 'TCharacter.MakeAlly';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Alliance = '' then
@@ -6544,10 +6315,7 @@ var
 const
   FailName : string = 'TCharacter.MakeEnemy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Alliance = '' then
@@ -6569,10 +6337,7 @@ var
 const
   FailName : string = 'TCharacter.MakeNeutral';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Alliance = '' then
@@ -6596,10 +6361,7 @@ const
 var
   i, j : integer;
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   result := TStringList.create;
   try
@@ -6625,10 +6387,7 @@ var
 const
   FailName : string = 'TCharacter.SetAttackSound';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( SoundLib ) then
@@ -6651,10 +6410,7 @@ var
 const
   FailName : string = 'TCharacter.SetDeathSound';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( SoundLib ) then
@@ -6677,10 +6433,7 @@ var
 const
   FailName : string = 'TCharacter.SetPainSound';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( SoundLib ) then
@@ -6703,10 +6456,7 @@ var
 const
   FailName : string = 'TCharacter.SetBattleCry';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( SoundLib ) then
@@ -6729,10 +6479,7 @@ var
 const
   FailName : string = 'TCharacter.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     LoadEquipment( UseDefaultEquipment );
     if FDead then
@@ -7023,10 +6770,7 @@ destructor TWeapon.Destroy;
 const
   FailName : string = 'TWeapon.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( SoundLib ) then
@@ -7051,10 +6795,7 @@ var
 const
   FailName : string = 'TWeapon.DoDamage';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Assigned( Target ) then
@@ -7139,10 +6880,7 @@ procedure TWeapon.Equip( Character : TCharacter );
 const
   FailName : string = 'TWeapon.Equip';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Character.ApplyModifier( @Modifier );
@@ -7160,10 +6898,7 @@ var
 const
   FailName : string = 'TWeapon.GetDamage';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     F := Character.Strength / 10;
@@ -7206,10 +6941,7 @@ var
 const
   FailName : string = 'TWeapon.GetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := LowerCase( Name );
@@ -7251,10 +6983,7 @@ var
 const
   FailName : string = 'TWeapon.SaveProperties';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := 'twohanded=' + FmtBool( TwoHanded ); List.add( S );
@@ -7279,10 +7008,7 @@ var
 const
   FailName : string = 'TWeapon.SetAttackSound';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( SoundLib ) then
@@ -7307,10 +7033,7 @@ var
 const
   FailName : string = 'TWeapon.SetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     NoProp := false;
@@ -7394,10 +7117,7 @@ var
 const
   FailName : string = 'TWeapon.SetStrikeLeatherSound';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( SoundLib ) then
@@ -7420,10 +7140,7 @@ var
 const
   FailName : string = 'TWeapon.SetStrikeMetalSound';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( SoundLib ) then
@@ -7447,10 +7164,7 @@ constructor TContainer.Create( X, Y, Z : Integer;
 const
   FailName : string = 'TContainer.SetStrikeMetalSound';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -7468,10 +7182,7 @@ procedure TContainer.Activate;
 const
   FailName : string = 'TContainer.Activate';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -7494,10 +7205,7 @@ var
 const
   FailName : string = 'TContainer.Close';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if AlwaysOpen then
@@ -7531,10 +7239,7 @@ var
 const
   FailName : string = 'TContainer.Open';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if FPlaying then
@@ -7586,10 +7291,7 @@ var
 const
   FailName : string = 'TContainer.ScriptEnd';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     FPlaying := False;
@@ -7630,10 +7332,7 @@ var
 const
   FailName : string = 'TContainer.GetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := LowerCase( Name );
@@ -7693,10 +7392,7 @@ var
 const
   FailName : string = 'TContainer.SetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     NoProp := false;
@@ -7825,10 +7521,7 @@ const
 begin
   result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     result := True;
@@ -7860,10 +7553,7 @@ const
 begin
   result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not assigned( Item ) then
@@ -7932,10 +7622,7 @@ destructor TContainer.Destroy;
 const
   FailName : string = 'TContainer.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Inventory.free;
@@ -7959,10 +7646,7 @@ var
 const
   FailName : string = 'TContainer.SaveProperties';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := 'keyname=' + KeyName; List.add( S );
@@ -8002,10 +7686,7 @@ var
 const
   FailName : string = 'TContainer.SetCloseSound';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( SoundLib ) then
@@ -8028,10 +7709,7 @@ var
 const
   FailName : string = 'TContainer.SetOpenSound';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( SoundLib ) then
@@ -8057,10 +7735,7 @@ var
 const
   FailName : string = 'TContainer.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if FInventoryList <> '' then
@@ -8136,10 +7811,7 @@ function TContainer.GetName : string;
 const
   FailName : string = 'TContainer.GetName';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     result := FName;
@@ -8154,10 +7826,7 @@ procedure TContainer.DoFrame;
 const
   FailName : string = 'TContainer.DoFrame';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -8248,10 +7917,7 @@ constructor TDoor.Create( X, Y,
 const
   FailName : string = 'TDoor.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -8269,10 +7935,7 @@ procedure TDoor.Activate;
 const
   FailName : string = 'TDoor.Activate';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -8295,10 +7958,7 @@ var
 const
   FailName : string = 'TDoor.Close';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if FPlaying then
@@ -8331,10 +7991,7 @@ const
 begin
   result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     result := True;
@@ -8356,10 +8013,7 @@ procedure TDoor.Open;
 const
   FailName : string = 'TDoor.Open';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if FPlaying then
@@ -8383,10 +8037,7 @@ var
 const
   FailName : string = 'TDoor.GetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := LowerCase( Name );
@@ -8427,10 +8078,7 @@ var
 const
   FailName : string = 'TDoor.SetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     NoProp := false;
@@ -8526,10 +8174,7 @@ var
 const
   FailName : string = 'TDoor.ChangeFrame';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
 //Log.Log('ChangeFrame: '+inttostr(Frame)+','+inttostr(PrevFrame));
@@ -8574,10 +8219,7 @@ var
 const
   FailName : string = 'TDoor.ScriptEnd';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     FPlaying := False;
@@ -8603,10 +8245,7 @@ procedure TDoor.DoFrame;
 const
   FailName : string = 'TDoor.DoFrame';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Visible := Highlighted;
@@ -8625,10 +8264,7 @@ var
 const
   FailName : string = 'TDoor.SaveProperties';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := 'keyname=' + KeyName; List.add( S );
@@ -8655,10 +8291,7 @@ var
 const
   FailName : string = 'TDoor.SetCloseSound';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( SoundLib ) then
@@ -8681,10 +8314,7 @@ var
 const
   FailName : string = 'TDoor.SetOpenSound';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( SoundLib ) then
@@ -8705,10 +8335,7 @@ destructor TDoor.Destroy;
 const
   FailName : string = 'TDoor.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( SoundLib ) then
@@ -8732,10 +8359,7 @@ var
 const
   FailName : string = 'TDoor.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not assigned( Frame1 ) then
@@ -8805,10 +8429,7 @@ procedure TDoor.SetResource( const Value : TAniResource );
 const
   FailName : string = 'TDoor.SetResource';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -8823,10 +8444,7 @@ function TDoor.GetName : string;
 const
   FailName : string = 'TDoor.GetName';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     result := FName;
@@ -8845,10 +8463,7 @@ const
 begin
   result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     result := ( Slot in SlotsAllowed ) and MeetsRequirements( Character );
@@ -8927,10 +8542,7 @@ var
 const
   FailName : string = 'TItem.Drop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not assigned( Resource ) then
@@ -8966,10 +8578,7 @@ procedure TItem.Equip( Character : TCharacter );
 const
   FailName : string = 'TItem.Equip';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Character.ApplyModifier( @Modifier );
@@ -9015,10 +8624,7 @@ var
 const
   FailName : string = 'TItem.GetIconicImage';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     result := nil;
@@ -9067,10 +8673,7 @@ function TItem.GetInfo : string;
 const
   FailName : string = 'TItem.GetInfo';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Identified and ( SecretInfo <> '' ) then
@@ -9094,10 +8697,7 @@ var
 const
   FailName : string = 'TItem.GetInventoryImage';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     result := nil;
@@ -9154,10 +8754,7 @@ var
 const
   FailName : string = 'TItem.GetInventoryShadow';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     result := nil;
@@ -9214,10 +8811,7 @@ function TItem.GetName : string;
 const
   FailName : string = 'TItem.GetName';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Identified and ( SecretName <> '' ) then
@@ -9237,10 +8831,7 @@ var
 const
   FailName : string = 'TItem.GetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := LowerCase( Name );
@@ -9370,10 +8961,7 @@ procedure TItem.Init;
 const
   FailName : string = 'TItem.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not DoAction( 'Default' ) then
@@ -9399,10 +8987,7 @@ var
 const
   FailName : string = 'TItem.PickUp';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Inc( PickUpCount );
@@ -9424,10 +9009,7 @@ var
 const
   FailName : string = 'TItem.SaveProperties';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := 'itemname=' + ItemName; List.add( S );
@@ -9522,10 +9104,7 @@ var
 const
   FailName : string = 'TItem.SetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     NoProp := false;
@@ -9749,10 +9328,7 @@ procedure TItem.SetResource( const Value : TAniResource );
 const
   FailName : string = 'TItem.SetResource';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -9782,10 +9358,7 @@ var
 const
   FailName : string = 'TProjectile.CollideFigure';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Target = FSource then
@@ -9874,10 +9447,7 @@ procedure TProjectile.CollideItem( Source : TAniFigure;
 const
   FailName : string = 'TProjectile.CollideItem';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Stop := True;
@@ -9914,10 +9484,7 @@ procedure TProjectile.Launch( Source : TCharacter; Target : TSpriteObject; X, Y 
 const
   FailName : string = 'TProjectile.Launch';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     OnCollideFigure := CollideFigure;
@@ -9950,10 +9517,7 @@ procedure TProjectile.CollideBoundary( Source : TAniFigure );
 const
   FailName : string = 'TProjectile.CollideBoundary';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Disable;
@@ -9974,10 +9538,7 @@ var
 const
   FailName : string = 'TProjectile.DoDamage';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if DamageRadius > 0 then
@@ -10054,10 +9615,7 @@ procedure TProjectile.ExplodeEnd( Sender : TObject );
 const
   FailName : string = 'TProjectile.ExplodeEnd';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Disable;
@@ -10072,10 +9630,7 @@ procedure TProjectile.Disable;
 const
   FailName : string = 'TProjectile.Disable';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( GlowEffect ) then
@@ -10107,10 +9662,7 @@ var
 const
   FailName : string = 'TProjectile.DoFrame';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Exploding then
@@ -10216,10 +9768,7 @@ procedure TProjectile.MoveEvent( Sender : TObject );
 const
   FailName : string = 'TProjectile.MoveEvent';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( GlowEffect ) then
@@ -10267,10 +9816,7 @@ var
 const
   FailName : string = 'TArrow.Render';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not Visible then
@@ -10338,10 +9884,7 @@ var
 const
   FailName : string = 'TArrow.Draw';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     with BM.Canvas do
@@ -10384,10 +9927,7 @@ procedure TArrow.Launch( Source : TCharacter; Target : TSpriteObject; X, Y : Lon
 const
   FailName : string = 'TArrow.Launch';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -10404,10 +9944,7 @@ procedure TArrow.Disable;
 const
   FailName : string = 'TArrow.Disable';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -10430,10 +9967,7 @@ var
 const
   FailName : string = 'TLauncher.DoDamage';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     NewProjectile := TProjectile( Sprites.NewSprite( TProjectile, nil, Source.X, Source.Y, Source.Height div 2 - 16, 1 ) );
@@ -10464,10 +9998,7 @@ constructor TGameObject.Create( X, Y, Z : Longint; Frame : Word; Enabled : Boole
 const
   FailName : string = 'TGameObject.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited Create( X, Y, Z, Frame, Enabled );
@@ -10484,10 +10015,7 @@ destructor TGameObject.Destroy;
 const
   FailName : string = 'TGameObject.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     FProperties.Free;
@@ -10505,10 +10033,7 @@ var
 const
   FailName : string = 'TGameObject.GetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := LowerCase( Name );
@@ -10543,10 +10068,7 @@ var
 const
   FailName : string = 'TGameObject.LoadProperties';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Loading := true;
@@ -10595,10 +10117,7 @@ const
 begin
   result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     result := FProperties.IndexOfName( Name ) >= 0;
@@ -10616,10 +10135,7 @@ var
 const
   FailName : string = 'TGameObject.SaveProperties';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := 'guid=' + GUID; List.add( S );
@@ -10646,10 +10162,7 @@ var
 const
   FailName : string = 'TGameObject.SetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     NoProp := false;
@@ -10726,10 +10239,7 @@ var
 const
   FailName : string = 'TGameObject.DoLoad';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Inc( LoadCount );
@@ -10754,10 +10264,7 @@ var
 const
   FailName : string = 'TSpriteObject.Activate';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Inc( ActivateCount );
@@ -10777,10 +10284,7 @@ constructor TSpriteObject.Create( X, Y, Z : Longint; Frame : Word; Enabled : Boo
 const
   FailName : string = 'TSpriteObject.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited Create( X, Y, Z, Frame, Enabled );
@@ -10796,10 +10300,7 @@ destructor TSpriteObject.Destroy;
 const
   FailName : string = 'TSpriteObject.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
 {$IFDEF DirectX}
@@ -10830,10 +10331,7 @@ const
 begin
   result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not assigned( Resource ) then
@@ -10888,10 +10386,7 @@ function TSpriteObject.GetFacingString : string;
 const
   FailName : string = 'TSpriteObject.GetFacingString';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     case FFacing of
@@ -10917,10 +10412,7 @@ var
 const
   FailName : string = 'TSpriteObject.GetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := LowerCase( Name );
@@ -10955,10 +10447,7 @@ var
 const
   FailName : string = 'TSpriteObject.SetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     NoProp := false;
@@ -11084,10 +10573,7 @@ procedure TSpriteObject.SetResource( const Value : TAniResource );
 const
   FailName : string = 'TSpriteObject.SetResource';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -11128,10 +10614,7 @@ const
 begin
   result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not assigned( Resource ) then
@@ -11159,10 +10642,7 @@ const
   FailName : string = 'TSpriteObject.Say';
 begin
 //TODO: Cleanup
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Msg = '' then
@@ -11229,10 +10709,7 @@ var
 const
   FailName : string = 'TSpriteObject.UpdateSay';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -11285,10 +10762,7 @@ procedure TSpriteObject.SetFacing( const Value : TFacing );
 const
   FailName : string = 'TSpriteObject.SetFacing';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     FFacing := Value;
@@ -11305,10 +10779,7 @@ var
 const
   FailName : string = 'TSpriteObject.SaveProperties';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := 'enabled=' + FmtBool( Enabled ); List.add( S );
@@ -11335,10 +10806,7 @@ procedure TSpriteObject.Init;
 const
   FailName : string = 'TSpriteObject.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     DoAction( 'Default' );
@@ -11353,10 +10821,7 @@ function TSpriteObject.GetName : string;
 const
   FailName : string = 'TSpriteObject.GetName';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     result := '';
@@ -11395,10 +10860,7 @@ var
 const
   FailName : string = 'TBow.DoDamage';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if MinStrength = 0 then
       Exit;
@@ -11521,10 +10983,7 @@ var
 const
   FailName : string = 'TBow.GetDamage';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     F := MinStrength / 10;
@@ -11575,10 +11034,7 @@ destructor TQuiver.Destroy;
 const
   FailName : string = 'TQuiver.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( SoundLib ) then
@@ -11600,10 +11056,7 @@ procedure TQuiver.Equip( Character : TCharacter );
 const
   FailName : string = 'TQuiver.Equip';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Character.ApplyModifier( @Modifier );
@@ -11621,10 +11074,7 @@ var
 const
   FailName : string = 'TQuiver.GetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := LowerCase( Name );
@@ -11653,10 +11103,7 @@ var
 const
   FailName : string = 'TQuiver.SaveProperties';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := 'fletchingcolor=' + IntToStr( FletchingColor ); List.add( S );
@@ -11678,10 +11125,7 @@ var
 const
   FailName : string = 'TQuiver.SetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := LowerCase( Name );
@@ -11710,10 +11154,7 @@ var
 const
   FailName : string = 'TQuiver.SetStrikeLeatherSound';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( SoundLib ) then
@@ -11736,10 +11177,7 @@ var
 const
   FailName : string = 'TQuiver.SetStrikeMetalSound';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( SoundLib ) then
@@ -11762,10 +11200,7 @@ var
 const
   FailName : string = 'TQuiver.SetStrikeStoneSound';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( SoundLib ) then
@@ -11790,10 +11225,7 @@ const
 begin
   result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Source.FCastRecovery := Recovery( Source );
@@ -11812,10 +11244,7 @@ constructor TSpell.Create;
 const
   FailName : string = 'TSpell.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -11831,10 +11260,7 @@ destructor TSpell.Destroy;
 const
   FailName : string = 'TSpell.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( SoundLib ) then
@@ -11873,10 +11299,7 @@ procedure TSpell.LoadCastSounds( const NameList : string );
 const
   FailName : string = 'TSpell.LoadCastSounds';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( SoundLib ) then
@@ -11898,10 +11321,7 @@ var
 const
   FailName : string = 'TSpell.PlaySound';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( CastSounds ) then
@@ -11964,10 +11384,7 @@ destructor TTrigger.Destroy;
 const
   FailName : string = 'TTrigger.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( SoundLib ) then
@@ -11990,10 +11407,7 @@ const
 begin
   result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     dec( CountDown );
@@ -12022,10 +11436,7 @@ var
 const
   FailName : string = 'TTrigger.GetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := LowerCase( Name );
@@ -12054,10 +11465,7 @@ var
 const
   FailName : string = 'TTrigger.SaveProperties';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := 'triggerenabled=' + FmtBool( TriggerEnabled ); List.add( S );
@@ -12079,10 +11487,7 @@ var
 const
   FailName : string = 'TTrigger.SetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := LowerCase( Name );
@@ -12114,10 +11519,7 @@ var
 const
   FailName : string = 'TTrigger.SetTriggerSound';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( SoundLib ) then
@@ -12140,10 +11542,7 @@ var
 const
   FailName : string = 'TTrigger.Trigger';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if not TriggerEnabled then
       exit;
@@ -12179,10 +11578,7 @@ constructor TSoundPlayer.Create( X, Y, Z : Integer );
 const
   FailName : string = 'TSoundPlayer.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -12202,10 +11598,7 @@ destructor TSoundPlayer.Destroy;
 const
   FailName : string = 'TSoundPlayer.PlaySound';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( SoundLib ) then
@@ -12271,10 +11664,7 @@ var
 const
   FailName : string = 'TSoundPlayer.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not assigned( SoundLib ) then
@@ -12354,10 +11744,7 @@ var
 const
   FailName : string = 'TSoundPlayer.GetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := LowerCase( Name );
@@ -12416,10 +11803,7 @@ var
 const
   FailName : string = 'TSoundPlayer.SaveProperties';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := 'on=' + FmtBool( SoundOn ); List.add( S );
@@ -12448,10 +11832,7 @@ procedure TSoundPlayer.SetContinuous( const Value : boolean );
 const
   FailName : string = 'TSoundPlayer.SetContinuous';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     FContinuous := Value;
@@ -12472,10 +11853,7 @@ var
 const
   FailName : string = 'TSoundPlayer.SetFilename';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( SoundLib ) then
@@ -12496,10 +11874,7 @@ procedure TSoundPlayer.SetInterval( const Value : integer );
 const
   FailName : string = 'TSoundPlayer.SetInterval';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     FInterval := Value;
@@ -12517,10 +11892,7 @@ var
 const
   FailName : string = 'TSoundPlayer.SetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := LowerCase( Name );
@@ -12569,10 +11941,7 @@ procedure TSoundPlayer.SetSoundOn( const Value : Boolean );
 const
   FailName : string = 'TSoundPlayer.SetSoundOn';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     FSoundOn := Value;
@@ -12595,10 +11964,7 @@ procedure TSoundPlayer.SetVolume( const Value : Integer );
 const
   FailName : string = 'TSoundPlayer.SetVolume';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     FVolume := Value;
@@ -12626,10 +11992,7 @@ const
 begin
   result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     D := Target.Distance - Target.Radius;
@@ -12727,10 +12090,7 @@ const
 begin
   result := nil;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := lowercase( GUID );
@@ -12753,10 +12113,7 @@ const
 begin
   result := nil;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     List := Game.FindInRadius( Source.X, Source.Y, Limit );
@@ -12799,10 +12156,7 @@ const
 begin
   result := true;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if ( Source is TCharacter ) then
@@ -12923,10 +12277,7 @@ const
 begin
   result := nil;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     F := Source.PerceptionFactor * Factor;
     Vision := Source.Vision * F;
@@ -12981,10 +12332,7 @@ const
 begin
   result := nil;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     List := Game.FindInRadius( Source.X, Source.Y, Limit );
@@ -13027,10 +12375,7 @@ const
 begin
   result := nil;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     F := Source.PerceptionFactor * Factor;
@@ -13086,10 +12431,7 @@ const
 begin
   result := nil;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     List := Game.FindInRadius( Source.X, Source.Y, Limit );
@@ -13132,10 +12474,7 @@ const
 begin
   result := nil;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     F := Source.PerceptionFactor * Factor;
@@ -13192,10 +12531,7 @@ const
 begin
   result := nil;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     F := Source.PerceptionFactor * Factor;
@@ -13247,10 +12583,7 @@ const
 begin
   result := nil;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if GroupName = '' then
@@ -13289,10 +12622,7 @@ const
 begin
   result := True;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if GroupName = '' then
@@ -13331,10 +12661,7 @@ var
 const
   FailName : string = 'TSpriteManager.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     SpriteCount := Count;
@@ -13357,10 +12684,7 @@ destructor TSpriteManager.Destroy;
 const
   FailName : string = 'TSpriteManager.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     List.Free;
@@ -13381,10 +12705,7 @@ const
 begin
   result := nil;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     StartIndex := FCurrentIndex;
@@ -13436,10 +12757,7 @@ var
 const
   FailName : string = 'TSpriteManager.ReAlloc';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     List.clear;
@@ -13464,10 +12782,7 @@ var
 const
   FailName : string = 'TPathCorner.GetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := LowerCase( Name );
@@ -13492,10 +12807,7 @@ var
 const
   FailName : string = 'TPathCorner.SaveProperties';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := 'nextdestination=' + NextDestination; List.add( S );
@@ -13515,10 +12827,7 @@ var
 const
   FailName : string = 'TPathCorner.SetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := LowerCase( Name );
@@ -13546,10 +12855,7 @@ procedure TEffect.Adjust( Character : TCharacter );
 const
   FailName : string = 'TEffect.Adjust';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Character.ApplyModifier( @StatModifier );
@@ -13573,10 +12879,7 @@ var
 const
   FailName : string = 'TEffect.DoAction';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( Resource ) then
@@ -13615,10 +12918,7 @@ const
 begin
   result := True;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if AnimationDuration > 0 then
@@ -13654,10 +12954,7 @@ var
 const
   FailName : string = 'TEffect.RenderLocked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( Resource ) and ( AnimationDuration > 0 ) then
@@ -13731,10 +13028,7 @@ procedure TEffect.UpdateScript;
 const
   FailName : string = 'TEffect.UpdateScript';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( Script ) then
@@ -13817,10 +13111,7 @@ constructor TGlow.Create( X, Y, Z : Integer;
 const
   FailName : string = 'TGlow.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -13871,10 +13162,7 @@ var
 const
   FailName : string = 'TGlow.Render';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     DstX1 := View.Left + PosX;
@@ -13938,10 +13226,7 @@ var
 const
   FailName : string = 'TEventTimer.GetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := LowerCase( Name );
@@ -13972,10 +13257,7 @@ var
 const
   FailName : string = 'TEventTimer.SaveProperties';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     S := 'interval=' + IntToStr( Interval ); List.add( S );
@@ -14000,10 +13282,7 @@ var
 const
   FailName : string = 'TEventTimer.SetProperty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     NoProp := false;
@@ -14063,10 +13342,7 @@ constructor TCompanionCharacter.Create( X, Y, Z : Integer; Frame : Word;
 const
   FailName : string = 'TCompanionCharacter.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -14085,10 +13361,7 @@ var
 const
   FailName : string = 'TCompanionCharacter.DoFrame';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Fade < 0 then
@@ -14171,10 +13444,7 @@ procedure TCompanionCharacter.SetResource( const Value : TAniResource );
 const
   FailName : string = 'TCompanionCharacter.SetResource';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;

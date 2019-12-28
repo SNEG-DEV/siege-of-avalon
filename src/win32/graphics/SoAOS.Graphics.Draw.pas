@@ -118,10 +118,7 @@ var
 const
   FailName : string = 'DXUtil.DDColorMatch';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   Result := 0;
   try
     dw := 0;

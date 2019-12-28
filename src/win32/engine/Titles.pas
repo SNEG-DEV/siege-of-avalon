@@ -110,10 +110,7 @@ function TTitlesDB.GetStatModifier( const Title : string ) : PStatModifier;
   const
     FailName : string = 'GetInt within GetStamodifier';
   begin
-{$IFDEF DODEBUG}
-    if ( CurrDbgLvl >= DbgLvlSevere ) then
-      Log.LogEntry( FailName );
-{$ENDIF}
+    Log.DebugLog(FailName);
     Result := 0;
     try
       try
@@ -131,10 +128,7 @@ function TTitlesDB.GetStatModifier( const Title : string ) : PStatModifier;
 const
   FailName : string = 'TTitlesDB.GetStatModifier';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   result := nil;
   try
 

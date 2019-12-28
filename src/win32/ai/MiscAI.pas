@@ -634,10 +634,7 @@ var
 const
   FailName : string = 'MiscAI.AssignMiscAI';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   Result := nil;
   try
     S := LowerCase( AIName );
@@ -703,10 +700,7 @@ var
 const
   FailName : string = 'MiscAI.RangeTest';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   Result := False;
   try
     D := sqrt( sqr( Target.X - Source.X ) + sqr( 2 * ( Target.Y - Source.Y ) ) );
@@ -774,10 +768,7 @@ procedure TCompanion.Execute;
 const
   FailName : string = 'MiscAI.TCompanion.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
 
@@ -910,10 +901,7 @@ const
   FailName : string = 'MiscAI.TCompanion.BuffParty';
 
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Spell := strTokenAt( dSPellBook, ',', Random( StrTokenCount( dSpellBook, ',' ) ) );
     if Spells.IndexOf( spell ) <> -1 then
@@ -938,10 +926,7 @@ var
 const
   FailName : string = 'MiscAI.TCompanion.HealPlayer';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   Result := false;
 
   try
@@ -974,10 +959,7 @@ var
 const
   FailName : string = 'MiscAI.TCompanion.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
 
@@ -1431,10 +1413,7 @@ var
   X, Y : Integer;
 
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   Result := False;
   try
@@ -1459,10 +1438,7 @@ procedure TCompanion.OnStop;
 const
   FailName : string = 'MiscAI.TCompanion.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     walking := False;
     if Assigned( Character.Track ) then
@@ -1483,10 +1459,7 @@ procedure TCompanion.OnNoPath;
 const
   FailName : string = 'MiscAI.TCompanion.OnNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     walking := False;
 
@@ -1508,10 +1481,7 @@ procedure TCompanion.WasAttacked( Source : TAniFigure; Damage : Single );
 const
   FailName : string = 'MiscAI.TCompanion.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     Delay := 0;
@@ -1565,10 +1535,7 @@ var
 const
   FailName : string = 'MiscAI.TCompanion.GuardPlayer';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     //watch for good guys
     if GuardFrame = 0 then
@@ -1613,10 +1580,7 @@ var
 const
   FailName : string = 'MiscAI.BTCompanion.FollowPlayer';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if NewFrame = 0 then
       NewFrame := FrameCount + 16;
@@ -1809,10 +1773,7 @@ procedure TCompanion.AttackMelee;
 const
   FailName : string = 'MiscAI.TCompanion.AttackMelee';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if Walking then
     begin
@@ -1932,10 +1893,7 @@ var
 const
   FailName : string = 'THumanoidArcherCombat.InRange';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   Result := False;
   try
     D := sqrt( sqr( Target.X - Character.X ) + sqr( 2 * ( Target.Y - Character.Y ) ) );
@@ -1950,10 +1908,7 @@ procedure TCompanion.AttackMeleeRanged;
 const
   FailName : string = 'MiscAI.TCompanion.AttackMelee';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if walking then
       exit;
@@ -2024,10 +1979,7 @@ var
 const
   FailName : string = 'THumanoidArcherCombat.BattleTactic';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     ShotCounter := 0;
@@ -2057,10 +2009,7 @@ var
 const
   FailName : string = 'MiscAI.TCompanion.AttackCaster';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if walking then
       exit;
@@ -2150,10 +2099,7 @@ procedure TCompanion.MoveAway;
 const
   FailName : string = 'MiscAI.TCompanion.MoveAway';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Walking := True;
     if Assigned( Character.Track ) then
@@ -2179,10 +2125,7 @@ destructor TCompanion.Destroy;
 const
   FailName : string = 'MiscAI.TCompanion.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     if Assigned( Spells ) then
@@ -2200,10 +2143,7 @@ procedure TGuardDog.Execute;
 const
   FailName : string = 'MiscAI.TGuardDog.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     //Temp find player stuff
@@ -2422,10 +2362,7 @@ procedure TGuardDog.HealMaster;
 const
   FailName : string = 'MiscAI.TGuardDog.HealFMaster';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Character.CurrentSpell <> TSpell( Spells.Objects[ Spells.IndexOf( 'Heal' ) ] ) then
@@ -2443,10 +2380,7 @@ procedure TGuardDog.HealSelf;
 const
   FailName : string = 'MiscAI.TGuardDog.HealFMaster';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Character.CurrentSpell <> TSpell( Spells.Objects[ Spells.IndexOf( 'Heal' ) ] ) then
@@ -2468,10 +2402,7 @@ var
 const
   FailName : string = 'MiscAI.TGuardDog.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   StandInterval := -1;
   try
     if character.GroupName <> '' then
@@ -2830,10 +2761,7 @@ var
   X, Y : Integer;
 
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   Result := False;
   try
@@ -2858,10 +2786,7 @@ procedure TGuardDog.OnStop;
 const
   FailName : string = 'MiscAI.TGuardDog.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     character.stand;
 
@@ -2883,10 +2808,7 @@ procedure TGuardDog.OnNoPath;
 const
   FailName : string = 'MiscAI.TGuardDog.OnNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     walking := False;
 
@@ -2907,10 +2829,7 @@ var
 const
   FailName : string = 'MiscAI.TGuardDog.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     Delay := 0;
@@ -2995,10 +2914,7 @@ var
 const
   FailName : string = 'MiscAI.TGuardDog.GuardFMaster';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     //watch for good guys
     if ( FrameCount mod 40 ) = 0 then
@@ -3119,10 +3035,7 @@ var
 const
   FailName : string = 'MiscAI.BTGuardDog.FollowFMaster';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     if ( character.Rangeto( FMaster.x, FMaster.y ) > 160 ) then
@@ -3176,10 +3089,7 @@ procedure TGuardDog.AttackMelee;
 const
   FailName : string = 'MiscAI.TGuardDog.AttackMelee';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if OldStand <> '' then
       character.StandAction := oldStand;
@@ -3278,10 +3188,7 @@ var
 const
   FailName : string = 'MiscAI.TGuardDog.BattleTactic';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not Walking then
@@ -3307,10 +3214,7 @@ var
 const
   FailName : string = 'MiscAI.TGuardDog.AttackCaster';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if TCharacter( Character.Track ).Dead then
     begin
@@ -3383,10 +3287,7 @@ procedure TGuardDog.MoveAway;
 const
   FailName : string = 'MiscAI.TGuardDog.MoveAway';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Walking := True;
     if Assigned( Character.Track ) then
@@ -3412,10 +3313,7 @@ destructor TGuardDog.Destroy;
 const
   FailName : string = 'MiscAI.TGuardDog.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     if Assigned( Spells ) then
@@ -3434,10 +3332,7 @@ procedure TCommanderCombat.Execute;
 const
   FailName : string = 'MiscAI.TCommanderCombat.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     if bRunaway then
@@ -3481,10 +3376,7 @@ procedure TCommanderCombat.Attack;
 const
   FailName : string = 'MiscAI.TCommanderCombat.Attack';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if Character.Track is TCharacter and TCharacter( Character.Track ).Dead then
     begin
@@ -3521,10 +3413,7 @@ var
 const
   FailName : string = 'MiscAI.TCommanderCombat.FindTarget';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if ( ( FrameCount mod 40 ) = 0 ) and WaitingToKill and OrdersGiven then
     begin
@@ -3599,10 +3488,7 @@ var
 const
   FailName : string = 'MiscAI.TCommanderCombat.Run';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if Assigned( Character.Track ) then
     begin
@@ -3652,10 +3538,7 @@ var
 const
   FailName : string = 'MiscAI.TCommanderCombat.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     S := Character.Properties[ 'RunAwayTime' ];
     try
@@ -3722,10 +3605,7 @@ procedure TCommanderCombat.Wait;
 const
   FailName : string = 'MiscAI.TCommanderCombat.Wait';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Character.WalkTo( Character.X + random( 80 ) - 40, Character.Y + random( 40 ) - 20, 16 );
     CollideCount := 0;
@@ -3741,10 +3621,7 @@ function TCommanderCombat.OnCollideFigure( Target : TAniFigure ) : Boolean;
 const
   FailName : string = 'MiscAI.TCommanderCombat.OnCollideFigure';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   Result := False;
   try
     if Target = Character.Track then
@@ -3783,10 +3660,7 @@ procedure TCommanderCombat.WasAttacked( Source : TAniFigure; Damage : Single );
 const
   FailName : string = 'MiscAI.TCommanderCombat.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Delay := 0;
     if Source is TCharacter then
@@ -3817,10 +3691,7 @@ procedure TCommanderCombat.OnNoPath;
 const
   FailName : string = 'MiscAI.TCommanderCombat.OnNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Walking := False;
   except
@@ -3833,10 +3704,7 @@ procedure TCommanderCombat.OnStop;
 const
   FailName : string = 'MiscAI.TCommanderCombat.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Walking := False;
   except
@@ -3852,10 +3720,7 @@ var
 const
   FailName : string = 'MiscAI.TCommanderCombat.WasKilled';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if Source is TCharacter then
       character.Face( TCharacter( Source ).x, TCharacter( Source ).y );
@@ -3886,10 +3751,7 @@ var
 const
   FailName : string = 'MiscAI.TCommanderCombat.NotifyOfDeath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     FriendList := GetPerceptibleAllies( Character, 1.5 );
     EnemyList := GetPerceptibleEnemies( Character, 1.25 );
@@ -3915,6 +3777,7 @@ begin
   end;
 end;
 {****************************************************************************************}
+
 { TOrcIdle }
 
 procedure TOrcIdle.Execute;
@@ -3929,10 +3792,7 @@ var
 const
   FailName : string = 'MiscAI.TOrcIdle.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     if ( FrameCount mod 160 ) = 0 then
@@ -4098,10 +3958,7 @@ var
 const
   FailName : string = 'MiscAI.TOrcIdle.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     CenterX := Character.X;
@@ -4176,10 +4033,7 @@ procedure TOrcIdle.Follow( Source, Target : TAniFigure );
 const
   FailName : string = 'MiscAI.TOrcIdle.Follow';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     character.WalkTo( Target.x, Target.y, 64 );
     Walking := True;
@@ -4193,10 +4047,7 @@ procedure TOrcIdle.OnStop;
 const
   FailName : string = 'MiscAI.TOrcIdle.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Walking := False;
 
@@ -4220,10 +4071,7 @@ procedure TOrcIdle.WasAttacked( Source : TAniFigure; Damage : Single );
 const
   FailName : string = 'MiscAI.TOrcIdle.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if Source is TCharacter then
       character.Face( TCharacter( Source ).x, TCharacter( Source ).y );
@@ -4244,10 +4092,7 @@ function TOrcIdle.OnCollideFigure( Target : TAniFigure ) : Boolean;
 const
   FailName : string = 'MiscAI.TOrcIdle.OnCollideFigure';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   Result := False;
   try
     if Target is TCharacter then
@@ -4281,16 +4126,14 @@ begin
 end;
 
 (************************************************************************)
+
 { TScoutIdle }
 
 procedure TScoutIdle.Execute;
 const
   FailName : string = 'MiscAI.TScoutIdle.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     if not ( Assigned( Character.Track ) ) and bCombative then
@@ -4337,10 +4180,7 @@ var
 const
   FailName : string = 'MiscAI.TScoutIdle.GetPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     DiffX := ToX - Character.X;
     DiffY := ToY - Character.Y;
@@ -4372,10 +4212,7 @@ var
 const
   FailName : string = 'MiscAI.TScoutIdle.FindTarget';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     //watch for bad guys
     if ( FrameCount mod 40 ) = 0 then
@@ -4401,10 +4238,7 @@ var
 const
   FailName : string = 'MiscAI.TScoutIdle.GotoFriends';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if ( FrameCount mod 40 ) = 0 then
     begin
@@ -4459,10 +4293,7 @@ procedure TScoutIdle.WalkPath;
 const
   FailName : string = 'MiscAI.TScoutIdle.WalkPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     //Pathcorner stuff here
     if Assigned( MyPathCorners ) then
@@ -4501,10 +4332,7 @@ var
 const
   FailName : string = 'MiscAI.TScoutIdle.Meander';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     //Pick A random direction
     Character.Track := nil;
@@ -4529,10 +4357,7 @@ var
 const
   FailName : string = 'MiscAI.TScoutIdle.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Walking := False;
     CenterX := Character.X;
@@ -4616,10 +4441,7 @@ procedure TScoutIdle.OnNoPath;
 const
   FailName : string = 'MiscAI.TScoutIdle.OnNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Walking := False;
     if Assigned( CurrentPath ) then
@@ -4634,10 +4456,7 @@ procedure TScoutIdle.Wait;
 const
   FailName : string = 'MiscAI.TScoutIdle.Wait';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Character.WalkTo( Character.X + random( 80 ) - 40, Character.Y + random( 40 ) - 20, 16 );
     CollideCount := 0;
@@ -4653,10 +4472,7 @@ procedure TScoutIdle.OnStop;
 const
   FailName : string = 'MiscAI.TScoutIdle.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Walking := False;
@@ -4681,10 +4497,7 @@ procedure TScoutIdle.WasAttacked( Source : TAniFigure; Damage : Single );
 const
   FailName : string = 'MiscAI.TScoutIdle.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     if Source is TCharacter then
@@ -4702,10 +4515,7 @@ function TScoutIdle.OnCollideFigure( Target : TAniFigure ) : Boolean;
 const
   FailName : string = 'MiscAI.TScoutIdle.OnCollideFigure';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   Result := False;
   try
     if Target is TCharacter then
@@ -4738,10 +4548,7 @@ procedure TWatchDog.Execute;
 const
   FailName : string = 'MiscAI.TWatchDog.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
 
@@ -4795,10 +4602,7 @@ var
 const
   FailName : string = 'MiscAI.TWatchDog.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     CirclePoint := Random( 360 ) + 180;
     NukeCounter := 0;
@@ -4897,10 +4701,7 @@ procedure TWatchDog.OnStop;
 const
   FailName : string = 'MiscAI.TWatchDog.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     walking := False;
     if Assigned( Character.Track ) then
@@ -4916,10 +4717,7 @@ procedure TWatchDog.OnNoPath;
 const
   FailName : string = 'MiscAI.TWatchDog.OnNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     walking := False;
     if Assigned( Character.Track ) then
@@ -4935,10 +4733,7 @@ procedure TWatchDog.WasAttacked( Source : TAniFigure; Damage : Single );
 const
   FailName : string = 'MiscAI.TWatchDog.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     if Source is TCharacter then
@@ -4979,10 +4774,7 @@ procedure TWatchDog.GuardDog;
 const
   FailName : string = 'MiscAI.TWatchDog.GuardDog';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     //watch for good guys
 
@@ -5028,10 +4820,7 @@ procedure TWatchDog.AttackMelee;
 const
   FailName : string = 'MiscAI.TWatchDog.AttackMelee';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if Walking then
     begin
@@ -5085,10 +4874,7 @@ var
 const
   FailName : string = 'MiscAI.TWatchDog.BattleTatic';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if not Walking then
     begin
@@ -5114,10 +4900,7 @@ var
 const
   FailName : string = 'MiscAI.TWatchDog.AttackCaster';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if TCharacter( Character.Track ).Dead then
     begin
@@ -5174,10 +4957,7 @@ procedure TWatchDog.MoveAway;
 const
   FailName : string = 'MiscAI.TWatchDog.MoveAway';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Walking := True;
     if Assigned( Character.Track ) then
@@ -5209,10 +4989,7 @@ var
 const
   FailName : string = 'MiscAI.TWatchDog.Meander';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     //Pick A random direction
     Walking := True;
@@ -5264,10 +5041,7 @@ begin
   delay := 50;
 
   exit;
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
 
@@ -5324,10 +5098,7 @@ var
 const
   FailName : string = 'MiscAI.TDrunk.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   delay := 50;
   exit;
   try
@@ -5404,10 +5175,7 @@ procedure TDrunk.OnStop;
 const
   FailName : string = 'MiscAI.TDrunk.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     walking := False;
     if Assigned( Character.Track ) then
@@ -5423,10 +5191,7 @@ procedure TDrunk.OnNoPath;
 const
   FailName : string = 'MiscAI.TDrunk.OnNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     walking := False;
     if Assigned( Character.Track ) then
@@ -5442,10 +5207,7 @@ procedure TDrunk.WasAttacked( Source : TAniFigure; Damage : Single );
 const
   FailName : string = 'MiscAI.TDrunk.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
 
@@ -5498,10 +5260,7 @@ var
 const
   FailName : string = 'MiscAI.TDrunk.DetectChar';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     //watch for good guys
@@ -5559,10 +5318,7 @@ procedure TDrunk.AttackMelee;
 const
   FailName : string = 'MiscAI.TDrunk.AttackMelee';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if Walking then
     begin
@@ -5616,10 +5372,7 @@ var
 const
   FailName : string = 'MiscAI.TDrunk.BattleTatic';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not Walking then
@@ -5645,10 +5398,7 @@ var
 const
   FailName : string = 'MiscAI.TDrunk.AttackCaster';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if TCharacter( Character.Track ).Dead then
     begin
@@ -5705,10 +5455,7 @@ procedure TDrunk.MoveAway;
 const
   FailName : string = 'MiscAI.TDrunk.MoveAway';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Walking := True;
 
@@ -5741,10 +5488,7 @@ var
 const
   FailName: string = 'MiscAI.TDrunk.Meander';
 begin
-{$IFDEF DODEBUG}
-{  if (CurrDbgLvl >= DbgLvlSevere) then
-    Log.LogEntry(FailName);
-{$ENDIF}
+  Log.DebugLog( FailName );
 {  try
     //Pick A random direction
     Walking := True;
@@ -5770,10 +5514,7 @@ destructor TWatchDog.Destroy;
 const
   FailName : string = 'MiscAI.TWatchDog.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     if Assigned( Spells ) then
@@ -5788,10 +5529,7 @@ destructor TScoutIdle.Destroy;
 const
   FailName : string = 'MiscAI.TScoutIdle.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     if Assigned( MyGroup ) then
@@ -5816,10 +5554,7 @@ var
 const
   FailName : string = 'MiscAI.TWorms.AttackMelee';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if ReadyToAttack then
@@ -5904,10 +5639,7 @@ procedure TWorms.Execute;
 const
   FailName : string = 'MiscAI.TWorms.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if ( Delay > 0 ) then
     begin
@@ -5933,10 +5665,7 @@ var
 const
   FailName : string = 'MiscAI.TWorms.FindTarget';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if ( FrameCount mod 40 ) = 0 then
     begin
@@ -5980,10 +5709,7 @@ var
 const
   FailName : string = 'MiscAI.TWorms.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Revealed := False;
     character.Frame := 0;
@@ -6044,10 +5770,7 @@ procedure TPriortyCompanion.Execute;
 const
   FailName : string = 'MiscAI.TPriortyCompanion.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     //Temp find player stuff
@@ -6164,10 +5887,7 @@ procedure TPriortyCompanion.HealPlayer;
 const
   FailName : string = 'MiscAI.TPriortyCompanion.HealPlayer';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Character.CurrentSpell <> TSpell( Spells.Objects[ Spells.IndexOf( 'Healing' ) ] ) then
@@ -6187,10 +5907,7 @@ var
 const
   FailName : string = 'MiscAI.TPriortyCompanion.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Spells := character.SpellList;
     CirclePoint := Random( 360 ) + 180;
@@ -6300,10 +6017,7 @@ procedure TPriortyCompanion.OnStop;
 const
   FailName : string = 'MiscAI.TPriortyCompanion.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     walking := False;
     if Assigned( Character.Track ) then
@@ -6318,10 +6032,7 @@ procedure TPriortyCompanion.OnNoPath;
 const
   FailName : string = 'MiscAI.TPriortyCompanion.OnNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     walking := False;
     if Assigned( Character.Track ) then
@@ -6336,10 +6047,7 @@ procedure TPriortyCompanion.WasAttacked( Source : TAniFigure; Damage : Single );
 const
   FailName : string = 'MiscAI.TPriortyCompanion.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     Delay := 0;
@@ -6364,10 +6072,7 @@ function TPriortyCompanion.OnCollideFigure( Target : TAniFigure ) : Boolean;
 const
   FailName : string = 'MiscAI.TPriortyCompanion.OnCollideFigure';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   Result := False;
   try
     if Assigned( Character.Track ) then
@@ -6392,10 +6097,7 @@ var
 const
   FailName : string = 'MiscAI.TPriortyCompanion.GuardPlayer';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     //watch for good guys
     if ( FrameCount mod 40 ) = 0 then
@@ -6438,10 +6140,7 @@ var
 const
   FailName : string = 'MiscAI.TPriortyCompanion.FollowPlayer';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if character.Rangeto( FLeader.x, FLeader.y ) > Distance then
     begin //stay close to the player
@@ -6480,10 +6179,7 @@ procedure TPriortyCompanion.AttackMelee;
 const
   FailName : string = 'MiscAI.TPriortyCompanion.AttackMelee';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Walking then
@@ -6555,10 +6251,7 @@ var
 const
   FailName : string = 'MiscAI.TPriortyCompanion.BattleTatic';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if not Walking then
     begin
@@ -6583,10 +6276,7 @@ var
 const
   FailName : string = 'MiscAI.TPriortyCompanion.AttackCaster';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if TCharacter( Character.Track ).Dead then
     begin
@@ -6659,10 +6349,7 @@ procedure TPriortyCompanion.MoveAway;
 const
   FailName : string = 'MiscAI.TPriortyCompanion.MoveAway';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Walking := True;
     if Assigned( Character.Track ) then
@@ -6688,10 +6375,7 @@ destructor TPriortyCompanion.Destroy;
 const
   FailName : string = 'MiscAI.TPriortyCompanion.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     if Assigned( Spells ) then
@@ -6708,10 +6392,7 @@ var
 const
   FailName : string = 'TPriortyCompanion.FindFriendly';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     if not Assigned( FriendsList ) then
@@ -6755,7 +6436,6 @@ var
   s, sLoot : string;
   GUID : string;
   i, j : integer;
-
 begin
 
   if LowerCase( Character.Properties[ 'NewLoot' ] ) <> 'true' then
@@ -6783,17 +6463,16 @@ begin
   end;
 
 end;
+
 (**************************************************************************************)
+
 { TRitual }
 
 destructor TRitual.Destroy;
 const
   FailName : string = 'THumanoidRitual.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -6807,10 +6486,7 @@ procedure TRitual.Execute;
 const
   FailName : string = 'THumanoidRitual.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -6862,10 +6538,7 @@ procedure TRitual.Init;
 const
   FailName : string = 'THumanoidRitual.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     iSpellCount := 0;
@@ -6885,10 +6558,7 @@ procedure TMeleeTraining.Execute;
 const
   FailName : string = 'TMeleeTraining.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -6928,10 +6598,7 @@ var
 const
   FailName : string = 'TMeleeTraining.FindNextTarget';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     if ( FrameCount mod 40 ) = 0 then
@@ -6953,15 +6620,11 @@ begin
 
 end;
 
-
 procedure TMeleeTraining.Attack;
 const
   FailName : string = 'TMeleeTraining.Attack';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not ( TCharacter( Character.Track ).dead ) then
@@ -7043,10 +6706,7 @@ function TMeleeTraining.OnCollideFigure( Target : TAniFigure ) : boolean;
 const
   FailName : string = 'TMeleeTraining.OnCollideFigure';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   Result := False;
 
@@ -7090,10 +6750,7 @@ procedure TMeleeTraining.OnNoPath;
 const
   FailName : string = 'TMeleeTraining.OnNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     Walking := False;
@@ -7111,10 +6768,7 @@ procedure TMeleeTraining.OnStop;
 const
   FailName : string = 'TMeleeTraining.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     try
@@ -7136,10 +6790,7 @@ procedure TMeleeTraining.WasAttacked( Source : TAniFigure; Damage : single );
 const
   FailName : string = 'TMeleeTraining.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     try
@@ -7165,11 +6816,7 @@ destructor TMeleeTraining.Destroy;
 const
   FailName : string = 'TMeleeTraining.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -7186,10 +6833,7 @@ destructor TMeleePratice.Destroy;
 const
   FailName : string = 'TMeleePratice.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -7210,10 +6854,7 @@ var
 const
   FailName : string = 'TMeleePratice.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -7273,10 +6914,7 @@ procedure TMeleePratice.Init;
 const
   FailName : string = 'TMeleePratice.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     PartyTotal := 1;
@@ -7450,10 +7088,7 @@ procedure TMeleeSparing.Execute;
 const
   FailName : string = 'TMeleeSparing.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -7484,10 +7119,7 @@ procedure TMeleeSparing.Attack;
 const
   FailName : string = 'TMeleeSparing.Attack';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     if ReadyToAttack then
@@ -7531,19 +7163,13 @@ begin
 
 end;
 
-
-
-
 procedure TMeleeSparing.Init;
 var
   S : string;
 const
   FailName : string = 'TMeleeSparing.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     Character.track := player;
@@ -7576,10 +7202,7 @@ function TMeleeSparing.OnCollideFigure( Target : TAniFigure ) : boolean;
 const
   FailName : string = 'TMeleeSparing.OnCollideFigure';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   Result := False;
 
@@ -7612,10 +7235,7 @@ procedure TMeleeSparing.OnNoPath;
 const
   FailName : string = 'TMeleeSparing.OnNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     Walking := False;
@@ -7633,10 +7253,7 @@ procedure TMeleeSparing.OnStop;
 const
   FailName : string = 'TMeleeSparing.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     Walking := false;
@@ -7654,10 +7271,7 @@ procedure TMeleeSparing.WasAttacked( Source : TAniFigure; Damage : single );
 const
   FailName : string = 'TMeleeSparing.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Source is TCharacter then
@@ -7687,7 +7301,6 @@ begin
       Log.log( FailName, E.Message, [ ] );
   end;
 end;
-
 
 { TEnviromentDamage }
 
@@ -7828,8 +7441,6 @@ begin
     //  NewGuard.Highlightable := true;
     //  NewGuard.alpha := 75;
     //  NewGuard.SpecialEffect := seTranslucent;   //   NewGuard.HitPoints := 1;
-
-
 
     NewGuard.Alliance := 'ahoul';
     NewGuard.Name := '';

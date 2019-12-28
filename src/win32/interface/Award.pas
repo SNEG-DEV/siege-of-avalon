@@ -120,10 +120,7 @@ constructor TAward.Create;
 const
   FailName : string = 'TAward.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     inherited;
@@ -137,10 +134,7 @@ destructor TAward.Destroy;
 const
   FailName : string = 'TAward.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     inherited;
@@ -158,10 +152,7 @@ var
 const
   FailName : string = 'TAward.init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if Loaded then
@@ -251,10 +242,7 @@ var
 const
   FailName : string = 'TAward.MouseDown';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     if TitleCount > 15 then
     begin
@@ -300,10 +288,7 @@ const
 var
   pr : TRect;
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     pr := Rect( 588, 407, 588 + 77, 407 + 54 );
     lpDDSBack.BltFast( 588, 407, DXBack, @pr, DDBLTFAST_WAIT );
@@ -347,10 +332,7 @@ const
   FailName : string = 'TAward.ShowText';
   Delimeter : string = '  ';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Y := 40;
@@ -431,10 +413,7 @@ procedure TAward.Release;
 const
   FailName : string = 'TAward.release';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     ExText.close;
     pText.UnLoadTinyFontGraphic;

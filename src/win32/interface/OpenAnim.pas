@@ -116,10 +116,7 @@ constructor TOpenAnim.Create;
 const
   FailName : string = 'TOpenAnim.create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
   except
@@ -133,10 +130,7 @@ destructor TOpenAnim.Destroy;
 const
   FailName : string = 'TOpenAnim.destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
   except
@@ -152,10 +146,7 @@ var
 const
   FailName : string = 'TOpenAnim.init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if Loaded then
       Exit;
@@ -197,10 +188,7 @@ procedure TOpenAnim.KeyDown( Sender : TObject; var key : Word; Shift : TShiftSta
 const
   FailName : string = 'TOpenAnim.Keydown';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if assigned( pMusic ) then
     begin
@@ -221,10 +209,7 @@ procedure TOpenAnim.MouseDown( Sender : TAniview; Button : TMouseButton; Shift :
 const
   FailName : string = 'TOpenAnim.Mousedown';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if assigned( pMusic ) then
     begin
@@ -256,10 +241,7 @@ var
 const
   FailName : string = 'TOpenAnim.PlayAnim';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     StartFinalCount := 0;
     pr := Rect( 0, 0, 800, 600 );  //NOHD
@@ -438,10 +420,7 @@ procedure TOpenAnim.Release;
 const
   FailName : string = 'TOpenAnim.release';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     DXBack := nil;
     DXSiege := nil;

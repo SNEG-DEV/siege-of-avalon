@@ -82,7 +82,7 @@ uses
   LogFile;
 
 type
-  TDynamicSmallIntArray = array of SmallInt;
+  TDynamicSmallIntArray = TArray<SmallInt>;
 
   TFacing = ( fNW, fNN, fNE, fEE, fSE, fSS, fSW, fWW );
 
@@ -129,7 +129,7 @@ type
     LightCount : integer;
     FReload : boolean;
     procedure LoadAction( INI : TStringIniFile; const Action : AnsiString );
-    procedure LoadScript( const S, Name : AnsiString; Multiplier : Word );
+    procedure LoadScript( const S, Name : string; Multiplier : Word );
     procedure SetReload( Value : boolean ); virtual;
     function GetFrameCount : integer;
   public
@@ -319,10 +319,7 @@ const
 begin
   Result := -1;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if not TFile.Exists( cFile ) then
@@ -382,11 +379,7 @@ const
   FailName : string = 'Resource.LoadResource';
 begin
   result := nil;
-
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     EOB := $4242;
     POXFile := ChangeFileExt( Filename, '.pox' );
@@ -512,42 +505,20 @@ end;
 
 { TResource }
 
-procedure TResource.LoadScript( const S, Name : AnsiString; Multiplier : Word );
+procedure TResource.LoadScript( const S, Name : string; Multiplier : Word );
 var
   NewScript : TScript;
-  i, j, k, L : Integer;
-  C : string;
 const
   FailName : string = 'TResource.LoadScript';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     NewScript := TScript.Create;
     NewScript.Multiplier := Multiplier;
-    i := 0;
-    j := 0;
-    L := Length( S );
-    while True do
+    var i: integer := 0;
+    var arr: TArray<string> := S.Split([',']);
+    for var C: string in arr do
     begin
-      k := j;
-      inc( j );
-      C := '';
-      while j <= L do
-      begin
-        if S[ j ] = #44 then
-        begin
-          C := copy( S, k + 1, j - k - 1 );
-          break;
-        end;
-        inc( j );
-      end;
-
-      if j > L then
-        C := copy( S, k + 1, j - k - 1 );
-
       if ( C = 'loop' ) then
       begin
         NewScript.Tag := scrLoop;
@@ -582,7 +553,6 @@ begin
         NewScript.FrameID[ i ] := StrToInt( C );
       end;
     end;
-
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -597,12 +567,9 @@ var
 const
   FailName : string = 'TResource.LoadAction';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
-
+  
     Group := 'Action ' + Action;
     Multiplier := INI.ReadInteger( Group, 'FrameMultiplier', FrameMultiplier );
     S0 := AnsiString( AnsiLowerCase( INI.ReadString( Group, 'Frames', '' ) ) );
@@ -647,10 +614,7 @@ var
 const
   FailName : string = 'TResource.LoadData';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     FrameWidth := INI.ReadInteger( 'Header', 'ImageWidth', 96 );
@@ -714,8 +678,6 @@ begin
     else
       DeathSlide := true;
 
-
-
     S := INI.ReadString( 'Header', 'Actions', '' );
     Actions := TStringList.Create;
     Actions.CommaText := S;
@@ -755,17 +717,12 @@ procedure TResource.FreeResources;
 const
   FailName : string = 'TResource.FreeResources';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
-
     Picture.free;
     Picture := nil;
     RLE.free;
     RLE := nil;
-
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -1022,15 +979,10 @@ constructor TCharacterResource.Create;
 const
   FailName : string = 'TCharacterResource.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
-
     inherited;
     Defaults := TStringList.Create;
-
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -1041,15 +993,10 @@ destructor TCharacterResource.Destroy;
 const
   FailName : string = 'TCharacterResource.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
-
-    Defaults.free;
+    Defaults.Free;
     inherited;
-
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -1060,14 +1007,9 @@ procedure TCharacterResource.LoadData( INI : TStringIniFile );
 const
   FailName : string = 'TCharacterResource.LoadData';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
-
     inherited;
-
     FContactFrame := INI.ReadInteger( 'Action Attack1', 'TriggerFrame', 1 );
     FReleaseFrame := INI.ReadInteger( 'Action BowAttack', 'TriggerFrame', 1 );
     FCastFrame := INI.ReadInteger( 'Action Cast', 'TriggerFrame', 1 );
@@ -1084,7 +1026,7 @@ begin
     Equipment[ slHelmet ] := AnsiString( INI.ReadString( 'Layers', 'helmet', '' ) );
     Equipment[ slWeapon ] := AnsiString( INI.ReadString( 'Layers', 'weapon', '' ) );
     Equipment[ slShield ] := AnsiString( INI.ReadString( 'Layers', 'shield', '' ) );
-Equipment[ sltabar ] := AnsiString( INI.ReadString( 'Layers', 'tabar', '' ) );
+    Equipment[ sltabar ] := AnsiString( INI.ReadString( 'Layers', 'tabar', '' ) );
     Equipment[ slMisc1 ] := AnsiString( INI.ReadString( 'Layers', 'misc1', '' ) );
     Equipment[ slMisc2 ] := AnsiString( INI.ReadString( 'Layers', 'misc2', '' ) );
     Equipment[ slMisc3 ] := AnsiString( INI.ReadString( 'Layers', 'misc3', '' ) );
@@ -2022,12 +1964,8 @@ var
 const
   FailName : string = 'TDoorResource.LoadData';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
-
     inherited;
     FrameWidth := INI.ReadInteger( 'Header', 'ImageWidth', 96 );
     FrameHeight := INI.ReadInteger( 'Header', 'ImageHeight', 86 );
@@ -2059,7 +1997,6 @@ begin
     ComplexShadow := false;
 
     UseLighting := false;
-
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -2097,10 +2034,7 @@ begin
   LineOfSightMask := nil;
   LightPoints := nil;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     if ( FrameWidth mod 4 ) = 0 then
       W := FrameWidth
@@ -2233,10 +2167,7 @@ begin
   LineOfSightMask := nil;
   LightPoints := nil;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if ( FrameWidth mod 4 ) = 0 then
@@ -2342,10 +2273,7 @@ var
 const
   FailName : string = 'TStaticResource.GetImage1';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     ddsd.dwSize := SizeOf( ddsd );
     if Surface.Lock( nil, ddsd, DDLOCK_WAIT, 0 ) = DD_OK then
@@ -2380,10 +2308,7 @@ var
 const
   FailName : string = 'TStaticResource.GetImage';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if ( FrameWidth mod 4 ) = 0 then
@@ -2443,10 +2368,7 @@ var
 const
   FailName : string = 'TStaticResource.LoadData';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     FrameWidth := INI.ReadInteger( 'Header', 'ImageWidth', 0 );
@@ -2514,11 +2436,7 @@ const
   FailName : string = 'TTileResource.Define';
 begin
   result := Index;
-
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if ( FrameWidth mod 4 ) = 0 then
@@ -2561,15 +2479,10 @@ destructor TTileResource.Destroy;
 const
   FailName : string = 'TTileResource.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
-
     INI.free;
     inherited;
-
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -2580,15 +2493,10 @@ procedure TTileResource.LoadData( INI : TStringINIFile );
 const
   FailName : string = 'TTileResource.LoadData';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
-
     inherited;
     self.INI := TStringINIFile.create( Data );
-
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -2600,11 +2508,8 @@ end;
 procedure TLayerResource.SetReload( Value : boolean );
 begin
   FReload := Value;
-  if Value then
-  begin
-    if assigned( Linkedresource ) then
-      Linkedresource.FReload := true;
-  end;
+  if Value and Assigned( Linkedresource ) then
+    Linkedresource.FReload := true;
 end;
 
 procedure TLayerResource.RenderLocked( Figure : TAniFigure; Bits : PBITPLANE );
@@ -2647,10 +2552,7 @@ var
 const
   FailName : string = 'TLayerResource.LoadData';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     inherited;
@@ -2688,15 +2590,10 @@ procedure TInventoryResource.LoadData( INI : TStringINIFile );
 const
   FailName : string = 'TInventoryResource.LoadData';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
-
     FrameWidth := INI.ReadInteger( 'Header', 'ImageWidth', 96 );
     FrameHeight := INI.ReadInteger( 'Header', 'ImageHeight', 86 );
-
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );

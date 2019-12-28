@@ -128,10 +128,7 @@ const
 var
   DC : HDC;
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Caption.Rect := Rect( X, Y, X + W, Y + H );
     Caption.Image := DDGetSurface( lpDD, W, H, cInvisIntro, true );
@@ -153,10 +150,7 @@ constructor TIntro.Create;
 const
   FailName : string = 'TIntro.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
   except
@@ -169,10 +163,7 @@ destructor TIntro.Destroy;
 const
   FailName : string = 'TIntro.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
   except
@@ -190,10 +181,7 @@ var
 const
   FailName : string = 'TIntro.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if Loaded then
       Exit;
@@ -270,10 +258,7 @@ var
 const
   FailName : string = 'TIntro.MouseDown';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     MenuChoice := 0;
 
@@ -327,10 +312,7 @@ var
 const
   FailName : string = 'TIntro.MouseMove';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Choice := 0;
     if AreYouSureBoxVisible = false then
@@ -379,10 +361,7 @@ const
   FailName : string = 'TIntro.AreYouSure ';
 begin
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     DXBorders := SoAOS_DX_LoadBMP( InterfacePath + 'ldChooseBox.bmp', cInvisColor, width, height );
     nRect := Captions[ 7 ].Rect; //Exit
@@ -411,10 +390,7 @@ var
 const
   FailName : string = 'TIntro.Release';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     ExText.close;
     for i := 1 to 8 do

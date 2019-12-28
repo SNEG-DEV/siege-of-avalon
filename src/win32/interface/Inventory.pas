@@ -190,10 +190,7 @@ var
 const
   FailName : string = 'TInventory.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     inherited;
   //TSlot = (slHead,slUpperBody,slLowerBody,slFeet,slHands,slRFinger,slLFinger,slBelt,slNeck,slWeapon,slShield,slMisc1,slMisc2);
@@ -306,10 +303,7 @@ destructor TInventory.Destroy;
 const
   FailName : string = 'TInventory.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     GroundList.Free;
@@ -335,10 +329,7 @@ var
 const
   FailName : string = 'TInventory.init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     if Loaded then
       Exit;
@@ -1180,10 +1171,7 @@ var
 const
   FailName : string = 'TInventory.paint';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     pr := Rect( 0, 0, 679, 476 );
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
@@ -1242,10 +1230,7 @@ var
 const
   FailName : string = 'TInventory.CollisionCheck';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   Result := false;
   try
     CollisionHasNotOccured := True;
@@ -1287,10 +1272,7 @@ var
 const
   FailName : string = 'TInventory.trytodroponbody';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   Result := -1;
   try
     SlotNumber := -1;
@@ -1373,10 +1355,7 @@ var
 const
   FailName : string = 'TInventory.GetSlotText';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   Result := 'failure';
   try
     Sentence := AnsiString( Trim( pTempItems( ItemList.Items[ CurrentSelectedItem ] ).PItem.Name ));
@@ -1402,10 +1381,7 @@ var
 const
   FailName : string = 'TInventory.ShowLegalSlots';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     for t := slLeg1 to slMisc3 do
     begin
@@ -1433,10 +1409,7 @@ procedure TInventory.CleanUpLegalSlots;
 const
   FailName : string = 'TInventory.CleanUpLegalSlots';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     paint;
   except
@@ -1453,10 +1426,7 @@ var
 const
   FailName : string = 'TInventory.WritetheInventorydata';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     if ( CurrentSelectedItem <> -1 ) and CheckForGroundDrop then
     begin //player is dragging an item
@@ -1529,10 +1499,7 @@ var
 const
   FailName : string = 'TInventory.ContianCursor';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     new( prRect );
     prRect.top := 0;
@@ -1563,10 +1530,7 @@ var
 const
   FailName : string = 'TInventory.WeaponPlacment';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     //This routine checks for collisions with the weapon and Misc3 and the Feet-
     //It moves the weapon about accordingly to avoid unsightly collisions
@@ -1603,10 +1567,7 @@ var
 const
   FailName: string = 'TInventory.DebugPlot';
 begin
-{$IFDEF DODEBUG}
-{  if (CurrDbgLvl >= DbgLvlSevere) then
-    Log.LogEntry(FailName);
-{$ENDIF}
+  Log.DebugLog(FailName);
 {try
 lpDDSBack.BltFast(20,237,DXBack,Rect(20,237,20+50,237+25),DDBLTFAST_WAIT); //clean up before we plot text
 str(i,a);
@@ -1623,10 +1584,7 @@ var
 const
   FailName : string = 'TInventory.release';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     CheckForGroundDrop := true;
     WriteTheInventoryData;
@@ -1687,10 +1645,7 @@ var
 const
   FailName : string = 'TInventory.ShowOpenInventorySlots';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     gWidth := 6 * 2; //each grid is 2x2
     gHeight := 7 * 2;
@@ -1765,10 +1720,7 @@ var
 const
   FailName : string = 'TInventory.Dropanitem';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   Result := false;
   try
     LastLowTotal := 9999; //initialize to insanely high number

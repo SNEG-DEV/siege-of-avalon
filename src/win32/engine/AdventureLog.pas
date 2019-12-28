@@ -122,10 +122,7 @@ constructor TAdventureLog.Create;
 const
   FailName : string = 'TAdventureLog.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     inherited Create;
@@ -152,10 +149,7 @@ const
   FailName : string = 'TAdventureLog.AddLogEntry';
 begin
   result := -1;
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     i := FLogDateList.IndexOf( LogFile );
@@ -176,10 +170,7 @@ var
 const
   FailName : string = 'TAdventureLog.ReadLogByName';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if not ( TFile.Exists( FLogDirectory + LogFile ) ) then
@@ -208,10 +199,7 @@ var
 const
   FailName : string = 'TAdventureLog.ReadLogByIndex';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if ( LogIndex >= 0 ) and ( LogIndex < FLogDateList.Count ) then
@@ -246,10 +234,7 @@ procedure TAdventureLog.DeleteLogEntry( LogFile : String );
 const
   FailName : string = 'TAdventureLog.DeleteLogEntry';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     FLogDateList.Delete( FLogDateList.IndexOf( LogFile ) );
@@ -264,10 +249,7 @@ procedure TAdventureLog.Clear;
 const
   FailName : string = 'TAdventureLog.Clear';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     FLogDateList.Clear;

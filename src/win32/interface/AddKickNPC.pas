@@ -149,10 +149,7 @@ constructor TAddKickNPC.Create;
 const
   FailName : string = 'TAddKickNPC.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     inherited;
@@ -166,10 +163,7 @@ destructor TAddKickNPC.Destroy;
 const
   FailName : string = 'TAddKickNPC.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     inherited;
@@ -187,10 +181,7 @@ var
 const
   FailName : string = 'TAddKickNPC.init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if Loaded then
@@ -276,10 +267,7 @@ var
 const
   FailName : string = 'TAddKickNPC.MouseDown';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     if assigned( Character ) then
     begin
@@ -439,10 +427,7 @@ var
 const
   FailName : string = 'TAddKickNPC.MouseMove';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     pr := Rect( 588, 407, 588 + 77, 407 + 54 );
     lpDDSBack.BltFast( 588, 407, DXBack, @pr, DDBLTFAST_WAIT );
@@ -487,10 +472,7 @@ const
 var
   i : integer;
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     for i := 0 to AIBoxList.count - 1 do
       TObject( AIBoxList.items[ i ] ).free;

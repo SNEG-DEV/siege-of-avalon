@@ -391,10 +391,7 @@ var
 const
   FailName : string = 'Main.CloseAllDialogs';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Game.LMouseButton := False;
@@ -509,10 +506,7 @@ procedure TfrmMain.OpenDialog( Dialog : TDisplay; CloseProcedure : TNotifyEvent 
 const
   FailName : string = 'Main.OpenDialog';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Active := False;
@@ -584,10 +578,7 @@ var
 const
   FailName : string = 'Main.CloseCreateDialog';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     TDisplay( Sender ).Release;
@@ -774,10 +765,7 @@ const
   FailName : string = 'Main.CharCreationDraw';
 begin
   // Drawing Actor/Player
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Frame := Spinner div 70 + 20;
@@ -830,10 +818,7 @@ var
 const
   FailName : string = 'Main.SaveOptions';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     MasterSoundVolume := DlgOptions.SoundVolume;
@@ -872,10 +857,7 @@ procedure TfrmMain.CloseOptions( Sender : TObject );
 const
   FailName : string = 'Main.CloseOptions';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     SaveOptions;
@@ -892,10 +874,7 @@ procedure TfrmMain.CloseShow( Sender : TObject );
 const
   FailName : string = 'Main.CloseShow';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     DlgShow.Release;
@@ -916,10 +895,7 @@ var
 const
   FailName : string = 'Main.FormShow';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     Log.Log( 'Start Siege' );
     Log.flush;
@@ -1564,10 +1540,7 @@ var
 const
   FailName : string = 'Main.FormKeyDown';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if DisableConsole then
@@ -2200,10 +2173,7 @@ var
 const
   FailName : string = 'Main.AniView1AfterDisplay';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     if Assigned( Game.MouseOverTile ) then
     begin
@@ -2361,10 +2331,7 @@ var
 const
   FailName : string = 'Main.DrawHealthBars';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if Mana > 0 then
@@ -2431,10 +2398,7 @@ var
 const
   FailName : string = 'Main.AniView1BeforeDisplay';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     for i := SayList.Count - 1 downto 0 do
@@ -2492,10 +2456,7 @@ var
 const
   FailName : string = 'Main.FormDestroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Log.Log( 'Shutting down application' );
@@ -2612,10 +2573,7 @@ procedure TfrmMain.BeginConverse( ObjectRef : TGameObject; Conversation : string
 const
   FailName : string = 'Main.BeginConverse';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if DlgConverse.Loaded then
@@ -2638,10 +2596,7 @@ var
 const
   FailName : string = 'Main.BeginInventory';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if Assigned( Character ) and not Character.InterfaceLocked then
@@ -2686,10 +2641,7 @@ var
 const
   FailName : string = 'Main.BeginMerchant';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if Assigned( Character ) and not Character.InterfaceLocked then
@@ -2735,10 +2687,7 @@ var
 const
   FailName : string = 'Main.BeginObjInventory';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if Assigned( Character ) and Assigned( OtherObj ) and not Character.InterfaceLocked then
@@ -2783,10 +2732,7 @@ var
 const
   FailName : string = 'Main.BeginLoot';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if Assigned( Character ) and Assigned( OtherObj ) and ( OtherObj is TCharacter ) and not Character.InterfaceLocked then
@@ -2833,10 +2779,7 @@ procedure TfrmMain.BeginStatistics( Character : TCharacter );
 const
   FailName : string = 'Main.BeginStatistics';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if Assigned( Character ) and not Character.InterfaceLocked then
@@ -2855,10 +2798,7 @@ procedure TfrmMain.BeginMap( Character : TCharacter );
 const
   FailName : string = 'Main.BeginMap';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if Assigned( Character ) then
@@ -2880,10 +2820,7 @@ procedure TfrmMain.BeginHelp;
 const
   FailName : string = 'Main.BeginHelp';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     DlgShow.frmMain := Self;
@@ -2902,10 +2839,7 @@ procedure TfrmMain.BeginTitles( Character : TCharacter );
 const
   FailName : string = 'Main.BeginTitles';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if Assigned( Character ) and not Character.InterfaceLocked then
@@ -2924,10 +2858,7 @@ procedure TfrmMain.BeginNPC( Character : TCharacter );
 const
   FailName : string = 'Main.BeginNPC';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Exit;
@@ -2950,10 +2881,7 @@ procedure TfrmMain.BeginJournal;
 const
   FailName : string = 'Main.BeginJournal';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     ClearLogGraphic;
@@ -2972,10 +2900,7 @@ procedure TfrmMain.BeginOptions( Character : TCharacter );
 const
   FailName : string = 'Main.BeginOptions';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if Assigned( Character ) then
@@ -2999,10 +2924,7 @@ procedure TfrmMain.FreeAll;
 const
   FailName : string = 'Main.FreeAll';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if Assigned( SoundTimer ) then
@@ -3522,10 +3444,7 @@ var
 const
   FailName : string = 'Main.ChangeFocus';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     SpellBarActive := False; //This prevents the player from choosing a spell for the wrong character
@@ -3564,10 +3483,7 @@ var
 const
   FailName : string = 'Main.AddToParty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if not ( Figure is TCharacter ) then
@@ -3613,10 +3529,7 @@ var
 const
   FailName : string = 'Main.RemoveFromParty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     i := NPCList.IndexOf( Figure );
@@ -3664,10 +3577,7 @@ var
 const
   FailName : string = 'Main.PaintCharacterOnBorder';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if Slot > 5 then
@@ -3885,11 +3795,7 @@ const
   FailName : string = 'Main.LoadResources';
 begin
   Result := False;
-
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     try
@@ -3984,10 +3890,7 @@ var
 const
   FailName : string = 'Main.LoadNewMapFile';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     S := GameName;
@@ -4058,11 +3961,7 @@ const
   FailName : string = 'Main.LoadMapFile';
 begin
   Result := True;
-
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Log.Log( '-----------------------------------------------------' );
@@ -4674,11 +4573,7 @@ const
   FailName : string = 'Main.SaveGame';
 begin
   Result := False;
-
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     Level := AnsiString( LowerCase( ChangeFileExt( ExtractFileName( LVLFile ), '' ) ) );
 
@@ -4740,11 +4635,7 @@ const
   FailName : string = 'Main.ClearResources';
 begin
   Result := True;
-
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     HLFigure := nil;
 
@@ -5235,11 +5126,7 @@ const
   FailName : string = 'Main.LoadGame';
 begin
   Result := False;
-
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     EOB := EOBMarker;
@@ -5295,10 +5182,7 @@ const
 var
   S : string;
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     Active := False;
     MouseCursor.Enabled := False;
@@ -5331,10 +5215,7 @@ const
 var
   pr: TRect;
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if LoadNewLevel > 0 then
@@ -5403,10 +5284,7 @@ var
 const
   FailName : string = 'Main.PlaceNPCList';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if CurrentStartingPoint = '' then
@@ -5453,10 +5331,7 @@ var
 const
   FailName : string = 'Main.DrawCurrentSpell';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     pr := Rect( 0, 0, 32, 32 );
     if ScreenMetrics.ScreenWidth>800 then
@@ -5490,10 +5365,7 @@ const
   FailName : string = 'Main.DrawSpellGlyphs';
   FailName2 : string = 'Main.DrawHelpbox';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     SpellBar.GetDC( DC );
@@ -5557,10 +5429,7 @@ var
 const
   FailName : string = 'Main.CueTune';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     SongDuration := 36000;
@@ -5638,10 +5507,7 @@ procedure TfrmMain.CloseIntroDialog( Sender : TObject );
 const
   FailName : string = 'Main.CloseIntroDialog';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     TDisplay( Sender ).Release;
@@ -5703,10 +5569,7 @@ procedure TfrmMain.WMStartmainMenu( var Message : TWMNoParams );
 const
   FailName : string = 'Main.WMStartmainMenu';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     DlgIntro.pText := DlgText;
@@ -5740,10 +5603,7 @@ var
 const
   FailName : string = 'Main.SetCurrentTheme';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     FCurrentTheme := Value;
@@ -5786,10 +5646,7 @@ const
   end;
 
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     INI := TIniFile.Create( DefaultPath + 'siege.ini' );
@@ -6100,10 +5957,7 @@ procedure TfrmMain.WMStartOptions( var Message : TWMNoParams );
 const
   FailName : string = 'Main.WMStartOptions';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     DlgOptions.SoundVolume := MasterSoundVolume;
@@ -6143,10 +5997,7 @@ var
 const
   FailName : string = 'Main.CloseLoad';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     with Sender as TLoadGame do
@@ -6240,10 +6091,7 @@ procedure TfrmMain.CloseSave( Sender : TObject );
 const
   FailName : string = 'Main.CloseSave';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     with Sender as TLoadGame do
@@ -6300,10 +6148,7 @@ procedure TfrmMain.WMStartLoad( var Message : TWMNoParams );
 const
   FailName : string = 'Main.WMStartLoad';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Game.OnMouseDown := nil;
@@ -6330,10 +6175,7 @@ procedure TfrmMain.WMStartSave( var Message : TWMNoParams );
 const
   FailName : string = 'Main.WMStartSave';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Game.OnMouseDown := nil;
@@ -6367,10 +6209,7 @@ var
 const
   FailName : string = 'Main.WMStartIntro';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     LocalShowHistory := True;
     if not ( TFile.Exists( OpeningMovie ) ) then
@@ -6520,10 +6359,7 @@ procedure TfrmMain.ShowQuickMessage( const Msg : string; Time : Integer );
 const
   FailName : string = 'Main.ShowQuickMessage';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     QuickMessage := Msg;
@@ -6543,10 +6379,7 @@ var
 const
   FailName : string = 'Main.InventoryDraw';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if not ( Sender is TCharacter ) then
@@ -6605,10 +6438,7 @@ procedure TfrmMain.WMStartCredits( var Message : TWMNoParams );
 const
   FailName : string = 'Main.WMStartCredits';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Game.OnMouseDown := nil;
@@ -6656,10 +6486,7 @@ procedure TfrmMain.AppActivate( Sender : TObject );
 const
   FailName : string = 'Main.AppActivate';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Log.Log( 'App Activate' );
@@ -6685,10 +6512,7 @@ procedure TfrmMain.AppDeactivate( Sender : TObject );
 const
   FailName : string = 'Main.AppDeactivate';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Log.Log( 'App Deactivate' );
@@ -6723,10 +6547,7 @@ procedure TfrmMain.BeginDeath;
 const
   FailName : string = 'Main.BeginDeath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Game.OnMouseDown := nil;
@@ -6757,10 +6578,7 @@ procedure TfrmMain.CloseIntroJournal( Sender : TObject );
 const
   FailName : string = 'Main.CloseIntroJournal';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if DlgJournal.Loaded then
@@ -6804,10 +6622,7 @@ procedure TfrmMain.BeginAdvLog;
 const
   FailName : string = 'Main.BeginAdvLog';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     ClearAdventureGraphic;
@@ -6824,10 +6639,7 @@ procedure TfrmMain.BeginQuestLog;
 const
   FailName : string = 'Main.BeginQuestLog';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     ClearQuestGraphic;
@@ -6844,10 +6656,7 @@ procedure TfrmMain.BeginRoster( Character : TCharacter );
 const
   FailName : string = 'Main.BeginRoster';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     DlgRoster.Character := Character;
@@ -7026,10 +6835,7 @@ var
 const
   FailName : string = 'Main.AddLogEntry';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     if AdventureLog1.AddLogEntry( FileName + '.jrn' ) <> -1 then
     begin
@@ -7864,10 +7670,7 @@ const
 var
   pr : TRect;
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     try
       Active := False;
@@ -7993,10 +7796,7 @@ procedure TfrmMain.CloseEnding( Sender : TObject );
 const
   FailName : string = 'Main.CloseEnding';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     if DlgJournal.Loaded then
       DlgJournal.Release;
@@ -8251,10 +8051,7 @@ procedure TfrmMain.CloseHistory( Sender : TObject );
 const
   FailName : string = 'Main.CloseHistory';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     if DlgJournal.Loaded then
       DlgJournal.Release;

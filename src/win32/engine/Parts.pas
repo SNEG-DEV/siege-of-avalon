@@ -199,10 +199,7 @@ constructor TPartManager.Create( const ItemDBPath, XRefDBPath : string );
 const
   FailName : string = 'Parts.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     InvDB := TStringDatabase.Create( ItemDBPath );
     XRefDB := TStringDatabase.Create( XRefDBPath );
@@ -216,10 +213,7 @@ destructor TPartManager.Destroy;
 const
   FailName : string = 'Parts.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     InvDB.Free;
     XRefDB.Free;
@@ -238,10 +232,7 @@ const
 begin
   Result := nil;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     S := PartFile;
     S1 := ChangeFileExt( S, '' );
@@ -275,10 +266,7 @@ const
 begin
   Result := nil;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     S := PartFile;
     S1 := ChangeFileExt( S, '' );
@@ -312,10 +300,7 @@ const
 begin
   Result := nil;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     S := LayerPath + PartFile;
     S1 := ChangeFileExt( S, '' );
@@ -350,10 +335,7 @@ var
   const
     FailName : string = 'Parts.LoadItem.ParseDB';
   begin
-{$IFDEF DODEBUG}
-    if ( CurrDbgLvl >= DbgLvlSevere ) then
-      Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
     try
       Result := InvDB.Fields[ FieldPos ];
 
@@ -369,10 +351,7 @@ var
   const
     FailName : string = 'Parts.LoadItem.sParseDB';
   begin
-{$IFDEF DODEBUG}
-    if ( CurrDbgLvl >= DbgLvlSevere ) then
-      Log.LogEntry( FailName );
-{$ENDIF}
+    Log.DebugLog( FailName );
     try
       Result := InvDB.Fields[ FieldPos ];
     except
@@ -387,10 +366,7 @@ const
 begin
   Result := nil;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not InvDB.FindRecord( ItemName ) then
@@ -589,10 +565,7 @@ var
 const
   FailName : string = 'Parts.GetImageFile';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     result := '';
     NotFound := false;
@@ -631,10 +604,7 @@ procedure TPartManager.ReleaseItemDB;
 const
   FailName : string = 'Parts.ReleaseItemDB';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     InvDB.free;
     InvDB := nil;
@@ -652,10 +622,7 @@ const
 begin
   result := 0;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     for i := 0 to Figures.Count - 1 do
     begin

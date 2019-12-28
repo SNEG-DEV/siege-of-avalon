@@ -113,10 +113,7 @@ var
 const
   FailName : string = 'TCharacter.create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     inherited;
     DXDirty := SoAOS_DX_LoadBMP( InterfacePath + 'ScrollFrame.bmp', cInvisColor );
@@ -136,10 +133,7 @@ destructor TScroll.Destroy;
 const
   FailName : string = 'TScroll.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     ExText.close;
     DescList.free;
@@ -166,10 +160,7 @@ var
 const
   FailName : string = 'TScroll.ShowStatsScroll';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     ScrollIsShowing := True;
     Yadj := 0;
@@ -848,10 +839,7 @@ var
 const
   FailName : string = 'TScroll.OpenStatsScroll';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     ScrollFactor := 0;
     KeepOnScrolling := false;
@@ -878,10 +866,7 @@ var
 const
   FailName : string = 'TScroll.ScrollStatsScroll';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     OldTime := TThread.GetTickCount;  // TStopWatch better
     Adj := 0;

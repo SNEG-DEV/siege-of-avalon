@@ -129,10 +129,7 @@ var
 const
   FailName : string = 'TMousePtr.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     DXMousePtr := SoAOS_DX_LoadBMP( InterfacePath + 'siegecursorsheet.bmp', cTransparent );
@@ -159,10 +156,7 @@ destructor TMousePtr.Destroy;
 const
   FailName : string = 'TMousePtr.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     MouseTimer.enabled := false;
     MouseTimer.onTimer := nil;
@@ -249,10 +243,7 @@ end; //MouseTimerEvent
 //const
 //  FailName : string = 'TMousePtr.SetAnim';
 //begin
-//{$IFDEF DODEBUG}
-//  if ( CurrDbgLvl >= DbgLvlSevere ) then
-//    Log.LogEntry( FailName );
-//{$ENDIF}
+//  Log.DebugLog( FailName );
 //  try
 //    if MouseAnimationCycle > 0 then
 //      exit;
@@ -276,10 +267,7 @@ end; //MouseTimerEvent
 //const
 //  FailName : string = 'TMousePtr.SetloopAnim';
 //begin
-//{$IFDEF DODEBUG}
-//  if ( CurrDbgLvl >= DbgLvlSevere ) then
-//    Log.LogEntry( FailName );
-//{$ENDIF}
+//  Log.DebugLog( FailName );
 //  try
 //    if MouseAnimationCycle > 0 then
 //      exit;
@@ -300,10 +288,7 @@ procedure TMousePtr.SetPlotDirty( const Value : boolean );
 const
   FailName : string = 'TMousePtr.SetPlotDirty';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     FPlotDirty := Value;
     if not FPlotDirty then
@@ -321,10 +306,7 @@ const
 var
   pr : TRect;
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if FPlotDirty then
     begin
@@ -343,10 +325,7 @@ procedure TMousePtr.SetEnabled( const Value : boolean );
 const
   FailName : string = 'TMousePtr.SetEnabled';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if FEnabled = Value then
       exit;

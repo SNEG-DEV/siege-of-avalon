@@ -112,10 +112,7 @@ constructor TShowGraphic.Create;
 const
   FailName : string = 'TShowGraphic.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     inherited;
   except
@@ -128,10 +125,7 @@ destructor TShowGraphic.Destroy;
 const
   FailName : string = 'TShowGraphic.destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     inherited;
   except
@@ -146,10 +140,7 @@ var
 const
   FailName : string = 'TShowGraphic.init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     if Loaded then
       Exit;
@@ -187,10 +178,7 @@ procedure TShowGraphic.KeyDown( Sender : TObject; var key : Word; Shift : TShift
 const
   FailName : string = 'TShowGraphic.keydown';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     if assigned( pMusic ) then
       pMusic.PauseThisSong;
@@ -205,10 +193,7 @@ procedure TShowGraphic.MouseDown( Sender : TAniview; Button : TMouseButton; Shif
 const
   FailName : string = 'TShowGraphic.mousedown';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     if assigned( pMusic ) then
       pMusic.PauseThisSong;
@@ -223,10 +208,7 @@ procedure TShowGraphic.FormMouseDown( Sender : TObject; Button : TMouseButton; S
 const
   FailName : string = 'TShowGraphic.formmousedown';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     if assigned( pMusic ) then
       pMusic.PauseThisSong;
@@ -237,16 +219,11 @@ begin
   end;
 end; //FormMouseDown
 
-
-
 procedure TShowGraphic.Release;
 const
   FailName : string = 'TShowGraphic.release';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     DXBack := nil;
     inherited;

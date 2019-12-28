@@ -145,10 +145,7 @@ var
 const
   FailName : string = 'AssignWolfAI';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   Result := nil;
   try
     S := LowerCase( AIName );
@@ -172,10 +169,7 @@ procedure TWolfIdle.Execute;
 const
   FailName : string = 'TWolfIdle.execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
 
@@ -214,10 +208,7 @@ var
 const
   FailName : string = 'TWolfIdle.Eat';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     List := GetPerceptibleDead( Character, 1.5 );
     if Assigned( List ) then
@@ -260,10 +251,7 @@ var
 const
   FailName : string = 'TWolfIdle.Meander';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Character.Track := nil;
     r := random( 500 );
@@ -285,10 +273,7 @@ procedure TWolfIdle.RunAway;
 const
   FailName : string = 'TWolfIdle.RunAway';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if assigned( Character.Track ) then
       Character.Face( Character.Track.X, Character.Track.Y );
@@ -320,10 +305,7 @@ var
 const
   FailName : string = 'TWolfIdle.FindTarget';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if ( FrameCount mod 40 ) = 0 then
     begin
@@ -351,10 +333,7 @@ var
 const
   FailName : string = 'TWolfIdle.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     CenterX := Character.X;
@@ -420,10 +399,7 @@ procedure TWolfIdle.Follow( Source, Target : TAnifigure );
 const
   FailName : string = 'TWolfIdle.Follow';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     character.WalkTo( Target.x, Target.Y, 16 );
     walking := True;
@@ -438,10 +414,7 @@ procedure TWolfIdle.OnNoPath;
 const
   FailName : string = 'TWolfIdle.OnNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Walking := False;
   except
@@ -455,10 +428,7 @@ procedure TWolfIdle.OnStop;
 const
   FailName : string = 'TWolfIdle.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Walking := False;
   except
@@ -472,10 +442,7 @@ procedure TWolfIdle.WasAttacked( Source : TAniFigure; Damage : Single );
 const
   FailName : string = 'TWolfIdle.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     if Source is TCharacter then
@@ -496,10 +463,7 @@ function TWolfIdle.OnCollideFigure( Target : TAniFigure ) : boolean;
 const
   FailName : string = 'TWolfIdle.OnCollideFigure';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   Result := False;
   try
     if Target is TCharacter then
@@ -549,10 +513,7 @@ procedure TWolfIdle.WasKilled( Source : TAniFigure );
 const
   FailName : string = 'TWolfIdle.WasKilled';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if Source is TCharacter then
       character.Face( TCharacter( Source ).x, TCharacter( Source ).y );
@@ -569,10 +530,7 @@ procedure TWolfCombat.Execute;
 const
   FailName : string = 'TWolfCombat.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -612,10 +570,7 @@ procedure TWolfCombat.Run;
 const
   FailName : string = 'TWolfCombat.Run';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if assigned( Character.Track ) then
@@ -650,10 +605,7 @@ var
 const
   FailName : string = 'TWolfCombat.FindTarget';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if ( FrameCount mod 40 ) = 0 then
@@ -680,10 +632,7 @@ procedure TWolfCombat.Wait;
 const
   FailName : string = 'TWolfCombat.Wait';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Character.WalkTo( Character.X + random( 80 ) - 40, Character.Y + random( 40 ) - 20, 16 );
@@ -701,10 +650,7 @@ procedure TWolfCombat.Attack;
 const
   FailName : string = 'TWolfCombat.Attack';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if Character.Track is TCharacter and TCharacter( Character.Track ).Dead then
       Character.Track := nil
@@ -737,10 +683,7 @@ procedure TWolfCombat.CallToArms( Source, Target : TAniFigure );
 const
   FailName : string = 'TWolfCombat.Calltoarms';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Character.Track := TCharacter( Target );
@@ -755,10 +698,7 @@ procedure TWolfCombat.Regroup( Source : TAniFigure; NewX, NewY : Integer );
 const
   FailName : string = 'TWolfCombat.Regroup';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Character.RunTo( NewX, NewY, 16 );
@@ -777,10 +717,7 @@ var
 const
   FailName : string = 'TWolfCombat.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     TCharacterResource( character.Resource ).speed := 7;
@@ -869,10 +806,7 @@ function TWolfCombat.OnCollideFigure( Target : TAniFigure ) : boolean;
 const
   FailName : string = 'TWolfCombat.onCollideFigure';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   Result := False;
   try
 
@@ -913,10 +847,7 @@ procedure TWolfCombat.WasAttacked( Source : TAniFigure; Damage : single );
 const
   FailName : string = 'TWolfCombat.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if random( 6 ) = 0 then
@@ -951,10 +882,7 @@ procedure TWolfCombat.WasKilled( Source : TAniFigure );
 const
   FailName : string = 'TWolfCombat.WasKilled';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if random( 3 ) = 0 then
@@ -973,10 +901,7 @@ procedure TWolfCombat.OnNoPath;
 const
   FailName : string = 'TWolfCombat.OnNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Walking := False;
@@ -991,10 +916,7 @@ procedure TWolfCombat.OnStop;
 const
   FailName : string = 'TWolfCombat.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Walking := false;

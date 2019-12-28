@@ -119,10 +119,7 @@ constructor TSound.Create( WindowHandle : integer );
 const
   FailName : string = 'TSound.create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited Create;
     Log.Log( 'Creating sound object...' ); Log.flush;
@@ -147,10 +144,7 @@ destructor TSound.Destroy;
 const
   FailName : string = 'TSound.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     SoundParser.free;
     if DaSoundCardAvailable then
@@ -173,10 +167,7 @@ var
 const
   FailName : string = 'TSound.OpenSound';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   result := nil;
   try
     if NameList = '' then
@@ -215,10 +206,7 @@ var
 const
   FailName : string = 'TSound.PlaySound';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   Result := 0;
   try
     if DaSoundCardAvailable and ( MasterSoundVolume > 0 ) then
@@ -252,10 +240,7 @@ function TSound.PlaySoundByIndex( Index, Looping, Volume, Pan, Frequency : integ
 const
   FailName : string = 'TSound.PlaySoundByIndex';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   Result := -1;
   try
     if DaSoundCardAvailable and ( MasterSoundVolume > 0 ) then
@@ -281,10 +266,7 @@ procedure TSound.SetSound( Index, Frequency, Volume, Pan : integer );
 const
   FailName : string = 'TSound.SetSound';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if DaSoundCardAvailable then
     begin
@@ -306,10 +288,7 @@ procedure TSound.StopSound( Index : integer );
 const
   FailName : string = 'TSound.';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if DaSoundCardAvailable then
     begin
@@ -327,10 +306,7 @@ procedure TSound.FreeAllSounds;
 const
   FailName : string = 'TSound.FreeAllSounds';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if DaSoundCardAvailable then
       DumpAllWavSounds( );
@@ -347,10 +323,7 @@ var
 const
   FailName : string = 'TSound.FreeSound';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if DaSoundCardAvailable then
     begin
@@ -377,10 +350,7 @@ procedure TSound.SetVolume( const Value : integer );
 const
   FailName : string = 'TSound.SetVolume';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if DaSoundCardAvailable then
     begin

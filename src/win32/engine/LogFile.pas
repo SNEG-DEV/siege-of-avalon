@@ -82,6 +82,7 @@ type
     procedure Log( const FailName : string; const Msg : string; const Args : array of const ); overload;
     procedure Log( const Msg : string ); overload;
     procedure LogEntry( const FailName : string );
+    procedure DebugLog( const FailName : string );
     procedure Comment( const Msg : string ); overload;
     // TLog.Msg is a less verbose message than a full TLog.Log entry (no timestamp)
     procedure Msg( const FailName : string; const Msg : string; const Args : array of const );
@@ -291,6 +292,14 @@ begin
   end;
   ParseCommandLine;
   OutputLogHeader;
+end;
+
+procedure TLog.DebugLog(const FailName: string);
+begin
+{$IFDEF DODEBUG}
+  if ( CurrDbgLvl >= DbgLvlSevere ) then
+    LogEntry( FailName );
+{$ENDIF}
 end;
 
 procedure TLog.Log( const FailName : string; const Msg : string; const Args : array of const );

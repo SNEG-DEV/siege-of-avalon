@@ -195,10 +195,7 @@ constructor TCreation.Create;
 const
   FailName : string = 'TCreation.create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     chaContinueRect := Rect( 400, 449, 0, 0 ); // left, top, right, bottom chaContinueRect := Rect( 498, 450, 0, 0 ); gondur //HD
@@ -214,10 +211,7 @@ destructor TCreation.Destroy;
 const
   FailName : string = 'TCreation.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -228,7 +222,6 @@ begin
 
 end;
 
-
 procedure TCreation.Init;
 var
   i, width, height : integer;
@@ -236,10 +229,7 @@ var
 const
   FailName : string = 'TCreation.init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Loaded then
@@ -311,10 +301,7 @@ procedure TCreation.Release;
 const
   FailName : string = 'TCreation.Release';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     pText.UnLoadGoldFontGraphic;
@@ -349,10 +336,7 @@ var
 const
   FailName : string = 'TCreation.MouseDown';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     BoxClosed := false;
@@ -668,10 +652,7 @@ var
 const
   FailName : string = 'TCreation.MouseMove';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
      //Clean up continue and cancel
     pr := Rect( chaContinueRect.Left, chaContinueRect.Top, chaContinueRect.Left + chaContinueRect.Right, chaContinueRect.Top + chaContinueRect.Bottom );
@@ -838,23 +819,17 @@ begin
 
 end; //TCreation.MouseMove
 
-
-
 procedure TCreation.MouseUp( Sender : TAniview; Button : TMouseButton;
   Shift : TShiftState; X, Y : Integer; GridX, GridY : integer );
 const
   FailName : string = 'TCreation.MouseUp';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
   except
     on E : Exception do
       Log.log( FailName + E.Message );
   end;
-
 
 end;
 
@@ -864,10 +839,7 @@ const
 var
   pr : TRect;
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
   //clear the back down to the text - but dont clear the info block
@@ -892,10 +864,7 @@ var
 const
   FailName : string = 'TCreation.CreateCollisonRects';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     //Modifier:=400;
@@ -1183,10 +1152,7 @@ var
 const
   FailName: string = 'TCreation.DebugPlot';
 begin
-{$IFDEF DODEBUG}
-{  if (CurrDbgLvl >= DbgLvlSevere) then
-    Log.LogEntry(FailName);
-{$ENDIF}
+  Log.DebugLog( FailName );
 {try
 
 lpDDSBack.BltFast(20,237,DXBack,Rect(20,237,20+50,237+25),DDBLTFAST_WAIT); //clean up before we plot text
@@ -1202,10 +1168,7 @@ procedure TCreation.LoadNames;
 const
   FailName : string = 'TCreation.LoadNames';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
   //Loads all the names we use in the Mouseover help
@@ -1243,10 +1206,7 @@ var
 const
   FailName : string = 'TCreation.LoadBaseValues';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
   //we store thse values so that we can keep the player from lowering his score beyon its start
     Damage := Character.Damage;
@@ -1280,12 +1240,8 @@ var
 const
   FailName : string = 'TCreation.ShowStats';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
-
 
     Alpha := 240; //blend value
     str( Character.TrainingPoints, a );
@@ -1330,8 +1286,6 @@ begin
 
 end; //TCreation.ShowStats
 
-
-
 procedure TCreation.KeyDown( Sender : TObject; var key : Word; Shift : TShiftState );
 var
   i : integer;
@@ -1340,10 +1294,7 @@ var
 const
   FailName : string = 'TCreation.Keydown';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
      //DebugPlot(Key);
@@ -1466,10 +1417,7 @@ const
 var
   pr : TRect;
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     pr := Rect( 300, 92, 448, 120 );
     lpDDSBack.BltFast( 300, 92, DXBack, @pr, DDBLTFAST_WAIT );
@@ -1494,7 +1442,6 @@ begin
 
 end; //TCreation.CaratTimerEvent
 
-
 procedure TCreation.OpenBox( box : integer );
 var
   i : integer;
@@ -1502,10 +1449,7 @@ var
 const
   FailName : string = 'TCreation.OpenBox';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
    //clean up any dimmed text
@@ -1623,10 +1567,7 @@ const
 var
   pr : TRect;
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     pr := Rect( 110, 93, 264, 227 );
     lpDDSBack.BltFast( 110, 93, DXBack, @pr, DDBLTFAST_WAIT );
@@ -1649,10 +1590,7 @@ const
 var
   pr : TRect;
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if PtInRect( rect( 318, 553, 359, 577 ), point( x, y ) ) or PtInRect( rect( 318, 510, 359, 537 ), point( x, y ) ) then
@@ -1680,10 +1618,7 @@ const
 var
   pr : TRect;
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
      //Clean up continue and cancel

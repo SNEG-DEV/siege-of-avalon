@@ -326,10 +326,7 @@ var
 const
   FailName : string = 'AniDec30.GetStripHeights';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    DbgLog.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     RowSize := W div 8;

@@ -82,10 +82,7 @@ var
 const
   FailName : string = 'DXUtil.GetSurfaceDims';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     lpDDSurfaceDesc.dwSize := SizeOf( lpDDSurfaceDesc );
     lpDDSurfaceDesc.dwFlags := DDSD_HEIGHT + DDSD_WIDTH;
@@ -108,10 +105,7 @@ var
 const
   FailName : string = 'DXUtil.DDGetSurface2';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     ddsd.dwSize := SizeOf( ddsd );
     ddsd.dwFlags := DDSD_CAPS + DDSD_HEIGHT + DDSD_WIDTH;
@@ -159,10 +153,7 @@ var
 const
   FailName : string = 'DXUtil.DDGetSurface1';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     ddsd.dwSize := SizeOf( ddsd );
     ddsd.dwFlags := DDSD_CAPS + DDSD_HEIGHT + DDSD_WIDTH;

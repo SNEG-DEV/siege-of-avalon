@@ -185,10 +185,7 @@ constructor TLootCorpse.Create;
 const
   FailName : string = 'TLootCorpse.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     GroundList := TList.Create;
@@ -203,10 +200,7 @@ destructor TLootCorpse.Destroy;
 const
   FailName : string = 'TLootCorpse.';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     GroundList.Free;
     GroundList := nil;
@@ -228,10 +222,7 @@ var
 const
   FailName : string = 'TLootCorpse.init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if Loaded then
       Exit;
@@ -446,10 +437,7 @@ var
 const
   FailName : string = 'TLootCorpse.MouseDown';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if CurrentSelectedItem = -1 then
     begin //if no piece is being dragged pick one up
@@ -820,10 +808,7 @@ var
 const
   FailName : string = 'TLootCorpse.MouseMove';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try //This assigned(DXBack) is here to keep the program from crashing while Im developing it
     if ( CurrentSelectedItem > -1 ) and Assigned( DXBack ) then
     begin //are we dragging an item?
@@ -1019,10 +1004,7 @@ procedure TLootCorpse.MouseUp( Sender : TAniview; Button : TMouseButton;
 const
   FailName : string = 'TLootCorpse.MouseUp';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     DlgScroll.KeepOnScrolling := false;
   except
@@ -1039,10 +1021,7 @@ var
 const
   FailName : string = 'TLootCorpse.Paint';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     pr := Rect( 0, 0, 679, 476 );
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
@@ -1093,10 +1072,7 @@ var
 const
   FailName : string = 'TLootCorpse.CollisionCheck';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   Result := false;
   try
     CollisionHasNotOccured := True;
@@ -1146,10 +1122,7 @@ var
 const
   FailName : string = 'TLootCorpse.CollisonCheck2';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   result := false;
   try
     CollisionHasNotOccured := True;
@@ -1190,10 +1163,7 @@ var
 const
   FailName : string = 'TLootCorpse.MoveAll';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if Destination = 1 then
     begin //if going to player1, or secondob is a player
@@ -1286,10 +1256,7 @@ var
 const
   FailName : string = 'TLootCorpse.getSlotText';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   Result := 'failed';
   try
     Sentence := pTempItems( ItemList.Items[ CurrentSelectedItem ] ).PItem.Name;
@@ -1310,10 +1277,7 @@ var
 const
   FailName : string = 'TLootCorpse.WritetheinventoryData';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
   //Clear the Characters/Container Inventory
     Character.Inventory.Clear;
@@ -1379,10 +1343,7 @@ var
 const
   FailName : string = 'TLootCorpse.ContainCursor';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     new( prRect );
     prRect.top := 0;
@@ -1415,10 +1376,7 @@ var
 const
   FailName : string = 'TLootCorpse.BuildGrid';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     //Load the grid graphic, and draw the left inventory area before we blit the screen to the backbuffer
     DXGrid := SoAOS_DX_LoadBMP( InterfacePath + 'ltPrev.bmp', cInvisColor, width, height );
@@ -1485,10 +1443,7 @@ var
 const
   FailName : string = 'TLootCorpse.ShowOpenInventorySlots';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     gWidth := 6 * 2; //each grid is 2x2
@@ -1554,10 +1509,7 @@ var
 const
   FailName : string = 'TLootCorpse.DropanItem';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   result := false;
   try
     LastLowTotal := 9999; //initialize to insanely high number
@@ -1601,10 +1553,7 @@ var
 const
   FailName : string = 'TLootCorpse.release';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     ExText.close;
     CheckForGroundDrop := true;

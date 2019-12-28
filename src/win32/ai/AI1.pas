@@ -133,10 +133,7 @@ const
 begin
   Result := nil;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     S := LowerCase( AIName );
@@ -163,10 +160,7 @@ var
 const
   FailName : string = 'TMeander.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if not Walking then
@@ -198,10 +192,7 @@ var
 const
   FailName : string = 'TMeander.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     S := Character.Properties[ 'CenterX' ];
@@ -256,10 +247,7 @@ const
 begin
   Result := True;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Character.Face( Target.X, Target.Y ); //This will appear as though the character
@@ -277,10 +265,7 @@ procedure TMeander.OnNoPath;
 const
   FailName : string = 'TMeander.OnNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Walking := False;
@@ -296,10 +281,7 @@ procedure TMeander.OnStop;
 const
   FailName : string = 'TMeander.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Walking := False;
@@ -318,10 +300,7 @@ var
 const
   FailName : string = 'TMeander.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
 
   try
     if Source is TCharacter then
@@ -361,10 +340,7 @@ var
 const
   FailName : string = 'TBanditCombat.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if Delay > 0 then
@@ -526,10 +502,7 @@ procedure TBanditCombat.Init;
 const
   FailName : string = 'TBanditCombat.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Delay := random( 60 );
@@ -546,10 +519,7 @@ const
 begin
   Result := False;
 
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     PostDelay := 0;
@@ -599,10 +569,7 @@ procedure TBanditCombat.OnNoPath;
 const
   FailName : string = 'TBanditCombat.OnNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Walking := False;
@@ -617,10 +584,7 @@ procedure TBanditCombat.OnStop;
 const
   FailName : string = 'TBanditCombat.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Walking := False;
@@ -635,10 +599,7 @@ procedure TBanditCombat.WasAttacked( Source : TAniFigure; Damage : Single );
 const
   FailName : string = 'TBanditCombat.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if Source is TCharacter then
@@ -666,10 +627,7 @@ procedure TFollowPath.Execute;
 const
   FailName : string = 'TFollowPath.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if not Walking and assigned( CurrentPath ) then
@@ -690,10 +648,7 @@ var
 const
   FailName : string = 'TFollowPath.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     S := Character.Properties[ 'PathCorner' ];
@@ -711,10 +666,7 @@ procedure TFollowPath.OnNoPath;
 const
   FailName : string = 'TFollowPath.OnNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Walking := false;
@@ -737,10 +689,7 @@ procedure TFollowPath.OnStop;
 const
   FailName : string = 'TFollowPath.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Walking := false;

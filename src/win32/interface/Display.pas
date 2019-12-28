@@ -132,10 +132,7 @@ procedure TDisplay.Close;
 const
   FailName : string = 'TDisplay.Close';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if assigned( FOnClose ) then
@@ -151,10 +148,7 @@ constructor TDisplay.Create;
 const
   FailName : string = 'TDisplay.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     inherited;
@@ -169,10 +163,7 @@ destructor TDisplay.Destroy;
 const
   FailName : string = 'TDisplay.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if Loaded then
@@ -189,10 +180,7 @@ procedure TDisplay.Init;
 const
   FailName : string = 'TDisplay.init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     Loaded := True;
@@ -257,10 +245,7 @@ procedure TDisplay.Release;
 const
   FailName : string = 'TDisplay.Release';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     OldKeyDown := nil;
@@ -294,10 +279,7 @@ var
 const
   FailName : string = 'TDisplay.';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     A := IntToStr( i );
@@ -314,10 +296,7 @@ procedure TDisplay.KeyDown( Sender : TObject; var key : Word;
 const
   FailName : string = 'TDisplay.KeyDown';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     if assigned( OldKeyDown ) then
       OldKeyDown( Sender, key, Shift );

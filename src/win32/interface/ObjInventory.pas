@@ -176,10 +176,7 @@ constructor TObjInventory.Create;
 const
   FailName : string = 'TObjInventory.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -194,12 +191,8 @@ destructor TObjInventory.Destroy;
 const
   FailName : string = 'TObjInventory.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
-
     GroundList.Free;
     GroundList := nil;
     inherited;
@@ -218,10 +211,7 @@ var
 const
   FailName : string = 'TObjInventory.init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Loaded then
@@ -397,10 +387,7 @@ var
 const
   FailName : string = 'TObjInventory.MouseDown';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if CurrentSelectedItem = -1 then
@@ -775,10 +762,7 @@ var
 const
   FailName : string = 'TObjInventory.MouseMove';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
                                    //This assigned(DXBack) is here to keep the program from crashing while Im developing it
     if ( CurrentSelectedItem > -1 ) and Assigned( DXBack ) then
@@ -949,10 +933,7 @@ procedure TObjInventory.MouseUp( Sender : TAniview; Button : TMouseButton;
 const
   FailName : string = 'TObjInventory.MouseUp';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     DlgScroll.KeepOnScrolling := false;
@@ -969,10 +950,7 @@ var
 const
   FailName : string = 'TObjInventory.Paint';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     pr := Rect( 0, 0, 679, 476 );
@@ -1017,10 +995,7 @@ var
 const
   FailName : string = 'TObjInventory.CollisionCheck';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   result := false;
   try
 
@@ -1069,10 +1044,7 @@ var
 const
   FailName : string = 'TObjInventory.MoveAll';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if ( OtherOb is TCharacter ) or ( Destination = 1 ) then
@@ -1138,18 +1110,13 @@ begin
   end;
 end; //TObjInventory.MoveAll
 
-
-
 function TObjInventory.GetSlotText : string;
 var
   Sentence : string;
 const
   FailName : string = 'TObjInventory.GetSlotText';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   result := 'failed';
   try
 
@@ -1161,18 +1128,13 @@ begin
   end;
 end; //TObjInventory.GetSlotText
 
-
-
 procedure TObjInventory.WriteTheInventoryData;
 var
   i : Integer;
 const
   FailName : string = 'TObjInventory.WriteTheInventoryData';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
   //Clear the Characters/Container Inventory
@@ -1225,18 +1187,13 @@ begin
   end;
 end; //TObjInventory.WriteTheInventoryData
 
-
-
 procedure TObjInventory.ContainCursor( action : integer );
 var
   prRect : PRect;
 const
   FailName : string = 'TObjInventory.ContainCursor';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     new( prRect );
@@ -1261,7 +1218,6 @@ begin
   end;
 end; //TObjInventory.ContainCursor
 
-
 procedure TObjInventory.BuildGrid;
 var
   i, j : integer;
@@ -1271,10 +1227,7 @@ var
 const
   FailName : string = 'TObjInventory.BuildGrid';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     DXGrid := SoAOS_DX_LoadBMP( InterfacePath + 'obInvGrid.bmp', cInvisColor );
@@ -1320,21 +1273,16 @@ begin
   end;
 end; //TObjInventory.BuildGrid;
 
-
 procedure TObjInventory.ShowOpenInventorySlots;
 var
   i, j, k, m, n : integer;
   gWidth : integer;
   gHeight : integer;
   XX, YY : integer;
-
 const
   FailName : string = 'TObjInventory.ShowOpenInventroySlots';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     gWidth := 6 * 2; //each grid is 2x2
@@ -1449,10 +1397,7 @@ var
 const
   FailName : string = 'TObjInventory.DropAnItem';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   Result := false;
   try
 
@@ -1537,10 +1482,7 @@ var
 const
   FailName : string = 'TObjInventory.Release';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     ExText.close;
     ContainCursor( 0 );
@@ -1590,6 +1532,5 @@ begin
       Log.log( FailName + E.Message );
   end;
 end; //TObjInventory.Release
-
 
 end.

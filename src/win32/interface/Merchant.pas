@@ -194,10 +194,7 @@ constructor TMerchant.Create;
 const
   FailName : string = 'TMerchant.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     GroundList := TList.Create;
@@ -211,10 +208,7 @@ destructor TMerchant.Destroy;
 const
   FailName : string = 'TMerchant.destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     GroundList.Free;
     GroundList := nil;
@@ -234,10 +228,7 @@ var
 const
   FailName : string = 'TMerchant.init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if Loaded then
       Exit;
@@ -1060,10 +1051,7 @@ var
 const
   FailName : string = 'TMerchant.Paint';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     pr := Rect( 0, 0, 679, 476 );
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
@@ -1105,10 +1093,7 @@ var
 const
   FailName : string = 'TMerchant.CollisionCheck';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   result := true;
   try
     CollisionHasNotOccured := True;
@@ -1148,10 +1133,7 @@ var
 const
   FailName : string = 'TMerchant.ItemFitsInInventory';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   result := false;
   try
     gWidth := 6 * 2; //each grid is 2x2
@@ -1199,10 +1181,7 @@ var
 const
   FailName : string = 'TMerchant.GetSlotText';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   result := 'failed';
   try
     Sentence := pTempItems( ItemList.Items[ CurrentSelectedItem ] ).PItem.Name;
@@ -1230,10 +1209,7 @@ var
 const
   FailName : string = 'TMerchant.GetSHORTSlotText';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   result := 'failed';
   try
     Sentence := S;
@@ -1265,10 +1241,7 @@ var
 const
   FailName : string = 'TMerchant.Writetheinventorydata';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
   //Clear the Characters/Merchant Inventory
     Character.Inventory.Clear;
@@ -1323,18 +1296,13 @@ begin
   end;
 end; //TMerchant.WriteTheInventoryData
 
-
-
 procedure TMerchant.ContainCursor( action : integer );
 var
   prRect : PRect;
 const
   FailName : string = 'TMerchant.ContainCursor';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     new( prRect );
     prRect.top := 0;
@@ -1365,10 +1333,7 @@ var
 const
   FailName : string = 'TMerchant.BuildGrid';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
   //Load the grid graphic, and draw the left inventory area before we blit the screen to the backbuffer
     DXGrid := SoAOS_DX_LoadBMP( InterfacePath + 'merGrid.bmp', cInvisColor );
@@ -1413,10 +1378,7 @@ var
 const
   FailName : string = 'TMerchant.ShowLeftList';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     j := 0;
     k := 1;
@@ -1488,10 +1450,7 @@ var
 const
   FailName : string = 'TMerchant.ShowRightList';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     UniqueItemList := TStringList.create; //create this string list to make sure we only show one of each kind of item
     UniqueItemList.sorted := true;
@@ -1562,10 +1521,7 @@ const
 var
   pr : TRect;
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if GroundOrderList.Count > 0 then
     begin //If we have any ground items
@@ -1600,10 +1556,7 @@ var
 const
   FailName : string = 'TMerchant.release';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if assigned( Timer ) then
     begin

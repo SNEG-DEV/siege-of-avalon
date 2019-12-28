@@ -134,10 +134,7 @@ constructor TOptions.Create;
 const
   FailName : string = 'TOptions.Create';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     inherited;
     opContinueRect := Rect( 400, 450, 400 + 300, 450 + 45 );
@@ -152,12 +149,8 @@ destructor TOptions.Destroy;
 const
   FailName : string = 'TOptions.Destroys';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
-
     inherited;
   except
     on E : Exception do
@@ -172,10 +165,7 @@ var
 const
   FailName : string = 'TOptions.init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
     if Loaded then
@@ -239,10 +229,7 @@ var
 const
   FailName : string = 'TOptions.PlotMenu';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
   //clear Volume bars
@@ -336,10 +323,7 @@ var
 const
   FailName : string = 'TOptions.KeyDown';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
    //was function key f3 to f12, now 0-9
@@ -376,10 +360,7 @@ procedure TOptions.MouseDown( Sender : TAniview; Button : TMouseButton; Shift : 
 const
   FailName : string = 'TOptions.MouseDown';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
 
@@ -476,10 +457,7 @@ var
 const
   FailName : string = 'TOptions.MouseMove';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 
   //Clear rollover text area
@@ -625,10 +603,7 @@ procedure TOptions.Release;
 const
   FailName : string = 'TOptions.Release';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     if assigned( Timer ) then
     begin

@@ -146,10 +146,7 @@ function TStringDatabase.GetFields( FieldPos : integer ) : string;
 const
   FailName : string = 'TStringDatabase.GetFields';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
 //  Result := StrTokenAt(DataString, FieldPos);
     Result := Parse( DataString, FieldPos, '|' );
@@ -166,10 +163,7 @@ var
 const
   FailName : string = 'TStringDatabase.strTokenAt';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog(FailName);
   try
     Result := '';
     j := 1;

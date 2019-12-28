@@ -252,10 +252,7 @@ var
 const
   FailName : string = 'AssignUndeadAI';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   result := nil;
   try
     S := lowercase( AIName );
@@ -284,10 +281,7 @@ var
 const
   FailName : string = 'RangeTest';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   result := false;
   try
     Result := false;
@@ -358,10 +352,7 @@ procedure TUndeadIdle.Execute;
 const
   FailName : string = 'TUndeadIdle.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
 
@@ -414,10 +405,7 @@ procedure TUndeadIdle.ReGroup( Source : TAniFigure; NewX, NewY : Integer );
 const
   FailName : string = 'TUndeadIdle.reGroup';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Character.WalkTo( NewX, NewY, 64 );
     Walking := true;
@@ -432,10 +420,7 @@ procedure TUndeadIdle.Eat;
 const
   FailName : string = 'TUndeadIdle.Eat';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if Character.Inrange( dead ) then
       if ( ( FrameCount mod 40 ) = 0 ) then
@@ -465,10 +450,7 @@ var
 const
   FailName : string = 'TUndeadIdle.IdleAction';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     case FUndeadType of
       utGhoul : //Ghouls get hungry
@@ -495,10 +477,7 @@ procedure TUndeadIdle.Fight;
 const
   FailName : string = 'TUndeadIdle.Fight';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if Character.Inrange( Character.Track ) then
       if ( ( FrameCount mod 60 ) = 0 ) then
@@ -523,10 +502,7 @@ var
 const
   FailName : string = 'TUndeadIdle.Meander';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if ( FUndeadType <> utSkeleton ) then
     begin
@@ -554,10 +530,7 @@ var
 const
   FailName : string = 'TUndeadIdle.FindTarget';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if ( FrameCount mod 40 ) = 0 then
     begin
@@ -596,10 +569,7 @@ var
 const
   FailName : string = 'TUndeadIdle.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     CenterX := Character.X;
     CenterY := Character.Y;
@@ -693,10 +663,7 @@ procedure TUndeadIdle.Follow( Source, Target : TAniFigure );
 const
   FailName : string = 'TUndeadIdle.Follow';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     character.WalkTo( Target.x, Target.y, 64 );
     Walking := True;
@@ -711,10 +678,7 @@ procedure TUndeadIdle.WasAttacked( Source : TAniFigure; Damage : Single );
 const
   FailName : string = 'TUndeadIdle.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if Source is TCharacter then
     begin
@@ -734,10 +698,7 @@ function TUndeadIdle.OnCollideFigure( Target : TAniFigure ) : boolean;
 const
   FailName : string = 'TUndeadIdle.Oncollidefigure';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   Result := false;
   try
 
@@ -766,10 +727,7 @@ procedure TUndeadIdle.OnStop;
 const
   FailName : string = 'TUndeadIdle.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Walking := false;
     if ( character.X <> character.StartX ) and ( character.Y <> character.StartY ) then
@@ -796,10 +754,7 @@ var
 const
   FailName : string = 'TUndeadMeleeCombat.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if ( FrameCount mod 160 ) = 0 then
@@ -863,10 +818,7 @@ procedure TUndeadMeleeCombat.Eat;
 const
   FailName : string = 'TUndeadMeleeCombat.Eat';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if ( Character.Inrange( Character.Track ) ) and Character.Track.Dead then
       if ( ( FrameCount mod 40 ) = 0 ) then
@@ -896,10 +848,7 @@ procedure TUndeadMeleeCombat.Attack;
 const
   FailName : string = 'TUndeadMeleeCombat.Attack';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if TCharacter( Character.Track ).Dead then
@@ -955,10 +904,7 @@ procedure TUndeadMeleeCombat.ReGroup( Source : TAniFigure; NewX, NewY : Integer 
 const
   FailName : string = 'TUndeadMeleeCombat.Regroup';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if bTakeOrders then
     begin
@@ -976,10 +922,7 @@ procedure TUndeadMeleeCombat.CallToArms( Source, Target : TAniFigure );
 const
   FailName : string = 'TUndeadMeleeCombat.CallToArms';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if bTakeOrders then
       Character.Track := TCharacter( Target );
@@ -997,10 +940,7 @@ var
 const
   FailName : string = 'TUndeadMeleeCombat.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     CirclePoint := Random( 360 ) + 180;
 
@@ -1165,10 +1105,7 @@ function TUndeadMeleeCombat.OnCollideFigure( Target : TAniFigure ) : boolean;
 const
   FailName : string = 'TUndeadMeleeCombat.Attack';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   Result := false;
   try
     Result := False;
@@ -1210,10 +1147,7 @@ procedure TUndeadMeleeCombat.OnStop;
 const
   FailName : string = 'TUndeadMeleeCombat.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Walking := false;
     if ( character.X = character.StartX ) and ( character.Y = character.StartY ) then
@@ -1227,7 +1161,6 @@ begin
       realstop := true;
     end;
 
-
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -1239,10 +1172,7 @@ procedure TUndeadMeleeCombat.OnNoPath;
 const
   FailName : string = 'TUndeadMeleeCombat.OnNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Walking := false;
     if ( character.X = character.StartX ) and ( character.Y = character.StartY ) then
@@ -1268,10 +1198,7 @@ procedure TUndeadMeleeCombat.WasAttacked( Source : TAniFigure; Damage : single )
 const
   FailName : string = 'TUndeadMeleeCombat.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if ( Source is TCharacter ) then
       if Character.IsEnemy( TCharacter( Source ) ) then
@@ -1293,10 +1220,7 @@ procedure TUndeadArcherCombat.CallToArms( Source, Target : TAniFigure );
 const
   FailName : string = 'TUndeadArcherCombat.CallToArms';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if bTakeOrders then
     begin
@@ -1315,10 +1239,7 @@ procedure TUndeadArcherCombat.Execute;
 const
   FailName : string = 'TUndeadArcherCombat.execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   inherited;
   try
@@ -1362,14 +1283,10 @@ begin
     if not Assigned( Character.Track ) then
       FindTarget;
 
-
   except
     on E : Exception do
       Log.log( 'Error UndeadArcher Execute: ' + E.Message );
-
   end;
-
-
 
 end;
 
@@ -1381,10 +1298,7 @@ var
 const
   FailName : string = 'TUndeadArcherCombat.battletactic';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if not Walking then
     begin
@@ -1410,10 +1324,7 @@ procedure TUndeadArcherCombat.MoveAway;
 const
   FailName : string = 'TUndeadArcherCombat.MoveAway';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Walking := True;
     if assigned( Character.Track ) then
@@ -1440,10 +1351,7 @@ procedure TUndeadArcherCombat.Attack;
 const
   FailName : string = 'TUndeadArcherCombat.attack';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if TCharacter( Character.Track ).Dead then
       Character.Track := nil
@@ -1484,10 +1392,7 @@ var
 const
   FailName : string = 'TUndeadArcherCombat.FindTarget';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     List := GetPerceptibleEnemies( Character, 2 );
     if assigned( List ) then
@@ -1517,10 +1422,7 @@ var
 const
   FailName : string = 'TUndeadArcherCombat.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     CirclePoint := Random( 360 ) + 180;
@@ -1648,10 +1550,7 @@ procedure TUndeadArcherCombat.NotifyOfDeath( Source : TAniFigure );
 const
   FailName : string = 'TUndeadArcherCombat.NotifyOfDeath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
   except
@@ -1665,10 +1564,7 @@ function TUndeadArcherCombat.OnCollideFigure(
 const
   FailName : string = 'TUndeadArcherCombat.Oncollidefigure';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   Result := False;
   try
     if Target = Character.Track then
@@ -1700,10 +1596,7 @@ procedure TUndeadArcherCombat.OnNoPath;
 const
   FailName : string = 'TUndeadArcherCombat.OnNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     RunOrFight := False;
     Walking := False;
@@ -1721,10 +1614,7 @@ procedure TUndeadArcherCombat.OnStop;
 const
   FailName : string = 'TUndeadArcherCombat.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Walking := false;
     if Assigned( Character.Track ) then
@@ -1741,10 +1631,7 @@ procedure TUndeadArcherCombat.Regroup( Source : TAniFigure; NewX, NewY : Integer
 const
   FailName : string = 'TUndeadArcherCombat.regroup';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
 
   try
     if bTakeOrders then
@@ -1767,10 +1654,7 @@ procedure TUndeadArcherCombat.WasAttacked( Source : TAniFigure; Damage : single 
 const
   FailName : string = 'TUndeadArcherCombat.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if Source <> character then
     begin
@@ -1792,10 +1676,7 @@ var
 const
   FailName : string = 'TUndeadArcherCombat.WasKilled';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
      //Tell everyone I died so they can save themselves
     List := GetPerceptibleAllies( Character, 1.5 );
@@ -1827,10 +1708,7 @@ procedure TUndeadCasterCombat.CallToArms( Source, Target : TAniFigure );
 const
   FailName : string = 'TUndeadCasterCombat.Calltoarms';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if bTakeOrders then
@@ -1849,10 +1727,7 @@ procedure TUndeadCasterCombat.Execute;
 const
   FailName : string = 'TUndeadCasterCombat.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -1915,10 +1790,7 @@ var
 const
   FailName : string = 'TUndeadCasterCombat.battletactic';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not Walking then
@@ -1942,10 +1814,7 @@ procedure TUndeadCasterCombat.CastHeal;
 const
   FailName : string = 'TUndeadCasterCombat.CastHeal';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Walking then
@@ -1973,10 +1842,7 @@ procedure TUndeadCasterCombat.MoveAway;
 const
   FailName : string = 'TUndeadCasterCombat.moveAway';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Walking := True;
@@ -2003,10 +1869,7 @@ procedure TUndeadCasterCombat.Attack;
 const
   FailName : string = 'TUndeadCasterCombat.Attack';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if TCharacter( Character.Track ).Dead then
       Character.Track := nil
@@ -2062,10 +1925,7 @@ var
 const
   FailName : string = 'TUndeadCasterCombat.FindFriendly';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not Assigned( FriendsList ) then
@@ -2127,10 +1987,7 @@ var
 const
   FailName : string = 'TUndeadCasterCombat.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     CirclePoint := Random( 360 ) + 180;
@@ -2269,10 +2126,7 @@ function TUndeadCasterCombat.OnCollideFigure( Target : TAniFigure ) : boolean;
 const
   FailName : string = 'TUndeadCasterCombat.OnCollideFigure';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   Result := False;
   try
     Result := False;
@@ -2304,10 +2158,7 @@ procedure TUndeadCasterCombat.OnStop;
 const
   FailName : string = 'TUndeadCasterCombat.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     Walking := false;
     if ( character.X <> character.StartX ) and ( character.Y <> character.StartY ) then
@@ -2325,10 +2176,7 @@ procedure TUndeadCasterCombat.OnNoPath;
 const
   FailName : string = 'TUndeadCasterCombat.OnNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     RunAway := False;
  // character.Frame := Random(31)+1;
@@ -2346,10 +2194,7 @@ procedure TUndeadCasterCombat.Regroup( Source : TAniFigure; NewX, NewY : Integer
 const
   FailName : string = 'TUndeadCasterCombat.regroup';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     if bTakeOrders then
     begin
@@ -2368,10 +2213,7 @@ procedure TUndeadCasterCombat.WasAttacked( Source : TAniFigure;
 const
   FailName : string = 'TUndeadCasterCombat.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Source <> character then
@@ -2402,10 +2244,7 @@ var
 const
   FailName : string = 'TUndeadCasterCombat.WasKilled';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
    //Tell everyone I died so they can save themselves
@@ -2429,10 +2268,7 @@ procedure TUndeadCommanderCombat.Execute;
 const
   FailName : string = 'TUndeadCommanderCombat.Execute';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     inherited;
@@ -2492,10 +2328,7 @@ procedure TUndeadCommanderCombat.CallToArms( Source, Target : TAniFigure );
 const
   FailName : string = 'TUndeadCommanderCombat.CallToArms';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if bTakeOrders then
@@ -2519,10 +2352,7 @@ var
 const
   FailName : string = 'TUndeadCommanderCombat.Battletactic';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not Walking then
@@ -2547,10 +2377,7 @@ procedure TUndeadCommanderCombat.CastHeal;
 const
   FailName : string = 'TUndeadCommanderCombat.castHeal';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Walking then
@@ -2579,10 +2406,7 @@ procedure TUndeadCommanderCombat.MoveAway;
 const
   FailName : string = 'TUndeadCommanderCombat.MoveAway';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Walking := True;
@@ -2610,10 +2434,7 @@ procedure TUndeadCommanderCombat.Attack;
 const
   FailName : string = 'TUndeadCommanderCombat.Attack';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if TCharacter( Character.Track ).Dead then
@@ -2675,10 +2496,7 @@ var
 const
   FailName : string = 'TUndeadCommanderCombat.FindFriendly';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if not Assigned( FriendsList ) then
@@ -2722,10 +2540,7 @@ var
 const
   FailName : string = 'TUndeadCommanderCombat.FindTarget';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     tmp := 0;
@@ -2820,10 +2635,7 @@ var
 const
   FailName : string = 'TUndeadCommanderCombat.Init';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     CirclePoint := Random( 360 ) + 180;
@@ -2974,10 +2786,7 @@ function TUndeadCommanderCombat.OnCollideFigure( Target : TAniFigure ) : boolean
 const
   FailName : string = 'TUndeadCommanderCombat.OnCollideFigure';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   Result := False;
   try
 
@@ -3009,10 +2818,7 @@ procedure TUndeadCommanderCombat.OnStop;
 const
   FailName : string = 'TUndeadCommanderCombat.OnStop';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     Walking := false;
@@ -3029,10 +2835,7 @@ procedure TUndeadCommanderCombat.OnNoPath;
 const
   FailName : string = 'TUndeadCommanderCombat.onNoPath';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     RunAway := False;
@@ -3050,10 +2853,7 @@ procedure TUndeadCommanderCombat.Regroup( Source : TAniFigure; NewX, NewY : Inte
 const
   FailName : string = 'TUndeadCommanderCombat.Regroup';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if bTakeOrders then
@@ -3075,10 +2875,7 @@ var
 const
   FailName : string = 'TUndeadCommanderCombat.WasAttacked';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
     if Source <> character then
@@ -3142,10 +2939,7 @@ var
 const
   FailName : string = 'TUndeadCommanderCombat.WasKilled';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
 
    //Tell everyone I died so they can save themselves
@@ -3171,10 +2965,7 @@ destructor TUndeadArcherCombat.Destroy;
 const
   FailName : string = 'TUndeadArcher.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     if Assigned( FriendsList ) then
@@ -3190,10 +2981,7 @@ destructor TUndeadCasterCombat.Destroy;
 const
   FailName : string = 'TUndeadCasterCombat.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     if Assigned( FriendsList ) then
@@ -3208,10 +2996,7 @@ destructor TUndeadCommanderCombat.Destroy;
 const
   FailName : string = 'TUndeadCommanderCombat.Destroy';
 begin
-{$IFDEF DODEBUG}
-  if ( CurrDbgLvl >= DbgLvlSevere ) then
-    Log.LogEntry( FailName );
-{$ENDIF}
+  Log.DebugLog( FailName );
   try
     inherited;
     if Assigned( FriendsList ) then
