@@ -1055,7 +1055,7 @@
         <DCCReference Include="engine\SoAOS.StrUtils.pas"/>
         <DCCReference Include="interface\Transit.pas"/>
         <DCCReference Include="engine\MMTimer.pas"/>
-        <DCCReference Include="engine\SOAOS.Types.pas"/>
+        <DCCReference Include="engine\SoAOS.Types.pas"/>
         <DCCReference Include="graphics\SoAOS.Graphics.Draw.pas"/>
         <DCCReference Include="graphics\SoAOS.Graphics.Types.pas"/>
         <DCCReference Include="interface\SoAOS.Intrface.Popup.pas"/>

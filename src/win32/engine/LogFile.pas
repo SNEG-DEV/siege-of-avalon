@@ -1,63 +1,43 @@
 unit LogFile;
-{******************************************************************************}
-{                                                                              }
-{               Siege Of Avalon : Open Source Edition                          }
-{               -------------------------------------                          }
-{                                                                              }
-{ Portions created by Digital Tome L.P. Texas USA are                          }
-{ Copyright ©1999-2000 Digital Tome L.P. Texas USA                             }
-{ All Rights Reserved.                                                         }
-{                                                                              }
-{ Portions created by Team SOAOS are                                           }
-{ Copyright (C) 2003 - Team SOAOS.                                             }
-{                                                                              }
-{                                                                              }
-{ Contributor(s)                                                               }
-{ --------------                                                               }
-{ Dominique Louis <Dominique@SavageSoftware.com.au>                            }
-{                                                                              }
-{                                                                              }
-{                                                                              }
-{ You may retrieve the latest version of this file at the SOAOS project page : }
-{   http://www.sourceforge.com/projects/soaos                                  }
-{                                                                              }
-{ The contents of this file maybe used with permission, subject to             }
-{ the GNU Lesser General Public License Version 2.1 (the "License"); you may   }
-{ not use this file except in compliance with the License. You may             }
-{ obtain a copy of the License at                                              }
-{ http://www.opensource.org/licenses/lgpl-license.php                          }
-{                                                                              }
-{ Software distributed under the License is distributed on an                  }
-{ "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or               }
-{ implied. See the License for the specific language governing                 }
-{ rights and limitations under the License.                                    }
-{                                                                              }
-{ Description                                                                  }
-{ -----------                                                                  }
-{                                                                              }
-{                                                                              }
-{                                                                              }
-{                                                                              }
-{                                                                              }
-{                                                                              }
-{                                                                              }
-{ Requires                                                                     }
-{ --------                                                                     }
-{   DirectX Runtime libraris on Win32                                          }
-{   They are available from...                                                 }
-{   http://www.microsoft.com.                                                  }
-{                                                                              }
-{ Programming Notes                                                            }
-{ -----------------                                                            }
-{                                                                              }
-{                                                                              }
-{                                                                              }
-{                                                                              }
-{ Revision History                                                             }
-{ ----------------                                                             }
-{   July    13 2003 - DL : Initial Upload to CVS                               }
-{                                                                              }
-{******************************************************************************}
+(*
+  Siege Of Avalon : Open Source Edition
+
+  Portions created by Digital Tome L.P. Texas USA are
+  Copyright ©1999-2000 Digital Tome L.P. Texas USA
+  All Rights Reserved.
+
+  Portions created by Team SOAOS are
+  Copyright (C) 2003 - Team SOAOS.
+
+  Portions created by Stefen Nyeland are
+  Copyright (C) 2019 - Steffen Nyeland.
+
+  Contributor(s):
+  Dominique Louis <Dominique@SavageSoftware.com.au>
+  Steffen Nyeland
+
+  You may retrieve the latest version of this file at:
+  https://github.com/SteveNew/Siege-of-Avalon-Open-Source
+
+  The contents of this file maybe used with permission, subject to
+  the GNU Lesser General Public License Version 2.1 (the "License"); you may
+  not use this file except in compliance with the License. You may
+  obtain a copy of the License at https://opensource.org/licenses/LGPL-2.1
+
+  Software distributed under the License is distributed on an "AS IS" basis,
+  WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+  for the specific language governing rights and limitations under the License.
+
+  Description:
+
+  Requires: Delphi 10.3.3 or later
+
+  Revision History:
+  - 13 Jul 2003 - DL: Initial Upload to CVS
+  - 10 Mar 2020 - SN: Forked on GitHub
+  see git repo afterwards
+
+*)
 
 interface
 
