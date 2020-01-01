@@ -485,7 +485,7 @@ var
         begin
           if ( InScene <> Scenename ) then   //Fix by Rucksacksepp
           begin
-            if ( Pos( '[' + SceneName + ']', InScene ) = 0 ) then
+            if ( InScene.IndexOf( '[' + SceneName + ']' ) = 0 ) then
             begin
               Attributes.Free;
               Log.Log( '  Object not in scene' );

@@ -88,8 +88,8 @@ uses
   SoAOS.Types,
   Character,
   Anigrp30,
-  strFunctions,
   Resource,
+  SoAOS.StrUtils,
   SoAOS.Graphics.Types,
   anidemo,
   spells1;
@@ -154,14 +154,14 @@ type
     bPlaySFXOther : boolean;
     SFXDelayType : TSFXDelayType;
 
-    strPlayerSay : string;
-    strFriendSay : string;
-    strNeutralSay : string;
-    strEnemySay : string;
-    strPlayerRsp : string;
-    strFriendRsp : string;
-    strNeutralRsp : string;
-    strEnemyRsp : string;
+    strPlayerSay : TTokenString;
+    strFriendSay : TTokenString;
+    strNeutralSay : TTokenString;
+    strEnemySay : TTokenString;
+    strPlayerRsp : TTokenString;
+    strFriendRsp : TTokenString;
+    strNeutralRsp : TTokenString;
+    strEnemyRsp : TTokenString;
     tmpEnemies : string;
     strAction : string;
     procedure FindTarget;
@@ -812,7 +812,7 @@ begin
     begin
       for i := 0 to TalkToMeCount - 1 do
       begin
-        if not ( Character.TitleExists( StrTokenAt( TalkToMeTitle, '|', i ) ) ) then
+        if not ( Character.TitleExists( TTokenString(TalkToMeTitle).PipeToken( i ) ) ) then
         begin
           if Assigned( TalkToMeResource ) then
           begin
@@ -1018,9 +1018,9 @@ begin
             if Character.Track = Current then
             begin
               if StrPlayerSay <> '' then
-                character.Say( StrTokenAt( StrPlayerSay, ',', Random( StrTokenCount( StrPlayerSay, ',' ) ) ), cTalkRedColor );
+                character.Say( TTokenString(StrPlayerSay).RandomToken, cTalkRedColor );
               if StrPlayerRsp <> '' then
-                Current.Say( StrTokenAt( StrPlayerRsp, ',', Random( StrTokenCount( StrPlayerRsp, ',' ) ) ), cTalkRedColor );
+                Current.Say( TTokenString(StrPlayerRsp).RandomToken, cTalkRedColor );
             end;
           except
             on E : Exception do
@@ -1031,9 +1031,9 @@ begin
             if ( Character.IsAlly( Character.Track ) ) and ( Character.Track <> Current ) then
             begin
               if StrFriendSay <> '' then
-                character.Say( StrTokenAt( StrFriendSay, ',', Random( StrTokenCount( StrFriendSay, ',' ) ) ), cTalkRedColor );
+                character.Say( TTokenString(StrFriendSay).RandomToken, cTalkRedColor );
               if StrFriendRsp <> '' then
-                Current.Say( StrTokenAt( StrFriendRsp, ',', Random( StrTokenCount( StrFriendRsp, ',' ) ) ), cTalkRedColor );
+                Current.Say( TTokenString(StrFriendRsp).RandomToken, cTalkRedColor );
             end;
           except
             on E : Exception do
@@ -1043,9 +1043,9 @@ begin
             if ( Character.IsNeutral( Character.Track ) ) and ( Character.Track <> Current ) then
             begin
               if StrNeutralSay <> '' then
-                character.Say( StrTokenAt( StrNeutralSay, ',', Random( StrTokenCount( StrNeutralSay, ',' ) ) ), cTalkRedColor );
+                character.Say( StrNeutralSay.RandomToken, cTalkRedColor );
               if StrNeutralRsp <> '' then
-                Current.Say( StrTokenAt( StrNeutralRsp, ',', Random( StrTokenCount( StrNeutralRsp, ',' ) ) ), cTalkRedColor );
+                Current.Say( StrNeutralRsp.RandomToken, cTalkRedColor );
             end;
           except
             on E : Exception do
@@ -1055,9 +1055,9 @@ begin
             if ( Character.IsEnemy( Character.Track ) ) and ( Character.Track <> Current ) then
             begin
               if StrEnemySay <> '' then
-                character.Say( StrTokenAt( StrEnemySay, ',', Random( StrTokenCount( StrEnemySay, ',' ) ) ), cTalkRedColor );
+                character.Say( StrEnemySay.RandomToken, cTalkRedColor );
               if StrEnemyRsp <> '' then
-                Current.Say( StrTokenAt( StrEnemyRsp, ',', Random( StrTokenCount( StrEnemyRsp, ',' ) ) ), cTalkRedColor );
+                Current.Say( StrEnemyRsp.RandomToken, cTalkRedColor );
             end;
           except
             on E : Exception do
@@ -1431,8 +1431,8 @@ end;
 
 procedure THumanoidIdle.Init;
 var
-  S : string;
-  sLoot : string;
+  S : TTokenString;
+  sLoot : TTokenString;
   i, j : Integer;
   sStart : string;
   sEnd : string;
@@ -1765,10 +1765,9 @@ begin
         if S <> '' then
         begin
           sLoot := s;
-          j := StrTokenCount( sLoot, ',' );
           for i := 0 to StrToInt( Character.Properties[ 'RandomLootCount' ] ) - 1 do
           begin
-            s := StrTokenAt( sLoot, ',', Random( j ) );
+            s := sLoot.RandomToken;
             if not ( character.HasItem( s ) ) then
               RunScript( Character, 'additem(' + s + ')' );
           end;
@@ -2054,24 +2053,22 @@ begin
   // replace the default stand action. exmaple would be making the dogs sit.
     S := LowerCase( Character.Properties[ 'NewStand' ] );
     try
-      if s <> '' then
+      if S <> '' then
       begin
         if character.StandAction <> '' then
           OldStand := character.StandAction
         else
           OldStand := 'Stand';
 
-        NewStand := strTokenAt( s, ',', 0 );
-        character.StandAction := strTokenAt( s, ',', 0 );
-        if strTokenAt( s, ',', 1 ) = '' then
+        NewStand := S.CommaToken( 0 );
+        character.StandAction := S.CommaToken( 0 );
+        if S.CommaToken( 1 ) = '' then
           StandInterval := Random( 400 ) + 500
         else
-          StandInterval := StrToInt( strTokenAt( s, ',', 1 ) );
-
-      end
+          StandInterval := s.CommaToken(1).ToInteger;
+       end
     except
     end;
-
 
   // indicator that the player should talk to this character next
     S := LowerCase( Character.Properties[ 'TalkToMe' ] );
@@ -2079,23 +2076,23 @@ begin
       if ( S <> '' ) and TalkToMe and TFile.Exists( ArtPath + 'engine\weaponprojectiles\mageblueball.pox' ) then
       begin
 //          TalkToMeTitles := s;
-        TalkToMeCount := StrTokenCount( s, '|' );
+        TalkToMeCount := S.TokenCount('|');
 
         for i := 0 to TalkToMeCount - 1 do
         begin
-          if player.TitleExists( StrTokenAt( StrTokenAt( s, '|', i ), ':', 0 ) ) then
-            TalkToMeTitles := TalkToMeTitles + ( StrTokenAt( StrTokenAt( s, '|', i ), ':', 1 ) ) + '|';
+          if player.TitleExists( S.PipeTokenTS( i ).ColonToken( 0 ) ) then
+            TalkToMeTitles := TalkToMeTitles + ( S.PipeTokenTS( i ).ColonToken( 1 ) ) + '|';
         end;
-        StrStripLast( TalkToMeTitles );
-        TalkToMeCount := StrTokenCount( TalkToMeTitles, '|' );
+        TalkToMeTitles := TalkToMeTitles.Remove(TalkToMeTitles.Length-1);
+        TalkToMeCount := TTokenString(TalkToMeTitles).TokenCount('|');
 
         for i := 0 to TalkToMeCount - 1 do
         begin
-          if not ( Character.TitleExists( StrTokenAt( TalkToMeTitles, '|', i ) ) ) then
-            TalkToMeTitle := TalkToMeTitle + StrTokenAt( TalkToMeTitles, '|', i ) + '|';
+          if not ( Character.TitleExists( TTokenString(TalkToMeTitles).PipeToken( i ) ) ) then
+            TalkToMeTitle := TalkToMeTitle + TTokenString(TalkToMeTitles).PipeToken( i ) + '|';
         end;
-        StrStripLast( TalkToMeTitle );
-        TalkToMeCount := StrTokenCount( TalkToMeTitle, '|' );
+        TalkToMeTitle := TalkToMeTitle.Remove(TalkToMeTitle.Length-1);
+        TalkToMeCount := TTokenString(TalkToMeTitle).TokenCount('|');
 
         TalkToMeResource := LoadArtResource( 'engine\weaponprojectiles\mageblueball.gif' );
         TalkToMeResource.Alpha := 100;
@@ -2105,8 +2102,6 @@ begin
       end;
     except
     end;
-
-
 
     try //find all my friends and pathcorners
       if character.GroupName <> '' then
@@ -2416,7 +2411,7 @@ var
   iStealth : integer;
   J : integer;
   Effect : TEffect;
-  s : string;
+  s : TTokenString;
 const
   FailName : string = 'THumanoidIdle.WasKilled';
 begin
@@ -2490,10 +2485,10 @@ begin
       else
       begin
         Effect := TEffect.Create;
-        if LowerCase( strTokenAt( s, '|', 1 ) ) = 'true' then
+        if LowerCase( S.PipeToken( 1 ) ) = 'true' then
           Effect.DisableWhenDone := true;
 
-        Effect.Resource := GetSpellEffect( strTokenAt( s, '|', 0 ) );
+        Effect.Resource := GetSpellEffect( S.PipeToken( 0 ) );
         Effect.AnimationDuration := Effect.Resource.FrameCount * Effect.Resource.FrameMultiplier;
         Effect.DoAction( 'Default', Character.FacingString );
         Character.AddEffect( Effect );
@@ -3424,7 +3419,7 @@ procedure THumanoidMeleeCombat.WasKilled( Source : TAniFigure );
 var
   List : TStringList;
   iLoop : integer;
-  s : string;
+  s : TTokenString;
   Effect : TEffect;
 const
   FailName : string = 'THumanoidMeleeCombat.WasKilled';
@@ -3468,10 +3463,10 @@ begin
       else
       begin
         Effect := TEffect.Create;
-        if LowerCase( strTokenAt( s, '|', 1 ) ) = 'true' then
+        if LowerCase( S.PipeToken( 1 ) ) = 'true' then
           Effect.DisableWhenDone := true;
 
-        Effect.Resource := GetSpellEffect( strTokenAt( s, '|', 0 ) );
+        Effect.Resource := GetSpellEffect( S.PipeToken( 0 ) );
         Effect.AnimationDuration := Effect.Resource.FrameCount * Effect.Resource.FrameMultiplier;
         Effect.DoAction( 'Default', Character.FacingString );
         Character.AddEffect( Effect );
@@ -4448,7 +4443,7 @@ begin
     if bTakeOrders then
     begin
       Character.Track := TCharacter( Target );
-      Spell := strTokenAt( oSPellBook, ',', Random( StrTokenCount( oSpellBook, ',' ) ) );
+      Spell := TTokenString(oSPellBook).RandomToken;
       if Spells.indexOf( Spell ) <> -1 then
       begin
         if Character.CurrentSpell <> TSpell( Spells.Objects[ Spells.indexOf( Spell ) ] ) then
@@ -5057,12 +5052,13 @@ begin
           Character.Face( Character.Track.x, Character.Track.y );
 
           if HoldCast then
-            Spell := strTokenAt( oSPellBook, ',', Random( StrTokenCount( oSpellBook, ',' ) ) )
+            Spell := TTokenString(oSPellBook).RandomToken
           else
           begin
             HoldCast := true;
             Spell := 'Hold';
           end;
+
           if Spell = 'hellhound' then
           begin
             SummonHellHound;
@@ -5076,6 +5072,7 @@ begin
             Delay := 20;
             exit;
           end;
+
           if Spell = 'invis' then
           begin
             castInvis;
@@ -5277,7 +5274,7 @@ var
   Alley : integer;
 begin
   try
-    Spell := strTokenAt( DSPellBook, ',', Random( StrTokenCount( DSpellBook, ',' ) ) );
+    Spell := TTokenString(DSPellBook).RandomToken;
     if ( Spells.indexOf( Spell ) = -1 ) or ( LowerCase( Spell ) = 'none' ) then
       exit;
 
@@ -5808,7 +5805,7 @@ begin
 
     if Character.Alliance <> 'summon' then
     begin
-      S := strTokenAt( DSPellBook, ',', Random( StrTokenCount( DSpellBook, ',' ) ) );
+      S := TTokenString(DSPellBook).RandomToken;
       if Spells.indexOf( S ) <> -1 then
       begin
         if character.titleExists( 'deflectfirst' ) and ( Spells.indexOf( 'deflect' ) <> -1 ) then
@@ -6108,7 +6105,7 @@ procedure THumanoidCasterCombat.WasKilled( Source : TAniFigure );
 var
   List : TStringList;
   iLoop : integer;
-  s : string;
+  S : TTokenString;
   Effect : TEffect;
 const
   FailName : string = 'THumanoidCasterCombat.WasKilled';
@@ -6158,10 +6155,10 @@ begin
       else
       begin
         Effect := TEffect.Create;
-        if LowerCase( strTokenAt( s, '|', 1 ) ) = 'true' then
+        if LowerCase( S.PipeToken( 1 ) ) = 'true' then
           Effect.DisableWhenDone := true;
 
-        Effect.Resource := GetSpellEffect( strTokenAt( s, '|', 0 ) );
+        Effect.Resource := GetSpellEffect( S.PipeToken( 0 ) );
         Effect.AnimationDuration := Effect.Resource.FrameCount * Effect.Resource.FrameMultiplier;
         Effect.DoAction( 'Default', Character.FacingString );
         Character.AddEffect( Effect );

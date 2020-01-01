@@ -1049,7 +1049,7 @@ begin
       UseDefaultPants := @ElfDefaultPants
     else
       UseDefaultPants := nil;
-    Female := Pos( 'female', lowercase( NakedName ) ) > 0;
+    Female := lowercase( NakedName ).IndexOf( 'female' ) > 0;
 
     HeadName := AnsiString( INI.ReadString( 'Layers', 'head', '' ) );
     if HeadName <> '' then

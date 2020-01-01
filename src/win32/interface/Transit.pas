@@ -347,7 +347,7 @@ begin
     for i := 0 to MapsAvailable.count - 1 do
     begin
       S1 := lowercase( MapsAvailable.strings[ i ] );
-      j := Pos( S, S1 );
+      j := S1.IndexOf( S );
       if ( j = 1 ) or ( j = 2 ) then
       begin
         result := i;

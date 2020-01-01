@@ -337,7 +337,6 @@ implementation
 uses
   SoAOS.Graphics.Draw,
   SoAOS.Graphics.Types,
-  strFunctions,
   DFX,
   Parts,
   Sound,
@@ -5608,7 +5607,7 @@ var
   S, LayeredImage : string;
   i : Integer;
   INI : TIniFile;
-  List : TStringList;
+  List : TArray<string>; //TStringList;
   PlayerResource : string;
 const
   FailName : string = 'Main.WMStartNew';
@@ -5623,8 +5622,7 @@ const
       sTemp := Trim( UpperCase( ParamStr( i ) ) );
       if ( Pos( 'STARTFILE=', sTemp ) > 0 ) then
       begin
-        strToken( sTemp, '=' ); // crop off the prefix part
-        Trim( sTemp );
+        sTemp := sTemp.Split(['='])[1].Trim;
         if Length( sTemp ) < 1 then
           Break;
         LVLFile := sTemp;
@@ -5674,6 +5672,7 @@ begin
       if LVLFile = '' then
         LVLFile := INI.ReadString( 'Settings', 'TestFile', '' );
       // *** jrs Add commandline override for StartFile setting. Mostly for testing, but might have other uses
+//Use      FindCmdLineSwitch('startFile', LVLFile);
       GetCommandLineLVLFile;
 
       if not System.IOUtils.TPath.IsPathRooted( LVLFile ) then
@@ -5691,16 +5690,9 @@ begin
       S := INI.ReadString( 'Settings', 'JournalIntro', '' );
       if S <> '' then
       begin
-        List := TStringList.Create;
-        try
-          strTokenToStrings( S, ',', List );
-          for i := 0 to List.Count - 1 do
-          begin
-            AdventureLog1.AddLogEntry( List.Strings[ i ] + '.jrn' );
-          end;
-        finally
-          List.Free;
-        end;
+        List := S.Split([',']);
+        for i := 0 to Length(List) - 1 do
+          AdventureLog1.AddLogEntry( List[ i ] + '.jrn' );
       end;
     finally
       INI.Free;
@@ -6190,7 +6182,7 @@ var
   DlgOpenAnim : TOpenAnim;
   INI : TIniFile;
   S : string;
-  List : TStringList;
+  List : TArray<string>;
   i : Integer;
   LocalShowHistory : Boolean;
 const
@@ -6233,16 +6225,9 @@ begin
         end
         else
         begin
-          List := TStringList.Create;
-          try
-            strTokenToStrings( S, ',', List );
-            for i := 0 to List.Count - 1 do
-            begin
-              AdventureLog1.AddLogEntry( List.Strings[ i ] + '.jrn' );
-            end;
-          finally
-            List.Free;
-          end;
+          List := S.Split([',']);
+          for i := 0 to Length(List) - 1 do
+            AdventureLog1.AddLogEntry( List[ i ] + '.jrn' );
           DlgJournal.StartLogIndex := -1;
           DlgJournal.pText := DlgText;
           DlgJournal.OnClose := CloseIntroJournal;
@@ -7734,7 +7719,7 @@ procedure TfrmMain.ShowEnding;
 var
   INI : TIniFile;
   S : string;
-  List : TStringList;
+  List : TArray<string>;
   i : Integer;
 begin
   AdventureLog1.Clear;
@@ -7747,16 +7732,9 @@ begin
     end
     else
     begin
-      List := TStringList.Create;
-      try
-        strTokenToStrings( S, ',', List );
-        for i := 0 to List.Count - 1 do
-        begin
-          AdventureLog1.AddLogEntry( List.Strings[ i ] + '.jrn' );
-        end;
-      finally
-        List.Free;
-      end;
+      List := S.Split([',']);
+      for i := 0 to Length(List) - 1 do
+        AdventureLog1.AddLogEntry( List[ i ] + '.jrn' );
       DlgJournal.StartLogIndex := -1;
       DlgJournal.pText := DlgText;
       DlgJournal.OnClose := CloseIntroJournal;
@@ -7832,7 +7810,7 @@ var
   Ini : TIniFile;
   s : string;
   i : Integer;
-  List : TStringList;
+  List : TArray<string>;
 begin
   INI := TIniFile.Create( DefaultPath + 'siege.ini' );
 
@@ -7849,16 +7827,9 @@ begin
     end
     else
     begin
-      List := TStringList.Create;
-      try
-        strTokenToStrings( S, ',', List );
-        for i := 0 to List.Count - 1 do
-        begin
-          HistoryLog.AddLogEntry( List.Strings[ i ] + '.jrn' );
-        end;
-      finally
-        List.Free;
-      end;
+      List := S.Split([',']);
+      for i := 0 to Length(List) - 1 do
+        HistoryLog.AddLogEntry( List[ i ] + '.jrn' );
       DlgJournal.StartLogIndex := -1;
       DlgJournal.pText := DlgText;
       DlgJournal.OnClose := CloseIntroJournal;

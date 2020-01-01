@@ -69,8 +69,8 @@ uses
   Character,
   Display,
   Anigrp30,
-  System.IniFiles;
-
+  System.IniFiles,
+  SoAOS.StrUtils;
 
 type
   TTextRect = class( TObject )
@@ -129,6 +129,14 @@ function CheckObjectOne( sTmp : string ) : boolean;
 function CheckWornOne( sTmp : string ) : boolean;
 function CheckPartyOne( sTmp : string ) : boolean;
 
+function checkStat(s: TTokenString; statStr: string; curPropVal: Integer) : boolean; overload;
+function checkStat(s: TTokenString; statStr: string; curPropVal: Single) : boolean; overload;
+function checkStat(s: TTokenString; statStr: string; curPropVal: Double) : boolean; overload;
+
+function checkStat1(s: TTokenString; statStr: string; curPropVal: Integer) : boolean; overload;
+function checkStat1(s: TTokenString; statStr: string; curPropVal: Single) : boolean; overload;
+function checkStat1(s: TTokenString; statStr: string; curPropVal: Double) : boolean; overload;
+
 implementation
 
 uses
@@ -139,7 +147,6 @@ uses
   SoAOS.Graphics.Draw,
   Engine,
   LogFile,
-  strFunctions,
   AniDemo,
   Resource;
 
@@ -232,7 +239,7 @@ end;
 procedure TConverseBox.MouseDown( Sender : TAniView; Button : TMouseButton;
   Shift : TShiftState; X, Y, GridX, GridY : Integer );
 var
-  strResponse : string;
+  strResponse : TTokenString;
 const
   FailName : string = 'TConverseBox.MouseDown';
 begin
@@ -252,18 +259,18 @@ begin
         begin
           strResponse := slResponse.Strings[ HLText ];
 
-          if ( StrTokenAt( strResponse, '|', 2 ) = '' ) and ( StrTokenAt( strResponse, '|', 1 ) = '' ) then
+          if ( strResponse.PipeToken( 2 ) = '' ) and ( strResponse.PipeToken( 1 ) = '' ) then
           begin
             Close;
             exit;
           end;
 
-          if StrTokenAt( strResponse, '|', 2 ) <> '' then
-            RunScript( ObjectRef, StrTokenAt( strResponse, '|', 2 ) );
+          if ( strResponse.PipeToken( 2 ) <> '' ) then
+            RunScript( ObjectRef, strResponse.PipeToken( 2 ) );
 
-          if StrTokenAt( strResponse, '|', 1 ) <> '' then
+          if ( strResponse.PipeToken( 1 ) <> '') then
           begin
-            Section := StrTokenAt( strResponse, '|', 1 );
+            Section := strResponse.PipeToken( 1 );
             LoadConversation;
             Paint;
           end
@@ -330,7 +337,8 @@ procedure TConverseBox.LoadConversation;
 var
   NewText : TTextRect;
   strCrntHeading : string;
-  tmpStr, strTmp, S : string;
+  tmpStr: TTokenString;
+  strTmp, S : string;
   strAll, StrOne : string;
   bAllStat, bAllParty, bAllTitle, bAllObj, bAllWrn, bAllChp : boolean;
   bOneStat, bOneParty, bOneTitle, bOneObj, bOneWrn, bOneChp : boolean;
@@ -340,8 +348,6 @@ var
   sorry : string;
   training : string;
   hail : string;
-
-
 const
   FailName : string = 'TConverseBox.LoadConversation';
 begin
@@ -367,7 +373,7 @@ begin
     begin
       Section := Ini.ReadString( 'root', 'Else', '' );
 
-      if LowerCase( ini.ReadString( 'root', 'random', 'false' ) ) = 'true' then
+      if AnsiSameText(ini.ReadString( 'root', 'random', 'false' ), 'true') then
         Section := Ini.ReadString( 'root', 'goto' + IntToStr( Random( Ini.ReadInteger( 'root', 'count', 0 ) ) + 1 ), '' )
       else
           //get the section
@@ -393,15 +399,15 @@ begin
           StrAll := '';
           StrOne := '';
 
-          tmpstr := Ini.ReadString( 'root', 'say' + IntToStr( iLoop ), '' );
+          tmpStr := Ini.ReadString( 'root', 'say' + IntToStr( iLoop ), '' );
 
-          if LowerCase( strLeft( tmpstr, 3 ) ) = 'all' then
+          if string(tmpStr).StartsWith('all', True) then
           begin
-            strAll := StrTokenAt( tmpStr, ';', 0 );
-            strOne := StrTokenAt( tmpStr, ';', 1 );
+            strAll := tmpStr.SemiToken( 0 );
+            strOne := tmpStr.SemiToken( 1 );
           end
-          else if LowerCase( strLeft( tmpstr, 3 ) ) = 'one' then
-            strOne := StrTokenAt( tmpStr, ';', 0 );
+          else if string(tmpStr).StartsWith('one', True) then
+            strOne := tmpStr.SemiToken( 0 );
 
 
           if StrAll <> '' then
@@ -425,8 +431,6 @@ begin
 
             if not ( bOneTitle ) and not ( bOneWrn ) and not ( bOneStat ) and not ( bOneObj ) and not ( bOneChp ) and not ( bOneParty ) then
               bOne := false;
-
-
           end;
 
           if bAllTitle and bAllParty and bAllStat and bAllObj and bAllWrn and bAllChp and bOne then
@@ -442,7 +446,7 @@ begin
       strCrntHeading := Section;
          //Say Text
       if ( Tcharacter( ObjectRef ) <> current ) and ( Tcharacter( ObjectRef ).properties[ 'charactername' ] <> '' ) then
-        Caption := Tcharacter( ObjectRef ).properties[ 'charactername' ] + ':  ' + Ini.ReadString( strCrntHeading, 'Say', '' )
+        Caption := TCharacter( ObjectRef ).properties[ 'charactername' ] + ':  ' + Ini.ReadString( strCrntHeading, 'Say', '' )
       else
         Caption := Ini.ReadString( strCrntHeading, 'Say', '' );
 
@@ -454,7 +458,7 @@ begin
       end;
     end
     else
-      Caption := Tcharacter( ObjectRef ).properties[ 'charactername' ] + ':  ' + hail;
+      Caption := TCharacter( ObjectRef ).properties[ 'charactername' ] + ':  ' + hail;
 
 
     caption := StringReplace( caption, '%playername%', player.name, [ rfReplaceAll, rfIgnoreCase ] );
@@ -465,12 +469,12 @@ begin
 
     if Ini.ReadString( strCrntHeading, 'special', '' ) <> '' then
     begin
-      strTmp := StrTokenAt( Ini.ReadString( strCrntHeading, 'special', '' ), '|', 0 );
+      strTmp := TTokenString(Ini.ReadString( strCrntHeading, 'special', '' )).PipeToken( 0 );
       for jLoop := 0 to NPCList.count - 1 do
       begin
         if TCharacter( NPCList.Items[ jLoop ] ).Guid = strTmp then
         begin
-          RunScript( TCharacter( NPCList.Items[ jLoop ] ), StrTokenAt( Ini.ReadString( strCrntHeading, 'special', '' ), '|', 1 ) );
+          RunScript( TCharacter( NPCList.Items[ jLoop ] ), TTokenString(Ini.ReadString( strCrntHeading, 'special', '' )).PipeToken( 1 ));
         end;
       end;
 
@@ -479,28 +483,28 @@ begin
 
     if Ini.ReadString( strCrntHeading, 'addquest', '' ) <> '' then
     begin
-      for iLoop := 0 to StrTokenCount( Ini.ReadString( strCrntHeading, 'addquest', '' ), ';' ) - 1 do
-        RunScript( ObjectRef, 'addquest(' + strTokenAt( Ini.ReadString( strCrntHeading, 'addquest', '' ), ';', iLoop ) + ')' );
+      for iLoop := 0 to TTokenString(Ini.ReadString( strCrntHeading, 'addquest', '' )).TokenCount(';') - 1 do
+        RunScript( ObjectRef, 'addquest(' + TTokenString(Ini.ReadString( strCrntHeading, 'addquest', '' )).SemiToken( iLoop ) + ')' );
         //RunScript(ObjectRef, '#showmessage.quest#');
     end;
     if Ini.ReadString( strCrntHeading, 'quest', '' ) <> '' then
     begin
-      for iLoop := 0 to StrTokenCount( Ini.ReadString( strCrntHeading, 'quest', '' ), ';' ) - 1 do
-        RunScript( ObjectRef, 'addquest(' + strTokenAt( Ini.ReadString( strCrntHeading, 'quest', '' ), ';', iLoop ) + ')' );
+      for iLoop := 0 to TTokenString(Ini.ReadString( strCrntHeading, 'quest', '' )).TokenCount(';') - 1 do
+        RunScript( ObjectRef, 'addquest(' + TTokenString(Ini.ReadString( strCrntHeading, 'quest', '' )).SemiToken( iLoop ) + ')' );
         //RunScript(ObjectRef, '#showmessage.quest#');
     end;
 
     if Ini.ReadString( strCrntHeading, 'adventure', '' ) <> '' then
     begin
-      for iLoop := 0 to StrTokenCount( Ini.ReadString( strCrntHeading, 'adventure', '' ), ';' ) - 1 do
-        RunScript( ObjectRef, 'Adventure(' + strTokenAt( Ini.ReadString( strCrntHeading, 'Adventure', '' ), ';', iLoop ) + ')' );
+      for iLoop := 0 to TTokenString(Ini.ReadString( strCrntHeading, 'adventure', '' )).TokenCount(';') - 1 do
+        RunScript( ObjectRef, 'Adventure(' + TTokenString(Ini.ReadString( strCrntHeading, 'Adventure', '' )).SemiToken( iLoop ) + ')' );
         //RunScript(ObjectRef, '#Showmessage.adventure#');
     end;
 
 
     if Ini.ReadString( strCrntHeading, 'removequest', '' ) <> '' then
-      for iLoop := 0 to StrTokenCount( Ini.ReadString( strCrntHeading, 'removequest', '' ), ';' ) - 1 do
-        RunScript( ObjectRef, 'removequest(' + strTokenAt( Ini.ReadString( strCrntHeading, 'removequest', '' ), ';', iLoop ) + ')' );
+      for iLoop := 0 to TTokenString(Ini.ReadString( strCrntHeading, 'removequest', '' )).TokenCount(';') - 1 do
+        RunScript( ObjectRef, 'removequest(' + TTokenString(Ini.ReadString( strCrntHeading, 'removequest', '' )).SemiToken( iLoop ) + ')' );
 
 
     for iLoop := 0 to Responses.count - 1 do
@@ -537,13 +541,13 @@ begin
       StrAll := '';
       StrOne := '';
       tmpstr := Ini.ReadString( strCrntHeading, 'RspCnd' + IntToStr( iLoop ), '' );
-      if LowerCase( strLeft( tmpstr, 3 ) ) = 'all' then
+      if string(tmpstr).StartsWith('all', True) then
       begin
-        strAll := StrTokenAt( tmpStr, ';', 0 );
-        strOne := StrTokenAt( tmpStr, ';', 1 );
+        strAll := tmpStr.SemiToken( 0 );
+        strOne := tmpStr.SemiToken( 1 );
       end
-      else if LowerCase( strLeft( tmpstr, 3 ) ) = 'one' then
-        strOne := StrTokenAt( tmpStr, ';', 0 );
+      else if string(tmpstr).StartsWith('one', True) then
+        strOne := tmpStr.SemiToken( 0 );
 
       if StrAll <> '' then
       begin
@@ -729,15 +733,13 @@ begin
     if sTmp = '' then
       exit;
 
-    Delete( sTmp, 1, 4 );
-    strStriplast( sTmp );
+    sTmp := sTmp.Substring(4, sTmp.Length-5);
     for iLoop := 0 to 2 do
     begin
-      if LowerCase( strLeft( StrTokenAt( sTmp, ':', iLoop ), 3 ) ) = 'stt' then
+      if TTokenString(sTmp).ColonToken( iLoop ).StartsWith('stt', True) then
       begin //List of Stats
-        Result := StrTokenAt( sTmp, ':', iLoop );
-        Delete( Result, 1, 4 );
-        strStriplast( Result );
+        Result := TTokenString(sTmp).ColonToken( iLoop );
+        Result := Result.Substring(4, Result.Length-5);
       end;
     end;
   except
@@ -758,15 +760,13 @@ begin
     if sTmp = '' then
       exit;
 
-    Delete( sTmp, 1, 4 );
-    strStriplast( sTmp );
+    sTmp := sTmp.Substring(4, sTmp.Length-5);
     for iLoop := 0 to 2 do
     begin
-      if LowerCase( strLeft( StrTokenAt( sTmp, ':', iLoop ), 3 ) ) = 'ttl' then
+      if TTokenString(sTmp).ColonToken( iLoop ).StartsWith('ttl', True) then
       begin //List of titles
-        Result := StrTokenAt( sTmp, ':', iLoop );
-        Delete( Result, 1, 4 );
-        strStriplast( Result );
+        Result := TTokenString(sTmp).ColonToken( iLoop );
+        Result := Result.Substring(4, Result.Length-5);
       end;
     end;
 
@@ -788,15 +788,13 @@ begin
     if sTmp = '' then
       exit;
 
-    Delete( sTmp, 1, 4 );
-    strStriplast( sTmp );
+    sTmp := sTmp.Substring(4, sTmp.Length-5);
     for iLoop := 0 to 2 do
     begin
-      if LowerCase( strLeft( StrTokenAt( sTmp, ':', iLoop ), 3 ) ) = 'chp' then
+      if TTokenString(sTmp).ColonToken( iLoop ).StartsWith('chp', True) then
       begin //List of titles
-        Result := StrTokenAt( sTmp, ':', iLoop );
-        Delete( Result, 1, 4 );
-        strStriplast( Result );
+        Result := TTokenString(sTmp).ColonToken( iLoop );
+        Result := Result.Substring(4, Result.Length-5);
       end;
     end;
 
@@ -818,16 +816,13 @@ begin
     if sTmp = '' then
       exit;
 
-    Delete( sTmp, 1, 4 );
-    strStriplast( sTmp );
-
+    sTmp := sTmp.Substring(4, sTmp.Length-5);
     for iLoop := 0 to 2 do
     begin
-      if LowerCase( strLeft( StrTokenAt( sTmp, ':', iLoop ), 3 ) ) = 'obj' then
+      if TTokenString(sTmp).ColonToken( iLoop ).StartsWith('obj', True) then
       begin //List of objects
-        Result := StrTokenAt( sTmp, ':', iLoop );
-        Delete( Result, 1, 4 );
-        strStriplast( Result );
+        Result := TTokenString(sTmp).ColonToken( iLoop );
+        Result := Result.Substring(4, Result.Length-5);
       end;
     end;
   except
@@ -848,16 +843,13 @@ begin
     if sTmp = '' then
       exit;
 
-    Delete( sTmp, 1, 4 );
-    strStriplast( sTmp );
-
+    sTmp := sTmp.Substring(4, sTmp.Length-5);
     for iLoop := 0 to 2 do
     begin
-      if LowerCase( strLeft( StrTokenAt( sTmp, ':', iLoop ), 3 ) ) = 'wrn' then
+      if TTokenString(sTmp).ColonToken( iLoop ).StartsWith('wrn', True) then
       begin //List of objects
-        Result := StrTokenAt( sTmp, ':', iLoop );
-        Delete( Result, 1, 4 );
-        strStriplast( Result );
+        Result := TTokenString(sTmp).ColonToken( iLoop );
+        Result := Result.Substring(4, Result.Length-5);
       end;
     end;
   except
@@ -878,16 +870,13 @@ begin
     if sTmp = '' then
       exit;
 
-    Delete( sTmp, 1, 4 );
-    strStriplast( sTmp );
-
+    sTmp := sTmp.Substring(4, sTmp.Length-5);
     for iLoop := 0 to 2 do
     begin
-      if LowerCase( strLeft( StrTokenAt( sTmp, ':', iLoop ), 3 ) ) = 'pty' then
+      if TTokenString(sTmp).ColonToken( iLoop ).StartsWith('pty', True) then
       begin //List of objects
-        Result := StrTokenAt( sTmp, ':', iLoop );
-        Delete( Result, 1, 4 );
-        strStriplast( Result );
+        Result := TTokenString(sTmp).ColonToken( iLoop );
+        Result := Result.Substring(4, Result.Length-5);
       end;
     end;
   except
@@ -913,10 +902,10 @@ begin
   try
     if sTmp = '' then
       exit;
-    for iLoop := 0 to StrTokenCount( sTmp, ',' ) - 1 do
+    for iLoop := 0 to TTokenString(sTmp).TokenCount(',') - 1 do
     begin
-      strTmp := trim( StrTokenAt( sTmp, ',', iLoop ) );
-      if strLeft( strTmp, 1 ) <> '!' then
+      strTmp := TTokenString(sTmp).CommaToken( iLoop ).Trim;
+      if strTmp[1] <> '!' then
       begin
         b1 := false;
         for jLoop := 0 to NPCList.count - 1 do
@@ -929,11 +918,10 @@ begin
       end
       else
       begin
-        strStripFirst( strTmp ); //get rid of the '!'
         b2 := false;
         for jLoop := 0 to NPCList.count - 1 do
         begin
-          if TCharacter( NPCList.Items[ jLoop ] ).Guid = strTmp then
+          if TCharacter( NPCList.Items[ jLoop ] ).Guid = strTmp.Remove(0, 1) then //get rid of the '!'
             b2 := true;
         end;
         if b2 then
@@ -963,18 +951,18 @@ begin
     if sTmp = '' then
       exit;
 
-    for iLoop := 0 to StrTokenCount( sTmp, ',' ) - 1 do
+    for iLoop := 0 to TTokenString(sTmp).TokenCount(',') - 1 do
     begin
-      strTmp := trim( StrTokenAt( sTmp, ',', iLoop ) );
-      if strLeft( strTmp, 1 ) <> '!' then
+      strTmp := TTokenString(sTmp).CommaToken( iLoop ).Trim;
+      if strTmp[1] <> '!' then
       begin
-        if not ( Player.TitleExists( LowerCase( strTmp ) ) ) and not ( Tcharacter( ObjRef ).TitleExists( LowerCase( strTmp ) ) ) then //player does not have it but should
+        if not ( Player.TitleExists( strTmp ) ) and not ( TCharacter( ObjRef ).TitleExists( strTmp ) ) then //player does not have it but should
           Result := false;
       end
       else //Make sure player doesnt have title
       begin
-        strStripFirst( strTmp ); //get rid of the '!'
-        if ( Player.TitleExists( LowerCase( strTmp ) ) ) or ( Tcharacter( ObjRef ).TitleExists( LowerCase( strTmp ) ) ) then //player does have it but shouldnt
+        strTmp := strTmp.Remove(0, 1); //get rid of the '!'
+        if ( Player.TitleExists( strTmp ) ) or ( TCharacter( ObjRef ).TitleExists( strTmp ) ) then //player does have it but shouldnt
           Result := false;
       end;
     end;
@@ -998,18 +986,17 @@ begin
     if sTmp = '' then
       exit;
 
-    for iLoop := 0 to StrTokenCount( sTmp, ',' ) - 1 do
+    for iLoop := 0 to TTokenString(sTmp).TokenCount(',') - 1 do
     begin
-      strTmp := trim( StrTokenAt( sTmp, ',', iLoop ) );
-      if strLeft( strTmp, 1 ) <> '!' then
+      strTmp := TTokenString(sTmp).CommaToken( iLoop ).Trim;
+      if strTmp[1] <> '!' then
       begin
-        if ( int64( 1 shl ( strtoint( strTmp ) - 1 ) ) and Chapters ) = 0 then
+        if ( int64( 1 shl ( strTmp.ToInteger - 1 ) ) and Chapters ) = 0 then
           Result := false;
       end
       else //Make sure player doesnt have title
       begin
-        strStripFirst( strTmp ); //get rid of the '!'
-        if ( int64( 1 shl ( strtoint( strTmp ) - 1 ) ) and Chapters ) <> 0 then
+        if ( int64( 1 shl ( strTmp.Remove(0, 1).ToInteger - 1 ) ) and Chapters ) <> 0 then
           Result := false;
       end;
     end;
@@ -1026,7 +1013,7 @@ var
 const
   FailName : string = 'Converse.CheckStatAll';
 begin
-  Result := true;
+  Result := True;
 
   Log.DebugLog( FailName );
   try
@@ -1034,168 +1021,22 @@ begin
       exit;
     for iLoop := 0 to 1 do
     begin
-      strTmp := trim( strTokenAt( sTmp, ',', iLoop ) );
+      strTmp := TTokenString(sTmp).CommaToken( iLoop ).Trim;
       if strTmp = '' then
         break;
       try
-        if Pos( '>', strTmp ) <> 0 then
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '>', 0 ) ) = 'charm' then
-            if Current.Charm < StrToInt( StrTokenAt( strTmp, '>', 1 ) ) + 1 then
-              Result := false;
-        end
-        else
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '<', 0 ) ) = 'charm' then
-            if Current.Charm > StrToInt( StrTokenAt( strTmp, '<', 1 ) ) - 1 then
-              Result := false;
-        end;
-
-        if Pos( '>', strTmp ) <> 0 then
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '>', 0 ) ) = 'combat' then
-            if Current.Combat < StrToInt( StrTokenAt( strTmp, '>', 1 ) ) + 1 then
-              Result := false;
-        end
-        else
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '<', 0 ) ) = 'combat' then
-            if Current.Combat > StrToInt( StrTokenAt( strTmp, '<', 1 ) ) - 1 then
-              Result := false;
-        end;
-
-        if Pos( '>', strTmp ) <> 0 then
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '>', 0 ) ) = 'constitution' then
-            if Current.Constitution < StrToInt( StrTokenAt( strTmp, '>', 1 ) ) + 1 then
-              Result := false;
-        end
-        else
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '<', 0 ) ) = 'constitution' then
-            if Current.Constitution > StrToInt( StrTokenAt( strTmp, '<', 1 ) ) - 1 then
-              Result := false;
-        end;
-
-        if Pos( '>', strTmp ) <> 0 then
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '>', 0 ) ) = 'coordination' then
-            if Current.coordination < StrToInt( StrTokenAt( strTmp, '>', 1 ) ) + 1 then
-              Result := false;
-        end
-        else
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '<', 0 ) ) = 'coordination' then
-            if Current.Coordination > StrToInt( StrTokenAt( strTmp, '<', 1 ) ) - 1 then
-              Result := false;
-        end;
-
-        if Pos( '>', strTmp ) <> 0 then
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '>', 0 ) ) = 'hitpoints' then
-            if Current.Hitpoints < StrToInt( StrTokenAt( strTmp, '>', 1 ) ) + 1 then
-              Result := false;
-        end
-        else
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '<', 0 ) ) = 'hitpoints' then
-            if Current.Hitpoints > StrToInt( StrTokenAt( strTmp, '<', 1 ) ) - 1 then
-              Result := false;
-        end;
-
-        if Pos( '>', strTmp ) <> 0 then
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '>', 0 ) ) = 'mana' then
-            if Current.Mana < StrToInt( StrTokenAt( strTmp, '>', 1 ) ) + 1 then
-              Result := false;
-        end
-        else
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '<', 0 ) ) = 'mana' then
-            if Current.Mana > StrToInt( StrTokenAt( strTmp, '<', 1 ) ) - 1 then
-              Result := false;
-        end;
-
-        if Pos( '>', strTmp ) <> 0 then
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '>', 0 ) ) = 'mysticism' then
-            if Current.mysticism < StrToInt( StrTokenAt( strTmp, '>', 1 ) ) + 1 then
-              Result := false;
-        end
-        else
-        begin
-
-          if lowerCase( StrTokenAt( StrTmp, '<', 0 ) ) = 'mysticism' then
-            if Current.mysticism > StrToInt( StrTokenAt( strTmp, '<', 1 ) ) - 1 then
-              Result := false;
-        end;
-
-        if Pos( '>', strTmp ) <> 0 then
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '>', 0 ) ) = 'perception' then
-            if Current.perception < StrToInt( StrTokenAt( strTmp, '>', 1 ) ) + 1 then
-              Result := false;
-        end
-        else
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '<', 0 ) ) = 'perception' then
-            if Current.perception > StrToInt( StrTokenAt( strTmp, '<', 1 ) ) - 1 then
-              Result := false;
-        end;
-
-
-        if Pos( '>', strTmp ) <> 0 then
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '>', 0 ) ) = 'stealth' then
-            if Current.stealth < StrToInt( StrTokenAt( strTmp, '>', 1 ) ) + 1 then
-              Result := false;
-        end
-        else
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '<', 0 ) ) = 'stealth' then
-            if Current.stealth > StrToInt( StrTokenAt( strTmp, '<', 1 ) ) - 1 then
-              Result := false;
-        end;
-
-        if Pos( '>', strTmp ) <> 0 then
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '>', 0 ) ) = 'strenght' then
-            if Current.strength < StrToInt( StrTokenAt( strTmp, '>', 1 ) ) + 1 then
-              Result := false;
-        end
-        else
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '<', 0 ) ) = 'strenght' then
-            if Current.strength > StrToInt( StrTokenAt( strTmp, '<', 1 ) ) - 1 then
-              Result := false;
-        end;
-
-        if Pos( '>', strTmp ) <> 0 then
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '>', 0 ) ) = 'wounds' then
-            if Current.wounds < StrToInt( StrTokenAt( strTmp, '>', 1 ) ) + 1 then
-              Result := false;
-        end
-        else
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '<', 0 ) ) = 'wounds' then
-            if Current.wounds > StrToInt( StrTokenAt( strTmp, '<', 1 ) ) - 1 then
-              Result := false;
-        end;
-
-        if Pos( '>', strTmp ) <> 0 then
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '>', 0 ) ) = 'trainingpoints' then
-            if Current.TrainingPoints < StrToInt( StrTokenAt( strTmp, '>', 1 ) ) + 1 then
-              Result := false;
-        end
-        else
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '<', 0 ) ) = 'trainingpoints' then
-            if Current.TrainingPoints > StrToInt( StrTokenAt( strTmp, '<', 1 ) ) - 1 then
-              Result := false;
-        end;
-
+        if not checkStat(TTokenString(strTmp), 'charm', Current.Charm) then Exit(False);
+        if not checkStat(TTokenString(strTmp), 'combat', Current.Combat) then Exit(False);
+        if not checkStat(TTokenString(strTmp), 'constitution', Current.Constitution) then Exit(False);
+        if not checkStat(TTokenString(strTmp), 'coordination', Current.coordination) then Exit(False);
+        if not checkStat(TTokenString(strTmp), 'hitpoints', Current.Hitpoints) then Exit(False);
+        if not checkStat(TTokenString(strTmp), 'mana', Current.Mana) then Exit(False);
+        if not checkStat(TTokenString(strTmp), 'mysticism', Current.mysticism) then Exit(False);
+        if not checkStat(TTokenString(strTmp), 'perception', Current.perception) then Exit(False);
+        if not checkStat(TTokenString(strTmp), 'stealth', Current.stealth) then Exit(False);
+        if not checkStat(TTokenString(strTmp), 'strenght', Current.strength) then Exit(False);
+        if not checkStat(TTokenString(strTmp), 'wounds', Current.wounds) then Exit(False);
+        if not checkStat(TTokenString(strTmp), 'trainingpoints', Current.TrainingPoints) then Exit(False);
       except
       end;
     end;
@@ -1219,18 +1060,17 @@ begin
     if sTmp = '' then
       exit;
 
-    for iLoop := 0 to strTokenCount( sTmp, ',' ) - 1 do
+    for iLoop := 0 to TTokenString(sTmp).TokenCount(',') - 1 do
     begin
-      strTmp := trim( StrTokenAt( sTmp, ',', iLoop ) );
-      if strLeft( StrTmp, 1 ) <> '!' then
+      strTmp := TTokenString(sTmp).CommaToken( iLoop ).Trim;
+      if StrTmp[1] <> '!' then
       begin
-        if not ( Player.InInventory( LowerCase( StrTmp ) ) ) then //player does not have it but should
+        if not ( Player.InInventory( StrTmp ) ) then //player does not have it but should
           Result := false;
       end
       else //Make sure player doesnt have title
       begin
-        strStripFirst( StrTmp ); //get rid of the '!'
-        if Player.InInventory( LowerCase( StrTmp ) ) then //player does have it but shouldnt
+        if Player.InInventory( strTmp.Remove(0, 1) ) then //player does have it but shouldnt //get rid of the '!'
           Result := false;
       end;
     end;
@@ -1255,18 +1095,17 @@ begin
     if sTmp = '' then
       exit;
 
-    for iLoop := 0 to strTokenCount( sTmp, ',' ) - 1 do
+    for iLoop := 0 to TTokenString(sTmp).TokenCount(',') - 1 do
     begin
-      strTmp := trim( StrTokenAt( sTmp, ',', iLoop ) );
-      if strLeft( StrTmp, 1 ) <> '!' then
+      strTmp := TTokenString(sTmp).CommaToken( iLoop ).Trim;
+      if StrTmp[1] <> '!' then
       begin
-        if not ( Player.IsWorn( LowerCase( StrTmp ) ) ) then //player does not have it but should
+        if not ( Player.IsWorn( StrTmp ) ) then //player does not have it but should
           Result := false;
       end
       else //Make sure player doesnt have title
       begin
-        strStripFirst( StrTmp ); //get rid of the '!'
-        if Player.IsWorn( LowerCase( StrTmp ) ) then //player does have it but shouldnt
+        if Player.IsWorn( strTmp.Remove(0, 1) ) then //player does have it but shouldnt //get rid of the '!'
           Result := false;
       end;
     end;
@@ -1296,10 +1135,10 @@ begin
   try
     if sTmp = '' then
       exit;
-    for iLoop := 0 to StrTokenCount( sTmp, ',' ) - 1 do
+    for iLoop := 0 to TTokenString(sTmp).TokenCount(',') - 1 do
     begin
-      strTmp := trim( StrTokenAt( sTmp, ',', iLoop ) );
-      if strLeft( strTmp, 1 ) <> '!' then
+      strTmp := TTokenString(sTmp).CommaToken( iLoop ).Trim;
+      if strTmp[1] <> '!' then
       begin
         b1 := false;
         for jLoop := 0 to NPCList.count - 1 do
@@ -1315,7 +1154,7 @@ begin
       end
       else
       begin
-        strStripFirst( strTmp ); //get rid of the '!'
+        strTmp := strTmp.Remove(0, 1); //get rid of the '!'
         b2 := false;
         for jLoop := 0 to NPCList.count - 1 do
         begin
@@ -1353,17 +1192,17 @@ begin
     if sTmp = '' then
       exit;
 
-    for iLoop := 0 to StrTokenCount( sTmp, ',' ) - 1 do
+    for iLoop := 0 to TTokenString(sTmp).TokenCount(',') - 1 do
     begin
-      strTmp := trim( StrTokenAt( sTmp, ',', iLoop ) );
-      if strLeft( strTmp, 1 ) <> '!' then
+      strTmp := TTokenString(sTmp).CommaToken( iLoop ).Trim;
+      if strTmp[1] <> '!' then
       begin
         if ( Player.TitleExists( strTmp ) ) or ( TCharacter( ObjRef ).TitleExists( strTmp ) ) then //player has it and should
           Result := true;
       end
       else //Make sure player doesnt have title
       begin
-        strStripFirst( strTmp ); //get rid of the '!'
+        strTmp := strTmp.Remove(0, 1); //get rid of the '!'
         if not ( Player.TitleExists( strTmp ) ) and not ( TCharacter( ObjRef ).TitleExists( strTmp ) ) then //player does have it and shouldnt
           Result := true;
       end;
@@ -1392,18 +1231,17 @@ begin
     Result := false;
 
     bTmp := false;
-    for iLoop := 0 to StrTokenCount( sTmp, ',' ) - 1 do
+    for iLoop := 0 to TTokenString(sTmp).TokenCount(',') - 1 do
     begin
-      strTmp := trim( StrTokenAt( sTmp, ',', iLoop ) );
-      if strLeft( strTmp, 1 ) <> '!' then
+      strTmp := TTokenString(sTmp).CommaToken( iLoop ).Trim;
+      if strTmp[1] <> '!' then
       begin
         if ( int64( 1 shl ( strtoint( strTmp ) - 1 ) ) and Chapters ) <> 0 then
           bTmp := true;
       end
       else //Make sure the chapter doesnt exist
       begin
-        strStripFirst( strTmp ); //get rid of the '!'
-        if ( int64( 1 shl ( strtoint( strTmp ) - 1 ) ) and Chapters ) = 0 then
+        if ( int64( 1 shl ( strTmp.Remove(0, 1).ToInteger - 1 ) ) and Chapters ) = 0 then //get rid of the '!'
           bTmp := true;
       end;
       if bTmp then
@@ -1434,140 +1272,20 @@ begin
     bTmp := false;
     for iLoop := 0 to 1 do
     begin
-      strTmp := trim( strTokenAt( sTmp, ',', iLoop ) );
+      strTmp := TTokenString(sTmp).CommaToken( iLoop ).Trim;
       if strTmp = '' then
         break;
       try
-        if Pos( '>', strTmp ) <> 0 then
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '>', 0 ) ) = 'charm' then
-            if Current.Charm > StrToInt( StrTokenAt( strTmp, '>', 1 ) ) then
-              bTmp := true;
-        end
-        else
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '<', 0 ) ) = 'charm' then
-            if Current.Charm < StrToInt( StrTokenAt( strTmp, '<', 1 ) ) then
-              bTmp := true;
-        end;
-
-        if Pos( '>', strTmp ) <> 0 then
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '>', 0 ) ) = 'combat' then
-            if Current.Combat > StrToInt( StrTokenAt( strTmp, '>', 1 ) ) then
-              bTmp := true;
-        end
-        else
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '<', 0 ) ) = 'combat' then
-            if Current.Combat < StrToInt( StrTokenAt( strTmp, '<', 1 ) ) then
-              bTmp := true;
-        end;
-
-        if Pos( '>', strTmp ) <> 0 then
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '>', 0 ) ) = 'constitution' then
-            if Current.Constitution > StrToInt( StrTokenAt( strTmp, '>', 1 ) ) then
-              bTmp := true;
-        end
-        else
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '<', 0 ) ) = 'constitution' then
-            if Current.Constitution < StrToInt( StrTokenAt( strTmp, '<', 1 ) ) then
-              bTmp := true;
-        end;
-
-        if Pos( '>', strTmp ) <> 0 then
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '>', 0 ) ) = 'coordination' then
-            if Current.Coordination > StrToInt( StrTokenAt( strTmp, '>', 1 ) ) then
-              bTmp := true;
-        end
-        else
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '<', 0 ) ) = 'coordination' then
-            if Current.Coordination < StrToInt( StrTokenAt( strTmp, '<', 1 ) ) then
-              bTmp := true;
-        end;
-
-        if Pos( '>', strTmp ) <> 0 then
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '>', 0 ) ) = 'hitpoints' then
-            if Current.hitpoints > StrToInt( StrTokenAt( strTmp, '>', 1 ) ) then
-              bTmp := true;
-        end
-        else
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '<', 0 ) ) = 'hitpoints' then
-            if Current.hitpoints < StrToInt( StrTokenAt( strTmp, '<', 1 ) ) then
-              bTmp := true;
-        end;
-
-        if Pos( '>', strTmp ) <> 0 then
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '>', 0 ) ) = 'mana' then
-            if Current.mana > StrToInt( StrTokenAt( strTmp, '>', 1 ) ) then
-              bTmp := true;
-        end
-        else
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '<', 0 ) ) = 'mana' then
-            if Current.mana < StrToInt( StrTokenAt( strTmp, '<', 1 ) ) then
-              bTmp := true;
-        end;
-
-        if Pos( '>', strTmp ) <> 0 then
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '>', 0 ) ) = 'mysticism' then
-            if Current.mysticism > StrToInt( StrTokenAt( strTmp, '>', 1 ) ) then
-              bTmp := true;
-        end
-        else
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '<', 0 ) ) = 'mysticism' then
-            if Current.mysticism < StrToInt( StrTokenAt( strTmp, '<', 1 ) ) then
-              bTmp := true;
-        end;
-
-        if Pos( '>', strTmp ) <> 0 then
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '>', 0 ) ) = 'perception' then
-            if Current.perception > StrToInt( StrTokenAt( strTmp, '>', 1 ) ) then
-              bTmp := true;
-        end
-        else
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '<', 0 ) ) = 'perception' then
-            if Current.perception < StrToInt( StrTokenAt( strTmp, '<', 1 ) ) then
-              bTmp := true;
-        end;
-
-
-        if Pos( '>', strTmp ) <> 0 then
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '>', 0 ) ) = 'stealth' then
-            if Current.stealth > StrToInt( StrTokenAt( strTmp, '>', 1 ) ) then
-              bTmp := true;
-        end
-        else
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '<', 0 ) ) = 'stealth' then
-            if Current.stealth < StrToInt( StrTokenAt( strTmp, '<', 1 ) ) then
-              bTmp := true;
-        end;
-
-        if Pos( '>', strTmp ) <> 0 then
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '>', 0 ) ) = 'strenght' then
-            if Current.strength > StrToInt( StrTokenAt( strTmp, '>', 1 ) ) then
-              bTmp := true;
-        end
-        else
-        begin
-          if lowerCase( StrTokenAt( StrTmp, '<', 0 ) ) = 'strenght' then
-            if Current.strength < StrToInt( StrTokenAt( strTmp, '<', 1 ) ) then
-              bTmp := true;
-        end;
+        if checkStat1(TTokenString(strTmp), 'charm', Current.Charm) then bTmp := True;
+        if checkStat1(TTokenString(strTmp), 'combat', Current.Combat) then bTmp := True;
+        if checkStat1(TTokenString(strTmp), 'constitution', Current.Constitution) then bTmp := True;
+        if checkStat1(TTokenString(strTmp), 'coordination', Current.Coordination) then bTmp := True;
+        if checkStat1(TTokenString(strTmp), 'hitpoints', Current.hitpoints) then bTmp := True;
+        if checkStat1(TTokenString(strTmp), 'mana', Current.mana) then bTmp := True;
+        if checkStat1(TTokenString(strTmp), 'mysticism', Current.mysticism) then bTmp := True;
+        if checkStat1(TTokenString(strTmp), 'perception', Current.perception) then bTmp := True;
+        if checkStat1(TTokenString(strTmp), 'stealth', Current.stealth) then bTmp := True;
+        if checkStat1(TTokenString(strTmp), 'strenght', Current.strength) then bTmp := True;
       except
       end;
       if bTmp then
@@ -1594,18 +1312,17 @@ begin
       exit;
     Result := false;
     bTmp := false;
-    for iLoop := 0 to strTokenCount( sTmp, ',' ) - 1 do
+    for iLoop := 0 to TTokenString(sTmp).TokenCount(',') - 1 do
     begin
-      strTmp := trim( StrTokenAt( sTmp, ',', iLoop ) );
-      if strLeft( StrTmp, 1 ) <> '!' then
+      strTmp := TTokenString(sTmp).CommaToken( iLoop ).Trim;
+      if StrTmp[1] <> '!' then
       begin
         if Player.InInventory( StrTmp ) then //player does not have it but should
           bTmp := true;
       end
       else //Make sure player doesnt have title
       begin
-        strStripFirst( StrTmp ); //get rid of the '!'
-        if not ( Player.InInventory( StrTmp ) ) then //player does have it but shouldnt
+        if not ( Player.InInventory( strTmp.Remove(0, 1) ) ) then //player does have it but shouldnt  //get rid of the '!'
           bTmp := true;
       end;
       if bTmp then
@@ -1633,18 +1350,17 @@ begin
       exit;
     Result := false;
     bTmp := false;
-    for iLoop := 0 to strTokenCount( sTmp, ',' ) - 1 do
+    for iLoop := 0 to TTokenString(sTmp).TokenCount(',') - 1 do
     begin
-      strTmp := trim( StrTokenAt( sTmp, ',', iLoop ) );
-      if strLeft( StrTmp, 1 ) <> '!' then
+      strTmp := TTokenString(sTmp).CommaToken( iLoop ).Trim;
+      if StrTmp[1] <> '!' then
       begin
         if Player.IsWorn( StrTmp ) then //player does not have it but should
           bTmp := true;
       end
       else //Make sure player doesnt have title
       begin
-        strStripFirst( StrTmp ); //get rid of the '!'
-        if not ( Player.IsWorn( StrTmp ) ) then //player does have it but shouldnt
+        if not ( Player.IsWorn( strTmp.Remove(0, 1) ) ) then //player does have it but shouldnt //get rid of the '!'
           bTmp := true;
       end;
       if bTmp then
@@ -1657,5 +1373,106 @@ begin
   end;
 end;
 
+function checkStat(s: TTokenString; statStr: string; curPropVal: integer) : boolean;
+begin
+  Result := True;
+  if string(s).Contains( '>' ) then
+  begin
+    if AnsiSameText(s.gtToken( 0 ), statStr) then
+      if curPropVal < s.gtToken( 1 ).ToInteger + 1 then
+        Result := False;
+  end
+  else
+  begin
+    if AnsiSameText(s.ltToken( 0 ), statStr) then
+      if curPropVal > s.ltToken( 1 ).ToInteger - 1 then
+        Result := False;
+  end;
+end;
+
+function checkStat(s: TTokenString; statStr: string; curPropVal: Single) : boolean;
+begin
+  Result := True;
+  if string(s).Contains( '>' ) then
+  begin
+    if AnsiSameText(s.gtToken( 0 ), statStr) then
+      if curPropVal < s.gtToken( 1 ).ToSingle + 1 then
+        Result := False;
+  end
+  else
+  begin
+    if AnsiSameText(s.ltToken( 0 ), statStr) then
+      if curPropVal > s.ltToken( 1 ).ToSingle - 1 then
+        Result := False;
+  end;
+end;
+
+function checkStat(s: TTokenString; statStr: string; curPropVal: Double) : boolean;
+begin
+  Result := True;
+  if string(s).Contains( '>' ) then
+  begin
+    if AnsiSameText(s.gtToken( 0 ), statStr) then
+      if curPropVal < s.gtToken( 1 ).ToSingle + 1 then
+        Result := False;
+  end
+  else
+  begin
+    if AnsiSameText(s.ltToken( 0 ), statStr) then
+      if curPropVal > s.ltToken( 1 ).ToSingle - 1 then
+        Result := False;
+  end;
+end;
+
+function checkStat1(s: TTokenString; statStr: string; curPropVal: Integer) : boolean;
+begin
+  Result := False;
+  if string(s).Contains( '>' ) then
+  begin
+    if AnsiSameText(s.gtToken( 0 ), statStr) then
+      if curPropVal > s.gtToken( 1 ).ToInteger then
+        Result := True;
+  end
+  else
+  begin
+    if AnsiSameText(s.ltToken( 0 ), statStr) then
+      if curPropVal > s.ltToken( 1 ).ToInteger then
+        Result := True;
+  end;
+end;
+
+function checkStat1(s: TTokenString; statStr: string; curPropVal: Single) : boolean;
+begin
+  Result := False;
+  if string(s).Contains( '>' ) then
+  begin
+    if AnsiSameText(s.gtToken( 0 ), statStr) then
+      if curPropVal > s.gtToken( 1 ).ToSingle then
+        Result := True;
+  end
+  else
+  begin
+    if AnsiSameText(s.ltToken( 0 ), statStr) then
+      if curPropVal > s.ltToken( 1 ).ToSingle then
+        Result := True;
+  end;
+end;
+
+function checkStat1(s: TTokenString; statStr: string; curPropVal: Double) : boolean;
+begin
+  Result := False;
+  if string(s).Contains( '>' ) then
+  begin
+    if AnsiSameText(s.gtToken( 0 ), statStr) then
+      if curPropVal > s.gtToken( 1 ).ToDouble then
+        Result := True;
+  end
+  else
+  begin
+    if AnsiSameText(s.ltToken( 0 ), statStr) then
+      if curPropVal > s.ltToken( 1 ).ToDouble then
+        Result := True;
+  end;
+end;
 
 end.

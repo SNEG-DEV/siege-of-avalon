@@ -65,7 +65,6 @@ uses
   System.SysUtils,
   System.IOUtils,
   System.Classes,
-  Resource,
   LogFile;
 
 type
@@ -78,7 +77,6 @@ type
     DataString : AnsiString;
     function GetFields( FieldPos : integer ) : string;
   public
-    function strTokenAt( const S : string; At : Integer ) : string;
     constructor Create( const Filename : string );
     destructor Destroy; override;
     function FindRecord( const Key : string ) : boolean;
@@ -88,6 +86,9 @@ type
   end;
 
 implementation
+
+uses
+  SoAOS.StrUtils;
 
 { TStringDatabase }
 
@@ -103,7 +104,7 @@ begin
     FDataBase.LoadFromFile( FFileName );
     for iLoop := 0 to FDatabase.Count - 1 do
     begin
-      FItemList.Add( Parse( AnsiString( FDatabase.Strings[ iLoop ] ), 0, '|' ) {+ '=' + IntToStr(iLoop)} );
+      FItemList.Add( TTokenString( AnsiString( FDatabase.Strings[ iLoop ] )).PipeToken( 0 ) {+ '=' + IntToStr(iLoop)} );
     end;
   end;
 
@@ -148,34 +149,7 @@ const
 begin
   Log.DebugLog(FailName);
   try
-//  Result := StrTokenAt(DataString, FieldPos);
-    Result := Parse( DataString, FieldPos, '|' );
-  except
-    on E : Exception do
-      Log.log( FailName + E.Message );
-  end;
-
-end;
-
-function TStringDatabase.strTokenAt( const S : string; At : Integer ) : string;
-var
-  j, i : Integer;
-const
-  FailName : string = 'TStringDatabase.strTokenAt';
-begin
-  Log.DebugLog(FailName);
-  try
-    Result := '';
-    j := 1;
-    i := 0;
-    while ( i <= At ) and ( j <= Length( S ) ) do
-    begin
-      if S[ j ] = '|' then
-        Inc( i )
-      else if i = At then
-        Result := Result + S[ j ];
-      Inc( j );
-    end;
+    Result := TTokenString(DataString).PipeToken( FieldPos );
   except
     on E : Exception do
       Log.log( FailName + E.Message );

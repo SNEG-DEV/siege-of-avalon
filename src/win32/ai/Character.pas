@@ -5919,7 +5919,7 @@ begin
   Log.DebugLog( FailName );
   try
 
-    Result := ( Titles.IndexOf( Title ) >= 0 );
+    Result := ( Titles.IndexOf( LowerCase(Title) ) >= 0 );
 
     if not Result then
     begin
@@ -5927,7 +5927,7 @@ begin
       begin
         if assigned( Equipment[ i ] ) then
         begin
-          if lowercase( Equipment[ i ].Title ) = lowercase( Title ) then
+          if AnsiSameText( Equipment[ i ].Title, Title ) then
           begin
             result := true;
             break;
@@ -6012,10 +6012,10 @@ begin
   Log.DebugLog( FailName );
   try
 
-    S := lowercase( ItemName );
+    S := LowerCase( ItemName );
     for i := 0 to Inventory.Count - 1 do
     begin
-      if lowercase( TItem( Inventory.items[ i ] ).ItemName ) = S then
+      if LowerCase( TItem( Inventory.items[ i ] ).ItemName ) = S then
       begin
         result := true;
         exit;
@@ -6026,7 +6026,7 @@ begin
     begin
       if assigned( Equipment[ j ] ) then
       begin
-        if lowercase( Equipment[ j ].ItemName ) = S then
+        if LowerCase( Equipment[ j ].ItemName ) = S then
         begin
           result := true;
           exit;

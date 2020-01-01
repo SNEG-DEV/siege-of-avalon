@@ -87,8 +87,7 @@ uses
   Engine,
   Anigrp30,
   LogFile,
-  Resource,
-  strFunctions;
+  Resource;
 
 type
   TIdleDuty = ( idStand, idMeander, idGuard, idbusy );
@@ -150,7 +149,6 @@ type
     procedure MoveAway;
     procedure BattleTactic;
     procedure BuffParty;
-
 
   protected
     procedure OnNoPath; override;
@@ -625,6 +623,7 @@ function GetFacing( SrcX, SrcY, TargetX, TargetY : Longint ) : Extended;
 implementation
 
 uses
+  SoAOS.StrUtils,
   AniDemo,
   BasicHumanoidAI;
 
@@ -896,14 +895,13 @@ end;
 
 procedure TCompanion.BuffParty;
 var
-  Spell : string;
+  Spell : TTokenString;
 const
   FailName : string = 'MiscAI.TCompanion.BuffParty';
-
 begin
   Log.DebugLog( FailName );
   try
-    Spell := strTokenAt( dSPellBook, ',', Random( StrTokenCount( dSpellBook, ',' ) ) );
+    Spell := TTokenString(dSPellBook).RandomToken;
     if Spells.IndexOf( spell ) <> -1 then
     begin
       Character.CurrentSpell := TSpell( Spells.Objects[ Spells.IndexOf( spell ) ] );
@@ -1025,6 +1023,7 @@ begin
     if character.TitleExists( 'Forget' ) then
       oSpellBook := oSpellBook + 'forget,';
 
+    oSpellBook.TrimRight([',']); // use Join on TArray
 
     if character.TitleExists( 'Aura of Iron' ) then
       dSpellBook := dSpellBook + 'Aura of Iron,';
@@ -1047,8 +1046,7 @@ begin
     if character.TitleExists( 'Mana Thief' ) then
       dSpellBook := dSpellBook + 'Mana Thief,';
 
-    StrStripLast( oSpellBook );
-    StrStripLast( dSpellBook );
+    dSpellBook.TrimRight([',']); // use Join on TArray
 
   //  if character.TitleExists('HealFirst') then
   //  begin
@@ -2036,7 +2034,7 @@ begin
                 Inc( NukeCounter );
 
               Character.Face( Character.Track.x, Character.Track.y );
-              Spell := strTokenAt( oSPellBook, ',', Random( StrTokenCount( oSpellBook, ',' ) ) );
+              Spell := TTokenString(oSPellBook).RandomToken;
               if Spells.IndexOf( spell ) <> -1 then
               begin
                 if Character.currentSpell <> TSpell( Spells.Objects[ Spells.IndexOf( spell ) ] ) then
@@ -2443,7 +2441,7 @@ begin
     if character.TitleExists( 'Shrapnel' ) then
       oSpellBook := oSpellBook + 'shrapnel,';
 
-    StrStripLast( oSpellBook );
+    oSpellBook.TrimRight([',']); // use Join on TArray
 
     if character.TitleExists( 'HealFirst' ) then
     begin
@@ -3232,7 +3230,7 @@ begin
               Inc( NukeCounter );
             //line of sight test here.
             Character.Face( Character.Track.x, Character.Track.y );
-            Spell := strTokenAt( oSPellBook, ',', Random( StrTokenCount( oSpellBook, ',' ) ) );
+            Spell := TTokenString(oSPellBook).RandomToken;
             if Character.currentSpell <> TSpell( Spells.Objects[ Spells.IndexOf( spell ) ] ) then
               Character.CurrentSpell := TSpell( Spells.Objects[ Spells.IndexOf( spell ) ] );
             if ( character.Mana - character.Drain ) >= Character.CurrentSpell.Drain( Character ) then
@@ -4782,7 +4780,7 @@ begin
     begin
       if ( strTitle <> '' ) and not ( Player.Dead ) then
       begin
-        if Player.TitleExists( StrTokenAt( strTitle, ';', 0 ) ) then
+        if Player.TitleExists( TTokenString(strTitle).SemiToken( 0 ) ) then
         begin
           Character.Track := Player;
           Fighting := True;
@@ -4791,7 +4789,7 @@ begin
           Exit;
         end;
 
-        if Player.TitleExists( StrTokenAt( strTitle, ';', 1 ) ) then
+        if Player.TitleExists( TTokenString(strTitle).SemiToken( 1 ) ) then
         begin
           Character.Track := Player;
           Fighting := True;
@@ -4799,7 +4797,7 @@ begin
           character.Say( 'Hello my name is Inigo Montoya!' + #10 + 'You kill my Father! Prepare to die!', cTalkRedColor );
           Exit;
         end;
-        if Player.TitleExists( StrTokenAt( strTitle, ';', 2 ) ) then
+        if Player.TitleExists( TTokenString(strTitle).SemiToken( 2 ) ) then
         begin
           Character.Track := Player;
           Fighting := True;
@@ -4917,7 +4915,7 @@ begin
             Inc( NukeCounter );
           //line of sight test here.
           Character.Face( Character.Track.x, Character.Track.y );
-          Spell := strTokenAt( oSPellBook, ',', Random( StrTokenCount( oSpellBook, ',' ) ) );
+          Spell := TTokenString(oSPellBook).RandomToken;
           if Character.currentSpell <> TSpell( Spells.Objects[ Spells.IndexOf( spell ) ] ) then
             Character.CurrentSpell := TSpell( Spells.Objects[ Spells.IndexOf( spell ) ] );
           if ( character.Mana - character.Drain ) >= Character.CurrentSpell.Drain( Character ) then
@@ -5415,7 +5413,7 @@ begin
             Inc( NukeCounter );
           //line of sight test here.
           Character.Face( Character.Track.x, Character.Track.y );
-          Spell := strTokenAt( oSPellBook, ',', Random( StrTokenCount( oSpellBook, ',' ) ) );
+          Spell := TTokenString(oSPellBook).RandomToken;
           if Character.currentSpell <> TSpell( Spells.Objects[ Spells.IndexOf( Spell ) ] ) then
             Character.CurrentSpell := TSpell( Spells.Objects[ Spells.IndexOf( Spell ) ] );
           if ( character.Mana - character.Drain ) >= Character.CurrentSpell.Drain( Character ) then
@@ -6294,7 +6292,7 @@ begin
               Inc( NukeCounter );
             //line of sight test here.
             Character.Face( Character.Track.x, Character.Track.y );
-            Spell := strTokenAt( oSPellBook, ',', Random( StrTokenCount( oSpellBook, ',' ) ) );
+            Spell := TTokenString(oSPellBook).RandomToken;
             if Character.currentSpell <> TSpell( Spells.Objects[ Spells.IndexOf( spell ) ] ) then
               Character.CurrentSpell := TSpell( Spells.Objects[ Spells.IndexOf( spell ) ] );
             if ( character.Mana - character.Drain ) >= Character.CurrentSpell.Drain( Character ) then
@@ -6435,7 +6433,7 @@ procedure TRandomChestLoot.Init;
 var
   s, sLoot : string;
   GUID : string;
-  i, j : integer;
+  i : integer;
 begin
 
   if LowerCase( Character.Properties[ 'NewLoot' ] ) <> 'true' then
@@ -6446,10 +6444,9 @@ begin
       if S <> '' then
       begin
         sLoot := s;
-        j := StrTokenCount( sLoot, ',' );
         for i := 0 to StrToInt( Character.Properties[ 'RandomLootCount' ] ) - 1 do
         begin
-          s := StrTokenAt( sLoot, ',', Random( j ) );
+          s := TTokenString(sLoot).RandomToken;
           if not ( character.HasItem( s ) ) then
           begin
             RunScript( Character, GUID + '.additem(' + s + ')' );

@@ -121,12 +121,13 @@ uses
   Options in 'interface\Options.pas',
   Scroll in 'engine\Scroll.pas',
   Statistics in 'interface\Statistics.pas',
-  strFunctions in 'engine\strFunctions.pas',
+  SoAOS.StrUtils in 'engine\SoAOS.StrUtils.pas',
   Transit in 'interface\Transit.pas',
   MMTimer in 'engine\MMTimer.pas',
   SoAOS.Types in 'engine\SoAOS.Types.pas',
   SoAOS.Graphics.Draw in 'graphics\SoAOS.Graphics.Draw.pas',
-  SoAOS.Graphics.Types in 'graphics\SoAOS.Graphics.Types.pas';
+  SoAOS.Graphics.Types in 'graphics\SoAOS.Graphics.Types.pas',
+  SoAOS.Intrface.Popup in 'interface\SoAOS.Intrface.Popup.pas';
 
 {$R *.RES}
 
