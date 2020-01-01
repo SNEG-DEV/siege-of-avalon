@@ -12,6 +12,14 @@ All notable changes to this project will be documented in this file.
 - Mod selection - more DLC style - extendable instead of destructive copy/paste exercises.
 - Better multi-language support - right now it is crippled, like other parts of the UI code.
 
+## 2020-01-01
+### Added
+- TTokenString string helpers
+- Missing License header in new files 
+
+### Removed
+- All old strFunctions - replaced by custom string helpers or newer alternatives
+
 ## 2019-12-28
 ### Changed
 - $DODEBUG "noise" isolated
