@@ -178,15 +178,15 @@ const
   DLL_Done = 2;
   DLL_CreateRLE = 3;
   DLL_ConvertRLE = 4;
-  DLL_ConvertBitplane = 5;
+//  DLL_ConvertBitplane = 5;
   DLL_DrawRLE = 6;
-  DLL_RLEConvertToPixels = 7;
-  DLL_DrawPixels = 8;
+//  DLL_RLEConvertToPixels = 7;
+//  DLL_DrawPixels = 8;
   DLL_DrawBitplane = 9;
   DLL_DrawRect = 10;
-  DLL_DrawLine = 11;
+//  DLL_DrawLine = 11;
   DLL_ConvertColor = 12;
-  DLL_CheckSupport = 13;
+//  DLL_CheckSupport = 13;
 
 type
   DRVFILE = record

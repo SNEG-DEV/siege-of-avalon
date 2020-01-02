@@ -58,7 +58,7 @@ type
   TAniMap = class;
   TAniFigure = class;
   TAniView = class;
-  TSubMap = class;
+//  TSubMap = class;
 
   TFlicker = ( flNone, flCandle, flTorch, flFluorescent );
 
@@ -288,12 +288,12 @@ type
     property ZoneCount : word read GetZoneCount;
   end;
 
-  TSubMap = class( TAniMap )
-  public
-    X1, Y1 : Longint;
-    X2, Y2 : Longint;
-    Visible : Boolean;
-  end;
+//  TSubMap = class( TAniMap )
+//  public
+//    X1, Y1 : Longint;
+//    X2, Y2 : Longint;
+//    Visible : Boolean;
+//  end;
 
   TScript = class( TObject )
   public
@@ -457,31 +457,31 @@ type
     property OnScreen : boolean read FOnScreen;
   end;
 
-  TImageSheet = class( TAniResource )
-  private
-{$IFDEF DirectX}
-    Picture : IDirectDrawSurface;
-    procedure SetImage( const Value : IDirectDrawSurface );
-{$ENDIF}
-{$IFNDEF DirectX}
-    Picture : HBITMAP;
-    Mask : HBITMAP;
-    procedure SetImage( const Value : TBitmap );
-{$ENDIF}
-    function GetFrames : Longint;
-  public
-    FrameWidth : Longint;
-    FrameHeight : Longint;
-    FramesWide : Longint;
-    FramesHigh : Longint;
-    TransparentColor : TColor;
-    constructor Create;
-//    procedure Draw( Canvas : TCanvas; X, Y : Integer; Frame : Word ); override;
-    procedure FreeResources; override;
-    procedure Render( Figure : TAniFigure ); override;
-    property Frames : Longint read GetFrames;
-    property Image : IDirectDrawSurface write SetImage;
-  end;
+//  TImageSheet = class( TAniResource )
+//  private
+//{$IFDEF DirectX}
+//    Picture : IDirectDrawSurface;
+//    procedure SetImage( const Value : IDirectDrawSurface );
+//{$ENDIF}
+//{$IFNDEF DirectX}
+//    Picture : HBITMAP;
+//    Mask : HBITMAP;
+//    procedure SetImage( const Value : TBitmap );
+//{$ENDIF}
+//    function GetFrames : Longint;
+//  public
+//    FrameWidth : Longint;
+//    FrameHeight : Longint;
+//    FramesWide : Longint;
+//    FramesHigh : Longint;
+//    TransparentColor : TColor;
+//    constructor Create;
+////    procedure Draw( Canvas : TCanvas; X, Y : Integer; Frame : Word ); override;
+//    procedure FreeResources; override;
+//    procedure Render( Figure : TAniFigure ); override;
+//    property Frames : Longint read GetFrames;
+//    property Image : IDirectDrawSurface write SetImage;
+//  end;
 
   TAniView = class( TGraphicControl )
   private
@@ -9524,101 +9524,101 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
             Result := nil;
         end;
 
-{ TImageSheet }
-
-        constructor TImageSheet.Create;
-        begin
-          inherited;
-        end;
-
-//        procedure TImageSheet.Draw( Canvas : TCanvas; X, Y : Integer; Frame : Word );
-//        begin
+//{ TImageSheet }
 //
+//        constructor TImageSheet.Create;
+//        begin
+//          inherited;
 //        end;
-
-        procedure TImageSheet.FreeResources;
-        begin
-      {$IFDEF DirectX}
-          Picture := nil;
-      {$ENDIF}
-      {$IFNDEF DirectX}
-          DeleteObject( Picture );
-          Picture := 0;
-          DeleteObject( Mask );
-          Mask := 0;
-      {$ENDIF}
-        end;
-
-        function TImageSheet.GetFrames : Longint;
-        begin
-          Result := FramesWide * FramesHigh;
-        end;
-
-        procedure TImageSheet.Render( Figure : TAniFigure );
-        var
-          SrcX, SrcY : Longint;
-        {$IFDEF DirectX}
-          SrcX1, SrcY1, SrcX2, SrcY2 : Integer;
-          DstX1, DstY1, DstX2, DstY2 : Integer;
-        {$ENDIF}
-          pr : TRect;
-        begin
-          if ( Figure.Frame = 0 ) or not Figure.Visible then
-            Exit;
-
-          SrcX := FrameWidth * ( ( Figure.Frame - 1 ) mod FramesWide );
-          SrcY := FrameHeight * ( ( Figure.Frame - 1 ) div FramesWide );
-
-      {$IFDEF DirectX}
-          SrcX1 := SrcX;
-          SrcX2 := SrcX1 + Figure.Width;
-          DstX1 := Figure.View.Left + Figure.PosX;
-          DstX2 := DstX1 + Figure.Width;
-          Clip( Figure.View.Left, Figure.View.Left + Figure.View.Width, DstX1, DstX2, SrcX1, SrcX2 );
-          SrcY1 := SrcY;
-          SrcY2 := SrcY1 + Figure.Height;
-          DstY1 := Figure.View.Top + Figure.PosY;
-          DstY2 := DstY1 + Figure.Height;
-          Clip( Figure.View.Top, Figure.View.Top + Figure.View.Height, DstY1, DstY2, SrcY1, SrcY2 );
-          pr := Rect( SrcX1, SrcY1, SrcX2, SrcY2 );
-          lpDDSBack.BltFast( DstX1, DstY1, Picture, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-      {$ENDIF}
-      {$IFNDEF DirectX}
-          SelectObject( Figure.FView.TempDC, Mask );
-          BitBlt( Figure.FView.FrameBuffer.Canvas.Handle, Figure.PosX, Figure.PosY, Figure.Width, Figure.Height,
-            Figure.FView.TempDC, SrcX, SrcY, SRCAND );
-          SelectObject( Figure.FView.TempDC, Picture );
-          BitBlt( Figure.FView.FrameBuffer.Canvas.Handle, Figure.PosX, Figure.PosY, Figure.Width, Figure.Height,
-            Figure.FView.TempDC, SrcX, SrcY, SRCPAINT );
-          SelectObject( Figure.FView.TempDC, Figure.FView.OldTempBitmap );
-      {$ENDIF}
-        end;
-
-      {$IFDEF DirectX}
-
-        procedure TImageSheet.SetImage( const Value : IDirectDrawSurface );
-        {$ENDIF}
-        {$IFNDEF DirectX}
-          procedure TImageSheet.SetImage( const Value : TBitmap );
-          {$ENDIF}
-          begin
-        {$IFDEF DirectX}
-            Picture := nil;
-            Picture := Value;
-        {$ENDIF}
-        {$IFNDEF DirectX}
-            if not Assigned( Value ) then
-            begin
-              DeleteObject( Picture );
-              Picture := 0;
-              DeleteObject( Mask );
-              Mask := 0;
-            end
-            else
-            begin
-              CreateMask( Picture, Mask, Value, ColorToRGB( TransparentColor ) );
-            end;
-        {$ENDIF}
-          end;
+//
+////        procedure TImageSheet.Draw( Canvas : TCanvas; X, Y : Integer; Frame : Word );
+////        begin
+////
+////        end;
+//
+//        procedure TImageSheet.FreeResources;
+//        begin
+//      {$IFDEF DirectX}
+//          Picture := nil;
+//      {$ENDIF}
+//      {$IFNDEF DirectX}
+//          DeleteObject( Picture );
+//          Picture := 0;
+//          DeleteObject( Mask );
+//          Mask := 0;
+//      {$ENDIF}
+//        end;
+//
+//        function TImageSheet.GetFrames : Longint;
+//        begin
+//          Result := FramesWide * FramesHigh;
+//        end;
+//
+//        procedure TImageSheet.Render( Figure : TAniFigure );
+//        var
+//          SrcX, SrcY : Longint;
+//        {$IFDEF DirectX}
+//          SrcX1, SrcY1, SrcX2, SrcY2 : Integer;
+//          DstX1, DstY1, DstX2, DstY2 : Integer;
+//        {$ENDIF}
+//          pr : TRect;
+//        begin
+//          if ( Figure.Frame = 0 ) or not Figure.Visible then
+//            Exit;
+//
+//          SrcX := FrameWidth * ( ( Figure.Frame - 1 ) mod FramesWide );
+//          SrcY := FrameHeight * ( ( Figure.Frame - 1 ) div FramesWide );
+//
+//      {$IFDEF DirectX}
+//          SrcX1 := SrcX;
+//          SrcX2 := SrcX1 + Figure.Width;
+//          DstX1 := Figure.View.Left + Figure.PosX;
+//          DstX2 := DstX1 + Figure.Width;
+//          Clip( Figure.View.Left, Figure.View.Left + Figure.View.Width, DstX1, DstX2, SrcX1, SrcX2 );
+//          SrcY1 := SrcY;
+//          SrcY2 := SrcY1 + Figure.Height;
+//          DstY1 := Figure.View.Top + Figure.PosY;
+//          DstY2 := DstY1 + Figure.Height;
+//          Clip( Figure.View.Top, Figure.View.Top + Figure.View.Height, DstY1, DstY2, SrcY1, SrcY2 );
+//          pr := Rect( SrcX1, SrcY1, SrcX2, SrcY2 );
+//          lpDDSBack.BltFast( DstX1, DstY1, Picture, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+//      {$ENDIF}
+//      {$IFNDEF DirectX}
+//          SelectObject( Figure.FView.TempDC, Mask );
+//          BitBlt( Figure.FView.FrameBuffer.Canvas.Handle, Figure.PosX, Figure.PosY, Figure.Width, Figure.Height,
+//            Figure.FView.TempDC, SrcX, SrcY, SRCAND );
+//          SelectObject( Figure.FView.TempDC, Picture );
+//          BitBlt( Figure.FView.FrameBuffer.Canvas.Handle, Figure.PosX, Figure.PosY, Figure.Width, Figure.Height,
+//            Figure.FView.TempDC, SrcX, SrcY, SRCPAINT );
+//          SelectObject( Figure.FView.TempDC, Figure.FView.OldTempBitmap );
+//      {$ENDIF}
+//        end;
+//
+//      {$IFDEF DirectX}
+//
+//        procedure TImageSheet.SetImage( const Value : IDirectDrawSurface );
+//        {$ENDIF}
+//        {$IFNDEF DirectX}
+//          procedure TImageSheet.SetImage( const Value : TBitmap );
+//          {$ENDIF}
+//          begin
+//        {$IFDEF DirectX}
+//            Picture := nil;
+//            Picture := Value;
+//        {$ENDIF}
+//        {$IFNDEF DirectX}
+//            if not Assigned( Value ) then
+//            begin
+//              DeleteObject( Picture );
+//              Picture := 0;
+//              DeleteObject( Mask );
+//              Mask := 0;
+//            end
+//            else
+//            begin
+//              CreateMask( Picture, Mask, Value, ColorToRGB( TransparentColor ) );
+//            end;
+//        {$ENDIF}
+//          end;
 
 end.

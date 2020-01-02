@@ -85,7 +85,7 @@ type
     procedure DrawMono( Index : LongWord; X, Y : Integer; Bits : PBITPLANE; Color : TColor );
     procedure DrawColorize( Index : longword; X, Y : integer; Bits : PBITPLANE; R, G, B, SrcBlend, DstBlend : integer );
     procedure DrawAntiAlias( Index : longword; X, Y : integer; Bits : PBITPLANE );
-    procedure DrawSoften( Index : longword; X, Y : integer; Bits : PBITPLANE );
+//    procedure DrawSoften( Index : longword; X, Y : integer; Bits : PBITPLANE );
     property Frames : DWORD read PicCnt;
     property Image[ Index : DWORD ] : PRLEHDR read GetImage;
     property MemSize : LongWord read FMemSize;
@@ -494,16 +494,16 @@ begin
   digifxDrawRLE( dfx_hnd, Image[ Index ], X, Y, @dfx_blitfx, Bits );
 end;
 
-procedure TRLESprite.DrawSoften( Index : longword; X, Y : integer;
-  Bits : PBITPLANE );
-var
-  dfx_blitfx : BLITFX;
-begin
-  if Index >= PicCnt then
-    exit;
-  dfx_blitfx.FXType := BLITFX_SOFTEN;
-  digifxDrawRLE( dfx_hnd, Image[ Index ], X, Y, @dfx_blitfx, Bits );
-end;
+//procedure TRLESprite.DrawSoften( Index : longword; X, Y : integer;
+//  Bits : PBITPLANE );
+//var
+//  dfx_blitfx : BLITFX;
+//begin
+//  if Index >= PicCnt then
+//    exit;
+//  dfx_blitfx.FXType := BLITFX_SOFTEN;
+//  digifxDrawRLE( dfx_hnd, Image[ Index ], X, Y, @dfx_blitfx, Bits );
+//end;
 
 procedure TRLESprite.LoadFromStream( Stream : TStream );
 var
