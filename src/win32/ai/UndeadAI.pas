@@ -1309,11 +1309,11 @@ begin
     Walking := True;
     if assigned( Character.Track ) then
       Character.Face( Character.Track.X, Character.Track.Y );
-    if Pos( 'E', character.FacingString ) <> 0 then
+    if character.FacingString.Contains( 'E' ) then
       Character.WalkTo( Character.X - 100, Character.Y + random( 200 ) - 100, 16 )
-    else if Pos( 'W', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'W' ) then
       Character.WalkTo( Character.X + 100, Character.Y + random( 200 ) - 100, 16 )
-    else if Pos( 'SS', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'SS' ) then
       Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y - 100, 16 )
     else
       Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y + 100, 16 );
@@ -1828,11 +1828,11 @@ begin
     Walking := True;
     if assigned( Character.Track ) then
       Character.Face( Character.Track.X, Character.Track.Y );
-    if Pos( 'E', character.FacingString ) <> 0 then
+    if character.FacingString.Contains( 'E' ) then
       Character.WalkTo( Character.X - 100, Character.Y + random( 200 ) - 100, 16 )
-    else if Pos( 'W', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'W' ) then
       Character.WalkTo( Character.X + 100, Character.Y + random( 200 ) - 100, 16 )
-    else if Pos( 'SS', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'SS' ) then
       Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y - 100, 16 )
     else
       Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y + 100, 16 );
@@ -2392,11 +2392,11 @@ begin
     Walking := True;
     if assigned( Character.Track ) then
       Character.Face( Character.Track.X, Character.Track.Y );
-    if Pos( 'E', character.FacingString ) <> 0 then
+    if character.FacingString.Contains( 'E' ) then
       Character.WalkTo( Character.X - 100, Character.Y + random( 200 ) - 100, 16 )
-    else if Pos( 'W', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'W' ) then
       Character.WalkTo( Character.X + 100, Character.Y + random( 200 ) - 100, 16 )
-    else if Pos( 'SS', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'SS' ) then
       Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y - 100, 16 )
     else
       Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y + 100, 16 );

@@ -2151,7 +2151,7 @@ begin
           i := Game.MouseOverTile.TriggerID - 1;
           if ( i < FigureInstances.Count ) and Assigned( FigureInstances.Objects[ i ] ) and ( FigureInstances.Objects[ i ] is TTrigger ) then
           begin
-            j := Pos( 'loadmap(', LowerCase( TTrigger( FigureInstances.Objects[ i ] ).OnTrigger ) );
+            j := TTrigger( FigureInstances.Objects[ i ] ).OnTrigger.ToLower.IndexOf('loadmap(');
             if j > 0 then
             begin
               S := Parse( AnsiString( Copy( TTrigger( FigureInstances.Objects[ i ] ).OnTrigger, j + 8, Length( TTrigger( FigureInstances.Objects[ i ] ).OnTrigger ) - j - 7 )), 0, ',' );
@@ -6772,10 +6772,8 @@ begin
       i := Figure.Tile.TriggerID - 1;
       if ( i < FigureInstances.Count ) and Assigned( FigureInstances.Objects[ i ] ) and ( FigureInstances.Objects[ i ] is TTrigger ) then
       begin
-        if Pos( 'loadmap(', LowerCase( TTrigger( FigureInstances.Objects[ i ] ).OnTrigger ) ) > 0 then
-        begin
+        if TTrigger( FigureInstances.Objects[ i ] ).OnTrigger.ToLower.Contains( 'loadmap(' ) then
           Result := True;
-        end;
       end;
     end;
   end;

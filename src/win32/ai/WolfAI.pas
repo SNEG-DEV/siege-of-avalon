@@ -258,11 +258,11 @@ begin
     if assigned( Character.Track ) then
       Character.Face( Character.Track.X, Character.Track.Y );
     //Better runAway code
-    if Pos( 'E', character.FacingString ) <> 0 then
+    if character.FacingString.Contains( 'E' ) then
       Character.RunTo( Character.X - 250, Character.Y + random( 500 ) - 250, 64 )
-    else if Pos( 'W', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'W' ) then
       Character.RunTo( Character.X + 250, Character.Y + random( 500 ) - 250, 64 )
-    else if Pos( 'SS', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'SS' ) then
       Character.RunTo( Character.X + random( 500 ) - 250, Character.Y - 250, 64 )
     else
       Character.RunTo( Character.X + random( 500 ) - 250, Character.Y + 250, 64 );
@@ -559,11 +559,11 @@ begin
       Character.Track := nil;
     end;
     //Better runAway code
-    if Pos( 'E', character.FacingString ) <> 0 then
+    if character.FacingString.Contains( 'E' ) then
       Character.RunTo( Character.X - 250, Character.Y + random( 500 ) - 250, 16 )
-    else if Pos( 'W', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'W' ) then
       Character.RunTo( Character.X + 250, Character.Y + random( 500 ) - 250, 16 )
-    else if Pos( 'SS', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'SS' ) then
       Character.RunTo( Character.X + random( 500 ) - 250, Character.Y - 250, 16 )
     else
       Character.RunTo( Character.X + random( 500 ) - 250, Character.Y + 250, 16 );
@@ -581,7 +581,6 @@ end;
 procedure TWolfCombat.FindTarget;
 var
   List : TStringList;
-    //j: integer;
 const
   FailName : string = 'TWolfCombat.FindTarget';
 begin

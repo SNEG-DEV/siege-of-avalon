@@ -4711,7 +4711,6 @@ procedure TCharacter.SetProperty( const Name, Value : string );
 var
   S : string;
   i : integer;
-  j : TSlot;
   L : integer;
   NoProp : boolean;
 const
@@ -5051,43 +5050,26 @@ begin
           end
           else if S = 'lockedequipment' then
           begin
-            for j := slLeg1 to slMisc3 do
-              EquipmentLocked[ j ] := false;
+//            for j := slLeg1 to slMisc3 do
+//              EquipmentLocked[ j ] := false;
             S := lowercase( Value );
-            if pos( 'leg1', S ) > 0 then
-              EquipmentLocked[ slLeg1 ] := true;
-            if pos( 'boot', S ) > 0 then
-              EquipmentLocked[ slBoot ] := true;
-            if pos( 'leg2', S ) > 0 then
-              EquipmentLocked[ slLeg2 ] := true;
-            if pos( 'chest1', S ) > 0 then
-              EquipmentLocked[ slChest1 ] := true;
-            if pos( 'chest2', S ) > 0 then
-              EquipmentLocked[ slChest2 ] := true;
-            if pos( 'arm', S ) > 0 then
-              EquipmentLocked[ slArm ] := true;
-            if pos( 'belt', S ) > 0 then
-              EquipmentLocked[ slBelt ] := true;
-            if pos( 'chest3', S ) > 0 then
-              EquipmentLocked[ slChest3 ] := true;
-            if pos( 'gauntlet', S ) > 0 then
-              EquipmentLocked[ slGauntlet ] := true;
-            if pos( 'outer', S ) > 0 then
-              EquipmentLocked[ slOuter ] := true;
-            if pos( 'helmet', S ) > 0 then
-              EquipmentLocked[ slHelmet ] := true;
-            if pos( 'weapon', S ) > 0 then
-              EquipmentLocked[ slWeapon ] := true;
-            if pos( 'shield', S ) > 0 then
-              EquipmentLocked[ slShield ] := true;
-            if pos( 'tabar', S ) > 0 then
-              EquipmentLocked[ sltabar ] := true;
-            if pos( 'misc1', S ) > 0 then
-              EquipmentLocked[ slMisc1 ] := true;
-            if pos( 'misc2', S ) > 0 then
-              EquipmentLocked[ slMisc2 ] := true;
-            if pos( 'misc3', S ) > 0 then
-              EquipmentLocked[ slMisc3 ] := true;
+            EquipmentLocked[ slLeg1 ] := S.Contains('leg1');
+            EquipmentLocked[ slBoot ] := S.Contains('boot');
+            EquipmentLocked[ slLeg2 ] := S.Contains('leg2');
+            EquipmentLocked[ slChest1 ] := S.Contains('chest1');
+            EquipmentLocked[ slChest2 ] := S.Contains('chest2');
+            EquipmentLocked[ slArm ] := S.Contains('arm');
+            EquipmentLocked[ slBelt ] := S.Contains('belt');
+            EquipmentLocked[ slChest3 ] := S.Contains('chest3');
+            EquipmentLocked[ slGauntlet ] := S.Contains('gauntlet');
+            EquipmentLocked[ slOuter ] := S.Contains('outer');
+            EquipmentLocked[ slHelmet ] := S.Contains('helmet');
+            EquipmentLocked[ slWeapon ] := S.Contains('weapon');
+            EquipmentLocked[ slShield ] := S.Contains('shield');
+            EquipmentLocked[ sltabar ] := S.Contains('tabar');
+            EquipmentLocked[ slMisc1 ] := S.Contains('misc1');
+            EquipmentLocked[ slMisc2 ] := S.Contains('misc2');
+            EquipmentLocked[ slMisc3 ] := S.Contains('misc3');
           end
           else
             NoProp := true;
@@ -9103,42 +9085,25 @@ begin
             InvH := StrToInt( Value )
           else if S = 'slot' then
           begin
-            S := LowerCase( Value );
+            S := Value.ToLower;
             SlotsAllowed := [ ];
-            if Pos( '[leg1]', S ) > 0 then
-              SlotsAllowed := SlotsAllowed + [ slLeg1 ];
-            if Pos( '[boot]', S ) > 0 then
-              SlotsAllowed := SlotsAllowed + [ slBoot ];
-            if Pos( '[leg2]', S ) > 0 then
-              SlotsAllowed := SlotsAllowed + [ slLeg2 ];
-            if Pos( '[chest1]', S ) > 0 then
-              SlotsAllowed := SlotsAllowed + [ slChest1 ];
-            if Pos( '[chest2]', S ) > 0 then
-              SlotsAllowed := SlotsAllowed + [ slChest2 ];
-            if Pos( '[arm]', S ) > 0 then
-              SlotsAllowed := SlotsAllowed + [ slArm ];
-            if Pos( '[belt]', S ) > 0 then
-              SlotsAllowed := SlotsAllowed + [ slBelt ];
-            if Pos( '[chest3]', S ) > 0 then
-              SlotsAllowed := SlotsAllowed + [ slChest3 ];
-            if Pos( '[gauntlet]', S ) > 0 then
-              SlotsAllowed := SlotsAllowed + [ slGauntlet ];
-            if Pos( '[outer]', S ) > 0 then
-              SlotsAllowed := SlotsAllowed + [ slOuter ];
-            if Pos( '[helmet]', S ) > 0 then
-              SlotsAllowed := SlotsAllowed + [ slHelmet ];
-            if Pos( '[weapon]', S ) > 0 then
-              SlotsAllowed := SlotsAllowed + [ slWeapon ];
-            if Pos( '[shield]', S ) > 0 then
-              SlotsAllowed := SlotsAllowed + [ slShield ];
-            if Pos( '[tabar]', S ) > 0 then
-              SlotsAllowed := SlotsAllowed + [ sltabar ];
-            if Pos( '[misc1]', S ) > 0 then
-              SlotsAllowed := SlotsAllowed + [ slMisc1 ];
-            if Pos( '[misc2]', S ) > 0 then
-              SlotsAllowed := SlotsAllowed + [ slMisc2 ];
-            if Pos( '[misc3]', S ) > 0 then
-              SlotsAllowed := SlotsAllowed + [ slMisc3 ];
+            if S.Contains( '[leg1]' ) then SlotsAllowed := SlotsAllowed + [ slLeg1 ];
+            if S.Contains( '[boot]' ) then SlotsAllowed := SlotsAllowed + [ slBoot ];
+            if S.Contains( '[leg2]' ) then SlotsAllowed := SlotsAllowed + [ slLeg2 ];
+            if S.Contains( '[chest1]' ) then SlotsAllowed := SlotsAllowed + [ slChest1 ];
+            if S.Contains( '[chest2]' ) then SlotsAllowed := SlotsAllowed + [ slChest2 ];
+            if S.Contains( '[arm]' ) then SlotsAllowed := SlotsAllowed + [ slArm ];
+            if S.Contains( '[belt]' ) then SlotsAllowed := SlotsAllowed + [ slBelt ];
+            if S.Contains( '[chest3]' ) then SlotsAllowed := SlotsAllowed + [ slChest3 ];
+            if S.Contains( '[gauntlet]' ) then SlotsAllowed := SlotsAllowed + [ slGauntlet ];
+            if S.Contains( '[outer]' ) then SlotsAllowed := SlotsAllowed + [ slOuter ];
+            if S.Contains( '[helmet]' ) then SlotsAllowed := SlotsAllowed + [ slHelmet ];
+            if S.Contains( '[weapon]' ) then SlotsAllowed := SlotsAllowed + [ slWeapon ];
+            if S.Contains( '[shield]' ) then SlotsAllowed := SlotsAllowed + [ slShield ];
+            if S.Contains( '[tabar]' ) then SlotsAllowed := SlotsAllowed + [ sltabar ];
+            if S.Contains( '[misc1]' ) then SlotsAllowed := SlotsAllowed + [ slMisc1 ];
+            if S.Contains( '[misc2]' ) then SlotsAllowed := SlotsAllowed + [ slMisc2 ];
+            if S.Contains( '[misc3]' ) then SlotsAllowed := SlotsAllowed + [ slMisc3 ];
           end
           else
             NoProp := true;
@@ -10058,7 +10023,7 @@ begin
       for i := 0 to List.Count - 1 do
       begin
         S := List.strings[ i ];
-        j := Pos( '=', S );
+        j := S.IndexOf('=');
         if ( j > 0 ) {and (j<length(S))} then
         begin //This caused blank properties not to overwrite defaults
           if ( j < length( S ) ) and ( S[ j + 1 ] = '#' ) then
@@ -11340,7 +11305,7 @@ var
   S1 : string;
 begin
   S1 := '#' + Symbol;
-  i := Pos( S1, S );
+  i := S.IndexOf(S1);
   if i > 0 then
     S := copy( S, 1, i - 1 ) + Value + copy( S, i + length( S1 ), length( S ) - i - length( S1 ) + 1 );
 end;
@@ -11349,12 +11314,13 @@ procedure TSpell.SetInfoText( const Value : string );
 var
   i : integer;
 begin
+{ TODO -cRedo or Remove : Replace pipe char with #13 }
   FInfoText := Value;
-  i := Pos( '|', FInfoText );
+  i := FInfoText.IndexOf('|');
   while i > 0 do
   begin
     FInfoText[ i ] := #13;
-    i := Pos( '|', FInfoText );
+    i := FInfoText.IndexOf('|');
   end;
 end;
 
@@ -11884,7 +11850,7 @@ begin
       Volume := StrToInt( Value )
     else if S = 'intervalperiod' then
     begin
-      if Pos( '-', Value ) > 0 then
+      if Value.Contains( '-' ) then
       begin
         Interval := StrToInt( Parse( Value, 0, '-' ) );
         MaxInterval := StrToInt( Parse( Value, 1, '-' ) );

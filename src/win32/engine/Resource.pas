@@ -64,10 +64,11 @@ uses
 type
   TDynamicSmallIntArray = TArray<SmallInt>;
 
+{ TODO -cRedo or Remove : Add record helper toString - and remove all FacingString }
   TFacing = ( fNW, fNN, fNE, fEE, fSE, fSS, fSW, fWW );
 
   TSlot = ( slLeg1, slBoot, slLeg2, slChest1, slChest2, slArm, slBelt, slChest3,
-    slGauntlet, slOuter, slHelmet, slWeapon, slShield, sltabar, slMisc1, slMisc2, slMisc3 );
+    slGauntlet, slOuter, slHelmet, slWeapon, slShield, slTabar, slMisc1, slMisc2, slMisc3 );
 
   TSlotAllowed = set of TSlot;
 
@@ -267,7 +268,7 @@ var
   XRefDB : string;
   TitlesDB : string;
 
-
+{ TODO -cMove : Redo as stringhelper in SoAOS.StrUtils }
 function Parse( const S : String; Index : integer; ParseChar : Char ) : string;
 //function GetFile( const FileName : string; var BM : TBitmap; var INI : TStringIniFile; var FrameCount : Integer ) : Boolean;
 function LoadResource( const Filename : string ) : TResource; overload;

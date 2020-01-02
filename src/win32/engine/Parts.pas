@@ -449,40 +449,23 @@ begin
 
       SlotString := LowerCase( sParseDB( cSlotsAllowed ) );
 
-      if Pos( '[leg1]', SlotString ) <> 0 then
-        SlotsAllowed := SlotsAllowed + [ slLeg1 ];
-      if Pos( '[boot]', SlotString ) <> 0 then
-        SlotsAllowed := SlotsAllowed + [ slBoot ];
-      if Pos( '[leg2]', SlotString ) <> 0 then
-        SlotsAllowed := SlotsAllowed + [ slLeg2 ];
-      if Pos( '[chest1]', SlotString ) <> 0 then
-        SlotsAllowed := SlotsAllowed + [ slChest1 ];
-      if Pos( '[chest2]', SlotString ) <> 0 then
-        SlotsAllowed := SlotsAllowed + [ slChest2 ];
-      if Pos( '[arm]', SlotString ) <> 0 then
-        SlotsAllowed := SlotsAllowed + [ slArm ];
-      if Pos( '[belt]', SlotString ) <> 0 then
-        SlotsAllowed := SlotsAllowed + [ slBelt ];
-      if Pos( '[chest3]', SlotString ) <> 0 then
-        SlotsAllowed := SlotsAllowed + [ slChest3 ];
-      if Pos( '[gauntlet]', SlotString ) <> 0 then
-        SlotsAllowed := SlotsAllowed + [ slGauntlet ];
-      if Pos( '[outer]', SlotString ) <> 0 then
-        SlotsAllowed := SlotsAllowed + [ slOuter ];
-      if Pos( '[helmet]', SlotString ) <> 0 then
-        SlotsAllowed := SlotsAllowed + [ slHelmet ];
-      if Pos( '[weapon]', SlotString ) <> 0 then
-        SlotsAllowed := SlotsAllowed + [ slWeapon ];
-      if Pos( '[shield]', SlotString ) <> 0 then
-        SlotsAllowed := SlotsAllowed + [ slShield ];
-      if Pos( '[tabar]', SlotString ) <> 0 then
-        SlotsAllowed := SlotsAllowed + [ sltabar ];
-      if Pos( '[misc1]', SlotString ) <> 0 then
-        SlotsAllowed := SlotsAllowed + [ slMisc1 ];
-      if Pos( '[misc2]', SlotString ) <> 0 then
-        SlotsAllowed := SlotsAllowed + [ slMisc2 ];
-      if Pos( '[misc3]', SlotString ) <> 0 then
-        SlotsAllowed := SlotsAllowed + [ slMisc3 ];
+      if SlotString.Contains( '[leg1]' ) then SlotsAllowed := SlotsAllowed + [ slLeg1 ];
+      if SlotString.Contains( '[boot]' ) then SlotsAllowed := SlotsAllowed + [ slBoot ];
+      if SlotString.Contains( '[leg2]' ) then SlotsAllowed := SlotsAllowed + [ slLeg2 ];
+      if SlotString.Contains( '[chest1]' ) then SlotsAllowed := SlotsAllowed + [ slChest1 ];
+      if SlotString.Contains( '[chest2]' ) then SlotsAllowed := SlotsAllowed + [ slChest2 ];
+      if SlotString.Contains( '[arm]' ) then SlotsAllowed := SlotsAllowed + [ slArm ];
+      if SlotString.Contains( '[belt]' ) then SlotsAllowed := SlotsAllowed + [ slBelt ];
+      if SlotString.Contains( '[chest3]' ) then SlotsAllowed := SlotsAllowed + [ slChest3 ];
+      if SlotString.Contains( '[gauntlet]' ) then SlotsAllowed := SlotsAllowed + [ slGauntlet ];
+      if SlotString.Contains( '[outer]' ) then SlotsAllowed := SlotsAllowed + [ slOuter ];
+      if SlotString.Contains( '[helmet]' ) then SlotsAllowed := SlotsAllowed + [ slHelmet ];
+      if SlotString.Contains( '[weapon]' ) then SlotsAllowed := SlotsAllowed + [ slWeapon ];
+      if SlotString.Contains( '[shield]' ) then SlotsAllowed := SlotsAllowed + [ slShield ];
+      if SlotString.Contains( '[tabar]' ) then SlotsAllowed := SlotsAllowed + [ sltabar ];
+      if SlotString.Contains( '[misc1]' ) then SlotsAllowed := SlotsAllowed + [ slMisc1 ];
+      if SlotString.Contains( '[misc2]' ) then SlotsAllowed := SlotsAllowed + [ slMisc2 ];
+      if SlotString.Contains( '[misc3]' ) then SlotsAllowed := SlotsAllowed + [ slMisc3 ];
 
       InvW := StrToInt( ParseDB( cInventoryWidth ) ) div 18;
       InvH := StrToInt( ParseDB( cInventoryHeight ) ) div 26;
@@ -553,11 +536,11 @@ begin
     if XRefDB.FindRecord( 'Base' ) then
     begin
       XRefIndex := 1;
-      S1 := lowercase( NakedName );
+      S1 := NakedName.ToLower;
       S := XRefDB.Fields[ XRefIndex ];
       while S <> '' do
       begin
-        if Pos( S1, lowercase( S ) ) > 0 then  // was >=0 in gondur code - did not make sense - I might be wrong, default skinny male does not fit his cloth is shown
+        if S.ToLower.Contains( S1 ) then  // was >=0 in gondur code - did not make sense - I might be wrong, default skinny male does not fit his cloth is shown
           break;
         inc( XRefIndex );
         S := XRefDB.Fields[ XRefIndex ];

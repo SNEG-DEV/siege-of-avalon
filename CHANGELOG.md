@@ -11,6 +11,14 @@ All notable changes to this project will be documented in this file.
 - Character in the center - add male/female choices.
 - Mod selection - more DLC style - extendable instead of destructive copy/paste exercises.
 - Better multi-language support - right now it is crippled, like other parts of the UI code.
+- REFACTOR: Remove casting and add helpers to improve readability/mainability
+- REFACTOR: Too much copy/paste code - (re)Moved method up to base class or extract
+- REFACTOR: Reorg classes
+
+## 2020-01-02
+### Changed
+- Changed all use of POS() to string helpers - syntactical sugar and recommended
+- Commented more unused code - will be removed next 
 
 ## 2020-01-01
 ### Added

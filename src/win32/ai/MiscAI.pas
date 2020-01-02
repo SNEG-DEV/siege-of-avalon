@@ -2083,11 +2083,11 @@ begin
     if Assigned( Character.Track ) then
       Character.Face( Character.Track.X, Character.Track.Y );
 
-    if Pos( 'E', character.FacingString ) <> 0 then
+    if character.FacingString.Contains( 'E' ) then
       Character.RunTo( Character.X - 200, Character.Y + random( 400 ) - 200, 48 )
-    else if Pos( 'W', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'W' ) then
       Character.RunTo( Character.X + 200, Character.Y + random( 400 ) - 200, 48 )
-    else if Pos( 'SS', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'SS' ) then
       Character.RunTo( Character.X + random( 400 ) - 200, Character.Y - 200, 48 )
     else
       Character.RunTo( Character.X + random( 400 ) - 200, Character.Y + 200, 48 );
@@ -2459,7 +2459,7 @@ begin
       else
       begin
         strdisguise := s;
-        if Pos( 'party', Lowercase( Character.Enemies ) ) <> 0 then
+        if Character.Enemies.ToLower.Contains( 'party' ) then
         begin
           tmpEnemies := Character.Enemies;
           Character.Properties[ 'tmpEnemies' ] := Character.Enemies;
@@ -2485,7 +2485,6 @@ begin
     except
       iDistance := 175;
     end;
-
 
     if character.TitleExists( 'Combative' ) then
     begin
@@ -2928,12 +2927,11 @@ begin
                 Fighting := False;
                 exit;
               end
-              else if Pos( 'party', Lowercase( tmpEnemies ) ) <> 0 then
+              else if tmpEnemies.ToLower.Contains( 'party' ) then
               begin
                 Character.MakeEnemy( 'party' );
               end;
             end;
-
 
             character.StandAction := '';
             StandInterval := -1;
@@ -3023,13 +3021,13 @@ begin
         Character.walkTo( FMaster.X + ( random( 220 ) - 110 ), FMaster.Y + ( random( 220 ) - 110 ), 48 );
         Stopped := false;
       end;
-        {  if Pos('E',FFMaster.FacingString)<>0 then
+        {  if FFMaster.FacingString.contains( 'E' ) then
              Character.WalkTo(FFMaster.X - (random(100)+20), FFMaster.Y+ random(100)+20, 4)
           else
-          if Pos('W',FFMaster.FacingString)<>0 then
+          if FFMaster.FacingString.contains( 'W' ) then
              Character.WalkTo(FFMaster.X + (random(100)+20), FFMaster.Y +  (random(100)+20), 4)
           else
-          if Pos('SS',FFMaster.FacingString)<>0 then
+          if FFMaster.FacingString.contains( 'SS' ) then
              Character.WalkTo(FFMaster.X +  (random(100)+20), FFMaster.Y - (random(100)+20), 4)
           else
               Character.WalkTo(FFMaster.X +  (random(100)+20), FFMaster.Y + (random(100)+20), 4);}
@@ -3271,11 +3269,11 @@ begin
     if Assigned( Character.Track ) then
       Character.Face( Character.Track.X, Character.Track.Y );
 
-    if Pos( 'E', character.FacingString ) <> 0 then
+    if character.FacingString.Contains( 'E' ) then
       Character.RunTo( Character.X - 100, Character.Y + random( 200 ) - 100, 4 )
-    else if Pos( 'W', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'W' ) then
       Character.RunTo( Character.X + 100, Character.Y + random( 200 ) - 100, 4 )
-    else if Pos( 'SS', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'SS' ) then
       Character.RunTo( Character.X + random( 200 ) - 100, Character.Y - 100, 4 )
     else
       Character.RunTo( Character.X + random( 200 ) - 100, Character.Y + 100, 4 );
@@ -3473,11 +3471,11 @@ begin
       Character.Face( Character.Track.X, Character.Track.Y );
     end;
     if walking then
-      if Pos( 'E', character.FacingString ) <> 0 then
+      if character.FacingString.Contains( 'E' ) then
         Character.WalkTo( Character.X - 250, Character.Y + random( 500 ) - 250, 16 )
-      else if Pos( 'W', character.FacingString ) <> 0 then
+      else if character.FacingString.Contains( 'W' ) then
         Character.WalkTo( Character.X + 250, Character.Y + random( 500 ) - 250, 16 )
-      else if Pos( 'SS', character.FacingString ) <> 0 then
+      else if character.FacingString.Contains( 'SS' ) then
         Character.WalkTo( Character.X + random( 500 ) - 250, Character.Y - 250, 16 )
       else
         Character.WalkTo( Character.X + random( 500 ) - 250, Character.Y + 250, 16 );
@@ -4941,11 +4939,11 @@ begin
     if Assigned( Character.Track ) then
       Character.Face( Character.Track.X, Character.Track.Y );
 
-    if Pos( 'E', character.FacingString ) <> 0 then
+    if character.FacingString.Contains( 'E' ) then
       Character.WalkTo( Character.X - 100, Character.Y + random( 200 ) - 100, 64 )
-    else if Pos( 'W', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'W' ) then
       Character.WalkTo( Character.X + 100, Character.Y + random( 200 ) - 100, 64 )
-    else if Pos( 'SS', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'SS' ) then
       Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y - 100, 64 )
     else
       Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y + 100, 64 );
@@ -5440,11 +5438,11 @@ begin
     if Assigned( Character.Track ) then
       Character.Face( Character.Track.X, Character.Track.Y );
 
-    if Pos( 'E', character.FacingString ) <> 0 then
+    if character.FacingString.Contains( 'E' ) then
       Character.WalkTo( Character.X - 100, Character.Y + random( 200 ) - 100, 64 )
-    else if Pos( 'W', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'W' ) then
       Character.WalkTo( Character.X + 100, Character.Y + random( 200 ) - 100, 64 )
-    else if Pos( 'SS', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'SS' ) then
       Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y - 100, 64 )
     else
       Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y + 100, 64 );
@@ -6125,13 +6123,13 @@ begin
       if ( FrameCount mod 40 ) = 0 then
         Character.RunTo( FLeader.X + ( random( 240 ) - 120 ), FLeader.Y + ( random( 240 ) - 120 ), 4 )
 
-        {  if Pos('E',FPlayer.FacingString)<>0 then
+        {  if FPlayer.FacingString.contains( 'E' ) then
              Character.WalkTo(FPlayer.X - (random(100)+20), FPlayer.Y+ random(100)+20, 4)
           else
-          if Pos('W',FPlayer.FacingString)<>0 then
+          if FPlayer.FacingString.contains( 'W' ) then
              Character.WalkTo(FPlayer.X + (random(100)+20), FPlayer.Y +  (random(100)+20), 4)
           else
-          if Pos('SS',FPlayer.FacingString)<>0 then
+          if FPlayer.FacingString.contains( 'SS' ) then
              Character.WalkTo(FPlayer.X +  (random(100)+20), FPlayer.Y - (random(100)+20), 4)
           else
               Character.WalkTo(FPlayer.X +  (random(100)+20), FPlayer.Y + (random(100)+20), 4);}
@@ -6333,11 +6331,11 @@ begin
     if Assigned( Character.Track ) then
       Character.Face( Character.Track.X, Character.Track.Y );
 
-    if Pos( 'E', character.FacingString ) <> 0 then
+    if character.FacingString.Contains( 'E' ) then
       Character.WalkTo( Character.X - 100, Character.Y + random( 200 ) - 100, 4 )
-    else if Pos( 'W', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'W' ) then
       Character.WalkTo( Character.X + 100, Character.Y + random( 200 ) - 100, 4 )
-    else if Pos( 'SS', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'SS' ) then
       Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y - 100, 4 )
     else
       Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y + 100, 4 );

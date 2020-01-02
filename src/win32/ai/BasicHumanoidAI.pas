@@ -1110,7 +1110,7 @@ begin
               begin
                 if Player.IsWorn( strdisguise ) and ( NPCList.count < 2 ) then
                   exit
-                else if Pos( 'party', Lowercase( tmpEnemies ) ) <> 0 then
+                else if Lowercase( tmpEnemies ).Contains( 'party' ) then
                 begin
                   Character.MakeEnemy( 'party' );
                   Character.Properties[ 'DisguiseDetected' ] := 'true';
@@ -1765,7 +1765,7 @@ begin
       else
       begin
         strdisguise := s;
-        if Pos( 'party', Lowercase( Character.Enemies ) ) <> 0 then
+        if Character.Enemies.ToLower.Contains( 'party' ) then
         begin
           tmpEnemies := Character.Enemies;
           Character.Properties[ 'tmpEnemies' ] := Character.Enemies;
@@ -2834,13 +2834,13 @@ begin
             Character.WalkTo( Character.X + random( 300 ) - 150, Character.Y + 150, 64 )
         end;
     end;
-        {if Pos('E',character.FacingString)<>0 then
+        {if character.FacingString.contains( 'E' ) then
            Character.WalkTo(Character.X - 150, Character.Y+ random(300)- 150, 128)
         else
-        if Pos('W',character.FacingString)<>0 then
+        if character.FacingString.contains( 'W' ) then
            Character.WalkTo(Character.X + 150, Character.Y + random(300)- 150, 128)
         else
-        if Pos('SS',character.FacingString)<>0 then
+        if character.FacingString.contains( 'SS' ) then
            Character.WalkTo(Character.X + random(300) - 150, Character.Y - 150, 128)
         else
             Character.WalkTo(Character.X + random(300) - 150, Character.Y + 150, 128);}
@@ -2913,7 +2913,6 @@ begin
   end;
 
 end;
-
 
 procedure THumanoidMeleeCombat.Regroup( Source : TAniFigure; NewX, NewY : Integer );
 const
@@ -5637,7 +5636,6 @@ begin
       AllowRun := true;
     end;
 
-
     S := LowerCase( Character.Properties[ 'oSpellBook' ] );
     try
       if S = '' then
@@ -5648,10 +5646,8 @@ begin
       oSpellBook := 'frost,shrapnel,flame,charge,buff,hold';
     end;
 
-    if Pos( 'hold', OSpellBook ) = 0 then
+    if not oSpellBook.Contains( 'hold' ) then
       HoldCast := true;
-
-
 
     S := LowerCase( Character.Properties[ 'SummonGUId' ] );
     try
@@ -5659,7 +5655,6 @@ begin
         FSummonGuid := ''
       else
       begin
-
         FSummonGuid := s;
         Character.addtitle( 'SummonGuards' );
       end;
@@ -5718,7 +5713,6 @@ begin
       dSpellBook := 'protection from all,aura of iron';
     end;
 
-
     S := LowerCase( Character.Properties[ 'Moveable' ] );
     try
       if S = '' then
@@ -5745,7 +5739,6 @@ begin
     end;
         //JAH FixME
     bHealFirst := False;
-
 
     S := Character.Properties[ 'Distance' ];
     try
@@ -5820,8 +5813,6 @@ begin
   //Delay := random(60);
 
 end;
-
-
 
 procedure THumanoidCasterCombat.NotifyOfDeath( Source : TAniFigure );
 var
@@ -6406,11 +6397,11 @@ begin
   try
     if assigned( Character.track ) then
       Character.Face( Character.Track.X, Character.track.Y );
-    if Pos( 'E', character.FacingString ) <> 0 then
+    if character.FacingString.Contains( 'E' ) then
       Character.WalkTo( Character.X - 150, Character.Y + random( 300 ) - 150, 64 )
-    else if Pos( 'W', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'W' ) then
       Character.WalkTo( Character.X + 150, Character.Y + random( 300 ) - 150, 64 )
-    else if Pos( 'SS', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'SS' ) then
       Character.WalkTo( Character.X + random( 300 ) - 150, Character.Y - 150, 64 )
     else
       Character.WalkTo( Character.X + random( 300 ) - 150, Character.Y + 150, 64 );
@@ -6698,17 +6689,17 @@ begin
               for iLoop := 0 to List.count - 1 do
               begin
                 TCharacter( List.Objects[ iLoop ] ).stand;
-                if Pos( 'E', TCharacter( List.Objects[ iLoop ] ).FacingString ) <> 0 then
+                if TCharacter( List.Objects[ iLoop ] ).FacingString.Contains( 'E' ) then
                 begin
                   if Assigned( TCharacter( List.Objects[ iLoop ] ).AI ) then
                     TAI( TCharacter( List.Objects[ iLoop ] ).AI ).regroup( character, TCharacter( List.Objects[ iLoop ] ).X - 150, TCharacter( List.Objects[ iLoop ] ).Y + random( 300 ) - 150 )
                 end
-                else if Pos( 'W', TCharacter( List.Objects[ iLoop ] ).FacingString ) <> 0 then
+                else if TCharacter( List.Objects[ iLoop ] ).FacingString.Contains( 'W' ) then
                 begin
                   if Assigned( TCharacter( List.Objects[ iLoop ] ).AI ) then
                     TAI( TCharacter( List.Objects[ iLoop ] ).AI ).regroup( character, TCharacter( List.Objects[ iLoop ] ).X + 150, TCharacter( List.Objects[ iLoop ] ).Y + random( 300 ) - 150 )
                 end
-                else if Pos( 'SS', TCharacter( List.Objects[ iLoop ] ).FacingString ) <> 0 then
+                else if TCharacter( List.Objects[ iLoop ] ).FacingString.Contains( 'SS' ) then
                 begin
                   if Assigned( TCharacter( List.Objects[ iLoop ] ).AI ) then
                     TAI( TCharacter( List.Objects[ iLoop ] ).AI ).regroup( character, TCharacter( List.Objects[ iLoop ] ).X + random( 300 ) - 150, TCharacter( List.Objects[ iLoop ] ).Y - 150 )
@@ -6941,11 +6932,11 @@ begin
     begin
       Character.Face( Character.Track.X, Character.track.Y );
     end; //From Mike
-    if Pos( 'E', character.FacingString ) <> 0 then
+    if character.FacingString.Contains( 'E' ) then
       Character.WalkTo( Character.X - 150, Character.Y + random( 300 ) - 150, 64 )
-    else if Pos( 'W', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'W' ) then
       Character.WalkTo( Character.X + 150, Character.Y + random( 300 ) - 150, 64 )
-    else if Pos( 'SS', character.FacingString ) <> 0 then
+    else if character.FacingString.Contains( 'SS' ) then
       Character.WalkTo( Character.X + random( 300 ) - 150, Character.Y - 150, 64 )
     else
       Character.WalkTo( Character.X + random( 300 ) - 150, Character.Y + 150, 64 );
@@ -7412,17 +7403,17 @@ begin
           for iLoop := 0 to List.count - 1 do
           begin
             TCharacter( List.Objects[ iLoop ] ).stand;
-            if Pos( 'E', TCharacter( List.Objects[ iLoop ] ).FacingString ) <> 0 then
+            if TCharacter( List.Objects[ iLoop ] ).FacingString.Contains( 'E' ) then
             begin
               if Assigned( TCharacter( List.Objects[ iLoop ] ).AI ) then
                 TAI( TCharacter( List.Objects[ iLoop ] ).AI ).regroup( character, TCharacter( List.Objects[ iLoop ] ).X - 150, TCharacter( List.Objects[ iLoop ] ).Y + random( 300 ) - 150 )
             end
-            else if Pos( 'W', TCharacter( List.Objects[ iLoop ] ).FacingString ) <> 0 then
+            else if TCharacter( List.Objects[ iLoop ] ).FacingString.Contains( 'W' ) then
             begin
               if Assigned( TCharacter( List.Objects[ iLoop ] ).AI ) then
                 TAI( TCharacter( List.Objects[ iLoop ] ).AI ).regroup( character, TCharacter( List.Objects[ iLoop ] ).X + 150, TCharacter( List.Objects[ iLoop ] ).Y + random( 300 ) - 150 )
             end
-            else if Pos( 'SS', TCharacter( List.Objects[ iLoop ] ).FacingString ) <> 0 then
+            else if TCharacter( List.Objects[ iLoop ] ).FacingString.Contains( 'SS' ) then
             begin
               if Assigned( TCharacter( List.Objects[ iLoop ] ).AI ) then
                 TAI( TCharacter( List.Objects[ iLoop ] ).AI ).regroup( character, TCharacter( List.Objects[ iLoop ] ).X + random( 300 ) - 150, TCharacter( List.Objects[ iLoop ] ).Y - 150 )
