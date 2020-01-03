@@ -257,16 +257,14 @@ begin
   try
     if assigned( Character.Track ) then
       Character.Face( Character.Track.X, Character.Track.Y );
-    //Better runAway code
-    if character.FacingString.Contains( 'E' ) then
-      Character.RunTo( Character.X - 250, Character.Y + random( 500 ) - 250, 64 )
-    else if character.FacingString.Contains( 'W' ) then
-      Character.RunTo( Character.X + 250, Character.Y + random( 500 ) - 250, 64 )
-    else if character.FacingString.Contains( 'SS' ) then
-      Character.RunTo( Character.X + random( 500 ) - 250, Character.Y - 250, 64 )
-    else
-      Character.RunTo( Character.X + random( 500 ) - 250, Character.Y + 250, 64 );
 
+    case Character.Facing of
+      fNE,fEE,fSE: Character.RunTo( Character.X - 250, Character.Y + random( 500 ) - 250, 64 );
+      fNW,fSW,fWW: Character.RunTo( Character.X + 250, Character.Y + random( 500 ) - 250, 64 );
+      fSS: Character.RunTo( Character.X + random( 500 ) - 250, Character.Y - 250, 64 );
+      fNN: Character.RunTo( Character.X + random( 500 ) - 250, Character.Y + 250, 64 );
+    end;
+    
     Walking := true;
     Delay := random( 240 );
   except
@@ -558,15 +556,13 @@ begin
       Character.Face( Character.Track.X, Character.Track.Y );
       Character.Track := nil;
     end;
-    //Better runAway code
-    if character.FacingString.Contains( 'E' ) then
-      Character.RunTo( Character.X - 250, Character.Y + random( 500 ) - 250, 16 )
-    else if character.FacingString.Contains( 'W' ) then
-      Character.RunTo( Character.X + 250, Character.Y + random( 500 ) - 250, 16 )
-    else if character.FacingString.Contains( 'SS' ) then
-      Character.RunTo( Character.X + random( 500 ) - 250, Character.Y - 250, 16 )
-    else
-      Character.RunTo( Character.X + random( 500 ) - 250, Character.Y + 250, 16 );
+
+    case Character.Facing of
+      fNE,fEE,fSE: Character.RunTo( Character.X - 250, Character.Y + random( 500 ) - 250, 16 );
+      fNW,fSW,fWW: Character.RunTo( Character.X + 250, Character.Y + random( 500 ) - 250, 16 );
+      fSS: Character.RunTo( Character.X + random( 500 ) - 250, Character.Y - 250, 16 );
+      fNN: Character.RunTo( Character.X + random( 500 ) - 250, Character.Y + 250, 16 );
+    end;
 
     Walking := true;
     bRunaway := False;

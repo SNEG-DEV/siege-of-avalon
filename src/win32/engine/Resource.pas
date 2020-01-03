@@ -64,9 +64,6 @@ uses
 type
   TDynamicSmallIntArray = TArray<SmallInt>;
 
-{ TODO -cRedo or Remove : Add record helper toString - and remove all FacingString }
-  TFacing = ( fNW, fNN, fNE, fEE, fSE, fSS, fSW, fWW );
-
   TSlot = ( slLeg1, slBoot, slLeg2, slChest1, slChest2, slArm, slBelt, slChest3,
     slGauntlet, slOuter, slHelmet, slWeapon, slShield, slTabar, slMisc1, slMisc2, slMisc3 );
 

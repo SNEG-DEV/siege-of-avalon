@@ -800,7 +800,7 @@ begin
             Effect.Resource := TalkToMeResource;
             Effect.AnimationDuration := 8 * TalkToMeResource.FrameMultiplier;
             Effect.Power := Character.Mysticism;
-            Effect.DoAction( 'Default', Character.FacingString );
+            Effect.DoAction( 'Default', Character.Facing );
             Character.AddEffect( Effect );
             Break;
           end;
@@ -2192,21 +2192,21 @@ begin
         if ( Facing <> '' ) then
         begin
           if Facing = 'SS' then
-            character.Facing := FSS;
+            character.Facing := fSS;
           if Facing = 'SE' then
-            character.Facing := FSE;
+            character.Facing := fSE;
           if Facing = 'EE' then
-            character.Facing := FEE;
+            character.Facing := fEE;
           if Facing = 'NE' then
-            character.Facing := FNE;
+            character.Facing := fNE;
           if Facing = 'NN' then
-            character.Facing := FNN;
+            character.Facing := fNN;
           if Facing = 'NW' then
-            character.Facing := FNW;
+            character.Facing := fNW;
           if Facing = 'WW' then
-            character.Facing := FWW;
+            character.Facing := fWW;
           if Facing = 'SW' then
-            character.Facing := FSW;
+            character.Facing := fSW;
           character.DoAction( 'Stand' );
           Facing := '';
         end;
@@ -2470,7 +2470,7 @@ begin
 
         Effect.Resource := GetSpellEffect( S.PipeToken( 0 ) );
         Effect.AnimationDuration := Effect.Resource.FrameCount * Effect.Resource.FrameMultiplier;
-        Effect.DoAction( 'Default', Character.FacingString );
+        Effect.DoAction( 'Default', Character.Facing );
         Character.AddEffect( Effect );
 ///        Effect := nil;
 
@@ -3334,7 +3334,7 @@ begin
               Effect := TEffect.Create;
               Effect.Resource := FSpellEffectResource;
               Effect.AnimationDuration := 8 * FSpellEffectResource.FrameMultiplier;
-              Effect.DoAction( 'Default', TCharacter( Source ).FacingString );
+              Effect.DoAction( 'Default', TCharacter( Source ).Facing );
               Effect.ColorR := 250;
               Effect.ColorG := 250;
               Effect.ColorB := 250;
@@ -3447,7 +3447,7 @@ begin
 
         Effect.Resource := GetSpellEffect( S.PipeToken( 0 ) );
         Effect.AnimationDuration := Effect.Resource.FrameCount * Effect.Resource.FrameMultiplier;
-        Effect.DoAction( 'Default', Character.FacingString );
+        Effect.DoAction( 'Default', Character.Facing );
         Character.AddEffect( Effect );
 ///        Effect := nil;
 
@@ -4560,7 +4560,7 @@ begin
     Effect := TEffect.Create;
     Effect.Resource := SummonEffect;
     Effect.AnimationDuration := 8 * SummonEffect.FrameMultiplier;
-    Effect.DoAction( 'Default', Character.FacingString );
+    Effect.DoAction( 'Default', Character.Facing );
     Character.AddEffect( Effect );
     Character.DoAction( 'Cast' );
 
@@ -4585,7 +4585,7 @@ begin
     Effect2 := TEffect.Create;
     Effect2.Resource := SummonResource;
     Effect2.AnimationDuration := 8 * SummonResource.FrameMultiplier;
-    Effect2.DoAction( 'Default', NewGuard.FacingString );
+    Effect2.DoAction( 'Default', NewGuard.Facing );
 
     if LowerCase( NewGuard.Properties[ 'UseColor' ] ) = 'true' then
     begin
@@ -4645,7 +4645,7 @@ begin
     Effect := TEffect.Create;
     Effect.Resource := SummonEffect;
     Effect.AnimationDuration := 8 * SummonEffect.FrameMultiplier;
-    Effect.DoAction( 'Default', Character.FacingString );
+    Effect.DoAction( 'Default', Character.Facing );
     Character.AddEffect( Effect );
     Character.DoAction( 'Cast' );
 
@@ -4696,7 +4696,7 @@ begin
     Effect2 := TEffect.Create;
     Effect2.Resource := SummonResource;
     Effect2.AnimationDuration := 8 * SummonResource.FrameMultiplier;
-    Effect2.DoAction( 'Default', NewSummon.FacingString );
+    Effect2.DoAction( 'Default', NewSummon.Facing );
          //red
     Effect2.ColorR := 0;
     Effect2.ColorG := -200;
@@ -4736,7 +4736,7 @@ begin
     Effect := TEffect.Create;
     Effect.Resource := SummonResource;
     Effect.AnimationDuration := 8 * SummonResource.FrameMultiplier;
-    Effect.DoAction( 'Default', character.FacingString );
+    Effect.DoAction( 'Default', character.Facing );
     Effect.Alpha := Effect.Resource.Alpha;
     Effect.SpecialEffect := seAdd;
     Character.AddEffect( Effect );
@@ -4801,7 +4801,7 @@ begin
       Effect2 := TEffect.Create;
       Effect2.Resource := SummonResource;
       Effect2.AnimationDuration := 8 * SummonResource.FrameMultiplier;
-      Effect2.DoAction( 'Default', NewGuard.FacingString );
+      Effect2.DoAction( 'Default', NewGuard.Facing );
       Effect2.Alpha := Effect.Resource.Alpha;
       Effect2.SpecialEffect := seAdd;
       Effect2.DisableWhenDone := true;
@@ -4864,7 +4864,7 @@ begin
       Effect.AnimationDuration := 8 * SummonResource.FrameMultiplier;
       Effect.Alpha := Effect.Resource.Alpha;
       Effect.SpecialEffect := seAdd;
-      Effect.DoAction( 'Default', character.FacingString );
+      Effect.DoAction( 'Default', character.Facing );
 
       Character.AddEffect( Effect );
 
@@ -5102,7 +5102,7 @@ begin
                     Effect.Resource := CastEffect;
                     Effect.AnimationDuration := 8 * CastEffect.FrameMultiplier;
                     Effect.Power := Character.Mysticism;
-                    Effect.DoAction( 'Default', Character.FacingString );
+                    Effect.DoAction( 'Default', Character.Facing );
                     Character.AddEffect( Effect );
                   end;
                   character.Cast( Character.Track );
@@ -5170,7 +5170,7 @@ begin
                   Effect := TEffect.Create;
                   Effect.Resource := PushEffect;
                   Effect.AnimationDuration := 8 * PushEffect.FrameMultiplier;
-                  Effect.DoAction( 'Default', Character.FacingString );
+                  Effect.DoAction( 'Default', Character.Facing );
                   Character.AddEffect( Effect );
                 end;
                 character.Cast( Character.Track );
@@ -5205,7 +5205,7 @@ begin
                   Effect := TEffect.Create;
                   Effect.Resource := RotatingBlades;
                   Effect.AnimationDuration := 8 * PushEffect.FrameMultiplier;
-                  Effect.DoAction( 'Default', Character.FacingString );
+                  Effect.DoAction( 'Default', Character.Facing );
                   Character.AddEffect( Effect );
                 end;
                 character.Cast( Character.Track );
@@ -5278,7 +5278,7 @@ begin
         Effect.Resource := CastEffect;
         Effect.AnimationDuration := 8 * CastEffect.FrameMultiplier;
         Effect.Power := Character.Mysticism;
-        Effect.DoAction( 'Default', Character.FacingString );
+        Effect.DoAction( 'Default', Character.Facing );
         Character.AddEffect( Effect );
       end;
       Allies := GetPerceptibleAllies( Character, 1.5 );
@@ -5794,7 +5794,7 @@ begin
             Effect.Resource := CastEffect;
             Effect.AnimationDuration := 8 * CastEffect.FrameMultiplier;
             Effect.Power := Character.Mysticism;
-            Effect.DoAction( 'Default', Character.FacingString );
+            Effect.DoAction( 'Default', Character.Facing );
             Character.AddEffect( Effect );
             Character.doaction( 'cast' );
           end;
@@ -6007,7 +6007,7 @@ begin
                 Effect.ColorB := 250;
                 Effect.ApplyColor := true;
                      // Effect.Power:=Character.Mysticism;
-                Effect.DoAction( 'Default', TCharacter( Source ).FacingString );
+                Effect.DoAction( 'Default', TCharacter( Source ).Facing );
                 TCharacter( Source ).AddEffect( Effect );
               end;
               TCharacter( Source ).TakeDamage( Character, ( ( iDamageShield / 100 ) * Damage ), 0, False );
@@ -6131,7 +6131,7 @@ begin
 
         Effect.Resource := GetSpellEffect( S.PipeToken( 0 ) );
         Effect.AnimationDuration := Effect.Resource.FrameCount * Effect.Resource.FrameMultiplier;
-        Effect.DoAction( 'Default', Character.FacingString );
+        Effect.DoAction( 'Default', Character.Facing );
         Character.AddEffect( Effect );
 ///        Effect := nil;
 
@@ -6397,14 +6397,13 @@ begin
   try
     if assigned( Character.track ) then
       Character.Face( Character.Track.X, Character.track.Y );
-    if character.FacingString.Contains( 'E' ) then
-      Character.WalkTo( Character.X - 150, Character.Y + random( 300 ) - 150, 64 )
-    else if character.FacingString.Contains( 'W' ) then
-      Character.WalkTo( Character.X + 150, Character.Y + random( 300 ) - 150, 64 )
-    else if character.FacingString.Contains( 'SS' ) then
-      Character.WalkTo( Character.X + random( 300 ) - 150, Character.Y - 150, 64 )
-    else
-      Character.WalkTo( Character.X + random( 300 ) - 150, Character.Y + 150, 64 );
+    case Character.Facing of
+      fNE,fEE,fSE: Character.WalkTo( Character.X - 150, Character.Y + random( 300 ) - 150, 64 );
+      fNW,fSW,fWW: Character.WalkTo( Character.X + 150, Character.Y + random( 300 ) - 150, 64 );
+      fSS: Character.WalkTo( Character.X + random( 300 ) - 150, Character.Y - 150, 64 );
+      fNN: Character.WalkTo( Character.X + random( 300 ) - 150, Character.Y + 150, 64 );
+    end;
+
     Walking := true;
     Delay := random( 120 );
   except
@@ -6688,24 +6687,20 @@ begin
             begin
               for iLoop := 0 to List.count - 1 do
               begin
-                TCharacter( List.Objects[ iLoop ] ).stand;
-                if TCharacter( List.Objects[ iLoop ] ).FacingString.Contains( 'E' ) then
+                TCharacter( List.Objects[ iLoop ] ).Stand;
+                if Assigned( TCharacter( List.Objects[ iLoop ] ).AI ) then
                 begin
-                  if Assigned( TCharacter( List.Objects[ iLoop ] ).AI ) then
-                    TAI( TCharacter( List.Objects[ iLoop ] ).AI ).regroup( character, TCharacter( List.Objects[ iLoop ] ).X - 150, TCharacter( List.Objects[ iLoop ] ).Y + random( 300 ) - 150 )
-                end
-                else if TCharacter( List.Objects[ iLoop ] ).FacingString.Contains( 'W' ) then
-                begin
-                  if Assigned( TCharacter( List.Objects[ iLoop ] ).AI ) then
-                    TAI( TCharacter( List.Objects[ iLoop ] ).AI ).regroup( character, TCharacter( List.Objects[ iLoop ] ).X + 150, TCharacter( List.Objects[ iLoop ] ).Y + random( 300 ) - 150 )
-                end
-                else if TCharacter( List.Objects[ iLoop ] ).FacingString.Contains( 'SS' ) then
-                begin
-                  if Assigned( TCharacter( List.Objects[ iLoop ] ).AI ) then
-                    TAI( TCharacter( List.Objects[ iLoop ] ).AI ).regroup( character, TCharacter( List.Objects[ iLoop ] ).X + random( 300 ) - 150, TCharacter( List.Objects[ iLoop ] ).Y - 150 )
-                end
-                else if Assigned( TCharacter( List.Objects[ iLoop ] ).AI ) then
-                  TAI( TCharacter( List.Objects[ iLoop ] ).AI ).regroup( character, TCharacter( List.Objects[ iLoop ] ).X + random( 300 ) - 150, TCharacter( List.Objects[ iLoop ] ).Y + 150 );
+                  case TCharacter( List.Objects[ iLoop ] ).Facing of
+                    fNE,fEE,fSE:
+                      TAI( TCharacter( List.Objects[ iLoop ] ).AI ).regroup( character, TCharacter( List.Objects[ iLoop ] ).X - 150, TCharacter( List.Objects[ iLoop ] ).Y + random( 300 ) - 150 );
+                    fNW,fSW,fWW:
+                      TAI( TCharacter( List.Objects[ iLoop ] ).AI ).regroup( character, TCharacter( List.Objects[ iLoop ] ).X + 150, TCharacter( List.Objects[ iLoop ] ).Y + random( 300 ) - 150 );
+                    fSS:
+                      TAI( TCharacter( List.Objects[ iLoop ] ).AI ).regroup( character, TCharacter( List.Objects[ iLoop ] ).X + random( 300 ) - 150, TCharacter( List.Objects[ iLoop ] ).Y - 150 );
+                    fNN:
+                      TAI( TCharacter( List.Objects[ iLoop ] ).AI ).regroup( character, TCharacter( List.Objects[ iLoop ] ).X + random( 300 ) - 150, TCharacter( List.Objects[ iLoop ] ).Y + 150 );
+                  end;
+                end;
               end;
               list.free;
             end;
@@ -6929,17 +6924,15 @@ begin
 
     //Better runAway code
     if assigned( Character.track ) then
-    begin
-      Character.Face( Character.Track.X, Character.track.Y );
-    end; //From Mike
-    if character.FacingString.Contains( 'E' ) then
-      Character.WalkTo( Character.X - 150, Character.Y + random( 300 ) - 150, 64 )
-    else if character.FacingString.Contains( 'W' ) then
-      Character.WalkTo( Character.X + 150, Character.Y + random( 300 ) - 150, 64 )
-    else if character.FacingString.Contains( 'SS' ) then
-      Character.WalkTo( Character.X + random( 300 ) - 150, Character.Y - 150, 64 )
-    else
-      Character.WalkTo( Character.X + random( 300 ) - 150, Character.Y + 150, 64 );
+      Character.Face( Character.Track.X, Character.track.Y ); //From Mike
+
+    case Character.Facing of
+      fNE,fEE,fSE: Character.WalkTo( Character.X - 150, Character.Y + random( 300 ) - 150, 64 );
+      fNW,fSW,fWW: Character.WalkTo( Character.X + 150, Character.Y + random( 300 ) - 150, 64 );
+      fSS: Character.WalkTo( Character.X + random( 300 ) - 150, Character.Y - 150, 64 );
+      fNN: Character.WalkTo( Character.X + random( 300 ) - 150, Character.Y + 150, 64 );
+    end;
+
     Walking := true;
     ReadyToAttack := false;
     bRunAway := false;
@@ -7402,25 +7395,20 @@ begin
         begin
           for iLoop := 0 to List.count - 1 do
           begin
-            TCharacter( List.Objects[ iLoop ] ).stand;
-            if TCharacter( List.Objects[ iLoop ] ).FacingString.Contains( 'E' ) then
+            TCharacter( List.Objects[ iLoop ] ).Stand;
+            if Assigned( TCharacter( List.Objects[ iLoop ] ).AI ) then
             begin
-              if Assigned( TCharacter( List.Objects[ iLoop ] ).AI ) then
-                TAI( TCharacter( List.Objects[ iLoop ] ).AI ).regroup( character, TCharacter( List.Objects[ iLoop ] ).X - 150, TCharacter( List.Objects[ iLoop ] ).Y + random( 300 ) - 150 )
-            end
-            else if TCharacter( List.Objects[ iLoop ] ).FacingString.Contains( 'W' ) then
-            begin
-              if Assigned( TCharacter( List.Objects[ iLoop ] ).AI ) then
-                TAI( TCharacter( List.Objects[ iLoop ] ).AI ).regroup( character, TCharacter( List.Objects[ iLoop ] ).X + 150, TCharacter( List.Objects[ iLoop ] ).Y + random( 300 ) - 150 )
-            end
-            else if TCharacter( List.Objects[ iLoop ] ).FacingString.Contains( 'SS' ) then
-            begin
-              if Assigned( TCharacter( List.Objects[ iLoop ] ).AI ) then
-                TAI( TCharacter( List.Objects[ iLoop ] ).AI ).regroup( character, TCharacter( List.Objects[ iLoop ] ).X + random( 300 ) - 150, TCharacter( List.Objects[ iLoop ] ).Y - 150 )
-            end
-            else if Assigned( TCharacter( List.Objects[ iLoop ] ).AI ) then
-              TAI( TCharacter( List.Objects[ iLoop ] ).AI ).regroup( character, TCharacter( List.Objects[ iLoop ] ).X + random( 300 ) - 150, TCharacter( List.Objects[ iLoop ] ).Y + 150 );
-
+              case TCharacter( List.Objects[ iLoop ] ).Facing of
+                fNE,fEE,fSE:
+                  TAI( TCharacter( List.Objects[ iLoop ] ).AI ).regroup( character, TCharacter( List.Objects[ iLoop ] ).X - 150, TCharacter( List.Objects[ iLoop ] ).Y + random( 300 ) - 150 );
+                fNW,fSW,fWW:
+                  TAI( TCharacter( List.Objects[ iLoop ] ).AI ).regroup( character, TCharacter( List.Objects[ iLoop ] ).X + 150, TCharacter( List.Objects[ iLoop ] ).Y + random( 300 ) - 150 );
+                fSS:
+                  TAI( TCharacter( List.Objects[ iLoop ] ).AI ).regroup( character, TCharacter( List.Objects[ iLoop ] ).X + random( 300 ) - 150, TCharacter( List.Objects[ iLoop ] ).Y - 150 );
+                fNN:
+                  TAI( TCharacter( List.Objects[ iLoop ] ).AI ).regroup( character, TCharacter( List.Objects[ iLoop ] ).X + random( 300 ) - 150, TCharacter( List.Objects[ iLoop ] ).Y + 150 );
+              end;
+            end;
           end;
           list.free;
         end;
@@ -7799,7 +7787,7 @@ begin
     if ( AnimationDuration = 1 ) and Assigned( Resource ) then
     begin
       AnimationDuration := Resource.FrameCount * ( Resource.FrameMultiplier );
-      DoAction( 'Default', FCharacter.FacingString );
+      DoAction( 'Default', FCharacter.Facing );
     end;
 
     inherited DoFrame;
@@ -7864,7 +7852,7 @@ begin
     if ( AnimationDuration = 1 ) and Assigned( Resource ) then
     begin
       AnimationDuration := Resource.FrameCount * ( Resource.FrameMultiplier );
-      DoAction( 'Default', FCharacter.FacingString );
+      DoAction( 'Default', FCharacter.Facing );
     end;
 
     inherited DoFrame;

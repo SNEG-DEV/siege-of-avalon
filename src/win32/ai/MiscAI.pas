@@ -2083,14 +2083,12 @@ begin
     if Assigned( Character.Track ) then
       Character.Face( Character.Track.X, Character.Track.Y );
 
-    if character.FacingString.Contains( 'E' ) then
-      Character.RunTo( Character.X - 200, Character.Y + random( 400 ) - 200, 48 )
-    else if character.FacingString.Contains( 'W' ) then
-      Character.RunTo( Character.X + 200, Character.Y + random( 400 ) - 200, 48 )
-    else if character.FacingString.Contains( 'SS' ) then
-      Character.RunTo( Character.X + random( 400 ) - 200, Character.Y - 200, 48 )
-    else
-      Character.RunTo( Character.X + random( 400 ) - 200, Character.Y + 200, 48 );
+    case Character.Facing of
+      fNE,fEE,fSE: Character.RunTo( Character.X - 200, Character.Y + random( 400 ) - 200, 48 );
+      fNW,fSW,fWW: Character.RunTo( Character.X + 200, Character.Y + random( 400 ) - 200, 48 );
+      fSS: Character.RunTo( Character.X + random( 400 ) - 200, Character.Y - 200, 48 );
+      fNN: Character.RunTo( Character.X + random( 400 ) - 200, Character.Y + 200, 48 );
+    end;
 
     RunAway := False;
   except
@@ -3269,14 +3267,12 @@ begin
     if Assigned( Character.Track ) then
       Character.Face( Character.Track.X, Character.Track.Y );
 
-    if character.FacingString.Contains( 'E' ) then
-      Character.RunTo( Character.X - 100, Character.Y + random( 200 ) - 100, 4 )
-    else if character.FacingString.Contains( 'W' ) then
-      Character.RunTo( Character.X + 100, Character.Y + random( 200 ) - 100, 4 )
-    else if character.FacingString.Contains( 'SS' ) then
-      Character.RunTo( Character.X + random( 200 ) - 100, Character.Y - 100, 4 )
-    else
-      Character.RunTo( Character.X + random( 200 ) - 100, Character.Y + 100, 4 );
+    case Character.Facing of
+      fNE,fEE,fSE: Character.RunTo( Character.X - 100, Character.Y + random( 200 ) - 100, 4 );
+      fNW,fSW,fWW: Character.RunTo( Character.X + 100, Character.Y + random( 200 ) - 100, 4 );
+      fSS: Character.RunTo( Character.X + random( 200 ) - 100, Character.Y - 100, 4 );
+      fNN: Character.RunTo( Character.X + random( 200 ) - 100, Character.Y + 100, 4 );
+    end;
 
     RunAway := False;
   except
@@ -3467,18 +3463,17 @@ begin
   Log.DebugLog( FailName );
   try
     if Assigned( Character.Track ) then
-    begin
       Character.Face( Character.Track.X, Character.Track.Y );
-    end;
+
     if walking then
-      if character.FacingString.Contains( 'E' ) then
-        Character.WalkTo( Character.X - 250, Character.Y + random( 500 ) - 250, 16 )
-      else if character.FacingString.Contains( 'W' ) then
-        Character.WalkTo( Character.X + 250, Character.Y + random( 500 ) - 250, 16 )
-      else if character.FacingString.Contains( 'SS' ) then
-        Character.WalkTo( Character.X + random( 500 ) - 250, Character.Y - 250, 16 )
-      else
-        Character.WalkTo( Character.X + random( 500 ) - 250, Character.Y + 250, 16 );
+    begin
+      case Character.Facing of
+        fNE,fEE,fSE: Character.WalkTo( Character.X - 250, Character.Y + random( 500 ) - 250, 16 );
+        fNW,fSW,fWW: Character.WalkTo( Character.X + 250, Character.Y + random( 500 ) - 250, 16 );
+        fSS: Character.WalkTo( Character.X + random( 500 ) - 250, Character.Y - 250, 16 );
+        fNN: Character.WalkTo( Character.X + random( 500 ) - 250, Character.Y + 250, 16 );
+      end;
+    end;
     //bRunaway := False;
 
     Walking := True;
@@ -4939,14 +4934,12 @@ begin
     if Assigned( Character.Track ) then
       Character.Face( Character.Track.X, Character.Track.Y );
 
-    if character.FacingString.Contains( 'E' ) then
-      Character.WalkTo( Character.X - 100, Character.Y + random( 200 ) - 100, 64 )
-    else if character.FacingString.Contains( 'W' ) then
-      Character.WalkTo( Character.X + 100, Character.Y + random( 200 ) - 100, 64 )
-    else if character.FacingString.Contains( 'SS' ) then
-      Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y - 100, 64 )
-    else
-      Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y + 100, 64 );
+    case Character.Facing of
+      fNE,fEE,fSE: Character.WalkTo( Character.X - 100, Character.Y + random( 200 ) - 100, 64 );
+      fNW,fSW,fWW: Character.WalkTo( Character.X + 100, Character.Y + random( 200 ) - 100, 64 );
+      fSS: Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y - 100, 64 );
+      fNN: Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y + 100, 64 );
+    end;
 
     RunAway := False;
 
@@ -5011,7 +5004,7 @@ begin
  // Effect.Resource:=LoadArtResource('engine\spells\summonreceive.gif');
   Effect.AnimationDuration := 8 * ( Effect.Resource.FrameMultiplier + 6 );
   Effect.Power := Character.Mysticism * 5;
-  Effect.DoAction( 'Default', Character.FacingString );
+  Effect.DoAction( 'Default', Character.Facing );
 
   character.AddEffect( Effect );
   delay := 50;
@@ -5437,15 +5430,12 @@ begin
 
     if Assigned( Character.Track ) then
       Character.Face( Character.Track.X, Character.Track.Y );
-
-    if character.FacingString.Contains( 'E' ) then
-      Character.WalkTo( Character.X - 100, Character.Y + random( 200 ) - 100, 64 )
-    else if character.FacingString.Contains( 'W' ) then
-      Character.WalkTo( Character.X + 100, Character.Y + random( 200 ) - 100, 64 )
-    else if character.FacingString.Contains( 'SS' ) then
-      Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y - 100, 64 )
-    else
-      Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y + 100, 64 );
+    case Character.Facing of
+      fNE,fEE,fSE: Character.WalkTo( Character.X - 100, Character.Y + random( 200 ) - 100, 64 );
+      fNW,fSW,fWW: Character.WalkTo( Character.X + 100, Character.Y + random( 200 ) - 100, 64 );
+      fSS: Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y - 100, 64 );
+      fNN: Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y + 100, 64 );
+    end;
 
     // RunAway := False;
 
@@ -6331,14 +6321,12 @@ begin
     if Assigned( Character.Track ) then
       Character.Face( Character.Track.X, Character.Track.Y );
 
-    if character.FacingString.Contains( 'E' ) then
-      Character.WalkTo( Character.X - 100, Character.Y + random( 200 ) - 100, 4 )
-    else if character.FacingString.Contains( 'W' ) then
-      Character.WalkTo( Character.X + 100, Character.Y + random( 200 ) - 100, 4 )
-    else if character.FacingString.Contains( 'SS' ) then
-      Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y - 100, 4 )
-    else
-      Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y + 100, 4 );
+    case Character.Facing of
+      fNE,fEE,fSE: Character.WalkTo( Character.X - 100, Character.Y + random( 200 ) - 100, 4 );
+      fNW,fSW,fWW: Character.WalkTo( Character.X + 100, Character.Y + random( 200 ) - 100, 4 );
+      fSS: Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y - 100, 4 );
+      fNN: Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y + 100, 4 );
+    end;
 
     RunAway := False;
   except

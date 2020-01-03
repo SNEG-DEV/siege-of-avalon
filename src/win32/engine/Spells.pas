@@ -737,6 +737,7 @@ function MakeSpell( var Spell : TSpell; SpellClass : TSpellClass ) : boolean;
 implementation
 
 uses
+  SoAOS.Types,
   AniDec30,
   AI1,
   MiscAI,
@@ -1315,7 +1316,7 @@ begin
     Effect.Resource := BigFire;
     Effect.AnimationDuration := 10 * Effect.Resource.FrameMultiplier;
     Effect.Power := Source.Mysticism;
-    Effect.DoAction( 'Default', Source.FacingString );
+    Effect.DoAction( 'Default', Source.Facing );
     Source.AddEffect( Effect );
   end;
 end;
@@ -1682,7 +1683,7 @@ begin
     Effect.Resource := BigIce;
     Effect.AnimationDuration := 10 * Effect.Resource.FrameMultiplier;
     Effect.Power := Source.Mysticism;
-    Effect.DoAction( 'Default', Source.FacingString );
+    Effect.DoAction( 'Default', Source.Facing );
     Source.AddEffect( Effect );
   end;
 end;
@@ -1890,7 +1891,7 @@ begin
     Effect.UseCustom := true;
     Effect.Alpha := 100;
     Effect.tag := tag;
-    Effect.DoAction( 'Default', NewTarget.FacingString );
+    Effect.DoAction( 'Default', NewTarget.Facing );
 
     with NewTarget do
     begin
@@ -2140,7 +2141,7 @@ begin
           Effect.Resource := ReceiveResource;
           Effect.AnimationDuration := 8 * ReceiveResource.FrameMultiplier;
           Effect.Power := Source.Mysticism;
-          Effect.DoAction( 'Default', Target.FacingString );
+          Effect.DoAction( 'Default', Target.Facing );
           TCharacter( Target ).AddEffect( Effect );
         end;
 
@@ -2248,7 +2249,7 @@ begin
                 Effect.Resource := ReceiveResource;
                 Effect.AnimationDuration := 8 * ReceiveResource.FrameMultiplier;
                 Effect.Power := Source.Mysticism;
-                Effect.DoAction( 'Default', Target.FacingString );
+                Effect.DoAction( 'Default', Target.Facing );
                 NewTarget.AddEffect( Effect );
               end;
 
@@ -2364,7 +2365,7 @@ begin
           Effect.Resource := ReceiveResource;
           Effect.AnimationDuration := 8 * ReceiveResource.FrameMultiplier;
           Effect.Power := Source.Mysticism;
-          Effect.DoAction( 'Default', Target.FacingString );
+          Effect.DoAction( 'Default', Target.Facing );
           TCharacter( Target ).AddEffect( Effect );
         end;
 
@@ -2479,7 +2480,7 @@ begin
           Effect.Resource := ReceiveResource;
           Effect.AnimationDuration := 8 * ReceiveResource.FrameMultiplier;
           Effect.Power := Source.Mysticism;
-          Effect.DoAction( 'Default', Target.FacingString );
+          Effect.DoAction( 'Default', Target.Facing );
           TCharacter( Target ).AddEffect( Effect );
         end;
 
@@ -3010,7 +3011,7 @@ begin
     Effect.Resource := Resource;
     Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
     Effect.Power := Source.Mysticism;
-    Effect.DoAction( 'Default', NewTarget.FacingString );
+    Effect.DoAction( 'Default', NewTarget.Facing );
 
     if Source.TitleExists( 'Traumatic Healing' ) then
     begin
@@ -3280,7 +3281,7 @@ begin
     Effect.Resource := Resource;
     Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
     Effect.Power := Source.Mysticism;
-    Effect.DoAction( 'Default', Target.FacingString );
+    Effect.DoAction( 'Default', Target.Facing );
 
     if Source.TitleExists( 'Infuse' ) then
     begin
@@ -3781,7 +3782,7 @@ begin
       Effect.Resource := Resource;
       Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
       Effect.Power := Source.Mysticism;
-      Effect.DoAction( 'Default', NewCharacter.FacingString );
+      Effect.DoAction( 'Default', NewCharacter.Facing );
 
       with NewCharacter do
       begin
@@ -3993,7 +3994,7 @@ begin
       Effect.Resource := Resource;
       Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
       Effect.Power := Source.Mysticism;
-      Effect.DoAction( 'Default', NewCharacter.FacingString );
+      Effect.DoAction( 'Default', NewCharacter.Facing );
 
       with NewCharacter do
       begin
@@ -4216,7 +4217,7 @@ begin
       Effect.Resource := Resource;
       Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
       Effect.Power := Source.Mysticism;
-      Effect.DoAction( 'Default', NewCharacter.FacingString );
+      Effect.DoAction( 'Default', NewCharacter.Facing );
 
       with NewCharacter do
       begin
@@ -4433,7 +4434,7 @@ begin
     Effect.Power := Source.Mysticism;
     TAuraEffect( Effect ).HitResource := HitResource;
     Effect.tag := 20;
-    Effect.DoAction( 'Default', NewTarget.FacingString );
+    Effect.DoAction( 'Default', NewTarget.Facing );
 
     with NewTarget do
     begin
@@ -4618,7 +4619,7 @@ begin
     Effect.Duration := Source.Mysticism * 50;
     Effect.Power := Source.Mysticism;
     Effect.tag := 30;
-    Effect.DoAction( 'Default', NewTarget.FacingString );
+    Effect.DoAction( 'Default', NewTarget.Facing );
 
     for i := 0 to FigureInstances.count - 1 do
     begin
@@ -4829,7 +4830,7 @@ begin
     Effect.AnimationDuration := Effect.duration * Resource.FrameMultiplier;
     Effect.Power := Source.Mysticism;
     Effect.tag := 30;
-    Effect.DoAction( 'Default', NewTarget.FacingString );
+    Effect.DoAction( 'Default', NewTarget.Facing );
 
     for i := 0 to FigureInstances.count - 1 do
     begin
@@ -5031,7 +5032,7 @@ begin
         Effect.Resource := Resource;
         Effect.Power := Source.Mysticism;
         Effect.tag := 50;
-        Effect.DoAction( 'Run', Target.FacingString );
+        Effect.DoAction( 'Run', Target.Facing );
 
         Effect.AnimationDuration := TCharacter( Target ).TakeDamage( Source, 0, Duration, true );
         TCharacter( Target ).AddEffect( Effect );
@@ -6087,20 +6088,9 @@ function TAuraEffect.Hit( Source : TAniFigure; Damage : PDamageProfile ) : boole
 var
   Effect : TEffect;
   Direction : TFacing;
-  S : string;
 begin
   result := false;
   Direction := Character.GetFacing( FCharacter.X, FCharacter.Y, Source.X, Source.Y );
-  case Direction of
-    fSS : S := 'SS';
-    fSE : S := 'SE';
-    fEE : S := 'EE';
-    fNE : S := 'NE';
-    fNN : S := 'NN';
-    fNW : S := 'NW';
-    fWW : S := 'WW';
-    fSW : S := 'SW';
-  end;
 
   Effect := TEffect.Create;
   Effect.Resource := HitResource;
@@ -6109,7 +6099,7 @@ begin
   Effect.ColorG := ColorG;
   Effect.ColorB := ColorB;
   Effect.ApplyColor := true;
-  Effect.DoAction( 'Default', S );
+  Effect.DoAction( 'Default', Direction );
 
   FCharacter.AddEffect( Effect );
 end;
@@ -6271,7 +6261,7 @@ begin
     Effect.AnimationDuration := Effect.Duration;
     Effect.Power := Source.Mysticism;
     Effect.tag := 172;
-    Effect.DoAction( 'Default', NewTarget.FacingString );
+    Effect.DoAction( 'Default', NewTarget.Facing );
 
     with NewTarget do
     begin
@@ -6511,7 +6501,7 @@ begin
     Effect.Resource := Resource;
     Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
     Effect.Power := Source.Mysticism;
-    Effect.DoAction( 'Default', Target.FacingString );
+    Effect.DoAction( 'Default', Target.Facing );
 
     Effect.Damage.Crushing.Min := Source.Mysticism;
     Effect.Damage.Crushing.Max := 1.5 * Source.Mysticism;
@@ -7009,7 +6999,7 @@ begin
     Effect.Resource := Resource;
     Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
     Effect.Power := Source.Mysticism;
-    Effect.DoAction( 'Default', Target.FacingString );
+    Effect.DoAction( 'Default', Target.Facing );
 
     Effect.Damage.Crushing.Min := Source.Mysticism / 3;
     Effect.Damage.Crushing.Max := 2 * Source.Mysticism / 3;
@@ -7203,7 +7193,7 @@ begin
     Effect.Resource := Resource;
     Effect.AnimationDuration := 16 * Resource.FrameMultiplier;
     Effect.Power := Source.Mysticism;
-    Effect.DoAction( 'Default', Target.FacingString );
+    Effect.DoAction( 'Default', Target.Facing );
     
     Effect.Damage.Cold.Min := 5 * Source.Mysticism / 6;
     Effect.Damage.Cold.Max := 2 * Source.Mysticism / 2;
@@ -7486,7 +7476,7 @@ begin
     Effect.Resource := BigFire;
     Effect.AnimationDuration := 10 * Effect.Resource.FrameMultiplier;
     Effect.Power := Source.Mysticism;
-    Effect.DoAction( 'Default', Source.FacingString );
+    Effect.DoAction( 'Default', Source.Facing );
     Source.AddEffect( Effect );
   end;
 end;
@@ -7688,7 +7678,7 @@ begin
     Effect.Resource := BigIce;
     Effect.AnimationDuration := 10 * Effect.Resource.FrameMultiplier;
     Effect.Power := Source.Mysticism;
-    Effect.DoAction( 'Default', Source.FacingString );
+    Effect.DoAction( 'Default', Source.Facing );
     Source.AddEffect( Effect );
   end;
 end;
@@ -7868,7 +7858,7 @@ begin
     Effect.Power := Source.Mysticism * 10;
     TReflectEffect( Effect ).HitResource := HitResource;
     Effect.tag := 183;
-    Effect.DoAction( 'Default', NewTarget.FacingString );
+    Effect.DoAction( 'Default', NewTarget.Facing );
 
     with NewTarget do
     begin
@@ -8044,7 +8034,6 @@ function TReflectEffect.Hit( Source : TAniFigure; Damage : PDamageProfile ) : bo
 var
   Effect : TEffect;
   Direction : TFacing;
-  S : string;
 begin
   result := false;
   if Source is TProjectile then
@@ -8060,21 +8049,11 @@ begin
       begin
         Power := Power - TProjectile( Source ).Magic;
         Direction := Character.GetFacing( FCharacter.X, FCharacter.Y, Source.X, Source.Y );
-        case Direction of
-          fSS : S := 'SS';
-          fSE : S := 'SE';
-          fEE : S := 'EE';
-          fNE : S := 'NE';
-          fNN : S := 'NN';
-          fNW : S := 'NW';
-          fWW : S := 'WW';
-          fSW : S := 'SW';
-        end;
 
         Effect := TEffect.Create;
         Effect.Resource := HitResource;
         Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
-        Effect.DoAction( 'Default', S );
+        Effect.DoAction( 'Default', Direction );
 
         result := true;
         if Reflect then

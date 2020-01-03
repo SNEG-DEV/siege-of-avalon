@@ -156,6 +156,7 @@ implementation
 uses
   System.Classes,
   System.SysUtils,
+  SoAOS.Types,
   Engine,
   Spells,
   LogFile;
@@ -255,7 +256,7 @@ begin
     Effect.Resource := Resource;
     Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
     Effect.Power := Source.Mysticism;
-    Effect.DoAction( 'Default', Target.FacingString );
+    Effect.DoAction( 'Default', Target.Facing );
 
     Effect.Damage.Crushing.Min := Source.Mysticism;
     Effect.Damage.Crushing.Max := 1.5 * Source.Mysticism;
@@ -440,7 +441,7 @@ begin
       Effect.Power := Source.Mysticism;
       Effect.DisableWhenDone := true;
       Effect.Duration := Source.Mysticism * 10;
-      Effect.DoAction( 'Default', NewCharacter.FacingString );
+      Effect.DoAction( 'Default', NewCharacter.Facing );
 
       case i of
         0 : NewCharacter.SetPos( Source.X, Source.Y + 50, Source.z );
@@ -660,7 +661,7 @@ begin
       Effect.Resource := Resource;
       Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
       Effect.Power := Source.Mysticism;
-      Effect.DoAction( 'Default', NewTarget.FacingString );
+      Effect.DoAction( 'Default', NewTarget.Facing );
 
       with NewTarget do
       begin

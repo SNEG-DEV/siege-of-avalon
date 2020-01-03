@@ -1299,7 +1299,6 @@ begin
 
 end;
 
-
 procedure TUndeadArcherCombat.MoveAway;
 const
   FailName : string = 'TUndeadArcherCombat.MoveAway';
@@ -1309,14 +1308,13 @@ begin
     Walking := True;
     if assigned( Character.Track ) then
       Character.Face( Character.Track.X, Character.Track.Y );
-    if character.FacingString.Contains( 'E' ) then
-      Character.WalkTo( Character.X - 100, Character.Y + random( 200 ) - 100, 16 )
-    else if character.FacingString.Contains( 'W' ) then
-      Character.WalkTo( Character.X + 100, Character.Y + random( 200 ) - 100, 16 )
-    else if character.FacingString.Contains( 'SS' ) then
-      Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y - 100, 16 )
-    else
-      Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y + 100, 16 );
+
+    case Character.Facing of
+      fNE,fEE,fSE: Character.WalkTo( Character.X - 100, Character.Y + random( 200 ) - 100, 16 );
+      fNW,fSW,fWW: Character.WalkTo( Character.X + 100, Character.Y + random( 200 ) - 100, 16 );
+      fSS: Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y - 100, 16 );
+      fNN: Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y + 100, 16 );
+    end;
 
     RunAway := False;
   except
@@ -1828,14 +1826,13 @@ begin
     Walking := True;
     if assigned( Character.Track ) then
       Character.Face( Character.Track.X, Character.Track.Y );
-    if character.FacingString.Contains( 'E' ) then
-      Character.WalkTo( Character.X - 100, Character.Y + random( 200 ) - 100, 16 )
-    else if character.FacingString.Contains( 'W' ) then
-      Character.WalkTo( Character.X + 100, Character.Y + random( 200 ) - 100, 16 )
-    else if character.FacingString.Contains( 'SS' ) then
-      Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y - 100, 16 )
-    else
-      Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y + 100, 16 );
+
+    case Character.Facing of
+      fNE,fEE,fSE: Character.WalkTo( Character.X - 100, Character.Y + random( 200 ) - 100, 16 );
+      fNW,fSW,fWW: Character.WalkTo( Character.X + 100, Character.Y + random( 200 ) - 100, 16 );
+      fSS: Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y - 100, 16 );
+      fNN: Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y + 100, 16 );
+    end;
 
 //     if Assigned(Character.currentSpell) then
 //     Delay := character.CurrentSpell.Recovery(Character);
@@ -2392,14 +2389,13 @@ begin
     Walking := True;
     if assigned( Character.Track ) then
       Character.Face( Character.Track.X, Character.Track.Y );
-    if character.FacingString.Contains( 'E' ) then
-      Character.WalkTo( Character.X - 100, Character.Y + random( 200 ) - 100, 16 )
-    else if character.FacingString.Contains( 'W' ) then
-      Character.WalkTo( Character.X + 100, Character.Y + random( 200 ) - 100, 16 )
-    else if character.FacingString.Contains( 'SS' ) then
-      Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y - 100, 16 )
-    else
-      Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y + 100, 16 );
+
+    case Character.Facing of
+      fNE,fEE,fSE: Character.WalkTo( Character.X - 100, Character.Y + random( 200 ) - 100, 16 );
+      fNW,fSW,fWW: Character.WalkTo( Character.X + 100, Character.Y + random( 200 ) - 100, 16 );
+      fSS: Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y - 100, 16 );
+      fNN: Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y + 100, 16 );
+    end;
 
 //     if Assigned(Character.currentSpell) then
 //     Delay := character.CurrentSpell.Recovery(Character);

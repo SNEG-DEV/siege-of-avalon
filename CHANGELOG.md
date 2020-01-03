@@ -18,7 +18,14 @@ All notable changes to this project will be documented in this file.
 ## 2020-01-02
 ### Changed
 - Changed all use of POS() to string helpers - syntactical sugar and recommended
-- Commented more unused code - will be removed next 
+- Commented more unused code - will be removed next
+- Moved TFacing and helper into SoAOS.Types
+
+### Added
+- TFacing record helper
+
+### Removed
+- All FacingString code
 
 ## 2020-01-01
 ### Added

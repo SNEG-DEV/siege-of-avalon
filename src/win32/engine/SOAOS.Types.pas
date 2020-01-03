@@ -318,6 +318,29 @@ const
      XRay : $58;
     );
 
+type
+  TFacing = ( fNW, fNN, fNE, fEE, fSE, fSS, fSW, fWW );
+
+  TFacingHelper = record helper for TFacing
+    function ToString : string;
+  end;
+
 implementation
+
+{ TFacingHelper }
+
+function TFacingHelper.ToString: string;
+begin
+  case self of
+    fNW: result := 'NW';
+    fNN: result := 'NN';
+    fNE: result := 'NE';
+    fEE: result := 'EE';
+    fSE: result := 'SE';
+    fSS: result := 'SS';
+    fSW: result := 'SW';
+    fWW: result := 'WW';
+  end;
+end;
 
 end.

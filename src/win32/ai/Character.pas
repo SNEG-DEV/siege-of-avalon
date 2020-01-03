@@ -176,7 +176,7 @@ type
     procedure Refresh( NewEffect : TEffect ); virtual;
     procedure Adjust( Character : TCharacter ); virtual;
     procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); virtual;
-    procedure DoAction( const Action, FacingString : string );
+    procedure DoAction( const Action : string; Facing : TFacing );
     function DoFrame : boolean; virtual;
     function Hit( Source : TAniFigure; Damage : PDamageProfile ) : boolean; virtual;
     property Resource : TResource read FResource write SetResource;
@@ -348,7 +348,6 @@ type
 {$ENDIF}
     MsgWidth : Integer;
     MsgHeight : Integer;
-    function GetFacingString : string;
     procedure SetFacing( const Value : TFacing );
   protected
     FFacing : TFacing;
@@ -375,7 +374,6 @@ type
     procedure SaveProperties( List : TStringList ); override;
     function ShouldSave : boolean; virtual;
     property Facing : TFacing read FFacing write SetFacing;
-    property FacingString : string read GetFacingString;
     property Name : string read GetName;
   end;
 
@@ -2294,7 +2292,7 @@ begin
 
     if RunExists and ( Resource is TCharacterResource ) and assigned( TCharacterResource( Resource ).NakedResource ) then
     begin
-      Script := TCharacterResource( Resource ).NakedResource.Script[ Action + FacingString ];
+      Script := TCharacterResource( Resource ).NakedResource.Script[ Action + Facing.ToString ];
       if not Assigned( Script ) then
         Script := TCharacterResource( Resource ).NakedResource.Script[ Action ];
       RunExists := Assigned( Script );
@@ -3644,7 +3642,7 @@ begin
     OldDelay := Delay;
     if OldDelay < 0 then
       OldDelay := 0;
-    PlayScript( MoveMode + FacingString, ScriptFrame, smRepeat );
+    PlayScript( MoveMode + Facing.ToString, ScriptFrame, smRepeat );
     Delay := OldDelay;
 
   except
@@ -5258,7 +5256,7 @@ begin
         Variation := random( TCharacterResource( Resource ).AttackVariations ) + 1
       else
         Variation := 1;
-      S := Action + IntToStr( Variation ) + FacingString;
+      S := Action + IntToStr( Variation ) + Facing.ToString;
       Script := Resource.Script[ S ];
       if Assigned( Script ) then
       begin
@@ -6446,7 +6444,7 @@ begin
     LoadEquipment( UseDefaultEquipment );
     if FDead then
     begin
-      Script := Resource.Script[ 'Death' + FacingString ];
+      Script := Resource.Script[ 'Death' + Facing.ToString ];
       if assigned( Script ) then
         Frame := Script.FrameID[ Script.Frames ]
       else
@@ -6461,9 +6459,9 @@ begin
     else
     begin
       if StandAction = '' then
-        Script := Resource.Script[ 'Stand' + FacingString ]
+        Script := Resource.Script[ 'Stand' + Facing.ToString ]
       else
-        Script := Resource.Script[ StandAction + FacingString ];
+        Script := Resource.Script[ StandAction + Facing.ToString ];
       if assigned( Script ) then
         Frame := Script.FrameID[ Script.Frames ]
       else
@@ -7736,7 +7734,7 @@ begin
 
     if Closed then
     begin
-      Script := Resource.Script[ 'Close' + FacingString ];
+      Script := Resource.Script[ 'Close' + Facing.ToString ];
       if assigned( Script ) then
         Frame := Script.FrameID[ Script.Frames ]
       else
@@ -7750,7 +7748,7 @@ begin
     end
     else
     begin
-      Script := Resource.Script[ 'Open' + FacingString ];
+      Script := Resource.Script[ 'Open' + Facing.ToString ];
       if assigned( Script ) then
         Frame := Script.FrameID[ Script.Frames ]
       else
@@ -8352,7 +8350,7 @@ begin
 
     if Closed then
     begin
-      Script := Resource.Script[ 'Close' + FacingString ];
+      Script := Resource.Script[ 'Close' + Facing.ToString ];
       if assigned( Script ) then
         Frame := Script.FrameID[ Script.Frames ]
       else
@@ -8366,7 +8364,7 @@ begin
     end
     else
     begin
-      Script := Resource.Script[ 'Open' + FacingString ];
+      Script := Resource.Script[ 'Open' + Facing.ToString ];
       if assigned( Script ) then
         Frame := Script.FrameID[ Script.Frames ]
       else
@@ -10291,7 +10289,7 @@ begin
       Activate
     else
     begin
-      S := Action + FacingString;
+      S := Action + Facing.ToString;
       Script := Resource.Script[ S ];
       if Assigned( Script ) then
       begin
@@ -10327,30 +10325,6 @@ begin
   end;
 end;
 
-function TSpriteObject.GetFacingString : string;
-const
-  FailName : string = 'TSpriteObject.GetFacingString';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    case FFacing of
-      fSS : result := 'SS';
-      fSE : result := 'SE';
-      fEE : result := 'EE';
-      fNE : result := 'NE';
-      fNN : result := 'NN';
-      fNW : result := 'NW';
-      fWW : result := 'WW';
-      fSW : result := 'SW';
-    end;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
 function TSpriteObject.GetProperty( const Name : string ) : string;
 var
   S : string;
@@ -10364,7 +10338,7 @@ begin
     if S = 'onactivate' then
       result := OnActivate
     else if S = 'facing' then
-      result := FacingString
+      result := Facing.ToString
     else if S = 'enabled' then
       result := FmtBool( Enabled )
     else if S = 'unmoveable' then
@@ -10567,7 +10541,7 @@ begin
       result := false;
       exit;
     end;
-    Script := Resource.Script[ Action + FacingString ];
+    Script := Resource.Script[ Action + Facing.ToString ];
     if not Assigned( Script ) then
       Script := Resource.Script[ Action ];
     result := Assigned( Script );
@@ -10729,7 +10703,7 @@ begin
 
     S := 'enabled=' + FmtBool( Enabled ); List.add( S );
     S := 'onactivate=' + OnActivate; List.add( S );
-    S := 'facing=' + FacingString; List.add( S );
+    S := 'facing=' + Facing.ToString; List.add( S );
     S := 'frame=' + IntToStr( Frame ); List.add( S );
     S := 'unmoveable=' + FmtBool( UnMoveable ); List.add( S );
     S := 'oncollide=' + OnCollide; List.add( S );
@@ -12819,7 +12793,7 @@ begin
   end;
 end;
 
-procedure TEffect.DoAction( const Action, FacingString : string );
+procedure TEffect.DoAction( const Action : string; Facing : TFacing );
 var
   S : string;
 const
@@ -12830,7 +12804,7 @@ begin
 
     if assigned( Resource ) then
     begin
-      S := Action + FacingString;
+      S := Action + Facing.ToString;
       Script := Resource.Script[ S ];
       if not Assigned( Script ) then
         Script := Resource.Script[ Action ];
