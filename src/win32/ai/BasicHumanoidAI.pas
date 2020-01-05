@@ -85,9 +85,7 @@ type
     OldStand : string;
     NewStand : string;
     StandInterval : integer;
-    Walking : Boolean;
     PathDev : integer;
-    Delay : Integer;
     CenterX : Integer;
     CenterY : Integer;
     GroupList : TStringList;
@@ -190,16 +188,13 @@ type
 
   THumanoidMeleeCombat = class( THumanoidCombat )
   private
-    Walking : Boolean;
     ReadyToAttack : Boolean;
     CirclePoint : integer;
     RunForIt : Boolean;
     CombatSay : string;
     FSpellEffectResource : TResource;
     //RunAway: Boolean;
-    Delay : integer;
     PartyTotal : integer;
-    CollideCount : integer;
     waiting : boolean;
     OldRadius : integer;
     NewRadius : integer;
@@ -236,10 +231,8 @@ type
 
   THumanoidArcherCombat = class( THumanoidCombat )
   private
-    Walking : boolean;
     FriendsList : TStringList;
     CirclePoint : integer;
-    Delay : integer;
     PartyTotal : integer;
     ShotCounter : integer;
     RunOrFight : boolean;
@@ -277,15 +270,12 @@ type
     function InRange( Target : TAniFigure ) : Boolean;
   end;
 
-
   THumanoidCasterCombat = class( THumanoidCombat )
   private
-    Walking : boolean;
     mirror : boolean;
     Friendly : TCharacter;
     FriendsList : TStringList;
     CirclePoint : integer;
-    Delay : integer;
     PauseAndExit : integer;
     PartyTotal : integer;
     NukeCounter : integer;
@@ -343,11 +333,8 @@ type
     function InRange( Target : TAniFigure ) : Boolean;
   end;
 
-
   THumanoidHeroCombat = class( TAI )
   private
-    Walking : Boolean;
-    Delay : integer;
     PartyTotal : integer;
     GoodCollideCount : integer;
     BadCollideCount : integer;
@@ -384,12 +371,9 @@ type
 
   THumanoidHunterCombat = class( THumanoidCombat )
   private
-    Walking : Boolean;
     ReadyToAttack : Boolean;
     bRunAway : Boolean;
-    Delay : integer;
     PartyTotal : integer;
-    CollideCount : integer;
     RangeAttack : boolean;
     bHasBow : Boolean;
     AttackDelay : integer;
@@ -746,7 +730,7 @@ begin
     begin
       if Delay > 0 then
       begin
-        dec( Delay );
+        Delay := Delay - 1;
         exit;
       end;
       Dec( stuckTracker );
@@ -2595,7 +2579,7 @@ begin
 
     if Delay > 0 then
     begin
-      dec( Delay );
+      Delay := Delay - 1;
       exit;
     end;
     if not ( Walking ) and RunForIt then
@@ -2800,50 +2784,10 @@ begin
     Walking := True;
         //Better runAway code
     if assigned( Character.track ) then
-    begin
-      Character.Face( Character.Track.X, Character.track.Y );
-    end; //From Mike
-    case Character.Facing of
-      fNE, fEE, fSE :
-        begin
-          if AllowRun then
-            Character.RunTo( Character.X - 150, Character.Y + random( 300 ) - 150, 64 )
-          else
-            Character.WalkTo( Character.X - 150, Character.Y + random( 300 ) - 150, 64 );
-        end;
-      fNW, fWW, fSW :
-        begin
-          if AllowRun then
-            Character.RunTo( Character.X + 150, Character.Y + random( 300 ) - 150, 64 )
-          else
-            Character.WalkTo( Character.X + 150, Character.Y + random( 300 ) - 150, 64 );
-        end;
-      fSS :
-        begin
-          if AllowRun then
-            Character.RunTo( Character.X + random( 300 ) - 150, Character.Y - 150, 64 )
-          else
-            Character.WalkTo( Character.X + random( 300 ) - 150, Character.Y - 150, 64 );
-        end;
+      Character.Face( Character.Track.X, Character.track.Y ); //From Mike
 
-      fNN :
-        begin
-          if AllowRun then
-            Character.RunTo( Character.X + random( 300 ) - 150, Character.Y + 150, 64 )
-          else
-            Character.WalkTo( Character.X + random( 300 ) - 150, Character.Y + 150, 64 )
-        end;
-    end;
-        {if character.FacingString.contains( 'E' ) then
-           Character.WalkTo(Character.X - 150, Character.Y+ random(300)- 150, 128)
-        else
-        if character.FacingString.contains( 'W' ) then
-           Character.WalkTo(Character.X + 150, Character.Y + random(300)- 150, 128)
-        else
-        if character.FacingString.contains( 'SS' ) then
-           Character.WalkTo(Character.X + random(300) - 150, Character.Y - 150, 128)
-        else
-            Character.WalkTo(Character.X + random(300) - 150, Character.Y + 150, 128);}
+    MoveAwayAI(150, 64, True, AllowRun);
+
     ReadyToAttack := false;
     Character.Track := nil;
         //Character.AIMode := AIIdle;
@@ -3247,7 +3191,7 @@ begin
         end
         else if assigned( Character.Track ) and not ( Character.InRange( Character.Track ) ) then
         begin
-          inc( CollideCount );
+          CollideCount := CollideCount + 1;
           if ( CollideCount > 3 ) then
           begin
             collideCount := 0;
@@ -3600,7 +3544,7 @@ begin
 
       if ( Delay > 0 ) and not ( Walking ) then
       begin
-        dec( Delay );
+        Delay := Delay - 1;
         exit;
       end;
 
@@ -3684,37 +3628,9 @@ begin
     Walking := True;
     if assigned( Character.track ) then
       Character.Face( Character.Track.X, Character.track.Y );
-    case Character.Facing of
-      fNE, fEE, fSE :
-        begin
-          if AllowRun then
-            Character.RunTo( Character.X - 100, Character.Y + random( 200 ) - 100, 64 )
-          else
-            Character.WalkTo( Character.X - 100, Character.Y + random( 200 ) - 100, 64 );
-        end;
-      fNW, fWW, fSW :
-        begin
-          if AllowRun then
-            Character.RunTo( Character.X + 100, Character.Y + random( 200 ) - 100, 64 )
-          else
-            Character.WalkTo( Character.X + 100, Character.Y + random( 200 ) - 100, 64 );
-        end;
-      fSS :
-        begin
-          if AllowRun then
-            Character.RunTo( Character.X + random( 200 ) - 100, Character.Y - 100, 64 )
-          else
-            Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y - 100, 64 );
-        end;
 
-      fNN :
-        begin
-          if AllowRun then
-            Character.RunTo( Character.X + random( 200 ) - 100, Character.Y + 100, 64 )
-          else
-            Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y + 100, 64 )
-        end;
-    end;
+    MoveAwayAI(100, 64, True, AllowRun);
+    
     RunAway := False;
 
      //Keep running??
@@ -4472,7 +4388,7 @@ begin
 
       if ( Delay > 0 ) and not ( Walking ) then
       begin
-        dec( Delay );
+        Delay := Delay - 1;
         exit;
       end;
 
@@ -4931,38 +4847,9 @@ begin
     Walking := True;
     if assigned( Character.track ) then
       Character.Face( Character.Track.X, Character.track.Y );
-    case Character.Facing of
-      fNE, fEE, fSE :
-        begin
-          if AllowRun then
-            Character.RunTo( Character.X - 100, Character.Y + random( 200 ) - 100, 64 )
-          else
-            Character.WalkTo( Character.X - 100, Character.Y + random( 200 ) - 100, 64 );
-        end;
-      fNW, fWW, fSW :
-        begin
-          if AllowRun then
-            Character.RunTo( Character.X + 100, Character.Y + random( 200 ) - 100, 64 )
-          else
-            Character.WalkTo( Character.X + 100, Character.Y + random( 200 ) - 100, 64 );
-        end;
-      fSS :
-        begin
-          if AllowRun then
-            Character.RunTo( Character.X + random( 200 ) - 100, Character.Y - 100, 64 )
-          else
-            Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y - 100, 64 );
-        end;
 
-      fNN :
-        begin
-          if AllowRun then
-            Character.RunTo( Character.X + random( 200 ) - 100, Character.Y + 100, 64 )
-          else
-            Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y + 100, 64 )
-        end;
-    end;
-
+    MoveAwayAI(100, 64, True, AllowRun);
+    
     RunAway := False;
      //Keep running??
     if ( Character.Wounds / Character.HitPoints ) * 100 >= iTimeToRun then
@@ -6228,7 +6115,7 @@ begin
     try
       if Delay > 0 then
       begin
-        dec( Delay );
+        Delay := Delay - 1;
         exit;
       end;
 
@@ -6397,13 +6284,9 @@ begin
   try
     if assigned( Character.track ) then
       Character.Face( Character.Track.X, Character.track.Y );
-    case Character.Facing of
-      fNE,fEE,fSE: Character.WalkTo( Character.X - 150, Character.Y + random( 300 ) - 150, 64 );
-      fNW,fSW,fWW: Character.WalkTo( Character.X + 150, Character.Y + random( 300 ) - 150, 64 );
-      fSS: Character.WalkTo( Character.X + random( 300 ) - 150, Character.Y - 150, 64 );
-      fNN: Character.WalkTo( Character.X + random( 300 ) - 150, Character.Y + 150, 64 );
-    end;
 
+    MoveAwayAI(150, 64);
+    
     Walking := true;
     Delay := random( 120 );
   except
@@ -6443,7 +6326,6 @@ begin
       Log.log( FailName, E.Message, [ ] );
   end;
 end;
-
 
 procedure THumanoidHeroCombat.Init;
 var
@@ -6898,7 +6780,7 @@ begin
     begin
       if Delay > 0 then
       begin
-        dec( Delay );
+        Delay := Delay - 1;
         exit;
       end;
     end;
@@ -6926,12 +6808,7 @@ begin
     if assigned( Character.track ) then
       Character.Face( Character.Track.X, Character.track.Y ); //From Mike
 
-    case Character.Facing of
-      fNE,fEE,fSE: Character.WalkTo( Character.X - 150, Character.Y + random( 300 ) - 150, 64 );
-      fNW,fSW,fWW: Character.WalkTo( Character.X + 150, Character.Y + random( 300 ) - 150, 64 );
-      fSS: Character.WalkTo( Character.X + random( 300 ) - 150, Character.Y - 150, 64 );
-      fNN: Character.WalkTo( Character.X + random( 300 ) - 150, Character.Y + 150, 64 );
-    end;
+    MoveAwayAI(150, 64);
 
     Walking := true;
     ReadyToAttack := false;
@@ -7384,7 +7261,7 @@ begin
     end
     else if assigned( Character.Track ) and not ( Character.InRange( Character.Track ) ) then
     begin
-      inc( CollideCount );
+      CollideCount := CollideCount + 1;
       if ( CollideCount > 5 ) then
       begin
         Character.Stand;

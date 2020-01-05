@@ -183,6 +183,16 @@ type
   end;
 
   TAI = class( TObject )
+  private
+    FWalking : Boolean;
+    FDelay : integer;
+    FCollideCount : integer;
+    procedure SetDelay(const Value: Integer);
+    function GetDelay: Integer;
+    function GetWalking: Boolean;
+    procedure SetWalking(const Value: Boolean);
+    function GetCollideCount: Integer;
+    procedure SetCollideCount(const Value: Integer);
   protected
     FrameCount : LongWord;
     function OnCollideFigure( Target : TAniFigure ) : Boolean; virtual;
@@ -202,6 +212,11 @@ type
     procedure NotifyOfDeath( Source : TAniFigure ); virtual;
     procedure Follow( Source, Target : TAniFigure ); virtual;
     procedure Clicked; virtual;
+    procedure MoveAwayAI(radius, deviance: Integer; enface: Boolean = True; run: Boolean = False);
+    procedure Wait; virtual;
+    property Walking: Boolean read GetWalking write SetWalking;
+    property Delay: Integer read GetDelay write SetDelay;
+    property CollideCount: Integer read GetCollideCount write SetCollideCount;
   end;
 
   TPartyAI = class( TAI )
@@ -2121,9 +2136,59 @@ begin
 
 end;
 
+function TAI.GetCollideCount: Integer;
+begin
+  Result := FCollideCount;
+end;
+
+function TAI.GetDelay: Integer;
+begin
+  Result := FDelay;
+end;
+
+function TAI.GetWalking: Boolean;
+begin
+  Result := FWalking;
+end;
+
 procedure TAI.Init;
 begin
 
+end;
+
+procedure TAI.MoveAwayAI(radius, deviance: Integer; enface, run: Boolean);
+const
+  FailName : string = 'TAI.MoveAwayAI';
+begin
+  Log.DebugLog( FailName );
+  try
+    var diameter: integer := 2*radius;
+    if enface then
+    begin
+      if run then
+      case Character.Facing of
+        fNE,fEE,fSE: Character.RunTo( Character.X - radius, Character.Y + random( diameter ) - radius, deviance );
+        fNW,fSW,fWW: Character.RunTo( Character.X + radius, Character.Y + random( diameter ) - radius, deviance );
+        fSS: Character.RunTo( Character.X + random( diameter ) - radius, Character.Y - radius, deviance );
+        fNN: Character.RunTo( Character.X + random( diameter ) - radius, Character.Y + radius, deviance );
+      end
+      else
+      case Character.Facing of
+        fNE,fEE,fSE: Character.WalkTo( Character.X - radius, Character.Y + random( diameter ) - radius, deviance );
+        fNW,fSW,fWW: Character.WalkTo( Character.X + radius, Character.Y + random( diameter ) - radius, deviance );
+        fSS: Character.WalkTo( Character.X + random( diameter ) - radius, Character.Y - radius, deviance );
+        fNN: Character.WalkTo( Character.X + random( diameter ) - radius, Character.Y + radius, deviance );
+      end;
+    end
+    else // Bandits, Scouts.Wait and WolfCombat.Wait - might be a stupid idea not very SOLID
+    begin
+      var halfradius: integer := radius div 2;
+      Character.WalkTo( Character.X + random( diameter ) - radius, Character.Y + random( radius ) - halfradius, deviance );
+    end;
+  except
+    on E : Exception do
+      Log.log( FailName + E.Message );
+  end;
 end;
 
 procedure TAI.NotifyOfDeath( Source : TAniFigure );
@@ -2161,9 +2226,40 @@ begin
 
 end;
 
+procedure TAI.SetCollideCount(const Value: Integer);
+begin
+
+end;
+
+procedure TAI.SetDelay(const Value: Integer);
+begin
+  FDelay := Value;
+end;
+
+procedure TAI.SetWalking(const Value: Boolean);
+begin
+
+end;
+
 procedure TAI.TrackChanged;
 begin
 
+end;
+
+procedure TAI.Wait;
+const
+  FailName : string = 'TAI.Wait';
+begin
+  Log.DebugLog( FailName );
+  try
+    MoveAwayAI(40, 16, False);
+    FCollideCount := 0;
+    FWalking := True;
+    FDelay := random( 10 ) + 10;
+  except
+    on E : Exception do
+      Log.log( FailName + E.Message );
+  end;
 end;
 
 procedure TAI.WasAttacked( Source : TAniFigure; Damage : Single );
@@ -10021,7 +10117,7 @@ begin
       for i := 0 to List.Count - 1 do
       begin
         S := List.strings[ i ];
-        j := S.IndexOf('=');
+        j := Pos( '=', S );
         if ( j > 0 ) {and (j<length(S))} then
         begin //This caused blank properties not to overwrite defaults
           if ( j < length( S ) ) and ( S[ j + 1 ] = '#' ) then
@@ -11279,23 +11375,14 @@ var
   S1 : string;
 begin
   S1 := '#' + Symbol;
-  i := S.IndexOf(S1);
+  i := Pos( S1, S );
   if i > 0 then
     S := copy( S, 1, i - 1 ) + Value + copy( S, i + length( S1 ), length( S ) - i - length( S1 ) + 1 );
 end;
 
 procedure TSpell.SetInfoText( const Value : string );
-var
-  i : integer;
 begin
-{ TODO -cRedo or Remove : Replace pipe char with #13 }
-  FInfoText := Value;
-  i := FInfoText.IndexOf('|');
-  while i > 0 do
-  begin
-    FInfoText[ i ] := #13;
-    i := FInfoText.IndexOf('|');
-  end;
+  FInfoText := Value.Replace('|',#13);
 end;
 
 { TTrigger }

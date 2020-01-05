@@ -48,8 +48,6 @@ uses
 type
   TMeander = class( TAI )
   private
-    Walking : Boolean;
-    Delay : Integer;
     Leash : Integer;
     CenterX : Integer;
     CenterY : Integer;
@@ -65,14 +63,12 @@ type
 
   TBanditCombat = class( TAI )
   private
-    Walking : Boolean;
     Waiting : Boolean;
     ReadyToAttack : Boolean;
     OldTrack : TCharacter;
     RunAway : Boolean;
-    CollideCount : Integer;
     TrackX, TrackY : Longint;
-    Delay, PostDelay : Integer;
+    PostDelay : Integer;
   protected
     procedure OnStop; override;
     procedure OnNoPath; override;
@@ -86,7 +82,6 @@ type
   TFollowPath = class( TAI )
   private
     CurrentPath : TGameObject;
-    Walking : boolean;
   protected
     procedure OnStop; override;
     procedure OnNoPath; override;
@@ -156,7 +151,7 @@ begin
       end
       else
       begin
-        Dec( Delay );
+        Delay := Delay - 1;
       end;
     end;
 
@@ -325,7 +320,7 @@ begin
 
     if Delay > 0 then
     begin
-      Dec( Delay );
+      Delay := Delay - 1;
       Exit;
     end;
 
@@ -333,7 +328,7 @@ begin
 
     if RunAway then
     begin
-      Character.WalkTo( Character.X + random( 500 ) - 250, Character.Y + random( 250 ) - 125, 16 );
+      MoveAwayAI(250, 16, False);
       CollideCount := 0;
       Walking := True;
       OldTrack := Character.Track;
@@ -345,7 +340,7 @@ begin
     else if Waiting then
     begin
       Waiting := False;
-      Character.WalkTo( Character.X + random( 80 ) - 40, Character.Y + random( 40 ) - 20, 4 );
+      MoveAwayAI(40, 4, False);
       CollideCount := 0;
       Walking := True;
       PostDelay := random( 10 ) + 10;
@@ -379,7 +374,7 @@ begin
               Character.Stand;
               Delay := random( 30 ) + 30;
               if Character.Track.Strength > Character.Strength * 1.5 then
-                Inc( Delay, 30 );
+                Delay := Delay + 30;
             end;
           end
           else if ( Character.Track.X <> TrackX ) or ( Character.Track.Y <> TrackY ) then
@@ -442,7 +437,7 @@ begin
                 begin
                   if ( FrameCount mod 120 ) = 0 then
                   begin
-                    Character.WalkTo( Character.X + random( 160 ) - 80, Character.Y + random( 80 ) - 40, 4 );
+                    MoveAwayAI(80, 4, False);
                     CollideCount := 0;
                     Walking := True;
                     PostDelay := random( 120 );
@@ -527,7 +522,7 @@ begin
       end
       else
       begin
-        Inc( CollideCount );
+        CollideCount := CollideCount + 1;
         if ( CollideCount > 1 ) then
         begin
           Character.Stand;

@@ -50,11 +50,9 @@ type
 
   TWolfIdle = class( TAI )
   private
-    Walking : Boolean;
     Leash : Integer;
     PercentageWounded : Integer;
     bCombative : Boolean;
-    Delay : Integer;
     FWolfType : TWolfType;
     CenterX : Integer;
     CenterY : Integer;
@@ -81,17 +79,13 @@ type
   TWolfCombat = class( TAI )
   private
     RunAwayTime : integer;
-    Walking : Boolean;
-    Delay : Integer;
     AttackDelay : integer;
     WolfType : string;
     PercentageWounded : Integer;
-    CollideCount : Integer;
     bRunaway : Boolean;
-    procedure Run;
+    procedure RunAway;
     procedure FindTarget;
     procedure Attack;
-    procedure Wait;
   protected
     procedure OnStop; override;
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
@@ -164,7 +158,7 @@ begin
     begin
       if Delay > 0 then
       begin
-        dec( Delay );
+        Delay := Delay - 1;
         exit;
       end;
       case Random( 10 ) of
@@ -258,13 +252,8 @@ begin
     if assigned( Character.Track ) then
       Character.Face( Character.Track.X, Character.Track.Y );
 
-    case Character.Facing of
-      fNE,fEE,fSE: Character.RunTo( Character.X - 250, Character.Y + random( 500 ) - 250, 64 );
-      fNW,fSW,fWW: Character.RunTo( Character.X + 250, Character.Y + random( 500 ) - 250, 64 );
-      fSS: Character.RunTo( Character.X + random( 500 ) - 250, Character.Y - 250, 64 );
-      fNN: Character.RunTo( Character.X + random( 500 ) - 250, Character.Y + 250, 64 );
-    end;
-    
+    MoveAwayAI(250, 64, True, True);
+
     Walking := true;
     Delay := random( 240 );
   except
@@ -513,7 +502,7 @@ begin
 
     inherited;
     if bRunaway then
-      Run;
+      RunAway;
     if ( FrameCount mod 160 ) = 0 then
       walking := false;
 
@@ -521,7 +510,7 @@ begin
     begin
       if Delay > 0 then
       begin
-        dec( Delay );
+        Delay := Delay - 1;
         exit;
       end;
     end;
@@ -544,7 +533,7 @@ begin
 
 end;
 
-procedure TWolfCombat.Run;
+procedure TWolfCombat.RunAway;
 const
   FailName : string = 'TWolfCombat.Run';
 begin
@@ -557,12 +546,7 @@ begin
       Character.Track := nil;
     end;
 
-    case Character.Facing of
-      fNE,fEE,fSE: Character.RunTo( Character.X - 250, Character.Y + random( 500 ) - 250, 16 );
-      fNW,fSW,fWW: Character.RunTo( Character.X + 250, Character.Y + random( 500 ) - 250, 16 );
-      fSS: Character.RunTo( Character.X + random( 500 ) - 250, Character.Y - 250, 16 );
-      fNN: Character.RunTo( Character.X + random( 500 ) - 250, Character.Y + 250, 16 );
-    end;
+    MoveAwayAI(250, 16, True, True);
 
     Walking := true;
     bRunaway := False;
@@ -603,23 +587,22 @@ begin
 
 end;
 
-procedure TWolfCombat.Wait;
-const
-  FailName : string = 'TWolfCombat.Wait';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    Character.WalkTo( Character.X + random( 80 ) - 40, Character.Y + random( 40 ) - 20, 16 );
-    CollideCount := 0;
-    Walking := true;
-    Delay := random( 10 ) + 10;
-  except
-    on E : Exception do
-      Log.log( FailName + E.Message );
-  end;
-
-end;
+//procedure TWolfCombat.Wait;
+//const
+//  FailName : string = 'TWolfCombat.Wait';
+//begin
+//  Log.DebugLog( FailName );
+//  try
+//    MoveAwayAI(40, 16, False);
+//    CollideCount := 0;
+//    Walking := true;
+//    Delay := random( 10 ) + 10;
+//  except
+//    on E : Exception do
+//      Log.log( FailName + E.Message );
+//  end;
+//
+//end;
 
 procedure TWolfCombat.Attack;
 const
@@ -801,7 +784,7 @@ begin
         end
         else if assigned( Character.Track ) and not ( Character.InRange( Character.Track ) ) then
         begin
-          inc( CollideCount );
+          CollideCount := CollideCount + 1;
           if ( CollideCount > 5 ) then
           begin
             Character.Stand;

@@ -54,8 +54,6 @@ type
 
   TUndeadIdle = class( TAI )
   private
-    Walking : Boolean;
-    Delay : Integer;
     Leash : Integer;
     CenterX : Integer;
     CenterY : Integer;
@@ -81,14 +79,11 @@ type
 
   TUndeadMeleeCombat = class( TAI )
   private
-    Walking : boolean;
     bTakeOrders : boolean;
     CirclePoint : integer;
     waiting : boolean;
     realStop : boolean;
-    Delay : integer;
     FUnDeadType : TUndeadType;
-    CollideCount : integer;
     procedure FindTarget;
     procedure Attack;
     procedure Eat;
@@ -108,10 +103,8 @@ type
 
   TUndeadArcherCombat = class( TAI )
   private
-    Walking : boolean;
     FriendsList : TStringList;
     CirclePoint : integer;
-    Delay : integer;
     PartyTotal : integer;
     ShotCounter : integer;
     RunOrFight : boolean;
@@ -142,10 +135,8 @@ type
 
   TUndeadCasterCombat = class( TAI )
   private
-    Walking : boolean;
     Friendly : TCharacter;
     FriendsList : TStringList;
-    Delay : integer;
     NukeCounter : integer;
     CirclePoint : integer;
     RunAway : boolean;
@@ -178,10 +169,8 @@ type
 
   TUndeadCommanderCombat = class( TAI )
   private
-    Walking : boolean;
     Friendly : TCharacter;
     FriendsList : TStringList;
-    Delay : integer;
     NukeCounter : integer;
     CirclePoint : integer;
     RunAway : boolean;
@@ -348,7 +337,7 @@ begin
 
     if Delay > 0 then
     begin
-      dec( Delay );
+      Delay := Delay - 1;
       exit;
     end;
 
@@ -750,7 +739,7 @@ begin
 
     if Delay > 0 then
     begin
-      dec( Delay );
+      Delay := Delay - 1;
       exit;
     end;
 
@@ -1105,7 +1094,7 @@ begin
         end
         else if assigned( Character.Track ) and not ( Character.InRange( Character.Track ) ) then
         begin
-          inc( CollideCount );
+          CollideCount := CollideCount + 1;
           if ( CollideCount > 3 ) then
           begin
             Character.doaction( 'stand' );
@@ -1231,7 +1220,7 @@ begin
 
     if ( Delay > 0 ) and not ( Walking ) then
     begin
-      dec( Delay );
+      Delay := Delay - 1;
       exit;
     end;
 
@@ -1309,12 +1298,7 @@ begin
     if assigned( Character.Track ) then
       Character.Face( Character.Track.X, Character.Track.Y );
 
-    case Character.Facing of
-      fNE,fEE,fSE: Character.WalkTo( Character.X - 100, Character.Y + random( 200 ) - 100, 16 );
-      fNW,fSW,fWW: Character.WalkTo( Character.X + 100, Character.Y + random( 200 ) - 100, 16 );
-      fSS: Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y - 100, 16 );
-      fNN: Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y + 100, 16 );
-    end;
+    MoveAwayAI(100, 16);
 
     RunAway := False;
   except
@@ -1716,7 +1700,7 @@ begin
 
     if Delay > 0 then
     begin
-      dec( Delay );
+      Delay := Delay - 1;
       exit;
     end;
 
@@ -1827,12 +1811,7 @@ begin
     if assigned( Character.Track ) then
       Character.Face( Character.Track.X, Character.Track.Y );
 
-    case Character.Facing of
-      fNE,fEE,fSE: Character.WalkTo( Character.X - 100, Character.Y + random( 200 ) - 100, 16 );
-      fNW,fSW,fWW: Character.WalkTo( Character.X + 100, Character.Y + random( 200 ) - 100, 16 );
-      fSS: Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y - 100, 16 );
-      fNN: Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y + 100, 16 );
-    end;
+    MoveAwayAI(100, 16);
 
 //     if Assigned(Character.currentSpell) then
 //     Delay := character.CurrentSpell.Recovery(Character);
@@ -2256,7 +2235,7 @@ begin
 
     if Delay > 0 then
     begin
-      dec( Delay );
+      Delay := Delay - 1;
       exit;
     end;
 
@@ -2390,12 +2369,7 @@ begin
     if assigned( Character.Track ) then
       Character.Face( Character.Track.X, Character.Track.Y );
 
-    case Character.Facing of
-      fNE,fEE,fSE: Character.WalkTo( Character.X - 100, Character.Y + random( 200 ) - 100, 16 );
-      fNW,fSW,fWW: Character.WalkTo( Character.X + 100, Character.Y + random( 200 ) - 100, 16 );
-      fSS: Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y - 100, 16 );
-      fNN: Character.WalkTo( Character.X + random( 200 ) - 100, Character.Y + 100, 16 );
-    end;
+    MoveAwayAI(100, 16);
 
 //     if Assigned(Character.currentSpell) then
 //     Delay := character.CurrentSpell.Recovery(Character);
