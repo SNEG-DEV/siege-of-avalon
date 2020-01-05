@@ -3,8 +3,8 @@ unit SoAOS.Types;
 (*
   Siege Of Avalon : Open Source Edition
 
-  Portions created by Stefen Nyeland are
-  Copyright (C) 2020 - Steffen Nyeland.
+  Portions created by Steffen Nyeland are
+  Copyright (C) 2019 - Steffen Nyeland.
 
   Contributor(s):
   Steffen Nyeland
@@ -81,6 +81,11 @@ type
   	LogX : integer;
     Visibility: integer;
     CharacterMysticVision: integer;
+    CharacterDistance: integer;
+    CharacterRange: integer;
+    GuardVision: integer;
+    CharacterReach: integer;
+    CompanionRange: integer;
     PartyMemberSlots: integer;
     spellbarFile: string;
     sidebarFile: string;
@@ -129,11 +134,66 @@ const
 	   LogX : 659;
      Visibility : 300; // ??
      CharacterMysticVision: 300;
+     CharacterDistance: 175;
+     CharacterRange: 300;
+     GuardVision: 300;
+     CharacterReach: 160;
+     CompanionRange: 300;
      PartyMemberSlots: 2;
      spellbarFile: 'spellbar.bmp';
      sidebarFile: 'sidebar.bmp';
      bottombarFile: 'bottombar.bmp';
      IniIdent : 'Original';
+     popInventoryRect: ( Left: 726; Top: 429; Right: 772; Bottom: 473 );
+     popMapRect: ( Left: 732; Top: 511; Right: 781; Bottom: 555 );
+     popQuestRect: ( Left: 666; Top: 511; Right: 715; Bottom: 531 );
+     popAdventureRect: ( Left: 660; Top: 535; Right: 725; Bottom: 556 );
+     popJournalRect: ( Left: 663; Top: 560; Right: 722; Bottom: 578 );
+     popAwardsRect: ( Left: 609; Top: 543; Right: 647; Bottom: 583 );
+     popMessageRect: ( Left: 392; Top: 517; Right: 591; Bottom: 582 );
+     popStatsRect: ( Left: 715; Top: 10; Right: 778; Bottom: 104 );
+     popManaRect: ( Left: 708; Top: 146; Right: 765; Bottom: 203 );
+     popHealthRect: ( Left: 711; Top: 258; Right: 759; Bottom: 348 );
+     popSpellRect: ( Left: 337; Top: 547; Right: 371; Bottom: 582 );
+     popRosterRect: ( Left: 175; Top: 539; Right: 256; Bottom: 571 );
+     popParty1Rect: ( Left: 3; Top: 510; Right: 65; Bottom: 586 );
+     popParty2Rect: ( Left: 80; Top: 510; Right: 151; Bottom: 586 );
+     popParty3Rect: ( Left: -1; Top: -1; Right: -1; Bottom: -1 );
+     popParty4Rect: ( Left: -1; Top: -1; Right: -1; Bottom: -1 );
+    );
+  cSDAOA : TScreenResolutionData =
+    (ScreenWidth : 800;
+     ScreenHeight : 600;
+     BPP : 16;
+     PreMapWidth: 768;
+     PreMapHeight: 544;
+     GameWidth : 703;
+     GameHeight : 511;
+     GameMapWidth : 200;
+     GameMapHeight : 400;
+	   SpellBarX : 683;
+	   SpellBarY : 486;
+	   StatsX : 699;
+	   StatsY : 498;
+	   HelpBoxY : 455;
+	   MouseMsgX : 394;
+	   BottomBarX : 391;
+	   NPCBarY : 581;
+	   ManaEmptyX : 699;
+	   LifeEmptyX : 709;
+	   LogX : 659;
+     Visibility : 300; // ??
+     CharacterMysticVision: 500;
+     CharacterDistance: 175;
+     CharacterRange: 300;
+     GuardVision: 300;
+     CharacterReach: 160;
+     CompanionRange: 300;
+     PartyMemberSlots: 2;
+     spellbarFile: 'spellbar.bmp';
+     sidebarFile: 'sidebar.bmp';
+     bottombarFile: 'bottombar.bmp';
+     IniIdent : 'SDAOA';
      popInventoryRect: ( Left: 726; Top: 429; Right: 772; Bottom: 473 );
      popMapRect: ( Left: 732; Top: 511; Right: 781; Bottom: 555 );
      popQuestRect: ( Left: 666; Top: 511; Right: 715; Bottom: 531 );
@@ -173,7 +233,12 @@ const
    	 LifeEmptyX : 1189;
 	   LogX : 1139; // ??
      Visibility : 300;  //??
-     CharacterMysticVision: 750;
+     CharacterMysticVision: 800;
+     CharacterDistance: 375;
+     CharacterRange: 650;
+     GuardVision: 450;
+     CharacterReach: 180;
+     CompanionRange: 650;
      PartyMemberSlots: 4;
      spellbarFile: 'spellbarHD.bmp';
      sidebarFile: 'sidebarHD.bmp';
@@ -218,7 +283,12 @@ const
 	   LifeEmptyX : 1829;
 	   LogX : 1139;
      Visibility : 300;  // ??
-     CharacterMysticVision: 750;
+     CharacterMysticVision: 1000;
+     CharacterDistance: 775;
+     CharacterRange: 950;
+     GuardVision: 700;
+     CharacterReach: 200;
+     CompanionRange: 900;
      PartyMemberSlots: 4;
      spellbarFile: 'spellbarFullHD.bmp';
      sidebarFile: 'sidebarFullHD.bmp';

@@ -2,7 +2,7 @@ unit SoAOS.StrUtils;
 (*
   Siege Of Avalon : Open Source Edition
 
-  Portions created by Stefen Nyeland are
+  Portions created by Steffen Nyeland are
   Copyright (C) 2020 - Steffen Nyeland.
 
   Contributor(s):

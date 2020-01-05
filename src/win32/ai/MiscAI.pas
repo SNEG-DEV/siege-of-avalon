@@ -9,12 +9,16 @@ unit MiscAI;
   Portions created by Team SOAOS are
   Copyright (C) 2003 - Team SOAOS.
 
-  Portions created by Stefen Nyeland are
+  Portions created by Steffen Nyeland are
   Copyright (C) 2019 - Steffen Nyeland.
+
+  Portions created by Rucksacksepp are
+  Copyright (C) 2020 - Rucksacksepp.
 
   Contributor(s):
   Dominique Louis <Dominique@SavageSoftware.com.au>
   Steffen Nyeland
+  Rucksacksepp from SoAmigos forum
 
   You may retrieve the latest version of this file at:
   https://github.com/SteveNew/Siege-of-Avalon-Open-Source
@@ -34,7 +38,7 @@ unit MiscAI;
 
   Revision History:
   - 13 Jul 2003 - DL: Initial Upload to CVS
-  - 10 Mar 2020 - SN: Forked on GitHub
+  - 10 Mar 2019 - SN: Forked on GitHub
   see git repo afterwards
 
 *)
@@ -493,7 +497,6 @@ type
     procedure Attack;
     procedure FindTarget;
     procedure Run;
-//    procedure Wait;
 
   protected
     procedure OnStop; override;
@@ -1013,11 +1016,11 @@ begin
     S := Character.Properties[ 'distance' ];
     try
       if S = '' then
-        iDistance := 175
+        iDistance := ScreenMetrics.CharacterDistance
       else
         iDistance := StrToInt( S );
     except
-      iDistance := 175;
+      iDistance := ScreenMetrics.CharacterDistance;
     end;
 
     if character.TitleExists( 'Combative' ) then
@@ -1453,7 +1456,7 @@ begin
 //          Fighting := false;
         end;
 
-        if FHoldAggressive and ( Character.wounds > ( Character.HitPoints * 0.25 ) ) then
+        if FHoldAggressive and ( Character.wounds > ( Character.HitPoints * 0.75 ) ) then
         begin
           RunAway := True;
 //           walking := false;
@@ -1513,7 +1516,7 @@ begin
     end;
     if Assigned( Character.track ) then
     begin
-      if ( Character.RangeTo( Character.Track.X, Character.Track.Y ) > 300 ) or not ( Game.LineOfCollision( Character.x, character.y, Character.track.x, Character.track.y ) ) then
+      if ( Character.RangeTo( Character.Track.X, Character.Track.Y ) > ScreenMetrics.CharacterRange ) or not ( Game.LineOfCollision( Character.x, character.y, Character.track.x, Character.track.y ) ) then
       begin
         Character.Track := nil;
         fighting := false;
@@ -1547,9 +1550,9 @@ begin
     begin //stay close to the leader
       NewFrame := 0;
       iRange := ( character.Rangeto( Player.x, Player.y ) );
-      if ( iRange > 160 ) then
+      if ( iRange > ScreenMetrics.CharacterReach ) then
       begin
-        if ( iRange > 300 ) then
+        if ( iRange > ScreenMetrics.CompanionRange ) then
         begin
           case Fleader.Facing of
             fNE, fEE, fSE :
@@ -5824,11 +5827,11 @@ begin
     S := Character.Properties[ 'Distance' ];
     try
       if S = '' then
-        iDistance := 175
+        iDistance := ScreenMetrics.CharacterDistance
       else
         iDistance := StrToInt( S );
     except
-      iDistance := 175;
+      iDistance := ScreenMetrics.CharacterDistance;
     end;
 
     S := LowerCase( Character.Properties[ 'Combative' ] );
@@ -7328,7 +7331,7 @@ begin
     NewGuard.Properties[ 'Combative' ] := 'True';
     NewGuard.Properties[ 'IdleDuty' ] := 'Stand';
     NewGuard.Mana := 500;
-    NewGuard.Vision := 300;
+    NewGuard.Vision := ScreenMetrics.GuardVision;
     NewGuard.Properties[ 'DeathSounds' ] := 'malekill3,malekill5,malekill7';
     NewGuard.Properties[ 'PainSounds' ] := 'malegrunt2,malegrunt4,malegrunt6';
     NewGuard.GroupName := 'ahoul';

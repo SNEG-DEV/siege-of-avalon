@@ -2,8 +2,8 @@ unit SoAOS.Intrface.Popup;
 (*
   Siege Of Avalon : Open Source Edition
 
-  Portions created by Stefen Nyeland are
-  Copyright (C) 2020 - Steffen Nyeland.
+  Portions created by Steffen Nyeland are
+  Copyright (C) 2019 - Steffen Nyeland.
 
   Contributor(s):
   Steffen Nyeland

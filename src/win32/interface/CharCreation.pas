@@ -9,7 +9,7 @@ unit CharCreation;
   Portions created by Team SOAOS are
   Copyright (C) 2003 - Team SOAOS.
 
-  Portions created by Stefen Nyeland are
+  Portions created by Steffen Nyeland are
   Copyright (C) 2019 - Steffen Nyeland.
 
   Contributor(s):
@@ -34,7 +34,7 @@ unit CharCreation;
 
   Revision History:
   - 13 Jul 2003 - DL: Initial Upload to CVS
-  - 10 Mar 2020 - SN: Forked on GitHub
+  - 10 Mar 2019 - SN: Forked on GitHub
   see git repo afterwards
 
 *)
