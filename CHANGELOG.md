@@ -24,6 +24,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - A few typos
 - RunAway bug found by @Rucksacksepp
+- Manual language selection - and color button bug hack
 
 ### Changed
 - MysticVision in 800x600 mode increased based on @Rucksacksepp findings - existed as a new ScreenMetric record a few hours.

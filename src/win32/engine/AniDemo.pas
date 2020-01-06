@@ -857,8 +857,10 @@ procedure TfrmMain.FormShow( Sender : TObject );
 var
   INI : TIniFile;
   ShowIntro : Boolean;
-  rtString : string;
+  rtString, fsrc, fdest : string;
   PopupEnabled : Boolean;
+  LanguagePath : string;
+  files : TArray<string>;
 const
   FailName : string = 'Main.FormShow';
 begin
@@ -922,41 +924,39 @@ begin
 
     UseDirectSound := False;
 
-    ArtPath := INI.ReadString( 'Settings', 'ArtPath', DefaultPath );
-    if ArtPath[ Length( ArtPath ) ] <> '\' then
-      ArtPath := ArtPath + '\';
+    ArtPath := IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'ArtPath', DefaultPath ) );
     Log.Log( 'ArtPath=' + ArtPath );
     Log.flush;
 
-    TilePath := INI.ReadString( 'Settings', 'TilePath', DefaultPath );
-    if TilePath[ Length( TilePath ) ] <> '\' then
-      TilePath := TilePath + '\';
+    TilePath := IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'TilePath', DefaultPath ) );
     Log.Log( 'TilePath=' + TilePath );
     Log.flush;
 
-    SoundPath := INI.ReadString( 'Settings', 'SoundPath', DefaultPath );
-    if SoundPath[ Length( SoundPath ) ] <> '\' then
-      SoundPath := SoundPath + '\';
+    SoundPath := IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'SoundPath', DefaultPath ) );
     Log.Log( 'SoundPath=' + SoundPath );
     Log.flush;
 
-    InterfacePath := INI.ReadString( 'Settings', 'Interface', DefaultPath );
-    if InterfacePath[ Length( InterfacePath ) ] <> '\' then
-      InterfacePath := InterfacePath + '\';
+    InterfacePath := IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'Interface', DefaultPath ) );
     Log.Log( 'InterfacePath=' + InterfacePath );
     Log.flush;
 
-    CachePath := INI.ReadString( 'Settings', 'CachePath', DefaultPath + 'cache\' );
-    if CachePath[ Length( CachePath ) ] <> '\' then
-      CachePath := CachePath + '\';
+    LanguagePath := IncludeTrailingPathDelimiter( InterfacePath + INI.ReadString( 'Settings', 'LanguagePath', 'english' ) );
+
+    files := TDirectory.GetFiles(LanguagePath);
+    for fsrc in files do
+    begin
+      fdest := TPath.Combine( InterfacePath, TPath.GetFileName( fsrc ) );
+      TFile.Copy( fsrc, fdest, True);
+    end;
+
+    CachePath := IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'CachePath', DefaultPath + 'cache\' ) );
     Log.Log( 'CachePath=' + CachePath );
     Log.flush;
 
     MapPath := AnsiString( INI.ReadString( 'Settings', 'MapPath', '' ) );
     if MapPath <> '' then
     begin
-      if MapPath[ Length( MapPath ) ] <> '\' then
-        MapPath := MapPath + '\';
+      MapPath := IncludeTrailingPathDelimiter( MapPath );
       Log.Log( 'MapPath=' + MapPath );
       Log.flush;
     end;

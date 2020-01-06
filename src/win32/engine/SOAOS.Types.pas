@@ -45,7 +45,6 @@ uses
 const
 /// <summary> RGB color consts to improve readbility </summary>
   cTransparent     = TColors.Fuchsia;   // Fuchsia/Magenta transparent
-  cInvisIntro      = $00FC04FC; // Someone is making fun of us, not using cTransparent for those assets
   cInvisColor      = TColors.Cyan;   // Aqua/Cyan transparent
   cLoadBackColor   = $00108020;   // ??
   cLoadColor       = $00CDCDCD;   // ??

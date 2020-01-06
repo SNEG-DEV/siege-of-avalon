@@ -1,6 +1,6 @@
 # Siege of Avalon : Open Source #
 
-_"Siege of Avalon : Open Source is an attempt to keep this great isometric RPG game alive by continuing development on it."
+_"Siege of Avalon : Open Source is an attempt to keep this great isometric RPG game alive by continuing development on it."_
 
 ![Siege of Avalon in HD with room for party of 4.](SoAOS_HD.png)Siege of Avalon in HD with room for party of 4.
 
@@ -37,9 +37,9 @@ As mentioned there is also:
 - ScreenResolution (defaults to 600) - possible other values are 720 and 1080
 
 There is also a language path that was not surfaced in the Options dialog of the released code - but found in later retail releases, so that needs currently to be changed manually - english, spanish and german are available currently.  
-On the TODO list is to add that into the Options dialog - but right now you have to manually copy the content of the "language" subfolders up into the assets\Interface folder (probably also how it was done in code).
+On the TODO list is to add that into the Options dialog - but right now you have to edit the seige.ini file:
 
-- LanguagePath (currently ignored)
+- LanguagePath (defaults to english) 
 
 
 ## Focus and origin ##

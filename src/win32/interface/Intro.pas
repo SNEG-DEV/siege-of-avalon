@@ -110,7 +110,7 @@ begin
   Log.DebugLog( FailName );
   try
     Caption.Rect := Rect( X, Y, X + W, Y + H );
-    Caption.Image := DDGetSurface( lpDD, W, H, cInvisIntro, true );
+    Caption.Image := DDGetSurface( lpDD, W, H, BM.Canvas.Pixels[1,1], true ); // The asset released has a "color" issue - this hack solves it
     Caption.Image.GetDC( DC );
     try
       BitBlt( DC, 0, 0, W, H, BM.canvas.handle, X - XFrame, Y - YFrame, SRCCOPY );
