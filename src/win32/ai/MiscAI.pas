@@ -1456,6 +1456,27 @@ begin
 //          Fighting := false;
         end;
 
+        if AdjustedCompanionAI then // Rucksacksepp improvement starts here
+        begin
+          //Zusatz für Wegrennen bei normalem Kampfverhalten
+          if FMeleeAggressive and ( Character.wounds > ( Character.HitPoints * 0.80 ) ) then
+          begin
+            if Damage > ( ( Character.HitPoints - Character.wounds ) * 0.50 ) then
+              RunAway := True;
+   //           walking := false;
+   //           Fighting := false;
+          end;
+
+          if FMeleeDefensive and ( Character.wounds > ( Character.HitPoints * 0.80 ) ) then
+          begin
+            if Damage > ( ( Character.HitPoints - Character.wounds ) * 0.50 ) then
+              RunAway := True;
+  //           walking := false;
+  //           Fighting := false;
+          end;
+          //Zusatz ende
+        end;
+
         if FHoldAggressive and ( Character.wounds > ( Character.HitPoints * 0.75 ) ) then
         begin
           RunAway := True;
@@ -1520,7 +1541,134 @@ begin
       begin
         Character.Track := nil;
         fighting := false;
-        Character.RunTo( Player.x, Player.y, 4 );
+        if not AdjustedCompanionAI then
+          Character.RunTo( Player.x, Player.y, 4 )
+        else
+        begin  // Rucksacksepp improvement starts here
+		      //Zusatz Teamkollegen auf Fleck von Spieler ->dämlich/unpraktisch
+          case Player.Facing of
+          fNE, fEE, fSE :
+            begin
+              case NPCList.IndexOf( Character ) of
+                0 :
+                  if not ( game.LineOfCollision( Player.x - 30, Player.y, Player.X, Player.y ) ) then
+                    Character.RunTo( Player.X, Player.Y, 48 )
+                  else
+                    Character.RunTo( Player.X - 30, Player.Y, 48 );
+                1 :
+                  if not ( game.LineOfCollision( Player.x - 30, Player.y + 30, Player.X, Player.y ) ) then
+                    Character.RunTo( Player.X, Player.Y, 48 )
+                  else
+                    Character.RunTo( Player.X - 30, Player.Y + 30, 48 );
+                2 :
+                  if not ( game.LineOfCollision( Player.x - 30, Player.y - 30, Player.X, Player.y ) ) then
+                    Character.RunTo( Player.X, Player.Y, 48 )
+                  else
+                    Character.RunTo( Player.X - 30, Player.Y - 30, 48 );
+                3 :
+                  if not ( game.LineOfCollision( Player.x - 30, Player.y, Player.X, Player.y ) ) then
+                    Character.RunTo( Player.X, Player.Y, 48 )
+                  else
+                    Character.RunTo( Player.X - 30, Player.Y, 48 );
+                4 :
+                  if not ( game.LineOfCollision( Player.x - 60, Player.y, Player.X, Player.y ) ) then
+                    Character.RunTo( Player.X, Player.Y, 48 )
+                  else
+                    Character.RunTo( Player.X - 60, Player.Y, 48 );
+              end;
+            end;
+          fNW, fWW, fSW :
+            begin
+              case NPCList.IndexOf( Character ) of
+                0 :
+                  if not ( game.LineOfCollision( Player.x + 30, Player.y, Player.X, Player.y ) ) then
+                    Character.RunTo( Player.X, Player.Y, 48 )
+                  else
+                    Character.RunTo( Player.X + 30, Player.Y, 48 );
+                1 :
+                  if not ( game.LineOfCollision( Player.x + 30, Player.y + 30, Player.X, Player.y ) ) then
+                    Character.RunTo( Player.X, Player.Y, 48 )
+                  else
+                    Character.RunTo( Player.X + 30, Player.Y + 30, 48 );
+                2 :
+                  if not ( game.LineOfCollision( Player.x + 30, Player.y - 30, Player.X, Player.y ) ) then
+                    Character.RunTo( Player.X, Player.Y, 48 )
+                  else
+                    Character.RunTo( Player.X + 30, Player.Y - 30, 48 );
+                3 :
+                  if not ( game.LineOfCollision( Player.x + 30, Player.y, Player.X, Player.y ) ) then
+                    Character.RunTo( Player.X, Player.Y, 48 )
+                  else
+                    Character.RunTo( Player.X + 30, Player.Y, 48 );
+                4 :
+                  if not ( game.LineOfCollision( Player.x + 60, Player.y, Player.X, Player.y ) ) then
+                    Character.RunTo( Player.X, Player.Y, 48 )
+                  else
+                    Character.RunTo( Player.X + 60, Player.Y, 48 );
+              end;
+            end;
+          fSS :
+            begin
+              case NPCList.IndexOf( Character ) of
+                0 :
+                  if not ( game.LineOfCollision( Player.x, Player.y + 30, Player.X, Player.y ) ) then
+                    Character.RunTo( Player.X, Player.Y, 48 )
+                  else
+                    Character.RunTo( Player.X, Player.Y + 30, 48 );
+                1 :
+                  if not ( game.LineOfCollision( Player.x - 30, Player.y - 30, Player.X, Player.y ) ) then
+                    Character.RunTo( Player.X, Player.Y, 48 )
+                  else
+                    Character.RunTo( Player.X - 30, Player.Y - 30, 48 );
+                2 :
+                  if not ( game.LineOfCollision( Player.x + 30, Player.y - 30, Player.X, Player.y ) ) then
+                    Character.RunTo( Player.X, Player.Y, 48 )
+                  else
+                    Character.RunTo( Player.X + 30, Player.Y - 30, 48 );
+                3 :
+                  if not ( game.LineOfCollision( Player.x, Player.y - 30, Player.X, Player.y ) ) then
+                    Character.RunTo( Player.X, Player.Y, 48 )
+                  else
+                    Character.RunTo( Player.X, Player.Y - 30, 48 );
+                4 :
+                  if not ( game.LineOfCollision( Player.x, Player.y - 60, Player.X, Player.y ) ) then
+                    Character.RunTo( Player.X, Player.Y, 48 )
+                  else
+                    Character.RunTo( Player.X, Player.Y - 60, 48 );
+              end;
+            end;
+          fNN :
+            begin
+              case NPCList.IndexOf( Character ) of
+                0 :
+                  if not ( game.LineOfCollision( Player.x, Player.y - 30, Player.X, Player.y ) ) then
+                    Character.RunTo( Player.X, Player.Y, 48 )
+                  else
+                    Character.RunTo( Player.X, Player.Y - 30, 48 );
+                1 :
+                  if not ( game.LineOfCollision( Player.x - 30, Player.y + 30, Player.X, Player.y ) ) then
+                    Character.RunTo( Player.X, Player.Y, 48 )
+                  else
+                    Character.RunTo( Player.X - 30, Player.Y + 30, 48 );
+                2 :
+                  if not ( game.LineOfCollision( Player.x + 30, Player.y + 30, Player.X, Player.y ) ) then
+                    Character.RunTo( Player.X, Player.Y, 48 )
+                  else
+                    Character.RunTo( Player.X + 30, Player.Y + 30, 48 );
+                3 :
+                  if not ( game.LineOfCollision( Player.x, Player.y + 30, Player.X, Player.y ) ) then
+                    Character.RunTo( Player.X, Player.Y, 48 )
+                  else
+                    Character.RunTo( Player.X, Player.Y + 30, 48 );
+                4 :
+                  if not ( game.LineOfCollision( Player.x, Player.y + 60, Player.X, Player.y ) ) then
+                    Character.RunTo( Player.X, Player.Y, 48 )
+                  else
+                    Character.RunTo( Player.X, Player.Y + 60, 48 );
+              end;
+            end;
+          end; //zusatz Ende
+        end;
         walking := true;
       end;
     end;
@@ -1750,7 +1898,134 @@ begin
           begin //dont get to far away;
             Character.Track := nil;
             fighting := false;
-            Character.RunTo( Player.x, Player.y, 4 );
+            if not AdjustedCompanionAI then
+              Character.RunTo( Player.x, Player.y, 4 )
+            else
+            begin  // Rucksacksepp improvement starts here
+              //Zusatz Teamkollegen auf Fleck von Spieler ->dämlich/unpraktisch
+              case Player.Facing of
+              fNE, fEE, fSE :
+                begin
+                  case NPCList.IndexOf( Character ) of
+                    0 :
+                      if not ( game.LineOfCollision( Player.x - 30, Player.y, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X - 30, Player.Y, 48 );
+                    1 :
+                      if not ( game.LineOfCollision( Player.x - 30, Player.y + 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X - 30, Player.Y + 30, 48 );
+                    2 :
+                      if not ( game.LineOfCollision( Player.x - 30, Player.y - 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X - 30, Player.Y - 30, 48 );
+                    3 :
+                      if not ( game.LineOfCollision( Player.x - 30, Player.y, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X - 30, Player.Y, 48 );
+                    4 :
+                      if not ( game.LineOfCollision( Player.x - 60, Player.y, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X - 60, Player.Y, 48 );
+                  end;
+                end;
+              fNW, fWW, fSW :
+                begin
+                  case NPCList.IndexOf( Character ) of
+                    0 :
+                      if not ( game.LineOfCollision( Player.x + 30, Player.y, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X + 30, Player.Y, 48 );
+                    1 :
+                      if not ( game.LineOfCollision( Player.x + 30, Player.y + 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X + 30, Player.Y + 30, 48 );
+                    2 :
+                      if not ( game.LineOfCollision( Player.x + 30, Player.y - 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X + 30, Player.Y - 30, 48 );
+                    3 :
+                      if not ( game.LineOfCollision( Player.x + 30, Player.y, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X + 30, Player.Y, 48 );
+                    4 :
+                      if not ( game.LineOfCollision( Player.x + 60, Player.y, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X + 60, Player.Y, 48 );
+                  end;
+                end;
+              fSS :
+                begin
+                  case NPCList.IndexOf( Character ) of
+                    0 :
+                      if not ( game.LineOfCollision( Player.x, Player.y + 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X, Player.Y + 30, 48 );
+                    1 :
+                      if not ( game.LineOfCollision( Player.x - 30, Player.y - 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X - 30, Player.Y - 30, 48 );
+                    2 :
+                      if not ( game.LineOfCollision( Player.x + 30, Player.y - 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X + 30, Player.Y - 30, 48 );
+                    3 :
+                      if not ( game.LineOfCollision( Player.x, Player.y - 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X, Player.Y - 30, 48 );
+                    4 :
+                      if not ( game.LineOfCollision( Player.x, Player.y - 60, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X, Player.Y - 60, 48 );
+                  end;
+                end;
+              fNN :
+                begin
+                  case NPCList.IndexOf( Character ) of
+                    0 :
+                      if not ( game.LineOfCollision( Player.x, Player.y - 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X, Player.Y - 30, 48 );
+                    1 :
+                      if not ( game.LineOfCollision( Player.x - 30, Player.y + 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X - 30, Player.Y + 30, 48 );
+                    2 :
+                      if not ( game.LineOfCollision( Player.x + 30, Player.y + 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X + 30, Player.Y + 30, 48 );
+                    3 :
+                      if not ( game.LineOfCollision( Player.x, Player.y + 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X, Player.Y + 30, 48 );
+                    4 :
+                      if not ( game.LineOfCollision( Player.x, Player.y + 60, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X, Player.Y + 60, 48 );
+                  end;
+                end;
+              end; //zusatz Ende
+            end;
           end
           else if FMeleeAggressive and not ( Character.InRange( Character.Track ) ) then
           begin //go get the bastard
@@ -1789,7 +2064,134 @@ begin
           begin //forget about him and go back to the player
             Character.Track := nil;
             Fighting := False;
-            Character.RunTo( Player.x, Player.y, 4 );
+            if not AdjustedCompanionAI then
+              Character.RunTo( Player.x, Player.y, 4 )
+            else
+            begin  // Rucksacksepp improvement starts here
+              //Zusatz Teamkollegen auf Fleck von Spieler ->dämlich/unpraktisch
+              case Player.Facing of
+              fNE, fEE, fSE :
+                begin
+                  case NPCList.IndexOf( Character ) of
+                    0 :
+                      if not ( game.LineOfCollision( Player.x - 30, Player.y, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X - 30, Player.Y, 48 );
+                    1 :
+                      if not ( game.LineOfCollision( Player.x - 30, Player.y + 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X - 30, Player.Y + 30, 48 );
+                    2 :
+                      if not ( game.LineOfCollision( Player.x - 30, Player.y - 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X - 30, Player.Y - 30, 48 );
+                    3 :
+                      if not ( game.LineOfCollision( Player.x - 30, Player.y, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X - 30, Player.Y, 48 );
+                    4 :
+                      if not ( game.LineOfCollision( Player.x - 60, Player.y, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X - 60, Player.Y, 48 );
+                  end;
+                end;
+              fNW, fWW, fSW :
+                begin
+                  case NPCList.IndexOf( Character ) of
+                    0 :
+                      if not ( game.LineOfCollision( Player.x + 30, Player.y, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X + 30, Player.Y, 48 );
+                    1 :
+                      if not ( game.LineOfCollision( Player.x + 30, Player.y + 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X + 30, Player.Y + 30, 48 );
+                    2 :
+                      if not ( game.LineOfCollision( Player.x + 30, Player.y - 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X + 30, Player.Y - 30, 48 );
+                    3 :
+                      if not ( game.LineOfCollision( Player.x + 30, Player.y, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X + 30, Player.Y, 48 );
+                    4 :
+                      if not ( game.LineOfCollision( Player.x + 60, Player.y, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X + 60, Player.Y, 48 );
+                  end;
+                end;
+              fSS :
+                begin
+                  case NPCList.IndexOf( Character ) of
+                    0 :
+                      if not ( game.LineOfCollision( Player.x, Player.y + 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X, Player.Y + 30, 48 );
+                    1 :
+                      if not ( game.LineOfCollision( Player.x - 30, Player.y - 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X - 30, Player.Y - 30, 48 );
+                    2 :
+                      if not ( game.LineOfCollision( Player.x + 30, Player.y - 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X + 30, Player.Y - 30, 48 );
+                    3 :
+                      if not ( game.LineOfCollision( Player.x, Player.y - 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X, Player.Y - 30, 48 );
+                    4 :
+                      if not ( game.LineOfCollision( Player.x, Player.y - 60, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X, Player.Y - 60, 48 );
+                  end;
+                end;
+              fNN :
+                begin
+                  case NPCList.IndexOf( Character ) of
+                    0 :
+                      if not ( game.LineOfCollision( Player.x, Player.y - 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X, Player.Y - 30, 48 );
+                    1 :
+                      if not ( game.LineOfCollision( Player.x - 30, Player.y + 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X - 30, Player.Y + 30, 48 );
+                    2 :
+                      if not ( game.LineOfCollision( Player.x + 30, Player.y + 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X + 30, Player.Y + 30, 48 );
+                    3 :
+                      if not ( game.LineOfCollision( Player.x, Player.y + 30, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X, Player.Y + 30, 48 );
+                    4 :
+                      if not ( game.LineOfCollision( Player.x, Player.y + 60, Player.X, Player.y ) ) then
+                        Character.RunTo( Player.X, Player.Y, 48 )
+                      else
+                        Character.RunTo( Player.X, Player.Y + 60, 48 );
+                  end;
+                end;
+              end; //zusatz Ende
+            end;
           end
           else
           begin

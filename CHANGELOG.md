@@ -14,16 +14,20 @@ All notable changes to this project will be documented in this file.
 - REFACTOR: Remove casting and add helpers to improve readability/mainability
 - REFACTOR: Too much copy/paste code - (re)Moved method up to base class or extract
 - REFACTOR: Reorg classes
-- Adding the improvments from @Rucksacksepp AI changes done in AoA - will be default in the future.
+
 
 ## 2020-01-06
 ### Added
-- Improved AI metrics based on @Rucksacksepp AoA code include in ScreenMetric record
-- A SDAoA "resolution" since @Rucksacksepp has changed the MysticVision since the "original" - that will be default SD resolution in the future
+- Improved AI metrics based on @Rucksacksepp AoA code include in ScreenMetric records
+- Adding the improvments from @Rucksacksepp AI changes done in AoA - will be default
 
 ### Fixed
 - A few typos
 - RunAway bug found by @Rucksacksepp
+
+### Changed
+- MysticVision in 800x600 mode increased based on @Rucksacksepp findings - existed as a new ScreenMetric record a few hours.
+- Updated README to better reflect what has been added, were it is going and differencies to the original released code.
 
 ## 2020-01-05
 ### Changed

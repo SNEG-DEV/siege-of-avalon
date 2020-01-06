@@ -305,6 +305,7 @@ var
   SetAppExStyleCount : Integer;
   ScreenMetrics : TScreenResolutionData;
   AdjustedPartyHitPoints : Boolean;
+  AdjustedCompanionAI : Boolean;  // Rucksacksepp's improved Companion AI - default to true
   frmMain : TfrmMain;
 
 const
@@ -888,6 +889,7 @@ begin
     end;
 
     AdjustedPartyHitPoints := ( LowerCase( INI.ReadString( 'Settings', 'AdjustedPartyHitPoints', 'false' ) ) = 'true' );
+    AdjustedCompanionAI := ( INI.ReadString( 'Settings', 'AdjustedPartyHitPoints', 'true' ).ToLower = 'true' );
 
     Log.Log( 'Set Bounds' );
     Log.flush;
