@@ -82,11 +82,10 @@ type
   	ManaEmptyX : integer;
   	LifeEmptyX : integer;
   	LogX : integer;
-    Visibility: integer;
+    VisibilityFactor: double;
     CharacterMysticVision: integer;
     CharacterDistance: integer;
     CharacterRange: integer;
-    GuardVision: integer;
     CharacterReach: integer;
     CompanionRange: integer;
     PartyMemberSlots: integer;
@@ -135,11 +134,10 @@ const
 	   ManaEmptyX : 699;
 	   LifeEmptyX : 709;
 	   LogX : 659;
-     Visibility : 300; // ??
+     VisibilityFactor : 1.0; // Visibility factor used on Vision property
      CharacterMysticVision: 500;  // was originally 300 but improved by Rucksacksepp
      CharacterDistance: 175;
      CharacterRange: 300;
-     GuardVision: 300;
      CharacterReach: 160;
      CompanionRange: 300;
      PartyMemberSlots: 2;
@@ -185,11 +183,10 @@ const
    	 ManaEmptyX : 1179;
    	 LifeEmptyX : 1189;
 	   LogX : 1139; // ??
-     Visibility : 300;  //??
+     VisibilityFactor : 1.5; // Visibility factor used on Vision property
      CharacterMysticVision: 800;
      CharacterDistance: 375;
      CharacterRange: 650;
-     GuardVision: 450;
      CharacterReach: 180;
      CompanionRange: 650;
      PartyMemberSlots: 4;
@@ -235,11 +232,10 @@ const
 	   ManaEmptyX : 1819;
 	   LifeEmptyX : 1829;
 	   LogX : 1139;
-     Visibility : 300;  // ??
+     VisibilityFactor : 7/3; // Visibility factor used on Vision property
      CharacterMysticVision: 1000;
      CharacterDistance: 775;
      CharacterRange: 950;
-     GuardVision: 700;
      CharacterReach: 200;
      CompanionRange: 900;
      PartyMemberSlots: 4;

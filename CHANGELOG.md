@@ -16,6 +16,13 @@ All notable changes to this project will be documented in this file.
 - REFACTOR: Reorg classes
 
 
+## 2020-01-08
+### Changed
+- Refactor of 'WideScreen' title code - now read-only TCharacter.Vision property
+
+### Fixed
+- Savegames where not property compatible between screen reolutions
+
 ## 2020-01-06
 ### Added
 - Improved AI metrics based on @Rucksacksepp AoA code include in ScreenMetric records

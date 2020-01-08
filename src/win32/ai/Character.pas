@@ -809,6 +809,7 @@ type
     AntiPathMode : boolean;
     FDeviance : integer;
     ThresholdOfPain : integer;
+    FVision : integer; //Sensory values are in horizontal units
     procedure SetAI( const Value : TAI );
     function GetEquipment( Slot : TSlot ) : TItem;
     procedure SetEquipment( Slot : TSlot; const Value : TItem );
@@ -848,6 +849,7 @@ type
     procedure SetCombatMode( const Value : boolean );
     procedure SetDead( const Value : boolean );
     procedure AddDamageBonus;
+    function getVision: Integer;
     property WillBeDisabled : boolean read GetWillBeDisabled write FWillBeDisabled;
   protected
     FWounds : Double;
@@ -902,7 +904,6 @@ type
     PartyAI : string;
     OnDie : string;
     CurrentSpell : TSpell;
-    Vision : Integer; //Sensory  values are in horizontal pixels
     Hearing : Integer;
     Smell : Integer;
     MysticVision : Integer;
@@ -978,6 +979,7 @@ type
     function AffectDamage( Source : TaniFigure; Damage : PDamageProfile ) : boolean;
     procedure ClearEquipment;
     function ValidateSpells : boolean;
+    procedure SetVision(v : Integer);
     //Primary Stats
     property Strength : Integer read FStrength write SetStrength;
     property Coordination : Integer read FCoordination write SetCoordination;
@@ -1032,8 +1034,8 @@ type
     property DeadCount : longword read FDeadCount;
     property TargetX : longint read FTargetX;
     property TargetY : longint read FTargetY;
+    property Vision: Integer read getVision;  //Sensory - values are in horizontal pixels
   end;
-
 
   TCompanionCharacter = class( TCharacter )
   private
@@ -2578,7 +2580,7 @@ begin
     BaseAttackRecovery := 12;
     BaseHitRecovery := 0;
     TrainingPoints := 0;
-    Vision := 400;
+    FVision := 400;
     Hearing := 80;
     Smell := 40;
     MysticVision := 0;
@@ -4359,7 +4361,7 @@ begin
     S := 'idleai=' + IdleAI; List.add( S );
     S := 'combatai=' + CombatAI; List.add( S );
     S := 'partyai=' + PartyAI; List.add( S );
-    S := 'vision=' + IntToStr( Vision ); List.add( S );
+    S := 'vision=' + IntToStr( FVision ); List.add( S );
     S := 'hearing=' + IntToStr( Hearing ); List.add( S );
     S := 'smell=' + IntToStr( Smell ); List.add( S );
     S := 'mysticvision=' + IntToStr( MysticVision ); List.add( S );
@@ -4630,7 +4632,7 @@ begin
     else if S = 'partyai' then
       Result := PartyAI
     else if S = 'vision' then
-      Result := IntToStr( Vision )
+      Result := IntToStr( FVision )
     else if S = 'hearing' then
       Result := IntToStr( Hearing )
     else if S = 'smell' then
@@ -4801,6 +4803,11 @@ begin
   end;
 end;
 
+function TCharacter.getVision: Integer;
+begin
+  Result := Trunc(FVision * ScreenMetrics.VisibilityFactor);
+end;
+
 procedure TCharacter.SetProperty( const Name, Value : string );
 var
   S : string;
@@ -4851,7 +4858,7 @@ begin
           else if S = 'idleai' then
             IdleAI := Value
           else if S = 'vision' then
-            Self.Vision := StrToInt( Value )
+            Self.FVision := StrToInt( Value )
           else if S = 'frozen' then
             Self.Frozen := ( lowercase( Value ) = 'true' )
           else if S = 'titles' then
@@ -5741,6 +5748,11 @@ begin
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
   end;
+end;
+
+procedure TCharacter.SetVision(v: Integer);
+begin
+  FVision := v;
 end;
 
 procedure TCharacter.SetMoney( const Value : Integer );
@@ -6696,7 +6708,7 @@ begin
   TCharacter( NewObject ).CombatAI := CombatAI;
   TCharacter( NewObject ).PartyAI := PartyAI;
   TCharacter( NewObject ).OnDie := OnDie;
-  TCharacter( NewObject ).Vision := Vision;
+  TCharacter( NewObject ).FVision := FVision;
   TCharacter( NewObject ).Hearing := Hearing;
   TCharacter( NewObject ).Smell := Smell;
   TCharacter( NewObject ).MysticVision := MysticVision;
@@ -12278,7 +12290,7 @@ var
   i, j : Integer;
   List : TList;
   Limit : Double;
-  Vision, Hearing, Smell, F : Double;
+  lVision, Hearing, Smell, F : Double;
 const
   FailName : string = 'Character.GetPerceptibleEnemies';
 begin
@@ -12287,10 +12299,10 @@ begin
   Log.DebugLog( FailName );
   try
     F := Source.PerceptionFactor * Factor;
-    Vision := Source.Vision * F;
+    lVision := Source.Vision * F;
     Hearing := Source.Hearing * F;
     Smell := Source.Smell * F;
-    Limit := Vision;
+    Limit := lVision;
     if Hearing > Limit then
       Limit := Hearing;
     if Smell > Limit then
@@ -12309,7 +12321,7 @@ begin
             if not TCharacter( List.Items[ i ] ).Dead and
               Source.IsEnemy( TCharacter( List.Items[ i ] ) ) then
             begin
-              if Perceptible( Source, TSpriteObject( List.Items[ i ] ), Vision, Hearing, Smell, Source.MysticVision ) then
+              if Perceptible( Source, TSpriteObject( List.Items[ i ] ), lVision, Hearing, Smell, Source.MysticVision ) then
               begin
                 if not Assigned( result ) then
                   result := TStringList.Create;
@@ -12376,7 +12388,7 @@ var
   i, j : integer;
   List : TList;
   Limit : double;
-  Vision, Hearing, Smell, F : double;
+  lVision, Hearing, Smell, F : double;
 const
   FailName : string = 'Character.GetPerceptibleAllies';
 begin
@@ -12386,10 +12398,10 @@ begin
   try
 
     F := Source.PerceptionFactor * Factor;
-    Vision := Source.Vision * F;
+    lVision := Source.Vision * F;
     Hearing := Source.Hearing * F;
     Smell := Source.Smell * F;
-    Limit := Vision;
+    Limit := lVision;
     if Hearing > Limit then
       Limit := Hearing;
     if Smell > Limit then
@@ -12408,7 +12420,7 @@ begin
             if ( List.items[ i ] <> Source ) and not TCharacter( List.items[ i ] ).Dead and
               Source.IsAlly( TCharacter( List.Items[ i ] ) ) then
             begin
-              if Perceptible( Source, TSpriteObject( List.items[ i ] ), Vision, Hearing, Smell, Source.MysticVision ) then
+              if Perceptible( Source, TSpriteObject( List.items[ i ] ), lVision, Hearing, Smell, Source.MysticVision ) then
               begin
                 if not assigned( result ) then
                   result := TStringList.create;
@@ -12475,7 +12487,7 @@ var
   i, j : Integer;
   List : TList;
   Limit : Double;
-  Vision, Hearing, Smell, F : Double;
+  lVision, Hearing, Smell, F : Double;
 const
   FailName : string = 'Character.GetPerceptibleDead';
 begin
@@ -12485,10 +12497,10 @@ begin
   try
 
     F := Source.PerceptionFactor * Factor;
-    Vision := Source.Vision * F;
+    lVision := Source.Vision * F;
     Hearing := Source.Hearing * F;
     Smell := Source.Smell * F;
-    Limit := Vision;
+    Limit := lVision;
     if Hearing > Limit then
       Limit := Hearing;
     if Smell > Limit then
@@ -12506,7 +12518,7 @@ begin
           begin
             if TCharacter( List.Items[ i ] ).Dead then
             begin
-              if Perceptible( Source, TSpriteObject( List.Items[ i ] ), Vision, Hearing, Smell, Source.MysticVision ) then
+              if Perceptible( Source, TSpriteObject( List.Items[ i ] ), lVision, Hearing, Smell, Source.MysticVision ) then
               begin
                 if not Assigned( result ) then
                   result := TStringList.Create;
@@ -12532,7 +12544,7 @@ var
   i, j : Integer;
   List : TList;
   Limit : Double;
-  Vision, Hearing, Smell, F : Double;
+  lVision, Hearing, Smell, F : Double;
 const
   FailName : string = 'Character.GetPerceptibleContainers';
 begin
@@ -12542,10 +12554,10 @@ begin
   try
 
     F := Source.PerceptionFactor * Factor;
-    Vision := Source.Vision * F;
+    lVision := Source.Vision * F;
     Hearing := Source.Hearing * F;
     Smell := Source.Smell * F;
-    Limit := Vision;
+    Limit := lVision;
     if Hearing > Limit then
       Limit := Hearing;
     if Smell > Limit then
@@ -12561,7 +12573,7 @@ begin
         begin
           if TAniFigure( List.Items[ i ] ) is TContainer then
           begin
-            if Perceptible( Source, TSpriteObject( List.Items[ i ] ), Vision, Hearing, Smell, Source.MysticVision ) then
+            if Perceptible( Source, TSpriteObject( List.Items[ i ] ), lVision, Hearing, Smell, Source.MysticVision ) then
             begin
               if not Assigned( result ) then
                 result := TStringList.Create;

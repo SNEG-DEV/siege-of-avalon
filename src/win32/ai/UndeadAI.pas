@@ -933,18 +933,6 @@ begin
         i := StrToInt( s );
         if i >= 0 then
         begin
-
-          //Addition: Because of higher resolution you can see opponents earlier, ranged attack without counterreaction
-          if ScreenMetrics.ScreenWidth>800 then //TODO: Refactor like alot of other stuff - too much copy-paste everywhere
-          begin
-            if not Character.TitleExists('Widescreen') then
-            begin
-              Character.Vision := Character.Vision + 400;
-              Character.AddTitle('Widescreen');
-            end;
-          end;
-          // Addition
-
           if player.TitleExists( 'Apprentice' ) then
           begin
             character.Combat := ( ( ( player.Mysticism * 3 ) div 4 ) + i );
@@ -1410,18 +1398,6 @@ begin
         i := StrToInt( s );
         if i >= 0 then
         begin
-
-          //Addition: Because of higher resolution you can see opponents earlier, ranged attack without counterreaction
-          if ScreenMetrics.ScreenWidth>800 then //TODO: Refactor like alot of other stuff - too much copy-paste everywhere
-          begin
-            if not Character.TitleExists('Widescreen') then
-            begin
-              Character.Vision := Character.Vision + 400;
-              Character.AddTitle('Widescreen');
-            end;
-          end;
-          // Addition
-
           if player.TitleExists( 'Apprentice' ) then
           begin
             character.Combat := player.Mysticism + i;
@@ -1975,18 +1951,6 @@ begin
         i := StrToInt( s );
         if i >= 0 then
         begin
-
-          //Addition: Because of higher resolution you can see opponents earlier, ranged attack without counterreaction
-          if ScreenMetrics.ScreenWidth>800 then //TODO: Refactor like alot of other stuff - too much copy-paste everywhere
-          begin
-            if not Character.TitleExists('Widescreen') then
-            begin
-              Character.Vision := Character.Vision + 400;
-              Character.AddTitle('Widescreen');
-            end;
-          end;
-          // Addition
-
           if player.TitleExists( 'Apprentice' ) then
           begin
             character.Mysticism := player.Mysticism + i;
@@ -2623,18 +2587,6 @@ begin
         i := StrToInt( s );
         if i >= 0 then
         begin
-
-          //Addition: Because of higher resolution you can see opponents earlier, ranged attack without counterreaction
-          if ScreenMetrics.ScreenWidth>800 then //TODO: Refactor like alot of other stuff - too much copy-paste everywhere
-          begin
-            if not Character.TitleExists('Widescreen') then
-            begin
-              Character.Vision := Character.Vision + 400;
-              Character.AddTitle('Widescreen');
-            end;
-          end;
-          // Addition
-
           if player.TitleExists( 'Apprentice' ) then
           begin
             character.Combat := player.Mysticism + i;

@@ -938,7 +938,7 @@ begin
     FScout := character.TitleExists( 'Scout' );
     FMage := character.TitleExists( 'Mage' );
 
-    Character.Vision := 0;
+    Character.SetVision(0);
     character.Hearing := 0;
     Character.Smell := 0;
     Character.MysticVision := ScreenMetrics.CharacterMysticVision;  //SD 300 HD 750
@@ -7733,7 +7733,7 @@ begin
     NewGuard.Properties[ 'Combative' ] := 'True';
     NewGuard.Properties[ 'IdleDuty' ] := 'Stand';
     NewGuard.Mana := 500;
-    NewGuard.Vision := ScreenMetrics.GuardVision;
+    NewGuard.SetVision(300);
     NewGuard.Properties[ 'DeathSounds' ] := 'malekill3,malekill5,malekill7';
     NewGuard.Properties[ 'PainSounds' ] := 'malegrunt2,malegrunt4,malegrunt6';
     NewGuard.GroupName := 'ahoul';
