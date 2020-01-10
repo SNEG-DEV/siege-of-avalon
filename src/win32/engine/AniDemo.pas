@@ -793,7 +793,6 @@ begin
     if Assigned( MusicLib ) then
       MusicLib.SetSongVolume( MasterMusicVolume );
     PlotShadows := DlgOptions.PlotShadows;
-    PlotScreenRes := DlgOptions.PlotScreenRes;
     if MasterSoundVolume > 100 then
       MasterSoundVolume := 100
     else if MasterSoundVolume < 0 then
@@ -807,9 +806,6 @@ begin
       INI.WriteInteger( 'Settings', 'SoundVolume', MasterSoundVolume );
       INI.WriteInteger( 'Settings', 'MusicVolume', MasterMusicVolume );
       INI.WriteInteger( 'Settings', 'Shadows', Integer( PlotShadows ) );
-
-      INI.WriteInteger( 'Settings', 'ScreenResolution', PlotScreenRes );
-      // Add AdjustedPartyHP
     finally
       INI.Free;
     end;
@@ -857,10 +853,8 @@ procedure TfrmMain.FormShow( Sender : TObject );
 var
   INI : TIniFile;
   ShowIntro : Boolean;
-  rtString, fsrc, fdest : string;
+  rtString : string;
   PopupEnabled : Boolean;
-  LanguagePath : string;
-  files : TArray<string>;
 const
   FailName : string = 'Main.FormShow';
 begin
@@ -939,15 +933,6 @@ begin
     InterfacePath := IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'Interface', DefaultPath ) );
     Log.Log( 'InterfacePath=' + InterfacePath );
     Log.flush;
-
-    LanguagePath := IncludeTrailingPathDelimiter( InterfacePath + INI.ReadString( 'Settings', 'LanguagePath', 'english' ) );
-
-    files := TDirectory.GetFiles(LanguagePath);
-    for fsrc in files do
-    begin
-      fdest := TPath.Combine( InterfacePath, TPath.GetFileName( fsrc ) );
-      TFile.Copy( fsrc, fdest, True);
-    end;
 
     CachePath := IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'CachePath', DefaultPath + 'cache\' ) );
     Log.Log( 'CachePath=' + CachePath );
@@ -2877,7 +2862,6 @@ begin
       DlgOptions.SoundVolume := MasterSoundVolume;
       DlgOptions.MusicVolume := MasterMusicVolume;
       DlgOptions.PlotShadows := PlotShadows;
-      DlgOptions.PlotScreenRes := PlotScreenRes;
       DlgOptions.IconDX := SpellGlyphs;
       OpenDialog( DlgOptions, CloseAllDialogs );
     end;
@@ -5924,7 +5908,6 @@ begin
     DlgOptions.SoundVolume := MasterSoundVolume;
     DlgOptions.MusicVolume := MasterMusicVolume;
     DlgOptions.PlotShadows := PlotShadows;
-    DlgOptions.PlotScreenRes := PlotScreenRes;
     if NewGame then
     begin
       DlgOptions.Character := nil;

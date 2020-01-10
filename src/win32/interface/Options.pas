@@ -68,7 +68,6 @@ type
     DXYellow : IDirectDrawSurface; //used to draw lines
     DXVolumeSlider : IDirectDrawSurface;
     DXVolumeShadow : IDirectDrawSurface;
-    DXScreenResolution : IDirectDrawSurface;
     XAdj, YAdj : integer; //adjust ments for placement of the sheet
     CurrentSelectedListItem : integer;
     StartSpell : integer;
@@ -90,11 +89,9 @@ type
     SoundVolume : integer;
     MusicVolume : integer;
     PlotShadows : boolean;
-    PlotScreenRes  : Integer;
     Character : TCharacter;
     IconDX : IDirectDrawSurface;
     opContinueRect : TRect;
-    opScreenResRect : TRect;
     constructor Create;
     destructor Destroy; override;
     procedure Init; override;
@@ -118,7 +115,6 @@ begin
   try
     inherited;
     opContinueRect := Rect( 400, 450, 400 + 300, 450 + 45 );
-    opScreenResRect := Rect( 105, 460, 105 + 311, 460 + 26 );
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -174,9 +170,6 @@ begin
     DXContinue := SoAOS_DX_LoadBMP( InterfacePath + 'opContinue.bmp', cInvisColor, width, height );
     opContinueRect.Right := width;
     opContinueRect.Bottom := height;
-    DXScreenResolution := SoAOS_DX_LoadBMP( InterfacePath + 'opScreenRes.bmp', cInvisColor, width, height );
-    opScreenResRect.Right := width;
-    opScreenResRect.Bottom := height;
     DXYellow := SoAOS_DX_LoadBMP( InterfacePath + 'opYellow.bmp', cInvisColor );
     DXVolumeSlider := SoAOS_DX_LoadBMP( InterfacePath + 'opVolume.bmp', cInvisColor );
     DXVolumeShadow := SoAOS_DX_LoadBMP( InterfacePath + 'opVolumeShadow.bmp', cInvisColor );
@@ -226,18 +219,6 @@ begin
       DrawAlpha( lpDDSBack, rect( 560, 75, 573, 86 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 )
     else
       DrawAlpha( lpDDSBack, rect( 632, 75, 645, 86 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
-
-    if True then  // HDAvail
-    begin
-      pr := Rect( 0, 0, opScreenResRect.Right, opScreenResRect.Bottom );
-      lpDDSBack.BltFast( opScreenResRect.Left, opScreenResRect.Top, DXScreenResolution, @pr, DDBLTFAST_WAIT );
-
-      case PlotScreenRes of
-        600 : DrawAlpha( lpDDSBack, rect( 112, 468, 125, 479 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
-        720 : DrawAlpha( lpDDSBack, rect( 219, 468, 232, 479 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
-        1080 : DrawAlpha( lpDDSBack, rect( 295, 468, 308, 479 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
-      end;
-    end;
 
   //Put in the volume
   //Sound FX
@@ -452,18 +433,6 @@ begin
   //clear back To Game
     SoAOS_DX_BltFastWaitXY( DXBack, Rect( opContinueRect.Left, opContinueRect.Top, opContinueRect.Left + opContinueRect.Right, opContinueRect.Top + opContinueRect.Bottom ) );
 
-    if True then  // HDAvail
-    begin
-      pr := Rect( 0, 0, opScreenResRect.Right, opScreenResRect.Bottom );
-      lpDDSBack.BltFast( opScreenResRect.Left, opScreenResRect.Top, DXScreenResolution, @pr, DDBLTFAST_WAIT );
-
-      case PlotScreenRes of
-        600 : DrawAlpha( lpDDSBack, rect( 112, 468, 125, 479 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
-        720 : DrawAlpha( lpDDSBack, rect( 219, 468, 232, 479 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
-        1080 : DrawAlpha( lpDDSBack, rect( 295, 468, 308, 479 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
-      end;
-    end;
-
     if PlotShadows then
       DrawAlpha( lpDDSBack, rect( 560, 75, 573, 86 ), rect( 0, 0, 12, 12 ), DXYellow, True, 255 )
     else
@@ -603,7 +572,6 @@ begin
     DXYellow := nil;
     DXVolumeSlider := nil;
     DXVolumeShadow := nil;
-    DXScreenResolution := nil;
 
     inherited;
   except

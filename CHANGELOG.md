@@ -16,6 +16,13 @@ All notable changes to this project will be documented in this file.
 - REFACTOR: Reorg classes
 
 
+## 2020-01-10
+### Added
+- Game Launcher settings dialog - for Language and screen resolution changes
+
+### Removed
+- All ingame Option screen resolution setting code/ui removed
+
 ## 2020-01-08
 ### Changed
 - Refactor of 'WideScreen' title code - now read-only TCharacter.Vision property

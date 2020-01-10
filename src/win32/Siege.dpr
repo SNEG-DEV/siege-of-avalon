@@ -38,8 +38,11 @@ program Siege;
 
 *)
 
+{$R *.dres}
+
 uses
   Vcl.Forms,
+  Vcl.dialogs,
   Winapi.Windows,
   System.SysUtils,
   System.IniFiles,
@@ -106,7 +109,8 @@ uses
   SoAOS.Types in 'engine\SoAOS.Types.pas',
   SoAOS.Graphics.Draw in 'graphics\SoAOS.Graphics.Draw.pas',
   SoAOS.Graphics.Types in 'graphics\SoAOS.Graphics.Types.pas',
-  SoAOS.Intrface.Popup in 'interface\SoAOS.Intrface.Popup.pas';
+  SoAOS.Intrface.Popup in 'interface\SoAOS.Intrface.Popup.pas',
+  SoAOSExtSetting in 'interface\SoAOSExtSetting.pas' {frmLaunchSetting};
 
 {$R *.RES}
 
@@ -200,9 +204,14 @@ begin
   PlayOpeningMovie;
   bPlayClosingMovie := False; // Game must force to true to show closing movie
 
+  // Launch dialog until game UI is redone - SDL2 - ran out of room on the ingame graphic.
+  TfrmLaunchSetting.Execute;
+
   Application.Initialize;
   Application.HelpFile := 'help.htm';
   Application.Title := 'Siege of Avalon';
+
+  Application.ProcessMessages;
   Application.CreateForm(TfrmMain, frmMain);
   Application.Run;
 
