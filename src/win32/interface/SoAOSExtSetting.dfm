@@ -15,6 +15,7 @@ object frmLaunchSetting: TfrmLaunchSetting
   Font.Height = -19
   Font.Name = 'BlackChancery'
   Font.Style = []
+  FormStyle = fsStayOnTop
   OldCreateOrder = False
   Position = poScreenCenter
   Scaled = False

@@ -338,7 +338,7 @@ begin
   Log.DebugLog( FailName );
   try
    //Search for the first file meeting our criteria - create a Find file structure, and assign it a handle
-    FileNotFound := FindFirst( DefaultPath + 'Games\*.sav', faAnyFile, FileData );
+    FileNotFound := FindFirst( GamesPath + '*.sav', faAnyFile, FileData );
     i := 0;
     while FileNotFound = 0 do
     begin
@@ -350,7 +350,7 @@ begin
         new( pTextItem );
         pTextItem.text := TheFileName;
           //Get the last time this file was accessed
-        FileAge( DefaultPath + 'Games\' + FileData.Name, dt );
+        FileAge( GamesPath + FileData.Name, dt );
         pTextitem.time := DateTimeToFileDate( dt ); //INVESTIGATE: Not sure if pTextitem.time makes any sense anymore
         DecodeDate( dt, fYear, fMonth, fDay );
         DecodeTime( dt, fHour, fMin, fSec, fMsec );
@@ -831,20 +831,20 @@ begin
            //if PtInRect(rect(422,509,474,541),point(x,y)) then begin //Yes pressed- del file
         if PtInRect( rect( nRect.left - 10 + 53, nRect.top + 32 + 78, nRect.left - 10 + 104, nRect.top + 32 + 109 ), point( x, y ) ) then
         begin //Yes pressed- del file
-          TFile.Delete( DefaultPath + 'Games\' + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.sav' );
-          if TFile.Exists( DefaultPath + 'Games\' + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.bmp' ) then
-            TFile.Delete( DefaultPath + 'Games\' + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.bmp' );
+          TFile.Delete( GamesPath + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.sav' );
+          if TFile.Exists( GamesPath + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.bmp' ) then
+            TFile.Delete( GamesPath + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.bmp' );
           try
-            if TFile.Exists( DefaultPath + 'Games\' + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.idx' ) then
-              TFile.Delete( DefaultPath + 'Games\' + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.idx' );
+            if TFile.Exists( GamesPath + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.idx' ) then
+              TFile.Delete( GamesPath + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.idx' );
           except
           end;
           try
-            if TFile.Exists( DefaultPath + 'Games\' + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.map' ) then
-              TFile.Delete( DefaultPath + 'Games\' + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.map' );
+            if TFile.Exists( GamesPath + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.map' ) then
+              TFile.Delete( GamesPath + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.map' );
           except
           end;
-          a := ChangeFileExt( ArtPath + CharacterGif, '.pox' );
+          a := ChangeFileExt( ResourcePath + CharacterGif, '.pox' );
               //if TFile.Exists(a) then
                  //TDelete.File(a); -> This is OUT in a June 11 modification
           SelectRect.Delete( CurrentSelectedListItem );
@@ -1141,7 +1141,7 @@ begin
     end; //endif
 
     if CurrentSelectedListItem > -1 then
-      PicName := DefaultPath + 'Games\' + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.bmp'
+      PicName := GamesPath + pItem( SelectRect.items[ CurrentSelectedListItem ] ).text + '.bmp'
     else
       PicName := '';
 
@@ -1320,9 +1320,9 @@ begin
       TravelBlock := '';
       FoundCharacters := false;
       try
-        Filename := DefaultPath + 'games\' + GameName + '.idx';
+        Filename := GamesPath + GameName + '.idx';
         if not TFile.Exists( Filename ) then
-          Filename := DefaultPath + 'games\' + GameName + '.sav';
+          Filename := GamesPath + GameName + '.sav';
       //Level:=lowercase(ChangeFileExt(ExtractFilename(LVLFile),''));
       //Scene:=CurrentScene;
         Stream := TFileStream.Create( Filename, fmOpenRead or fmShareCompat );

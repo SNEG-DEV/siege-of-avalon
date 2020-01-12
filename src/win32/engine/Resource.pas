@@ -254,11 +254,11 @@ const
   scrRandom = 3;
   Angles = 8;
 
-  LayerPath = 'engine\layeredimages\';
+  LayerPath =  'engine\layeredimages\';
   InventoryPath = 'engine\inventoryimages\';
 
 var
-  ArtPath : string;
+  ResourcePath : string;
   TilePath : string;
   SoundPath : string;
   ItemDB : string;
@@ -328,7 +328,7 @@ end;
 
 function LoadArtResource( const ResourceFile : string; OnDemand : boolean ) : TResource;
 begin
-  result := LoadResource( ArtPath + ResourceFile, OnDemand );
+  result := LoadResource( ResourcePath + ResourceFile, OnDemand );
   if assigned( result ) then
     result.Filename := ResourceFile;
 end;
@@ -770,7 +770,7 @@ begin
   if assigned( RLE ) then
     exit;
   EOB := $4242;
-  Stream := TFileStream.create( ArtPath + ChangeFileExt( Filename, '.pox' ), fmOpenRead or fmShareCompat );
+  Stream := TFileStream.create( ResourcePath + ChangeFileExt( Filename, '.pox' ), fmOpenRead or fmShareCompat );
   try
     Stream.Read( L, sizeof( L ) );
     if ( L <> $41584F50 ) then

@@ -89,6 +89,7 @@ type
     CharacterReach: integer;
     CompanionRange: integer;
     PartyMemberSlots: integer;
+    AStarGridDim: Integer;
     spellbarFile: string;
     sidebarFile: string;
     bottombarFile: string;
@@ -141,9 +142,9 @@ const
      CharacterReach: 160;
      CompanionRange: 300;
      PartyMemberSlots: 2;
-     spellbarFile: 'spellbar.bmp';
-     sidebarFile: 'sidebar.bmp';
-     bottombarFile: 'bottombar.bmp';
+     spellbarFile: 'spellbar';
+     sidebarFile: 'sidebar';
+     bottombarFile: 'bottombar';
      IniIdent : 'SDAOA';
      popInventoryRect: ( Left: 726; Top: 429; Right: 772; Bottom: 473 );
      popMapRect: ( Left: 732; Top: 511; Right: 781; Bottom: 555 );
@@ -190,9 +191,9 @@ const
      CharacterReach: 180;
      CompanionRange: 650;
      PartyMemberSlots: 4;
-     spellbarFile: 'spellbarHD.bmp';
-     sidebarFile: 'sidebarHD.bmp';
-     bottombarFile: 'bottombarHD.bmp';
+     spellbarFile: 'spellbarHD';
+     sidebarFile: 'sidebarHD';
+     bottombarFile: 'bottombarHD';
      IniIdent : 'HD';
      popInventoryRect: ( Left: 1206; Top: 429; Right: 1254; Bottom: 473 );
      popMapRect: ( Left: 1212; Top: 631; Right: 1263; Bottom: 675 );
@@ -239,9 +240,9 @@ const
      CharacterReach: 200;
      CompanionRange: 900;
      PartyMemberSlots: 4;
-     spellbarFile: 'spellbarFullHD.bmp';
-     sidebarFile: 'sidebarFullHD.bmp';
-     bottombarFile: 'bottombarFullHD.bmp';
+     spellbarFile: 'spellbarFullHD';
+     sidebarFile: 'sidebarFullHD';
+     bottombarFile: 'bottombarFullHD';
      IniIdent : 'FullHD';
      popInventoryRect: ( Left: 1846; Top: 885; Right: 1894; Bottom: 931 );
      popMapRect: ( Left: 1852; Top: 991; Right: 1903; Bottom: 1035 );

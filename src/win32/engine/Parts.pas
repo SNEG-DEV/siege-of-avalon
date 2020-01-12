@@ -536,14 +536,20 @@ begin
     if XRefDB.FindRecord( 'Base' ) then
     begin
       XRefIndex := 1;
-      S1 := NakedName.ToLower;
       S := XRefDB.Fields[ XRefIndex ];
-      while S <> '' do
+      // Old 2001 builds used different format
+      if XRefDB.V2Format then
       begin
-        if S.ToLower.Contains( S1 ) then  // was >=0 in gondur code - did not make sense - I might be wrong, default skinny male does not fit his cloth is shown
-          break;
-        inc( XRefIndex );
-        S := XRefDB.Fields[ XRefIndex ];
+        S1 := NakedName.ToLower;
+        while S <> '' do
+        begin
+          // was pos(S1) >=0 in gondur code - did not make sense -
+          // Is was due to 2 different xref formats - should be solved in db unit
+          if S.ToLower.Contains( S1 ) then
+            break;
+          inc( XRefIndex );
+          S := XRefDB.Fields[ XRefIndex ];
+        end;
       end;
       if S <> '' then
       begin

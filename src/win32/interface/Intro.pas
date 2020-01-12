@@ -98,7 +98,6 @@ const
   XFrame = 106;
   YFrame = 41;
 
-
 procedure MakeRect( var Caption : TIntroRect; X, Y : integer; BM : TBitmap );
 const
   FailName : string = 'Intro.MakeRect';
@@ -113,7 +112,32 @@ begin
     Caption.Image := DDGetSurface( lpDD, W, H, BM.Canvas.Pixels[1,1], true ); // The asset released has a "color" issue - this hack solves it
     Caption.Image.GetDC( DC );
     try
-      BitBlt( DC, 0, 0, W, H, BM.canvas.handle, X - XFrame, Y - YFrame, SRCCOPY );
+      BitBlt( DC, 0, 0, W, H, BM.canvas.handle, 0, Y - YFrame, SRCCOPY );
+    finally
+      Caption.Image.ReleaseDC( DC );
+    end;
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+procedure MakeOldRect( var Caption : TIntroRect; X, Y : integer; BM : TBitmap );
+const
+  FailName : string = 'Intro.MakeOldRect';
+var
+  DC: HDC;
+  W, H: Integer;
+begin
+  Log.DebugLog( FailName );
+  W := BM.Width;
+  H := BM.Height;
+  try
+    Caption.Rect := Rect( X, Y, X + W, Y + H );
+    Caption.Image := DDGetSurface( lpDD, W, H, cTransparent, true );
+    Caption.Image.GetDC( DC );
+    try
+      BitBlt( DC, 0, 0, W, H, BM.canvas.handle, 0, 0, SRCCOPY );
     finally
       Caption.Image.ReleaseDC( DC );
     end;
@@ -174,44 +198,67 @@ begin
 
     BM := TBitmap.Create;
     try
-      BM.LoadFromFile( InterfacePath + 'gMainMenuBlank.bmp' );
-      DXBack := SoAOS_DX_SurfaceFromBMP( BM, cInvisColor );
+      if FileExists( InterfacePath + 'gMainMenuBlank.bmp' ) then   // multi language setup
+      begin
+        BM.LoadFromFile( InterfacePath + 'gMainMenuBlank.bmp' );
+        DXBack := SoAOS_DX_SurfaceFromBMP( BM, cInvisColor );
+        BM.LoadFromFile( InterfacePath + 'gMainMenuText.bmp' );
 
-      BM.LoadFromFile( InterfacePath + 'gMainMenuText.bmp' );
-      DXBack.GetDC( DC );
-      try
-        BitBlt( DC, 106, 41, 582, 416, BM.canvas.handle, 0, 0, SRCCOPY );
-      finally
-        DXBack.ReleaseDC( DC );
+        DXBack.GetDC( DC );
+        try
+          BitBlt( DC, 106, 41, 582, 416, BM.canvas.handle, 0, 0, SRCCOPY );
+        finally
+          DXBack.ReleaseDC( DC );
+        end;
+      end
+      else
+      begin
+        BM.LoadFromFile( InterfacePath + 'gMainMenu.bmp' );       // original 2001 setup
+        DXBack := SoAOS_DX_SurfaceFromBMP( BM, cInvisColor );
       end;
 
       pr := Rect( 0, 0, 800, 600 ); //NOHD
       lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
 
-      BM.LoadFromFile( InterfacePath + 'gMainMenuTextBttns.bmp' );
-      Y1 := YFrame;
-      MakeRect( Captions[ 1 ], XFrame, Y1, BM );  // New game
-
-      inc( Y1, 52 );
-      MakeRect( Captions[ 2 ], XFrame, Y1, BM );  // Load
-
-      inc( Y1, 52 );
-      MakeRect( Captions[ 3 ], XFrame, Y1, BM );  // Save
-
-      inc( Y1, 52 );
-      MakeRect( Captions[ 4 ], XFrame, Y1, BM );  // Options
-
-      inc( Y1, 52 );
-      MakeRect( Captions[ 5 ], XFrame, Y1, BM );  // History
-
-      inc( Y1, 52 );
-      MakeRect( Captions[ 6 ], XFrame, Y1, BM );  // Credits
-
-      inc( Y1, 52 );
-      MakeRect( Captions[ 7 ], XFrame, Y1, BM );  // Exit
-
-      inc( Y1, 52 );
-      MakeRect( Captions[ 8 ], XFrame, Y1, BM );  // Resume
+      if FileExists( InterfacePath + 'gMainMenuTextBttns.bmp' ) then
+      begin
+        BM.LoadFromFile( InterfacePath + 'gMainMenuTextBttns.bmp' );
+        Y1 := YFrame;
+        MakeRect( Captions[ 1 ], XFrame, Y1, BM );  // New game
+        inc( Y1, 52 );
+        MakeRect( Captions[ 2 ], XFrame, Y1, BM );  // Load
+        inc( Y1, 52 );
+        MakeRect( Captions[ 3 ], XFrame, Y1, BM );  // Save
+        inc( Y1, 52 );
+        MakeRect( Captions[ 4 ], XFrame, Y1, BM );  // Options
+        inc( Y1, 52 );
+        MakeRect( Captions[ 5 ], XFrame, Y1, BM );  // History
+        inc( Y1, 52 );
+        MakeRect( Captions[ 6 ], XFrame, Y1, BM );  // Credits
+        inc( Y1, 52 );
+        MakeRect( Captions[ 7 ], XFrame, Y1, BM );  // Exit
+        inc( Y1, 52 );
+        MakeRect( Captions[ 8 ], XFrame, Y1, BM );  // Resume
+      end
+      else
+      begin
+        BM.LoadFromFile( InterfacePath + 'gNEW.bmp' );
+        MakeOldRect( Captions[ 1 ], 255, 49, BM );  // New game
+        BM.LoadFromFile( InterfacePath + 'gLOAD.bmp' );
+        MakeOldRect( Captions[ 2 ], 323, 94, BM );  // Load
+        BM.LoadFromFile( InterfacePath + 'gSAVE.bmp' );
+        MakeOldRect( Captions[ 3 ], 294, 148, BM );  // Save
+        BM.LoadFromFile( InterfacePath + 'gOPTIONS.bmp' );
+        MakeOldRect( Captions[ 4 ], 284, 191, BM );  // Options
+        BM.LoadFromFile( InterfacePath + 'gUPDATE.bmp' );
+        MakeOldRect( Captions[ 5 ], 260, 254, BM );  // History
+        BM.LoadFromFile( InterfacePath + 'gCREDITS.bmp' );
+        MakeOldRect( Captions[ 6 ], 294, 297, BM );  // Credits
+        BM.LoadFromFile( InterfacePath + 'gEXIT.bmp' );
+        MakeOldRect( Captions[ 7 ], 300, 353, BM );  // Exit
+        BM.LoadFromFile( InterfacePath + 'gRESUME.bmp' );
+        MakeOldRect( Captions[ 8 ], 197, 400, BM );  // Resume
+      end;
 
     finally
       BM.Free;

@@ -28,7 +28,7 @@ unit AStar;
   WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
   for the specific language governing rights and limitations under the License.
 
-  Description:
+  Description: A* path finding algoritm
 
   Requires: Delphi 10.3.3 or later
 
@@ -45,9 +45,9 @@ uses
   Winapi.Windows;
 
 const
-  MinSearch = -128;
-  MaxSearch = 128;
-  HeapSize = 256;
+  MinSearch = -256; //-160 //-128;
+  MaxSearch = 256; // 160 // 128;
+  HeapSize = 512;
 
 type
   TAGrid = packed record

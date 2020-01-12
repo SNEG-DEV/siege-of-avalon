@@ -584,20 +584,20 @@ begin
       Exit;
     end;
 
-    ForceNotReadOnly( DefaultPath + 'games\' + TempGame + '.sav' );
-    ForceNotReadOnly( DefaultPath + 'games\' + TempGame + '.idx' );
-    ForceNotReadOnly( DefaultPath + 'games\' + TempGame + '.map' );
+    ForceNotReadOnly( GamesPath + TempGame + '.sav' );
+    ForceNotReadOnly( GamesPath + TempGame + '.idx' );
+    ForceNotReadOnly( GamesPath + TempGame + '.map' );
 
     try
-      DeleteFile( DefaultPath + 'games\' + TempGame + '.sav' );
+      DeleteFile( GamesPath + TempGame + '.sav' );
     except
     end;
     try
-      DeleteFile( DefaultPath + 'games\' + TempGame + '.idx' );
+      DeleteFile( GamesPath + TempGame + '.idx' );
     except
     end;
     try
-      DeleteFile( DefaultPath + 'games\' + TempGame + '.map' );
+      DeleteFile( GamesPath + TempGame + '.map' );
     except
     end;
 
@@ -674,7 +674,7 @@ begin
     NPCList.Clear;
     NPCList.Add( Player );
 
-    INI := TIniFile.Create( DefaultPath + 'siege.ini' );
+    INI := TIniFile.Create( SiegeINIFile );
     try
       if Player.AttackSound = '' then
         Player.AttackSound := INI.ReadString( 'Character', 'AttackSounds', '' );
@@ -801,7 +801,7 @@ begin
       MasterMusicVolume := 100
     else if MasterMusicVolume < 0 then
       MasterMusicVolume := 0;
-    INI := TIniFile.Create( DefaultPath + 'siege.ini' );
+    INI := TIniFile.Create( SiegeINIFile );
     try
       INI.WriteInteger( 'Settings', 'SoundVolume', MasterSoundVolume );
       INI.WriteInteger( 'Settings', 'MusicVolume', MasterMusicVolume );
@@ -862,270 +862,284 @@ begin
   try
     Log.Log( 'Start Siege' );
     Log.flush;
+    // Setting all paths and file references - move into record or class - SoAOSPath struct
+    // Start with defaults and missing - OS agnostic
+    AppPath := ExtractFilePath( Application.ExeName );
+    SiegeINIFile := AppPath + 'siege.ini';
 
-    DefaultPath := ExtractFilePath( Application.ExeName );
+    MapPath := AnsiString(IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'maps')));
+    GamesPath := IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'games'));
+    CachePath := IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'cache'));
+    ResourcePath := IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'ArtLib/Resources'));
+    TilePath := IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'ArtLib/Tiles'));
+    SoundPath := IncludeTrailingPathDelimiter(TPath.Combine(ResourcePath, 'Audio'));
+    InterfacePath := IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'Interface'));
+    ItemDB := IncludeTrailingPathDelimiter(TPath.Combine(ResourcePath, 'Database/items.db'));
+    XRefDB := IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'Database/xref.db'));
+    TitlesDB := IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'Database/titles.db'));
+
+//    StartFile := MapPath+'OKeepL2.lvl';
+
     DisableConsole := True;
 
     NewGame := True;
 
-    INI := TIniFile.Create( DefaultPath + 'siege.ini' );
+    INI := TIniFile.Create( SiegeINIFile );
+    try
+      ResourcePath := TPath.GetFullPath(IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'ArtPath', ResourcePath ) ) );
+      Log.Log( 'ArtPath=' + ResourcePath );
+      Log.flush;
 
-    PlotScreenRes := INI.ReadInteger( 'Settings', 'ScreenResolution', 600 );
+      TilePath := TPath.GetFullPath(IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'TilePath', TilePath ) ) );
+      Log.Log( 'TilePath=' + TilePath );
+      Log.flush;
 
-    case PlotScreenRes of
-       600 : ScreenMetrics := cOriginal;
-       720 : ScreenMetrics := cHD;
-      1080 : ScreenMetrics := cFullHD;
-      else
-      begin
-        PlotScreenRes := 600;
-        INI.WriteInteger( 'Settings', 'ScreenResolution', 600 );
-        ScreenMetrics := cOriginal;
+      SoundPath := TPath.GetFullPath(IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'SoundPath', SoundPath ) ) );
+      Log.Log( 'SoundPath=' + SoundPath );
+      Log.flush;
+
+      InterfacePath := TPath.GetFullPath(IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'Interface', InterfacePath ) ) );
+      Log.Log( 'InterfacePath=' + InterfacePath );
+      Log.flush;
+
+      PlotScreenRes := INI.ReadInteger( 'Settings', 'ScreenResolution', 600 );
+
+      case PlotScreenRes of
+         600 : ScreenMetrics := cOriginal;
+         720 : ScreenMetrics := cHD;
+        1080 : ScreenMetrics := cFullHD;
+        else
+        begin
+          PlotScreenRes := 600;
+          INI.WriteInteger( 'Settings', 'ScreenResolution', 600 );
+          ScreenMetrics := cOriginal;
+        end;
       end;
-    end;
 
-    AdjustedPartyHitPoints := ( LowerCase( INI.ReadString( 'Settings', 'AdjustedPartyHitPoints', 'false' ) ) = 'true' );
-    AdjustedCompanionAI := ( INI.ReadString( 'Settings', 'AdjustedPartyHitPoints', 'true' ).ToLower = 'true' );
+      AdjustedPartyHitPoints := ( LowerCase( INI.ReadString( 'Settings', 'AdjustedPartyHitPoints', 'false' ) ) = 'true' );
+      AdjustedCompanionAI := ( INI.ReadString( 'Settings', 'AdjustedPartyHitPoints', 'true' ).ToLower = 'true' );
 
-    Log.Log( 'Set Bounds' );
-    Log.flush;
-    Game.SetBounds( 0, 0, ScreenMetrics.GameWidth, ScreenMetrics.GameHeight ); // 703, 511
+      Log.Log( 'Set Bounds' );
+      Log.flush;
+      Game.SetBounds( 0, 0, ScreenMetrics.GameWidth, ScreenMetrics.GameHeight ); // 703, 511
 
-{$IFDEF DirectX}
-    Log.Log( 'Mode=DX' );
-    Log.flush;
-{$ENDIF}
-{$IFNDEF DirectX}
-    Log.Log( 'Mode=GDI' );
-    Log.flush;
-    GameMap.UseLighting := False;
-{$ENDIF}
+  {$IFDEF DirectX}
+      Log.Log( 'Mode=DX' );
+      Log.flush;
+  {$ENDIF}
+  {$IFNDEF DirectX}
+      Log.Log( 'Mode=GDI' );
+      Log.flush;
+      GameMap.UseLighting := False;
+  {$ENDIF}
 
-    Log.Log( 'Read Settings' );
-    Log.flush;
+      Log.Log( 'Read Settings' );
+      Log.flush;
 
-    GetChapters( INI );
+      GetChapters( INI );
 
-    ItemDB := INI.ReadString( 'Settings', 'ItemDB', DefaultPath + 'items.db' );
-    XRefDB := INI.ReadString( 'Settings', 'XRefDB', DefaultPath + 'xref.db' );
-    TitlesDB := INI.ReadString( 'Settings', 'TitlesDB', DefaultPath + 'titles.db' );
-    Log.Log( 'Item DB=' + ItemDB );
-    Log.Log( 'XRef DB=' + XRefDB );
-    Log.Log( 'Titles DB=' + TitlesDB );
-    Log.flush;
+      ItemDB := TPath.GetFullPath(INI.ReadString( 'Settings', 'ItemDB', ItemDB ));
+      XRefDB := TPath.GetFullPath(INI.ReadString( 'Settings', 'XRefDB', XRefDB ));
+      TitlesDB := TPath.GetFullPath(INI.ReadString( 'Settings', 'TitlesDB', TitlesDB ));
+      Log.Log( 'Item DB=' + ItemDB );
+      Log.Log( 'XRef DB=' + XRefDB );
+      Log.Log( 'Titles DB=' + TitlesDB );
+      Log.flush;
 
-    TalkToMe := ( LowerCase( INI.ReadString( 'Settings', 'TalkToMe', '' ) ) = 'true' );
+      TalkToMe := ( LowerCase( INI.ReadString( 'Settings', 'TalkToMe', '' ) ) = 'true' );
 
-    UseDirectSound := False;
+      UseDirectSound := False;
 
-    ArtPath := IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'ArtPath', DefaultPath ) );
-    Log.Log( 'ArtPath=' + ArtPath );
-    Log.flush;
+      CachePath := TPath.GetFullPath(IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'CachePath', CachePath ) ) );
+      Log.Log( 'CachePath=' + CachePath );
+      Log.flush;
 
-    TilePath := IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'TilePath', DefaultPath ) );
-    Log.Log( 'TilePath=' + TilePath );
-    Log.flush;
-
-    SoundPath := IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'SoundPath', DefaultPath ) );
-    Log.Log( 'SoundPath=' + SoundPath );
-    Log.flush;
-
-    InterfacePath := IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'Interface', DefaultPath ) );
-    Log.Log( 'InterfacePath=' + InterfacePath );
-    Log.flush;
-
-    CachePath := IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'CachePath', DefaultPath + 'cache\' ) );
-    Log.Log( 'CachePath=' + CachePath );
-    Log.flush;
-
-    MapPath := AnsiString( INI.ReadString( 'Settings', 'MapPath', '' ) );
-    if MapPath <> '' then
-    begin
-      MapPath := IncludeTrailingPathDelimiter( MapPath );
+      MapPath := AnsiString( TPath.GetFullPath(IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'MapPath', MapPath ) ) ) );
       Log.Log( 'MapPath=' + MapPath );
       Log.flush;
-    end;
-
-    DefaultTransition := INI.ReadString( 'Settings', 'Transition', '' );
-    if DefaultTransition <> '' then
-      DefaultTransition := InterfacePath + DefaultTransition + '.bmp';
-    Log.Log( 'DefaultTransition=' + DefaultTransition );
-    Log.flush;
-
-    MaxCacheSize := INI.ReadInteger( 'Settings', 'CacheSize', 640 );
-    INI.WriteInteger( 'Settings', 'CacheSize', MaxCacheSize );
-    MaxCacheSize := MaxCacheSize * 1024 * 1024;
-
-    GlobalBrightness := INI.ReadInteger( 'Settings', 'Brightness', 0 );
-    INI.WriteInteger( 'Settings', 'Brightness', GlobalBrightness );
-    Log.Log( 'Brightness=' + IntToStr( GlobalBrightness ) );
-    Log.flush;
-
-    Game.ShowRepaint := ( LowerCase( INI.ReadString( 'Settings', 'ShowRepaint', '' ) ) = 'true' );
-    if Game.ShowRepaint then
-      Log.Log( 'ShowRepaint=true' );
-
-    Log.Log( 'Create Globals' );
-    Log.flush;
-    CreateGlobals;
-    if LowerCase( INI.ReadString( 'Settings', 'sound', '' ) ) <> 'false' then
-    begin
-      INI.WriteString( 'Settings', 'sound', 'true' );
-      Log.Log( 'Sound enabled' );
-      Log.flush;
-      Log.Log( 'Initializing sound' );
+    
+      DefaultTransition := INI.ReadString( 'Settings', 'Transition', '' );
+      if DefaultTransition <> '' then
+        DefaultTransition := InterfacePath + DefaultTransition + '.bmp';
+      Log.Log( 'DefaultTransition=' + DefaultTransition );
       Log.flush;
 
-      rtString := LowerCase( INI.ReadString( 'Settings', 'UseDirectSound', '' ) );
-      if rtString = '' then
-      begin //no setting found - check for SB live
-        if ( Pos( 'live', LowerCase( FSOUND_GetDriverName( 0 ) ) ) = 0 ) and ( Pos( 'live', LowerCase( FSOUND_GetDriverName( 1 ) ) ) = 0 ) then
-        begin
+      MaxCacheSize := INI.ReadInteger( 'Settings', 'CacheSize', 640 );
+      INI.WriteInteger( 'Settings', 'CacheSize', MaxCacheSize );
+      MaxCacheSize := MaxCacheSize * 1024 * 1024;
+
+      GlobalBrightness := INI.ReadInteger( 'Settings', 'Brightness', 0 );
+      INI.WriteInteger( 'Settings', 'Brightness', GlobalBrightness );
+      Log.Log( 'Brightness=' + IntToStr( GlobalBrightness ) );
+      Log.flush;
+
+      Game.ShowRepaint := ( LowerCase( INI.ReadString( 'Settings', 'ShowRepaint', '' ) ) = 'true' );
+      if Game.ShowRepaint then
+        Log.Log( 'ShowRepaint=true' );
+
+      Log.Log( 'Create Globals' );
+      Log.flush;
+      CreateGlobals;
+      if LowerCase( INI.ReadString( 'Settings', 'sound', '' ) ) <> 'false' then
+      begin
+        INI.WriteString( 'Settings', 'sound', 'true' );
+        Log.Log( 'Sound enabled' );
+        Log.flush;
+        Log.Log( 'Initializing sound' );
+        Log.flush;
+
+        rtString := LowerCase( INI.ReadString( 'Settings', 'UseDirectSound', '' ) );
+        if rtString = '' then
+        begin //no setting found - check for SB live
+          if ( Pos( 'live', LowerCase( FSOUND_GetDriverName( 0 ) ) ) = 0 ) and ( Pos( 'live', LowerCase( FSOUND_GetDriverName( 1 ) ) ) = 0 ) then
+          begin
+            UseDirectSound := True;
+          end
+          else
+          begin
+            UseDirectSound := False; //SB live
+          end;
+        end
+        else if rtString = 'true' then
           UseDirectSound := True;
+
+        SoundLib := TSound.Create( Handle );
+        if LowerCase( INI.ReadString( 'Settings', 'music', '' ) ) <> 'false' then
+        begin
+          INI.WriteString( 'Settings', 'music', 'true' );
+          Log.Log( 'Music enabled' );
+          Log.flush;
+          Log.Log( 'Initializing music' );
+          Log.flush;
+          MusicLib := TMusic.Create( Handle );
         end
         else
         begin
-          UseDirectSound := False; //SB live
+          INI.WriteString( 'Settings', 'music', 'false' );
+          Log.Log( 'Music disabled' );
+          Log.flush;
         end;
-      end
-      else if rtString = 'true' then
-        UseDirectSound := True;
-
-      SoundLib := TSound.Create( Handle );
-      if LowerCase( INI.ReadString( 'Settings', 'music', '' ) ) <> 'false' then
-      begin
-        INI.WriteString( 'Settings', 'music', 'true' );
-        Log.Log( 'Music enabled' );
-        Log.flush;
-        Log.Log( 'Initializing music' );
-        Log.flush;
-        MusicLib := TMusic.Create( Handle );
       end
       else
       begin
+        INI.WriteString( 'Settings', 'sound', 'false' );
         INI.WriteString( 'Settings', 'music', 'false' );
+        Log.Log( 'Sound disabled' );
+        Log.flush;
         Log.Log( 'Music disabled' );
         Log.flush;
       end;
-    end
-    else
-    begin
-      INI.WriteString( 'Settings', 'sound', 'false' );
-      INI.WriteString( 'Settings', 'music', 'false' );
-      Log.Log( 'Sound disabled' );
+      //MusicLib.OpenThisSong(SoundPath+'theme\canyon'+'.mp3');
+      //MusicLib.PlayThisSong;
+
+      if DaSoundCardAvailable then
+        Log.Log( 'Sound card available' )
+      else
+        Log.Log( 'Sound card not available' );
       Log.flush;
-      Log.Log( 'Music disabled' );
+
+      SoundOK := DaSoundCardAvailable and ( Assigned( SoundLib ) or Assigned( MusicLib ) );
+      Log.Log( 'Initializing event timer' );
       Log.flush;
+      SoundTimer := TTimer.Create( nil );
+      SoundTimer.Interval := 100;
+
+      MasterSoundVolume := INI.ReadInteger( 'Settings', 'SoundVolume', 50 );
+      MasterMusicVolume := INI.ReadInteger( 'Settings', 'MusicVolume', 50 );
+      PlotShadows := ( INI.ReadInteger( 'Settings', 'Shadows', 1 ) <> 0 );
+      if PlotShadows then
+      begin
+        INI.WriteInteger( 'Settings', 'Shadows', 1 );
+        Log.Log( 'PlotShadows enabled' );
+      end
+      else
+      begin
+        INI.WriteInteger( 'Settings', 'Shadows', 0 );
+      end;
+
+      UseTimer := ( LowerCase( INI.ReadString( 'Settings', 'UseTimer', '' ) ) = 'true' );
+      if UseTimer then
+      begin
+        INI.WriteString( 'Settings', 'UseTimer', 'true' );
+        Log.Log( 'UseTimer enabled' );
+      end
+      else
+      begin
+        INI.WriteString( 'Settings', 'UseTimer', 'false' );
+      end;
+      Interval := INI.ReadInteger( 'Settings', 'Interval', 30 );
+      Log.Log( 'Interval=' + IntToStr( Interval ) );
+      UseVideoRAM := ( LowerCase( INI.ReadString( 'Settings', 'UseVideo', '' ) ) = 'true' );
+      if UseVideoRAM then
+      begin
+        INI.WriteString( 'Settings', 'UseVideo', 'true' );
+        Log.Log( 'UseVideoRAM enabled' );
+      end
+      else
+      begin
+        INI.WriteString( 'Settings', 'UseVideo', 'false' )
+      end;
+      GIFToPOX := ( LowerCase( INI.ReadString( 'Settings', 'GIFToPOX', '' ) ) = 'true' );
+      if GIFToPOX then
+        Log.Log( 'GIFToPOX enabled' );
+      AllSpells := ( LowerCase( INI.ReadString( 'Settings', 'AllSpells', '' ) ) = 'true' );
+      if AllSpells then
+        Log.Log( 'AllSpells enabled' );
+      ReadCache := ( LowerCase( INI.ReadString( 'Settings', 'ReadCache', '' ) ) <> 'false' );
+      if ReadCache then
+      begin
+        INI.WriteString( 'Settings', 'ReadCache', 'true' );
+        Log.Log( 'ReadCache enabled' );
+      end
+      else
+      begin
+        INI.WriteString( 'Settings', 'ReadCache', 'false' );
+      end;
+      WriteCache := ( LowerCase( INI.ReadString( 'Settings', 'WriteCache', '' ) ) <> 'false' );
+      if WriteCache then
+      begin
+        INI.WriteString( 'Settings', 'WriteCache', 'true' );
+        Log.Log( 'WriteCache enabled' );
+      end
+      else
+      begin
+        INI.WriteString( 'Settings', 'WriteCache', 'false' );
+      end;
+      Bikini := ( lowercase( INI.ReadString( 'Settings', 'Bikini', '' ) ) = 'true' );
+      NoPageNumbers := ( LowerCase( INI.ReadString( 'Settings', 'NoPageNumbers', '' ) ) = 'true' );
+      UseSmallFont := ( LowerCase( INI.ReadString( 'Settings', 'UseSmallFont', '' ) ) = 'true' );
+      NoTransit := ( LowerCase( INI.ReadString( 'Settings', 'NoTransit', '' ) ) = 'true' );
+      GameMap.UseLighting := ( LowerCase( INI.ReadString( 'Settings', 'Lighting', '' ) ) <> 'false' );
+      if GameMap.UseLighting then
+      begin
+        INI.WriteString( 'Settings', 'Lighting', 'true' );
+        Log.Log( 'UseLighting enabled' );
+      end
+      else
+      begin
+        INI.WriteString( 'Settings', 'Lighting', 'false' );
+      end;
+      GameMap.UseAmbientOnly := ( LowerCase( INI.ReadString( 'Settings', 'AmbientOnly', '' ) ) = 'true' );
+      Log.flush;
+
+      if ( INI.ReadInteger( 'Settings', 'JournalFont', 0 ) = 1 ) and TDirectory.Exists( ResourcePath + 'journalalt' ) then
+        AdventureLog1.LogDirectory := ResourcePath + 'journalalt\'
+      else
+        AdventureLog1.LogDirectory := ResourcePath + 'journal\';
+
+      //cue intro music
+      Log.Log( 'Start event timer' );
+      Log.flush;
+      SoundTimer.OnTimer := Timer1Timer;
+      SoundTimer.Enabled := True; //Start sound timer
+
+      ShowIntro := ( LowerCase( INI.ReadString( 'Settings', 'ShowIntro', 'true' ) ) = 'true' );
+
+      PopupEnabled := ( LowerCase( INI.ReadString( 'Settings', 'Popup', '' ) ) <> 'false' );
+
+    finally
+      INI.Free;
     end;
-    //MusicLib.OpenThisSong(SoundPath+'theme\canyon'+'.mp3');
-    //MusicLib.PlayThisSong;
-
-    if DaSoundCardAvailable then
-      Log.Log( 'Sound card available' )
-    else
-      Log.Log( 'Sound card not available' );
-    Log.flush;
-
-    SoundOK := DaSoundCardAvailable and ( Assigned( SoundLib ) or Assigned( MusicLib ) );
-    Log.Log( 'Initializing event timer' );
-    Log.flush;
-    SoundTimer := TTimer.Create( nil );
-    SoundTimer.Interval := 100;
-
-    MasterSoundVolume := INI.ReadInteger( 'Settings', 'SoundVolume', 50 );
-    MasterMusicVolume := INI.ReadInteger( 'Settings', 'MusicVolume', 50 );
-    PlotShadows := ( INI.ReadInteger( 'Settings', 'Shadows', 1 ) <> 0 );
-    if PlotShadows then
-    begin
-      INI.WriteInteger( 'Settings', 'Shadows', 1 );
-      Log.Log( 'PlotShadows enabled' );
-    end
-    else
-    begin
-      INI.WriteInteger( 'Settings', 'Shadows', 0 );
-    end;
-
-    UseTimer := ( LowerCase( INI.ReadString( 'Settings', 'UseTimer', '' ) ) = 'true' );
-    if UseTimer then
-    begin
-      INI.WriteString( 'Settings', 'UseTimer', 'true' );
-      Log.Log( 'UseTimer enabled' );
-    end
-    else
-    begin
-      INI.WriteString( 'Settings', 'UseTimer', 'false' );
-    end;
-    Interval := INI.ReadInteger( 'Settings', 'Interval', 30 );
-    Log.Log( 'Interval=' + IntToStr( Interval ) );
-    UseVideoRAM := ( LowerCase( INI.ReadString( 'Settings', 'UseVideo', '' ) ) = 'true' );
-    if UseVideoRAM then
-    begin
-      INI.WriteString( 'Settings', 'UseVideo', 'true' );
-      Log.Log( 'UseVideoRAM enabled' );
-    end
-    else
-    begin
-      INI.WriteString( 'Settings', 'UseVideo', 'false' )
-    end;
-    GIFToPOX := ( LowerCase( INI.ReadString( 'Settings', 'GIFToPOX', '' ) ) = 'true' );
-    if GIFToPOX then
-      Log.Log( 'GIFToPOX enabled' );
-    AllSpells := ( LowerCase( INI.ReadString( 'Settings', 'AllSpells', '' ) ) = 'true' );
-    if AllSpells then
-      Log.Log( 'AllSpells enabled' );
-    ReadCache := ( LowerCase( INI.ReadString( 'Settings', 'ReadCache', '' ) ) <> 'false' );
-    if ReadCache then
-    begin
-      INI.WriteString( 'Settings', 'ReadCache', 'true' );
-      Log.Log( 'ReadCache enabled' );
-    end
-    else
-    begin
-      INI.WriteString( 'Settings', 'ReadCache', 'false' );
-    end;
-    WriteCache := ( LowerCase( INI.ReadString( 'Settings', 'WriteCache', '' ) ) <> 'false' );
-    if WriteCache then
-    begin
-      INI.WriteString( 'Settings', 'WriteCache', 'true' );
-      Log.Log( 'WriteCache enabled' );
-    end
-    else
-    begin
-      INI.WriteString( 'Settings', 'WriteCache', 'false' );
-    end;
-    Bikini := ( lowercase( INI.ReadString( 'Settings', 'Bikini', '' ) ) = 'true' );
-    NoPageNumbers := ( LowerCase( INI.ReadString( 'Settings', 'NoPageNumbers', '' ) ) = 'true' );
-    UseSmallFont := ( LowerCase( INI.ReadString( 'Settings', 'UseSmallFont', '' ) ) = 'true' );
-    NoTransit := ( LowerCase( INI.ReadString( 'Settings', 'NoTransit', '' ) ) = 'true' );
-    GameMap.UseLighting := ( LowerCase( INI.ReadString( 'Settings', 'Lighting', '' ) ) <> 'false' );
-    if GameMap.UseLighting then
-    begin
-      INI.WriteString( 'Settings', 'Lighting', 'true' );
-      Log.Log( 'UseLighting enabled' );
-    end
-    else
-    begin
-      INI.WriteString( 'Settings', 'Lighting', 'false' );
-    end;
-    GameMap.UseAmbientOnly := ( LowerCase( INI.ReadString( 'Settings', 'AmbientOnly', '' ) ) = 'true' );
-    Log.flush;
-
-    if ( INI.ReadInteger( 'Settings', 'JournalFont', 0 ) = 1 ) and TDirectory.Exists( ArtPath + 'journalalt' ) then
-      AdventureLog1.LogDirectory := ArtPath + 'journalalt\'
-    else
-      AdventureLog1.LogDirectory := ArtPath + 'journal\';
-
-    //cue intro music
-    Log.Log( 'Start event timer' );
-    Log.flush;
-    SoundTimer.OnTimer := Timer1Timer;
-    SoundTimer.Enabled := True; //Start sound timer
-
-    ShowIntro := ( LowerCase( INI.ReadString( 'Settings', 'ShowIntro', 'true' ) ) = 'true' );
-
-    PopupEnabled := ( LowerCase( INI.ReadString( 'Settings', 'Popup', '' ) ) <> 'false' );
-
-    INI.Free;
 
     Log.Log( 'Initializing DX...' );
     Log.flush;
@@ -1148,7 +1162,7 @@ begin
 
     Log.Log( 'Initializing DFX...' );
     Log.flush;
-    DFXInit( DefaultPath );
+    DFXInit( AppPath );
 
     Log.Log( 'Loading resources...' );
     Log.flush;
@@ -2039,8 +2053,8 @@ begin
             try
               if Assigned( ScreenShot ) then
               begin
-                Log.Log( 'Saving screenshot: ' + DefaultPath + 'games\' + GameName + '.bmp' );
-                ScreenShot.SaveToFile( DefaultPath + 'games\' + GameName + '.bmp' );
+                Log.Log( 'Saving screenshot: ' + GamesPath + GameName + '.bmp' );
+                ScreenShot.SaveToFile( GamesPath + GameName + '.bmp' );
               end;
             except
             end;
@@ -2097,7 +2111,7 @@ begin
           i := i shl 12;
           repeat
             Inc( i );
-            S := DefaultPath + 'SS' + IntToHex( i, 8 ) + '.bmp';
+            S := AppPath + 'SS' + IntToHex( i, 8 ) + '.bmp';
           until not TFile.Exists( S );
           BM.PixelFormat := pf24bit;
           BM.SaveToFile( S );
@@ -2414,15 +2428,15 @@ begin
 
     Log.Log( 'Shutting down application' );
     try
-      DeleteFile( DefaultPath + 'games\' + TempGame + '.sav' );
+      DeleteFile( GamesPath + TempGame + '.sav' );
     except
     end;
     try
-      DeleteFile( DefaultPath + 'games\' + TempGame + '.idx' );
+      DeleteFile( GamesPath + TempGame + '.idx' );
     except
     end;
     try
-      DeleteFile( DefaultPath + 'games\' + TempGame + '.map' );
+      DeleteFile( GamesPath + TempGame + '.map' );
     except
     end;
 
@@ -3755,16 +3769,29 @@ begin
       SpellGlyphs := SoAOS_DX_LoadBMP( InterfacePath + 'SpellGlyphs.bmp', cBlackBackground );
       imgCombat.LoadFromFile( InterfacePath + 'combat.bmp' );
 
-      imgBottomBar.LoadFromFile( InterfacePath + ScreenMetrics.bottombarFile );
-      OverlayB := SoAOS_DX_LoadBMP( InterfacePath + ScreenMetrics.bottombarFile, cTransparent );
-      imgSidebar.LoadFromFile( InterfacePath + ScreenMetrics.sidebarFile );
-      OverlayR := SoAOS_DX_LoadBMP( InterfacePath + ScreenMetrics.sidebarFile, cTransparent );
+      if FileExists(InterfacePath + ScreenMetrics.bottombarFile + '.bmp') then
+        imgBottomBar.LoadFromFile( InterfacePath + ScreenMetrics.bottombarFile + '.bmp' )
+      else
+        imgBottomBar.LoadFromResourceName( HInstance, ScreenMetrics.bottombarFile );
+      OverlayB := SoAOS_DX_SurfaceFromBMP( imgBottomBar, cTransparent );
+
+      if FileExists(InterfacePath + ScreenMetrics.sidebarFile + '.bmp') then
+        imgSidebar.LoadFromFile( InterfacePath + ScreenMetrics.sidebarFile + '.bmp' )
+      else
+        imgSidebar.LoadFromResourceName( HInstance, ScreenMetrics.sidebarFile );
+      OverlayR := SoAOS_DX_SurfaceFromBMP( imgSidebar, cTransparent );
+
       ManaEmpty := SoAOS_DX_LoadBMP( InterfacePath + 'mana.bmp', cBlackBackground );
       LifeEmpty := SoAOS_DX_LoadBMP( InterfacePath + 'health.bmp', cBlackBackground );
-      imgSpellBar.LoadFromFile( InterfacePath + ScreenMetrics.spellbarFile );
-      SpellBar := SoAOS_DX_LoadBMP( InterfacePath + ScreenMetrics.spellbarFile, cTransparent );
-      ShadowImage := SoAOS_DX_LoadBMP( InterfacePath + 'shadow.bmp', cBlackBackground );
-      imgAutoTransparent.LoadFromFile( InterfacePath + 'XRay.bmp' );
+
+      if FileExists(InterfacePath + ScreenMetrics.spellbarFile + '.bmp') then
+        imgSpellBar.LoadFromFile( InterfacePath + ScreenMetrics.spellbarFile + '.bmp' )
+      else
+        imgSpellBar.LoadFromResourceName( HInstance, ScreenMetrics.spellbarFile );
+      SpellBar := SoAOS_DX_SurfaceFromBMP( imgSpellBar, cTransparent );
+
+      ShadowImage := SoAOS_DX_LoadBMPResource( 'shadow', cBlackBackground );
+      imgAutoTransparent.LoadFromResourceName( HInstance, 'xray' );
       Game.AutoTransparentMask := imgAutoTransparent;
 
       NoSpellIcon := DDGetSurface( lpDD, 32, 32, clBlack, False );
@@ -3777,7 +3804,7 @@ begin
 
       imgGlow := TBitmap.Create;
       try
-        imgGlow.LoadFromFile( InterfacePath + 'glow.bmp' );
+        imgGlow.LoadFromResourceName( Hinstance, 'glow' );
         GlowImage := TRLESprite.Create;   // Loadfrom BMP
         GlowImage.LoadFromBitmap( imgGlow, imgGlow.width, imgGlow.Height, 0 );
       finally
@@ -3851,19 +3878,19 @@ begin
       Log.Log( 'SaveGame' );
       SaveGame;
       Log.Log( 'Copy files' );
-      ForceNotReadOnly( DefaultPath + 'games\~End of Level.sav' );
-      ForceNotReadOnly( DefaultPath + 'games\~End of Level.idx' );
-      ForceNotReadOnly( DefaultPath + 'games\~End of Level.map' );
+      ForceNotReadOnly( GamesPath + '~End of Level.sav' );
+      ForceNotReadOnly( GamesPath + '~End of Level.idx' );
+      ForceNotReadOnly( GamesPath + '~End of Level.map' );
       try
-        TFile.Copy( DefaultPath + 'games\' + GameName + '.sav', DefaultPath + 'games\~End of Level.sav', True );
+        TFile.Copy( GamesPath + GameName + '.sav', GamesPath + '~End of Level.sav', True );
       except
       end;
       try
-        TFile.Copy( DefaultPath + 'games\' + GameName + '.idx', DefaultPath + 'games\~End of Level.idx', True );
+        TFile.Copy( GamesPath + GameName + '.idx', GamesPath + '~End of Level.idx', True );
       except
       end;
       try
-        TFile.Copy( DefaultPath + 'games\' + GameName + '.map', DefaultPath + 'games\~End of Level.map', True );
+        TFile.Copy( GamesPath + GameName + '.map', GamesPath + '~End of Level.map', True );
       except
       end;
       Log.Log( 'ClearOnDemandResources' );
@@ -3923,7 +3950,7 @@ begin
       S := DefaultTransition
     else
     begin
-      S := ArtPath + 'Transition\' + TransitionScreen + '.bmp';
+      S := ResourcePath + 'Transition\' + TransitionScreen + '.bmp';
       if not TFile.Exists( S ) then
         S := DefaultTransition;
     end;
@@ -4048,7 +4075,7 @@ begin
         end;
       end;
 
-      INI := TIniFile.Create( DefaultPath + 'siege.ini' );
+      INI := TIniFile.Create( SiegeINIFile );
       try
         MapName := INI.ReadString( 'MapNames', Level, Level );
       finally
@@ -4221,7 +4248,7 @@ begin
           GameMap.RenderMap;
           DlgProgress.SetBar( Round( DlgProgress.MaxValue * 0.98 ) );
 
-          S := DefaultPath + 'Maps\' + ChangeFileExt( ExtractFileName( LVLFile ), '.zit' );
+          S := MapPath + ChangeFileExt( ExtractFileName( LVLFile ), '.zit' );
           if TFile.Exists( S ) then
           begin
             ForceNotReadOnly( S );
@@ -4538,17 +4565,17 @@ begin
       TravelList.Add( S );
 
     EOB := EOBMarker;
-    if not TDirectory.Exists( DefaultPath + 'games' ) then
-      ForceDirectories( DefaultPath + 'games' );
+    if not TDirectory.Exists( GamesPath ) then
+      ForceDirectories( GamesPath );
 
-    FileName := DefaultPath + 'games\' + GameName + '.sav';
+    FileName := GamesPath + GameName + '.sav';
     ForceNotReadOnly( FileName );
     ForceNotReadOnly( ChangeFileExt( FileName, '.idx' ) );
     ForceNotReadOnly( ChangeFileExt( FileName, '.map' ) );
 
     SavFile := TSavFile.Create;
     try
-      SavFile.Open( DefaultPath + 'games\' + TempGame + '.sav' );
+      SavFile.Open( GamesPath + TempGame + '.sav' );
       SavFile.MapName := Level;
       SavFile.SceneName := CurrentScene;
       SavFile.CurrentMap := Level;
@@ -5083,7 +5110,7 @@ begin
 
     EOB := EOBMarker;
 
-    FileName := DefaultPath + 'games\' + GameName + '.sav';
+    FileName := GamesPath + GameName + '.sav';
     ForceNotReadOnly( FileName );
     ForceNotReadOnly( ChangeFileExt( FileName, '.idx' ) );
     ForceNotReadOnly( ChangeFileExt( FileName, '.map' ) );
@@ -5600,10 +5627,10 @@ begin
   Log.DebugLog(FailName);
   try
 
-    INI := TIniFile.Create( DefaultPath + 'siege.ini' );
+    INI := TIniFile.Create( SiegeINIFile );
     try
       PlayerResource := 'players\' + INI.ReadString( 'Character', 'Resource', 'player' ) + '.pox';
-      if not TFile.Exists( ArtPath + PlayerResource ) then
+      if not TFile.Exists( ResourcePath + PlayerResource ) then
       begin
         //Message could not create character
         PostMessage( Handle, WM_StartMainMenu, 0, 0 ); //Restart the intro
@@ -5632,7 +5659,7 @@ begin
     DlgJournal.StartLogIndex := -1;
     Quests.Clear;
     Adventures.Clear;
-    INI := TIniFile.Create( DefaultPath + 'siege.ini' );
+    INI := TIniFile.Create( SiegeINIFile );
     try
       LVLFile := INI.ReadString( 'Settings', 'StartFile', '' );
       if LVLFile = '' then
@@ -5642,7 +5669,7 @@ begin
       GetCommandLineLVLFile;
 
       if not System.IOUtils.TPath.IsPathRooted( LVLFile ) then
-        LVLFile := DefaultPath + 'Maps\' + System.IOUtils.TPath.GetFileName( LVLFile );
+        LVLFile := MapPath + System.IOUtils.TPath.GetFileName( LVLFile );
       if not TFile.Exists( LVLFile ) then
       begin // jrs
         Log.log( FailName, 'Unable to open game map file %s', [ LVLFile ] );
@@ -5961,8 +5988,8 @@ begin
       begin
         Log.Log( 'Loading saved game: ' + DlgLoad.LoadThisFile );
 
-        S1 := DefaultPath + 'games\' + TempGame + '.sav';
-        S2 := DefaultPath + 'games\' + DlgLoad.LoadThisFile + '.sav';
+        S1 := GamesPath + TempGame + '.sav';
+        S2 := GamesPath + DlgLoad.LoadThisFile + '.sav';
         ForceNotReadOnly( S1 );
         ForceNotReadOnly( ChangeFileExt( S1, '.idx' ) );
         ForceNotReadOnly( ChangeFileExt( S1, '.map' ) );
@@ -6070,9 +6097,9 @@ begin
           LastFileSaved := GameName;
           if Assigned( ScreenShot ) then
           begin
-            Log.Log( 'Saving screenshot: ' + DefaultPath + 'games\' + DlgLoad.LoadThisFile + '.bmp' );
-            ForceNotReadOnly( DefaultPath + 'games\' + DlgLoad.LoadThisFile + '.bmp' );
-            ScreenShot.SaveToFile( DefaultPath + 'games\' + DlgLoad.LoadThisFile + '.bmp' );
+            Log.Log( 'Saving screenshot: ' + GamesPath + DlgLoad.LoadThisFile + '.bmp' );
+            ForceNotReadOnly( GamesPath + DlgLoad.LoadThisFile + '.bmp' );
+            ScreenShot.SaveToFile( GamesPath + DlgLoad.LoadThisFile + '.bmp' );
           end;
         except
           //Could not save file
@@ -6174,7 +6201,7 @@ begin
 
     if LocalShowHistory then
     begin
-      INI := TIniFile.Create( DefaultPath + 'siege.ini' );
+      INI := TIniFile.Create( SiegeINIFile );
       try
         S := INI.ReadString( 'Settings', 'History', '' );
         if LowerCase( Ini.ReadString( 'Settings', 'ShowHistory', 'false' ) ) = 'false' then
@@ -6975,9 +7002,9 @@ begin
         try
           if Assigned( ScreenShot ) then
           begin
-            Log.Log( 'Saving screenshot: ' + DefaultPath + 'games\' + GameName + '.bmp' );
-            ForceNotReadOnly( DefaultPath + 'games\' + GameName + '.bmp' );
-            ScreenShot.SaveToFile( DefaultPath + 'games\' + GameName + '.bmp' );
+            Log.Log( 'Saving screenshot: ' + GamesPath + GameName + '.bmp' );
+            ForceNotReadOnly( GamesPath + GameName + '.bmp' );
+            ScreenShot.SaveToFile( GamesPath + GameName + '.bmp' );
           end;
         except
         end;
@@ -7218,9 +7245,9 @@ begin
   PathCornerList := TStringList.Create;
   SavFile := TSavFile.Create;
   try
-    S := DefaultPath + 'games\' + TempGame + '.sav';
+    S := GamesPath + TempGame + '.sav';
     if not TFile.Exists( S ) then
-      S := DefaultPath + 'games\' + GameName + '.sav';
+      S := GamesPath + GameName + '.sav';
     if TFile.Exists( S ) then
     try
       SavFile.Open( S );
@@ -7272,7 +7299,7 @@ begin
     begin
       //Show transit screen
       Log.Log( '  Show transit' );
-      INI := TIniFile.Create( DefaultPath + 'siege.ini' );
+      INI := TIniFile.Create( SiegeINIFile );
       try
         DlgTransit.DefaultName := INI.ReadString( 'MapNames', trNewFile, trNewFile );
       finally
@@ -7577,7 +7604,7 @@ begin
     S := Parse( MapPath, i, ';' );
   end;
 
-  Result := DefaultPath + 'maps\' + FileName + '.lvl';
+  Result := MapPath + FileName + '.lvl';
 end;
 
 procedure TfrmMain.ClearOnDemandResources;
@@ -7686,7 +7713,7 @@ var
   i : Integer;
 begin
   AdventureLog1.Clear;
-  INI := TIniFile.Create( DefaultPath + 'siege.ini' );
+  INI := TIniFile.Create( SiegeINIFile );
   try
     S := INI.ReadString( 'Settings', 'Ending', '' );
     if S = '' then
@@ -7775,12 +7802,12 @@ var
   i : Integer;
   List : TArray<string>;
 begin
-  INI := TIniFile.Create( DefaultPath + 'siege.ini' );
+  INI := TIniFile.Create( SiegeINIFile );
 
-  if ( INI.ReadInteger( 'Settings', 'JournalFont', 0 ) = 1 ) and TDirectory.Exists( ArtPath + 'journalalt' ) then
-    HistoryLog.LogDirectory := ArtPath + 'journalalt\'
+  if ( INI.ReadInteger( 'Settings', 'JournalFont', 0 ) = 1 ) and TDirectory.Exists( ResourcePath + 'journalalt' ) then
+    HistoryLog.LogDirectory := ResourcePath + 'journalalt\'
   else
-    HistoryLog.LogDirectory := ArtPath + 'journal\';
+    HistoryLog.LogDirectory := ResourcePath + 'journal\';
 
   try
     S := INI.ReadString( 'Settings', 'History', '' );

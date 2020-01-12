@@ -53,6 +53,8 @@ procedure SoAOS_DX_BltFastWaitXY( srcSur: IDirectDrawSurface; srcRect: TRect );
 function SoAOS_DX_SurfaceFromBMP ( bmp: TBitmap; color: TColor; video: Boolean = True ) : IDirectDrawSurface;
 function SoAOS_DX_LoadBMP( filename: string; color: TColor; video: Boolean = True ) : IDirectDrawSurface; overload;
 function SoAOS_DX_LoadBMP( filename: string; color: TColor; out width, height: integer; video: Boolean = True ) : IDirectDrawSurface; overload;
+function SoAOS_DX_LoadBMPResource( resname: string; color: TColor; video: Boolean = True ) : IDirectDrawSurface; overload;
+function SoAOS_DX_LoadBMPResource( resname: string; color: TColor; out width, height: integer; video: Boolean = True ) : IDirectDrawSurface; overload;
 function SoAOS_DX_ColorMatch( pdds : IDirectDrawSurface; Color : TColor ) : Longint;
 
 implementation
@@ -137,6 +139,28 @@ var
   w, h : Integer;
 begin
   Result := SoAOS_DX_LoadBMP( filename, color, w, h, video );
+end;
+
+function SoAOS_DX_LoadBMPResource( resname: string; color: TColor; out width, height: integer; video: Boolean = True ) : IDirectDrawSurface;
+var
+  bmp  : TBitmap;
+begin
+  bmp := TBitmap.Create;
+  try
+    bmp.LoadFromResourceName(HInstance, resname);
+    width := bmp.Width;
+    height := bmp.Height;
+    Result := SoAOS_DX_SurfaceFromBMP ( bmp, color, video )
+  finally
+    bmp.Free;
+  end;
+end;
+
+function SoAOS_DX_LoadBMPResource( resname: string; color: TColor; video: Boolean = True ) : IDirectDrawSurface;
+var
+  w, h : Integer;
+begin
+  Result := SoAOS_DX_LoadBMPResource( resname, color, w, h, video );
 end;
 
 function SoAOS_DX_ColorMatch( pdds : IDirectDrawSurface; Color : TColor ) : Longint;

@@ -136,7 +136,7 @@ function GetIniDebugValue( ) : Integer;
 var
   INI : TIniFile;
 begin
-  INI := TIniFile.Create( DefaultPath + 'siege.ini' );
+  INI := TIniFile.Create( SiegeINIFile );
   try
     Result := INI.ReadInteger( 'Settings', 'Debug', 0 );
   finally

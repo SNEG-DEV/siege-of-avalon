@@ -37,6 +37,9 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
   Vcl.Imaging.pngimage;
 
+const
+  cNoLanguage = 'default';
+
 type
   TfrmLaunchSetting = class(TForm)
     imgPage1: TImage;
@@ -124,22 +127,26 @@ begin
   try
 
     try
-      INI.WriteString('Settings', 'LanguagePath', FLanguages[FCurrentLanguageIdx]);
+      if FCurrentLanguage <> cNoLanguage then
+        INI.WriteString('Settings', 'LanguagePath', FCurrentLanguage);
       INI.WriteInteger('Settings', 'ScreenResolution', r);
-      Ini.UpdateFile;
+      INI.UpdateFile;
     except
       on EIniFileException do
       begin
         RaiseLastOsError;
       end;
     end;
-    languagePath := IncludeTrailingPathDelimiter(FInterfacePath) + FCurrentLanguage;
 
-    files := TDirectory.GetFiles(languagePath);
-    for fsrc in files do
+    if FCurrentLanguage <> cNoLanguage then
     begin
-      fdest := TPath.Combine( FInterfacePath, TPath.GetFileName( fsrc ) );
-      TFile.Copy( fsrc, fdest, True);
+      languagePath := IncludeTrailingPathDelimiter(TPath.Combine(FInterfacePath, FCurrentLanguage));
+      files := TDirectory.GetFiles(languagePath);
+      for fsrc in files do
+      begin
+        fdest := TPath.Combine( FInterfacePath, TPath.GetFileName( fsrc ) );
+        TFile.Copy( fsrc, fdest, True);
+      end;
     end;
 
   finally
@@ -173,14 +180,16 @@ begin
   Application.ProcessMessages;
   INI := TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini'));
   try
-    FCurrentLanguage := INI.ReadString('Settings', 'LanguagePath', 'english');
+    FCurrentLanguage := INI.ReadString('Settings', 'LanguagePath', cNoLanguage);
     lInterfacePath := INI.ReadString('Settings', 'Interface', 'Interface');
   finally
     INI.Free;
   end;
-  FInterfacePath := IncludeTrailingPathDelimiter(ExtractFilePath(Application.ExeName))+lInterfacePath;
+  FInterfacePath := IncludeTrailingPathDelimiter(TPath.GetFullPath(lInterfacePath));
   for dir in TDirectory.GetDirectories(FInterfacePath) do
     FLanguages.Add(Copy(dir, dir.LastIndexOf(PathDelim)+2));
+  if FLanguages.Count=0 then // no languages - other than english
+    FLanguages.Add(cNoLanguage);
   FCurrentLanguageIdx := FLanguages.IndexOf(FCurrentLanguage);
   if FCurrentLanguageIdx=-1 then
     FCurrentLanguageIdx := 0;
@@ -199,7 +208,12 @@ begin
 end;
 
 procedure TfrmLaunchSetting.imgPage1Click(Sender: TObject);
+var
+  lInterfacePath: string;
 begin
+  lInterfacePath := FInterfacePath;
+  if FCurrentLanguage <> cNoLanguage then
+    lInterfacePath := IncludeTrailingPathDelimiter(TPath.Combine(FInterfacePath, FCurrentLanguage));
   if Rect(321,283,342,304).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
     TxtScrollLeft;
   if Rect(455,283,476,304).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then

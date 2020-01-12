@@ -402,7 +402,7 @@ var
           zone := Map.AddLight( Color, Intensity, Radius, FlickerType, X, Y, Z );
     //    Log.Log('Light Zone: '+inttostr(zone));
 
-          S := DefaultPath + 'Maps\' + ChangeFileExt( ExtractFilename( LVLFile ), '.zit' );
+          S := MapPath + ChangeFileExt( ExtractFilename( LVLFile ), '.zit' );
           if TFile.Exists( S ) then
           try
             ZoneStream := TFileStream.Create( S, fmOpenRead or fmShareDenyWrite );
@@ -1090,7 +1090,7 @@ var
       end
       else
       begin
-        S := AnsiString( DefaultPath + 'Maps\' + ChangeFileExt( ExtractFilename( LVLFile ), '.zit' ) );
+        S := AnsiString( MapPath + ChangeFileExt( ExtractFilename( LVLFile ), '.zit' ) );
         try
           if TFile.Exists( S ) then
             ZoneStream := TFileStream.Create( S, fmOpenRead or fmShareDenyWrite )
@@ -1173,7 +1173,7 @@ begin
       end
       else
       begin
-        S := AnsiString( DefaultPath + 'Maps\' + ChangeFileExt( ExtractFilename( LVLFile ), '.zit' ));
+        S := AnsiString( MapPath + ChangeFileExt( ExtractFilename( LVLFile ), '.zit' ));
         try
           if TFile.Exists( S ) then
             Stream := TFileStream.Create( S, fmOpenRead or fmShareDenyWrite )
@@ -1362,7 +1362,7 @@ begin
                     begin
                       if DumpMode then
                       begin
-                        if not TFile.Exists( ArtPath + S + '.pox' ) then
+                        if not TFile.Exists( ResourcePath + S + '.pox' ) then
                           Log.Log( '*** Error: Resource does not exist ' + S );
                       end
                       else

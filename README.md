@@ -4,13 +4,21 @@ _"Siege of Avalon : Open Source is an attempt to keep this great isometric RPG g
 
 ![Siege of Avalon in HD with room for party of 4.](SoAOS_HD.png)Siege of Avalon in HD with room for party of 4.
 
+## Latest feature added!! ##
+Startup launch dialog enable choice of Original/HD/FullHD resolutions and language - if any available -also on old retail releases.
+
+Tested with "Siege of Avalon Anthology - Chapters 1-6" build 1.1.2001.1104 from 2001 - just copy Siege.exe and DDraw.dll found under releases - and the game can be played in higher resolutions.
+- the are a few menu quicks - will fix comming days.
+
 ## How to complie ##
 Install Delphi 10.3.3 or newer - the free Community Edition found at https://www.embarcadero.com/products/delphi/starter will do fine.  
 Open the Siege.dpr project file and compile.
 
 ## Installing ##
 
-To play the game your need additional files in the assets folder:
+Copy or download Siege.exe together with ddraw.dll from the latest releases - and copy into the games install folder.
+
+To play the game your need additional files in the assets/install folder:
 - soundlib.dll
 - fmod.dll
 - DFX_P5S.DLL
@@ -18,7 +26,7 @@ To play the game your need additional files in the assets folder:
 
 all found in the original free playable 1. chapter/demo - http://soaos.sourceforge.net/FreePage.htm
 
-You must also currently include the newest ddraw.dll from [**DDrawCompat**](https://github.com/narzoul/DDrawCompat) - binary can be downloaded under releases.
+The newest ddraw.dll from [**DDrawCompat**](https://github.com/narzoul/DDrawCompat) - binary can be downloaded under his repos releases.
 
 ## Playing ##
 
@@ -36,8 +44,7 @@ As mentioned there is also:
 
 - ScreenResolution (defaults to 600) - possible other values are 720 and 1080
 
-There is also a language path that was not surfaced in the Options dialog of the released code - but found in later retail releases, so that needs currently to be changed manually - english, spanish and german are available currently.  
-On the TODO list is to add that into the Options dialog - but right now you have to edit the seige.ini file:
+There is also a language path that was not surfaced in the Options dialog of the released code - but assets where available in the release - english, spanish and german are available currently.
 
 - LanguagePath (defaults to english) 
 

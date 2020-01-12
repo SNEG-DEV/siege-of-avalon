@@ -2027,7 +2027,7 @@ begin
   // indicator that the player should talk to this character next
     S := LowerCase( Character.Properties[ 'TalkToMe' ] );
     try
-      if ( S <> '' ) and TalkToMe and TFile.Exists( ArtPath + 'engine\weaponprojectiles\mageblueball.pox' ) then
+      if ( S <> '' ) and TalkToMe and TFile.Exists( ResourcePath + 'engine\weaponprojectiles\mageblueball.pox' ) then
       begin
 //          TalkToMeTitles := s;
         TalkToMeCount := S.TokenCount('|');

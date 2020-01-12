@@ -15,6 +15,17 @@ All notable changes to this project will be documented in this file.
 - REFACTOR: Too much copy/paste code - (re)Moved method up to base class or extract
 - REFACTOR: Reorg classes
 
+## 2020-01-12
+### Added
+- Check of old DB format - used in parts - the whole "Database" thing should be rewritten
+- Support for both old and new "Menu" resources
+- HD resources are now added, and are used if no HD files found - so old retail releases can be played in HD/FullHD with extra new files.
+- Load of BMP resource into IDirectDrawSurface
+
+### Changed
+- Increased A* path finding grid - to support HD/FullHD, again based on @Rucksacksepp findings
+- Game Launcher setting dialog handles old retail releases - with single language/resolution
+- INI path handling supports absolute/relative an *nix paths - and cleanedup
 
 ## 2020-01-10
 ### Added

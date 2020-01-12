@@ -186,6 +186,24 @@
                 <Platform value="Win64">False</Platform>
             </Platforms>
             <Deployment Version="3">
+                <DeployFile LocalName="..\..\assets\Interface\spellbarFullHD.bmp" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\assets\Interface\glow.bmp" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\assets\Interface\spellbarHD.bmp" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="..\..\assets\Siege.exe" Configuration="Release" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>Siege.exe</RemoteName>
@@ -193,6 +211,42 @@
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\..\assets\Interface\blkchcry.ttf" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\assets\Interface\shadow.bmp" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\assets\Interface\sidebarFullHD.bmp" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\assets\Interface\bottombarHD.bmp" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\assets\Interface\bottombarFullHD.bmp" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\assets\Interface\XRay.bmp" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\assets\Interface\sidebarHD.bmp" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
@@ -1072,6 +1126,42 @@
         <RcItem Include="..\..\assets\Interface\blkchcry.ttf">
             <ResourceType>FONT</ResourceType>
             <ResourceId>1</ResourceId>
+        </RcItem>
+        <RcItem Include="..\..\assets\Interface\glow.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>glow</ResourceId>
+        </RcItem>
+        <RcItem Include="..\..\assets\Interface\shadow.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>shadow</ResourceId>
+        </RcItem>
+        <RcItem Include="..\..\assets\Interface\XRay.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>xray</ResourceId>
+        </RcItem>
+        <RcItem Include="..\..\assets\Interface\bottombarFullHD.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>bottombarFullHD</ResourceId>
+        </RcItem>
+        <RcItem Include="..\..\assets\Interface\bottombarHD.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>bottombarHD</ResourceId>
+        </RcItem>
+        <RcItem Include="..\..\assets\Interface\sidebarFullHD.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>sidebarFullHD</ResourceId>
+        </RcItem>
+        <RcItem Include="..\..\assets\Interface\sidebarHD.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>sidebarHD</ResourceId>
+        </RcItem>
+        <RcItem Include="..\..\assets\Interface\spellbarFullHD.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>spellbarFullHD</ResourceId>
+        </RcItem>
+        <RcItem Include="..\..\assets\Interface\spellbarHD.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>spellbarHD</ResourceId>
         </RcItem>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>

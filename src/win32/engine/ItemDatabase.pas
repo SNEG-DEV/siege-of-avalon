@@ -56,6 +56,7 @@ type
     FItemName : string;
     DataString : AnsiString;
     function GetFields( FieldPos : integer ) : string;
+    function GetV2Format: Boolean;
   public
     constructor Create( const Filename : string );
     destructor Destroy; override;
@@ -63,6 +64,7 @@ type
     property ItemName : string read FItemName;
     property FileName : string read FFileName;
     property Fields[ FieldPos : integer ] : string read GetFields;
+    property V2Format : Boolean read GetV2Format;
   end;
 
 implementation
@@ -135,6 +137,12 @@ begin
       Log.log( FailName + E.Message );
   end;
 
+end;
+
+function TStringDatabase.GetV2Format: Boolean;
+begin
+  // There was no support for "multi-field" columns in the old format
+  Result := (FDatabase.Strings[ 0 ].Contains(',') or FDatabase.Strings[ 0 ].Contains('\'));
 end;
 
 end.

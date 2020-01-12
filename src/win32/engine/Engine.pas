@@ -78,7 +78,10 @@ var
   ShadowImage : IDirectDrawSurface;
   GlowImage : TRLESprite;
   BaseLightType : longint;
-  DefaultPath : string;
+  AppPath: string;
+  SiegeINIFile: string;
+  GamesPath: string;
+//  MapsPath: string;
   CachePath : string;
   MapKnown : boolean;
   Themes : TStringList;
@@ -335,7 +338,7 @@ begin
     S := Parse( result, 1, '#' );
     j := Length( S );
     if not assigned( INI ) then
-      INI := TINIFile.create( DefaultPath + 'maps\symbols.ini' );
+      INI := TINIFile.create( MapPath + 'symbols.ini' );
     S1 := Parse( S, 0, '.' );
     S2 := Parse( S, 1, '.' );
     S0 := INI.ReadString( S1, S2, '' );
@@ -1453,8 +1456,7 @@ var
   CacheItem : TCacheInfo;
   Count : integer;
 begin
-  Dir := DefaultPath + 'cache\';
-  FileList := GetFileList( Dir, '.zit' );
+  FileList := GetFileList( CachePath, '.zit' );
   try
     Count := FileList.count;
     GetMem( CacheList, Count * sizeof( TCacheInfo ) );

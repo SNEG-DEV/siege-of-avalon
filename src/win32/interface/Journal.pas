@@ -161,12 +161,12 @@ begin
 
   //JournalLog.create:=TAdventureLog.create;
   //JournalLog.LogDirectory:=ExtractFilePath(Application.ExeName) + 'Journal\';
-    INI := TIniFile.Create( DefaultPath + 'siege.ini' );
+    INI := TIniFile.Create( SiegeINIFile );
 
-    if ( INI.readinteger( 'Settings', 'JournalFont', 0 ) = 1 ) and TDirectory.Exists( ArtPath + 'journalalt' ) then
-      JournalLog.LogDirectory := ArtPath + 'journalalt\'
+    if ( INI.readinteger( 'Settings', 'JournalFont', 0 ) = 1 ) and TDirectory.Exists( ResourcePath + 'journalalt' ) then
+      JournalLog.LogDirectory := ResourcePath + 'journalalt\'
     else
-      JournalLog.LogDirectory := ArtPath + 'journal\';
+      JournalLog.LogDirectory := ResourcePath + 'journal\';
 
     ini.free;
   //LogText:=JournalLog.ReadLogByName(LogFile);
