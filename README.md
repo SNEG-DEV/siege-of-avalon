@@ -5,10 +5,10 @@ _"Siege of Avalon : Open Source is an attempt to keep this great isometric RPG g
 ![Siege of Avalon in HD with room for party of 4.](SoAOS_HD.png)Siege of Avalon in HD with room for party of 4.
 
 ## Latest feature added!! ##
-Startup launch dialog enable choice of Original/HD/FullHD resolutions and language - if any available -also on old retail releases.
+Startup launch dialog enable choice of Original/HD/FullHD resolutions and language - if any available - also on old retail releases.
 
 Tested with "Siege of Avalon Anthology - Chapters 1-6" build 1.1.2001.1104 from 2001 - just copy Siege.exe and DDraw.dll found under releases - and the game can be played in higher resolutions.
-- the are a few menu quicks - will fix comming days.
+- there are a few menu quirks (Options and Load/Save) - will fix coming days.
 
 ## How to complie ##
 Install Delphi 10.3.3 or newer - the free Community Edition found at https://www.embarcadero.com/products/delphi/starter will do fine.  
