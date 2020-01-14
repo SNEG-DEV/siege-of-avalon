@@ -1094,7 +1094,6 @@
         <DCCReference Include="engine\Spells1.pas"/>
         <DCCReference Include="interface\Intro.pas"/>
         <DCCReference Include="engine\SaveFile.pas"/>
-        <DCCReference Include="engine\ItemDatabase.pas"/>
         <DCCReference Include="interface\AddKickNPC.pas"/>
         <DCCReference Include="interface\LoadGame.pas"/>
         <DCCReference Include="interface\LootCorpse.pas"/>
@@ -1123,6 +1122,7 @@
             <Form>frmLaunchSetting</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="engine\SoAOS.Data.DB.pas"/>
         <RcItem Include="..\..\assets\Interface\blkchcry.ttf">
             <ResourceType>FONT</ResourceType>
             <ResourceId>1</ResourceId>

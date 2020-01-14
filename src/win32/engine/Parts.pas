@@ -47,15 +47,15 @@ uses
   AniDec30,
   Resource,
   Character,
-  ItemDatabase,
+  SoAOS.Data.DB,
   Engine,
   LogFile;
 
 type
   TPartManager = class( TObject )
   private
-    InvDB : TStringDatabase;
-    XRefDB : TStringDatabase;
+    InvDB : TSoAOSItemsTable;
+    XRefDB : TSoAOSXRefTable;
   public
     NotFound : boolean;
     constructor Create( const ItemDBPath, XRefDBPath : string );
@@ -181,8 +181,10 @@ const
 begin
   Log.DebugLog( FailName );
   try
-    InvDB := TStringDatabase.Create( ItemDBPath );
-    XRefDB := TStringDatabase.Create( XRefDBPath );
+    InvDB := TSoAOSItemsTable.Create;
+    InvDB.LoadFromFile( ItemDBPath );
+    XRefDB := TSoAOSXRefTable.Create;
+    XRefDB.LoadFromFile( XRefDBPath );
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -310,37 +312,6 @@ var
   SlotString : string;
   ItemType : string;
   S : string;
-
-  function ParseDB( FieldPos : integer ) : string;
-  const
-    FailName : string = 'Parts.LoadItem.ParseDB';
-  begin
-  Log.DebugLog( FailName );
-    try
-      Result := InvDB.Fields[ FieldPos ];
-
-      if Result = '' then
-        Result := '0'
-    except
-      on E : Exception do
-        Log.log( FailName, E.Message, [ ] );
-    end;
-  end;
-
-  function sParseDB( FieldPos : integer ) : string;
-  const
-    FailName : string = 'Parts.LoadItem.sParseDB';
-  begin
-    Log.DebugLog( FailName );
-    try
-      Result := InvDB.Fields[ FieldPos ];
-    except
-      on E : Exception do
-        Log.log( FailName, E.Message, [ ] );
-    end;
-  end;
-
-
 const
   FailName : string = 'Parts.LoadItem';
 begin
@@ -349,10 +320,10 @@ begin
   Log.DebugLog( FailName );
   try
 
-    if not InvDB.FindRecord( ItemName ) then
+    if not InvDB.Locate( ItemName ) then
       exit;
 
-    ItemType := lowercase( Trim( sParseDB( cItemType ) ) );
+    ItemType := InvDB.Fields[ cItemType ].AsString.Trim.ToLower;
     if ItemType = 'weapon' then
       result := TWeapon.Create( 0, 0, 0, 1, false )
     else if ItemType = 'bow' then
@@ -365,89 +336,89 @@ begin
     result.ItemName := ItemName;
     with result do
     begin
-      Damage.Piercing.Min := StrToFloat( ParseDB( PiercingMin ) );
-      Damage.Crushing.Min := StrToFloat( ParseDB( CrushingMin ) );
-      Damage.Cutting.Min := StrToFloat( ParseDB( CuttingMin ) );
-      Damage.Heat.Min := StrToFloat( ParseDB( HeatMin ) );
-      Damage.Cold.Min := StrToFloat( ParseDB( ColdMin ) );
-      Damage.Electric.Min := StrToFloat( ParseDB( ElectricMin ) );
-      Damage.Poison.Min := StrToFloat( ParseDB( PoisonMin ) );
-      Damage.Magic.Min := StrToFloat( ParseDB( MagicMin ) );
-      Damage.Mental.Min := StrToFloat( ParseDB( MentalMin ) );
-      Damage.Stun.Min := StrToFloat( ParseDB( StunMin ) );
-      Damage.Special.Min := StrToFloat( ParseDB( SpecialMin ) );
+      Damage.Piercing.Min := InvDB.Fields[ PiercingMin ].AsFloat;
+      Damage.Crushing.Min := InvDB.Fields[ CrushingMin ].AsFloat;
+      Damage.Cutting.Min := InvDB.Fields[ CuttingMin ].AsFloat;
+      Damage.Heat.Min := InvDB.Fields[ HeatMin ].AsFloat;
+      Damage.Cold.Min := InvDB.Fields[ ColdMin ].AsFloat;
+      Damage.Electric.Min := InvDB.Fields[ ElectricMin ].AsFloat;
+      Damage.Poison.Min := InvDB.Fields[ PoisonMin ].AsFloat;
+      Damage.Magic.Min := InvDB.Fields[ MagicMin ].AsFloat;
+      Damage.Mental.Min := InvDB.Fields[ MentalMin ].AsFloat;
+      Damage.Stun.Min := InvDB.Fields[ StunMin ].AsFloat;
+      Damage.Special.Min := InvDB.Fields[ SpecialMin ].AsFloat;
 
-      Damage.Piercing.Max := StrToFloat( ParseDB( PiercingMax ) );
-      Damage.Crushing.Max := StrToFloat( ParseDB( CrushingMax ) );
-      Damage.Cutting.Max := StrToFloat( ParseDB( CuttingMax ) );
-      Damage.Heat.Max := StrToFloat( ParseDB( HeatMax ) );
-      Damage.Cold.Max := StrToFloat( ParseDB( ColdMax ) );
-      Damage.Electric.Max := StrToFloat( ParseDB( ElectricMax ) );
-      Damage.Poison.Max := StrToFloat( ParseDB( PoisonMax ) );
-      Damage.Magic.Max := StrToFloat( ParseDB( MagicMax ) );
-      Damage.Mental.Max := StrToFloat( ParseDB( MentalMax ) );
-      Damage.Stun.Max := StrToFloat( ParseDB( StunMax ) );
-      Damage.Special.Max := StrToFloat( ParseDB( SpecialMax ) );
+      Damage.Piercing.Max := InvDB.Fields[ PiercingMax ].AsFloat;
+      Damage.Crushing.Max := InvDB.Fields[ CrushingMax ].AsFloat;
+      Damage.Cutting.Max := InvDB.Fields[ CuttingMax ].AsFloat;
+      Damage.Heat.Max := InvDB.Fields[ HeatMax ].AsFloat;
+      Damage.Cold.Max := InvDB.Fields[ ColdMax ].AsFloat;
+      Damage.Electric.Max := InvDB.Fields[ ElectricMax ].AsFloat;
+      Damage.Poison.Max := InvDB.Fields[ PoisonMax ].AsFloat;
+      Damage.Magic.Max := InvDB.Fields[ MagicMax ].AsFloat;
+      Damage.Mental.Max := InvDB.Fields[ MentalMax ].AsFloat;
+      Damage.Stun.Max := InvDB.Fields[ StunMax ].AsFloat;
+      Damage.Special.Max := InvDB.Fields[ SpecialMax ].AsFloat;
 
-      Resistance.Piercing.Invulnerability := StrToFloat( ParseDB( PiercingInv ) );
-      Resistance.Crushing.Invulnerability := StrToFloat( ParseDB( CrushingInv ) );
-      Resistance.Cutting.Invulnerability := StrToFloat( ParseDB( CuttingInv ) );
-      Resistance.Heat.Invulnerability := StrToFloat( ParseDB( HeatInv ) );
-      Resistance.Cold.Invulnerability := StrToFloat( ParseDB( ColdInv ) );
-      Resistance.Electric.Invulnerability := StrToFloat( ParseDB( ElectricInv ) );
-      Resistance.Poison.Invulnerability := StrToFloat( ParseDB( PoisonInv ) );
-      Resistance.Magic.Invulnerability := StrToFloat( ParseDB( MagicInv ) );
-      Resistance.Mental.Invulnerability := StrToFloat( ParseDB( MentalInv ) );
-      Resistance.Stun.Invulnerability := StrToFloat( ParseDB( StunInv ) );
+      Resistance.Piercing.Invulnerability := InvDB.Fields[ PiercingInv ].AsFloat;
+      Resistance.Crushing.Invulnerability := InvDB.Fields[ CrushingInv ].AsFloat;
+      Resistance.Cutting.Invulnerability := InvDB.Fields[ CuttingInv ].AsFloat;
+      Resistance.Heat.Invulnerability := InvDB.Fields[ HeatInv ].AsFloat;
+      Resistance.Cold.Invulnerability := InvDB.Fields[ ColdInv ].AsFloat;
+      Resistance.Electric.Invulnerability := InvDB.Fields[ ElectricInv ].AsFloat;
+      Resistance.Poison.Invulnerability := InvDB.Fields[ PoisonInv ].AsFloat;
+      Resistance.Magic.Invulnerability := InvDB.Fields[ MagicInv ].AsFloat;
+      Resistance.Mental.Invulnerability := InvDB.Fields[ MentalInv ].AsFloat;
+      Resistance.Stun.Invulnerability := InvDB.Fields[ StunInv ].AsFloat;
 
-      Resistance.Piercing.Resistance := StrToFloat( ParseDB( PiercingRes ) ) / 100;
-      Resistance.Crushing.Resistance := StrToFloat( ParseDB( CrushingRes ) ) / 100;
-      Resistance.Cutting.Resistance := StrToFloat( ParseDB( CuttingRes ) ) / 100;
-      Resistance.Heat.Resistance := StrToFloat( ParseDB( HeatRes ) ) / 100;
-      Resistance.Cold.Resistance := StrToFloat( ParseDB( ColdRes ) ) / 100;
-      Resistance.Electric.Resistance := StrToFloat( ParseDB( ElectricRes ) ) / 100;
-      Resistance.Poison.Resistance := StrToFloat( ParseDB( PoisonRes ) ) / 100;
-      Resistance.Magic.Resistance := StrToFloat( ParseDB( MagicRes ) ) / 100;
-      Resistance.Mental.Resistance := StrToFloat( ParseDB( MentalRes ) ) / 100;
-      Resistance.Stun.Resistance := StrToFloat( ParseDB( StunRes ) ) / 100;
+      Resistance.Piercing.Resistance := InvDB.Fields[ PiercingRes ].AsFloat / 100;
+      Resistance.Crushing.Resistance := InvDB.Fields[ CrushingRes ].AsFloat / 100;
+      Resistance.Cutting.Resistance := InvDB.Fields[ CuttingRes ].AsFloat / 100;
+      Resistance.Heat.Resistance := InvDB.Fields[ HeatRes ].AsFloat / 100;
+      Resistance.Cold.Resistance := InvDB.Fields[ ColdRes ].AsFloat / 100;
+      Resistance.Electric.Resistance := InvDB.Fields[ ElectricRes ].AsFloat / 100;
+      Resistance.Poison.Resistance := InvDB.Fields[ PoisonRes ].AsFloat / 100;
+      Resistance.Magic.Resistance := InvDB.Fields[ MagicRes ].AsFloat / 100;
+      Resistance.Mental.Resistance := InvDB.Fields[ MentalRes ].AsFloat / 100;
+      Resistance.Stun.Resistance := InvDB.Fields[ StunRes ].AsFloat / 100;
 
-      Modifier.Strength := StrToInt( ParseDB( StrengthSM ) );
-      Modifier.Coordination := StrToInt( ParseDB( CoordinationSM ) );
-      Modifier.Constitution := StrToInt( ParseDB( ConstitutionSM ) );
-      Modifier.Mysticism := StrToInt( ParseDB( MysticismSM ) );
-      Modifier.Combat := StrToInt( ParseDB( CombatSM ) );
-      Modifier.Stealth := StrToInt( ParseDB( StealthSM ) );
-      Modifier.Restriction := StrToInt( ParseDB( RestrictionSM ) );
-      Modifier.AttackRecovery := StrToInt( ParseDB( AttackRecoverySM ) );
-      Modifier.HitRecovery := StrToInt( ParseDB( HitRecoverySM ) );
-      Modifier.Perception := StrToInt( ParseDB( PerceptionSM ) );
-      Modifier.Charm := StrToInt( ParseDB( CharmSM ) );
-      Modifier.HealingRate := StrToInt( ParseDB( HealingRateSM ) );
-      Modifier.RechargeRate := StrToInt( ParseDB( RechargeRateSM ) );
-      Modifier.HitPoints := StrToInt( ParseDB( HitPointsSM ) );
-      Modifier.Mana := StrToInt( ParseDB( ManaSM ) );
-      Modifier.Attack := StrToInt( ParseDB( AttackSM ) );
-      Modifier.Defense := StrToInt( ParseDB( DefenseSM ) );
+      Modifier.Strength := InvDB.Fields[ StrengthSM ].AsInteger;
+      Modifier.Coordination := InvDB.Fields[ CoordinationSM ].AsInteger;
+      Modifier.Constitution := InvDB.Fields[ ConstitutionSM ].AsInteger;
+      Modifier.Mysticism := InvDB.Fields[ MysticismSM ].AsInteger;
+      Modifier.Combat := InvDB.Fields[ CombatSM ].AsInteger;
+      Modifier.Stealth := InvDB.Fields[ StealthSM ].AsInteger;
+      Modifier.Restriction := InvDB.Fields[ RestrictionSM ].AsInteger;
+      Modifier.AttackRecovery := InvDB.Fields[ AttackRecoverySM ].AsInteger;
+      Modifier.HitRecovery := InvDB.Fields[ HitRecoverySM ].AsInteger;
+      Modifier.Perception := InvDB.Fields[ PerceptionSM ].AsInteger;
+      Modifier.Charm := InvDB.Fields[ CharmSM ].AsInteger;
+      Modifier.HealingRate := InvDB.Fields[ HealingRateSM ].AsInteger;
+      Modifier.RechargeRate := InvDB.Fields[ RechargeRateSM ].AsInteger;
+      Modifier.HitPoints := InvDB.Fields[ HitPointsSM ].AsInteger;
+      Modifier.Mana := InvDB.Fields[ ManaSM ].AsInteger;
+      Modifier.Attack := InvDB.Fields[ AttackSM ].AsInteger;
+      Modifier.Defense := InvDB.Fields[ DefenseSM ].AsInteger;
 
-      Value := StrToInt( ParseDB( cvalue ) );
+      Value := InvDB.Fields[ cvalue ].AsInteger;
 //    Weight:= StrToInt(ParseDB(cweight));
-      Title := ParseDB( cTitle );
-      Magic := StrToInt( ParseDB( cMagic ) );
+      Title := InvDB.Fields[ cTitle ].AsString;
+      Magic := InvDB.Fields[ cMagic ].AsInteger;
 
       Identified := False;
 
-      ItemInfo := sParseDB( cItemInfo );
-      SecretName := sParseDB( cSecretName );
-      SecretInfo := sParseDB( cSecretInfo );
-      InventoryImage := sParseDB( cInventoryImage );
+      ItemInfo := InvDB.Fields[ cItemInfo ].AsString;
+      SecretName := InvDB.Fields[ cSecretName ].AsString;
+      SecretInfo := InvDB.Fields[ cSecretInfo ].AsString;
+      InventoryImage := InvDB.Fields[ cInventoryImage ].AsString;
       if InventoryImage <> '' then
         InventoryImage := InventoryPath + InventoryImage;
-      PartName := sParseDB( cPartName );
-      DisplayName := sParseDB( cDisplayName );
+      PartName := InvDB.Fields[ cPartName ].AsString;
+      DisplayName := InvDB.Fields[ cDisplayName ].AsString;
 
       SlotsAllowed := [ ]; //clear it first;
 
-      SlotString := LowerCase( sParseDB( cSlotsAllowed ) );
+      SlotString := InvDB.Fields[ cSlotsAllowed ].AsString.ToLower;
 
       if SlotString.Contains( '[leg1]' ) then SlotsAllowed := SlotsAllowed + [ slLeg1 ];
       if SlotString.Contains( '[boot]' ) then SlotsAllowed := SlotsAllowed + [ slBoot ];
@@ -467,8 +438,8 @@ begin
       if SlotString.Contains( '[misc2]' ) then SlotsAllowed := SlotsAllowed + [ slMisc2 ];
       if SlotString.Contains( '[misc3]' ) then SlotsAllowed := SlotsAllowed + [ slMisc3 ];
 
-      InvW := StrToInt( ParseDB( cInventoryWidth ) ) div 18;
-      InvH := StrToInt( ParseDB( cInventoryHeight ) ) div 26;
+      InvW := InvDB.Fields[ cInventoryWidth ].AsInteger div 18;
+      InvH := InvDB.Fields[ cInventoryHeight ].AsInteger div 26;
 
       if PartName = '' then
         PartName := 'prt_smallbag';
@@ -477,37 +448,37 @@ begin
 
     if ItemType = 'weapon' then
     begin
-      TWeapon( result ).TwoHanded := ( lowercase( ParseDB( w2Handed ) ) = 'true' );
-      TWeapon( result ).Range := StrToInt( ParseDB( wRange ) );
-      TWeapon( result ).MinStrength := StrToInt( ParseDB( wMinStrength ) );
-      TWeapon( result ).MinCoordination := StrToInt( ParseDB( wMinCoordination ) );
-      TWeapon( result ).MaxRestriction := StrToInt( ParseDB( wMaxRestriction ) );
-      TWeapon( result ).AttackSound := ParseDB( wSndAttack );
-      TWeapon( result ).StrikeLeatherSound := ParseDB( wSndOther );
-      TWeapon( result ).StrikeMetalSound := ParseDB( wSndMetal );
+      TWeapon( result ).TwoHanded := InvDB.Fields[ w2Handed ].AsBoolean;
+      TWeapon( result ).Range := InvDB.Fields[ wRange ].AsInteger;
+      TWeapon( result ).MinStrength := InvDB.Fields[ wMinStrength ].AsInteger;
+      TWeapon( result ).MinCoordination := InvDB.Fields[ wMinCoordination ].AsInteger;
+      TWeapon( result ).MaxRestriction := InvDB.Fields[ wMaxRestriction ].AsInteger;
+      TWeapon( result ).AttackSound := InvDB.Fields[ wSndAttack ].AsString;
+      TWeapon( result ).StrikeLeatherSound := InvDB.Fields[ wSndOther ].AsString;
+      TWeapon( result ).StrikeMetalSound := InvDB.Fields[ wSndMetal ].AsString;
     end
     else if ItemType = 'bow' then
     begin
-      TBow( result ).TwoHanded := ( lowercase( ParseDB( w2Handed ) ) = 'true' );
-      TBow( result ).Range := StrToInt( ParseDB( wRange ) );
-      TBow( result ).MinStrength := StrToInt( ParseDB( wMinStrength ) );
-      TBow( result ).MinCoordination := StrToInt( ParseDB( wMinCoordination ) );
-      TBow( result ).MaxRestriction := StrToInt( ParseDB( wMaxRestriction ) );
-      TBow( result ).AttackSound := ParseDB( wSndAttack );
-      TBow( result ).StrikeLeatherSound := ParseDB( wSndOther );
-      TBow( result ).StrikeMetalSound := ParseDB( wSndMetal );
+      TBow( result ).TwoHanded := InvDB.Fields[ w2Handed ].AsBoolean;
+      TBow( result ).Range := InvDB.Fields[ wRange ].AsInteger;
+      TBow( result ).MinStrength := InvDB.Fields[ wMinStrength ].AsInteger;
+      TBow( result ).MinCoordination := InvDB.Fields[ wMinCoordination ].AsInteger;
+      TBow( result ).MaxRestriction := InvDB.Fields[ wMaxRestriction ].AsInteger;
+      TBow( result ).AttackSound := InvDB.Fields[ wSndAttack ].AsString;
+      TBow( result ).StrikeLeatherSound := InvDB.Fields[ wSndOther ].AsString;
+      TBow( result ).StrikeMetalSound := InvDB.Fields[ wSndMetal ].AsString;
     end
     else if ItemType = 'quiver' then
     begin
-      TQuiver( result ).FletchingColor := StrToInt( ParseDB( qFletchingColor ) );
-      TQuiver( result ).TrackingDegree := StrToInt( ParseDB( qTracking ) );
-      TQuiver( result ).StrikeLeatherSound := ParseDB( qSndOther );
-      TQuiver( result ).StrikeMetalSound := ParseDB( qSndMetal );
-      TQuiver( result ).StrikeStoneSound := ParseDB( qSndStone );
+      TQuiver( result ).FletchingColor := InvDB.Fields[ qFletchingColor ].AsInteger;
+      TQuiver( result ).TrackingDegree := InvDB.Fields[ qTracking ].AsInteger;
+      TQuiver( result ).StrikeLeatherSound := InvDB.Fields[ qSndOther ].AsString;
+      TQuiver( result ).StrikeMetalSound := InvDB.Fields[ qSndMetal ].AsString;
+      TQuiver( result ).StrikeStoneSound := InvDB.Fields[ qSndStone ].AsString;
     end
     else
     begin
-      S := lowercase( ParseDB( iMaterial ) );
+      S := InvDB.Fields[ iMaterial ].AsString.ToLower;
       if S = 'metal' then
         result.Material := maMetal
       else
@@ -520,49 +491,15 @@ begin
   end;
 end;
 
-function TPartManager.GetImageFile( const PartName,
-  NakedName : string ) : string;
-var
-  S, S1 : string;
-  XRefIndex : integer;
+function TPartManager.GetImageFile( const PartName,  NakedName : string ) : string;
 const
   FailName : string = 'Parts.GetImageFile';
 begin
   Log.DebugLog( FailName );
   try
-    result := '';
-    NotFound := false;
-
-    if XRefDB.FindRecord( 'Base' ) then
-    begin
-      XRefIndex := 1;
-      S := XRefDB.Fields[ XRefIndex ];
-      // Old 2001 builds used different format
-      if XRefDB.V2Format then
-      begin
-        S1 := NakedName.ToLower;
-        while S <> '' do
-        begin
-          // was pos(S1) >=0 in gondur code - did not make sense -
-          // Is was due to 2 different xref formats - should be solved in db unit
-          if S.ToLower.Contains( S1 ) then
-            break;
-          inc( XRefIndex );
-          S := XRefDB.Fields[ XRefIndex ];
-        end;
-      end;
-      if S <> '' then
-      begin
-        if XRefDB.FindRecord( PartName ) then
-        begin
-          Result := XRefDB.Fields[ XRefIndex ];
-        end
-        else
-        begin
-          NotFound := true;
-        end;
-      end;
-    end;
+    Result := '';
+    if XRefDB.Locate( PartName ) then
+      Result := XRefDB.FieldByName( NakedName ).AsPOXFilename;
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );

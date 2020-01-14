@@ -43,10 +43,10 @@ interface
 
 uses
   Character,
-  ItemDatabase;
+  SoAOS.Data.DB;
 
 type
-  TTitlesDB = class( TStringDatabase )
+  TTitlesDB = class( TSoAOSTitleTable )
   public
     function GetStatModifier( const Title : string ) : PStatModifier;
   end;
@@ -86,25 +86,6 @@ uses
 
 function TTitlesDB.GetStatModifier( const Title : string ) : PStatModifier;
 
-  function GetInt( FieldPos : integer ) : integer;
-  const
-    FailName : string = 'GetInt within GetStamodifier';
-  begin
-    Log.DebugLog(FailName);
-    Result := 0;
-    try
-      try
-        Result := StrToInt( Fields[ FieldPos ] );
-      except
-        Result := 0;
-      end;
-    except
-      on E : Exception do
-        Log.log( FailName + E.Message );
-    end;
-
-  end;
-
 const
   FailName : string = 'TTitlesDB.GetStatModifier';
 begin
@@ -112,28 +93,28 @@ begin
   result := nil;
   try
 
-    if FindRecord( Title ) then
+    if Locate( Title ) then
     begin
       new( result );
-      result.Strength := GetInt( ttStrength );
-      result.Coordination := GetInt( ttCoordination );
-      result.Constitution := GetInt( ttConstitution );
-      result.Mysticism := GetInt( ttMysticism );
-      result.Combat := GetInt( ttCombat );
-      result.Stealth := GetInt( ttStealth );
-      result.Restriction := GetInt( ttRestriction );
-      result.AttackRecovery := GetInt( ttAttackRecovery );
-      result.HitRecovery := GetInt( ttHitRecovery );
-      result.Perception := GetInt( ttPerception );
-      result.Charm := GetInt( ttCharm );
-      result.HealingRate := GetInt( ttHealingRate );
-      result.RechargeRate := GetInt( ttRechargeRate );
-      result.HitPoints := GetInt( ttHitPoints );
-      result.Mana := GetInt( ttMana );
-      result.Attack := GetInt( ttAttack );
-      result.Defense := GetInt( ttDefense );
-      result.Visible := lowercase( Fields[ ttVisible ] ) = 'true';
-      result.DisplayName := Fields[ ttDisplayName ];
+      result.Strength := Fields[ ttStrength ].AsInteger;
+      result.Coordination := Fields[ ttCoordination ].AsInteger;
+      result.Constitution := Fields[ ttConstitution ].AsInteger;
+      result.Mysticism := Fields[ ttMysticism ].AsInteger;
+      result.Combat := Fields[ ttCombat ].AsInteger;
+      result.Stealth := Fields[ ttStealth ].AsInteger;
+      result.Restriction := Fields[ ttRestriction ].AsInteger;
+      result.AttackRecovery := Fields[ ttAttackRecovery ].AsInteger;
+      result.HitRecovery := Fields[ ttHitRecovery ].AsInteger;
+      result.Perception := Fields[ ttPerception ].AsInteger;
+      result.Charm := Fields[ ttCharm ].AsInteger;
+      result.HealingRate := Fields[ ttHealingRate ].AsInteger;
+      result.RechargeRate := Fields[ ttRechargeRate ].AsInteger;
+      result.HitPoints := Fields[ ttHitPoints ].AsInteger;
+      result.Mana := Fields[ ttMana ].AsInteger;
+      result.Attack := Fields[ ttAttack ].AsInteger;
+      result.Defense := Fields[ ttDefense ].AsInteger;
+      result.Visible := Fields[ ttVisible ].AsBoolean;
+      result.DisplayName := Fields[ ttDisplayName ].AsString;
     end
     else
       result := nil;

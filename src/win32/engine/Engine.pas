@@ -53,7 +53,6 @@ uses
   DirectX,
   LogFile,
   Resource,
-  Titles,
   DFX,
   MousePtr;
 
@@ -132,6 +131,7 @@ uses
   AniDemo,
   Character,
   Parts,
+  Titles,
   Effects,
   Display,
   Music;
@@ -165,7 +165,8 @@ begin
     Sounds := TList.create;
     ActiveTriggers := TList.create;
     PartManager := TPartManager.Create( ItemDB, XRefDB );
-    TitlesManager := TTitlesDB.create( TitlesDB );
+    TitlesManager := TTitlesDB.create;
+    TitlesManager.LoadFromFile( TitlesDB );
     NPCList := TList.create;
     NPCList.capacity := 5;
     Themes := TStringList.create;

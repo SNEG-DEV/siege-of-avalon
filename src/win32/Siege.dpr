@@ -85,7 +85,6 @@ uses
   Spells1 in 'engine\Spells1.pas',
   Intro in 'interface\Intro.pas',
   SaveFile in 'engine\SaveFile.pas',
-  ItemDatabase in 'engine\ItemDatabase.pas',
   AddKickNPC in 'interface\AddKickNPC.pas',
   LoadGame in 'interface\LoadGame.pas',
   LootCorpse in 'interface\LootCorpse.pas',
@@ -110,7 +109,8 @@ uses
   SoAOS.Graphics.Draw in 'graphics\SoAOS.Graphics.Draw.pas',
   SoAOS.Graphics.Types in 'graphics\SoAOS.Graphics.Types.pas',
   SoAOS.Intrface.Popup in 'interface\SoAOS.Intrface.Popup.pas',
-  SoAOSExtSetting in 'interface\SoAOSExtSetting.pas' {frmLaunchSetting};
+  SoAOSExtSetting in 'interface\SoAOSExtSetting.pas' {frmLaunchSetting},
+  SoAOS.Data.DB in 'engine\SoAOS.Data.DB.pas';
 
 {$R *.RES}
 
