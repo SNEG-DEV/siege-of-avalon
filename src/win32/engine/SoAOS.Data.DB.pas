@@ -179,7 +179,7 @@ function TCustomSoAOSDataset.FieldByName(const FieldName: string): TSoAOSField;
 var
   idx: integer;
 begin
-  if (FCurrentDataRow<>nil) and FFieldNames.TryGetValue(FieldName, idx) then
+  if (FCurrentDataRow<>nil) and FFieldNames.TryGetValue(FieldName.ToLower, idx) then
   begin
     if not FCurrentDataRow.TryGetValue(Idx, Result) then
     Result := nil;
@@ -231,7 +231,7 @@ begin
       begin
         fnames := coldata[c].Split([',']);
         for fname in fnames do  // V1 has only 1 fname per col
-          FFieldNames.AddOrSetValue(fname, c);
+          FFieldNames.AddOrSetValue(fname.ToLower, c);
       end;
       rows.Delete(0);
     end

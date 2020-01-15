@@ -65,7 +65,6 @@ type
     function GetOnDemandResource( const PartFile : string ) : TResource;
     function GetImageFile( const PartName, NakedName : string ) : string;
     function LoadItem( const ItemName, NakedName : string ) : TItem;
-    procedure ReleaseItemDB;
     function MemSize : longint;
     procedure ClearUnusedParts;
   end;
@@ -319,10 +318,8 @@ begin
 
   Log.DebugLog( FailName );
   try
-
     if not InvDB.Locate( ItemName ) then
       exit;
-
     ItemType := InvDB.Fields[ cItemType ].AsString.Trim.ToLower;
     if ItemType = 'weapon' then
       result := TWeapon.Create( 0, 0, 0, 1, false )
@@ -499,21 +496,7 @@ begin
   try
     Result := '';
     if XRefDB.Locate( PartName ) then
-      Result := XRefDB.FieldByName( NakedName ).AsPOXFilename;
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
-procedure TPartManager.ReleaseItemDB;
-const
-  FailName : string = 'Parts.ReleaseItemDB';
-begin
-  Log.DebugLog( FailName );
-  try
-    InvDB.free;
-    InvDB := nil;
+      Result := XRefDB.FieldByName( NakedName ).AsString;
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
