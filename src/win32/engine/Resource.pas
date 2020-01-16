@@ -1088,7 +1088,7 @@ begin
           if UseCastAnimation and Casting and ( RecoveryCount = 0 ) then
             CurrentSpell.CastEffect.RenderLocked( Figure, @Bits );
           for i := 0 to Effects.count - 1 do
-            TEffect( Effects.items[ i ] ).RenderLocked( Figure, @Bits );
+            Effects[ i ].RenderLocked( Figure, @Bits );
         end;
       finally
         lpDDSBack.Unlock( nil );
@@ -1128,7 +1128,7 @@ begin
         if UseCastAnimation and Casting and ( RecoveryCount = 0 ) then
           CurrentSpell.CastEffect.RenderLocked( Figure, @Bits );
         for i := 0 to Effects.count - 1 do
-          TEffect( Effects.items[ i ] ).RenderLocked( Figure, @Bits );
+          Effects[ i ].RenderLocked( Figure, @Bits );
       end;
     finally
       lpDDSBack.Unlock( nil );

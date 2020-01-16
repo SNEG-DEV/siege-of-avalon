@@ -87,7 +87,7 @@ uses
   OpenAnim,
   Showgraphic,
   LogScreen,
-  Transit,
+  SoAOS.Intrface.Transit,
   AddKickNPC;
 
 const

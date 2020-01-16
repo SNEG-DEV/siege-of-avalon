@@ -192,7 +192,7 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="..\..\assets\Interface\glow.bmp" Configuration="Release" Class="ProjectFile">
+                <DeployFile LocalName="..\..\assets\Interface\sidebarHD.bmp" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
@@ -246,7 +246,7 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="..\..\assets\Interface\sidebarHD.bmp" Configuration="Release" Class="ProjectFile">
+                <DeployFile LocalName="..\..\assets\Interface\glow.bmp" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
@@ -1112,7 +1112,6 @@
         <DCCReference Include="engine\Scroll.pas"/>
         <DCCReference Include="interface\Statistics.pas"/>
         <DCCReference Include="engine\SoAOS.StrUtils.pas"/>
-        <DCCReference Include="interface\Transit.pas"/>
         <DCCReference Include="engine\MMTimer.pas"/>
         <DCCReference Include="engine\SoAOS.Types.pas"/>
         <DCCReference Include="graphics\SoAOS.Graphics.Draw.pas"/>
@@ -1123,6 +1122,7 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="engine\SoAOS.Data.DB.pas"/>
+        <DCCReference Include="interface\SoAOS.Intrface.Transit.pas"/>
         <RcItem Include="..\..\assets\Interface\blkchcry.ttf">
             <ResourceType>FONT</ResourceType>
             <ResourceId>1</ResourceId>

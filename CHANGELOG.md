@@ -15,6 +15,18 @@ All notable changes to this project will be documented in this file.
 - REFACTOR: Too much copy/paste code - (re)Moved method up to base class or extract
 - REFACTOR: Reorg classes
 
+## 2020-01-16
+### Added
+- SoAOS.Data.DB unit replaces ItemDatabase.pas - TDataset-style with Locate and TField.as... notation. Also handles Xref.db version variations.
+- SoAOS.Intrface.Transit replaces Transit.pas - could need more cleaning
+
+### Changed
+- PartsManager and TitleManager changed to use "TDataSet"-styles - improved readability of remaining code. 
+- Type casting hell gone in "Transit", and code consolidated  
+
+### Removed
+- Much unreadable code
+
 ## 2020-01-12
 ### Added
 - Check of old DB format - used in parts - the whole "Database" thing should be rewritten

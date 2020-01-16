@@ -44,6 +44,7 @@ interface
 uses
   System.Classes,
   System.UITypes,
+  System.Generics.Collections,
   Winapi.Windows,
   Anigrp30,
   AniDec30,
@@ -764,7 +765,7 @@ type
     WasPartyMember : boolean;
     Dieing : boolean;
     FDeadCount : LongWord;
-    FInventory : TList;
+    FInventory : TList; // Find correct type
     FRange : Integer;
     Shifted : boolean;
     InitStand : Boolean;
@@ -912,7 +913,7 @@ type
     SellingMarkup : single;
     Alliance : string;
     PrevAlliance : string;
-    Effects : TList;
+    Effects : TObjectList<TEffect>;
     PrevAIMode : TAIMode;
     UseDefaultEquipment : boolean;
     Titles : TStringList;
@@ -2499,7 +2500,7 @@ begin
     ColorG := 0;
     ColorB := 0;
     for j := 0 to Effects.count - 1 do
-      TEffect( Effects.items[ j ] ).Adjust( self );
+      Effects.items[ j ].Adjust( self );
 
     FAttackBonus := FAttackBonus + FStrength / 5 + FCoordination / 2 + FCombat - FRestriction / 10;
     FDefense := FDefense + FCoordination / 2 + FCombat - FRestriction / 10 + 10;
@@ -2607,7 +2608,7 @@ begin
     FEnemies := TStringList.Create;
     FEnemies.Sorted := True;
     FEnemies.Duplicates := dupIgnore;
-    Effects := TList.Create;
+    Effects := TObjectList<TEffect>.Create;
     CalcStats;
     FrameCount := random( 10 );
     FCombatMode := true;
@@ -2634,11 +2635,7 @@ begin
       Avoid.Free;
     FFriends.Free;
     FEnemies.free;
-    for i := 0 to Effects.count - 1 do
-    begin
-      TEffect( Effects.items[ i ] ).free;
-    end;
-    Effects.free;
+    Effects.Free;
     for i := 0 to Titles.count - 1 do
     begin
       if assigned( Titles.objects[ i ] ) then
@@ -2836,18 +2833,19 @@ begin
     Changed := false;
     for i := Effects.count - 1 downto 0 do
     begin
-      if TEffect( Effects.items[ i ] ).DoFrame then
+      if Effects[ i ].DoFrame then
       begin
-        if TEffect( Effects.items[ i ] ).DisableWhenDone then
+        if Effects[ i ].DisableWhenDone then
         begin
-          TEffect( Effects.items[ i ] ).free;
-          Effects.Delete( i );
+          // Effects[ i ].free;
+          Effects.ExtractAt( i );
+          // Delete( i );
           Enabled := false;
           exit;
         end
         else
         begin
-          TEffect( Effects.items[ i ] ).free;
+          Effects[ i ].Free;
           Effects.Delete( i );
           Changed := true;
         end;
@@ -5806,7 +5804,7 @@ begin
   begin
     for i := 0 to Effects.count - 1 do
     begin
-      if TEffect( Effects.items[ i ] ).DisableWhenDone then
+      if Effects[ i ].DisableWhenDone then
       begin
         result := true;
         break;
@@ -5898,17 +5896,17 @@ begin
     begin
       for i := 0 to Effects.count - 1 do
       begin
-        if TEffect( Effects.items[ i ] ).tag = Effect.tag then
+        if Effects[ i ].tag = Effect.tag then
         begin
           if Effect.tag < 0 then
           begin
-            TEffect( Effects.items[ i ] ).Refresh( Effect );
+            Effects[ i ].Refresh( Effect );
             Effect.free;
           end
           else
           begin
-            TEffect( Effects.items[ i ] ).free;
-            Effects.items[ i ] := Effect;
+            Effects[ i ].Free;
+            Effects[ i ] := Effect;
           end;
           Found := true;
           break;
@@ -6804,7 +6802,7 @@ var
 begin
   result := false;
   for i := 0 to Effects.count - 1 do
-    result := result or TEffect( Effects.items[ i ] ).Hit( Source, Damage );
+    result := result or Effects[ i ].Hit( Source, Damage );
 end;
 
 procedure TCharacter.ClearEquipment;

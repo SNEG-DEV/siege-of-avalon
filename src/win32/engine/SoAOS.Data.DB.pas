@@ -48,7 +48,6 @@ type
     function GetAsPOXFilename: string;
     function GetAsString: string;
     function GetFieldNames: string;
-  private
     function GetAsFloat: Single;
   public
     constructor Create(const FieldNo: Integer; const FieldNames, Value: string);
@@ -119,17 +118,24 @@ end;
 
 function TSoAOSField.GetAsBoolean: Boolean;
 begin
-  Result := (FStrDataRead.Length > 0) and ((FStrDataRead.Chars[0] = 'T') or (FStrDataRead.Chars[0] = 't') or (FStrDataRead.Chars[0] = 'Y') or (FStrDataRead.Chars[0] = 'y'));
+  Result := (Self<>nil) and (FStrDataRead.Length > 0) and
+    ((FStrDataRead.Chars[0] = 'T') or (FStrDataRead.Chars[0] = 't') or (FStrDataRead.Chars[0] = 'Y') or (FStrDataRead.Chars[0] = 'y'));
 end;
 
 function TSoAOSField.GetAsFloat: Single;
 begin
-  Result := StrToFloatDef(FStrDataRead, 0.0);
+  if Self<>nil then
+    Result := StrToFloatDef(FStrDataRead, 0.0)
+  else
+    Result := 0.0;
 end;
 
 function TSoAOSField.GetAsInteger: Integer;
 begin
-  Result := StrToIntDef(FStrDataRead, 0);
+  if Self<>nil then
+    Result := StrToIntDef(FStrDataRead, 0)
+  else
+    Result := 0;
 end;
 
 function TSoAOSField.GetAsPOXFilename: string;
@@ -190,7 +196,7 @@ end;
 
 function TCustomSoAOSDataset.GetFields(Index: Integer): TSoAOSField;
 begin
-  if not FCurrentDataRow.TryGetValue(Index, Result) then
+  if (FCurrentDataRow<>nil) and not FCurrentDataRow.TryGetValue(Index, Result) then
     Result := nil;
 end;
 

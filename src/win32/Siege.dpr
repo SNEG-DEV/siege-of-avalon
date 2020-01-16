@@ -103,14 +103,14 @@ uses
   Scroll in 'engine\Scroll.pas',
   Statistics in 'interface\Statistics.pas',
   SoAOS.StrUtils in 'engine\SoAOS.StrUtils.pas',
-  Transit in 'interface\Transit.pas',
   MMTimer in 'engine\MMTimer.pas',
   SoAOS.Types in 'engine\SoAOS.Types.pas',
   SoAOS.Graphics.Draw in 'graphics\SoAOS.Graphics.Draw.pas',
   SoAOS.Graphics.Types in 'graphics\SoAOS.Graphics.Types.pas',
   SoAOS.Intrface.Popup in 'interface\SoAOS.Intrface.Popup.pas',
   SoAOSExtSetting in 'interface\SoAOSExtSetting.pas' {frmLaunchSetting},
-  SoAOS.Data.DB in 'engine\SoAOS.Data.DB.pas';
+  SoAOS.Data.DB in 'engine\SoAOS.Data.DB.pas',
+  SoAOS.Intrface.Transit in 'interface\SoAOS.Intrface.Transit.pas';
 
 {$R *.RES}
 

@@ -329,7 +329,6 @@ begin
       result := TQuiver.Create( 0, 0, 0, 1, false )
     else
       result := TItem.Create( 0, 0, 0, 1, false );
-
     result.ItemName := ItemName;
     with result do
     begin
