@@ -115,17 +115,15 @@ begin
     DXMousePtr := SoAOS_DX_LoadBMP( InterfacePath + 'siegecursorsheet.bmp', cTransparent );
     DXDirty := DDGetSurface( lpDD, PtrWidth, PtrHeight, cTransparent, true );
   //pre-load Dirty
-
     FPlotDirty := false;
     DXSurface := lpDDSFront;
     mPt := Mouse.CursorPos;
     pr := Rect( mPt.x, mPt.y, mPt.x + PtrWidth, mPt.y + PtrHeight );
     DXDirty.BltFast( 0, 0, DXSurface, @pr, DDBLTFAST_WAIT );
-
     MouseTimer := TTimer.create( nil );
+    MouseTimer.Enabled := false;
     MouseTimer.onTimer := MouseTimerEvent;
     MouseTimer.Interval := 10;
-    MouseTimer.enabled := false;
   except
     on E : Exception do
       Log.log( FailName + E.Message );

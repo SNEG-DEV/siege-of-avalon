@@ -1,4 +1,4 @@
-unit Intro;
+unit SoAOS.Intrface.Dialogs.MainMenu;
 (*
   Siege Of Avalon : Open Source Edition
 
@@ -28,7 +28,7 @@ unit Intro;
   WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
   for the specific language governing rights and limitations under the License.
 
-  Description:
+  Description: Main Menu Dialog - was Intro.pas - a lot more clean-up is coming
 
   Requires: Delphi 10.3.3 or later
 
@@ -72,6 +72,8 @@ type
     PrevChoice : integer;
     txtMessage : array[ 0..1 ] of string;
     procedure AreYouSure;
+    function GetNoRect: TRect;
+    function GetYesRect: TRect;
   protected
     procedure MouseDown( Sender : TAniview; Button : TMouseButton;
       Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
@@ -85,6 +87,8 @@ type
     destructor Destroy; override;
     procedure Init; override;
     procedure Release; override;
+    property YesRect: TRect read GetYesRect;
+    property NoRect: TRect read GetNoRect;
   end;
 
 implementation
@@ -173,7 +177,19 @@ begin
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
   end;
-end; //Destroy
+end;
+
+function TIntro.GetNoRect: TRect;
+begin
+  Result := Rect( 438, 456, 488, 484 ); // SD coords
+  Result.Offset(Offset);
+end;
+
+function TIntro.GetYesRect: TRect;
+begin
+  Result := Rect( 303, 456, 352, 484 ); // SD coords
+  Result.Offset(Offset);
+end;
 
 procedure TIntro.Init;
 var
@@ -184,6 +200,8 @@ var
 const
   FailName : string = 'TIntro.Init';
 begin
+  // Does calculate an offset based on screen vs menu bitmap - but might move to screenMetrics
+  // For now are the caption rects in SD coords
   Log.DebugLog( FailName );
   try
     if Loaded then
@@ -200,10 +218,8 @@ begin
     try
       if FileExists( InterfacePath + 'gMainMenuBlank.bmp' ) then   // multi language setup
       begin
-        BM.LoadFromFile( InterfacePath + 'gMainMenuBlank.bmp' );
-        DXBack := SoAOS_DX_SurfaceFromBMP( BM, cInvisColor );
+        DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'gMainMenuBlank.bmp', cInvisColor, DlgWidth, DlgHeight );
         BM.LoadFromFile( InterfacePath + 'gMainMenuText.bmp' );
-
         DXBack.GetDC( DC );
         try
           BitBlt( DC, 106, 41, 582, 416, BM.canvas.handle, 0, 0, SRCCOPY );
@@ -212,13 +228,12 @@ begin
         end;
       end
       else
-      begin
-        BM.LoadFromFile( InterfacePath + 'gMainMenu.bmp' );       // original 2001 setup
-        DXBack := SoAOS_DX_SurfaceFromBMP( BM, cInvisColor );
+      begin // original 2001 setup
+        DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'gMainMenu.bmp', cInvisColor, DlgWidth, DlgHeight );
       end;
 
-      pr := Rect( 0, 0, 800, 600 ); //NOHD
-      lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+      pr := Rect( 0, 0, DlgWidth, DlgHeight );
+      lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
 
       if FileExists( InterfacePath + 'gMainMenuTextBttns.bmp' ) then
       begin
@@ -290,12 +305,15 @@ begin
 
     if AreYouSureBoxVisible = false then
     begin
+      // Compensate for higher resolution against caption rects
+      Dec(X, Offset.X);
+      Dec(Y, Offset.Y);
       for i := 1 to 8 do
       begin
-        if Captions[ i ].enabled and ( X >= Captions[ i ].Rect.Left ) and ( Y >= Captions[ i ].Rect.Top ) and ( X < Captions[ i ].Rect.Right ) and ( Y < Captions[ i ].Rect.Bottom ) then
+        if Captions[ i ].Enabled and Captions[ i ].Rect.Contains( Point( X, Y ) ) then
         begin
           MenuChoice := i;
-          break;
+          Break;
         end;
       end;
       if MenuChoice = 7 then
@@ -309,16 +327,16 @@ begin
     end
     else
     begin //check for clicks on Yes/No in AreYouSurebox
-      if PtInRect( rect( 303, 456, 352, 484 ), point( x, y ) ) then
+      if YesRect.Contains( Point( x, y ) ) then
       begin //Yes pressed- quit game
         MenuChoice := 7;
         Close;
       end
-      else if PtInRect( rect( 438, 456, 488, 484 ), point( x, y ) ) then
+      else if NoRect.Contains( Point( x, y ) ) then
       begin //No pressed- just show screen
         AreYouSureBoxVisible := false;
-        pr := Rect( 0, 0, 800, 600 );  //NOHD
-        lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_WAIT ); //clear screen
+        pr := Rect( 0, 0, DlgWidth, DlgHeight );
+        lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_WAIT ); //clear screen
         SoAOS_DX_BltFront;
       end; //endif PtInRect
     end;
@@ -328,9 +346,7 @@ begin
   end;
 end;
 
-
-procedure TIntro.MouseMove( Sender : TAniview; Shift : TShiftState; X, Y,
-  GridX, GridY : integer );
+procedure TIntro.MouseMove( Sender : TAniview; Shift : TShiftState; X, Y,  GridX, GridY : integer );
 var
   Choice : integer;
   i : integer;
@@ -343,17 +359,20 @@ begin
     Choice := 0;
     if AreYouSureBoxVisible = false then
     begin
+      // Compensate for higher resolution against caption rects
+      Dec(X, Offset.X);
+      Dec(Y, Offset.Y);
       for i := 1 to 8 do
       begin
-        if Captions[ i ].enabled and ( X >= Captions[ i ].Rect.Left ) and ( Y >= Captions[ i ].Rect.Top ) and ( X < Captions[ i ].Rect.Right ) and ( Y < Captions[ i ].Rect.Bottom ) then
+        if Captions[ i ].Enabled and Captions[ i ].Rect.Contains( Point( X, Y ) ) then
         begin
           Choice := i;
           if Choice <> PrevChoice then
           begin
-            pr := Rect( 0, 0, 800, 600 ); //NOHD
-            lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
-            pr := Rect( 0, 0, Captions[ i ].Rect.Right - Captions[ i ].Rect.Left, Captions[ i ].Rect.Bottom - Captions[ i ].Rect.Top );
-            lpDDSBack.BltFast( Captions[ i ].Rect.Left, Captions[ i ].Rect.Top, Captions[ i ].Image, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+            pr := Rect( 0, 0, DlgWidth, DlgHeight );
+            lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+            pr := Rect( 0, 0, Captions[ i ].Rect.Width, Captions[ i ].Rect.Height );
+            lpDDSBack.BltFast( Offset.X + Captions[ i ].Rect.Left, Offset.Y + Captions[ i ].Rect.Top, Captions[ i ].Image, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
             lpDDSFront.Flip( nil, DDFLIP_WAIT );
             MouseCursor.PlotDirty := false;
           end;
@@ -363,13 +382,13 @@ begin
 
       if ( Choice = 0 ) and ( Choice <> PrevChoice ) then
       begin
-        pr := Rect( 0, 0, 800, 600 ); //NOHD
-        lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, DlgWidth, DlgHeight );
+        lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
         lpDDSFront.Flip( nil, DDFLIP_WAIT );
         MouseCursor.PlotDirty := false;
       end;
       PrevChoice := Choice;
-    end; //endif areyousure
+    end;
 
   except
     on E : Exception do
@@ -392,14 +411,14 @@ begin
     DXBorders := SoAOS_DX_LoadBMP( InterfacePath + 'ldChooseBox.bmp', cInvisColor, width, height );
     nRect := Captions[ 7 ].Rect; //Exit
 
-    pr := Rect( 0, 0, 800, 600 ); //NOHD
-    lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, DlgWidth, DlgHeight );
+    lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
     pr := Rect( 0, 0, width, height );
-    lpDDSBack.BltFast( 400 - width div 2, nRect.top + 32, DXBorders, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( (ScreenMetrics.ScreenWidth - width) div 2, nRect.top + 32 + Offset.Y, DXBorders, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
     DXBorders := nil;
 
-    pText.PlotTextBlock( txtMessage[ 0 ], 400 - width div 2 + 23, 400 - width div 2 + 281, nRect.top + 52, 240 );
+    pText.PlotTextBlock( txtMessage[ 0 ], (ScreenMetrics.ScreenWidth - width) div 2 + 23, (ScreenMetrics.ScreenWidth - width ) div 2 + 281, nRect.top + 52 + Offset.Y, 240 );
 
     AreYouSureBoxVisible := true;
 

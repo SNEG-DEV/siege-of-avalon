@@ -184,10 +184,16 @@ end;
 function TCustomSoAOSDataset.FieldByName(const FieldName: string): TSoAOSField;
 var
   idx: integer;
+  fldn: string;
 begin
-  if (FCurrentDataRow<>nil) and FFieldNames.TryGetValue(FieldName.ToLower, idx) then
+  if (FDatasetType=dstXref) and (FVersion=1) then
+    fldn := ExtractFileName(FieldName).ToLower
+  else
+    fldn := FieldName.ToLower;
+
+  if (FCurrentDataRow<>nil) and FFieldNames.TryGetValue(fldn, idx) then
   begin
-    if not FCurrentDataRow.TryGetValue(Idx, Result) then
+    if not FCurrentDataRow.TryGetValue(idx, Result) then
     Result := nil;
   end
   else
@@ -381,7 +387,7 @@ begin
       fields := TSoAOSFields.Create([doOwnsValues]);
       for col := 1 to fieldcount-1 do
         fields.Add(col, TSoAOSField.Create(col, coldata[col], rowdata[col]));
-      FData.Add(rowdata[0], fields);
+      FData.Add(rowdata[0].ToLower, fields);
     end;
 
   finally
@@ -395,8 +401,8 @@ begin
     Result := True
   else
   begin
-    Result := FData.TryGetValue(KeyValue, FCurrentDataRow);
-    if Result then FCurrentKey := KeyValue;
+    Result := FData.TryGetValue(KeyValue.ToLower, FCurrentDataRow);
+    if Result then FCurrentKey := KeyValue.ToLower;
   end;
 end;
 

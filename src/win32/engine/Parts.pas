@@ -315,11 +315,11 @@ const
   FailName : string = 'Parts.LoadItem';
 begin
   Result := nil;
-
   Log.DebugLog( FailName );
   try
     if not InvDB.Locate( ItemName ) then
       exit;
+
     ItemType := InvDB.Fields[ cItemType ].AsString.Trim.ToLower;
     if ItemType = 'weapon' then
       result := TWeapon.Create( 0, 0, 0, 1, false )

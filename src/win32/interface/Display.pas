@@ -44,6 +44,7 @@ interface
 uses
   System.SysUtils,
   System.Classes,
+  System.Types,
   Vcl.Controls,
   Gametext,
   Anigrp30,
@@ -67,6 +68,7 @@ type
   TDisplay = class( TObject )
   private
     FOnClose : TNotifyEvent;
+    function GetOffset: TPoint;
   protected
     WasActive : Boolean;
     InBound : Boolean;
@@ -80,6 +82,8 @@ type
       Shift : TShiftState ); virtual;
     procedure Close; virtual;
   public
+    DlgWidth: Integer;
+    DlgHeight: Integer;
     X1, Y1, X2, Y2 : Integer;
     pText : TGameText; //pointer to GameText object - caller must set this before init is called
     Loaded : Boolean;
@@ -91,6 +95,7 @@ type
     procedure Release; virtual;
     property OnClose : TNotifyEvent read FOnClose write FOnClose;
     procedure DebugPlot( i : integer );
+    property Offset: TPoint read GetOffset;
   end;
 
 procedure DebugPrint( S : string );
@@ -154,6 +159,11 @@ begin
       Log.log( FailName + E.Message );
   end;
 
+end;
+
+function TDisplay.GetOffset: TPoint;
+begin
+  Result := TPoint.Create((ScreenMetrics.ScreenWidth - DlgWidth) div 2, (ScreenMetrics.ScreenHeight - DlgHeight) div 2);
 end;
 
 procedure TDisplay.Init;

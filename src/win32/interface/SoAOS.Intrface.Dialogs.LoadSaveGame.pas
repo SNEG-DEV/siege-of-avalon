@@ -1,4 +1,4 @@
-unit LoadGame;
+unit SoAOS.Intrface.Dialogs.LoadSaveGame;
 (*
   Siege Of Avalon : Open Source Edition
 
@@ -28,7 +28,7 @@ unit LoadGame;
   WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
   for the specific language governing rights and limitations under the License.
 
-  Description:
+  Description: Load/Save Dialog - was LoadGame.pas - a lot more clean-up is coming
 
   Requires: Delphi 10.3.3 or later
 
@@ -112,6 +112,8 @@ type
     function LoadGame( GameName : string ) : boolean;
     //procedure FormMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure FormMouseMove( Sender : TObject; Shift : TShiftState; X, Y : Integer );
+    function GetCancelRect: TRect;
+    function GetLoadSaveRect: TRect;
   protected
     procedure MouseDown( Sender : TAniview; Button : TMouseButton;
       Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
@@ -128,19 +130,11 @@ type
     SceneName : string;
     MapName : string;
     TravelBlock : AnsiString;
-    ldLoadLightRect : TRect;
-    ldSaveLightRect : TRect;
-    DXLoadRect : TRect;
-    ldCancelRect : TRect;
-    ldLoadDarkRect : TRect;
-    ldSaveDarkRect : TRect;
-    ldLoadUpperRect : TRect;
-    ldSaveUpperRect : TRect;
-    constructor Create;
-    destructor Destroy; override;
     procedure Paint; override;
     procedure Init; override;
     procedure Release; override;
+    property CancelRect: TRect read GetCancelRect;
+    property LoadSaveRect: TRect read GetLoadSaveRect;
   end;
 
 implementation
@@ -154,45 +148,10 @@ uses
 
 { TLoadGame }
 
-constructor TLoadGame.Create;
-const
-  FailName : string = 'TLoadGame.create ';
-begin
-
-  Log.DebugLog( FailName );
-  try
-    inherited;
-    ldCancelRect := Rect( 101, 450, 101 + 300, 450 + 45 );
-    ldLoadDarkRect := Rect( 401, 450, 401 + 300, 450 + 45 );
-    ldSaveDarkRect := Rect( 401, 450, 401 + 300, 450 + 45 );
-    ldLoadUpperRect := Rect( 94, 19, 94 + 263, 19 + 45 );
-    ldSaveUpperRect := Rect( 94, 19, 94 + 263, 19 + 45 );
-    ldLoadLightRect := ldLoadDarkRect;
-    ldSaveLightRect := ldSaveDarkRect;
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end; //Create
-
-destructor TLoadGame.Destroy;
-const
-  FailName : string = 'TLoadGame.Destory ';
-begin
-
-  Log.DebugLog( FailName );
-  try
-    inherited;
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end; //Destroy
-
 procedure TLoadGame.Init;
 var
   DXTemp : IDirectDrawSurface;
-  i, width, height, widthBack, heightBack : integer;
+  i : integer;
   pr : TRect;
 const
   FailName : string = 'TLoadGame.init ';
@@ -242,58 +201,35 @@ begin
 
     //TODO: The rects are defined identical - clean
     if LoadFile then
-    begin
-      DXLoad := SoAOS_DX_LoadBMP( InterfacePath + 'ldLoadLight.bmp', cInvisColor, width, height );
-      DXLoadRect := ldLoadLightRect;
-    end
+      DXLoad := SoAOS_DX_LoadBMP( InterfacePath + 'ldLoadLight.bmp', cInvisColor )
     else
-    begin
-      DXLoad := SoAOS_DX_LoadBMP( InterfacePath + 'ldSaveLight.bmp', cInvisColor, width, height );
-      DXLoadRect := ldSaveLightRect;
-    end;
-    DXLoadRect.Right := width;
-    DXLoadRect.Bottom := height;
+      DXLoad := SoAOS_DX_LoadBMP( InterfacePath + 'ldSaveLight.bmp', cInvisColor );
 
-    DXCancel := SoAOS_DX_LoadBMP( InterfacePath + 'ldCancel.bmp', cInvisColor, width, height );
-    ldCancelRect.Right := width;
-    ldCancelRect.Bottom := height;
+    DXCancel := SoAOS_DX_LoadBMP( InterfacePath + 'ldCancel.bmp', cInvisColor );
 
     DXok := SoAOS_DX_LoadBMP( InterfacePath + 'ldOk.bmp', cInvisColor );
 
     DXBackHighlight := SoAOS_DX_LoadBMP( InterfacePath + 'opYellow.bmp', cInvisColor );
 
-    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'ldLoadSave.bmp', cInvisColor, widthBack, heightBack );
+    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'ldLoadSave.bmp', cInvisColor, DlgWidth, DlgHeight );
 
     if LoadFile then
-    begin
-      DXTemp := SoAOS_DX_LoadBMP( InterfacePath + 'ldLoadDark.bmp', cInvisColor, width, height );
-      pr := Rect( 0, 0, width, height );
-      DXBack.BltFast( ldLoadDarkRect.Left, ldLoadDarkRect.Top, DXTemp, @pr, DDBLTFAST_WAIT );
-    end
+      DXTemp := SoAOS_DX_LoadBMP( InterfacePath + 'ldLoadDark.bmp', cInvisColor )
     else
-    begin
-      DXTemp := SoAOS_DX_LoadBMP( InterfacePath + 'ldSaveDark.bmp', cInvisColor, width, height );
-      pr := Rect( 0, 0, width, height );
-      DXBack.BltFast( ldSaveDarkRect.Left, ldSaveDarkRect.Top, DXTemp, @pr, DDBLTFAST_WAIT );
-    end;
+      DXTemp := SoAOS_DX_LoadBMP( InterfacePath + 'ldSaveDark.bmp', cInvisColor );
+    pr := Rect( 0, 0, DlgRect.dlgLoadSaveRect.Width, DlgRect.dlgLoadSaveRect.Height );
+    DXBack.BltFast( DlgRect.dlgLoadSaveRect.Left, DlgRect.dlgLoadSaveRect.Top, DXTemp, @pr, DDBLTFAST_WAIT );
 
     DXTemp := nil;
 
     if LoadFile then
-    begin
-      DXTemp := SoAOS_DX_LoadBMP( InterfacePath + 'ldLoadUpper.bmp', cInvisColor, width, height );
-      pr := Rect( 0, 0, width, height );
-      DXBack.BltFast( ldLoadUpperRect.Left, ldLoadUpperRect.Top, DXTemp, @pr, DDBLTFAST_WAIT );
-    end
+      DXTemp := SoAOS_DX_LoadBMP( InterfacePath + 'ldLoadUpper.bmp', cInvisColor )
     else
-    begin
-      DXTemp := SoAOS_DX_LoadBMP( InterfacePath + 'ldSaveUpper.bmp', cInvisColor, width, height );
-      pr := Rect( 0, 0, width, height );
-      DXBack.BltFast( ldSaveUpperRect.Left, ldSaveUpperRect.Top, DXTemp, @pr, DDBLTFAST_WAIT );
-    end;
-
-    pr := Rect( 0, 0, widthBack, heightBack );
-    lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      DXTemp := SoAOS_DX_LoadBMP( InterfacePath + 'ldSaveUpper.bmp', cInvisColor );
+    pr := Rect( 0, 0, DlgRect.dlgLoadSaveTitleRect.Width, DlgRect.dlgLoadSaveTitleRect.Height );
+    DXBack.BltFast( DlgRect.dlgLoadSaveTitleRect.Left, DlgRect.dlgLoadSaveTitleRect.Top, DXTemp, @pr, DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, DlgWidth, DlgHeight );
+    lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
     DXTemp := nil;
     PlotMenu;
@@ -312,7 +248,6 @@ begin
         ShowInfo;
       end;
     end;
-
 
     SoAOS_DX_BltFront;
   except
@@ -359,6 +294,7 @@ begin
         else
           pTextItem.Date := intToStr( fMonth ) + '/' + intToStr( fDay ) + ' ' + intToStr( fHour ) + ':0' + intToStr( fMin ); //'/'+intToStr(fYear);
         pTextItem.rect := rect( 379, 66 + i * 35, 669, 66 + i * 35 + 35 );
+        pTextItem.rect.Offset(Offset);
         SelectRect.add( pTextItem );
         i := i + 1;
       end;
@@ -404,22 +340,23 @@ end; //LoadText
 procedure TLoadGame.PlotMenu;
 var
   i, j : integer;
+  r: TRect;
 const
   FailName : string = 'TLoadGame.PlotMenu ';
 begin
-
   Log.DebugLog( FailName );
   try
-
 
     j := 0;
     for i := 0 to SelectRect.count - 1 do
     begin
       if ( i >= StartFile ) and ( i < StartFile + 9 ) then
       begin //only show 9 files
-        pItem( SelectRect.items[ i ] ).rect := rect( 379, 66 + j * 35, 669, 66 + j * 35 + 35 );
+        r := Rect( 379, 66 + j * 35, 669, 66 + j * 35 + 35 );
+        r.Offset(Offset);
+        pItem( SelectRect.items[ i ] ).rect := r;
         ptext.PlotText( pItem( SelectRect.items[ i ] ).text, pItem( SelectRect.items[ i ] ).rect.left, pItem( SelectRect.items[ i ] ).rect.top, 240 );
-        ptext.PlotText( pItem( SelectRect.items[ i ] ).date, 590, pItem( SelectRect.items[ i ] ).rect.top, 240 );
+        ptext.PlotText( pItem( SelectRect.items[ i ] ).date, 590 + Offset.X, pItem( SelectRect.items[ i ] ).rect.top, 240 );
         j := j + 1;
       end
       else
@@ -433,7 +370,6 @@ begin
   end;
 end; //PlotMenu
 
-
 procedure TLoadGame.MoveList;
 var
   i, j : integer;
@@ -443,14 +379,13 @@ begin
 
   Log.DebugLog( FailName );
   try
-
-
     j := 0;
     for i := 0 to SelectRect.count - 1 do
     begin
       if ( i >= StartFile ) and ( i < StartFile + 9 ) then
       begin //only show 10 files
         pItem( SelectRect.items[ i ] ).rect := rect( 379, 66 + j * 35, 669, 66 + j * 35 + 35 );
+        pItem( SelectRect.items[ i ] ).rect.Offset(Offset);
         j := j + 1;
       end
       else
@@ -469,7 +404,6 @@ begin
       Log.log( FailName, E.Message, [ ] );
   end;
 end; //MoveList
-
 
 procedure TLoadGame.KeyDown( Sender : TObject; var key : Word; Shift : TShiftState );
 var
@@ -492,7 +426,7 @@ begin
       pr := Rect( nRect.left - 10, nRect.top - 5, nRect.right, nRect.bottom - 5 );
       lpDDSBack.BltFast( nRect.left - 10, nRect.top - 5, DXBack, @pr, DDBLTFAST_WAIT );
       DrawAlpha( lpDDSBack, rect( nRect.left - 10, nRect.top - 5, nRect.right, nRect.bottom - 5 ), rect( 0, 0, 12, 12 ), DXBackHighlight, False, 40 );
-      pText.PlotText( pItem( SelectRect.items[ CurrentSelectedListItem ] ).date, 590, pItem( SelectRect.items[ CurrentSelectedListItem ] ).rect.top, 240 );
+      pText.PlotText( pItem( SelectRect.items[ CurrentSelectedListItem ] ).date, 590 + Offset.X, pItem( SelectRect.items[ CurrentSelectedListItem ] ).rect.top, 240 );
       if ( ( Key > 64 ) and ( Key < 91 ) ) or ( ( Key > 47 ) and ( Key < 58 ) ) or ( Key = 32 ) or ( key = 189 ) then
       begin
         if ( ( Key > 64 ) and ( Key < 91 ) ) and ( Shift <> [ ssShift ] ) then //make the char lowercase
@@ -622,7 +556,9 @@ begin
     begin
       P := Mouse.CursorPos;
 //      GetCursorPos( P );
-      if PtinRect( rect( 673, 203, 694, 218 ), P ) then
+      pr := Rect( 673, 203, 694, 218 );
+      pr.Offset(Offset);
+      if pr.Contains( P ) then
       begin //up arrow
         if ScrollState < -1 then
           inc( ScrollState )
@@ -643,7 +579,9 @@ begin
     begin
       // GetCursorPos( P );
       P := Mouse.CursorPos;
-      if PtinRect( rect( 673, 234, 694, 250 ), P ) then
+      pr := Rect( 673, 234, 694, 250 );
+      pr.Offset(Offset);
+      if pr.Contains( P ) then
       begin //down arrow
         if ScrollState > 1 then
           dec( ScrollState )
@@ -666,10 +604,10 @@ begin
       if ( CurrentSelectedListItem > -1 ) and Loaded then
       begin
         nRect := pItem( SelectRect.Items[ CurrentSelectedListItem ] ).Rect;
-        pr := Rect( nRect.left - 10, nRect.top - 5, nRect.right, nRect.bottom - 5 );
+        pr := Rect( nRect.left - 10 - Offset.X, nRect.top - 5 - Offset.Y, nRect.right - Offset.X, nRect.bottom - 5 - Offset.Y);
         lpDDSBack.BltFast( nRect.left - 10, nRect.top - 5, DXBack, @pr, DDBLTFAST_WAIT );
         DrawAlpha( lpDDSBack, rect( nRect.left - 10, nRect.top - 5, nRect.right, nRect.bottom - 5 ), rect( 0, 0, 12, 12 ), DXBackHighlight, False, 40 );
-        pText.PlotText( pItem( SelectRect.items[ CurrentSelectedListItem ] ).date, 590, pItem( SelectRect.items[ CurrentSelectedListItem ] ).rect.top, 240 );
+        pText.PlotText( pItem( SelectRect.items[ CurrentSelectedListItem ] ).date, 590 + Offset.X, pItem( SelectRect.items[ CurrentSelectedListItem ] ).rect.top, 240 );
         X1 := pItem( SelectRect.items[ CurrentSelectedListItem ] ).rect.left;
         Y1 := pItem( SelectRect.items[ CurrentSelectedListItem ] ).rect.top;
 
@@ -701,7 +639,7 @@ var
   nRect : TRect;
   FileAlreadyExists : boolean;
   a : string;
-  pr : TRect;
+  pr, pr1, pr2 : TRect;
 const
   FailName : string = 'TLoadGame.MouseDown ';
 begin
@@ -709,14 +647,13 @@ begin
   Log.DebugLog( FailName );
   try
 
-
     if ( DeleteBoxVisible = false ) and ( OverwriteBoxVisible = false ) and ( MustEnterNameBoxVisible = false ) then
     begin
       for i := 0 to SelectRect.count - 1 do
       begin
         if ( i >= StartFile ) and ( i < StartFile + 10 ) then
         begin
-          if PtInRect( pItem( SelectRect.items[ i ] ).rect, point( x, y ) ) then
+          if pItem( SelectRect.items[ i ] ).rect.Contains( Point( x, y ) ) then
           begin
             if i <> CurrentSelectedListItem then
             begin
@@ -733,7 +670,7 @@ begin
               begin
                      //lpDDSBack.BltFast(114,257,DXBack,rect(114,257,341,421),DDBLTFAST_WAIT);
                 pr := rect( 111, 65, 341, 231 );
-                lpDDSBack.BltFast( 111, 65, DXBack, @pr, DDBLTFAST_WAIT );
+                lpDDSBack.BltFast( pr.Left + Offset.X, pr.Top + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
               end;
             end; //endif i <> CurrentSelectedListItem NEW July 8 2000
           end;
@@ -741,7 +678,11 @@ begin
       end; //end for
 
       //check for scroll arrows
-      if PtinRect( rect( 673, 203, 694, 218 ), point( X, Y ) ) then
+      pr1 := Rect( 673, 203, 694, 218 );
+      pr1.Offset(Offset);
+      pr2 := Rect( 673, 234, 694, 250 );
+      pr2.Offset(Offset);
+      if pr1.Contains( Point( X, Y ) ) then
       begin //up arrow
         if StartFile > 0 then
         begin
@@ -751,7 +692,7 @@ begin
           ScrollState := -3;
         end;
       end
-      else if PtinRect( rect( 673, 234, 694, 250 ), point( X, Y ) ) then
+      else if pr2.Contains( Point( X, Y ) ) then
       begin //down arrow
         if StartFile + 8 < SelectRect.count - 1 then
         begin
@@ -764,7 +705,9 @@ begin
       else
         ScrollState := 0;
 
-      if PtInRect( rect( 369, 400, 492, 428 ), point( x, y ) ) then
+      pr1 := Rect( 369, 400, 492, 428 );
+      pr1.Offset(Offset);
+      if pr1.Contains( Point( x, y ) ) then
       begin //delete
         if ( CurrentSelectedListItem > -1 ) then
         begin
@@ -774,7 +717,7 @@ begin
           end;
         end;
       end
-      else if PtInRect( rect( 581, 445, 581 + 121, 445 + 54 ), point( x, y ) ) then
+      else if LoadSaveRect.Contains( Point (X, Y)) then // PtInRect( rect( 581, 445, 581 + 121, 445 + 54 ), point( x, y ) ) then
       begin //load or save game
         if LoadFile then
         begin
@@ -816,7 +759,7 @@ begin
           end; //endif currentseleceditem
         end; //endif loadfile
       end
-      else if PtInRect( rect( 95, 443, 95 + 165, 443 + 58 ), point( x, y ) ) then
+      else if CancelRect.Contains( Point( X, Y)) then // PtInRect( rect( 95, 443, 95 + 165, 443 + 58 ), point( x, y ) ) then
       begin //cancel
         LoadThisFile := '';
         Close;
@@ -900,8 +843,6 @@ begin
 
   Log.DebugLog( FailName );
   try
-
-
     if ( DeleteBoxVisible = false ) and ( OverwriteBoxVisible = false ) and ( MustEnterNameBoxVisible = false ) then
     begin
       //clear menu
@@ -909,11 +850,9 @@ begin
       //clear Delete
       //lpDDSBack.BltFast(8,417,DXBack,rect(8,417,64,436),DDBLTFAST_WAIT);
       //clear Cancel
-      pr := Rect( ldCancelRect.Left, ldCancelRect.Top, ldCancelRect.Left + ldCancelRect.Right, ldCancelRect.Top + ldCancelRect.Bottom );
-      lpDDSBack.BltFast( ldCancelRect.Left, ldCancelRect.Top, DXBack, @pr, DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( CancelRect.Left, CancelRect.Top, DXBack, @DlgRect.dlgLoadSaveCancelRect, DDBLTFAST_WAIT );
       //Clear Load
-      pr := Rect( DXLoadRect.Left, DXLoadRect.Top, DXLoadRect.Left + DXLoadRect.Right, DXLoadRect.Top + DXLoadRect.Bottom );
-      lpDDSBack.BltFast( DXLoadRect.Left, DXLoadRect.Top, DXBack, @pr, DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( LoadSaveRect.Left, LoadSaveRect.Top, DXBack, @DlgRect.dlgLoadSaveRect, DDBLTFAST_WAIT );
       //highlight any options he's over
   {    for i:=0 to SelectRect.count -1 do begin
          //if its hightlighted plot highlight
@@ -929,18 +868,18 @@ begin
          pText.PlotText(pItem(SelectRect.items[i]).date,590,pItem(SelectRect.items[i]).rect.top,240);
       end;//end for
      }
-      if PtInRect( rect( DXLoadRect.Left, DXLoadRect.Top, DXLoadRect.Left + DXLoadRect.Right, DXLoadRect.Top + DXLoadRect.Bottom ), point( x, y ) ) then
+      if LoadSaveRect.Contains( Point( x, y ) ) then
       begin //load game
         if CurrentSelectedListItem >= 0 then
         begin
-          pr := Rect( 0, 0, DXLoadRect.Right, DXLoadRect.Bottom );
-          lpDDSBack.BltFast( DXLoadRect.Left, DXLoadRect.Top, DXLoad, @pr, DDBLTFAST_WAIT );
+          pr := Rect( 0, 0, DlgRect.dlgLoadSaveRect.Width, DlgRect.dlgLoadSaveRect.Height );
+          lpDDSBack.BltFast( LoadSaveRect.Left, LoadSaveRect.Top, DXLoad, @pr, DDBLTFAST_WAIT );
         end;
       end
-      else if PtInRect( rect( ldCancelRect.Left, ldCancelRect.Top, ldCancelRect.Left + ldCancelRect.Right, ldCancelRect.Top + ldCancelRect.Bottom ), point( x, y ) ) then
+      else if CancelRect.Contains( Point( x, y ) ) then
       begin //cancel
-        pr := Rect( 0, 0, ldCancelRect.Right, ldCancelRect.Bottom );
-        lpDDSBack.BltFast( ldCancelRect.Left, ldCancelRect.Top, DXCancel, @pr, DDBLTFAST_WAIT );
+        pr := Rect( 0, 0, DlgRect.dlgLoadSaveCancelRect.Width, DlgRect.dlgLoadSaveCancelRect.Height );
+        lpDDSBack.BltFast( CancelRect.Left, CancelRect.Top, DXCancel, @pr, DDBLTFAST_WAIT );
       end;
 
     end;
@@ -965,15 +904,29 @@ begin
   try
     //clear Cancel
     pr := Rect( 95, 443, 95 + 165, 443 + 58 );
-    lpDDSBack.BltFast( 95, 443, DXBack, @pr, DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( pr.Left + Offset.X, pr.Top + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
     //Clear Load
     pr := rect( 581, 445, 581 + 121, 445 + 54 );
-    lpDDSBack.BltFast( 581, 445, DXBack, @pr, DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( pr.Left + Offset.X, pr.Top + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
   end;
-end; //FormMouseMove
+end;
+
+function TLoadGame.GetCancelRect: TRect;
+begin
+  Result := DlgRect.dlgLoadSaveCancelRect;
+  Result.Offset(Offset);
+end;
+
+function TLoadGame.GetLoadSaveRect: TRect;
+begin
+  Result := DlgRect.dlgLoadSaveRect;
+  Result.Offset(Offset);
+end;
+
+//FormMouseMove
 
 
 procedure TLoadGame.Paint;
@@ -985,8 +938,8 @@ begin
 
   Log.DebugLog( FailName );
   try
-    pr := Rect( 0, 0, 800, 600 );  //NOHD
-    lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, DlgWidth, DlgHeight );
+    lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     PlotMenu;
     ShowScreen;
     if CurrentSelectedListItem > -1 then
@@ -999,9 +952,9 @@ begin
     else
     begin
       pr := Rect( 114, 257, 344, 421 );
-      lpDDSBack.BltFast( 114, 257, DXBack, @pr, DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( pr.Left + Offset.X, pr.Top + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
       pr := Rect( 111, 65, 344, 231 );
-      lpDDSBack.BltFast( 111, 65, DXBack, @pr, DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( pr.Left + Offset.X, pr.Top + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
     end;
 
     SoAOS_DX_BltFront;
@@ -1010,7 +963,6 @@ begin
       Log.log( FailName, E.Message, [ ] );
   end;
 end; //paint
-
 
 procedure TLoadGame.DeleteSavedFile;
 var
@@ -1120,7 +1072,7 @@ begin
     begin
       //clear menu
       pr := Rect( 368, 52, 671, 386 );
-      lpDDSBack.BltFast( 368, 52, DXBack, @pr, DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( pr.Left + Offset.X, pr.Top + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
       //highlight any options he's over
       for i := 0 to SelectRect.count - 1 do
       begin
@@ -1131,10 +1083,11 @@ begin
           if ( i = CurrentSelectedListItem ) then
           begin
             nRect := pItem( SelectRect.Items[ CurrentSelectedListItem ] ).Rect;
-            DrawAlpha( lpDDSBack, rect( nRect.left - 10, nRect.top - 5, nRect.right, nRect.bottom - 5 ), rect( 0, 0, 12, 12 ), DXBackHighlight, False, 40 );
+            pr := Rect( nRect.left - 10, nRect.top - 5, nRect.right, nRect.bottom - 5 );
+            DrawAlpha( lpDDSBack, pr, rect( 0, 0, 12, 12 ), DXBackHighlight, False, 40 );
           end;
           pText.PlotText( pItem( SelectRect.items[ i ] ).text, pItem( SelectRect.items[ i ] ).rect.left, pItem( SelectRect.items[ i ] ).rect.top, 240 );
-          pText.PlotText( pItem( SelectRect.items[ i ] ).date, 590, pItem( SelectRect.items[ i ] ).rect.top, 240 );
+          pText.PlotText( pItem( SelectRect.items[ i ] ).date, 590 + Offset.X, pItem( SelectRect.items[ i ] ).rect.top, 240 );
         end;
       end; //end for
 
@@ -1149,13 +1102,13 @@ begin
     begin
       DXTemp := SoAOS_DX_LoadBMP( PicName, cInvisColor );
       pr := Rect( 0, 0, 225, 162 );
-      lpDDSBack.BltFast( 114, 257, DXTemp, @pr, DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 114 + Offset.X, 257 + Offset.Y, DXTemp, @pr, DDBLTFAST_WAIT );
       DXTemp := nil;
     end
     else
     begin
       pr := Rect( 114, 257, 340, 420 );
-      lpDDSBack.BltFast( 114, 257, DXBack, @pr, DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( pr.Left + Offset.X, pr.Top + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
     end; //endif
 
     SoAOS_DX_BltFront;
@@ -1177,13 +1130,13 @@ begin
   Log.DebugLog( FailName );
   try
     pr := Rect( 111, 65, 344, 231 );
-    lpDDSBack.BltFast( 111, 65, DXBack, @pr, DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( pr.Left + Offset.X, pr.Top + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
 
-    pText.PlotTextBlock( MapName, 123, 340, 70, 240 );
+    pText.PlotTextBlock( MapName, 123 + Offset.X, 340 + Offset.X, 70 + Offset.Y, 240 );
 
     for i := 1 to CharacterCount do
     begin
-      pText.PlotText( CharacterName[ i ], 133, 70 + i * 25, 240 );
+      pText.PlotText( CharacterName[ i ], 133 + Offset.X, 70 + i * 25 + Offset.Y, 240 );
     end;
   except
     on E : Exception do
@@ -1264,7 +1217,6 @@ begin
   ExText.close;
   Log.DebugLog( FailName );
   try
-
 
     if assigned( CaratTimer ) then
     begin

@@ -1,4 +1,4 @@
-unit ShowGraphic;
+unit SoAOS.Intrface.Dialogs.HelpCredit;
 (*
   Siege Of Avalon : Open Source Edition
 
@@ -28,7 +28,7 @@ unit ShowGraphic;
   WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
   for the specific language governing rights and limitations under the License.
 
-  Description:
+  Description: Help, Credits and "Death" Dialog - shows the bmp file given - was ShowGraphic.pas - a lot more clean-up is coming
 
   Requires: Delphi 10.3.3 or later
 
@@ -70,8 +70,6 @@ type
     FileName : string;
     MusicFileName : AnsiString;
     pMusic : TMusic;
-    constructor Create;
-    destructor Destroy; override;
     procedure Init; override;
     procedure Release; override;
   end;
@@ -87,32 +85,6 @@ uses
   LogFile;
 
 { TShowGraphic }
-
-constructor TShowGraphic.Create;
-const
-  FailName : string = 'TShowGraphic.Create';
-begin
-  Log.DebugLog(FailName);
-  try
-    inherited;
-  except
-    on E : Exception do
-      Log.log( FailName + E.Message );
-  end;
-end; //Create
-
-destructor TShowGraphic.Destroy;
-const
-  FailName : string = 'TShowGraphic.destroy';
-begin
-  Log.DebugLog(FailName);
-  try
-    inherited;
-  except
-    on E : Exception do
-      Log.log( FailName + E.Message );
-  end;
-end; //Destroy
 
 procedure TShowGraphic.Init;
 var
@@ -132,9 +104,9 @@ begin
 
     frmMain.OnMouseDown := FormMouseDown;
 
-    DXBack := SoAOS_DX_LoadBMP( InterfacePath + FileName, cInvisColor );
-    pr := Rect( 0, 0, 800, 600 ); //NOHD
-    lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_WAIT );
+    DXBack := SoAOS_DX_LoadBMP( InterfacePath + FileName, cInvisColor, DlgWidth, DlgHeight );
+    pr := Rect( 0, 0, DlgWidth, DlgHeight );
+    lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
 
     SoAOS_DX_BltFront;
 

@@ -3459,66 +3459,43 @@ begin
 //Log.Log('InitDX');
   if DXMode then
     Exit;
-//Log.Log('2');
   ResWidth := ResW;
-//Log.Log('3');
   ResHeight := ResH;
-//Log.Log('4');
   DirectDrawCreate( nil, tmpDD, nil );  // Prepare for DirectX 7 or newer
   try
     tmpDD.QueryInterface(IID_IDirectDraw, lpDD);
   finally
     tmpDD := nil;
   end;
-//Log.Log('5');
   lpDD.SetCooperativeLevel( Handle, DDSCL_EXCLUSIVE or DDSCL_FULLSCREEN );
-//Log.Log('6');
   lpDD.SetDisplayMode( ResW, ResH, BPP );
-//Log.Log('7');
 
   ddsd.dwSize := SizeOf( ddsd );
-//Log.Log('8');
   ddsd.dwFlags := DDSD_CAPS or DDSD_BACKBUFFERCOUNT;
-//Log.Log('9');
   ddsd.dwBackBufferCount := 1;
-//Log.Log('10');
   ddsd.ddsCaps.dwCaps := DDSCAPS_COMPLEX + DDSCAPS_FLIP + DDSCAPS_PRIMARYSURFACE;
-//Log.Log('11');
   if ( lpdd.CreateSurface( ddsd, lpDDSFront, nil ) = DD_OK ) then
   begin
-//Log.Log('12');
     Caps.dwCaps := DDSCAPS_BACKBUFFER;
-//Log.Log('13');
     lpDDSFront.GetAttachedSurface( Caps, lpDDSBack );
-//Log.Log('14');
   end;
   BltFx.dwSize := SizeOf( BltFx );
-//Log.Log('15');
   BltFx.dwFillColor := 0;
-//Log.Log('16');
   pr := Rect( 0, 0, ResWidth, ResHeight );
   lpDDSBack.Blt( @pr, nil, @pr, DDBLT_COLORFILL + DDBLT_WAIT, @BltFx );
-//Log.Log('17');
   lpDDSFront.Flip( nil, DDFLIP_WAIT );
-//Log.Log('18');
   BltFx.dwSize := SizeOf( BltFx );
-//Log.Log('19');
   BltFx.dwFillColor := 0;
-//Log.Log('20');
   pr := Rect( 0, 0, ResWidth, ResHeight );
   lpDDSBack.Blt( @pr, nil, @pr, DDBLT_COLORFILL + DDBLT_WAIT, @BltFx );
-//Log.Log('21');
   C := FindColorMatch( $FFFFFF );
-//Log.Log('22');
   if C = $FFFFFF then
     PixelFormat := pf888
   else if C > $7FFF then
     PixelFormat := pf565
   else
     PixelFormat := pf555;
-//Log.Log('23');
   DXMode := True;
-//Log.Log('24');
 {$ENDIF}
 end;
 

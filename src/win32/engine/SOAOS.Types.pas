@@ -71,6 +71,7 @@ type
     GameHeight: integer;
     GameMapWidth: integer;
     GameMapHeight: integer;
+    SpellX : integer;
   	SpellBarX : integer;
    	SpellBarY : integer;
 	  StatsX : integer;  // and inventorydlg?
@@ -113,6 +114,16 @@ type
     popParty4Rect: TRect;
   end;
 
+/// <summary> Dialog constants - since when no-one even bothered to use the same offset when doing multilanguage version.</summary>
+  TDialogData = record
+    dlgNewCancelRect: TRect;
+    dlgNewContinueRect: TRect;
+    dlgLoadSaveTitleRect: TRect;
+    dlgLoadSaveCancelRect: TRect;
+    dlgLoadSaveRect: TRect;
+    dlgOptContinueRect: TRect;
+  end;
+
 const
   cOriginal : TScreenResolutionData =
     (ScreenWidth : 800;
@@ -124,6 +135,7 @@ const
      GameHeight : 511;
      GameMapWidth : 200;
      GameMapHeight : 400;
+     SpellX : 339;
 	   SpellBarX : 683;
 	   SpellBarY : 486;
 	   StatsX : 699;
@@ -173,6 +185,7 @@ const
      GameHeight : 631;
      GameMapWidth : 200;  // ??
      GameMapHeight : 400; // ??
+     SpellX : 508;
   	 SpellBarX : 1163;  // ??
 	   SpellBarY : 606;
 	   StatsX : 1803;
@@ -222,6 +235,7 @@ const
      GameHeight : 997;  // 997?
      GameMapWidth : 200;  // ??
      GameMapHeight : 400; // ??
+     SpellX : 508;
   	 SpellBarX : 1803;
 	   SpellBarY : 966;
 	   StatsX : 1803;
@@ -260,6 +274,24 @@ const
      popParty2Rect: ( Left: 80; Top: 990; Right: 151; Bottom: 1066 );
      popParty3Rect: ( Left: 166; Top: 990; Right: 233; Bottom: 1066 );
      popParty4Rect: ( Left: 248; Top: 990; Right: 319; Bottom: 1066 );
+    );
+
+const
+  cClassicDialogs : TDialogData =
+    (dlgNewCancelRect: ( Left: 102; Top: 450; Right: 102 + 155; Bottom: 450 + 44 );
+     dlgNewContinueRect: ( Left: 700 - 202; Top: 450; Right: 700; Bottom: 450 + 45 );  // RightAligend
+     dlgLoadSaveTitleRect: ( Left: 93; Top: 12; Right: 93 + 111; Bottom: 12 + 53 );
+     dlgLoadSaveCancelRect: ( Left: 95; Top: 443; Right: 95 + 165; Bottom: 443 + 58 );
+     dlgLoadSaveRect: ( Left: 701 - 121; Top: 445; Right: 701; Bottom: 445 + 54 );  // RightAligned
+     dlgOptContinueRect: ( Left: 700 - 198; Top: 450; Right: 700; Bottom: 450 + 45 );  // RightAligend
+    );
+  cMultilingualDialogs : TDialogData =
+    (dlgNewCancelRect: ( Left: 100; Top: 449; Right: 100 + 300; Bottom: 449 + 45 );
+     dlgNewContinueRect: ( Left: 700 - 300; Top: 449; Right: 700; Bottom: 449 + 45 );  // RightAligend
+     dlgLoadSaveTitleRect: ( Left: 94; Top: 19; Right: 94 + 263; Bottom: 19 + 45 );
+     dlgLoadSaveCancelRect: ( Left: 100; Top: 450; Right: 100 + 300; Bottom: 450 + 45 );
+     dlgLoadSaveRect: ( Left: 700 - 300; Top: 450; Right: 700; Bottom: 450 + 45 );  // RightAligned
+     dlgOptContinueRect: ( Left: 700 - 300; Top: 450; Right: 700; Bottom: 450 + 45 );  // RightAligend
     );
 
 type

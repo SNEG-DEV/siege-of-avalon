@@ -99,16 +99,18 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
-        <VerInfo_MinorVer>0</VerInfo_MinorVer>
-        <VerInfo_Release>0</VerInfo_Release>
-        <VerInfo_Build>0</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_MinorVer>20</VerInfo_MinorVer>
+        <VerInfo_Release>2</VerInfo_Release>
+        <VerInfo_Build>1220</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.20.2.1220;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <Icon_MainIcon>Siege_Icon.ico</Icon_MainIcon>
         <DCC_Optimize>false</DCC_Optimize>
         <DCC_DebugInformation>2</DCC_DebugInformation>
         <DCC_LocalDebugSymbols>true</DCC_LocalDebugSymbols>
         <DCC_IMPLICIT_STRING_CAST>false</DCC_IMPLICIT_STRING_CAST>
         <DCC_MapFile>3</DCC_MapFile>
+        <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
+        <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <Version>7.0</Version>
@@ -1078,7 +1080,7 @@
         <DCCReference Include="ai\AStar.pas"/>
         <DCCReference Include="interface\Inventory.pas"/>
         <DCCReference Include="interface\Display.pas"/>
-        <DCCReference Include="interface\CharCreation.pas"/>
+        <DCCReference Include="interface\SoAOS.Intrface.Dialogs.NewCharacter.pas"/>
         <DCCReference Include="interface\Award.pas"/>
         <DCCReference Include="engine\Parts.pas"/>
         <DCCReference Include="graphics\digifx.pas"/>
@@ -1087,15 +1089,15 @@
         <DCCReference Include="interface\Converse.pas"/>
         <DCCReference Include="engine\Titles.pas"/>
         <DCCReference Include="interface\Map.pas"/>
-        <DCCReference Include="interface\Journal.pas"/>
+        <DCCReference Include="interface\SoAOS.Intrface.Dialogs.Journal.pas"/>
         <DCCReference Include="engine\LoaderBox.pas"/>
         <DCCReference Include="engine\Effects.pas"/>
         <DCCReference Include="engine\Spells.pas"/>
         <DCCReference Include="engine\Spells1.pas"/>
-        <DCCReference Include="interface\Intro.pas"/>
+        <DCCReference Include="interface\SoAOS.Intrface.Dialogs.MainMenu.pas"/>
         <DCCReference Include="engine\SaveFile.pas"/>
         <DCCReference Include="interface\AddKickNPC.pas"/>
-        <DCCReference Include="interface\LoadGame.pas"/>
+        <DCCReference Include="interface\SoAOS.Intrface.Dialogs.LoadSaveGame.pas"/>
         <DCCReference Include="interface\LootCorpse.pas"/>
         <DCCReference Include="interface\LogScreen.pas"/>
         <DCCReference Include="interface\Merchant.pas"/>
@@ -1104,16 +1106,16 @@
         <DCCReference Include="sound\MP3.pas"/>
         <DCCReference Include="sound\Music.pas"/>
         <DCCReference Include="interface\NPCBehavior.pas"/>
-        <DCCReference Include="interface\Showgraphic.pas"/>
+        <DCCReference Include="interface\SoAOS.Intrface.Dialogs.HelpCredit.pas"/>
         <DCCReference Include="engine\MousePtr.pas"/>
         <DCCReference Include="interface\ObjInventory.pas"/>
         <DCCReference Include="interface\OpenAnim.pas"/>
-        <DCCReference Include="interface\Options.pas"/>
+        <DCCReference Include="interface\SoAOS.Intrface.Dialogs.Options.pas"/>
         <DCCReference Include="engine\Scroll.pas"/>
         <DCCReference Include="interface\Statistics.pas"/>
         <DCCReference Include="engine\SoAOS.StrUtils.pas"/>
         <DCCReference Include="engine\MMTimer.pas"/>
-        <DCCReference Include="engine\SoAOS.Types.pas"/>
+        <DCCReference Include="engine\SOAOS.Types.pas"/>
         <DCCReference Include="graphics\SoAOS.Graphics.Draw.pas"/>
         <DCCReference Include="graphics\SoAOS.Graphics.Types.pas"/>
         <DCCReference Include="interface\SoAOS.Intrface.Popup.pas"/>

@@ -1,4 +1,4 @@
-unit Journal;
+unit SoAOS.Intrface.Dialogs.Journal;
 (*
   Siege Of Avalon : Open Source Edition
 
@@ -28,7 +28,7 @@ unit Journal;
   WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
   for the specific language governing rights and limitations under the License.
 
-  Description:
+  Description: Journal/History Dialog - was Journal.pas - a lot more clean-up is coming
 
   Requires: Delphi 10.3.3 or later
 
@@ -91,8 +91,6 @@ type
     StartLogIndex : integer;
     PicXY : TPoint;
     JournalLog : TAdventureLog;
-    constructor Create;
-    destructor Destroy; override;
     procedure Init; override;
     procedure Release; override;
   end;
@@ -105,34 +103,6 @@ uses
   AniDemo;
 
 { TJournal }
-
-constructor TJournal.Create;
-const
-  FailName : string = 'TJournal.create';
-begin
-  Log.DebugLog(FailName);
-  try
-
-    inherited;
-  except
-    on E : Exception do
-      Log.log( FailName + E.Message );
-  end;
-end; //Create
-
-destructor TJournal.Destroy;
-const
-  FailName : string = 'TJournal.destroy';
-begin
-  Log.DebugLog(FailName);
-  try
-
-    inherited;
-  except
-    on E : Exception do
-      Log.log( FailName + E.Message );
-  end;
-end; //Destroy
 
 procedure TJournal.Init;
 var
@@ -183,7 +153,7 @@ begin
 
     pText.LoadFontGraphic( 'inventory' ); //load the statistics font graphic in
 
-    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'Journal.bmp', cInvisColor );
+    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'Journal.bmp', cInvisColor, DlgWidth, DlgHeight );
 
   {//Now for the Alpha'ed edges
   BMBack.LoadFromFile(ExtractFilePath(Application.ExeName) + 'Options\Dialog-Shadow.bmp');
@@ -203,12 +173,21 @@ end; //Init
 
 procedure TJournal.FormMouseDown( Sender : TObject; Button : TMouseButton;
   Shift : TShiftState; X, Y : Integer );
+var
+  pr1, pr2, pr3: TRect;
 const
   FailName : string = 'TJournal.formmousedown';
 begin
   try
   //check for clicks
-    if ptinRect( rect( 582, 575, 659, 596 ), point( x, y ) ) then
+    pr1 := Rect( 582, 575, 659, 596 );
+    pr1.Offset(Offset);
+    pr2 := Rect( 681, 575, 721, 596 );
+    pr2.Offset(Offset);
+    pr3 := Rect( 746, 575, 786, 596 );
+    pr3.Offset(Offset);
+
+    if pr1.Contains( Point( x, y ) ) then
     begin //prev
       if CurrentLogIndex > 0 then
       begin
@@ -216,7 +195,7 @@ begin
         ShowText;
       end;
     end
-    else if ptinRect( rect( 681, 575, 721, 596 ), point( x, y ) ) then
+    else if pr2.Contains( Point( x, y ) ) then
     begin //next
       if CurrentLogIndex < JournalLog.LogFileList.count - 1 then
       begin
@@ -224,7 +203,7 @@ begin
         ShowText;
       end;
     end
-    else if ptinRect( rect( 746, 575, 786, 596 ), point( x, y ) ) then
+    else if pr3.Contains( Point( x, y ) ) then
     begin //exit
       Close;
       frmMain := nil;
@@ -234,7 +213,6 @@ begin
       Log.log( FailName + E.Message );
   end;
 end; //FormMouseDown
-
 
 procedure TJournal.FormMouseMove( Sender : TObject; Shift : TShiftState; X, Y : Integer );
 const
@@ -270,11 +248,18 @@ begin
 end; //FormMouseMove
 
 procedure TJournal.MouseDown( Sender : TAniview; Button : TMouseButton; Shift : TShiftState; X, Y, GridX, GridY : integer );
+var
+  pr1, pr2, pr3: TRect;
 begin
-   begin
   try
+    pr1 := Rect( 582, 575, 659, 596 );
+    pr1.Offset(Offset);
+    pr2 := Rect( 681, 575, 721, 596 );
+    pr2.Offset(Offset);
+    pr3 := Rect( 746, 575, 786, 596 );
+    pr3.Offset(Offset);
   //check for clicks
-    if ptinRect( rect( 582, 575, 659, 596 ), point( x, y ) ) then
+    if pr1.Contains( Point( x, y ) ) then
     begin //prev
       if CurrentLogIndex > 0 then
       begin
@@ -282,7 +267,7 @@ begin
         ShowText;
       end;
     end
-    else if ptinRect( rect( 681, 575, 721, 596 ), point( x, y ) ) then
+    else if pr2.Contains( Point( x, y ) ) then
     begin //next
       if CurrentLogIndex < JournalLog.LogFileList.count - 1 then
       begin
@@ -290,7 +275,7 @@ begin
         ShowText;
       end;
     end
-    else if ptinRect( rect( 746, 575, 786, 596 ), point( x, y ) ) then
+    else if pr3.Contains( Point( x, y ) ) then
     begin //exit
       Close;
       frmMain := nil;
@@ -298,7 +283,6 @@ begin
   except
     on E : Exception do
      exit;
-  end;
   end;
 end; //MouseDown
 
@@ -347,8 +331,8 @@ begin
     if CurrentLogIndex > StartLogIndex then
       StartLogIndex := CurrentLogIndex;
   //clear screen
-    pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-    lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, DlgWidth, DlgHeight );
+    lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   //Plot buttons
   //pText.PlotText('Previous',300,570,240);
   //pText.PlotText('Next',450,570,240);
@@ -372,7 +356,7 @@ begin
         PicWidth := width;
         PicHeight := height;
         pr := Rect( 0, 0, width, Height );
-        lpDDSBack.BltFast( PicXY.X, PicXY.Y, DXPic, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        lpDDSBack.BltFast( PicXY.X + Offset.X, PicXY.Y + Offset.Y, DXPic, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         if LogText <> '' then
           pText.PlotTextBlockAroundBox( Logtext, 50, 750, 50, 240, rect( PicXY.X, PicXY.Y, PicXY.X + PicWidth + 20, PicXY.Y + PicHeight + 20 ) );
       end
@@ -403,7 +387,7 @@ begin
         end;
 
         pr := Rect( 0, 0, BM.width, BM.Height );
-        lpDDSBack.BltFast( PicXY.X, PicXY.Y, DXPic, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        lpDDSBack.BltFast( PicXY.X + Offset.X, PicXY.Y + Offset.Y, DXPic, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         if LogText <> '' then
           pText.PlotTextBlockAroundBox( Logtext, 50, 750, 50, 240, rect( PicXY.X, PicXY.Y, PicXY.X + PicWidth + 20, PicXY.Y + PicHeight + 20 ) );
       end
@@ -414,7 +398,7 @@ begin
       pText.PlotTextBlock( Logtext, 50, 750, 50, 240 );
 
     if not NoPageNumbers then
-      pText.plotText( txtMessage[ 0 ] + intToStr( CurrentLogIndex + 1 ) + txtMessage[ 1 ] + IntToStr( JournalLog.LogFileList.count ), 81, 575, 255 );
+      pText.plotText( txtMessage[ 0 ] + intToStr( CurrentLogIndex + 1 ) + txtMessage[ 1 ] + IntToStr( JournalLog.LogFileList.count ), 81 + Offset.X, 575 + Offset.Y, 255 );
     SoAOS_DX_BltFront;
 
     DXPic := nil;

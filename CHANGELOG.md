@@ -15,6 +15,16 @@ All notable changes to this project will be documented in this file.
 - REFACTOR: Too much copy/paste code - (re)Moved method up to base class or extract
 - REFACTOR: Reorg classes
 
+## 2020-01-21
+### Fixed
+- A lot of errors introduced or "missings" in regards to HD/FullHD resolution have now been fixed or resolved.
+- A lot of errors in regards to "asset" variations between original game data and new game data.
+- Xref.db Versin1 FieldByName issue
+- HighDPI scaling issue - not allowing the game to run if scaled resolution exceed actual resolution. 4K with >100% DPI.
+
+### Changed
+- All "Menu" dialogs are now centered on screen, and their unit names have changed to SoAOS.Intrface.Dialogs...
+
 ## 2020-01-16
 ### Added
 - SoAOS.Data.DB unit replaces ItemDatabase.pas - TDataset-style with Locate and TField.as... notation. Also handles Xref.db version variations.

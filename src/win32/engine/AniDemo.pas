@@ -75,17 +75,17 @@ uses
   Map,
   Merchant,
   AdventureLog,
-  Journal,
-  CharCreation,
-  Intro,
-  Options,
+  SoAOS.Intrface.Dialogs.Journal,
+  SoAOS.Intrface.Dialogs.NewCharacter,
+  SoAOS.Intrface.Dialogs.Mainmenu,
+  SoAOS.Intrface.Dialogs.Options,
   NPCBehavior,
   LoaderBox,
   Award,
-  LoadGame,
+  SoAOS.Intrface.Dialogs.LoadSaveGame,
   LootCorpse,
   OpenAnim,
-  Showgraphic,
+  SoAOS.Intrface.Dialogs.HelpCredit,
   LogScreen,
   SoAOS.Intrface.Transit,
   AddKickNPC;
@@ -169,7 +169,7 @@ type
     NextSong : string;
     SongCounter : Longint;
     SoundOK : Boolean;
-    Spinner : Integer;
+//    Spinner : Integer;
     NewGame : Boolean;
 {$IFDEF DirectX}
     OverlayB : IDirectDrawSurface;
@@ -288,7 +288,6 @@ type
     procedure LoadNewMapFile;
     function LoadMapFile( New, FullLoad : Boolean ) : Boolean;
     function FindMap( const FileName : string ) : string;
-    procedure CharCreationDraw( Sender : TObject );
     procedure InventoryDraw( Sender : TObject );
     function SaveGame : Boolean;
     function LoadGame( FullLoad, UseCache : Boolean ) : Boolean;
@@ -304,6 +303,7 @@ type
 var
   SetAppExStyleCount : Integer;
   ScreenMetrics : TScreenResolutionData;
+  DlgRect : TDialogData;
   AdjustedPartyHitPoints : Boolean;
   AdjustedCompanionAI : Boolean;  // Rucksacksepp's improved Companion AI - default to true
   frmMain : TfrmMain;
@@ -318,6 +318,7 @@ implementation
 uses
   SoAOS.Graphics.Draw,
   SoAOS.Graphics.Types,
+  System.Types,
   DFX,
   Parts,
   Sound,
@@ -722,63 +723,6 @@ begin
   end;
 end;
 
-procedure TfrmMain.CharCreationDraw( Sender : TObject );
-var
-  ddsd : TDDSurfaceDesc;
-  Bits : BITPLANE;
-  R : TRect;
-  Frame : Integer;
-const
-  FailName : string = 'Main.CharCreationDraw';
-begin
-  // Drawing Actor/Player
-  Log.DebugLog(FailName);
-  try
-
-    Frame := Spinner div 70 + 20;
-    ddsd.dwSize := SizeOf( ddsd );
-    R := Rect( 114, 93, 262, 223 );
-    if lpDDSBack.Lock( @R, ddsd, DDLOCK_WAIT, 0 ) = DD_OK then
-    begin
-      try
-        Bits.bitsPtr := ddsd.lpSurface;
-        Bits.bitsWdh := ResWidth;
-        Bits.bitsHgh := ResHeight;
-        Bits.bitsFmt := dfx_pixelformat;
-        Bits.bitsPitch := ddsd.lPitch;
-        Bits.BaseX := 0;
-        Bits.BaseY := 0;
-
-        TCharacterResource( Player.Resource ).NakedResource.RLE.Draw( Frame, 0, 0, @Bits );
-        if Assigned( TCreation( Sender ).SelectedPants ) and
-          Assigned( TCreation( Sender ).SelectedPants.Resource ) and
-          Assigned( TLayerResource( TCreation( Sender ).SelectedPants.Resource ).RLE ) then
-          TLayerResource( TCreation( Sender ).SelectedPants.Resource ).RLE.Draw( Frame, 0, 0, @Bits );
-        if Assigned( Player.Equipment[ slBoot ] ) and
-          Assigned( Player.Equipment[ slBoot ].Resource ) and
-          Assigned( TLayerResource( Player.Equipment[ slBoot ].Resource ).RLE ) then
-          TLayerResource( Player.Equipment[ slBoot ].Resource ).RLE.Draw( Frame, 0, 0, @Bits );
-        if Assigned( TCreation( Sender ).SelectedShirt ) and
-          Assigned( TCreation( Sender ).SelectedShirt.Resource ) and
-          Assigned( TLayerResource( TCreation( Sender ).SelectedShirt.Resource ).RLE ) then
-          TLayerResource( TCreation( Sender ).SelectedShirt.Resource ).RLE.Draw( Frame, 0, 0, @Bits );
-        if Assigned( TCreation( Sender ).SelectedHair ) and
-          Assigned( TLayerResource( TCreation( Sender ).SelectedHair ).RLE ) then
-          TLayerResource( TCreation( Sender ).SelectedHair ).RLE.Draw( Frame, 0, 0, @Bits );
-      finally
-        lpDDSBack.Unlock( nil );
-      end;
-    end;
-    Inc( Spinner );
-    if Spinner >= 280 then
-      Spinner := 0;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
 procedure TfrmMain.SaveOptions;
 var
   INI : TIniFile;
@@ -915,6 +859,11 @@ begin
           ScreenMetrics := cOriginal;
         end;
       end;
+
+      if FileExists( InterfacePath + 'gMainMenuBlank.bmp' ) then
+        DlgRect := cMultilingualDialogs
+      else
+        DlgRect := cClassicDialogs;
 
       AdjustedPartyHitPoints := ( LowerCase( INI.ReadString( 'Settings', 'AdjustedPartyHitPoints', 'false' ) ) = 'true' );
       AdjustedCompanionAI := ( INI.ReadString( 'Settings', 'AdjustedPartyHitPoints', 'true' ).ToLower = 'true' );
@@ -3027,7 +2976,7 @@ begin
     begin
       if FSpellBarActive then
       begin
-        //TODO: Refactor - code smell below - I even added more stupidity
+        //TODO: Refactor - code smell below - spell Rect logic - should be added to screenMetrics
         if ScreenMetrics.IniIdent='HD' then
         begin
           Ymin1 := 606;
@@ -3066,115 +3015,13 @@ begin
           end;
           FSpellBarActive := False;
           Exit;
-        end
-        else
-        begin
-          if ((ScreenMetrics.ScreenWidth=800) and ( X >= 714 ) and ( X < 782 ) and ( Y >= 9 ) and ( Y < 107 )) or
-    		     ( X >= 1834 ) and ( X < 1902 ) and ( Y >= 9 ) and ( Y < 107 ) then //Both HD and FullHD?
-          begin
-            i := 0;
-            if i < NPCList.Count then
-            begin
-              if Button = mbLeft then
-              begin
-                if NPCList.Items[ i ] = Current then
-                begin
-                  if DlgStatistics.Loaded then
-                    CloseAllDialogs( DlgStatistics )
-                  else
-                  begin
-                    DoNotRestartTimer := True;
-                    CloseAllDialogs( DlgStatistics );
-                    BeginStatistics( Current );
-                  end;
-                end
-                else
-                begin
-                  if DlgStatistics.Loaded then
-                  begin
-                    DoNotRestartTimer := True;
-                    CloseAllDialogs( DlgStatistics );
-                    ChangeFocus( NPCList.Items[ i ] );
-                    pr := Rect( 16, 0, 117, 120 );
-                    if ScreenMetrics.ScreenWidth>800 then
-                      lpDDSFront.BltFast( 1819, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ) //Both HD and FullHD?
-                    else
-                      lpDDSFront.BltFast( 699, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-                    BeginStatistics( Current );
-                  end
-                  else if DlgInventory.Loaded then
-                  begin
-                    DoNotRestartTimer := True;
-                    CloseAllDialogs( DlgStatistics );
-                    ChangeFocus( NPCList.Items[ i ] );
-                    pr := Rect( 16, 0, 117, 120 );
-                    if ScreenMetrics.ScreenWidth>800 then
-                      lpDDSFront.BltFast( 1819, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ) //Both HD and FullHD?
-                    else
-                      lpDDSFront.BltFast( 699, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-                    BeginInventory( Current );
-                  end
-                  else if Active then
-                    ChangeFocus( NPCList.Items[ i ] );
-                end;
-              end
-              else if Button = mbRight then
-              begin
-                BeginNPC( NPCList.Items[ i ] );
-              end;
-            end;
-            Exit;
-          end;
         end;
       end
       else
-      begin  // Teammates
-        i := -1;
-        if ((ScreenMetrics.ScreenWidth=800) and ( X >= 0 ) and ( X < 66 ) and ( Y >= 518 ) and ( Y < 580 )) or
-           (( X >= 0 ) and ( X < 66 ) and ( Y >= 998 ) and ( Y < 1060 )) then //Both HD and FullHD?
-        begin
-          i := 1;
-        end
-        else if ((ScreenMetrics.ScreenWidth=800) and ( X >= 80 ) and ( X < 152 ) and ( Y >= 518 ) and ( Y < 580 )) or
-                (( X >= 80 ) and ( X < 152 ) and ( Y >= 998 ) and ( Y < 1060 )) then //Both HD and FullHD?
-        begin
-          i := 2;
-        end;
-
-        if ( MaxPartyMembers=4 ) then //HD always has 4 slots
-        begin
-          if ((ScreenMetrics.ScreenWidth=800) and (X>=166) and (X<234) and (Y>=518) and (Y<580)) or
-             ((X>=166) and (X<234) and ( Y >= 998 ) and ( Y < 1060 )) then //Both HD and FullHD?
-          begin
-            i:=3;
-          end
-          else if ((ScreenMetrics.ScreenWidth=800) and (X>=248) and (X<311) and (Y>=518) and (Y<580)) or
-                  ((X>=248) and (X<311) and ( Y >= 998 ) and ( Y < 1060 )) then //Both HD and FullHD?
-          begin
-            i:=4;
-          end
-        end
-        else if ((ScreenMetrics.ScreenWidth=800) and ( X >= 716 ) and ( X < 778 ) and ( Y >= 11 ) and ( Y < 104 )) or
-                (( X >= 1834 ) and ( X < 1902 ) and ( Y >= 9 ) and ( Y < 107 )) then //Both HD and FullHD?
+      begin
+        if ScreenMetrics.popStatsRect.Contains( Point(x, y) ) then
         begin
           i := 0;
-        end;
-
-        {      if i=0 then begin
-                if Button=mbLeft then begin
-                  if NPCList.items[i]=Current then begin
-                    if DlgStatistics.Loaded then
-                      CloseAllDialogs(DlgStatistics)
-                    else begin
-                      DoNotRestartTimer:=true;
-                      CloseAllDialogs(DlgStatistics);
-                      BeginStatistics(Current);
-                    end;
-                  end;
-                end;
-              end  }
-        if i >= 0 then
-        begin
           if i < NPCList.Count then
           begin
             if Button = mbLeft then
@@ -3197,9 +3044,7 @@ begin
                   DoNotRestartTimer := True;
                   CloseAllDialogs( DlgStatistics );
                   ChangeFocus( NPCList.Items[ i ] );
-                  pr := Rect( 0, 12, 326, 114 );
-                  lpDDSFront.BltFast( 0, ScreenMetrics.StatsY, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-                  pr := Rect( 16, 0, 117, 120 );
+                  pr := Rect( 16, 0, 117, 120 );          // 699 and 1819
                   lpDDSFront.BltFast( ScreenMetrics.StatsX, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                   BeginStatistics( Current );
                 end
@@ -3208,8 +3053,6 @@ begin
                   DoNotRestartTimer := True;
                   CloseAllDialogs( DlgStatistics );
                   ChangeFocus( NPCList.Items[ i ] );
-                  pr := Rect( 0, 12, 326, 114 );
-                  lpDDSFront.BltFast( 0, ScreenMetrics.StatsY, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                   pr := Rect( 16, 0, 117, 120 );
                   lpDDSFront.BltFast( ScreenMetrics.StatsX, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                   BeginInventory( Current );
@@ -3224,13 +3067,91 @@ begin
             end;
           end;
           Exit;
+        end
+        else
+        begin  // Teammates
+          i := -1;
+          if ScreenMetrics.popParty1Rect.Contains( Point(x, y) ) then i := 1
+          else if ScreenMetrics.popParty2Rect.Contains( Point(x, y) ) then i := 2;
+
+          if ( MaxPartyMembers=4 ) then //HD always has 4 slots
+          begin
+            if ScreenMetrics.popParty3Rect.Contains( Point(x, y) ) then i := 3
+            else if ScreenMetrics.popParty4Rect.Contains( Point(x, y) ) then i := 4;
+          end
+          else if ScreenMetrics.popStatsRect.Contains( Point(x, y) ) then i := 0;
+
+          {      if i=0 then begin
+                  if Button=mbLeft then begin
+                    if NPCList.items[i]=Current then begin
+                      if DlgStatistics.Loaded then
+                        CloseAllDialogs(DlgStatistics)
+                      else begin
+                        DoNotRestartTimer:=true;
+                        CloseAllDialogs(DlgStatistics);
+                        BeginStatistics(Current);
+                      end;
+                    end;
+                  end;
+                end  }
+          if i >= 0 then
+          begin
+            if i < NPCList.Count then
+            begin
+              if Button = mbLeft then
+              begin
+                if NPCList.Items[ i ] = Current then
+                begin
+                  if DlgStatistics.Loaded then
+                    CloseAllDialogs( DlgStatistics )
+                  else
+                  begin
+                    DoNotRestartTimer := True;
+                    CloseAllDialogs( DlgStatistics );
+                    BeginStatistics( Current );
+                  end;
+                end
+                else
+                begin
+                  if DlgStatistics.Loaded then
+                  begin
+                    DoNotRestartTimer := True;
+                    CloseAllDialogs( DlgStatistics );
+                    ChangeFocus( NPCList.Items[ i ] );
+                    pr := Rect( 0, 12, 326, 114 );
+                    lpDDSFront.BltFast( 0, ScreenMetrics.StatsY, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                    pr := Rect( 16, 0, 117, 120 );
+                    lpDDSFront.BltFast( ScreenMetrics.StatsX, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                    BeginStatistics( Current );
+                  end
+                  else if DlgInventory.Loaded then
+                  begin
+                    DoNotRestartTimer := True;
+                    CloseAllDialogs( DlgStatistics );
+                    ChangeFocus( NPCList.Items[ i ] );
+                    pr := Rect( 0, 12, 326, 114 );
+                    lpDDSFront.BltFast( 0, ScreenMetrics.StatsY, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                    pr := Rect( 16, 0, 117, 120 );
+                    lpDDSFront.BltFast( ScreenMetrics.StatsX, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                    BeginInventory( Current );
+                  end
+                  else if Active then
+                    ChangeFocus( NPCList.Items[ i ] );
+                end;
+              end
+              else if Button = mbRight then
+              begin
+                BeginNPC( NPCList.Items[ i ] );
+              end;
+            end;
+            Exit;
+          end;
         end;
       end;
 
       if Assigned( Current ) then
       begin
-        if ((ScreenMetrics.ScreenWidth=800) and ( X >= 725 ) and ( X < 773 ) and ( Y >= 430 ) and ( Y < 475 )) or
-           (( X >= 1846 ) and ( X < 1895 ) and ( Y >= 886 ) and ( Y < 930 )) then //Both HD and FullHD?
+        if ScreenMetrics.popInventoryRect.Contains( Point(x, y) ) then
         begin
           if DlgInventory.Loaded then
             CloseAllDialogs( DlgInventory )
@@ -3241,8 +3162,7 @@ begin
             BeginInventory( Current );
           end;
         end
-        else if ((ScreenMetrics.ScreenWidth=800) and ( X >= 724 ) and ( X < 772 ) and ( Y >= 511 ) and ( Y < 559 )) or
-                (( X >= 1846 ) and ( X < 1892 ) and ( Y >= 991 ) and ( Y < 1039 )) then  //Both HD and FullHD?
+        else if ScreenMetrics.popMapRect.Contains( Point(x, y) ) then
         begin
           if DlgMap.Loaded then
             CloseAllDialogs( DlgMap )
@@ -3253,8 +3173,7 @@ begin
             BeginMap( Current );
           end;
         end
-        else if ((ScreenMetrics.ScreenWidth=800) and ( X >= 658 ) and ( X < 728 ) and ( Y >= 559 ) and ( Y < 584 )) or
-                (( X >= 1138 ) and ( X < 1202 ) and ( Y >= 1039 ) and ( Y < 1064 )) then  //Both HD and FullHD?
+        else if ScreenMetrics.popJournalRect.Contains( Point(x, y) ) then
         begin
           if DlgJournal.Loaded then
             CloseAllDialogs( DlgJournal )
@@ -3265,8 +3184,7 @@ begin
             BeginJournal;
           end;
         end
-        else if ((ScreenMetrics.ScreenWidth=800) and ( X >= 658 ) and ( X < 728 ) and ( Y >= 533 ) and ( Y < 559 )) or
-                (( X >= 1138 ) and ( X < 1202 ) and ( Y >= 1016 ) and ( Y < 1039 )) then  //Both HD and FullHD?
+        else if ScreenMetrics.popAdventureRect.Contains( Point(x, y) ) then
         begin
           if DlgAdvLog.Loaded then
             CloseAllDialogs( DlgAdvLog )
@@ -3277,8 +3195,7 @@ begin
             BeginAdvLog;
           end;
         end
-        else if ((ScreenMetrics.ScreenWidth=800) and ( X >= 658 ) and ( X < 728 ) and ( Y >= 511 ) and ( Y < 533 )) or
-                (( X >= 1138 ) and ( X < 1202 ) and ( Y >= 998 ) and ( Y < 1013 )) then  //Both HD and FullHD?
+        else if ScreenMetrics.popQuestRect.Contains( Point(x, y) ) then
         begin
           if DlgQuestLog.Loaded then
             CloseAllDialogs( DlgQuestLog )
@@ -3289,8 +3206,7 @@ begin
             BeginQuestLog;
           end;
         end
-        else if ((ScreenMetrics.ScreenWidth=800) and ( X >= 608 ) and ( X < 648 ) and ( Y >= 542 ) and ( Y < 584 )) or
-                (( X >= 1088 ) and ( X < 1128 ) and ( Y >= 1022 ) and ( Y < 1064 )) then  //Both HD and FullHD?
+        else if ScreenMetrics.popAwardsRect.Contains( Point(x, y) ) then
         begin
           if DlgTitles.Loaded then
             CloseAllDialogs( DlgTitles )
@@ -3301,8 +3217,7 @@ begin
             BeginTitles( Current );
           end;
         end
-        else if ((ScreenMetrics.ScreenWidth=800) and ( X >= 175 ) and ( X < 256 ) and ( Y >= 539 ) and ( Y < 571 )) or
-                (( X >= 345 ) and ( X < 425 ) and ( Y >= 1020 ) and ( Y < 1050 )) then  //Both HD and FullHD?
+        else if ScreenMetrics.popRosterRect.Contains( Point(x, y) ) then
         begin
           if DlgRoster.Loaded then
             CloseAllDialogs( DlgRoster )
@@ -3315,8 +3230,7 @@ begin
           end;
           Exit;
         end
-        else if ((ScreenMetrics.ScreenWidth=800) and ( X >= 324 ) and ( X < 385 ) and ( Y >= 512 ) and ( Y < 588 )) or
-                (( X >= 507 ) and ( X < 541 ) and ( Y >= 992 ) and ( Y < 1068 )) and not FSpellBarActive then  //Both HD and FullHD?
+        else if ScreenMetrics.popSpellRect.Contains( Point(x, y) ) then
         begin
           FSpellBarActive := not FSpellBarActive;
           if FSpellBarActive then
@@ -3820,6 +3734,7 @@ begin
       ScreenShot.Height := 162;
 
       Log.Log( 'Loading interface...' );
+      DlgIntro := TIntro.Create; // Create first due to Intercase check
       DlgConverse := TConverseBox.Create;
       DlgInventory := TInventory.Create;
       DlgMerchant := TMerchant.Create;
@@ -3831,7 +3746,6 @@ begin
       DlgOptions := TOptions.Create;
       DlgLoad := TLoadGame.Create;
       DlgProgress := TLoaderBox.Create;
-      DlgIntro := TIntro.Create;
 
       DlgNPC := TNPCBehavior.Create;
       DlgShow := TShowGraphic.Create;
@@ -5313,18 +5227,12 @@ begin
   Log.DebugLog(FailName);
   try
     pr := Rect( 0, 0, 32, 32 );
-    if ScreenMetrics.ScreenWidth>800 then
-      OverlayB.BltFast( 508, 64, NoSpellIcon, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT ) //Both HD and FullHD?
-    else
-      OverlayB.BltFast( 339, 64, NoSpellIcon, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+    OverlayB.BltFast( ScreenMetrics.SpellX, 64, NoSpellIcon, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
 
     if Assigned( Current ) and Assigned( Current.CurrentSpell ) then
     begin
       Point := Current.CurrentSpell.GetIconXY( Current );
-      if ScreenMetrics.ScreenWidth>800 then
-        DrawAlpha( OverlayB, Rect( 508, 64, 508 + 32, 64 + 32 ),Rect( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), SpellGlyphs, False, 200 ) //Both HD and FullHD?
-      else
-        DrawAlpha( OverlayB, Rect( 339, 64, 339 + 32, 64 + 32 ), Rect( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), SpellGlyphs, False, 200 );
+      DrawAlpha( OverlayB, Rect( ScreenMetrics.SpellX, 64, ScreenMetrics.SpellX + 32, 64 + 32 ), Rect( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), SpellGlyphs, False, 200 );
     end;
 
   except
@@ -5912,9 +5820,6 @@ begin
       else
         Hair[4, 3, 2] := PartManager.GetLayerResource(S + 'PonytailGrey');
       Hair[4, 4, 2] := nil;}
-
-      Spinner := 0;
-      OnDraw := CharCreationDraw;
 
       Init;
     end;
