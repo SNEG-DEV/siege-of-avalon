@@ -52,8 +52,8 @@ uses
   System.Classes,
   Vcl.Graphics,
   Vcl.Controls,
+  SoAOS.Intrface.Dialogs,
   GameText,
-  Display,
   Anigrp30,
   Engine,
   LogFile;
@@ -65,7 +65,7 @@ type
     Enabled : boolean;
   end;
 
-  TIntro = class( TDisplay )
+  TIntro = class( TDialog )
   private
     AreYouSureBoxVisible : boolean;
     DXBack : IDirectDrawSurface;
@@ -95,6 +95,7 @@ implementation
 
 uses
   SoAOS.Types,
+  SoAOS.Intrface.Text,
   SoAOS.Graphics.Draw,
   AniDemo;
 

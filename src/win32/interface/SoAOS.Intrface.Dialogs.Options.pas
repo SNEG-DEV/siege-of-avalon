@@ -52,15 +52,15 @@ uses
   System.Classes,
   Vcl.Controls,
   Vcl.ExtCtrls,
+  SoAOS.Intrface.Dialogs,
   Character,
   GameText,
-  Display,
   Anigrp30,
   Logfile,
   Engine;
 
 type
-  TOptions = class( TDisplay )
+  TOptions = class( TDialog )
   private
     //Bitmap stuff
     DXBack : IDirectDrawSurface; //DD surface that holds the statistics screen before blit
@@ -102,6 +102,7 @@ implementation
 
 uses
   SoAOS.Types,
+  SoAOS.Intrface.Text,
   SoAOS.Graphics.Draw,
   AniDemo;
 

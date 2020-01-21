@@ -124,6 +124,7 @@ uses
   DXUtil,
   DXEffects,
   SoAOS.Types,
+  SoAOS.Intrface.Text,
   SoAOS.Graphics.Draw,
   Engine,
   LogFile,

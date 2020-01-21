@@ -53,22 +53,9 @@ uses
   LogFile;
 
 type
-  TExternalizer = class( TObject )
-  private
-    INI : TINIFile;
-    FSection : string;
-  public
-    destructor Destroy; override;
-    procedure Open( const Section : string );
-    procedure Close;
-    function GetText( const ID : string ) : string;
-    procedure GetSection( Strings : TStrings );
-  end;
-
   TDisplay = class( TObject )
   private
     FOnClose : TNotifyEvent;
-    function GetOffset: TPoint;
   protected
     WasActive : Boolean;
     InBound : Boolean;
@@ -82,8 +69,6 @@ type
       Shift : TShiftState ); virtual;
     procedure Close; virtual;
   public
-    DlgWidth: Integer;
-    DlgHeight: Integer;
     X1, Y1, X2, Y2 : Integer;
     pText : TGameText; //pointer to GameText object - caller must set this before init is called
     Loaded : Boolean;
@@ -95,16 +80,12 @@ type
     procedure Release; virtual;
     property OnClose : TNotifyEvent read FOnClose write FOnClose;
     procedure DebugPlot( i : integer );
-    property Offset: TPoint read GetOffset;
   end;
 
 procedure DebugPrint( S : string );
 const
   GroundListWidth : integer = 75;
   GroundListHeight : integer = 29;
-
-var
-  ExText : TExternalizer;
 
 implementation
 
@@ -159,11 +140,6 @@ begin
       Log.log( FailName + E.Message );
   end;
 
-end;
-
-function TDisplay.GetOffset: TPoint;
-begin
-  Result := TPoint.Create((ScreenMetrics.ScreenWidth - DlgWidth) div 2, (ScreenMetrics.ScreenHeight - DlgHeight) div 2);
 end;
 
 procedure TDisplay.Init;
@@ -296,53 +272,5 @@ begin
   end;
 
 end;
-
-{ TExternalizer }
-
-procedure TExternalizer.Close;
-begin
-  if assigned( INI ) then
-  begin
-    INI.free;
-    INI := nil;
-  end;
-end;
-
-destructor TExternalizer.Destroy;
-begin
-  INI.free;
-  inherited;
-end;
-
-procedure TExternalizer.GetSection( Strings : TStrings );
-begin
-  INI.ReadSectionValues( FSection, Strings );
-end;
-
-function TExternalizer.GetText( const ID : string ) : string;
-begin
-  if assigned( INI ) then
-    result := INI.ReadString( FSection, ID, '' )
-  else
-    result := '';
-end;
-
-procedure TExternalizer.Open( const Section : string );
-begin
-  FSection := Section;
-  if not assigned( INI ) then
-    INI := TIniFile.create( InterfacePath + 'text.ini' );
-end;
-
-initialization
-  begin
-    ExText := TExternalizer.create;
-  end;
-
-finalization
-  begin
-    ExText.free;
-  end;
-
 
 end.

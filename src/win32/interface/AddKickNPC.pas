@@ -117,6 +117,7 @@ uses
 {$ENDIF}
   SoAOS.Types,
   SoAOS.Graphics.Draw,
+  SoAOS.Intrface.Text,
   Engine,
   Resource,
   Logfile,

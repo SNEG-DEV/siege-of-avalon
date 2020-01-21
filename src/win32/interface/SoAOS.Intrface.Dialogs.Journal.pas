@@ -55,9 +55,9 @@ uses
   Vcl.Forms,
   Vcl.Imaging.jpeg,
   System.IniFiles,
+  SoAOS.Intrface.Dialogs,
   Resource,
   GameText,
-  Display,
   Anigrp30,
   AdventureLog,
   LogFile,
@@ -65,7 +65,7 @@ uses
 
 type
 
-  TJournal = class( TDisplay )
+  TJournal = class( TDialog )
   private
     //Bitmap stuff
     DXBack : IDirectDrawSurface;
@@ -99,6 +99,7 @@ implementation
 
 uses
   SoAOS.Types,
+  SoAOS.Intrface.Text,
   SoAOS.Graphics.Draw,
   AniDemo;
 

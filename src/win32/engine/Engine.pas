@@ -128,6 +128,7 @@ implementation
 
 uses
   SoAOS.Types,
+  SoAOS.Intrface.Text,
   AniDemo,
   Character,
   Parts,

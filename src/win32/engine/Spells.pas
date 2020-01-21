@@ -738,6 +738,7 @@ implementation
 
 uses
   SoAOS.Types,
+  SoAOS.Intrface.Text,
   AniDec30,
   AI1,
   MiscAI,

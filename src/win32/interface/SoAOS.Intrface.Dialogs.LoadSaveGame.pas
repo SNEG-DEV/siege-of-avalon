@@ -54,8 +54,8 @@ uses
   Vcl.Controls,
   Vcl.Forms,
   Vcl.ExtCtrls,
+  SoAOS.Intrface.Dialogs,
   GameText,
-  Display,
   Anigrp30,
   Engine,
   Logfile;
@@ -69,7 +69,7 @@ type
     date : string;
   end;
 
-  TLoadGame = class( TDisplay )
+  TLoadGame = class( TDialog )
   private
     //Info Box stuff
     CharacterName : array[ 1..5 ] of string;
@@ -141,6 +141,7 @@ implementation
 
 uses
   SoAOS.Types,
+  SoAOS.Intrface.Text,
   SoAOS.Graphics.Draw,
   AniDemo,
   Resource,

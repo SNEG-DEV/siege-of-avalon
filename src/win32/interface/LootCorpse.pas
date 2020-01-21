@@ -149,6 +149,7 @@ implementation
 uses
   SoAOS.Types,
   SoAOS.Graphics.Draw,
+  SoAOS.Intrface.Text,
   AniDemo;
 
 const

@@ -110,7 +110,9 @@ uses
   SoAOS.Intrface.Popup in 'interface\SoAOS.Intrface.Popup.pas',
   SoAOSExtSetting in 'interface\SoAOSExtSetting.pas' {frmLaunchSetting},
   SoAOS.Data.DB in 'engine\SoAOS.Data.DB.pas',
-  SoAOS.Intrface.Transit in 'interface\SoAOS.Intrface.Transit.pas';
+  SoAOS.Intrface.Transit in 'interface\SoAOS.Intrface.Transit.pas',
+  SoAOS.Intrface.Dialogs in 'interface\SoAOS.Intrface.Dialogs.pas',
+  SoAOS.Intrface.Text in 'interface\SoAOS.Intrface.Text.pas';
 
 {$R *.RES}
 

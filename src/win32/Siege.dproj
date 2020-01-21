@@ -101,8 +101,8 @@
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <VerInfo_MinorVer>20</VerInfo_MinorVer>
         <VerInfo_Release>2</VerInfo_Release>
-        <VerInfo_Build>1220</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.20.2.1220;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Build>1222</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.20.2.1222;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <Icon_MainIcon>Siege_Icon.ico</Icon_MainIcon>
         <DCC_Optimize>false</DCC_Optimize>
         <DCC_DebugInformation>2</DCC_DebugInformation>
@@ -194,7 +194,7 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="..\..\assets\Interface\sidebarHD.bmp" Configuration="Release" Class="ProjectFile">
+                <DeployFile LocalName="..\..\assets\Interface\glow.bmp" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
@@ -248,7 +248,7 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="..\..\assets\Interface\glow.bmp" Configuration="Release" Class="ProjectFile">
+                <DeployFile LocalName="..\..\assets\Interface\sidebarHD.bmp" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
@@ -1125,6 +1125,8 @@
         </DCCReference>
         <DCCReference Include="engine\SoAOS.Data.DB.pas"/>
         <DCCReference Include="interface\SoAOS.Intrface.Transit.pas"/>
+        <DCCReference Include="interface\SoAOS.Intrface.Dialogs.pas"/>
+        <DCCReference Include="interface\SoAOS.Intrface.Text.pas"/>
         <RcItem Include="..\..\assets\Interface\blkchcry.ttf">
             <ResourceType>FONT</ResourceType>
             <ResourceId>1</ResourceId>

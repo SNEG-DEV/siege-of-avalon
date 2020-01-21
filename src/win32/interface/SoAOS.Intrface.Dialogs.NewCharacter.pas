@@ -44,17 +44,17 @@ unit SoAOS.Intrface.Dialogs.NewCharacter;
 interface
 
 uses
-{$IFDEF DirectX}
   DirectX,
-{$ENDIF}
+
   System.Types,
   System.Classes,
   Vcl.Controls,
   Vcl.Forms,
   Vcl.ExtCtrls,
+
   Character,
   Resource,
-  Display,
+  SoAOS.Intrface.Dialogs,
   Anigrp30;
 
 type
@@ -69,7 +69,7 @@ type
     text : string;
   end;
 
-  TCreation = class( TDisplay )
+  TCreation = class( TDialog )
   private
     FOnDraw : TNotifyEvent;
     //Training modifications
@@ -179,6 +179,7 @@ uses
   SoAOS.Types,
   SoAOS.Graphics.Types,
   SoAOS.Graphics.Draw,
+  SoAOS.Intrface.Text,
   Engine,
   Logfile,
   GameText,

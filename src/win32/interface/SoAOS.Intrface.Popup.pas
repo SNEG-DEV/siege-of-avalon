@@ -60,6 +60,7 @@ type
 implementation
 
 uses
+  SoAOS.Intrface.Text,
   Winapi.Windows,
   System.Types,
   Vcl.Controls,

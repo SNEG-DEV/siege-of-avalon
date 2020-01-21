@@ -152,6 +152,7 @@ uses
   SoAOS.Types,
   SoAOS.Graphics.Draw,
   SoAOS.Graphics.Types,
+  SoAOS.Intrface.Text,
   AniDemo,
   System.SysUtils,
   Gametext,

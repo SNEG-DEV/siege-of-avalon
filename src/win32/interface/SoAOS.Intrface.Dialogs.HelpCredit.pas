@@ -52,12 +52,12 @@ uses
   System.Types,
   Vcl.Controls,
   Vcl.Forms,
-  Display,
+  SoAOS.Intrface.Dialogs,
   Anigrp30,
   Music;
   
 type
-  TShowGraphic = class( TDisplay )
+  TShowGraphic = class( TDialog )
   private
     DXBack : IDirectDrawSurface;
     procedure FormMouseDown( Sender : TObject; Button : TMouseButton; Shift : TShiftState; X, Y : Integer );
