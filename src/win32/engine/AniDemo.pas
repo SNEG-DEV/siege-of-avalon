@@ -54,11 +54,10 @@ uses
   System.IniFiles,
   LogFile,
   Spells,
-{$IFDEF DirectX}
+//  Winapi.DirectDraw,
   DirectX,
   DXUtil,
   DXEffects,
-{$ENDIF}
   SoAOS.Types,
   SoAOS.Intrface.Popup,
   Anigrp30,
@@ -171,7 +170,6 @@ type
     SoundOK : Boolean;
 //    Spinner : Integer;
     NewGame : Boolean;
-{$IFDEF DirectX}
     OverlayB : IDirectDrawSurface;
     OverlayR : IDirectDrawSurface;
     ManaEmpty : IDirectDrawSurface;
@@ -181,7 +179,6 @@ type
     NoSpellIcon : IDirectDrawSurface;
     HelpBox : IDirectDrawSurface;
     PauseImage : IDirectDrawSurface;
-{$ENDIF}
     FCurrentTheme : string;
     ScreenShot : TBitmap;
     imgGlow : TBitmap;
@@ -640,19 +637,19 @@ begin
 
       Player.Properties[ 'HeadLayer' ] := TCharacterResource( Player.Resource ).HeadName;
 
-      if SelectedTraining = 18 then
+      if SelectedTraining = 0 then
       begin
         Player.AddTitle( 'Squire' );
         Player.AddTitle( 'Siegeexe' );
         Player.AddTitle( 'AoAFull' );
       end
-      else if SelectedTraining = 19 then
+      else if SelectedTraining = 1 then
       begin
         Player.AddTitle( 'Hunter' );
         Player.AddTitle( 'Siegeexe' );
         Player.AddTitle( 'AoAFull' );
       end
-      else if SelectedTraining = 20 then
+      else if SelectedTraining = 2 then
       begin
         Player.AddTitle( 'Apprentice' );
         Player.AddTitle( 'Charge' );
@@ -685,6 +682,8 @@ begin
         Player.DeathSound := INI.ReadString( 'Character', 'DeathSounds', '' );
       if Player.BattleCry = '' then
         Player.BattleCry := INI.ReadString( 'Character', 'BattleCry', '' );
+      // Need to set/get the correct "Player" name not the nakedname resource
+      INI.WriteString('Character', 'Resource', ChangeFileExt( ExtractFileName( TCharacterResource( Player.Resource ).FileName ), '' )  );
     finally
       INI.Free;
     end;
@@ -872,15 +871,8 @@ begin
       Log.flush;
       Game.SetBounds( 0, 0, ScreenMetrics.GameWidth, ScreenMetrics.GameHeight ); // 703, 511
 
-  {$IFDEF DirectX}
       Log.Log( 'Mode=DX' );
       Log.flush;
-  {$ENDIF}
-  {$IFNDEF DirectX}
-      Log.Log( 'Mode=GDI' );
-      Log.flush;
-      GameMap.UseLighting := False;
-  {$ENDIF}
 
       Log.Log( 'Read Settings' );
       Log.flush;
@@ -2320,7 +2312,6 @@ begin
     for i := SayList.Count - 1 downto 0 do
       TSpriteObject( SayList.Items[ i ] ).UpdateSay;
 
-{$IFDEF DirectX}
     if FSpellBarActive then
     begin
       pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, 114 );
@@ -2357,8 +2348,6 @@ begin
 
     if Assigned( Popup ) then
       Popup.Draw;
-
-{$ENDIF}
 
   except
     on E : Exception do
@@ -2740,8 +2729,7 @@ begin
   try
 
     DlgShow.frmMain := Self;
-    DlgShow.FileName := 'HelpScreen(telekeneticDuck).bmp';
-    DlgShow.pMusic := nil;
+    DlgShow.BMPFileName := 'HelpScreen(telekeneticDuck).bmp';
     DlgShow.MusicFileName := '';
     OpenDialog( DlgShow, CloseAllDialogs );
 
@@ -2921,7 +2909,6 @@ begin
 
     FreeSpells;
 
-{$IFDEF DirectX}
     Log.Log( 'Freeing console' );
     OverlayB := nil;
     OverlayR := nil;
@@ -2935,7 +2922,6 @@ begin
     PauseImage := nil;
     Game.AutoTransparentMask := nil;
     GlowImage.Free;
-{$ENDIF}
 
     Popup.Free;
     MouseCursor.Free;
@@ -5505,7 +5491,7 @@ end;
 
 procedure TfrmMain.WMStartNew( var Message : TWMNoParams );
 var
-  S, LayeredImage : string;
+  S : string;
   i : Integer;
   INI : TIniFile;
   List : TArray<string>; //TStringList;
@@ -5554,6 +5540,7 @@ begin
       ClearResources( True );
       Sprites.Realloc;
     end;
+
     NewGame := True;
 
     Player := TCharacter.Create( 400, 400, 0, 1, True );
@@ -5574,7 +5561,7 @@ begin
         LVLFile := INI.ReadString( 'Settings', 'TestFile', '' );
       // *** jrs Add commandline override for StartFile setting. Mostly for testing, but might have other uses
 //Use      FindCmdLineSwitch('startFile', LVLFile);
-      GetCommandLineLVLFile;
+//      GetCommandLineLVLFile;
 
       if not System.IOUtils.TPath.IsPathRooted( LVLFile ) then
         LVLFile := MapPath + System.IOUtils.TPath.GetFileName( LVLFile );
@@ -5599,7 +5586,7 @@ begin
       INI.Free;
     end;
 
-    DlgCreation.character := Player;
+    DlgCreation.Character := Player;
     DlgCreation.frmMain := Self;
 
     Game.OnMouseDown := nil;
@@ -5612,217 +5599,7 @@ begin
     Player.Resource := LoadArtResource( ChangeFileExt( PlayerResource, '.gif' ) );
     Player.LoadEquipment( True );
 
-    with DlgCreation do
-    begin
-      shirt[ 1 ] := PartManager.LoadItem( 'TunicBlue', TCharacterResource( Player.Resource ).NakedName );
-      shirt[ 2 ] := PartManager.LoadItem( 'TunicBrown', TCharacterResource( Player.Resource ).NakedName );
-      shirt[ 3 ] := PartManager.LoadItem( 'TunicYellow', TCharacterResource( Player.Resource ).NakedName );
-      shirt[ 4 ] := PartManager.LoadItem( 'TunicGreen', TCharacterResource( Player.Resource ).NakedName );
-
-      for i := 1 to 4 do
-        shirt[ i ].Resource := PartManager.GetLayerResource( shirt[ i ].LayeredImage );
-
-      pants[ 1 ] := PartManager.LoadItem( 'BluePants', TCharacterResource( Player.Resource ).NakedName );
-      pants[ 2 ] := PartManager.LoadItem( 'BrownPants', TCharacterResource( Player.Resource ).NakedName );
-      pants[ 3 ] := PartManager.LoadItem( 'YellowPants', TCharacterResource( Player.Resource ).NakedName );
-      pants[ 4 ] := PartManager.LoadItem( 'GreenPants', TCharacterResource( Player.Resource ).NakedName );
-
-      for i := 1 to 4 do
-        pants[ i ].Resource := PartManager.GetLayerResource( pants[ i ].LayeredImage );
-
-      S := ExtractFilePath( TCharacterResource( Player.Resource ).NakedName );
-
-      LayeredImage := PartManager.GetImageFile( 'prt_ShortHairBeardLight', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'ShortHairBeardLight';
-      Hair[ 1, 1, 1 ] := PartManager.GetLayerResource( LayeredImage );
-      LayeredImage := PartManager.GetImageFile( 'prt_LongHairBeardLight', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'LongHairBeardLight';
-      Hair[ 1, 2, 1 ] := PartManager.GetLayerResource( LayeredImage );
-      LayeredImage := PartManager.GetImageFile( 'prt_PonytailBeardLight', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'PonyBeardLight';
-      Hair[ 1, 3, 1 ] := PartManager.GetLayerResource( LayeredImage );
-      LayeredImage := PartManager.GetImageFile( 'prt_BeardLight', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'BeardLight';
-      Hair[ 1, 4, 1 ] := PartManager.GetLayerResource( LayeredImage );
-
-      LayeredImage := PartManager.GetImageFile( 'prt_ShortHairBeardDark', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'ShortHairBeardDark';
-      Hair[ 2, 1, 1 ] := PartManager.GetLayerResource( LayeredImage );
-      LayeredImage := PartManager.GetImageFile( 'prt_LongHairBeardDark', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'LongHairBeardDark';
-      Hair[ 2, 2, 1 ] := PartManager.GetLayerResource( LayeredImage );
-      LayeredImage := PartManager.GetImageFile( 'prt_PonytailBeardDark', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'PonyBeardDark';
-      Hair[ 2, 3, 1 ] := PartManager.GetLayerResource( LayeredImage );
-      LayeredImage := PartManager.GetImageFile( 'prt_BeardDark', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'BeardDark';
-      Hair[ 2, 4, 1 ] := PartManager.GetLayerResource( LayeredImage );
-
-      LayeredImage := PartManager.GetImageFile( 'prt_ShortHairBeardRed', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'ShortHairBeardRed';
-      Hair[ 3, 1, 1 ] := PartManager.GetLayerResource( LayeredImage );
-      LayeredImage := PartManager.GetImageFile( 'prt_LongHairBeardRed', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'LongHairBeardRed';
-      Hair[ 3, 2, 1 ] := PartManager.GetLayerResource( LayeredImage );
-      LayeredImage := PartManager.GetImageFile( 'prt_PonytailBeardRed', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'PonyBeardRed';
-      Hair[ 3, 3, 1 ] := PartManager.GetLayerResource( LayeredImage );
-      LayeredImage := PartManager.GetImageFile( 'prt_BeardRed', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'BeardRed';
-      Hair[ 3, 4, 1 ] := PartManager.GetLayerResource( LayeredImage );
-
-      LayeredImage := PartManager.GetImageFile( 'prt_ShortHairBeardGrey', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'ShortHairBeardGrey';
-      Hair[ 4, 1, 1 ] := PartManager.GetLayerResource( LayeredImage );
-      LayeredImage := PartManager.GetImageFile( 'prt_LongHairBeardGrey', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'LongHairBeardGrey';
-      Hair[ 4, 2, 1 ] := PartManager.GetLayerResource( LayeredImage );
-      LayeredImage := PartManager.GetImageFile( 'prt_PonytailBeardGrey', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'PonyBeardGrey';
-      Hair[ 4, 3, 1 ] := PartManager.GetLayerResource( LayeredImage );
-      LayeredImage := PartManager.GetImageFile( 'prt_BeardGrey', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'BeardGrey';
-      Hair[ 4, 4, 1 ] := PartManager.GetLayerResource( LayeredImage );
-
-      LayeredImage := PartManager.GetImageFile( 'prt_ShortHairLight', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'ShortHairLight';
-      Hair[ 1, 1, 2 ] := PartManager.GetLayerResource( LayeredImage );
-      LayeredImage := PartManager.GetImageFile( 'prt_LongHairLight', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'LongHairLight';
-      Hair[ 1, 2, 2 ] := PartManager.GetLayerResource( LayeredImage );
-      LayeredImage := PartManager.GetImageFile( 'prt_PonytailLight', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'PonytailLight';
-      Hair[ 1, 3, 2 ] := PartManager.GetLayerResource( LayeredImage );
-      Hair[ 1, 4, 2 ] := nil;
-
-      LayeredImage := PartManager.GetImageFile( 'prt_ShortHairDark', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'ShortHairDark';
-      Hair[ 2, 1, 2 ] := PartManager.GetLayerResource( LayeredImage );
-      LayeredImage := PartManager.GetImageFile( 'prt_LongHairDark', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'LongHairDark';
-      Hair[ 2, 2, 2 ] := PartManager.GetLayerResource( LayeredImage );
-      LayeredImage := PartManager.GetImageFile( 'prt_PonytailDark', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'PonytailDark';
-      Hair[ 2, 3, 2 ] := PartManager.GetLayerResource( LayeredImage );
-      Hair[ 2, 4, 2 ] := nil;
-
-      LayeredImage := PartManager.GetImageFile( 'prt_ShortHairRed', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'ShortHairRed';
-      Hair[ 3, 1, 2 ] := PartManager.GetLayerResource( LayeredImage );
-      LayeredImage := PartManager.GetImageFile( 'prt_LongHairRed', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'LongHairRed';
-      Hair[ 3, 2, 2 ] := PartManager.GetLayerResource( LayeredImage );
-      LayeredImage := PartManager.GetImageFile( 'prt_PonytailRed', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'PonytailRed';
-      Hair[ 3, 3, 2 ] := PartManager.GetLayerResource( LayeredImage );
-      Hair[ 3, 4, 2 ] := nil;
-
-      LayeredImage := PartManager.GetImageFile( 'prt_ShortHairGrey', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'ShortHairGrey';
-      Hair[ 4, 1, 2 ] := PartManager.GetLayerResource( LayeredImage );
-      LayeredImage := PartManager.GetImageFile( 'prt_LongHairGrey', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'LongHairGrey';
-      Hair[ 4, 2, 2 ] := PartManager.GetLayerResource( LayeredImage );
-      LayeredImage := PartManager.GetImageFile( 'prt_PonytailGrey', TCharacterResource( Player.Resource ).NakedName );
-      if PartManager.NotFound then
-        LayeredImage := S + 'PonytailGrey';
-      Hair[ 4, 3, 2 ] := PartManager.GetLayerResource( LayeredImage );
-      Hair[ 4, 4, 2 ] := nil;
-//TODO: Why the above ?
-      Hair[1, 1, 1] := PartManager.GetLayerResource(S + 'ShortHairBeardLight');
-      Hair[1, 2, 1] := PartManager.GetLayerResource(S + 'LongHairBeardLight');
-      Hair[1, 3, 1] := PartManager.GetLayerResource(S + 'PonyBeardLight');
-      Hair[1, 4, 1] := PartManager.GetLayerResource(S + 'BeardLight');
-
-      Hair[2, 1, 1] := PartManager.GetLayerResource(S + 'ShortHairBeardDark');
-      Hair[2, 2, 1] := PartManager.GetLayerResource(S + 'LongHairBeardDark');
-      Hair[2, 3, 1] := PartManager.GetLayerResource(S + 'PonyBeardDark');
-      Hair[2, 4, 1] := PartManager.GetLayerResource(S + 'BeardDark');
-
-      Hair[3, 1, 1] := PartManager.GetLayerResource(S + 'ShortHairBeardRed');
-      Hair[3, 2, 1] := PartManager.GetLayerResource(S + 'LongHairBeardRed');
-      Hair[3, 3, 1] := PartManager.GetLayerResource(S + 'PonyBeardRed');
-      Hair[3, 4, 1] := PartManager.GetLayerResource(S + 'BeardRed');
-
-      Hair[4, 1, 1] := PartManager.GetLayerResource(S + 'ShortHairBeardGrey');
-      Hair[4, 2, 1] := PartManager.GetLayerResource(S + 'LongHairBeardGrey');
-      Hair[4, 3, 1] := PartManager.GetLayerResource(S + 'PonyBeardGrey');
-      Hair[4, 4, 1] := PartManager.GetLayerResource(S + 'BeardGrey');
-
-      Hair[1, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairLight');
-      Hair[1, 2, 2] := PartManager.GetLayerResource(S + 'LongHairLight');
-      Hair[1, 3, 2] := PartManager.GetLayerResource(S + 'PonyTailLight');
-
-      Hair[2, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairDark');
-      Hair[2, 2, 2] := PartManager.GetLayerResource(S + 'LongHairDark');
-      Hair[2, 3, 2] := PartManager.GetLayerResource(S + 'PonyTailDark');
-
-      Hair[3, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairRed');
-      Hair[3, 2, 2] := PartManager.GetLayerResource(S + 'LongHairRed');
-      Hair[3, 3, 2] := PartManager.GetLayerResource(S + 'PonyTailRed');
-
-      Hair[4, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairGrey');
-      Hair[4, 2, 2] := PartManager.GetLayerResource(S + 'LongHairGrey');
-      Hair[4, 3, 2] := PartManager.GetLayerResource(S + 'PonyTailGrey');
-      {if Female then
-        Hair[1, 3, 2] := PartManager.GetLayerResource(S + 'FemHiPonytailLight')
-      else
-        Hair[1, 3, 2] := PartManager.GetLayerResource(S + 'PonytailLight');
-      Hair[1, 4, 2] := nil;
-
-      Hair[2, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairDark');
-      Hair[2, 2, 2] := PartManager.GetLayerResource(S + 'LongHairDark');
-      if Female then
-        Hair[2, 3, 2] := PartManager.GetLayerResource(S + 'FemHiPonytailDark')
-      else
-        Hair[2, 3, 2] := PartManager.GetLayerResource(S + 'PonytailDark');
-      Hair[2, 4, 2] := nil;
-
-      Hair[3, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairRed');
-      Hair[3, 2, 2] := PartManager.GetLayerResource(S + 'LongHairRed');
-      if Female then
-        Hair[3, 3, 2] := PartManager.GetLayerResource(S + 'FemHiPonytailRed')
-      else
-        Hair[3, 3, 2] := PartManager.GetLayerResource(S + 'PonytailRed');
-      Hair[3, 4, 2] := nil;
-
-      Hair[4, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairGrey');
-      Hair[4, 2, 2] := PartManager.GetLayerResource(S + 'LongHairGrey');
-      if Female then
-        Hair[4, 3, 2] := PartManager.GetLayerResource(S + 'FemHiPonytailGrey')
-      else
-        Hair[4, 3, 2] := PartManager.GetLayerResource(S + 'PonytailGrey');
-      Hair[4, 4, 2] := nil;}
-
-      Init;
-    end;
+    DlgCreation.Init;
 
   except
     on E : Exception do
@@ -6318,8 +6095,7 @@ begin
     DlgShow.pText := DlgText;
     DlgShow.OnClose := CloseShow;
     DlgShow.frmMain := Self;
-    DlgShow.FileName := 'CreditsScreen.bmp';
-    DlgShow.pMusic := MusicLib;
+    DlgShow.BMPFileName := 'CreditsScreen.bmp';
     DlgShow.MusicFileName := 'exCarlibur.mp3';
     MouseCursor.SetFrame( 37 );
     PrevTriggerID := -1;
@@ -6428,10 +6204,9 @@ begin
     DlgShow.OnClose := CloseShow;
     DlgShow.frmMain := Self;
     if DeathScreen = '' then
-      DlgShow.FileName := 'Death.bmp'
+      DlgShow.BMPFileName := 'Death.bmp'
     else
-      DlgShow.FileName := DeathScreen + '.bmp';
-    DlgShow.pMusic := MusicLib;
+      DlgShow.BMPFileName := DeathScreen + '.bmp';
     DlgShow.MusicFileName := 'Level1Final.mp3';
     MouseCursor.SetFrame( 37 );
     PrevTriggerID := -1;

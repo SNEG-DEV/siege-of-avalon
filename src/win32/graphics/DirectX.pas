@@ -43,8 +43,8 @@ Unit DirectX;
 Interface
 
 uses
-  Windows,
-  MMSystem;
+  Winapi.Windows,
+  Winapi.MMSystem;
 
 {Delphi version marks}
 

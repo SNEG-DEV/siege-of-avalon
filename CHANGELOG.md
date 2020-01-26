@@ -7,7 +7,6 @@ All notable changes to this project will be documented in this file.
 - Add documentation on the assets file-formats used.
 - Getting rid of need for custem ddraw.dll
 - Replacing DirectDraw with cross-platform library
-- Add a character selector - again probably re-organizing the "Character Creator" dialog
 - Character in the center - add male/female choices.
 - Mod selection - more DLC style - extendable instead of destructive copy/paste exercises.
 - Better multi-language support - right now it is crippled, like other parts of the UI code.
@@ -15,11 +14,22 @@ All notable changes to this project will be documented in this file.
 - REFACTOR: Too much copy/paste code - (re)Moved method up to base class or extract
 - REFACTOR: Reorg classes
 
+## 2020-01-26
+### Added
+- Character selection. Will check for PlayerX.pox files and check if their "naked" resource file is found. Apart from just copying the Player files, most of them found here needs to be adjusted for the older versions - since resource names and locations are different :( But playing as Yeti is fun :D
+
+### Changed
+- Some code has been rewritten and cleaned-up in the Character creation, but long way to go - a mess.  
+
+### Removed
+- Some redundant code
+- All DirectX $IFDEFs, and all $IFNDEF DirectX code
+
 ## 2020-01-21
 ### Fixed
 - A lot of errors introduced or "missings" in regards to HD/FullHD resolution have now been fixed or resolved.
 - A lot of errors in regards to "asset" variations between original game data and new game data.
-- Xref.db Versin1 FieldByName issue
+- Xref.db Version1 FieldByName issue
 - HighDPI scaling issue - not allowing the game to run if scaled resolution exceed actual resolution. 4K with >100% DPI.
 
 ### Changed

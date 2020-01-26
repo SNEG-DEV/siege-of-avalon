@@ -145,45 +145,6 @@ begin
   end;
 end;
 
-//function DFXCheckSupport : BOOL;
-//var
-//  dfx_blitfx : BLITFX;
-//  rlehdr_temp : RLEHDR;
-//  bitplane_temp : BITPLANE;
-//  my_bitplane : BITPLANE;
-//begin
-//  my_bitplane.bitsFmt := dfx_pixelformat;
-//  dfx_blitfx.FXType := BLITFX_BLEND;
-//  dfx_blitfx.BlendSrcFactor := 0;
-//  dfx_blitfx.BlendDstFactor := 0;
-//
-//  rlehdr_temp.PixFmt := dfx_pixelformat;
-//  rlehdr_temp.DataPtr := nil;
-//  bitplane_temp.bitsFmt := dfx_pixelformat;
-//  bitplane_temp.bitsPtr := nil;
-//
-//  Result := False;
-//
-//  if ( not digifxCheckSupport( dfx_hnd, DFX_DRAWRLE, @dfx_blitfx, @rlehdr_temp, @my_bitplane ) ) then
-//    Exit;
-//  if ( not digifxCheckSupport( dfx_hnd, DFX_DRAWBITPLANE, @dfx_blitfx, @bitplane_temp, @my_bitplane ) ) then
-//    Exit;
-//
-//  dfx_blitfx.FXType := BLITFX_TEXTURED;
-//  rlehdr_temp.PixFmt := dfx_pixelformat;
-//  rlehdr_temp.DataPtr := nil;
-//
-//  if ( not digifxCheckSupport( dfx_hnd, DFX_DRAWRLE, @dfx_blitfx, @rlehdr_temp, @my_bitplane ) ) then
-//    Exit;
-//  dfx_blitfx.FXType := BLITFX_MONO;
-//  if ( not digifxCheckSupport( dfx_hnd, DFX_DRAWRECT, @dfx_blitfx, @rlehdr_temp, @my_bitplane ) ) then
-//    Exit;
-//  if ( not digifxCheckSupport( dfx_hnd, DFX_DRAWLINE, @dfx_blitfx, @rlehdr_temp, @my_bitplane ) ) then
-//    Exit;
-//
-//  Result := True;
-//end;
-
 function DFXEnumProc( driverinfo : PChar ) : BOOL;
 begin
   Result := False;
@@ -191,7 +152,6 @@ begin
   dfx_hnd := digifxLoadDriver( driverinfo, dfx_pixelformat );
   if ( dfx_hnd <> 0 ) then
   begin
-{$IFDEF DirectX}
     if dfx_pixelformat = PIXFMT_555 then
     begin
       if SoAOS_DX_ColorMatch( lpDDSBack, clWhite ) <= 32767 then
@@ -202,13 +162,6 @@ begin
       if SoAOS_DX_ColorMatch( lpDDSBack, clWhite ) > 32767 then
         exit;
     end
-{$ENDIF}
-{$IFNDEF DirectX}
-      if ( DFXCheckSupport( ) ) then
-      begin
-        Exit;
-      end;
-{$ENDIF}
   end;
 
   digifxFreeDriver( dfx_hnd );

@@ -377,6 +377,41 @@ type
     function ToString : string;
   end;
 
+  TInformationRect = record
+  private
+    FRect: TRect;
+//    class operator Implicit(const Value: TRect): TInformationRect;
+//    class operator Implicit(const Value: TInformationRect): TRect;
+  public
+    Info: string;
+    function Contains(const Pt: TPoint): Boolean;
+    procedure Offset(const Point: TPoint);
+    property Left: Integer read FRect.Left write FRect.Left;
+    property Top: Integer read FRect.Top write FRect.Top;
+    property Right: Integer read FRect.Right write FRect.Right;
+    property Bottom: Integer read FRect.Bottom write FRect.Bottom;
+  end;
+
+  TSelectionRect = record
+  private
+    FRect: TRect;
+//    class operator Implicit(const Value: TRect): TSelectionRect;
+//    class operator Implicit(const Value: TSelectionRect): TRect;
+  public
+    Info: string;
+    Text: string;
+    Enabled: Boolean;
+    function Contains(const Pt: TPoint): Boolean;
+    procedure Offset(const Point: TPoint);
+    property Left: Integer read FRect.Left write FRect.Left;
+    property Top: Integer read FRect.Top write FRect.Top;
+    property Right: Integer read FRect.Right write FRect.Right;
+    property Bottom: Integer read FRect.Bottom write FRect.Bottom;
+  end;
+
+  function InformationRect(ALeft, ATop, ARight, ABottom: Integer; AInfo: string): TInformationRect;
+  function SelectionRect(ALeft, ATop, ARight, ABottom: Integer; AInfo, AText: string): TSelectionRect;
+
 implementation
 
 { TFacingHelper }
@@ -393,6 +428,62 @@ begin
     fSW: result := 'SW';
     fWW: result := 'WW';
   end;
+end;
+
+{ TInformationRect }
+
+function TInformationRect.Contains(const Pt: TPoint): Boolean;
+begin
+  Result := FRect.Contains(Pt);
+end;
+
+procedure TInformationRect.Offset(const Point: TPoint);
+begin
+  FRect.TopLeft.Offset(Point);
+  FRect.BottomRight.Offset(Point);
+end;
+
+function InformationRect(ALeft, ATop, ARight, ABottom: Integer; AInfo: string): TInformationRect;
+begin
+  Result.FRect.Left := ALeft;
+  Result.FRect.Top := ATop;
+  Result.FRect.Right := ARight;
+  Result.FRect.Bottom := ABottom;
+  Result.Info := AInfo;
+end;
+
+{ TSelectionRect }
+
+function TSelectionRect.Contains(const Pt: TPoint): Boolean;
+begin
+  Result := Enabled and FRect.Contains(Pt);
+end;
+
+//class operator TSelectionRect.Implicit(const Value: TRect): TSelectionRect;
+//begin
+//  Result.FRect := Value;
+//end;
+//
+//class operator TSelectionRect.Implicit(const Value: TSelectionRect): TRect;
+//begin
+//  Result := Value.FRect;
+//end;
+
+procedure TSelectionRect.Offset(const Point: TPoint);
+begin
+  FRect.TopLeft.Offset(Point);
+  FRect.BottomRight.Offset(Point);
+end;
+
+function SelectionRect(ALeft, ATop, ARight, ABottom: Integer; AInfo, AText: string): TSelectionRect;
+begin
+  Result.FRect.Left := ALeft;
+  Result.FRect.Top := ATop;
+  Result.FRect.Right := ARight;
+  Result.FRect.Bottom := ABottom;
+  Result.Info := AInfo;
+  Result.Text := AText;
+  Result.Enabled := False;
 end;
 
 end.

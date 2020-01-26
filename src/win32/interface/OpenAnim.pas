@@ -42,11 +42,9 @@ unit OpenAnim;
 interface
 
 uses
-{$IFDEF DirectX}
+  //  Winapi.DirectDraw,
   DirectX,
-  DXUtil,
   DXEffects,
-{$ENDIF}
   System.SysUtils,
   System.Types,
   System.Classes,

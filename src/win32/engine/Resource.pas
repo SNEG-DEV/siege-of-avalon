@@ -52,11 +52,10 @@ uses
   Anigrp30,
   AniDec30,
   System.IniFiles,
-{$IFDEF DirectX}
+//  Winapi.DirectDraw,
   DirectX,
   DXUtil,
   DXEffects,
-{$ENDIF}
   DFX,
   SoAOS.Graphics.Types,
   LogFile;
@@ -210,22 +209,12 @@ type
   TStaticResource = class( TResource )
   private
     Data : AnsiString;
-{$IFDEF DirectX}
     function GetImage( ImageIndex : Integer ) : IDirectDrawSurface;
     procedure GetImage1( ImageIndex : Integer; Surface : IDirectDrawSurface; W : integer );
-{$ENDIF}
-{$IFNDEF DirectX}
-    function GetImage( ImageIndex : Integer ) : TBitmap;
-{$ENDIF}
   public
     procedure LoadData( INI : TStringINIFile ); override;
     function Define( Map : TAniMap; Zone : byte; Index : word ) : integer; virtual;
-{$IFDEF DirectX}
     property Image[ ImageIndex : Integer ] : IDirectDrawSurface read GetImage;
-{$ENDIF}
-{$IFNDEF DirectX}
-    property Image[ ImageIndex : Integer ] : TBitmap read GetImage;
-{$ENDIF}
   end;
 
   TDoorResource = class( TStaticResource )
@@ -273,6 +262,7 @@ function LoadResource( const Filename : string; OnDemand : boolean ) : TResource
 function LoadArtResource( const ResourceFile : string ) : TResource; overload;
 function LoadArtResource( const ResourceFile : string; OnDemand : boolean ) : TResource; overload;
 function GetFileDate( cFile : string ) : TDateTime;
+function NakedName( const FileName: string ): string;
 
 implementation
 
@@ -480,6 +470,53 @@ begin
   for var i: integer := 0 to Length(arr)-1 do
     A[i] := StrToIntDef(arr[i], 0);
 end;
+
+function NakedName( const Filename : string ) : string;
+var
+  POXFile : string;
+  INI : TStringINIFile;
+  Stream : TMemoryStream;
+  S : AnsiString;
+  L : longword;
+  M : array[ 1..2 ] of AnsiChar;
+  BB : word;
+const
+  FailName : string = 'Resource.NakedName';
+begin
+  Result := '';
+  Log.DebugLog(FailName);
+  try
+    POXFile := ChangeFileExt( Filename, '.pox' );
+    if not TFile.Exists( POXFile ) then
+      exit;
+    //Load POX
+    Stream := TMemoryStream.create;
+    try
+      Stream.LoadFromFile( POXFile );
+      Stream.Read( L, sizeof( L ) );
+      if ( L <> $41584F50 ) then
+        exit;
+      Stream.Read( M, sizeof( M ) );
+      Stream.Read( BB, sizeof( BB ) ); //CRLF
+      if ( M = #76#67 ) then
+        L := Stream.Size - Stream.Position
+      else
+        exit;
+      SetLength( S, L );
+      Stream.Read( S[ 1 ], L );
+      INI := TStringINIFile.Create( S );
+      Result := ChangeFileExt( INI.ReadString('Layers', 'naked', ''), '.pox' );
+      INI.free;
+    finally
+      Stream.free;
+    end;
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message+ #13#10+E.StackTrace, [ ] );
+  end;
+end;
+
 
 { TResource }
 
@@ -1991,14 +2028,9 @@ var
   MultiImage : boolean;
   INI : TStringINIFile;
   ImageIndex : integer;
-{$IFDEF DirectX}
   BM : IDirectDrawSurface;
   ddck : TDDCOLORKEY;
   BltFx : TDDBLTFX;
-{$ENDIF}
-{$IFNDEF DirectX}
-  BM : TBitmap;
-{$ENDIF}
   W : integer;
   ColorMatch : integer;
   pr : TRect;
@@ -2090,12 +2122,7 @@ begin
       LightPoints := nil;
     end;
     INI.free;
-{$IFDEF DirectX}
     BM := nil;
-{$ENDIF}
-{$IFNDEF DirectX}
-    BM.free;
-{$ENDIF}
     result := Index;
 
   except
@@ -2123,14 +2150,9 @@ var
   Slope, Angle : Single;
   AutoTransparent : Boolean;
   ImageIndex : integer;
-{$IFDEF DirectX}
   BM : IDirectDrawSurface;
   ddck : TDDCOLORKEY;
   BltFx : TDDBLTFX;
-{$ENDIF}
-{$IFNDEF DirectX}
-  BM : TBitmap;
-{$ENDIF}
   INI : TStringINIFile;
   MultiImage : boolean;
   W : integer;
@@ -2230,12 +2252,7 @@ begin
       LightPoints := nil;
     end;
     INI.free;
-{$IFDEF DirectX}
     BM := nil;
-{$ENDIF}
-{$IFNDEF DirectX}
-    BM.free;
-{$ENDIF}
     result := Index;
 
   except
@@ -2274,8 +2291,6 @@ begin
       Log.log( FailName, E.Message, [ ] );
   end;
 end;
-
-{$IFDEF DirectX}
 
 function TStaticResource.GetImage( ImageIndex : Integer ) : IDirectDrawSurface;
 var
@@ -2317,28 +2332,6 @@ begin
       Log.log( FailName, E.Message, [ ] );
   end;
 end;
-{$ENDIF}
-{$IFNDEF DirectX}
-
-function TStaticResource.GetImage( ImageIndex : Integer ) : TBitmap;
-var
-  Bits : TBitPlane;
-  W : integer;
-begin
-  if ( FrameWidth mod 4 ) = 0 then
-    W := FrameWidth
-  else
-    W := FrameWidth + 4 - ( FrameWidth mod 4 );
-  Bits := TBitPlane.Create( W, FrameHeight );
-  result := TBitmap.create;
-  result.Width := W;
-  result.Height := FrameHeight;
-  Bits.Fill( clFuchsia );
-  RLE.Draw( ImageIndex, 0, 0, Bits.Bits );
-  Bits.DrawToDC( result.canvas.handle, 0, 0 );
-  Bits.free;
-end;
-{$ENDIF}
 
 procedure TStaticResource.LoadData( INI : TStringINIFile );
 var
@@ -2398,14 +2391,9 @@ end;
 
 function TTileResource.Define( Map : TAniMap; Zone : byte; Index : word ) : integer;
 var
-{$IFDEF DirectX}
   TileBM : IDirectDrawSurface;
   ddck : TDDCOLORKEY;
   BltFx : TDDBLTFX;
-{$ENDIF}
-{$IFNDEF DirectX}
-  TileBM : TBitmap;
-{$ENDIF}
   i : Integer;
   W : integer;
   ColorMatch : integer;
@@ -2440,12 +2428,7 @@ begin
       GetImage1( i, TileBM, W );
       Map.DefineTile( Zone, Index + i, TileBM );
     end;
-{$IFDEF DirectX}
     TileBM := nil;
-{$ENDIF}
-{$IFNDEF DirectX}
-    TileBM.Free;
-{$ENDIF}
 
   except
     on E : Exception do

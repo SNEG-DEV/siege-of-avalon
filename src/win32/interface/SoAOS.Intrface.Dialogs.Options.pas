@@ -42,11 +42,9 @@ unit SoAOS.Intrface.Dialogs.Options;
 interface
 
 uses
-{$IFDEF DirectX}
+  //  Winapi.DirectDraw,
   DirectX,
-  DXUtil,
   DXEffects,
-{$ENDIF}
   System.SysUtils,
   System.Types,
   System.Classes,
@@ -78,7 +76,6 @@ type
     procedure TimerEvent( Sender : TObject );
     procedure PlotMenu;
     function GetContinueRect: TRect;
-    procedure PlotTextBlock( const Sentence : string; X1, X2, Y, Alpha : integer; Const UseSmallFnt: Boolean = False );
   protected
     procedure MouseDown( Sender : TAniview; Button : TMouseButton;
       Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
@@ -110,8 +107,7 @@ uses
 
 function TOptions.GetContinueRect: TRect;
 begin
-  Result := DlgRect.dlgOptContinueRect;
-  Result.Offset(Offset);
+  Result := ApplyOffset( DlgRect.dlgOptContinueRect );
 end;
 
 procedure TOptions.Init;
@@ -200,42 +196,35 @@ begin
 
     if PlotShadows then
     begin
-      pr := Rect( 560, 75, 573, 86 );
-      pr.Offset(Offset);
+      pr := ApplyOffset( Rect( 560, 75, 573, 86 ) );
       DrawAlpha( lpDDSBack, pr, rect( 0, 0, 12, 12 ), DXYellow, True, 255 )
     end
     else
     begin
-      pr := Rect( 632, 75, 645, 86 );
-      pr.Offset(Offset);
+      pr := ApplyOffset( Rect( 632, 75, 645, 86 ) );
       DrawAlpha( lpDDSBack, pr, rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
     end;
 
   //Put in the volume
   //Sound FX
-    pr := Rect( 116, 92, SoundVolume * 2 + 116, 105 );
-    pr.Offset(Offset);
+    pr := ApplyOffset( Rect( 116, 92, SoundVolume * 2 + 116, 105 ) );
     DrawAlpha( lpDDSBack, pr, rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
     pr := Rect( 0, 0, 40, 30 );
     lpDDSBack.BltFast( SoundVolume * 2 + 116 - 20 + Offset.X, 103 + Offset.Y, DXVolumeSlider, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-    pr := Rect( SoundVolume * 2 + 116 - 20, 103, SoundVolume * 2 + 116 + 20, 103 + 30 );
-    pr.Offset(Offset);
+    pr := ApplyOffset( Rect( SoundVolume * 2 + 116 - 20, 103, SoundVolume * 2 + 116 + 20, 103 + 30 ) );
     DrawSub( lpDDSBack, pr, rect( 0, 0, 40, 30 ), DXVolumeShadow, True, 200 );
   //Music
-    pr := Rect( 116, 175, MusicVolume * 2 + 116, 188 );
-    pr.Offset(Offset);
+    pr := ApplyOffset( Rect( 116, 175, MusicVolume * 2 + 116, 188 ) );
     DrawAlpha( lpDDSBack, pr, Rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
     pr := Rect( 0, 0, 40, 30 );
     lpDDSBack.BltFast( MusicVolume * 2 + 116 - 20 + Offset.X, 184 + Offset.Y, DXVolumeSlider, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-    pr := Rect( MusicVolume * 2 + 116 - 20, 184, MusicVolume * 2 + 116 + 20, 184 + 30 );
-    pr.Offset(Offset);
+    pr := ApplyOffset( Rect( MusicVolume * 2 + 116 - 20, 184, MusicVolume * 2 + 116 + 20, 184 + 30 ) );
     DrawSub( lpDDSBack, pr, Rect( 0, 0, 40, 30 ), DXVolumeShadow, True, 200 );
 
   //Plot Text HighLight
     if CurrentSelectedListItem <> -1 then
     begin
-      pr := Rect( 167, ( CurrentSelectedListItem - StartSpell ) * 35 + 259, 595, ( CurrentSelectedListItem - StartSpell ) * 35 + 35 + 259 );
-      pr.Offset(Offset);
+      pr := ApplyOffset( Rect( 167, ( CurrentSelectedListItem - StartSpell ) * 35 + 259, 595, ( CurrentSelectedListItem - StartSpell ) * 35 + 35 + 259 ) );
       DrawAlpha( lpDDSBack, pr, rect( 0, 0, 12, 12 ), DXYellow, True, 40 );
     end;
 
@@ -279,14 +268,6 @@ begin
     on E : Exception do
       Log.log( FailName + E.Message );
   end;
-end;
-
-procedure TOptions.PlotTextBlock(const Sentence: string; X1, X2, Y, Alpha: integer; const UseSmallFnt: Boolean);
-begin
-  if UseSmallFnt then
-    pText.PlotGoldTextBlock( Sentence, X1 + Offset.X, X2 + Offset.X, Y + Offset.Y, Alpha )
-  else
-    pText.PlotTextBlock( Sentence, X1 + Offset.X, X2 + Offset.X, Y + Offset.Y, Alpha );
 end;
 
 //PlotMenu
@@ -338,10 +319,8 @@ begin
   Log.DebugLog(FailName);
   try
     //FX volume
-    pr1 := Rect( 100, 88, 335, 125 );
-    pr1.Offset(Offset);
-    pr2 := Rect( 100, 171, 335, 209 );
-    pr2.Offset(Offset);
+    pr1 := ApplyOffset( Rect( 100, 88, 335, 125 ) );
+    pr2 := ApplyOffset( Rect( 100, 171, 335, 209 ) );
 
     if pr1.Contains( Point( x, y ) ) and ( Shift = [ ssLeft ] ) then
     begin
@@ -363,12 +342,9 @@ begin
   //check for clicks in spellist
     if Character <> nil then
     begin
-      pr1 := Rect( 112, 259, 665, 431 );
-      pr1.Offset(Offset);
-      pr2 := Rect( 670, 319, 690, 333 );
-      pr2.Offset(Offset);
-      pr3:= Rect( 670, 352, 690, 365 );
-      pr3.Offset(Offset);
+      pr1 := ApplyOffset( Rect( 112, 259, 665, 431 ) );
+      pr2 := ApplyOffset( Rect( 670, 319, 690, 333 ) );
+      pr3:= ApplyOffset( Rect( 670, 352, 690, 365 ) );
 
       if pr1.Contains( Point( x, y ) ) then
       begin
@@ -402,10 +378,8 @@ begin
         ScrollState := 0;
     end; //if char = nil
 
-    pr1 := Rect( 557, 71, 576, 89 );
-    pr1.Offset(Offset);
-    pr2 := Rect( 628, 71, 650, 89 );
-    pr2.Offset(Offset);
+    pr1 := ApplyOffset( Rect( 557, 71, 576, 89 ) );
+    pr2 := ApplyOffset( Rect( 628, 71, 650, 89 ) );
 
     if pr1.Contains( Point( x, y ) ) then
     begin //yes
@@ -458,22 +432,18 @@ begin
 
     if PlotShadows then
     begin
-      pr := Rect( 560, 75, 573, 86 );
-      pr.Offset(Offset);
+      pr := ApplyOffset( Rect( 560, 75, 573, 86 ) );
       DrawAlpha( lpDDSBack, pr, Rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
     end
     else
     begin
-      pr := Rect( 632, 75, 645, 86 );
-      pr.Offset(Offset);
+      pr := ApplyOffset( Rect( 632, 75, 645, 86 ) );
       DrawAlpha( lpDDSBack, pr, Rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
     end;
 
   //FX volume - we do mousedown check here as well for drag
-    pr1 := Rect( 100, 88, 335, 125 );
-    pr1.Offset(Offset);
-    pr2 := Rect( 100, 171, 335, 209 );
-    pr2.Offset(Offset);
+    pr1 := ApplyOffset( Rect( 100, 88, 335, 125 ) );
+    pr2 := ApplyOffset( Rect( 100, 171, 335, 209 ) );
 
     if pr1.Contains( Point( x, y ) ) and ( Shift = [ ssLeft ] ) then
     begin
@@ -493,28 +463,23 @@ begin
     end;
 
   //Sound FX
-    pr := Rect( 116, 92, SoundVolume * 2 + 116, 105 );
-    pr.Offset(Offset);
+    pr := ApplyOffset( Rect( 116, 92, SoundVolume * 2 + 116, 105 ) );
     DrawAlpha( lpDDSBack, pr, Rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
     pr := Rect( 0, 0, 40, 30 );
     lpDDSBack.BltFast( SoundVolume * 2 + 116 - 20 + Offset.X, 103 + Offset.Y, DXVolumeSlider, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-    pr := Rect( SoundVolume * 2 + 116 - 20, 103, SoundVolume * 2 + 116 + 20, 103 + 30 );
-    pr.Offset(Offset);
+    pr := ApplyOffset( Rect( SoundVolume * 2 + 116 - 20, 103, SoundVolume * 2 + 116 + 20, 103 + 30 ) );
     DrawSub( lpDDSBack, pr, Rect( 0, 0, 40, 30 ), DXVolumeShadow, True, 200 );
   //Music
-    pr := Rect( 116, 175, MusicVolume * 2 + 116, 188 );
-    pr.Offset(Offset);
+    pr := ApplyOffset( Rect( 116, 175, MusicVolume * 2 + 116, 188 ) );
     DrawAlpha( lpDDSBack, pr, Rect( 0, 0, 12, 12 ), DXYellow, True, 255 );
     pr := Rect( 0, 0, 40, 30 );
     lpDDSBack.BltFast( MusicVolume * 2 + 116 - 20 + Offset.X, 184 + Offset.Y, DXVolumeSlider, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-    pr := Rect( MusicVolume * 2 + 116 - 20, 184, MusicVolume * 2 + 116 + 20, 184 + 30 );
-    pr.Offset(Offset);
+    pr := ApplyOffset( Rect( MusicVolume * 2 + 116 - 20, 184, MusicVolume * 2 + 116 + 20, 184 + 30 ) );
     DrawSub( lpDDSBack, pr, Rect( 0, 0, 40, 30 ), DXVolumeShadow, True, 200 );
   //Plot Text HighLight
     if CurrentSelectedListItem <> -1 then
     begin
-      pr := Rect( 167, ( CurrentSelectedListItem - StartSpell ) * 35 + 259, 595, ( CurrentSelectedListItem - StartSpell ) * 35 + 35 + 259 );
-      pr.Offset(Offset);
+      pr := ApplyOffset( Rect( 167, ( CurrentSelectedListItem - StartSpell ) * 35 + 259, 595, ( CurrentSelectedListItem - StartSpell ) * 35 + 35 + 259 ) );
       DrawAlpha( lpDDSBack, pr, Rect( 0, 0, 12, 12 ), DXYellow, True, 40 );
     end;
     if Character <> nil then
@@ -536,8 +501,7 @@ begin
           end;
             //Plot The Spell Icons
           pt := TSpell( SpellList.objects[ i ] ).GetIconXY( Character );
-          pr := Rect( 130, 260 + j * 35, 130 + 32, 260 + j * 35 + 32 );
-          pr.Offset(Offset);
+          pr := ApplyOffset( Rect( 130, 260 + j * 35, 130 + 32, 260 + j * 35 + 32 ) );
           DrawAlpha( lpDDSBack, pr, Rect( pt.x, pt.y, pt.x + 32, pt.y + 32 ), IconDX, True, 200 );
             //Plot the spell names, but make sure they fit
             //if pText.TextLength(SpellList.Strings[i]) > 215 then
@@ -556,14 +520,10 @@ begin
     end
     else
     begin
-      FXRect := Rect( 100, 61, 332, 126 );
-      FXRect.Offset(Offset);
-      MusRect := Rect( 9, 144, 332, 209 );
-      MusRect.Offset(Offset);
-      ShdwRect := Rect( 350, 61, 695, 98 );
-      ShdwRect.Offset(Offset);
-      SpllRect := Rect( 101, 229, 694, 448 );
-      SpllRect.Offset(Offset);
+      FXRect := ApplyOffset( Rect( 100, 61, 332, 126 ) );
+      MusRect := ApplyOffset( Rect( 9, 144, 332, 209 ) );
+      ShdwRect := ApplyOffset( Rect( 350, 61, 695, 98 ) );
+      SpllRect := ApplyOffset( Rect( 101, 229, 694, 448 ) );
 
       if FXRect.Contains( Point( X, Y ) ) then //over SoundFX
         PlotTextBlock( txtMessage[ 0 ], 359, 670, 121, 240 )
@@ -630,8 +590,7 @@ procedure TOptions.TimerEvent( Sender : TObject );
   begin
     if CurrentSelectedListItem <> -1 then
     begin
-      pr := rect( 167, ( CurrentSelectedListItem - StartSpell ) * 35 + 259, 595, ( CurrentSelectedListItem - StartSpell ) * 35 + 35 + 259 );
-      pr.Offset(Offset);
+      pr := ApplyOffset( Rect( 167, ( CurrentSelectedListItem - StartSpell ) * 35 + 259, 595, ( CurrentSelectedListItem - StartSpell ) * 35 + 35 + 259 ) );
       DrawAlpha( lpDDSBack, pr, rect( 0, 0, 12, 12 ), DXYellow, True, 40 );
     end;
     if Character <> nil then
@@ -655,8 +614,7 @@ procedure TOptions.TimerEvent( Sender : TObject );
           end;
               //Plot The Spell Icons
           pt := TSpell( SpellList.objects[ i ] ).GetIconXY( Character );
-          pr := Rect( 130, 260 + j * 35, 130 + 32, 260 + j * 35 + 32 );
-          pr.Offset(Offset);
+          pr := ApplyOffset( Rect( 130, 260 + j * 35, 130 + 32, 260 + j * 35 + 32 ) );
           DrawAlpha( lpDDSBack, pr, Rect( pt.x, pt.y, pt.x + 32, pt.y + 32 ), IconDX, True, 200 );
           pText.PlotText( TSpell( SpellList.Objects[ i ] ).DisplayName, 181+Offset.X, 264 + j * 35+Offset.Y, 240 );
           j := j + 1;
@@ -674,8 +632,7 @@ begin
   begin
 //    GetCursorPos( P );
     P := Mouse.CursorPos;
-    pr := Rect( 670, 319, 690, 333 );
-    pr.Offset(Offset);
+    pr := ApplyOffset( Rect( 670, 319, 690, 333 ) );
     if pr.Contains( P ) then
     begin //up arrow
       if ScrollState < -1 then
@@ -698,8 +655,7 @@ begin
   begin
     // GetCursorPos( P );
     P := Mouse.CursorPos;
-    pr := Rect( 670, 352, 690, 365 );
-    pr.Offset(Offset);
+    pr := ApplyOffset( Rect( 670, 352, 690, 365 ) );
     if pr.Contains( P ) then
     begin //down arrow
       if ScrollState > 1 then
@@ -724,7 +680,6 @@ procedure TOptions.MouseUp( Sender : TAniview; Button : TMouseButton;
   Shift : TShiftState; X, Y, GridX, GridY : integer );
 begin
   inherited;
-
   ScrollState := 0;
 end;
 

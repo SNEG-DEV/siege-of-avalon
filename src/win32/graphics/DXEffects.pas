@@ -43,9 +43,10 @@ unit DXEffects;
 interface
 
 uses
-  Types,
+  System.Types,
+//  Winapi.DirectDraw,
   DirectX,
-  Graphics;
+  Vcl.Graphics;
 
 //procedure DrawAdd( Dest : IDirectDrawSurface; const DestRect, SrcRect : TRect; Source : IDirectDrawSurface;
 //  TRANSPARENT : Boolean; Alpha : Integer );

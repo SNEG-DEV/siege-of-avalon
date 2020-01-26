@@ -42,10 +42,8 @@ unit SoAOS.Intrface.Dialogs.HelpCredit;
 interface
 
 uses
-{$IFDEF DirectX}
+//  Winapi.DirectDraw,
   DirectX,
-  DXUtil,
-{$ENDIF}
   System.SysUtils,
   System.IOUtils,
   System.Classes,
@@ -58,20 +56,24 @@ uses
   
 type
   TShowGraphic = class( TDialog )
-  private
+  strict private
     DXBack : IDirectDrawSurface;
+    pMusic : TMusic;
+    FMusicFileName : string; // was AnsiString;
+    FBMPFileName : string;
     procedure FormMouseDown( Sender : TObject; Button : TMouseButton; Shift : TShiftState; X, Y : Integer );
+    procedure SetMusicFileName(const Value: string);
+    procedure SetBMPFileName(const Value: string);
   protected
     procedure MouseDown( Sender : TAniview; Button : TMouseButton;
       Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
     procedure KeyDown( Sender : TObject; var key : Word; Shift : TShiftState ); override;
   public
     frmMain : TForm;
-    FileName : string;
-    MusicFileName : AnsiString;
-    pMusic : TMusic;
     procedure Init; override;
     procedure Release; override;
+    property BMPFileName : string write SetBMPFileName;
+    property MusicFileName : string write SetMusicFileName;
   end;
 
 implementation
@@ -89,56 +91,39 @@ uses
 procedure TShowGraphic.Init;
 var
   pr : TRect;
-const
-  FailName : string = 'TShowGraphic.init';
 begin
-  Log.DebugLog(FailName);
-  try
-    if Loaded then
-      Exit;
-    inherited;
-    MouseCursor.Cleanup;
-    pr := Rect( 0, 0, ResWidth, ResHeight );
-    lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
-    MouseCursor.PlotDirty := false;
+  if Loaded then
+    Exit;
+  inherited;
+  MouseCursor.Cleanup;
+  pr := Rect( 0, 0, ResWidth, ResHeight );
+  lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+  MouseCursor.PlotDirty := false;
 
-    frmMain.OnMouseDown := FormMouseDown;
+  frmMain.OnMouseDown := FormMouseDown; //TODO: Use Callback
 
-    DXBack := SoAOS_DX_LoadBMP( InterfacePath + FileName, cInvisColor, DlgWidth, DlgHeight );
-    pr := Rect( 0, 0, DlgWidth, DlgHeight );
-    lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
+  DXBack := SoAOS_DX_LoadBMP( InterfacePath + FBMPFileName, cInvisColor, DlgWidth, DlgHeight );
+  pr := Rect( 0, 0, DlgWidth, DlgHeight );
+  lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
 
-    SoAOS_DX_BltFront;
+  SoAOS_DX_BltFront;
 
-    if assigned( pMusic ) then
+  if Assigned( pMusic ) then
+  begin
+    if TFile.Exists( SoundPath + 'Theme\' + FMusicFileName ) then
     begin
-      if TFile.Exists( SoundPath + 'Theme\' + MusicFileName ) then
-      begin
-        pMusic.OpenThisSong( AnsiString ( SoundPath + 'Theme\' + MusicFileName ) );
-        pMusic.PlayThisSong;
-        pMusic.SetSongVolume( 99 );
-      end;
+      pMusic.OpenThisSong( AnsiString ( SoundPath + 'Theme\' + FMusicFileName ) );
+      pMusic.PlayThisSong;
+      pMusic.SetSongVolume( 99 );
     end;
-  except
-    on E : Exception do
-      Log.log( FailName + E.Message );
   end;
 end; //Init
 
-
 procedure TShowGraphic.KeyDown( Sender : TObject; var key : Word; Shift : TShiftState );
-const
-  FailName : string = 'TShowGraphic.keydown';
 begin
-  Log.DebugLog(FailName);
-  try
-    if assigned( pMusic ) then
-      pMusic.PauseThisSong;
-    Close;
-  except
-    on E : Exception do
-      Log.log( FailName + E.Message );
-  end;
+  if Assigned( pMusic ) then
+    pMusic.PauseThisSong;
+  Close;
 end; //keyDown
 
 procedure TShowGraphic.MouseDown( Sender : TAniview; Button : TMouseButton; Shift : TShiftState; X, Y, GridX, GridY : integer );
@@ -172,17 +157,23 @@ begin
 end; //FormMouseDown
 
 procedure TShowGraphic.Release;
-const
-  FailName : string = 'TShowGraphic.release';
 begin
-  Log.DebugLog(FailName);
-  try
-    DXBack := nil;
-    inherited;
-  except
-    on E : Exception do
-      Log.log( FailName + E.Message );
-  end;
+  DXBack := nil;
+  inherited;
+end;
+
+procedure TShowGraphic.SetBMPFileName(const Value: string);
+begin
+  FBMPFileName := Value;
+end;
+
+procedure TShowGraphic.SetMusicFileName(const Value: string);
+begin
+  FMusicFileName := Value;
+  if Value='' then
+    pMusic := nil
+  else
+    pMusic := MusicLib;
 end;
 
 end.

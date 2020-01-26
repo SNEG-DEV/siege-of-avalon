@@ -42,6 +42,7 @@ unit Converse;
 interface
 
 uses
+//  Winapi.DirectDraw,
   DirectX,
   System.Types,
   System.Classes,

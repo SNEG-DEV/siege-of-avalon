@@ -42,10 +42,9 @@ unit MousePtr;
 interface
 
 uses
-{$IFDEF DirectX}
+//  Winapi.DirectDraw,
   DirectX,
   DXUtil,
-{$ENDIF}
   System.Types,
   System.SysUtils,
   System.Classes,

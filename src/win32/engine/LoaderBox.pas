@@ -42,11 +42,9 @@ unit LoaderBox;
 interface
 
 uses
-{$IFDEF DirectX}
+//  Winapi.DirectDraw,
   DirectX,
-  DXUtil,
   DXEffects,
-{$ENDIF}
   System.Classes,
   System.Types,
   System.SysUtils,

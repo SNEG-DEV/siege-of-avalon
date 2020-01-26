@@ -42,11 +42,9 @@ unit LogScreen;
 interface
 
 uses
-{$IFDEF DirectX}
+//  Winapi.DirectDraw,
   DirectX,
-  DXUtil,
   DXEffects,
-{$ENDIF}
   System.SysUtils,
   System.IOUtils,
   System.Types,

@@ -42,10 +42,8 @@ unit SoAOS.Intrface.Dialogs.Journal;
 interface
 
 uses
-{$IFDEF DirectX}
+//  Winapi.DirectDraw,
   DirectX,
-  DXUtil,
-{$ENDIF}
   System.SysUtils,
   System.IOUtils,
   System.Types,
@@ -181,12 +179,9 @@ const
 begin
   try
   //check for clicks
-    pr1 := Rect( 582, 575, 659, 596 );
-    pr1.Offset(Offset);
-    pr2 := Rect( 681, 575, 721, 596 );
-    pr2.Offset(Offset);
-    pr3 := Rect( 746, 575, 786, 596 );
-    pr3.Offset(Offset);
+    pr1 := ApplyOffset( Rect( 582, 575, 659, 596 ) );
+    pr2 := ApplyOffset( Rect( 681, 575, 721, 596 ) );
+    pr3 := ApplyOffset( Rect( 746, 575, 786, 596 ) );
 
     if pr1.Contains( Point( x, y ) ) then
     begin //prev
@@ -253,12 +248,9 @@ var
   pr1, pr2, pr3: TRect;
 begin
   try
-    pr1 := Rect( 582, 575, 659, 596 );
-    pr1.Offset(Offset);
-    pr2 := Rect( 681, 575, 721, 596 );
-    pr2.Offset(Offset);
-    pr3 := Rect( 746, 575, 786, 596 );
-    pr3.Offset(Offset);
+    pr1 := ApplyOffset( Rect( 582, 575, 659, 596 ) );
+    pr2 := ApplyOffset( Rect( 681, 575, 721, 596 ) );
+    pr3 := ApplyOffset( Rect( 746, 575, 786, 596 ) );
   //check for clicks
     if pr1.Contains( Point( x, y ) ) then
     begin //prev

@@ -42,11 +42,10 @@ unit Inventory;
 interface
 
 uses
-{$IFDEF DirectX}
+//  Winapi.DirectDraw,
   DirectX,
   DXUtil,
   DXEffects,
-{$ENDIF}
   Winapi.Windows,
   System.SysUtils,
   System.Types,
@@ -93,7 +92,6 @@ type
     CurrentSelectedItem : Integer; //Current Item being dragged about
     Tx, Ty : Integer; // x and y locs used with the offset of the dragged item
     DontPlotCurrentItem : boolean;
-{$IFDEF DirectX}
     DXBack : IDirectDrawSurface; //DD surface that holds the inventory screen before blit
     DxDirty : IDirectDrawSurface; //DD for cleanup when dragging items
     DXCircle : IDirectDrawSurface; //circle used for outline
@@ -101,7 +99,6 @@ type
     DXRightArrow : IDirectDrawSurface; //Inventory right arrow
     DXBackToGame : IDirectDrawSurface; //Back To Game highlight
     DXBrown : IDirectDrawSurface; //Show where we can drop item in inventory
-{$ENDIF}
     SlotName : TStringList; //names of each slot we plot on screen
     SlotCoord : array[ 0..16 ] of BodySlotCoord; //coordinates used to generate rects
     //GroundList: TList;
@@ -481,7 +478,6 @@ begin
     end; //endif
 
   //Load the Background Bitmap and plot it
-{$IFDEF DirectX}
     DXRightArrow := SoAOS_DX_LoadBMP( InterfacePath + 'invRightArrow.bmp', cInvisColor );
     DXLeftArrow := SoAOS_DX_LoadBMP( InterfacePath + 'invLeftArrow.bmp', cInvisColor );
     DXBackToGame := SoAOS_DX_LoadBMP( InterfacePath + 'invBackToGame.bmp', cInvisColor );
@@ -500,9 +496,7 @@ begin
     DrawSub( lpDDSBack, Rect( 0, 460, width, 460 + height ), Rect( 0, 0, width, height ), DXBorder, True, Alpha );
 
     DXBorder := nil; //release DXBorder
-{$ENDIF}
 
-{$IFDEF DirectX}
     DontPlotCurrentItem := false;
     paint;
 
@@ -512,7 +506,6 @@ begin
 
     SoAOS_DX_BltFront;
 
-{$ENDIF}
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -1570,10 +1563,6 @@ begin
     CheckForGroundDrop := true;
     WriteTheInventoryData;
     ExText.Close;
-{$IFNDEF DirectX}
-//    BMBack.Free;
-{$ENDIF}
-{$IFDEF DirectX}
     Locked := false;
     DlgScroll.free;
     DlgScroll := nil;
@@ -1594,7 +1583,6 @@ begin
         pTempItems( ItemList.Items[ i ] ).DXShadow := nil;
 
     end;
-{$ENDIF}
   //ItemsList Cleanup
     if Assigned( ItemList ) then
     begin

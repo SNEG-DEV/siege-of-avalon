@@ -42,10 +42,8 @@ unit Scroll;
 interface
 
 uses
-{$IFDEF DirectX}
+//  Winapi.DirectDraw,
   DirectX,
-  DXUtil,
-{$ENDIF}
   Vcl.Forms,
   System.Classes,
   System.Types,
@@ -92,7 +90,7 @@ constructor TScroll.Create;
 var
   i : integer;
 const
-  FailName : string = 'TCharacter.create';
+  FailName : string = 'TScroll.Create';
 begin
   Log.DebugLog(FailName);
   try

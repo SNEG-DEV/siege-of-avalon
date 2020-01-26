@@ -50,6 +50,7 @@ uses
   System.Math,
   System.SysUtils,
   System.IniFiles,
+//  Winapi.DirectDraw,
   DirectX,
   LogFile,
   Resource,

@@ -42,11 +42,9 @@ unit Award;
 interface
 
 uses
-{$IFDEF DirectX}
+//  Winapi.DirectDraw,
   DirectX,
-  DXUtil,
   DXEffects,
-{$ENDIF}
   System.SysUtils,
   System.Classes,
   System.Types,

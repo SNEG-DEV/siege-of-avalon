@@ -73,7 +73,6 @@ uses
   Award in 'interface\Award.pas',
   Parts in 'engine\Parts.pas',
   digifx in 'graphics\digifx.pas',
-  DirectX in 'graphics\DirectX.pas',
   DXRender in 'graphics\DXRender.pas',
   Converse in 'interface\Converse.pas',
   Titles in 'engine\Titles.pas',
@@ -203,8 +202,8 @@ begin
   end;
   hMutex := CreateMutex( nil, True, MUTEXNAME );
 
-  PlayOpeningMovie;
-  bPlayClosingMovie := False; // Game must force to true to show closing movie
+//  PlayOpeningMovie;
+//  bPlayClosingMovie := False; // Game must force to true to show closing movie
 
   // Launch dialog until game UI is redone - SDL2 - ran out of room on the ingame graphic.
   TfrmLaunchSetting.Execute;
@@ -220,7 +219,7 @@ begin
   ReleaseMutex( hMutex );
   CloseHandle( hMutex );
 
-  PlayClosingMovie;
+//  PlayClosingMovie;
 
 end.
 

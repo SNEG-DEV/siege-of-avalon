@@ -39,6 +39,7 @@ uses
   System.UITypes,
   Vcl.Graphics,
 
+//  Winapi.DirectDraw,
   DirectX;
 
 /// <summary>

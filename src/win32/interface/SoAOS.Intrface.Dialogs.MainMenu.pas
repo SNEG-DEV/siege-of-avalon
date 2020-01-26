@@ -42,10 +42,9 @@ unit SoAOS.Intrface.Dialogs.MainMenu;
 interface
 
 uses
-{$IFDEF DirectX}
+//  Winapi.DirectDraw,
   DirectX,
   DXUtil,
-{$ENDIF}
   Winapi.Windows,
   System.SysUtils,
   System.Types,
@@ -182,14 +181,12 @@ end;
 
 function TIntro.GetNoRect: TRect;
 begin
-  Result := Rect( 438, 456, 488, 484 ); // SD coords
-  Result.Offset(Offset);
+  Result := ApplyOffset( Rect( 438, 456, 488, 484 ) );
 end;
 
 function TIntro.GetYesRect: TRect;
 begin
-  Result := Rect( 303, 456, 352, 484 ); // SD coords
-  Result.Offset(Offset);
+  Result := ApplyOffset( Rect( 303, 456, 352, 484 ) );
 end;
 
 procedure TIntro.Init;

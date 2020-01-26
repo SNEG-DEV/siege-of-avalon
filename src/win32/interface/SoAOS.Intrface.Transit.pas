@@ -47,6 +47,7 @@ uses
   System.Generics.Collections,
   Vcl.Controls,
   Vcl.Forms,
+//  Winapi.DirectDraw,
   DirectX,
   Anigrp30,
   Display,

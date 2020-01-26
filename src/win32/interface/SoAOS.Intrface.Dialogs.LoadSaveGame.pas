@@ -42,11 +42,9 @@ unit SoAOS.Intrface.Dialogs.LoadSaveGame;
 interface
 
 uses
-{$IFDEF DirectX}
+//  Winapi.DirectDraw,
   DirectX,
-  DXUtil,
   DXEffects,
-{$ENDIF}
   System.SysUtils,
   System.Types,
   System.Classes,
@@ -294,8 +292,7 @@ begin
           pTextItem.Date := intToStr( fMonth ) + '/' + intToStr( fDay ) + ' ' + intToStr( fHour ) + ':' + intToStr( fMin ) //'/'+intToStr(fYear);
         else
           pTextItem.Date := intToStr( fMonth ) + '/' + intToStr( fDay ) + ' ' + intToStr( fHour ) + ':0' + intToStr( fMin ); //'/'+intToStr(fYear);
-        pTextItem.rect := rect( 379, 66 + i * 35, 669, 66 + i * 35 + 35 );
-        pTextItem.rect.Offset(Offset);
+        pTextItem.Rect := ApplyOffset( Rect( 379, 66 + i * 35, 669, 66 + i * 35 + 35 ) );
         SelectRect.add( pTextItem );
         i := i + 1;
       end;
@@ -353,8 +350,7 @@ begin
     begin
       if ( i >= StartFile ) and ( i < StartFile + 9 ) then
       begin //only show 9 files
-        r := Rect( 379, 66 + j * 35, 669, 66 + j * 35 + 35 );
-        r.Offset(Offset);
+        r := ApplyOffset( Rect( 379, 66 + j * 35, 669, 66 + j * 35 + 35 ) );
         pItem( SelectRect.items[ i ] ).rect := r;
         ptext.PlotText( pItem( SelectRect.items[ i ] ).text, pItem( SelectRect.items[ i ] ).rect.left, pItem( SelectRect.items[ i ] ).rect.top, 240 );
         ptext.PlotText( pItem( SelectRect.items[ i ] ).date, 590 + Offset.X, pItem( SelectRect.items[ i ] ).rect.top, 240 );
@@ -385,8 +381,7 @@ begin
     begin
       if ( i >= StartFile ) and ( i < StartFile + 9 ) then
       begin //only show 10 files
-        pItem( SelectRect.items[ i ] ).rect := rect( 379, 66 + j * 35, 669, 66 + j * 35 + 35 );
-        pItem( SelectRect.items[ i ] ).rect.Offset(Offset);
+        pItem( SelectRect.items[ i ] ).Rect := ApplyOffset( Rect( 379, 66 + j * 35, 669, 66 + j * 35 + 35 ) );
         j := j + 1;
       end
       else
@@ -557,8 +552,7 @@ begin
     begin
       P := Mouse.CursorPos;
 //      GetCursorPos( P );
-      pr := Rect( 673, 203, 694, 218 );
-      pr.Offset(Offset);
+      pr := ApplyOffset( Rect( 673, 203, 694, 218 ) );
       if pr.Contains( P ) then
       begin //up arrow
         if ScrollState < -1 then
@@ -580,8 +574,7 @@ begin
     begin
       // GetCursorPos( P );
       P := Mouse.CursorPos;
-      pr := Rect( 673, 234, 694, 250 );
-      pr.Offset(Offset);
+      pr := ApplyOffset( Rect( 673, 234, 694, 250 ) );
       if pr.Contains( P ) then
       begin //down arrow
         if ScrollState > 1 then
@@ -679,10 +672,8 @@ begin
       end; //end for
 
       //check for scroll arrows
-      pr1 := Rect( 673, 203, 694, 218 );
-      pr1.Offset(Offset);
-      pr2 := Rect( 673, 234, 694, 250 );
-      pr2.Offset(Offset);
+      pr1 := ApplyOffset( Rect( 673, 203, 694, 218 ) );
+      pr2 := ApplyOffset( Rect( 673, 234, 694, 250 ) );
       if pr1.Contains( Point( X, Y ) ) then
       begin //up arrow
         if StartFile > 0 then
@@ -706,8 +697,7 @@ begin
       else
         ScrollState := 0;
 
-      pr1 := Rect( 369, 400, 492, 428 );
-      pr1.Offset(Offset);
+      pr1 := ApplyOffset( Rect( 369, 400, 492, 428 ) );
       if pr1.Contains( Point( x, y ) ) then
       begin //delete
         if ( CurrentSelectedListItem > -1 ) then
@@ -917,14 +907,12 @@ end;
 
 function TLoadGame.GetCancelRect: TRect;
 begin
-  Result := DlgRect.dlgLoadSaveCancelRect;
-  Result.Offset(Offset);
+  Result := ApplyOffset( DlgRect.dlgLoadSaveCancelRect );
 end;
 
 function TLoadGame.GetLoadSaveRect: TRect;
 begin
-  Result := DlgRect.dlgLoadSaveRect;
-  Result.Offset(Offset);
+  Result := ApplyOffset( DlgRect.dlgLoadSaveRect );
 end;
 
 //FormMouseMove

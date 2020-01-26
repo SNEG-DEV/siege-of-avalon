@@ -5,18 +5,10 @@ interface
 {$INCLUDE DelphiXcfg.inc}
 
 uses
-  Windows,
-{$IfDef StandardDX}
-  DirectDraw,
-  {$ifdef DX7}
-  Direct3D;
-  {$endif}
-  {$IfDef DX9}
-  Direct3D9, Direct3D, D3DX9, {Direct3D8,} DX7toDX8;
-  {$EndIf}
-{$Else}
+  Winapi.Windows,
+  Winapi.Direct3D,
+//  Winapi.DirectDraw,
   DirectX;
-{$EndIf}
 
 const
   DXR_MAXTEXTURE = 4;

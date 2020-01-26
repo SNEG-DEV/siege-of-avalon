@@ -43,11 +43,12 @@ unit DXUtil;
 interface
 
 uses
-  Windows,
-  Classes,
+  Winapi.Windows,
+  System.Classes,
+//  Winapi.DirectDraw,
   DirectX,
-  Graphics,
-  Sysutils,
+  Vcl.Graphics, // replace by System.UITypes,
+  System.Sysutils,
   LogFile,
   SoAOS.Graphics.Draw;
 

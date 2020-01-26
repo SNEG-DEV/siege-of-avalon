@@ -34,7 +34,8 @@ interface
 
 uses
   System.Types,
-
+//  Winapi.DirectDraw,
+  DirectX,
   Display;
 
 type
@@ -44,6 +45,12 @@ type
   public
     DlgWidth: Integer;
     DlgHeight: Integer;
+    // Local functions to honor offset - should be moved to gametext as relative function
+    // PlotText(msg, x, x2, y, relativepoint=nil, centered=false) bla. bla. - will happen on gametext cleanup
+    function ApplyOffset(const r: TRect): TRect;
+    procedure PlotText(const Sentence: string; const X, Y, Alpha: Integer);
+    procedure PlotTextCentered( const DX : IDirectDrawSurface; const Sentence : string; const X1, X2, Y, Alpha : Integer; Const UseSmallFnt: Boolean = False );
+    procedure PlotTextBlock( const Sentence : string; X1, X2, Y, Alpha : integer; Const UseSmallFnt: Boolean = False );
     property Offset: TPoint read GetOffset;
   end;
 
@@ -54,9 +61,40 @@ uses
 
 { TDialog }
 
+function TDialog.ApplyOffset(const r: TRect): TRect;
+begin
+  Result := r;
+  Result.Offset(Offset);
+end;
+
 function TDialog.GetOffset: TPoint;
 begin
   Result := TPoint.Create((ScreenMetrics.ScreenWidth - DlgWidth) div 2, (ScreenMetrics.ScreenHeight - DlgHeight) div 2);
+end;
+
+procedure TDialog.PlotText(const Sentence: string; const X, Y,
+  Alpha: Integer);
+begin
+  pText.PlotText( Sentence, X + Offset.X, Y + Offset.Y, Alpha );
+end;
+
+procedure TDialog.PlotTextBlock(const Sentence: string; X1, X2, Y,
+  Alpha: integer; const UseSmallFnt: Boolean);
+begin
+  if UseSmallFnt then
+    pText.PlotGoldTextBlock( Sentence, X1 + Offset.X, X2 + Offset.X, Y + Offset.Y, Alpha )
+  else
+    pText.PlotTextBlock( Sentence, X1 + Offset.X, X2 + Offset.X, Y + Offset.Y, Alpha );
+end;
+
+procedure TDialog.PlotTextCentered(const DX: IDirectDrawSurface;
+  const Sentence: string; const X1, X2, Y, Alpha: Integer;
+  const UseSmallFnt: Boolean);
+begin
+  if UseSmallFnt then
+    pText.PlotGoldTextCentered( DX, Sentence, X1 + Offset.X, X2 + Offset.X, Y + Offset.Y, Alpha )
+  else
+    pText.PlotTextCentered( Sentence, X1 + Offset.X, X2 + Offset.X, Y + Offset.Y, Alpha );
 end;
 
 end.

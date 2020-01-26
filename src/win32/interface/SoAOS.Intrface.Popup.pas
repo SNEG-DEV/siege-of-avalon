@@ -35,11 +35,9 @@ interface
 
 uses
   System.Classes,
-{$IFDEF DirectX}
+//  Winapi.DirectDraw,
   DirectX,
-  DXUtil
-{$ENDIF}
-  ;
+  DXUtil;
 
 type
   TPopup = class

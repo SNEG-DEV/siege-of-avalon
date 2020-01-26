@@ -42,9 +42,8 @@ unit AddKickNPC;
 interface
 
 uses
-{$IFDEF DirectX}
+//  Winapi.DirectDraw,
   DirectX,
-{$ENDIF}
   System.Types,
   System.Classes,
   Vcl.Controls,
@@ -111,10 +110,8 @@ implementation
 
 uses
   System.SysUtils,
-{$IFDEF DirectX}
   DXUtil,
   DXEffects,
-{$ENDIF}
   SoAOS.Types,
   SoAOS.Graphics.Draw,
   SoAOS.Intrface.Text,
