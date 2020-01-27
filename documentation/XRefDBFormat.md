@@ -19,8 +19,9 @@ The following linies start with the key `prt_<name>`, examples are:
 **V1:** `prt_Axe|HumanMaleLayers\Axe.gif|HumanMaleLayers\Axe.gif|HumanMaleLayers\Axe.gif|HumanMaleLayers\Axe.gif|`  
 **V2:** `prt_Axe|HumanMaleLayers\Axe.gif||HumanFemale2Layers\FineWarAxe.gif|ElfMaleLayers\ElfSword.gif|NagaMale\NagaFineAxe.gif|`  
 
-Shown in table form below:
-| V1 | BaseHumanMale.gif | BaseHumanFemale.gif | BaseSkeleton.gif | BaseAhoul.gif |
+Shown in table form below:  
+
+| V1 | BaseHumanMale.gif | BaseHumanFemale.gif | BaseSkeleton.gif | BaseAhoul.gif |  
 | ---- | ---- | ---- | ---- | ---- |
 |prt_Axe|HumanMaleLayers\Axe.gif|HumanMaleLayers\Axe.gif|HumanMaleLayers\Axe.gif|HumanMaleLayers\Axe.gif|
 
