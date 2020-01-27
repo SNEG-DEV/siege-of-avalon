@@ -7,12 +7,15 @@ All notable changes to this project will be documented in this file.
 - Add documentation on the assets file-formats used.
 - Getting rid of need for custem ddraw.dll
 - Replacing DirectDraw with cross-platform library
-- Character in the center - add male/female choices.
 - Mod selection - more DLC style - extendable instead of destructive copy/paste exercises.
 - Better multi-language support - right now it is crippled, like other parts of the UI code.
 - REFACTOR: Remove casting and add helpers to improve readability/mainability
 - REFACTOR: Too much copy/paste code - (re)Moved method up to base class or extract
 - REFACTOR: Reorg classes
+
+## 2020-01-27
+### Added
+- Xref.db documentation - moved into documentation folder with POX file format documentation - both variantions described.
 
 ## 2020-01-26
 ### Added
