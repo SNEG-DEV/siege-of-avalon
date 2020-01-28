@@ -35,4 +35,4 @@ As in most (all?) places in the engine the resource files are refered to as `.gi
 
 The file is used by the **PartManager**, together with the Items.db file.
 
-
+Disclaimer: The documentation is based on current findings - and might be proved wrong - if you see any wrong conclusions or have additional info, please let me know.
