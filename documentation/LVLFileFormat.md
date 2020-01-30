@@ -48,6 +48,7 @@ There are a few missing parts, so still WIP.
 |8|4| RandSeed
 |12|4| FillIndex - is incremented by 1
 |16|4| FillVarLimit - is decremented by 1
+
 RIndex[FillIndex] is used by SetTile for Width x Height of Map adding random of FillVarLimit for Layer 0, Zone 1 - so mbRectResourceList or mbAltRectResourceList should have been read first since they define RIndex.
 
 **mbRectResourceList, mbAltRectResourceList** - might be skipped and read from cache.
@@ -56,6 +57,7 @@ RIndex[FillIndex] is used by SetTile for Width x Height of Map adding random of 
 | ------ | ----- | -----------
 |0|4| Resource stringlist size
 |4|size| RNames stringlist data - an empty string is inserted as item 0.
+
 RIndex array is set by loading and blitting the TileResources given by RNames. RIndex contains an array of TileIndex which is incremented by the number of frames in the given TileResource. Starts with [0]=0 and [1]=1.
 
 **mbDiamResourceList, mbAltDiamResourceList** - might be skipped and read from cache.
@@ -64,6 +66,7 @@ RIndex array is set by loading and blitting the TileResources given by RNames. R
 | ------ | ----- | -----------
 |0|4| Resource stringlist size
 |4|size| DNames stringlist data - an empty string is NOT inserted as item 0.
+
 DIndex array is set similar to RIndex (see above), and DVariations is set by reading the INI datas ImageList from theTileResources given by DNames.
 
 **mbObjResourceList, mbAltObjResourceList**
@@ -72,23 +75,27 @@ DIndex array is set similar to RIndex (see above), and DVariations is set by rea
 | ------ | ----- | -----------
 |0|4| Resource stringlist size
 |4|size| ONames stringlist data - an empty string is inserted as item 0.
+
 OIndex array is an index array of TStaticObjects, TDoorResources or TCharacters - ONames starting with 'editor\' are "skipped". And ZINdex is set. A lot goes on here so more details to come.
 
 **mbLayer0** - might be skipped and read from cache.  
-Read until the given block size of data is read, in the following chunks:
+Read until the given block size of data is read, in the following chunks:  
+
 | Offset | Bytes | Description
 | ------ | ----- | -----------
 |0|4| iMapPos - gives the X (iMapPos mod Width) and Y (iMapPos div Width)
 |4|2| iPos - is incremented by 1
 |6|2| Offset
 |8|1| Variation
+
 If the Offset is 0, then Map.SetTile( X, Y, 0, 1, RIndex[ iPos ] + Variation - 1 ) is called.
 
 **mbLayer1** - might be skipped and read from cache.
 Same as mbLayer0 - just setting layer 1.
 
 **mbLayerDiamond** - might be skipped and read from cache.
-Read until the given block size of data is read, in the following chunks:
+Read until the given block size of data is read, in the following chunks:  
+
 | Offset | Bytes | Description
 | ------ | ----- | -----------
 |0|4| iMapPos - gives the X (iMapPos mod Width) and Y (iMapPos div Width)
@@ -98,6 +105,7 @@ Read until the given block size of data is read, in the following chunks:
 |1|2| iPos - local-based index
 |3|1| Element
 |4|1| Variation
+
 All this is used to call Map.SetDiamondTile(), based on some extra logic.
 
 **mbObject**
@@ -111,8 +119,8 @@ All this is used to call Map.SetDiamondTile(), based on some extra logic.
 |16|4| ImageIndex
 |20|4| Size of Attribute string
 |24|size| Attribute stringlist
-A lot goes on here so more details to come.
 
+A lot goes on here so more details to come.
 
 **mbScene**
 
@@ -131,6 +139,7 @@ A lot goes on here so more details to come.
 |0|4| Count
 |4|4| Size of zones string
 |8|size| Zones stringlist
+
 ....Missing the rest for now, but .zit and cache is involved.
 
 **mbSceneKnown**
@@ -139,6 +148,7 @@ A lot goes on here so more details to come.
 | ------ | ----- | -----------
 |0|4| Number of entries
 |sceneIdx * 4|4| MapKnown if not 0
+
 Checkes if the current SceneIdx is a known map.
             
 **mbTheme**
@@ -150,6 +160,7 @@ Checkes if the current SceneIdx is a known map.
 |8|size1| Theme name
 |8 + size1|4|Size of themes string (size2)
 |8 + size1 + 4|size2|Themes item stringlist
+
 Result is added to the Themes stringllist as a key value pair - \<ThemeName>=\<comma delimited list of Themes>
 
 
