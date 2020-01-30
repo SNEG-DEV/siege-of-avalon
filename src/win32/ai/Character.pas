@@ -771,7 +771,7 @@ type
     FBowBonus : Single;
     FDefense : Single;
     FTrainingPoints : Integer;
-    Avoid : TList;
+    Avoid : TList<TAniFigure>;
     FindAgain : Boolean;
     Heal : Double;
     Recharge : Double;
@@ -4029,7 +4029,7 @@ begin
               end
               else
               begin
-                Avoid := TList.Create;
+                Avoid := TList<TAniFigure>.Create;
                 Avoid.Add( Target );
               end;
             end;
@@ -4063,7 +4063,7 @@ begin
           end
           else
           begin
-            Avoid := TList.Create;
+            Avoid := TList<TAniFigure>.Create;
             Avoid.Add( Target );
           end;
         end;

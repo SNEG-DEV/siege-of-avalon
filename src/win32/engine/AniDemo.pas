@@ -4159,7 +4159,7 @@ begin
           try
             for i := 0 to GameMap.ZoneCount - 1 do
             begin
-              TZone( GameMap.Zones.Items[ i ] ).SaveToStream( Stream, False );
+              GameMap.Zones[ i ].SaveToStream( Stream, False );
             end;
           finally
             Stream.Free;
@@ -4178,7 +4178,7 @@ begin
             try
               for i := 0 to GameMap.ZoneCount - 1 do
               begin
-                TZone( GameMap.Zones.Items[ i ] ).SaveToStream( Stream, True );
+                GameMap.Zones[ i ].SaveToStream( Stream, True );
               end;
             finally
               Stream.Free;
@@ -4199,7 +4199,7 @@ begin
         begin
           ZoneMem := GameMap.GetZoneMemoryUsage( i ) * 2;
           Inc( ZoneTotal, ZoneMem );
-          if TZone( GameMap.Zones.items[ i ] ) is TLightZone then
+          if GameMap.Zones[ i ] is TLightZone then
             Log.Log( '  Zone ' + IntToStr( i ) + '*: ' + IntToStr( ZoneMem ) )
           else
             Log.Log( '  Zone ' + IntToStr( i ) + ': ' + IntToStr( ZoneMem ) );
@@ -4212,11 +4212,11 @@ begin
         if UseVideoRAM then
         begin
           for i := 0 to GameMap.ZoneCount - 1 do
-            if not ( TZone( GameMap.Zones.items[ i ] ) is TLightZone ) then
+            if not ( GameMap.Zones[ i ] is TLightZone ) then
               GameMap.MoveZoneToVideo( i );
 
           for i := 1 to GameMap.ZoneCount - 1 do
-            if ( TZone( GameMap.Zones.items[ i ] ) is TLightZone ) then
+            if ( GameMap.Zones[ i ] is TLightZone ) then
               GameMap.MoveZoneToVideo( i );
         end;
       except

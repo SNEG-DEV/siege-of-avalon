@@ -62,12 +62,12 @@ type
   TDiamondQuadrants = ( dqCenter, dqOE, dqNE, dqON, dqNW, dqOW, dqSW, dqOS,
     dqSE, dqIE, dqIN, dqIW, dqIS );
 
-//These are used for reading the map file               ___2____
-  TDTileInfo = packed record //    |\     /|    Rectangular tiles are divided
-    Slice : array[ 1..4 ] of word; //  3 |  \ /  | 1  into 4 slices to support diamond
-    Element : array[ 1..4 ] of byte; //    |  / \  |    tiles as shown.
-    Variation : array[ 1..4 ] of byte; //    |/_____\|
-  end; //        4
+//These are used for reading the map file     ____2____
+  TDTileInfo = packed record            //    |\     /|    Rectangular tiles are divided
+    Slice : array[ 1..4 ] of word;      //  3 |  \ /  | 1  into 4 slices to support diamond
+    Element : array[ 1..4 ] of byte;    //    |  / \  |    tiles as shown.
+    Variation : array[ 1..4 ] of byte;  //    |/_____\|
+  end;                                  //        4
 
 const
   Key = 5765587;
@@ -411,7 +411,7 @@ var
               begin //we know this data is 24 bytes long
                 ZoneStream.Position := zone * 24;
                 try
-                  TZone( Map.Zones.items[ zone ] ).LoadFromStream( ZoneStream );
+                  Map.Zones[ zone ].LoadFromStream( ZoneStream );
                 except
                 end;
               end;
@@ -1057,7 +1057,7 @@ var
           if assigned( ZoneStream ) then
           begin
             try
-              TZone( Map.Zones.items[ z ] ).LoadFromStream( ZoneStream );
+              Map.Zones[ z ].LoadFromStream( ZoneStream );
             except
             end;
           end;
@@ -1081,7 +1081,7 @@ var
             begin
               inc( z );
               try
-                TZone( Map.Zones.items[ z ] ).LoadFromStream( ZoneStream );
+                Map.Zones[ z ].LoadFromStream( ZoneStream );
               except
               end;
             end;
@@ -1106,7 +1106,7 @@ var
             begin //we know this data is 24 bytes long
               ZoneStream.Position := z * 24;
               try
-                TZone( Map.Zones.items[ z ] ).LoadFromStream( ZoneStream );
+                Map.Zones[ z ].LoadFromStream( ZoneStream );
               except
               end;
             end;
@@ -1164,7 +1164,7 @@ begin
         if assigned( Stream ) then
         begin
           try
-            TZone( Map.Zones.items[ 0 ] ).LoadFromStream( Stream );
+            Map.Zones[ 0 ].LoadFromStream( Stream );
           except
           end;
           Stream.free;
@@ -1183,7 +1183,7 @@ begin
         if assigned( Stream ) then
         begin
           try
-            TZone( Map.Zones.items[ 0 ] ).LoadFromStream( Stream );
+            Map.Zones[ 0 ].LoadFromStream( Stream );
           except
           end;
           Stream.free;

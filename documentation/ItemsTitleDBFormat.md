@@ -144,4 +144,6 @@ and in their raw form within the file:
 
 `Engres|False|3|11||||||-10|-5|||5|5|15||8|6`
 
-`corvus|False|||||25||-8|-10|-5|||10||75||7|5`
+`corvus|False|||||25||-8|-10|-5|||10||75||7|5`  
+
+Disclaimer: The documentation is based on current findings - and might be proved wrong - if you see any wrong conclusions or have additional info, please let me know.

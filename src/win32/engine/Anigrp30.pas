@@ -45,6 +45,7 @@ uses
   Winapi.Windows,
   System.Types,
   System.Classes,
+  System.Generics.Collections,
   Vcl.Graphics,
   Vcl.Controls,
   AniDec30,
@@ -140,7 +141,7 @@ type
 
   TLightZone = class( TZone )
   private
-    OverlapZones : TList;
+    OverlapZones : TList<TLightZone>;
     Items : TList;
     States : Integer;
     State : Integer;
@@ -210,7 +211,7 @@ type
     function GetColorMatch : word;
   protected
   public
-    Zones : TList;
+    Zones : TList<TZone>;
     constructor Create( AOwner : TComponent ); override;
     destructor Destroy; override;
     function AddItem( Zone, ItemIndex : Word; X, Y, Z : Longint; FilterID : Smallint;
@@ -307,7 +308,7 @@ type
     PlayMode : TScriptMode;
     MultiplierDelta : Smallint;
     MultiplierDeltaFrame : Word;
-    AvoidInPath : TList;
+    AvoidInPath : TList<TAniFigure>;
     ViewEnabled : Boolean;
     Zone : Byte;
     FFrame : Word;
@@ -391,7 +392,7 @@ type
     procedure Move( X, Y, Z : Longint );
     procedure MoveTo( X, Y, Z : Longint );
     procedure SetPos( X, Y, Z : Longint );
-    procedure FindPathTo( X, Y : Longint; Avoid : TList; Deviance : integer );
+    procedure FindPathTo( X, Y : Longint; Avoid : TList<TAniFigure>; Deviance : integer );
     procedure PlayScript( Name : string; StartIndex : Word; PlayMode : TScriptMode ); overload;
     procedure PlayScript( Name : string; StartIndex : Word; PlayMode : TScriptMode; Multiplier, DeltaFrame : Word; Delta : SmallInt ); overload;
     procedure ForceFrame( const Value : Word );
@@ -476,7 +477,7 @@ type
     MaxHeightBottom : Longint;
     FMaxCollisionRadius : Word;
     FItemMask : Longint;
-    FFigureList : TList;
+    FFigureList : TList<TAniFigure>;
     FOnMouseDown : TExtMouseEvent;
     FOnMouseUp : TExtMouseEvent;
     FOnMouseMove : TExtMouseMoveEvent;
@@ -485,7 +486,7 @@ type
     FOnWaitFortimer : TNotifyEvent;
     FAStar : TAStar;
     FAStarFigure : TAniFigure;
-    FAstarAvoidFigure : TList;
+    FAstarAvoidFigure : TList<TAniFigure>;
     FStartX : Longint;
     FStartY : Longint;
     FDrawing : Boolean;
@@ -572,7 +573,7 @@ type
     property ShowHint;
     property Visible;
     property Interval : Word read FInterval write SetInterval default 50;
-    property FigureList : TList read FFigureList;
+    property FigureList : TList<TAniFigure> read FFigureList;
     property OnMouseDown : TExtMouseEvent read FOnMouseDown write FOnMouseDown;
     property OnMouseUp : TExtMouseEvent read FOnMouseUp write FOnMouseUp;
     property OnMouseMove : TExtMouseMoveEvent read FOnMouseMove write FOnMouseMove;
@@ -663,7 +664,7 @@ begin
       end;
       GlobalUnlock( FMapData );
     end;
-    Zones := TList.Create;
+    Zones := TList<TZone>.Create;
     NewZone := TZone.Create( Self );
     Zones.Add( NewZone );
   end;
@@ -679,7 +680,7 @@ begin
     FMapData := 0;
   end;
   for i := 0 to Zones.Count - 1 do
-    TZone( Zones.Items[ i ] ).Free;
+    Zones[ i ].Free;
   Zones.Free;
   inherited Destroy;
 end;
@@ -739,17 +740,17 @@ var
 begin
   for i := 0 to Zones.Count - 1 do
   begin
-    TZone( Zones.Items[ i ] ).FTileImages := nil;
-    TZone( Zones.Items[ i ] ).FItemImages := nil;
-    TZone( Zones.Items[ i ] ).Cached := False;
-    TZone( Zones.Items[ i ] ).FTileBitWidth := 0;
-    TZone( Zones.Items[ i ] ).FTileBitHeight := 0;
-    TZone( Zones.Items[ i ] ).FTileMaxIndex := 0;
-    TZone( Zones.Items[ i ] ).FTileMaxColumnIndex := 0;
-    TZone( Zones.Items[ i ] ).FItemBitWidth := 0;
-    TZone( Zones.Items[ i ] ).FItemBitHeight := 0;
-    TZone( Zones.Items[ i ] ).FItemColumn := 0;
-    TZone( Zones.Items[ i ] ).FItemColumnBitHeight := 0;
+    Zones[ i ].FTileImages := nil;
+    Zones[ i ].FItemImages := nil;
+    Zones[ i ].Cached := False;
+    Zones[ i ].FTileBitWidth := 0;
+    Zones[ i ].FTileBitHeight := 0;
+    Zones[ i ].FTileMaxIndex := 0;
+    Zones[ i ].FTileMaxColumnIndex := 0;
+    Zones[ i ].FItemBitWidth := 0;
+    Zones[ i ].FItemBitHeight := 0;
+    Zones[ i ].FItemColumn := 0;
+    Zones[ i ].FItemColumnBitHeight := 0;
   end;
 end;
 
@@ -759,7 +760,7 @@ var
 begin
   for i := 0 to Zones.Count - 1 do
   begin
-    TZone( Zones.Items[ i ] ).DisposeDef;
+    Zones[ i ].DisposeDef;
   end;
 end;
 
@@ -774,8 +775,8 @@ begin
     FMapData := 0;
   end;
   FreeResources;
-  for i := 0 to Zones.count - 1 do
-    TZone( Zones.items[ i ] ).free;
+  for i := 0 to Zones.Count - 1 do
+    Zones[ i ].Free;
   Zones.Clear;
   NewZone := TZone.Create( Self );
   Zones.Add( NewZone );
@@ -855,7 +856,7 @@ end;
 
 function TAniMap.GetZoneMemoryUsage( Index : integer ) : longint;
 begin
-  with TZone( Zones.items[ Index ] ) do
+  with Zones[ Index ] do
   begin
     result := FItemBitWidth * FItemBitHeight + FTileBitWidth * FTileBitHeight;
 //Log.Log(inttostr(FItemBitWidth)+'x'+inttostr(FitemBitHeight));
@@ -864,13 +865,13 @@ end;
 
 procedure TAniMap.MoveZoneToVideo( Index : integer );
 begin
-  if not ( TZone( Zones.items[ Index ] ).TilesInVideo and TZone( Zones.items[ Index ] ).ItemsInVideo ) then
-    TZone( Zones.items[ Index ] ).MoveToVideo;
+  if not ( Zones[ Index ].TilesInVideo and Zones[ Index ].ItemsInVideo ) then
+    Zones[ Index ].MoveToVideo;
 end;
 
 function TAniMap.GetZoneCount : word;
 begin
-  result := Zones.count;
+  result := Zones.Count;
 end;
 
 procedure TAniMap.SetTransparentColor( Color : TColor );
@@ -1101,7 +1102,9 @@ var
   R1, G1, B1 : word;
   D : Double;
   IL1 : integer;
-  Overlap, OverlapTile, LightZones : TList;
+  Overlap: TList<TLightZone>;
+  OverlapTile : TList<TLightZone>;
+  LightZones : TList<TLightZone>;
   CurrentZone, Test : TLightZone;
   Zone : Word;
   CurrentIndex : Integer;
@@ -1146,13 +1149,13 @@ begin
 
   if not FUseAmbientOnly then
   begin
-    OverlapTile := TList.Create;
-    LightZones := TList.Create;
+    OverlapTile := TList<TLightZone>.Create;
+    LightZones := TList<TLightZone>.Create;
     //Make sure flicker lighting is evaluated last
     SortedZones := TList.create;
     for Zone := 0 to Zones.Count - 1 do
     begin
-      ZoneTile := Zones.Items[ Zone ];
+      ZoneTile := Zones[ Zone ];
       if ZoneTile is TLightZone then
       begin
         if TLightZone( ZoneTile ).States = 1 then
@@ -1163,7 +1166,7 @@ begin
     end;
     for Zone := 0 to Zones.Count - 1 do
     begin
-      ZoneTile := Zones.Items[ Zone ];
+      ZoneTile := Zones[ Zone ];
       if ZoneTile is TLightZone then
       begin
         if TLightZone( ZoneTile ).States > 1 then
@@ -1176,12 +1179,12 @@ begin
     TimeCount := GetTickCount;
     for Zone := 1 to SortedZones.Count - 1 do
     begin
-      ZoneTile := SortedZones.Items[ Zone ];
+      ZoneTile := SortedZones[ Zone ];
       if ZoneTile is TLightZone then
       begin
-        CurrentZone := SortedZones.Items[ Zone ];
+        CurrentZone := SortedZones[ Zone ];
         LightZones.Add( CurrentZone );
-        Overlap := TList.Create;
+        Overlap := TList<TLightZone>.Create;
         Overlap.Add( currentZone );
         NewTileIndex := 0;
         CurrentIndex := -1;
@@ -1189,10 +1192,10 @@ begin
         begin
           if ( i <> Zone ) then
           begin
-            ZoneTile := SortedZones.Items[ i ];
+            ZoneTile := SortedZones[ i ];
             if ZoneTile is TLightZone then
             begin
-              Test := SortedZones.Items[ i ];
+              Test := SortedZones[ i ];
               if ( Test.X1 <= CurrentZone.X2 ) and ( Test.X2 >= CurrentZone.X1 ) and
                 ( Test.Y1 <= CurrentZone.Y2 ) and ( Test.Y2 > CurrentZone.Y1 ) then
               begin
@@ -1203,7 +1206,7 @@ begin
               end;
             end;
           end;
-          TLightZone( CurrentZone ).OverlapZones := Overlap;
+          CurrentZone.OverlapZones := Overlap;
         end;
         TempSurface := DDGetSurface( lpDD, FTileWidth, FTileHeight, TransparentColor, false );
         for State := 1 to CurrentZone.States do
@@ -1223,7 +1226,7 @@ begin
                   OVERLAPPED := False;
                   for i := 1 to Overlap.Count - 1 do
                   begin
-                    Test := Overlap.Items[ i ];
+                    Test := Overlap[ i ];
                     if ( Test.X1 < X + 1 ) and ( Test.X2 >= X ) and
                       ( Test.Y1 < Y + 1 ) and ( Test.Y2 >= Y ) then
                     begin
@@ -1244,7 +1247,7 @@ begin
                     if ( Index <> $FFFF ) or ( ( ( p^.BitField and $80 ) <> 0 ) and ( Layer = 1 ) ) then
                     begin
                       OverlapTile.Add( CurrentZone );
-                      ZoneTile := Zones.Items[ p^.Zone[ Layer ] ];
+                      ZoneTile := Zones[ p^.Zone[ Layer ] ];
                       if ( ( ( p^.BitField and $80 ) <> 0 ) and ( Layer = 1 ) ) then
                       begin
                         BltFx.dwSize := SizeOf( BltFx );
@@ -1263,7 +1266,7 @@ begin
                         begin
                           SrcX := ( Index div ZoneTile.FTileMaxColumnIndex ) * FTileWidth;
                           SrcY := ( Index mod ZoneTile.FTileMaxColumnIndex ) * FTileHeight;
-                          ZoneTile := Zones.Items[ p^.Zone[ 2 ] ];
+                          ZoneTile := Zones[ p^.Zone[ 2 ] ];
                           pr := Rect( SrcX, SrcY, SrcX + HalfWidth, SrcY + FTileHeight );
                           TempSurface.BltFast( HalfWidth, 0, ZoneTile.FTileImages, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                         end;
@@ -1272,7 +1275,7 @@ begin
                         begin
                           SrcX := ( Index div ZoneTile.FTileMaxColumnIndex ) * FTileWidth;
                           SrcY := ( Index mod ZoneTile.FTileMaxColumnIndex ) * FTileHeight;
-                          ZoneTile := Zones.Items[ p^.Zone[ 3 ] ];
+                          ZoneTile := Zones[ p^.Zone[ 3 ] ];
                           pr := Rect( SrcX, SrcY, SrcX + FTileWidth, SrcY + HalfHeight );
                           TempSurface.BltFast( 0, HalfHeight, ZoneTile.FTileImages, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                         end;
@@ -1281,7 +1284,7 @@ begin
                         begin
                           SrcX := ( Index div ZoneTile.FTileMaxColumnIndex ) * FTileWidth + HalfWidth;
                           SrcY := ( Index mod ZoneTile.FTileMaxColumnIndex ) * FTileHeight;
-                          ZoneTile := Zones.Items[ p^.Zone[ 4 ] ];
+                          ZoneTile := Zones[ p^.Zone[ 4 ] ];
                           pr := Rect( SrcX, SrcY, SrcX + HalfWidth, SrcY + FTileHeight );
                           TempSurface.BltFast( 0, 0, ZoneTile.FTileImages, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                         end;
@@ -1314,7 +1317,7 @@ begin
                                 B1 := LightB1;
                                 for k := 0 to OverlapTile.Count - 1 do
                                 begin
-                                  Test := OverlapTile.Items[ k ];
+                                  Test := OverlapTile[ k ];
                                   if Test = CurrentZone then
                                   begin
                                     ZoneX := Test.FlickerX[ State ];
@@ -1491,7 +1494,7 @@ begin
         i := FirstItem;
         while ( i <> 0 ) do
         begin
-          ZoneTile := Zones.Items[ FItemList[ i ].Zone ];
+          ZoneTile := Zones[ FItemList[ i ].Zone ];
           X := FItemList[ i ].X div FTileWidth;
           Y := FItemList[ i ].Y div FTileHeight;
           OverlapTile.Clear;
@@ -1509,7 +1512,7 @@ begin
           end;
           if OverlapTile.Count > 0 then
           begin
-            Zone := TZone( OverlapTile[ OverlapTile.Count - 1 ] ).Index;
+            Zone := OverlapTile[ OverlapTile.Count - 1 ].Index;
             TempSurface := DDGetSurface( lpDD, FStripWidth, FItemList[ i ].Height, TransparentColor, false );
             pr := Rect( FItemList[ i ].ImageX, FItemList[ i ].ImageY, FItemList[ i ].ImageX + FStripWidth,
               FItemList[ i ].ImageY + FItemList[ i ].Height );
@@ -1570,8 +1573,8 @@ begin
                       B1 := LightB1;
                       for j := 0 to OverlapTile.Count - 1 do
                       begin
-                        Test := OverlapTile.Items[ j ];
-                        if Test = Zones.Items[ Zone ] then
+                        Test := OverlapTile[ j ];
+                        if Test = Zones[ Zone ] then
                         begin
                           ZoneX := Test.FlickerX[ State ];
                           ZoneY := Test.FlickerY[ State ];
@@ -1714,7 +1717,7 @@ begin
                 TempSurface.UnLock( nil );
               end;
             end;
-            if ( State = TLightZone( Zones.Items[ Zone ] ).States ) then
+            if ( State = TLightZone( Zones[ Zone ] ).States ) then
             begin
               TLightZone( Zones[ Zone ] ).AddStrip( TempSurface, FItemList[ i ].ImageX, FItemList[ i ].ImageY );
               FItemList[ i ].Zone := Zone;
@@ -1748,7 +1751,7 @@ begin
       i := FirstItem;
       while ( i <> 0 ) do
       begin
-        ZoneTile := Zones.Items[ FItemList[ i ].Zone ];
+        ZoneTile := Zones[ FItemList[ i ].Zone ];
         if ZoneTile is TLightZone then
         begin
           Test := TLightZone( ZoneTile );
@@ -1768,7 +1771,7 @@ begin
     TimeCount := GetTickCount;
     for Zone := 0 to Zones.Count - 1 do
     begin
-      ZoneTile := Zones.Items[ Zone ];
+      ZoneTile := Zones[ Zone ];
       if not ( ZoneTile is TLightZone ) then
       begin
         //Do tiles first
@@ -2753,14 +2756,14 @@ begin
     Result := nil;
     Exit;
   end;
-  Result := TZone( Zones.Items[ Zone ] ).DefineItem( Index, Image, StripHeights, CollisionMasks, LineOfSightMasks, LightPoints, FTransparentColor, Slope, Visible, AutoTransparent, Vertical );
+  Result := Zones[ Zone ].DefineItem( Index, Image, StripHeights, CollisionMasks, LineOfSightMasks, LightPoints, FTransparentColor, Slope, Visible, AutoTransparent, Vertical );
 end;
 
 procedure TAniMap.DefineTile( Zone, Index : Word; Image : IDirectDrawSurface );
 begin
   if ( Zone >= Zones.Count ) then
     Exit;
-  TZone( Zones.Items[ Zone ] ).DefineTile( Index, Image, FTransparentColor );
+  Zones[ Zone ].DefineTile( Index, Image, FTransparentColor );
 end;
 
 function TAniMap.GetTile( X, Y : Longint ) : PGridInfo;
@@ -2810,7 +2813,7 @@ begin
       else
       begin
         p^.Zone[ 1 ] := ZoneTop;
-        p^.Tile[ 1 ] := TZone( Zones.Items[ ZoneTop ] ).Tile[ TileTop ].ImageIndex;
+        p^.Tile[ 1 ] := Zones[ ZoneTop ].Tile[ TileTop ].ImageIndex;
       end;
       if TileRight = 0 then
       begin
@@ -2820,7 +2823,7 @@ begin
       else
       begin
         p^.Zone[ 2 ] := ZoneRight;
-        p^.Tile[ 2 ] := TZone( Zones.Items[ ZoneRight ] ).Tile[ TileRight ].ImageIndex;
+        p^.Tile[ 2 ] := Zones[ ZoneRight ].Tile[ TileRight ].ImageIndex;
       end;
       if TileBottom = 0 then
       begin
@@ -2830,7 +2833,7 @@ begin
       else
       begin
         p^.Zone[ 3 ] := ZoneBottom;
-        p^.Tile[ 3 ] := TZone( Zones.Items[ ZoneBottom ] ).Tile[ TileBottom ].ImageIndex;
+        p^.Tile[ 3 ] := Zones[ ZoneBottom ].Tile[ TileBottom ].ImageIndex;
       end;
       if TileLeft = 0 then
       begin
@@ -2840,7 +2843,7 @@ begin
       else
       begin
         p^.Zone[ 4 ] := ZoneLeft;
-        p^.Tile[ 4 ] := TZone( Zones.Items[ ZoneLeft ] ).Tile[ TileLeft ].ImageIndex;
+        p^.Tile[ 4 ] := Zones[ ZoneLeft ].Tile[ TileLeft ].ImageIndex;
       end;
       p^.BitField := p^.BitField or $80; //Set high bit to denote a diamond tile
       GlobalUnlock( FMapData );
@@ -2872,11 +2875,11 @@ begin
     end
     else
     begin
-      for i := 0 to TZone( Zones.Items[ Zone ] ).Tile[ Index ].Columns - 1 do
+      for i := 0 to Zones[ Zone ].Tile[ Index ].Columns - 1 do
       begin
         if ( X + i < FWidth ) then
         begin
-          for j := 0 to TZone( Zones.Items[ Zone ] ).Tile[ Index ].Rows - 1 do
+          for j := 0 to Zones[ Zone ].Tile[ Index ].Rows - 1 do
           begin
             if ( Y + j < FHeight ) then
             begin
@@ -2884,8 +2887,8 @@ begin
               p := GridLoc;
               Inc( p, Loc );
               p^.Zone[ Layer ] := Zone;
-              p^.Tile[ Layer ] := TZone( Zones.Items[ Zone ] ).Tile[ Index ].ImageIndex +
-                i * TZone( Zones.Items[ Zone ] ).Tile[ Index ].Rows + j;
+              p^.Tile[ Layer ] := Zones[ Zone ].Tile[ Index ].ImageIndex +
+                i * Zones[ Zone ].Tile[ Index ].Rows + j;
               if ( Layer ) = 1 then
                 p^.BitField := p^.BitField and $7F; //Turn off high bit to denote rect tile
             end;
@@ -3042,7 +3045,7 @@ begin
     Y := ( Y div FStripHeight ) * FStripHeight;
   GridBase := GlobalLock( FMapData );
 
-  ZoneItem := Zones.Items[ Zone ];
+  ZoneItem := Zones[ Zone ];
   with ZoneItem as TZone do
   begin
 
@@ -3305,7 +3308,7 @@ begin
     FAStar := TAStar.Create;
     FAStar.CanMove := CanMove;
 
-    FFigureList := TList.Create;
+    FFigureList := TList<TAniFigure>.Create;
   end;
 end;
 
@@ -3415,7 +3418,7 @@ begin
   for i := 0 to FigureList.Count - 1 do
   begin
     try
-      TAniFigure( FigureList.Items[ i ] ).Free;
+      FigureList[ i ].Free;
     except
       Log.Log( '*** Error: object could not be freed' );
     end;
@@ -3481,13 +3484,13 @@ procedure TAniView.ReplaceFigure( i : integer; Figure : TAniFigure );
 begin
   if ( Figure = nil ) then
     Exit;
-  if assigned( FigureList.items[ i ] ) then
+  if assigned( FigureList[ i ] ) then
   begin
-    if TAniFigure( FigureList.items[ i ] ).Enabled then
-      DisableFigure( TAniFigure( FigureList.items[ i ] ) );
-    TAniFigure( FigureList.items[ i ] ).Free;
+    if FigureList[ i ].Enabled then
+      DisableFigure( FigureList[ i ] );
+    FigureList[ i ].Free;
   end;
-  FigureList.items[ i ] := Figure;
+  FigureList[ i ] := Figure;
   Figure.FView := Self;
   if ( Figure.Radius > FMaxCollisionRadius ) then
     FMaxCollisionRadius := Figure.Radius;
@@ -3608,7 +3611,7 @@ begin
     //Add flicker lighting
     for i := 1 to FMap.Zones.Count - 1 do
     begin
-      ZoneItem := FMap.Zones.Items[ i ];
+      ZoneItem := FMap.Zones[ i ];
       if ZoneItem is TLightZone then
       begin
         if ZoneItem.FullRefresh then
@@ -3754,63 +3757,63 @@ begin
 
       for i := 0 to FigureList.Count - 1 do
       begin
-        if ( TAniFigure( FigureList.Items[ i ] ).Enabled ) then
+        if FigureList[ i ].Enabled then
         begin
-          TAniFigure( FigureList.Items[ i ] ).FOnScreen := false;
-          TAniFigure( FigureList.Items[ i ] ).UpdateScript;
-          if TAniFigure( FigureList.Items[ i ] ).ViewEnabled then
-            TAniFigure( FigureList.Items[ i ] ).Moved := true;
+          FigureList[ i ].FOnScreen := false;
+          FigureList[ i ].UpdateScript;
+          if FigureList[ i ].ViewEnabled then
+            FigureList[ i ].Moved := true;
 
-          if ( FigureList.Items[ i ] <> KeyFigure ) then
-            if TAniFigure( FigureList.Items[ i ] ).NeedPath then
-              GetPath( TAniFigure( FigureList.Items[ i ] ) );
-          if ( FigureList.Items[ i ] <> KeyFigure ) then
-            if TAniFigure( FigureList.Items[ i ] ).Moved then
-              TransFigure( TAniFigure( FigureList.Items[ i ] ) );
-          if ( FigureList.Items[ i ] <> KeyFigure ) then
-            if TAniFigure( FigureList.Items[ i ] ).Moving then
-              MoveFigure( TAniFigure( FigureList.Items[ i ] ) );
-          if assigned( TAniFigure( FigureList.Items[ i ] ).OnMove ) then
-            TAniFigure( FigureList.Items[ i ] ).OnMove( FigureList.Items[ i ] );
+          if ( FigureList[ i ] <> KeyFigure ) then
+            if FigureList[ i ].NeedPath then
+              GetPath( FigureList[ i ] );
+          if ( FigureList[ i ] <> KeyFigure ) then
+            if FigureList[ i ].Moved then
+              TransFigure( FigureList[ i ] );
+          if ( FigureList[ i ] <> KeyFigure ) then
+            if FigureList[ i ].Moving then
+              MoveFigure( FigureList[ i ] );
+          if assigned( FigureList[ i ].OnMove ) then
+            FigureList[ i ].OnMove( FigureList[ i ] );
 
-          X := TAniFigure( FigureList.Items[ i ] ).FX - TAniFigure( FigureList.Items[ i ] ).CenterX - OffsetX;
-          W := X + TAniFigure( FigureList.Items[ i ] ).MouseRect.Right;
-          inc( X, TAniFigure( FigureList.Items[ i ] ).MouseRect.Left );
-          Y := TAniFigure( FigureList.Items[ i ] ).FY - TAniFigure( FigureList.Items[ i ] ).CenterY - TAniFigure( FigureList.Items[ i ] ).FZ - OffsetY;
-          H := Y + TAniFigure( FigureList.Items[ i ] ).MouseRect.Bottom;
-          inc( Y, TAniFigure( FigureList.Items[ i ] ).MouseRect.Top );
+          X := FigureList[ i ].FX - FigureList[ i ].CenterX - OffsetX;
+          W := X + FigureList[ i ].MouseRect.Right;
+          inc( X, FigureList[ i ].MouseRect.Left );
+          Y := FigureList[ i ].FY - FigureList[ i ].CenterY - FigureList[ i ].FZ - OffsetY;
+          H := Y + FigureList[ i ].MouseRect.Bottom;
+          inc( Y, FigureList[ i ].MouseRect.Top );
           if ( MousePosition.X >= X ) and ( MousePosition.X < W ) and ( MousePosition.Y >= Y ) and ( MousePosition.Y < H ) then
           begin
             if not Assigned( MouseOverFigure ) then
-              MouseOverFigure := TAniFigure( FigureList.Items[ i ] )
-            else if ( TAniFigure( FigureList.Items[ i ] ).FY > MouseOverFigure.FY ) then
-              MouseOverFigure := TAniFigure( FigureList.Items[ i ] );
-            if ( TAniFigure( FigureList.Items[ i ] ).Highlightable ) then
+              MouseOverFigure := FigureList[ i ]
+            else if ( FigureList[ i ].FY > MouseOverFigure.FY ) then
+              MouseOverFigure := FigureList[ i ];
+            if FigureList[ i ].Highlightable then
             begin
               if not Assigned( MouseOverHLFigure ) then
-                MouseOverHLFigure := TAniFigure( FigureList.Items[ i ] )
-              else if ( TAniFigure( FigureList.Items[ i ] ).FY > MouseOverHLFigure.FY ) then
-                MouseOverHLFigure := TAniFigure( FigureList.Items[ i ] );
+                MouseOverHLFigure := FigureList[ i ]
+              else if ( FigureList[ i ].FY > MouseOverHLFigure.FY ) then
+                MouseOverHLFigure := FigureList[ i ];
             end;
           end;
 
-          if ( TAniFigure( FigureList.Items[ i ] ).FY >= Y1 ) and ( TAniFigure( FigureList.Items[ i ] ).FY <= Y2 ) then
+          if ( FigureList[ i ].FY >= Y1 ) and ( FigureList[ i ].FY <= Y2 ) then
           begin
             RowData := RowBase;
-            Inc( RowData, TAniFigure( FigureList.Items[ i ] ).FY );
+            Inc( RowData, FigureList[ i ].FY );
             NextFigure := RowData^.Figure;
-            RowData^.Figure := FigureList.Items[ i ];
-            TAniFigure( FigureList.Items[ i ] ).NextOnRow := NextFigure;
+            RowData^.Figure := FigureList[ i ];
+            FigureList[ i ].NextOnRow := NextFigure;
           end
           else
           begin
-            TAniFigure( FigureList.Items[ i ] ).NextOnRow := nil;
+            FigureList[ i ].NextOnRow := nil;
           end;
         end
         else
         begin
-          if ( TAniFigure( FigureList.Items[ i ] ).ViewEnabled ) then
-            DisableFigure( TAniFigure( FigureList.Items[ i ] ) );
+          if FigureList[ i ].ViewEnabled then
+            DisableFigure( FigureList[ i ] );
         end;
       end;
 
@@ -3855,7 +3858,7 @@ begin
                       end;
                     end;
                     Dec( Y, OffsetY );
-                    ZoneItem := TZone( FMap.Zones.Items[ FMap.FItemList[ ItemIndex ].Zone ] );
+                    ZoneItem := FMap.Zones[ FMap.FItemList[ ItemIndex ].Zone ];
 
                     SrcX1 := FMap.FItemList[ ItemIndex ].ImageX;
                     DstX1 := X;
@@ -3981,7 +3984,7 @@ begin
             begin
               if NextFigure.Visible then
               begin
-                if ( NextFigure = KeyFigure ) and TAniFigure( NextFigure ).AutoTransparent and Assigned( XRayImage ) then
+                if ( NextFigure = KeyFigure ) and NextFigure.AutoTransparent and Assigned( XRayImage ) then
                 begin
                   StripX := ( XRayX1Fix - MapX * FMap.FTileWidth ) div FMap.FStripWidth;
                   StripW := ( XRayX2Fix - XRayX1Fix ) div FMap.FStripWidth + 1;
@@ -4068,8 +4071,8 @@ begin
 
   for i := 0 to FigureList.Count - 1 do
   begin
-    if TAniFigure( FigureList.Items[ i ] ).Enabled then
-      TAniFigure( FigureList.Items[ i ] ).DoFrame;
+    if FigureList[ i ].Enabled then
+      FigureList[ i ].DoFrame;
   end;
 
   Inc( FFrameCount );
@@ -4625,7 +4628,7 @@ begin
           Clip1( X1, X2, XA, R.Left, R.Right );
           Clip1( Y1, Y2, YA, R.Top, R.Bottom );
 
-          lpDDSBack.BltFast( XA, YA, TZone( FMap.Zones.Items[ FMap.FItemList[ i ].Zone ] ).FItemImages,
+          lpDDSBack.BltFast( XA, YA, FMap.Zones[ FMap.FItemList[ i ].Zone ].FItemImages,
             @R, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         end;
       end;
@@ -4746,7 +4749,7 @@ begin
       Inc( p, Zone.X1 + j * FMap.FWidth );
       for i := Zone.X1 to Zone.X2 do
       begin
-        if FMap.Zones.Items[ p^.Zone[ Layer ] ] = Zone then
+        if FMap.Zones[ p^.Zone[ Layer ] ] = Zone then
         begin
           X := ( i - Zone.X1 ) * FMap.FTileWidth;
           Index := p^.Tile[ Layer ];
@@ -4780,37 +4783,37 @@ begin
 
   Offset := ( Zone.States - NewState ) * Zone.ItemStateOffset;
   MaxY := MapHeight * FMap.FTileHeight;
-  if Assigned( Zone.Items ) then
+  if Assigned( Zone ) then
   begin
     for i := 0 to Zone.Items.Count - 1 do
     begin
-      if ItemInstanceInfo( Zone.Items.Items[ i ]^ ).Visible and ( ItemInstanceInfo( Zone.Items.Items[ i ]^ ).FilterID = 0 ) or
-        ( ( ItemInstanceInfo( Zone.Items.Items[ i ]^ ).FilterID < 0 ) or
-        ( ItemInstanceInfo( Zone.Items.Items[ i ]^ ).FilterID = FItemMask ) ) and
-        ( ItemInstanceInfo( Zone.Items.Items[ i ]^ ).FilterID <> -FItemMask ) then
+      if ItemInstanceInfo( Zone.Items[ i ]^ ).Visible and ( ItemInstanceInfo( Zone.Items[ i ]^ ).FilterID = 0 ) or
+        ( ( ItemInstanceInfo( Zone.Items[ i ]^ ).FilterID < 0 ) or
+        ( ItemInstanceInfo( Zone.Items[ i ]^ ).FilterID = FItemMask ) ) and
+        ( ItemInstanceInfo( Zone.Items[ i ]^ ).FilterID <> -FItemMask ) then
       begin
 
-        X := ItemInstanceInfo( Zone.Items.Items[ i ]^ ).X - OffsetX;
-        Y := ItemInstanceInfo( Zone.Items.Items[ i ]^ ).Y - ItemInstanceInfo( Zone.Items.Items[ i ]^ ).VHeight - OffsetY;
-        DstH := Y + ItemInstanceInfo( Zone.Items.Items[ i ]^ ).Height;
+        X := ItemInstanceInfo( Zone.Items[ i ]^ ).X - OffsetX;
+        Y := ItemInstanceInfo( Zone.Items[ i ]^ ).Y - ItemInstanceInfo( Zone.Items[ i ]^ ).VHeight - OffsetY;
+        DstH := Y + ItemInstanceInfo( Zone.Items[ i ]^ ).Height;
         if ( Y < 0 ) then
         begin
-          SrcY1 := ItemInstanceInfo( Zone.Items.Items[ i ]^ ).ImageY - Y;
-          SrcY2 := ItemInstanceInfo( Zone.Items.Items[ i ]^ ).ImageY + ItemInstanceInfo( Zone.Items.Items[ i ]^ ).Height;
+          SrcY1 := ItemInstanceInfo( Zone.Items[ i ]^ ).ImageY - Y;
+          SrcY2 := ItemInstanceInfo( Zone.Items[ i ]^ ).ImageY + ItemInstanceInfo( Zone.Items[ i ]^ ).Height;
           if ( DstH > MapBitHeight ) then
             Dec( SrcY2, DstH - MaxY );
           Y := 0;
         end
         else
         begin
-          SrcY1 := ItemInstanceInfo( Zone.Items.Items[ i ]^ ).ImageY;
-          SrcY2 := ItemInstanceInfo( Zone.Items.Items[ i ]^ ).ImageY + ItemInstanceInfo( Zone.Items.Items[ i ]^ ).Height;
+          SrcY1 := ItemInstanceInfo( Zone.Items[ i ]^ ).ImageY;
+          SrcY2 := ItemInstanceInfo( Zone.Items[ i ]^ ).ImageY + ItemInstanceInfo( Zone.Items[ i ]^ ).Height;
           if ( DstH > MapBitHeight ) then
             Dec( SrcY2, DstH - MaxY );
         end;
 
-        SrcX1 := ItemInstanceInfo( Zone.Items.Items[ i ]^ ).ImageX - Offset;
-        SrcX2 := ItemInstanceInfo( Zone.Items.Items[ i ]^ ).ImageX + ItemInstanceInfo( Zone.Items.Items[ i ]^ ).Width - Offset;
+        SrcX1 := ItemInstanceInfo( Zone.Items[ i ]^ ).ImageX - Offset;
+        SrcX2 := ItemInstanceInfo( Zone.Items[ i ]^ ).ImageX + ItemInstanceInfo( Zone.Items[ i ]^ ).Width - Offset;
 
         Ya := Y;
         SrcY1a := SrcY1;
@@ -4973,7 +4976,7 @@ begin
           begin
             X := FMap.FItemList[ i ].X - MinX;
             dec( Y, MinY );
-            ZoneItem := TZone( FMap.Zones.Items[ FMap.FItemList[ i ].Zone ] );
+            ZoneItem := FMap.Zones[ FMap.FItemList[ i ].Zone ];
             DstH := Y + FMap.FItemList[ i ].Height;
             if ( Y < 0 ) then
             begin
@@ -5077,7 +5080,7 @@ begin
             H := FMap.FItemList[ i ].Height;
             X3 := FMap.FItemList[ i ].X + W;
             Y3 := FMap.FItemList[ i ].Y - FMap.FItemList[ i ].VHeight;
-            ZoneItem := TZone( FMap.Zones.Items[ FMap.FItemList[ i ].Zone ] );
+            ZoneItem := FMap.Zones[ FMap.FItemList[ i ].Zone ];
             if ( X3 > MinX ) and ( Y3 < MaxY ) then
             begin
               if ( X3 > X1 ) and ( FMap.FItemList[ i ].X < X2 ) then
@@ -5236,7 +5239,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
 
       if ( Index <> $FFFF ) then
       begin
-        ZoneTile := TZone( FMap.Zones.Items[ p^.Zone[ 1 ] ] );
+        ZoneTile := FMap.Zones[ p^.Zone[ 1 ] ];
         SrcX := ( Index div ZoneTile.FTileMaxColumnIndex ) * FMap.FTileWidth;
         SrcY := ( Index mod ZoneTile.FTileMaxColumnIndex ) * FMap.FTileHeight + HalfHeight;
         SrcX2 := SrcX + FMap.FTileWidth;
@@ -5257,7 +5260,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
 
       if ( p^.Tile[ 2 ] <> $FFFF ) then
       begin
-        ZoneTile := TZone( FMap.Zones.Items[ p^.Zone[ 2 ] ] );
+        ZoneTile := FMap.Zones[ p^.Zone[ 2 ] ];
         SrcX := ( p^.Tile[ 2 ] div ZoneTile.FTileMaxColumnIndex ) * FMap.FTileWidth;
         SrcY := ( p^.Tile[ 2 ] mod ZoneTile.FTileMaxColumnIndex ) * FMap.FTileHeight;
         SrcX2 := SrcX + HalfWidth;
@@ -5278,7 +5281,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
 
       if ( p^.Tile[ 3 ] <> $FFFF ) then
       begin
-        ZoneTile := TZone( FMap.Zones.Items[ p^.Zone[ 3 ] ] );
+        ZoneTile := FMap.Zones[ p^.Zone[ 3 ] ];
         SrcX := ( p^.Tile[ 3 ] div ZoneTile.FTileMaxColumnIndex ) * FMap.FTileWidth;
         SrcY := ( p^.Tile[ 3 ] mod ZoneTile.FTileMaxColumnIndex ) * FMap.FTileHeight;
         SrcX2 := SrcX + FMap.FTileWidth;
@@ -5299,7 +5302,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
 
       if ( p^.Tile[ 4 ] <> $FFFF ) then
       begin
-        ZoneTile := TZone( FMap.Zones.Items[ p^.Zone[ 4 ] ] );
+        ZoneTile := FMap.Zones[ p^.Zone[ 4 ] ];
         SrcX := ( p^.Tile[ 4 ] div ZoneTile.FTileMaxColumnIndex ) * FMap.FTileWidth + HalfWidth;
         SrcY := ( p^.Tile[ 4 ] mod ZoneTile.FTileMaxColumnIndex ) * FMap.FTileHeight;
         SrcX2 := SrcX + HalfWidth;
@@ -5322,7 +5325,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
     begin
       if ( Index = $FFFF ) then
         Exit;
-      ZoneTile := TZone( FMap.Zones.Items[ p^.Zone[ Layer ] ] );
+      ZoneTile := FMap.Zones[ p^.Zone[ Layer ] ];
       if ZoneTile is TLightZone then
       begin
         if ZoneTile.FullRefresh then
@@ -5699,8 +5702,8 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
     begin
       for i := 0 to FAstarAvoidFigure.Count - 1 do
       begin
-        A := sqr( TAniFigure( FAstarAvoidFigure.Items[ i ] ).Radius + FAStarFigure.Radius ) + sqr( FMap.FStripWidth ); //StripWidth is the fudge factor
-        B := sqr( TAniFigure( FAstarAvoidFigure.Items[ i ] ).StepX - DestX1 ) + sqr( 2 * ( TAniFigure( FAstarAvoidFigure.Items[ i ] ).StepY - DestY1 ) );
+        A := sqr( FAstarAvoidFigure[ i ].Radius + FAStarFigure.Radius ) + sqr( FMap.FStripWidth ); //StripWidth is the fudge factor
+        B := sqr( FAstarAvoidFigure[ i ].StepX - DestX1 ) + sqr( 2 * ( FAstarAvoidFigure[ i ].StepY - DestY1 ) );
       //        if (B<A) then begin
       //          A:=sqr(StepX-(FStartX+SrcX*CellWidth)+CellWidth)+sqr(2*(StepY-(FStartY+SrcY*CellHeight))+CellHeight);
         if ( B < A ) then
@@ -7109,12 +7112,12 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
     R1 := FMap.LightR;
     G1 := FMap.LightG;
     B1 := FMap.LightB;
-    if ( TZone( FMap.Zones.Items[ Figure.Zone ] ) is TLightZone ) then
+    if ( FMap.Zones[ Figure.Zone ] is TLightZone ) then
     begin
       j := 0;
-      for i := 0 to TLightZone( FMap.Zones.Items[ Figure.Zone ] ).OverlapZones.Count - 1 do
+      for i := 0 to TLightZone( FMap.Zones[ Figure.Zone ] ).OverlapZones.Count - 1 do
       begin
-        Test := TLightZone( FMap.Zones.Items[ Figure.Zone ] ).OverlapZones.Items[ i ];
+        Test := TLightZone( FMap.Zones[ Figure.Zone ] ).OverlapZones[ i ];
         X1 := sqr( Test.FlickerX[ Test.State ] - Figure.FX );
         Y1 := sqr( ( Test.FlickerY[ Test.State ] - Figure.FY ) * 2 );
         Z1 := sqr( Test.FlickerZ[ Test.State ] - ( Figure.Height div 2 ) );
@@ -7244,22 +7247,22 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
     Result := nil;
     for i := 0 to FigureList.Count - 1 do
     begin
-      if TAniFigure( FigureList.Items[ i ] ).Enabled then
+      if FigureList[ i ].Enabled then
       begin
-        R := Radius + TAniFigure( FigureList.Items[ i ] ).Radius;
-        Dx := TAniFigure( FigureList.Items[ i ] ).X - X;
+        R := Radius + FigureList[ i ].Radius;
+        Dx := FigureList[ i ].X - X;
         if ( Dx <= R ) and ( Dx >= -R ) then
         begin
-          dy := TAniFigure( FigureList.Items[ i ] ).Y - Y;
+          dy := FigureList[ i ].Y - Y;
           hR := R / 2;
           if ( dy <= hR ) and ( dy >= -hR ) then
           begin
-            TAniFigure( FigureList.Items[ i ] ).FDistance := sqrt( sqr( Dx ) + sqr( 2 * dy ) );
-            if TAniFigure( FigureList.Items[ i ] ).Distance <= R then
+            FigureList[ i ].FDistance := sqrt( sqr( Dx ) + sqr( 2 * dy ) );
+            if FigureList[ i ].Distance <= R then
             begin
               if not Assigned( Result ) then
                 Result := TList.Create;
-              Result.Add( TAniFigure( FigureList.Items[ i ] ) )
+              Result.Add( FigureList[ i ] )
             end;
           end;
         end;
@@ -8317,20 +8320,20 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
         var
           i, L : longint;
         begin
-          if assigned( OverlapZones ) then
+          if Assigned( OverlapZones ) then
           begin
-            OverlapZones.free;
+            OverlapZones.Free;
             OverlapZones := nil;
           end;
           Stream.Read( L, sizeof( L ) );
           if L > 0 then
           begin
-            OverlapZones := TList.create;
-            OverlapZones.capacity := L;
+            OverlapZones := TList<TLightZone>.create;
+            OverlapZones.Capacity := L;
             for i := 0 to L - 1 do
             begin
               Stream.Read( L, sizeof( L ) );
-              OverlapZones.add( FMap.Zones[ L ] );
+              OverlapZones.Add( TLightZone( FMap.Zones[ L ] ) );
             end;
           end;
 
@@ -8382,11 +8385,11 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
         begin
           if assigned( OverlapZones ) then
           begin
-            L := OverlapZones.count;
+            L := OverlapZones.Count;
             Stream.write( L, sizeof( L ) );
             for i := 0 to L - 1 do
             begin
-              L := TZone( OverlapZones.items[ i ] ).Index;
+              L := OverlapZones[ i ].Index;
               Stream.write( L, sizeof( L ) );
             end;
           end
@@ -8402,7 +8405,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
             Stream.write( L, sizeof( L ) );
             for i := 0 to L - 1 do
             begin
-              L := FMap.GetItemIndex( PItemInstanceInfo( Items.items[ i ] ) );
+              L := FMap.GetItemIndex( PItemInstanceInfo( Items[ i ] ) );
               Stream.write( L, sizeof( L ) );
             end;
           end
@@ -8491,7 +8494,7 @@ procedure TAniView.CopyTile( Dest : IDirectDrawSurface; GridLoc : Pointer; X, Y,
           result := FLightIndex;
         end;
 
-        procedure TAniFigure.FindPathTo( X, Y : Integer; Avoid : TList; Deviance : integer );
+        procedure TAniFigure.FindPathTo( X, Y : Integer; Avoid : TList<TAniFigure>; Deviance : integer );
         begin
           FStartX := FX;
           FStartY := FY;

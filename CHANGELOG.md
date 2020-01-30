@@ -13,6 +13,17 @@ All notable changes to this project will be documented in this file.
 - REFACTOR: Too much copy/paste code - (re)Moved method up to base class or extract
 - REFACTOR: Reorg classes
 
+## 2020-01-30
+### Added
+- .LVL map documentation - not fully complete.
+
+### Changed
+- TZone and TAniFigure typed lists - so removed some casting and default properties - to improve readability and type checking.
+
+## 2020-01-28
+### Added
+- Items.db and Title.db documentation.
+
 ## 2020-01-27
 ### Added
 - Xref.db documentation - moved into documentation folder with POX file format documentation - both variantions described.
