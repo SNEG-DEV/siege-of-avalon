@@ -13,6 +13,13 @@ All notable changes to this project will be documented in this file.
 - REFACTOR: Too much copy/paste code - (re)Moved method up to base class or extract
 - REFACTOR: Reorg classes
 
+## 2020-05-24
+### Added
+- Support for Delphi 10.4 Sydney.
+
+### Changed
+- Many try-except conversions, replaced by StrToXDef one-lines.
+
 ## 2020-01-30
 ### Added
 - .LVL map documentation - not fully complete.

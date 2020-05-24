@@ -307,14 +307,10 @@ begin
     CenterY := Character.Y;
     TCharacterResource( character.Resource ).speed := 7;
     S := Character.Properties[ 'LeashLength' ];
-    try
-      if S = '' then
-        Leash := 400
-      else
-        Leash := StrToInt( S );
-    except
-      Leash := 200;
-    end;
+    if S = '' then
+      Leash := 400
+    else
+      Leash := StrToIntDef( S, 200 );
 
     S := Lowercase( Character.Properties[ 'WolfType' ] );
     try
@@ -334,27 +330,9 @@ begin
       WolfType := wtWolf;
     end;
 
-    S := LowerCase( Character.Properties[ 'Combative' ] );
-    try
-      if S = '' then
-        bCombative := True
-      else if S = 'false' then
-        bCombative := False
-      else
-        bCombative := true;
-    except
-      bCombative := False;
-    end;
-
-    S := Character.Properties[ 'TimeToAttack' ];
-    try
-      if S = '' then
-        PercentageWounded := 50
-      else
-        PercentageWounded := StrtoInt( S );
-    except
-      PercentageWounded := 50;
-    end;
+    bCombative := StrToBoolDef( Character.Properties[ 'Combative' ], True );
+    PercentageWounded := StrtoIntDef( Character.Properties[ 'TimeToAttack' ], 50 );
+    
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -679,15 +657,9 @@ begin
   try
 
     TCharacterResource( character.Resource ).speed := 7;
-    S := Character.Properties[ 'AttackDelay' ];
-    try
-      if ( S = '' ) or ( s = '0' ) then
-        AttackDelay := 25
-      else
-        AttackDelay := StrToInt( S );
-    except
+    AttackDelay := StrToIntDef( Character.Properties[ 'AttackDelay' ], 25 );
+    if AttackDelay = 0 then
       AttackDelay := 25;
-    end;
 
     S := Character.Properties[ 'iSpeed' ];
     try
@@ -711,16 +683,7 @@ begin
     except
     end;
 
-
-    S := Character.Properties[ 'TimeToRun' ];
-    try
-      if S = '' then
-        RunAwayTime := 75
-      else
-        RunAwayTime := StrToInt( S );
-    except
-      RunAwayTime := 75;
-    end;
+    RunAwayTime := StrToIntDef( Character.Properties[ 'TimeToRun' ], 75 );
 
     S := Lowercase( Character.Properties[ 'WolfType' ] );
     try
@@ -732,15 +695,7 @@ begin
       WolfType := 'wolf';
     end;
 
-    S := Character.Properties[ 'TimeToAttack' ];
-    try
-      if S = '' then
-        PercentageWounded := 50
-      else
-        PercentageWounded := StrtoInt( S );
-    except
-      PercentageWounded := 50;
-    end;
+    PercentageWounded := StrToIntDef( Character.Properties[ 'TimeToAttack' ], 50 );
   except
     on E : Exception do
       Log.log( FailName + E.Message );

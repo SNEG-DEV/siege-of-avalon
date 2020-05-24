@@ -10228,21 +10228,9 @@ begin
         begin
           if S = 'position' then
           begin
-            try
-              FX := StrToInt( Parse( Value, 0, ',' ) );
-            except
-              FX := 0;
-            end;
-            try
-              FY := StrToInt( Parse( Value, 1, ',' ) );
-            except
-              FY := 0;
-            end;
-            try
-              FZ := StrToInt( Parse( Value, 2, ',' ) );
-            except
-              FZ := 0;
-            end;
+            FX := StrToIntDef( Parse( Value, 0, ',' ), 0 );
+            FY := StrToIntDef( Parse( Value, 1, ',' ), 0 );
+            FZ := StrToIntDef( Parse( Value, 2, ',' ), 0 );
           end
           else
             NoProp := true;
@@ -10504,21 +10492,9 @@ begin
           if S = 'resource' then
           else if S = 'position' then
           begin
-            try
-              i := StrToInt( Parse( Value, 0, ',' ) );
-            except
-              i := 0;
-            end;
-            try
-              j := StrToInt( Parse( Value, 1, ',' ) );
-            except
-              j := 0;
-            end;
-            try
-              k := StrToInt( Parse( Value, 2, ',' ) );
-            except
-              k := 0;
-            end;
+            i := StrToIntDef( Parse( Value, 0, ',' ), 0 );
+            j := StrToIntDef( Parse( Value, 1, ',' ), 0 );
+            k := StrToIntDef( Parse( Value, 2, ',' ), 0 );
             SetPos( i, j, k );
           end
           else

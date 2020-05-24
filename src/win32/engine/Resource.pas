@@ -2531,11 +2531,7 @@ begin
     arr := S.Split([',']);
     for i := 0 to Length(arr)-1 do
     begin
-      try
-        j := StrToInt( arr[i] );
-      except
-        j := -1;
-      end;
+      j := StrToIntDef( arr[i], -1 );
       if j >= 0 then
         BackLayer[ j ] := True;
     end;

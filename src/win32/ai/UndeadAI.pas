@@ -544,14 +544,7 @@ begin
     CenterY := Character.Y;
 
     S := Character.Properties[ 'LeashLength' ];
-    try
-      if S = '' then
-        Leash := 200
-      else
-        Leash := StrToInt( S );
-    except
-      Leash := 200;
-    end;
+    Leash := StrToIntDef( S, 200 );
 
     case Random( 8 ) of
       0 : character.Frame := 168;
@@ -1450,14 +1443,7 @@ begin
 
 
     S := Character.Properties[ 'Distance' ];
-    try
-      if S = '' then
-        iDistance := 175
-      else
-        iDistance := StrToInt( S );
-    except
-      iDistance := 175;
-    end;
+    iDistance := StrToIntDef( S, 175 );
 
     PartyTotal := 1;
     if character.GroupName <> '' then
@@ -2018,14 +2004,7 @@ begin
 
 
     S := Character.Properties[ 'Distance' ];
-    try
-      if S = '' then
-        iDistance := 175
-      else
-        iDistance := StrToInt( S );
-    except
-      iDistance := 175;
-    end;
+    iDistance := StrToIntDef( S, 175 );
 
     if character.GroupName <> '' then
       FriendsList := GetGroup( Character, Character.GroupName );
@@ -2659,15 +2638,8 @@ begin
     end;
 
     S := Character.Properties[ 'Distance' ];
-    try
-      if S = '' then
-        iDistance := 175
-      else
-        iDistance := StrToInt( S );
-    except
-      iDistance := 175;
-    end;
-
+    iDistance := StrToIntDef( S, 175 );
+    
     if character.GroupName <> '' then
       FriendsList := GetGroup( Character, Character.GroupName );
 

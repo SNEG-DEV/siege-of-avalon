@@ -177,13 +177,7 @@ begin
       Character.Properties[ 'CenterX' ] := IntToStr( CenterX );
     end
     else
-    begin
-      try
-        CenterX := StrToInt( S );
-      except
-        CenterX := Character.X;
-      end;
-    end;
+      CenterX := StrToIntDef( S, Character.X );
 
     S := Character.Properties[ 'CenterY' ];
     if S = '' then
@@ -192,13 +186,7 @@ begin
       Character.Properties[ 'CenterY' ] := IntToStr( CenterY );
     end
     else
-    begin
-      try
-        CenterY := StrToInt( S );
-      except
-        CenterY := Character.Y;
-      end;
-    end;
+      CenterY := StrToIntDef( S, Character.Y );
 
     S := Character.Properties[ 'LeashLength' ];
     try

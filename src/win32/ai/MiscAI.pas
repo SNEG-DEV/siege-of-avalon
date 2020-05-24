@@ -1013,15 +1013,7 @@ begin
 
     character.Properties[ 'idleduty' ] := 'stand';
 
-    S := Character.Properties[ 'distance' ];
-    try
-      if S = '' then
-        iDistance := ScreenMetrics.CharacterDistance
-      else
-        iDistance := StrToInt( S );
-    except
-      iDistance := ScreenMetrics.CharacterDistance;
-    end;
+    iDistance := StrToIntDef( Character.Properties[ 'distance' ], ScreenMetrics.CharacterDistance );
 
     if character.TitleExists( 'Combative' ) then
     begin
@@ -2846,15 +2838,7 @@ begin
       strdisguise := '';
     end;
 
-    S := Character.Properties[ 'Distance' ];
-    try
-      if S = '' then
-        iDistance := 175
-      else
-        iDistance := StrToInt( S );
-    except
-      iDistance := 175;
-    end;
+    iDistance := StrToIntDef( Character.Properties[ 'Distance' ], 175 );
 
     if character.TitleExists( 'Combative' ) then
     begin
@@ -3014,65 +2998,16 @@ begin
       PlayIdleSFX := false;
     end;
 
-    S := LowerCase( Character.Properties[ 'IdleSFXDelay' ] );
-    try
-      if S = '' then
-        IdleSFXDelay := 0
-      else
-      begin
-        iSFXDelayCount := StrToInt( s );
-        IdleSFXDelay := StrToInt( s );
-      end;
-    except
-      IdleSFXDelay := 0;
-    end;
+    iSFXDelayCount := StrToIntDef( Character.Properties[ 'IdleSFXDelay' ], 0 );
+    IdleSFXDelay := StrToIntDef( Character.Properties[ 'IdleSFXDelay' ], 0 );
+    bPlaySFXMetal := StrToBoolDef( Character.Properties[ 'PlaySFXMetal' ], False );
+    bPlaySFXAttack := StrToBoolDef( Character.Properties[ 'PlaySFXAttack' ], False );
+    bPlaySFXOther := StrToBoolDef( Character.Properties[ 'PlaySFXOther' ], False );
 
-    S := LowerCase( Character.Properties[ 'PlaySFXMetal' ] );
-    try
-      if S = '' then
-        bPlaySFXMetal := false
-      else if S = 'true' then
-        bPlaySFXMetal := true
-      else
-        bPlaySFXMetal := False;
-    except
-      bPlaySFXMetal := false;
-    end;
-    S := LowerCase( Character.Properties[ 'PlaySFXAttack' ] );
-    try
-      if S = '' then
-        bPlaySFXAttack := false
-      else if S = 'true' then
-        bPlaySFXAttack := true
-      else
-        bPlaySFXAttack := False;
-    except
-      bPlaySFXAttack := false;
-    end;
-
-    S := LowerCase( Character.Properties[ 'PlaySFXOther' ] );
-    try
-      if S = '' then
-        bPlaySFXOther := false
-      else if S = 'true' then
-        bPlaySFXOther := true
-      else
-        bPlaySFXOther := False;
-    except
-      bPlaySFXOther := false;
-    end;
-
-    S := LowerCase( Character.Properties[ 'SFXDelayType' ] );
-    try
-      if S = '' then
-        SFXDelayType := dtRandom
-      else if S = 'fixed' then
-        SFXDelayType := dtFixed
-      else
-        SFXDelayType := dtRandom;
-    except
+    if LowerCase( Character.Properties[ 'SFXDelayType' ] ) = 'fixed' then
+      SFXDelayType := dtFixed
+    else
       SFXDelayType := dtRandom;
-    end;
 
     S := Character.Properties[ 'iSpeed' ];
     try
@@ -3081,17 +3016,7 @@ begin
     except
     end;
 
-    S := LowerCase( Character.Properties[ 'Moveable' ] );
-    try
-      if S = '' then
-        bMove := True
-      else if S = 'false' then
-        bMove := False
-      else
-        bMove := True;
-    except
-      bMove := True;
-    end;
+    bMove := StrToBoolDef( Character.Properties[ 'Moveable' ], True );
 
   except
     on E : Exception do
@@ -3854,7 +3779,6 @@ end;
 
 procedure TCommanderCombat.Init;
 var
-  S : string;
   List : TStringList;
   iLoop : Integer;
 const
@@ -3862,45 +3786,15 @@ const
 begin
   Log.DebugLog( FailName );
   try
-    S := Character.Properties[ 'RunAwayTime' ];
-    try
-      if S = '' then
-        RunAwayTime := 25
-      else
-        RunAwayTime := StrToInt( S );
-    except
-      RunAwayTime := 25;
-    end;
+    RunAwayTime := StrToIntDef( Character.Properties[ 'RunAwayTime' ], 25 );
+    TimeToDie := StrToIntDef( Character.Properties[ 'TimeToDie' ], 90 );
 
-    S := Character.Properties[ 'TimeToDie' ];
-    try
-      if S = '' then
-        TimeToDie := 90
-      else
-        TimeToDie := StrToInt( S );
-    except
-      TimeToDie := 90;
-    end;
-
-    S := LowerCase( Character.Properties[ 'MainStat' ] );
-    try
-      if S = '' then
-        MainStat := 'strength'
-      else
-        MainStat := S;
-    except
+    MainStat := LowerCase( Character.Properties[ 'MainStat' ] );
+    if MainStat = '' then
       MainStat := 'strength';
-    end;
 
-    S := Character.Properties[ 'TimeToAttack' ];
-    try
-      if S = '' then
-        TimeToAttack := 20
-      else
-        TimeToAttack := StrToInt( S );
-    except
-      TimeToAttack := 20;
-    end;
+    TimeToAttack := StrToIntDef( Character.Properties[ 'TimeToAttack' ], 20 );
+
     if Character.GroupName <> '' then
     begin
       List := GetGroup( Character, Character.GroupName );
@@ -4301,39 +4195,9 @@ begin
       IdleDuty := idMeander;
     end;
 
-    S := LowerCase( Character.Properties[ 'Combative' ] );
-    try
-      if S = '' then
-        bCombative := True
-      else if S = 'false' then
-        bCombative := False
-      else
-        bCombative := True;
-    except
-      bCombative := True;
-    end;
-
-    S := LowerCase( Character.Properties[ 'Talk' ] );
-    try
-      if S = '' then
-        bTalk := True
-      else if S = 'false' then
-        bTalk := False
-      else
-        bTalk := True;
-    except
-      bTalk := True;
-    end;
-
-    S := Character.Properties[ 'LeashLength' ];
-    try
-      if S = '' then
-        iLeash := 0
-      else
-        iLeash := StrToInt( S );
-    except
-      iLeash := 0;
-    end;
+    bCombative := StrToBoolDef( Character.Properties[ 'Combative' ], True );
+    bTalk := StrToBoolDef( Character.Properties[ 'Talk' ], True );
+    iLeash := StrToIntDef( Character.Properties[ 'LeashLength' ], 0 );
 
     if IdleDuty = idGuard then
     begin
@@ -4685,15 +4549,7 @@ begin
     CenterX := Character.X;
     CenterY := Character.Y;
 
-    S := Character.Properties[ 'LeashLength' ];
-    try
-      if S = '' then
-        iLeash := 0
-      else
-        iLeash := StrToInt( S );
-    except
-      iLeash := 0;
-    end;
+    iLeash := StrToIntDef( Character.Properties[ 'LeashLength' ], 0 );
 
     S := LowerCase( Character.Properties[ 'IdleDuty' ] );
     try
@@ -4711,27 +4567,10 @@ begin
       IdleDuty := idMeander;
 
     end;
-    S := LowerCase( Character.Properties[ 'Combative' ] );
-    try
-      if S = '' then
-        bCombative := True
-      else if S = 'false' then
-        bCombative := False
-      else
-        bCombative := True;
-    except
-      bCombative := True;
-    end;
 
-    S := Character.Properties[ 'ReturnPath' ];
-    try
-      if S = '' then
-        ReturnName := ''
-      else
-        ReturnName := S;
-    except
-      ReturnName := '';
-    end;
+    bCombative := StrToBoolDef( Character.Properties[ 'Combative' ], True );
+
+    ReturnName := Character.Properties[ 'ReturnPath' ];
 
     if Character.GroupName <> '' then
       MyGroup := GetGroup( Character, Character.GroupName );
@@ -4916,15 +4755,7 @@ begin
     CenterX := Character.X;
     CenterY := Character.Y;
 
-    S := Character.Properties[ 'Distance' ];
-    try
-      if S = '' then
-        iDistance := 175
-      else
-        iDistance := StrToInt( S );
-    except
-      iDistance := 175;
-    end;
+    iDistance := StrToIntDef( Character.Properties[ 'Distance' ], 175 );
 
     S := LowerCase( Character.Properties[ 'IdleDuty' ] );
     try
@@ -4940,63 +4771,15 @@ begin
       IdleDuty := 'stand';
     end;
 
-    S := Character.Properties[ 'WatchedTitle' ];
-    try
-      if S = '' then
-        strTitle := 'harasser;killdad;killmom'
-      else
-        strTitle := S;
-    except
+
+    strTitle := Character.Properties[ 'WatchedTitle' ];
+    if S = '' then
       strTitle := 'harasser;killdad;killmom';
-    end;
 
-    S := LowerCase( Character.Properties[ 'Combative' ] );
-    try
-      if S = '' then
-        FCombative := True
-      else if S = 'false' then
-        FCombative := False
-      else
-        FCombative := True;
-    except
-      FCombative := True;
-    end;
-
-    S := LowerCase( Character.Properties[ 'Caster' ] );
-    try
-      if S = '' then
-        FCaster := False
-      else if S = 'true' then
-        FCaster := True
-      else
-        FCaster := False;
-    except
-      FCaster := False;
-    end;
-
-    S := Character.Properties[ 'LeashLength' ];
-    try
-
-      if S = '' then
-        iLeash := 50
-      else
-        iLeash := StrToInt( S );
-    except
-      iLeash := 50;
-    end;
-
-    S := LowerCase( Character.Properties[ 'Moveable' ] );
-    try
-      if S = '' then
-        bMove := True
-      else if S = 'false' then
-        bMove := False
-      else
-        bMove := True;
-    except
-      bMove := True;
-    end;
-
+    FCombative := StrToBoolDef( Character.Properties[ 'Combative' ], True );
+    FCaster := StrToBoolDef( Character.Properties[ 'Caster' ], False );
+    iLeash := StrToIntDef( Character.Properties[ 'LeashLength' ], 50 );
+    bMove := StrToBoolDef( Character.Properties[ 'Moveable' ], True );
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -5392,8 +5175,6 @@ begin
 end;
 
 procedure TDrunk.Init;
-var
-  S : string;
 const
   FailName : string = 'MiscAI.TDrunk.Init';
 begin
@@ -5406,64 +5187,11 @@ begin
     CastTimes := Random( 3 ) + 1;
     CenterX := Character.X;
     CenterY := Character.Y;
-
-    S := Character.Properties[ 'Distance' ];
-    try
-      if S = '' then
-        iDistance := 175
-      else
-        iDistance := StrToInt( S );
-    except
-      iDistance := 175;
-    end;
-
-    S := LowerCase( Character.Properties[ 'Combative' ] );
-    try
-      if S = '' then
-        FCombative := True
-      else if S = 'false' then
-        FCombative := False
-      else
-        FCombative := True;
-    except
-      FCombative := True;
-    end;
-
-    S := LowerCase( Character.Properties[ 'Caster' ] );
-    try
-      if S = '' then
-        FCaster := False
-      else if S = 'true' then
-        FCaster := True
-      else
-        FCaster := False;
-    except
-      FCaster := False;
-    end;
-
-    S := Character.Properties[ 'LeashLength' ];
-    try
-
-      if S = '' then
-        iLeash := 50
-      else
-        iLeash := StrToInt( S );
-    except
-      iLeash := 50;
-    end;
-
-    S := LowerCase( Character.Properties[ 'Moveable' ] );
-    try
-      if S = '' then
-        bMove := True
-      else if S = 'false' then
-        bMove := False
-      else
-        bMove := True;
-    except
-      bMove := True;
-    end;
-
+    iDistance := StrToIntDef( Character.Properties[ 'Distance' ], 175 );
+    FCombative := StrToBoolDef( Character.Properties[ 'Combative' ], True );
+    FCaster := StrToBoolDef( Character.Properties[ 'Caster' ], False );
+    iLeash := StrToIntDef( Character.Properties[ 'LeashLength' ], 50 );
+    bMove := StrToBoolDef( Character.Properties[ 'Moveable' ], True );
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -6005,16 +5733,10 @@ begin
   try
     Revealed := False;
     character.Frame := 0;
-    S := Character.Properties[ 'AttackDelay' ];
-    try
-      if ( S = '' ) or ( s = '0' ) then
-        AttackDelay := 32
-      else
-        AttackDelay := StrToInt( S );
-    except
+    AttackDelay := StrToIntDef( Character.Properties[ 'AttackDelay' ], 32 );
+    if AttackDelay = 0 then
       AttackDelay := 32;
-    end;
-
+ 
     S := LowerCase( Character.Properties[ 'BalanceWithPlayer' ] );
     try
       if ( S <> '' ) and ( s <> '0' ) then
@@ -6226,59 +5948,18 @@ begin
     Character.AddTitle( 'Shadow' );
     Character.AddTitle( 'Hold' );
 
-    S := Character.Properties[ 'Distance' ];
-    try
-      if S = '' then
-        iDistance := ScreenMetrics.CharacterDistance
-      else
-        iDistance := StrToInt( S );
-    except
-      iDistance := ScreenMetrics.CharacterDistance;
-    end;
+    iDistance := StrToIntDef( Character.Properties[ 'Distance' ], ScreenMetrics.CharacterDistance );
+    FCombative := StrToBoolDef( Character.Properties[ 'Combative' ], True );
+    FCaster := StrToBoolDef( Character.Properties[ 'Caster' ], False );
 
-    S := LowerCase( Character.Properties[ 'Combative' ] );
-    try
-      if S = '' then
-        FCombative := True
-      else if S = 'false' then
-        FCombative := False
-      else
-        FCombative := True;
-    except
-      FCombative := False;
-    end;
 
-    S := LowerCase( Character.Properties[ 'Caster' ] );
-    try
-      if S = '' then
-        FCaster := False
-      else if S = 'true' then
-        FCaster := True
-      else
-        FCaster := False;
-    except
-      FCaster := False;
-    end;
-
-    S := LowerCase( Character.Properties[ 'SpellBook' ] );
-    try
-      if S = '' then
-        oSpellBook := 'frost,shock,shrapnel,flame'
-      else
-        oSpellBook := s
-    except
+    oSpellBook := LowerCase( Character.Properties[ 'SpellBook' ] );
+    if oSpellBook = '' then
       oSpellBook := 'frost,shock,shrapnel,flame';
-    end;
 
-    S := LowerCase( Character.Properties[ 'SpellBook' ] );
-    try
-      if S = '' then
-        dSpellBook := 'push,heal,protection'
-      else
-        dSpellBook := s
-    except
+    dSpellBook := LowerCase( Character.Properties[ 'SpellBook' ] );
+    if dSpellBook = '' then
       dSpellBook := 'push,heal,protection';
-    end;
 
     S := Character.Properties[ 'iSpeed' ];
     try
@@ -6287,18 +5968,7 @@ begin
     except
     end;
 
-    S := LowerCase( Character.Properties[ 'Moveable' ] );
-    try
-      if S = '' then
-        bMove := True
-      else if S = 'false' then
-        bMove := False
-      else
-        bMove := True;
-    except
-      bMove := True;
-    end;
-
+    bMove := StrToBoolDef( Character.Properties[ 'Moveable' ], True );
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -7438,8 +7108,6 @@ begin
 end;
 
 procedure TMeleeSparing.Init;
-var
-  S : string;
 const
   FailName : string = 'TMeleeSparing.Init';
 begin
@@ -7450,19 +7118,7 @@ begin
     character.combat := player.combat;
     character.Strength := player.strength;
     character.Coordination := player.Coordination;
-
-    S := Character.Properties[ 'TimeToRun' ];
-    try
-      if S = '' then
-        iTimeToRun := 75
-      else
-        iTimeToRun := StrToInt( S );
-    except
-      iTimeToRun := 75;
-    end;
-
-
-
+    iTimeToRun := StrToIntDef( Character.Properties[ 'TimeToRun' ], 75 );
   except
     on E : Exception do
       Log.log( 'Error Melee Init: ' + E.Message );
@@ -7470,7 +7126,6 @@ begin
 
   Delay := random( 40 );
 end;
-
 
 function TMeleeSparing.OnCollideFigure( Target : TAniFigure ) : boolean;
 const
@@ -7600,20 +7255,8 @@ begin
 end;
 
 procedure TEnviromentDamage.Init;
-var
-  s : string;
 begin
-  S := Character.Properties[ 'LeashLength' ];
-  try
-
-    if S = '' then
-      Interval := 166
-    else
-      Interval := StrToInt( S );
-  except
-    Interval := 166;
-  end;
-
+  Interval := StrToIntDef( Character.Properties[ 'LeashLength' ], 166 );
 end;
 
 { TObliesk }
@@ -7669,30 +7312,10 @@ begin
 end;
 
 procedure TRunScript.Init;
-var
-  s : string;
 begin
   NewFrame := 0;
-  S := LowerCase( Character.Properties[ 'Script' ] );
-  try
-    if S = '' then
-      strScript := ''
-    else
-      strScript := s;
-  except
-    strScript := '';
-  end;
-
-  S := Character.Properties[ 'LeashLength' ];
-  try
-    if S = '' then
-      Interval := 166
-    else
-      Interval := StrToInt( S );
-  except
-    Interval := 166;
-  end;
-
+  strScript := LowerCase( Character.Properties[ 'Script' ] );
+  Interval := StrToIntDef( Character.Properties[ 'LeashLength' ], 166 );
 end;
 
 { TClonePlayer }

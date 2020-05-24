@@ -373,21 +373,10 @@ var
       Log.DebugLog(FailName);
       try
 
-        try
-          Intensity := StrToInt( Attributes.values[ 'Intensity' ] );
-        except
-          Intensity := 100;
-        end;
-        try
-          Color := StrToInt( Attributes.values[ 'Color' ] );
-        except
-          Color := $FFFFFF;
-        end;
-        try
-          Radius := StrToInt( Attributes.values[ 'Radius' ] );
-        except
-          Radius := 128;
-        end;
+        Intensity := StrToIntDef(Attributes.values[ 'Intensity' ], 100);
+        Color := StrToIntDef( Attributes.values[ 'Color' ], $FFFFFF );
+        Radius := StrToIntDef( Attributes.values[ 'Radius' ], 128 );
+
         S := lowercase( Attributes.values[ 'Flicker' ] );
         if S = 'torch' then
           FlickerType := flTorch
@@ -489,11 +478,7 @@ var
           j := FigureInstances.add( GUID );
           GUID := '';
           S := Attributes.values[ 'SpriteVersion' ];
-          try
-            Version := StrToInt( S );
-          except
-            Version := 0;
-          end;
+          Version := StrToIntDef( S, 0 );
 
           if ( IgnoreDefaultSprites and ( InScene = '' ) ) or ( IgnoreSceneSprites and ( InScene <> '' ) ) then
             CreateEnabled := Version > 0

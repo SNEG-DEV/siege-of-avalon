@@ -1841,118 +1841,32 @@ begin
 
   // how far I can wonder from my start point
     S := Character.Properties[ 'LeashLength' ];
-    try
-
-      if S = '' then
-        iLeash := 0
-      else
-        iLeash := StrToInt( S );
-    except
-      iLeash := 0;
-    end;
-
+    iLeash := StrToIntDef( S, 0 );
+    
   // should I watch for enemies?
-    S := LowerCase( Character.Properties[ 'Combative' ] );
-    try
-      if S = '' then
-        bCombative := true
-      else if S = 'false' then
-        bCombative := False
-      else
-        bCombative := true;
-    except
-      bCombative := true;
-    end;
+    bCombative := StrToBoolDef(Character.Properties[ 'Combative' ], True);
 
   // can I be stopped from doing what I am doing
-    S := LowerCase( Character.Properties[ 'CanStop' ] );
-    try
-      if S = '' then
-        bCanStop := true
-      else if S = 'false' then
-        bCanStop := False
-      else
-        bCanStop := true;
-    except
-      bCanStop := true;
-    end;
+    bCanStop := StrToBoolDef(Character.Properties[ 'CanStop' ], True);
 
   //can I make comments about what I am doing.. never used
-    S := LowerCase( Character.Properties[ 'AllowTalk' ] );
-    try
-      if S = '' then
-        bTalk := true
-      else if S = 'false' then
-        bTalk := False
-      else
-        bTalk := true;
-    except
-      bTalk := true;
-    end;
+    bTalk := StrToBoolDef(Character.Properties[ 'AllowTalk' ], True);
 
   // Look for IdleSFX to play
-    S := LowerCase( Character.Properties[ 'PlayIdleSFX' ] );
-    try
-      if S = '' then
-        PlayIdleSFX := false
-      else if S = 'true' then
-        PlayIdleSFX := true
-      else
-        PlayIdleSFX := false;
-    except
-      PlayIdleSFX := false;
-    end;
+    PlayIdleSFX := StrToBoolDef(Character.Properties[ 'PlayIdleSFX' ], False);
+    
   //delay between SFX
-    S := LowerCase( Character.Properties[ 'IdleSFXDelay' ] );
-    try
-      if S = '' then
-        IdleSFXDelay := 0
-      else
-      begin
-        iSFXDelayCount := StrToInt( s );
-        IdleSFXDelay := StrToInt( s );
-      end;
-    except
-      IdleSFXDelay := 0;
-    end;
+    iSFXDelayCount := StrToIntDef(Character.Properties[ 'IdleSFXDelay' ], 0);
+    IdleSFXDelay := StrToIntDef(Character.Properties[ 'IdleSFXDelay' ], 0);
 
   //where to play the sfx from see item DTSoundRing
-    S := LowerCase( Character.Properties[ 'PlaySFXMetal' ] );
-    try
-      if S = '' then
-        bPlaySFXMetal := false
-      else if S = 'true' then
-        bPlaySFXMetal := true
-      else
-        bPlaySFXMetal := False;
-    except
-      bPlaySFXMetal := false;
-    end;
+    bPlaySFXMetal := StrToBoolDef(Character.Properties[ 'PlaySFXMetal' ], False);
 
   //where to play the sfx from see item DTSoundRing
-    S := LowerCase( Character.Properties[ 'PlaySFXAttack' ] );
-    try
-      if S = '' then
-        bPlaySFXAttack := false
-      else if S = 'true' then
-        bPlaySFXAttack := true
-      else
-        bPlaySFXAttack := False;
-    except
-      bPlaySFXAttack := false;
-    end;
+    bPlaySFXAttack := StrToBoolDef(Character.Properties[ 'PlaySFXAttack' ], False);
+    
   //where to play the sfx from see item DTSoundRing
-    S := LowerCase( Character.Properties[ 'PlaySFXOther' ] );
-    try
-      if S = '' then
-        bPlaySFXOther := false
-      else if S = 'true' then
-        bPlaySFXOther := true
-      else
-        bPlaySFXOther := False;
-    except
-      bPlaySFXOther := false;
-    end;
+    bPlaySFXOther := StrToBoolDef(Character.Properties[ 'PlaySFXOther' ], False);
 
   // SFX interval type
     S := LowerCase( Character.Properties[ 'SFXDelayType' ] );
@@ -2884,16 +2798,8 @@ begin
 
     CollideCount := 0;
     CirclePoint := Random( 360 ) + 180;
-    S := Character.Properties[ 'TimeToRun' ];
-    try
-      if S = '' then
-        iTimeToRun := 75
-      else
-        iTimeToRun := StrToInt( S );
-    except
-      iTimeToRun := 75;
-    end;
-
+    iTimeToRun := StrToIntDef(Character.Properties[ 'TimeToRun' ], 75);
+    
     S := Character.Properties[ 'Say' ];
     try
       if S = '' then
@@ -2904,18 +2810,8 @@ begin
       CombatSay := '';
     end;
 
-    S := LowerCase( Character.Properties[ 'AllowRun' ] );
-    try
-      if S = '' then
-        AllowRun := true
-      else if S = 'false' then
-        AllowRun := False
-      else
-        AllowRun := true;
-    except
-      AllowRun := true;
-    end;
-
+    AllowRun := StrToBoolDef( Character.Properties[ 'AllowRun' ], True );
+    
     S := Character.Properties[ 'iSpeed' ];
     try
       if ( S <> '' ) and ( s <> '0' ) then
@@ -2923,47 +2819,10 @@ begin
     except
     end;
 
-    S := Character.Properties[ 'BaseCourage' ];
-    try
-      if S = '' then
-        FBaseCourage := 5
-      else
-        FBaseCourage := StrToInt( S );
-    except
-      FBaseCourage := 5;
-    end;
-
-    S := Character.Properties[ 'BonusCourage' ];
-    try
-      if S = '' then
-        FBonusCourage := 0
-      else
-        FBonusCourage := StrToInt( S );
-    except
-      FBonusCourage := 0;
-    end;
-
-    S := LowerCase( Character.Properties[ 'TakeOrders' ] );
-    try
-      if S = '' then
-        bTakeOrders := true
-      else if S = 'false' then
-        bTakeOrders := False
-      else
-        bTakeOrders := true;
-    except
-      bTakeOrders := true;
-    end;
-
-    S := Character.Properties[ 'AttackDelay' ];
-    try
-      if ( S = '' ) or ( s = '0' ) then
-        AttackDelay := 30
-      else
-        AttackDelay := StrToInt( S );
-    except
-      AttackDelay := 30;
-    end;
+    FBaseCourage := StrToIntDef( Character.Properties[ 'BaseCourage' ], 5 );
+    FBonusCourage := StrToIntDef( Character.Properties[ 'BonusCourage' ], 0 );
+    bTakeOrders := StrToBoolDef( Character.Properties[ 'TakeOrders' ], True );
+    AttackDelay := StrToIntDef( Character.Properties[ 'AttackDelay' ], 30 );
 
     S := LowerCase( Character.Properties[ 'BalanceWithPlayer' ] );
     try
@@ -3112,15 +2971,7 @@ begin
     except
     end;
 
-    S := Character.Properties[ 'DamageShield' ];
-    try
-      if S = '' then
-        iDamageShield := 0
-      else
-        iDamageShield := StrToInt( S );
-    except
-      iDamageShield := 0;
-    end;
+    iDamageShield := StrToIntDef( Character.Properties[ 'DamageShield' ], 0 );
 
     S := LowerCase( Character.Properties[ 'SpellEffect' ] );
     if ( s <> '' ) then
@@ -3763,16 +3614,7 @@ begin
     except
     end;
 
-
-    S := Character.Properties[ 'TimeToRun' ];
-    try
-      if S = '' then
-        iTimeToRun := 75
-      else
-        iTimeToRun := StrToInt( S );
-    except
-      iTimeToRun := 75;
-    end;
+    iTimeToRun := StrToIntDef( Character.Properties[ 'TimeToRun' ], 75 );
 
     S := LowerCase( Character.Properties[ 'BalanceWithPlayer' ] );
     try
@@ -3872,72 +3714,15 @@ begin
     except
     end;
 
-    S := Character.Properties[ 'AttackDelay' ];
-    try
-      if ( S = '' ) or ( s = '0' ) then
-        AttackDelay := 25
-      else
-        AttackDelay := StrToInt( S );
-    except
+    AttackDelay := StrToIntDef( Character.Properties[ 'AttackDelay' ], 25 );
+    if AttackDelay=0 then
       AttackDelay := 25;
-    end;
 
-    S := Character.Properties[ 'BaseCourage' ];
-    try
-      if S = '' then
-        FBaseCourage := 1
-      else
-        FBaseCourage := StrToInt( S );
-    except
-      FBaseCourage := 1;
-    end;
-
-
-    S := LowerCase( Character.Properties[ 'TakeOrders' ] );
-    try
-      if S = '' then
-        bTakeOrders := true
-      else if S = 'false' then
-        bTakeOrders := False
-      else
-        bTakeOrders := true;
-    except
-      bTakeOrders := true;
-    end;
-
-    S := LowerCase( Character.Properties[ 'Moveable' ] );
-    try
-      if S = '' then
-        bMove := true
-      else if S = 'false' then
-        bMove := False
-      else
-        bMove := true;
-    except
-      bMove := true;
-    end;
-            //bMove :=false;
-    S := LowerCase( Character.Properties[ 'AllowRun' ] );
-    try
-      if S = '' then
-        AllowRun := true
-      else if S = 'false' then
-        AllowRun := False
-      else
-        AllowRun := true;
-    except
-      AllowRun := true;
-    end;
-
-    S := Character.Properties[ 'Distance' ];
-    try
-      if S = '' then
-        iDistance := 175
-      else
-        iDistance := StrToInt( S );
-    except
-      iDistance := 175;
-    end;
+    FBaseCourage := StrToIntDef( Character.Properties[ 'BaseCourage' ], 1 );
+    bTakeOrders := StrToBoolDef( Character.Properties[ 'TakeOrders' ], True );
+    bMove := StrToBoolDef( Character.Properties[ 'Moveable' ], True );
+    AllowRun := StrToBoolDef( Character.Properties[ 'AllowRun' ], True );
+    iDistance := StrToIntDef( Character.Properties[ 'Distance' ], 175 );
 
     PartyTotal := 1;
     if character.GroupName <> '' then
@@ -5199,9 +4984,6 @@ begin
       Log.log( 'Error HumanoidCaster FindFriendly: ' + E.Message );
 
   end;
-
-
-
 end;
 
 procedure THumanoidCasterCombat.FindTarget;
@@ -5287,16 +5069,8 @@ begin
     except
     end;
 
-    S := Character.Properties[ 'TimeToRun' ];
-    try
-      if S = '' then
-        iTimeToRun := 75
-      else
-        iTimeToRun := StrToInt( S );
-    except
-      iTimeToRun := 75;
-    end;
-
+    iTimeToRun := StrToIntDef( Character.Properties[ 'TimeToRun' ], 75 );
+    
     S := LowerCase( Character.Properties[ 'SpellEffect' ] );
     if ( s <> '' ) then
     begin
@@ -5442,50 +5216,13 @@ begin
     except
     end;
 
-    S := Character.Properties[ 'BaseCourage' ];
-    try
-      if S = '' then
-        FBaseCourage := 1
-      else
-        FBaseCourage := StrToInt( S );
-    except
-      FBaseCourage := 1;
-    end;
+    FBaseCourage := StrToIntDef( Character.Properties[ 'BaseCourage' ], 1 );
+    bTakeOrders := StrToBoolDef( Character.Properties[ 'TakeOrders' ], True );
+    AllowRun := StrToBoolDef( Character.Properties[ 'AllowRun' ], True );
 
-
-    S := LowerCase( Character.Properties[ 'TakeOrders' ] );
-    try
-      if S = '' then
-        bTakeOrders := true
-      else if S = 'false' then
-        bTakeOrders := False
-      else
-        bTakeOrders := true;
-    except
-      bTakeOrders := true;
-    end;
-
-    S := LowerCase( Character.Properties[ 'AllowRun' ] );
-    try
-      if S = '' then
-        AllowRun := true
-      else if S = 'false' then
-        AllowRun := False
-      else
-        AllowRun := true;
-    except
-      AllowRun := true;
-    end;
-
-    S := LowerCase( Character.Properties[ 'oSpellBook' ] );
-    try
-      if S = '' then
-        oSpellBook := 'frost,shrapnel,flame,charge,buff,hold'
-      else
-        oSpellBook := s
-    except
+    oSpellBook := LowerCase( Character.Properties[ 'oSpellBook' ] );
+    if oSpellBook = '' then
       oSpellBook := 'frost,shrapnel,flame,charge,buff,hold';
-    end;
 
     if not oSpellBook.Contains( 'hold' ) then
       HoldCast := true;
@@ -5544,62 +5281,18 @@ begin
       end
     end;
 
-    S := LowerCase( Character.Properties[ 'dSpellBook' ] );
-    try
-      if S = '' then
-        dSpellBook := 'protection from all,aura of iron'
-      else
-        dSpellBook := s
-    except
+    dSpellBook := LowerCase( Character.Properties[ 'dSpellBook' ] );
+    if dSpellBook = '' then
       dSpellBook := 'protection from all,aura of iron';
-    end;
 
-    S := LowerCase( Character.Properties[ 'Moveable' ] );
-    try
-      if S = '' then
-        bMove := true
-      else if S = 'false' then
-        bMove := False
-      else
-        bMove := true;
-    except
-      bMove := true;
-    end;
+    bMove := StrToBoolDef( Character.Properties[ 'Moveable' ], True );
 
-    S := LowerCase( Character.Properties[ 'HealFirst' ] );
-    try
-      if S = '' then
-        bHealFirst := true
-      else if S = 'false' then
-        bHealFirst := False
-      else
-        bHealFirst := true;
-
-    except
-      bHealFirst := true;
-    end;
-        //JAH FixME
+    bHealFirst := StrToBoolDef( Character.Properties[ 'HealFirst' ], True );
+    //JAH FixME - why then not move it to a const?
     bHealFirst := False;
 
-    S := Character.Properties[ 'Distance' ];
-    try
-      if S = '' then
-        iDistance := 175
-      else
-        iDistance := StrToInt( S );
-    except
-      iDistance := 175;
-    end;
-
-    S := Character.Properties[ 'DamageShield' ];
-    try
-      if S = '' then
-        iDamageShield := 0
-      else
-        iDamageShield := StrToInt( S );
-    except
-      iDamageShield := 0;
-    end;
+    iDistance := StrToIntDef( Character.Properties[ 'Distance' ], 175 );
+    iDamageShield := StrToIntDef( Character.Properties[ 'DamageShield' ], 0 );
 
     PartyTotal := 1;
     if character.GroupName <> '' then
@@ -6302,26 +5995,8 @@ begin
     except
     end;
 
-    S := Character.Properties[ 'AttackDelay' ];
-    try
-      if ( S = '' ) or ( s = '0' ) then
-        AttackDelay := 25
-      else
-        AttackDelay := StrToInt( S );
-    except
-      AttackDelay := 25;
-    end;
-    S := LowerCase( Character.Properties[ 'AllowRun' ] );
-    try
-      if S = '' then
-        AllowRun := true
-      else if S = 'false' then
-        AllowRun := False
-      else
-        AllowRun := true;
-    except
-      AllowRun := true;
-    end;
+    AttackDelay := StrToIntDef( Character.Properties[ 'AttackDelay' ], 25 );
+    AllowRun := StrToBoolDef( Character.Properties[ 'AllowRun' ], True );
 
     S := LowerCase( Character.Properties[ 'BalanceWithPlayer' ] );
     try
@@ -6387,48 +6062,10 @@ begin
     except
     end;
 
-    S := LowerCase( Character.Properties[ 'TakeOrders' ] );
-    try
-      if S = '' then
-        bTakeOrders := true
-      else if S = 'false' then
-        bTakeOrders := False
-      else
-        bTakeOrders := true;
-    except
-      bTakeOrders := true;
-    end;
-
-    S := Character.Properties[ 'BaseCourage' ];
-    try
-      if S = '' then
-        FBaseCourage := 1
-      else
-        FBaseCourage := StrToInt( S );
-    except
-      FBaseCourage := 1;
-    end;
-
-    S := Character.Properties[ 'BonusCourage' ];
-    try
-      if S = '' then
-        FBonusCourage := 0
-      else
-        FBonusCourage := StrToInt( S );
-    except
-      FBonusCourage := 0;
-    end;
-
-
-    S := Character.Properties[ 'Distance' ];
-    try
-      if S = '' then
-        iDistance := 100
-      else
-        iDistance := StrToInt( S );
-    except
-      iDistance := 100;
-    end;
+    bTakeOrders := StrToBoolDef( Character.Properties[ 'TakeOrders' ], True );
+    FBaseCourage := StrToIntDef( Character.Properties[ 'BaseCourage' ], 1 );
+    FBonusCourage := StrToIntDef( Character.Properties[ 'BonusCourage' ], 0 );
+    iDistance := StrToIntDef( Character.Properties[ 'Distance' ], 100 );
 
     S := LowerCase( Character.Properties[ 'MainStat' ] );
     try
@@ -7003,15 +6640,9 @@ begin
     RangeAttack := true;
     bHasBow := True;
 
-    S := Character.Properties[ 'AttackDelay' ];
-    try
-      if ( S = '' ) or ( s = '0' ) then
-        AttackDelay := 25
-      else
-        AttackDelay := StrToInt( S );
-    except
+    AttackDelay := StrToIntDef( Character.Properties[ 'AttackDelay' ], 25 );
+    if AttackDelay = 0 then
       AttackDelay := 25;
-    end;
 
     S := LowerCase( Character.Properties[ 'BalanceWithPlayer' ] );
     try
@@ -7107,35 +6738,9 @@ begin
     except
     end;
 
-    S := Character.Properties[ 'BaseCourage' ];
-    try
-      if S = '' then
-        FBaseCourage := 1
-      else
-        FBaseCourage := StrToInt( S );
-    except
-      FBaseCourage := 1;
-    end;
-
-    S := Character.Properties[ 'BonusCourage' ];
-    try
-      if S = '' then
-        FBonusCourage := 0
-      else
-        FBonusCourage := StrToInt( S );
-    except
-      FBonusCourage := 0;
-    end;
-
-    S := Character.Properties[ 'Distance' ];
-    try
-      if S = '' then
-        iDistance := 100
-      else
-        iDistance := StrToInt( S );
-    except
-      iDistance := 100;
-    end;
+    FBaseCourage := StrToIntDef( Character.Properties[ 'BaseCourage' ], 1 );
+    FBonusCourage := StrToIntDef( Character.Properties[ 'BonusCourage' ], 0 );
+    iDistance := StrToIntDef( Character.Properties[ 'Distance' ], 100 );
 
     S := LowerCase( Character.Properties[ 'MainStat' ] );
     try
