@@ -159,6 +159,7 @@ uses
   System.Classes,
   System.SysUtils,
   SoAOS.Types,
+  SoAOS.Effects,
   Engine,
   Spells,
   LogFile;

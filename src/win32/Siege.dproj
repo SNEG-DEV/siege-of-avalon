@@ -101,8 +101,8 @@
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <VerInfo_MinorVer>20</VerInfo_MinorVer>
         <VerInfo_Release>2</VerInfo_Release>
-        <VerInfo_Build>1312</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.20.2.1312;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Build>1313</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.20.2.1313;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <DCC_Optimize>false</DCC_Optimize>
         <DCC_DebugInformation>2</DCC_DebugInformation>
         <DCC_LocalDebugSymbols>true</DCC_LocalDebugSymbols>
@@ -1166,7 +1166,7 @@
         <DCCReference Include="interface\Map.pas"/>
         <DCCReference Include="interface\SoAOS.Intrface.Dialogs.Journal.pas"/>
         <DCCReference Include="engine\LoaderBox.pas"/>
-        <DCCReference Include="engine\Effects.pas"/>
+        <DCCReference Include="engine\SoAOS.Effects.pas"/>
         <DCCReference Include="engine\Spells.pas"/>
         <DCCReference Include="engine\Spells1.pas"/>
         <DCCReference Include="interface\SoAOS.Intrface.Dialogs.MainMenu.pas"/>
@@ -1190,7 +1190,7 @@
         <DCCReference Include="interface\Statistics.pas"/>
         <DCCReference Include="engine\SoAOS.StrUtils.pas"/>
         <DCCReference Include="engine\MMTimer.pas"/>
-        <DCCReference Include="engine\SOAOS.Types.pas"/>
+        <DCCReference Include="engine\SoAOS.Types.pas"/>
         <DCCReference Include="graphics\SoAOS.Graphics.Draw.pas"/>
         <DCCReference Include="graphics\SoAOS.Graphics.Types.pas"/>
         <DCCReference Include="interface\SoAOS.Intrface.Popup.pas"/>

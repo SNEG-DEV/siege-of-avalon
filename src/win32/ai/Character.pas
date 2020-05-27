@@ -910,6 +910,7 @@ uses
   SoAOS.Projectile,
   SoAOS.AI.Helper,
   SoAOS.Spells,
+  SoAOS.Effects,
   System.SysUtils,
   DXUtil,
   SoAOS.Graphics.Draw,

@@ -136,7 +136,7 @@ uses
   Character,
   Parts,
   Titles,
-  Effects,
+  SoAOS.Effects,
   Display,
   Music;
 

@@ -1,4 +1,4 @@
-unit Effects;
+unit SoAOS.Effects;
 (*
   Siege Of Avalon : Open Source Edition
 
@@ -42,12 +42,15 @@ unit Effects;
 interface
 
 uses
+  System.Classes,
   System.SysUtils,
   System.Types,
   Resource,
   Character,
   Anigrp30,
   SoAOS.Graphics.Types,
+  SoAOS.AI.Types,
+  SoAOS.AI,
   Spells;
 
 type
@@ -144,19 +147,19 @@ type
 
   TAuraEffect = class( TEffect )
   private
-    HitResource : TResource;
     FCharacter : TCharacter;
   public
+    HitResource : TResource;
     procedure Adjust( Character : TCharacter ); override;
     function Hit( Source : TAniFigure; Damage : PDamageProfile ) : boolean; override;
   end;
 
   TReflectEffect = class( TEffect )
   private
-    HitResource : TResource;
     FCharacter : TCharacter;
-    Reflect : boolean;
   public
+    HitResource : TResource;
+    Reflect : boolean;
     procedure Adjust( Character : TCharacter ); override;
     function Hit( Source : TAniFigure; Damage : PDamageProfile ) : boolean; override;
   end;
@@ -200,6 +203,10 @@ function GetNamedEffect( const Name : string ) : TEffect;
 implementation
 
 uses
+  SoAOS.Types,
+  SoAOS.AI.Helper,
+  SoAOS.Projectile,
+  AI1,
   Engine;
 
 function GetNamedEffect( const Name : string ) : TEffect;

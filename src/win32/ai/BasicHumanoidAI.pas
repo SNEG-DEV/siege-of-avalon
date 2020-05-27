@@ -497,7 +497,7 @@ uses
   SoAOS.AI.Types,
   Engine,
   LogFile,
-  Effects,
+  SoAOS.Effects,
   Spells;
 
 function AssignHumanoidAI( AIName : string ) : TAI;

@@ -629,7 +629,7 @@ uses
   AI1,
   MiscAI,
   AniDemo,
-  Effects,
+  SoAOS.Effects,
   Display,
   Spells1,
   System.SysUtils,
