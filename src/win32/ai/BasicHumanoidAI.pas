@@ -67,6 +67,9 @@ uses
   System.Types,
   SoAOS.Types,
   Character,
+  SoAOS.AI,
+  SoAOS.AI.Helper,
+  SoAOS.Spells,
   Anigrp30,
   Resource,
   SoAOS.StrUtils,
@@ -151,9 +154,7 @@ type
     procedure PlaySounds;
     procedure HaloEffect;
     procedure TalkToMeEffect;
-
-  protected
-
+  public
     procedure OnStop; override;
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
     procedure OnNoPath; override;
@@ -169,14 +170,11 @@ type
     procedure Execute; override;
   end;
 
-
-
   THumanoidCombat = class( TAI )
   private
     FBonusCourage : integer;
     FBaseCourage : integer;
-
-  protected
+  public
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
     procedure WasKilled( Source : TAniFigure ); override;
   public
@@ -184,7 +182,6 @@ type
     property BonusCourage : Integer read FBonusCourage write FBonusCourage;
     property BaseCourage : Integer read FBaseCourage write FBaseCourage;
   end;
-
 
   THumanoidMeleeCombat = class( THumanoidCombat )
   private
@@ -211,7 +208,7 @@ type
     procedure FindNextTarget;
     procedure Attack;
     procedure TellFriends;
-  protected
+  public
     procedure OnStop; override;
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
     procedure WasKilled( Source : TAniFigure ); override;
@@ -251,7 +248,7 @@ type
     procedure Attack;
     procedure FindTarget;
     procedure BattleTactic;
-  protected
+  public
     procedure OnStop; override;
     procedure WasAttacked( Source : TAniFigure; Damage : single ); override;
     procedure WasKilled( Source : TAniFigure ); override;
@@ -314,7 +311,7 @@ type
     procedure CastInvis;
     procedure SummonHellHound;
     procedure BuffAllies;
-  protected
+  public
     procedure OnStop; override;
     procedure WasAttacked( Source : TAniFigure; Damage : single ); override;
     procedure WasKilled( Source : TAniFigure ); override;
@@ -351,7 +348,7 @@ type
     procedure FindTarget;
     procedure RunAway;
 
-  protected
+  public
     procedure OnNoPath; override;
     procedure OnStop; override;
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
@@ -387,7 +384,7 @@ type
     procedure RunAway;
     procedure Attack;
     procedure FindTarget;
-  protected
+  public
     procedure OnStop; override;
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
     procedure WasKilled( Source : TAniFigure ); override;
@@ -497,6 +494,7 @@ var
 implementation
 
 uses
+  SoAOS.AI.Types,
   Engine,
   LogFile,
   Effects,
@@ -1439,26 +1437,10 @@ begin
     StandInterval := -1;
     MeanderDelay := 0;
   //Say this when you see an enemy
-    S := LowerCase( Character.Properties[ 'EnemySay' ] );
-    try
-      if S = '' then
-        strEnemySay := ''
-      else
-        strEnemySay := s;
-    except
-      strEnemySay := '';
-    end;
+    strEnemySay := LowerCase( Character.Properties[ 'EnemySay' ] );
 
   // say this when you see a neutral
-    S := LowerCase( Character.Properties[ 'NeutralSay' ] );
-    try
-      if S = '' then
-        strNeutralSay := ''
-      else
-        strNeutralSay := s;
-    except
-      strNeutralSay := '';
-    end;
+    strNeutralSay := LowerCase( Character.Properties[ 'NeutralSay' ] );
 
     S := Character.Properties[ 'iSpeed' ];
     try
@@ -1475,90 +1457,30 @@ begin
     except
     end;
      //say this when you see a friend
-    S := LowerCase( Character.Properties[ 'FriendSay' ] );
-    try
-      if S = '' then
-        strFriendSay := ''
-      else
-        strFriendSay := s;
-    except
-      strFriendSay := '';
-    end;
+    strFriendSay := LowerCase( Character.Properties[ 'FriendSay' ] );
 
   //say this when you see the player
-    S := LowerCase( Character.Properties[ 'PlayerSay' ] );
-    try
-      if S = '' then
-        strPlayerSay := ''
-      else
-        strPlayerSay := s;
-    except
-      strPlayerSay := '';
-    end;
+    strPlayerSay := LowerCase( Character.Properties[ 'PlayerSay' ] );
 
   // enemy responce to your say
-    S := LowerCase( Character.Properties[ 'EnemyRsp' ] );
-    try
-      if S = '' then
-        strEnemyRsp := ''
-      else
-        strEnemyRsp := s;
-    except
-      strEnemyRsp := '';
-    end;
+    strEnemyRsp := LowerCase( Character.Properties[ 'EnemyRsp' ] );
 
-    if Character.TitleExists( 'WorkOffScreen' ) then
-    begin
-      workOffScreen := true;
-    end
-    else
-      workOffScreen := false;
+    workOffScreen := Character.TitleExists( 'WorkOffScreen' );
 
     if Character.TitleExists( 'NoHighLight' ) then
       Character.Highlightable := false;
 
   // Neutral responce to your say
-    S := LowerCase( Character.Properties[ 'NeutralRsp' ] );
-    try
-      if S = '' then
-        strNeutralRsp := ''
-      else
-        strNeutralRsp := s;
-    except
-      strNeutralRsp := '';
-    end;
+    strNeutralRsp := LowerCase( Character.Properties[ 'NeutralRsp' ] );
 
   // friend responce to your say
-    S := LowerCase( Character.Properties[ 'FriendRsp' ] );
-    try
-      if S = '' then
-        strFriendRsp := ''
-      else
-        strFriendRsp := s;
-    except
-      strFriendRsp := '';
-    end;
+    strFriendRsp := LowerCase( Character.Properties[ 'FriendRsp' ] );
 
   // player responce to your say
-    S := LowerCase( Character.Properties[ 'PlayerRsp' ] );
-    try
-      if S = '' then
-        strPlayerRsp := ''
-      else
-        strPlayerRsp := s;
-    except
-      strPlayerRsp := '';
-    end;
+    strPlayerRsp := LowerCase( Character.Properties[ 'PlayerRsp' ] );
+
   //general say
-    S := Character.Properties[ 'Say' ];
-    try
-      if S = '' then
-        CombatSay := ''
-      else
-        CombatSay := S;
-    except
-      CombatSay := '';
-    end;
+    CombatSay := Character.Properties[ 'Say' ];
 
     S := LowerCase( Character.Properties[ 'GlowEffect' ] );
     if ( s = 'true' ) then
@@ -1571,7 +1493,6 @@ begin
       Effect.AnimationDuration := Effect.Resource.FrameCount * Effect.Resource.FrameMultiplier;
       Character.AddEffect( Effect );
 ///      Effect := nil;
-
     end;
 
     S := LowerCase( Character.Properties[ 'IdleEffect' ] );
@@ -1688,19 +1609,8 @@ begin
     except
     end;
 
-
   // This script is activate when idle duty is set to action or converse
-    S := LowerCase( Character.Properties[ 'Script' ] );
-    try
-      if S = '' then
-        strCnvScr := ''
-      else
-        strCnvScr := s;
-
-    except
-      strCnvScr := '';
-    end;
-
+    strCnvScr := LowerCase( Character.Properties[ 'Script' ] );
 
   // Used for tracking the player when he is deguised
     S := LowerCase( Character.Properties[ 'tmpEnemies' ] );
@@ -1732,88 +1642,44 @@ begin
     end;
 
   // used to fool enemies. should be set to the name of an item
-    S := LowerCase( Character.Properties[ 'disguise' ] );
-    try
-      if S = '' then
-        strdisguise := ''
-      else
+    strdisguise := LowerCase( Character.Properties[ 'disguise' ] );
+    if strdisguise <> '' then
+    begin
+      strdisguise := s;
+      if Character.Enemies.ToLower.Contains( 'party' ) then
       begin
-        strdisguise := s;
-        if Character.Enemies.ToLower.Contains( 'party' ) then
+        tmpEnemies := Character.Enemies;
+        Character.Properties[ 'tmpEnemies' ] := Character.Enemies;
+
+        if ( Player.IsWorn( strdisguise ) ) and ( NPCList.count < 2 ) then
         begin
-          tmpEnemies := Character.Enemies;
-          Character.Properties[ 'tmpEnemies' ] := Character.Enemies;
+          if Character.Properties[ 'DisguiseDetected' ] <> 'true' then
+            Character.MakeNeutral( 'party' );
 
-          if ( Player.IsWorn( strdisguise ) ) and ( NPCList.count < 2 ) then
-          begin
-            if Character.Properties[ 'DisguiseDetected' ] <> 'true' then
-              Character.MakeNeutral( 'party' );
-
-            for j := 0 to NPCList.count - 1 do
-              TCharacter( NPCList[ j ] ).MakeNeutral( Character.Alliance );
-          end;
+          for j := 0 to NPCList.count - 1 do
+            TCharacter( NPCList[ j ] ).MakeNeutral( Character.Alliance );
         end;
       end;
-    except
-      strdisguise := '';
     end;
 
   // script to run when the character starts walking a path
-    S := Character.Properties[ 'PathStartScr' ];
-    try
-      if S = '' then
-        strPathStart := ''
-      else
-        strPathStart := s;
-    except
-      strPathStart := '';
-    end;
+    strPathStart := Character.Properties[ 'PathStartScr' ];
 
   // script to run when the character completes a path
-    S := Character.Properties[ 'PathEndScr' ];
-    try
-      if S = '' then
-        strPathEnd := ''
-      else
-        strPathEnd := s;
-    except
-      strPathEnd := '';
-    end;
+    strPathEnd := Character.Properties[ 'PathEndScr' ];
 
   // guid of the first pathcorner in a path. when this pathcorner is
   // reached PathStartScr is run
-    S := LowerCase( Character.Properties[ 'PathStart' ] );
-    try
-      if S = '' then
-        sStart := ''
-      else
-        sStart := s;
-    except
-      sStart := '';
-    end;
+    sStart := LowerCase( Character.Properties[ 'PathStart' ] );
 
   // guid of the last pathcorner in a path. when this pathcorner is
   // reached PathEndScr is run
-    S := LowerCase( Character.Properties[ 'PathEnd' ] );
-    try
-      if S = '' then
-        sEnd := ''
-      else
-        sEnd := s;
-    except
-      sEnd := '';
-    end;
+    sEnd := LowerCase( Character.Properties[ 'PathEnd' ] );
 
   //idle action like hammer or stand
-    S := LowerCase( Character.Properties[ 'Action' ] );
-    try
-      if S = '' then
-        strAction := 'stand'
-      else
-        strAction := s;
-    except
+    strAction := LowerCase( Character.Properties[ 'Action' ] );
+    if strAction = '' then
       strAction := 'stand';
-    end;
 
   //things to do
     S := lowerCase( Character.Properties[ 'IdleDuty' ] );
@@ -1840,8 +1706,7 @@ begin
     end;
 
   // how far I can wonder from my start point
-    S := Character.Properties[ 'LeashLength' ];
-    iLeash := StrToIntDef( S, 0 );
+    iLeash := StrToIntDef( Character.Properties[ 'LeashLength' ], 0 );
     
   // should I watch for enemies?
     bCombative := StrToBoolDef(Character.Properties[ 'Combative' ], True);
@@ -1869,17 +1734,10 @@ begin
     bPlaySFXOther := StrToBoolDef(Character.Properties[ 'PlaySFXOther' ], False);
 
   // SFX interval type
-    S := LowerCase( Character.Properties[ 'SFXDelayType' ] );
-    try
-      if S = '' then
-        SFXDelayType := dtRandom
-      else if S = 'fixed' then
-        SFXDelayType := dtFixed
-      else
-        SFXDelayType := dtRandom;
-    except
+    if LowerCase( Character.Properties[ 'SFXDelayType' ] ) = 'fixed' then
+      SFXDelayType := dtFixed
+    else
       SFXDelayType := dtRandom;
-    end;
 
   // draw this character transparent
     S := LowerCase( Character.Properties[ 'Transparent' ] );
@@ -2800,15 +2658,7 @@ begin
     CirclePoint := Random( 360 ) + 180;
     iTimeToRun := StrToIntDef(Character.Properties[ 'TimeToRun' ], 75);
     
-    S := Character.Properties[ 'Say' ];
-    try
-      if S = '' then
-        CombatSay := ''
-      else
-        CombatSay := S;
-    except
-      CombatSay := '';
-    end;
+    CombatSay := Character.Properties[ 'Say' ];
 
     AllowRun := StrToBoolDef( Character.Properties[ 'AllowRun' ], True );
     
@@ -5227,19 +5077,9 @@ begin
     if not oSpellBook.Contains( 'hold' ) then
       HoldCast := true;
 
-    S := LowerCase( Character.Properties[ 'SummonGUId' ] );
-    try
-      if S = '' then
-        FSummonGuid := ''
-      else
-      begin
-        FSummonGuid := s;
-        Character.addtitle( 'SummonGuards' );
-      end;
-
-    except
-      FSummonGuid := '';
-    end;
+    FSummonGuid := LowerCase( Character.Properties[ 'SummonGUId' ] );
+    if FSummonGuid <> '' then
+      Character.addtitle( 'SummonGuards' );
 
 {    if TFile.Exists(ArtPath + 'engine\spells\SummonReceive.pox') and TFile.Exists(ArtPath + 'engine\spells\SummonCast.pox') then
     begin
@@ -6719,17 +6559,7 @@ begin
     except
     end;
 
-    S := LowerCase( Character.Properties[ 'TakeOrders' ] );
-    try
-      if S = '' then
-        bTakeOrders := true
-      else if S = 'false' then
-        bTakeOrders := False
-      else
-        bTakeOrders := true;
-    except
-      bTakeOrders := true;
-    end;
+    bTakeOrders := StrToBoolDef( Character.Properties[ 'TakeOrders' ], True );
 
     S := Character.Properties[ 'iSpeed' ];
     try

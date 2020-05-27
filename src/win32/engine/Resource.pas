@@ -268,6 +268,7 @@ implementation
 
 uses
   Character,
+  SoAOS.AI.Helper,
   Engine,
   Parts;
 

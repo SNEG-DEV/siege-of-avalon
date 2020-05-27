@@ -79,6 +79,7 @@ function GetlevelCode( const Filename : string ) : int64;
 implementation
 
 uses
+  SoAOS.AI.Types,
   Parts,
   AniDemo,
   System.Variants;

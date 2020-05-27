@@ -51,7 +51,9 @@ uses
   System.Classes,
   Vcl.Controls,
   Vcl.ExtCtrls,
+  SoAOS.AI,
   Character,
+  SoAOS.AI.Types,
   GameText,
   Display,
   Anigrp30,
@@ -132,6 +134,8 @@ implementation
 
 uses
   SoAOS.Types,
+  SoAOS.AI.Helper,
+  SoAOS.Spells,
   SoAOS.Graphics.Draw,
   AniDemo;
 
@@ -175,8 +179,8 @@ begin
   TargList := Tlist.create;
   SpellList := TList.create;
 
-  if CharAI.character <> nil then
-    CharSpellList := CharAI.character.SpellList;
+  if CharAI.Character <> nil then
+    CharSpellList := CharAI.Character.SpellList;
 
   pText.LoadFontGraphic( 'statistics' ); //load the statistics font graphic in
 

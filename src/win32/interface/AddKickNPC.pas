@@ -115,6 +115,8 @@ uses
   SoAOS.Types,
   SoAOS.Graphics.Draw,
   SoAOS.Intrface.Text,
+  SoAOS.AI,
+  SoAOS.AI.Helper,
   Engine,
   Resource,
   Logfile,

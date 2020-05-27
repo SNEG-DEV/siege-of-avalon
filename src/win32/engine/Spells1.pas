@@ -43,7 +43,9 @@ interface
 
 uses
   System.Types,
+  SoAOS.AI.Types,
   Character,
+  SoAOS.Spells,
   Resource;
 
 var

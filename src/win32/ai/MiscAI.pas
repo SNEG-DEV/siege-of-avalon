@@ -67,6 +67,7 @@ uses
   System.SysUtils,
   System.Types,
   SoAOS.Types,
+  SoAOS.AI,
   Character,
   Engine,
   Anigrp30,
@@ -132,12 +133,12 @@ type
     procedure BattleTactic;
     procedure BuffParty;
 
-  protected
+  public
     procedure OnNoPath; override;
     procedure OnStop; override;
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
     function OnCollideFigure( Target : TAniFigure ) : boolean; override;
-
+  protected
     procedure SetMeleeRanged( value : Boolean );
     procedure SetMeleeAggressive( value : Boolean );
     procedure SetMeleeDefensive( value : Boolean );
@@ -151,7 +152,7 @@ type
   public
     destructor Destroy; override;
     property Combative : Boolean read FCombative write FCombative;
-   //roperty Caster: Boolean read FCaster write FCaster;
+   //property Caster: Boolean read FCaster write FCaster;
     property Healfirst : Boolean read FHealfirst write FHealfirst;
 //    property StayClose: Boolean read fStayClose write fStayClose;
     property MeleeRanged : Boolean read FMeleeRanged write SetMeleeRanged;
@@ -177,7 +178,7 @@ type
     //Soft
     procedure FindNextTarget;
     procedure Attack;
-  protected
+  public
     procedure OnStop; override;
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
     function OnCollideFigure( Target : TAniFigure ) : Boolean; override;
@@ -193,7 +194,7 @@ type
     iTimeToRun : integer;
     //Soft
     procedure Attack;
-  protected
+  public
     procedure OnStop; override;
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
     function OnCollideFigure( Target : TAniFigure ) : Boolean; override;
@@ -207,7 +208,7 @@ type
   private
     PartyTotal : integer;
     Partylist : TstringList;
-  protected
+  public
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
     procedure WasKilled( Source : TAniFigure ); override;
   public
@@ -297,13 +298,11 @@ type
     procedure MoveAway;
     procedure BattleTactic;
     procedure PlaySounds;
-
-  protected
+  public
     procedure OnNoPath; override;
     procedure OnStop; override;
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
     function OnCollideFigure( Target : TAniFigure ) : boolean; override;
-
   public
     destructor Destroy; override;
     property Combative : Boolean read FCombative write FCombative;
@@ -366,8 +365,7 @@ type
     procedure MoveAway;
     procedure BattleTactic;
     procedure FindFriendly;
-
-  protected
+  public
     procedure OnNoPath; override;
     procedure OnStop; override;
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
@@ -389,11 +387,10 @@ type
     ReadyToAttack : Boolean;
     Revealed : Boolean;
     AttackDelay : Integer;
-
     procedure AttackMelee;
 //    procedure BattleTactic;
     procedure FindTarget;
-  protected
+  public
     procedure OnNoPath; override;
     procedure OnStop; override;
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
@@ -430,7 +427,7 @@ type
     procedure BattleTatic;
     procedure GuardDog;
     procedure Meander;
-  protected
+  public
     procedure OnNoPath; override;
     procedure OnStop; override;
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
@@ -469,8 +466,7 @@ type
     procedure MoveAway;
     procedure BattleTatic;
     procedure DetectChar;
-//    procedure Meander;
-  protected
+  public
     procedure OnNoPath; override;
     procedure OnStop; override;
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
@@ -497,13 +493,11 @@ type
     procedure Attack;
     procedure FindTarget;
     procedure Run;
-
-  protected
+  public
     procedure OnStop; override;
     procedure OnNoPath; override;
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
     procedure WasKilled( Source : TAniFigure ); override;
-
   public
     procedure Init; override;
     property BonusCourage : Integer read FBonusCourage write FBonusCourage;
@@ -529,8 +523,7 @@ type
     Point2X : Integer;
     Point2Y : Integer;
     atStart : Boolean;
-
-  protected
+  public
     procedure OnStop; override;
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
   public
@@ -555,15 +548,12 @@ type
     IdleDuty : TIdleDuty;
     bCombative : Boolean;
     ReturnName : string;
-    //temp
-
     procedure Meander;
     procedure FindTarget;
     procedure WalkPath;
     procedure GotoFriends;
     procedure GetPath( ToX, ToY : Integer );
-
-  protected
+  public
     procedure OnStop; override;
     procedure OnNoPath; override;
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
@@ -581,6 +571,9 @@ function GetFacing( SrcX, SrcY, TargetX, TargetY : Longint ) : Extended;
 implementation
 
 uses
+  SoAOS.AI.Types,
+  SoAOS.AI.Helper,
+  SoAOS.Spells,
   SoAOS.StrUtils,
   AniDemo,
   BasicHumanoidAI;
@@ -1145,17 +1138,7 @@ begin
     except
     end;
 
-    S := LowerCase( Character.Properties[ 'Moveable' ] );
-    try
-      if S = '' then
-        bMove := True
-      else if S = 'false' then
-        bMove := False
-      else
-        bMove := True;
-    except
-      bMove := True;
-    end;
+    bMove := StrToBoolDef( Character.Properties[ 'Moveable' ], True );
 
   except
     on E : Exception do
@@ -1370,8 +1353,8 @@ begin
       begin
         r := random( 150 );
         T := c2PI * random( 360 ) / 360;
-        X := round( r * cos( T ) ) + FLeader.X + 10;
-        Y := round( r * sin( T ) / 2 ) + FLeader.Y + 10;
+        X := round( r * cos( T ) ) + Leader.X + 10;
+        Y := round( r * sin( T ) / 2 ) + Leader.Y + 10;
         Character.WalkTo( X, Y, 4 );
       end;
 
@@ -1694,34 +1677,34 @@ begin
       begin
         if ( iRange > ScreenMetrics.CompanionRange ) then
         begin
-          case Fleader.Facing of
+          case Leader.Facing of
             fNE, fEE, fSE :
               begin
-                if not ( game.LineOfCollision( FLeader.x - 50, FLeader.y, FLeader.X, FLeader.y ) ) then
-                  Character.RunTo( FLeader.X, FLeader.Y, 48 )
+                if not ( game.LineOfCollision( Leader.x - 50, Leader.y, Leader.X, Leader.y ) ) then
+                  Character.RunTo( Leader.X, Leader.Y, 48 )
                 else
-                  Character.RunTo( FLeader.X - 50, FLeader.Y, 48 );
+                  Character.RunTo( Leader.X - 50, Leader.Y, 48 );
               end;
             fNW, fWW, fSW :
               begin
-                if not ( game.LineOfCollision( FLeader.x + 50, FLeader.y, FLeader.X, FLeader.y ) ) then
-                  Character.RunTo( FLeader.X, FLeader.Y, 48 )
+                if not ( game.LineOfCollision( Leader.x + 50, Leader.y, Leader.X, Leader.y ) ) then
+                  Character.RunTo( Leader.X, Leader.Y, 48 )
                 else
-                  Character.RunTo( FLeader.X + 50, FLeader.Y, 48 );
+                  Character.RunTo( Leader.X + 50, Leader.Y, 48 );
               end;
             fSS :
               begin
-                if not ( game.LineOfCollision( FLeader.x, FLeader.y + 50, FLeader.X, FLeader.y ) ) then
-                  Character.RunTo( FLeader.X, FLeader.Y, 48 )
+                if not ( game.LineOfCollision( Leader.x, Leader.y + 50, Leader.X, Leader.y ) ) then
+                  Character.RunTo( Leader.X, Leader.Y, 48 )
                 else
-                  Character.RunTo( FLeader.X, FLeader.Y + 50, 48 );
+                  Character.RunTo( Leader.X, Leader.Y + 50, 48 );
               end;
             fNN :
               begin
-                if not ( game.LineOfCollision( FLeader.x, FLeader.y - 50, FLeader.X, FLeader.y ) ) then
-                  Character.RunTo( FLeader.X, FLeader.Y, 48 )
+                if not ( game.LineOfCollision( Leader.x, Leader.y - 50, Leader.X, Leader.y ) ) then
+                  Character.RunTo( Leader.X, Leader.Y, 48 )
                 else
-                  Character.RunTo( FLeader.X, FLeader.Y - 50, 48 );
+                  Character.RunTo( Leader.X, Leader.Y - 50, 48 );
               end;
           end;
           exit;
@@ -1854,7 +1837,7 @@ begin
           end;
         end
         else
-          Character.RunTo( FLeader.X + ( random( 220 ) - 110 ), FLeader.Y + ( random( 220 ) - 110 ), 48 );
+          Character.RunTo( Leader.X + ( random( 220 ) - 110 ), Leader.Y + ( random( 220 ) - 110 ), 48 );
 
         Stopped := false;
       end;
@@ -2814,28 +2797,22 @@ begin
     except
     end;
 
-    S := LowerCase( Character.Properties[ 'disguise' ] );
-    try
-      if S = '' then
-        strdisguise := ''
-      else
+    strdisguise := LowerCase( Character.Properties[ 'disguise' ] );
+    if strdisguise <> '' then
+    begin
+      strdisguise := s;
+      if Character.Enemies.ToLower.Contains( 'party' ) then
       begin
-        strdisguise := s;
-        if Character.Enemies.ToLower.Contains( 'party' ) then
+        tmpEnemies := Character.Enemies;
+        Character.Properties[ 'tmpEnemies' ] := Character.Enemies;
+        if ( Player.IsWorn( strdisguise ) ) and ( NPCList.count < 2 ) then
         begin
-          tmpEnemies := Character.Enemies;
-          Character.Properties[ 'tmpEnemies' ] := Character.Enemies;
-          if ( Player.IsWorn( strdisguise ) ) and ( NPCList.count < 2 ) then
+          for j := 0 to NPCList.count - 1 do
           begin
-            for j := 0 to NPCList.count - 1 do
-            begin
-              TCharacter( NPCList[ j ] ).MakeNeutral( Character.Alliance );
-            end;
+            TCharacter( NPCList[ j ] ).MakeNeutral( Character.Alliance );
           end;
         end;
       end;
-    except
-      strdisguise := '';
     end;
 
     iDistance := StrToIntDef( Character.Properties[ 'Distance' ], 175 );
@@ -2986,18 +2963,8 @@ begin
       end;
     except
     end;
-    S := LowerCase( Character.Properties[ 'PlayIdleSFX' ] );
-    try
-      if S = '' then
-        PlayIdleSFX := false
-      else if S = 'true' then
-        PlayIdleSFX := true
-      else
-        PlayIdleSFX := false;
-    except
-      PlayIdleSFX := false;
-    end;
 
+    PlayIdleSFX := StrToBoolDef( Character.Properties[ 'PlayIdleSFX' ], False );
     iSFXDelayCount := StrToIntDef( Character.Properties[ 'IdleSFXDelay' ], 0 );
     IdleSFXDelay := StrToIntDef( Character.Properties[ 'IdleSFXDelay' ], 0 );
     bPlaySFXMetal := StrToBoolDef( Character.Properties[ 'PlaySFXMetal' ], False );
@@ -4773,7 +4740,7 @@ begin
 
 
     strTitle := Character.Properties[ 'WatchedTitle' ];
-    if S = '' then
+    if strTitle = '' then
       strTitle := 'harasser;killdad;killmom';
 
     FCombative := StrToBoolDef( Character.Properties[ 'Combative' ], True );
@@ -6104,10 +6071,10 @@ const
 begin
   Log.DebugLog( FailName );
   try
-    if character.Rangeto( FLeader.x, FLeader.y ) > Distance then
+    if character.Rangeto( Leader.x, Leader.y ) > Distance then
     begin //stay close to the player
       if ( FrameCount mod 40 ) = 0 then
-        Character.RunTo( FLeader.X + ( random( 240 ) - 120 ), FLeader.Y + ( random( 240 ) - 120 ), 4 )
+        Character.RunTo( Leader.X + ( random( 240 ) - 120 ), Leader.Y + ( random( 240 ) - 120 ), 4 )
 
     end
     else
@@ -6116,8 +6083,8 @@ begin
       begin
         r := random( 150 );
         T := c2PI * random( 360 ) / 360;
-        X := round( r * cos( T ) ) + FLeader.X + 10;
-        Y := round( r * sin( T ) / 2 ) + FLeader.Y + 10;
+        X := round( r * cos( T ) ) + Leader.X + 10;
+        Y := round( r * sin( T ) / 2 ) + Leader.Y + 10;
         Character.WalkTo( X, Y, 4 );
       end;
     end;

@@ -99,6 +99,8 @@ implementation
 
 uses
   SoAOS.Types,
+  SoAOS.Spells,
+  SoAOS.AI.Helper,
   SoAOS.Intrface.Text,
   SoAOS.Graphics.Draw,
   AniDemo;

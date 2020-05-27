@@ -90,3 +90,4 @@ backup/
 /assets/ddraw.log
 /assets/bugreport.txt
 /src/win32/Siege.mes
+/src/win32/dcu

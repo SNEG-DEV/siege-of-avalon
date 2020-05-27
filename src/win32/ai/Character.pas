@@ -54,6 +54,8 @@ uses
   DirectX,
   DXEffects,
   SoAOS.Graphics.Types,
+  SoAOS.AI.Types,
+  SoAOS.AI,
   DFX,
   Resource;
 
@@ -65,25 +67,12 @@ procedure PlaySound( const Sounds : TDynamicSmallIntArray; X, Y : longint );
 procedure PlaySingleSound( Sound : SmallInt; X, Y : longint );
 
 type
-  TCastingType = ( ctCombat, ctHealing, ctDivination, ctSummoning, ctTranslocation, ctProtection, ctIllusion );
-
-  TTargetType = ( ttNone, ttFriend, ttEnemy );
-
-  TAIMode = ( aiNone, aiIdle, aiCombat, aiParty );
-
-  TAIPriority = ( prNone, prAttack, prGuard, prFlee, prHide, prCast, prFollowClose, prFollowFar );
-
-  TAIParameter = ( paNone, paAnyEnemy, paAnyAlly, paAnyPartyMember, paClosestEnemy, paStrongestEnemy,
-    paWeakestEnemy, paMostMagicalEnemy, paAttacker, paSelf, paSpecificPartyMember, paPlayerTarget );
-
   TMaterial = ( maOther, maMetal );
 
   TNextAction = ( naNone, naWalk, naRun, naAttack, naCast );
 
   TCharacter = class;
   TCompanionCharacter = class;
-  TGlow = class;
-  TSpell = class;
 
   TDamageRange = record
     Min : Single;
@@ -182,67 +171,15 @@ type
     property Resource : TResource read FResource write SetResource;
   end;
 
-  TAI = class( TObject )
-  private
-    FWalking : Boolean;
-    FDelay : integer;
-    FCollideCount : integer;
-    procedure SetDelay(const Value: Integer);
-    function GetDelay: Integer;
-    function GetWalking: Boolean;
-    procedure SetWalking(const Value: Boolean);
-    function GetCollideCount: Integer;
-    procedure SetCollideCount(const Value: Integer);
-  protected
-    FrameCount : LongWord;
-    function OnCollideFigure( Target : TAniFigure ) : Boolean; virtual;
-    function OnCollideObject( Target : TAniFigure ) : Boolean; virtual;
-    procedure WasAttacked( Source : TAniFigure; Damage : Single ); virtual;
-    procedure WasKilled( Source : TAniFigure ); virtual;
-    procedure TrackChanged; virtual;
-    procedure OnCollideItem; virtual;
-    procedure OnStop; virtual;
-    procedure OnNoPath; virtual;
-  public
-    Character : TCharacter;
-    procedure Init; virtual;
-    procedure Execute; virtual;
-    procedure CallToArms( Source, Target : TAniFigure ); virtual;
-    procedure Regroup( Source : TAniFigure; NewX, NewY : Integer ); virtual;
-    procedure NotifyOfDeath( Source : TAniFigure ); virtual;
-    procedure Follow( Source, Target : TAniFigure ); virtual;
-    procedure Clicked; virtual;
-    procedure MoveAwayAI(radius, deviance: Integer; enface: Boolean = True; run: Boolean = False);
-    procedure Wait; virtual;
-    property Walking: Boolean read GetWalking write SetWalking;
-    property Delay: Integer read GetDelay write SetDelay;
-    property CollideCount: Integer read GetCollideCount write SetCollideCount;
-  end;
-
-  TPartyAI = class( TAI )
-  protected
-    FLeader : TCharacter;
-    procedure SetLeader( const Value : TCharacter ); virtual;
-  public
-    Priority : array[ 1..4 ] of TAIPriority;
-    Parameter : array[ 1..4 ] of TAIParameter;
-    SpellToCast : array[ 1..4 ] of TSpell;
-    PartyMember : array[ 1..4 ] of TCharacter;
-    Party : TList;
-      Index : integer;
-    procedure AIChanged; virtual;
-    property Leader : TCharacter read FLeader write SetLeader;
-  end;
-
   TGameObject = class( TAniFigure )
   private
     FProperties : TStringList;
-    Loading : boolean;
     LoadCount : integer;
   protected
     function GetProperty( const Name : string ) : string; virtual;
     procedure SetProperty( const Name : string; const Value : string ); virtual;
   public
+    Loading : boolean;
     GUID : string;
     GroupName : string;
     OnLoad : string;
@@ -471,75 +408,6 @@ type
     property Range : integer read FRange write SetRange;
   end;
 
-  TProjectile = class( TSpriteObject )
-  protected
-    ZFix : Integer;
-    Exploding : Boolean;
-    DamageFactor : single;
-    Critical : boolean;
-    procedure DoDamage( Target : TSpriteObject ); virtual;
-    procedure CollideFigure( Source, Target : TAniFigure; var Stop : Boolean ); virtual;
-    procedure CollideItem( Source : TAniFigure; var Stop : Boolean ); virtual;
-    procedure CollideBoundary( Source : TAniFigure ); virtual;
-    procedure DoFrame; override;
-    procedure ExplodeEnd( Sender : TObject ); virtual;
-    procedure Disable; virtual;
-  public
-    FSource : TCharacter;
-    FTarget : TSpriteObject;
-    Damage : TDamageProfile;
-    HitTarget : single;
-    HitIncidental : single;
-    TrackingDegree : Single;
-    DamageRadius : Integer;
-    Duration : LongWord;
-    UseStealth : boolean;
-    GlowEffect : TGlow;
-    TrailedBy : TProjectile;
-    Passive : boolean;
-    StrikeLeatherSound : SmallInt;
-    StrikeMetalSound : SmallInt;
-    StrikeWallSound : SmallInt;
-    Magic : integer; //How magical is this projectile
-    constructor Create( X, Y, Z : Longint; Frame : Word; Enabled : Boolean ); override;
-    procedure Launch( Source : TCharacter; Target : TSpriteObject; X, Y : Longint ); virtual;
-    procedure MoveEvent( Sender : TObject ); virtual;
-  end;
-
-  TGlow = class( TProjectile )
-  protected
-    procedure Render; override;
-    procedure DoDamage( Target : TSpriteObject ); override;
-    procedure CollideFigure( Source, Target : TAniFigure; var Stop : Boolean ); override;
-    procedure CollideItem( Source : TAniFigure; var Stop : Boolean ); override;
-    procedure CollideBoundary( Source : TAniFigure ); override;
-    procedure DoFrame; override;
-    procedure ExplodeEnd( Sender : TObject ); override;
-    procedure Disable; override;
-  public
-    RFactor : integer;
-    GFactor : integer;
-    BFactor : integer;
-    constructor Create( X, Y, Z : Longint; Frame : Word; Enabled : Boolean ); override;
-    procedure MoveEvent( Sender : TObject ); override;
-  end;
-
-  TArrow = class( TProjectile )
-  private
-    RLE : TRLESprite;
-    BM : TBitmap;
-    PrevSlopeX : Double;
-    PrevSlopeY : Double;
-    FletchingColor : TColor;
-  protected
-    procedure Render; override;
-    procedure Disable; override;
-    procedure Draw( X1, Y1, X2, Y2, R : Integer; SinT, CosT : Single ); virtual;
-  public
-    destructor Destroy; override;
-    procedure Launch( Source : TCharacter; Target : TSpriteObject; X, Y : Longint ); override;
-  end;
-
   TQuiver = class( TItem )
   private
     FStrikeLeatherSound : string;
@@ -678,56 +546,6 @@ type
     property CloseSound : string read FCloseSound write SetCloseSound;
   end;
 
-  TSpellClass = class of TSpell;
-
-  TSpell = class( TObject )
-  private
-    CastSoundCount : integer;
-    CastSoundCounter : integer;
-    FInfoText : string;
-    procedure SetInfoText( const Value : string );
-  protected
-    CastSounds : TDynamicSmallIntArray;
-    procedure Replace( var S : string; const Symbol, Value : string );
-    function GetLoaded : Boolean; virtual;
-  public
-    CastEffect : TResource;
-    CastingType : TCastingType;
-    TargetType : TTargetType;
-    SoundInCast : boolean;
-    Interupted : boolean;
-    DisplayName : string;
-    constructor Create; virtual;
-    destructor Destroy; override;
-    class function GetName : string; virtual; abstract;
-    function Range( Source : TCharacter ) : Integer; virtual;
-    function Recovery( Source : TCharacter ) : Integer; virtual;
-    function Drain( Source : TCharacter ) : Single; virtual;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; virtual;
-    function GetIconXY( Source : TCharacter ) : TPoint; virtual; abstract;
-    function GetInfo( Source : TCharacter ) : string; virtual;
-    procedure Casting( Source : TCharacter ); virtual;
-    procedure Clear; virtual;
-    procedure LoadCastSounds( const NameList : string );
-    procedure PlaySound( X, Y : longint );
-    property Loaded : Boolean read GetLoaded;
-    property Name : string read GetName;
-    property InfoText : string read FInfoText write SetInfoText;
-  end;
-
-  TBodyRotEffect = class( TEffect )
-  private
-    FCharacter : TCharacter;
-    Facing : integer;
-    Frame : integer;
-    Fade : integer;
-  public
-    constructor Create;
-    procedure Adjust( Character : TCharacter ); override;
-    procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); override;
-    function DoFrame : boolean; override;
-  end;
-
   TCharacter = class( TSpriteObject )
   private
     FTarget : TSpriteObject;
@@ -749,7 +567,6 @@ type
     PerceptionFactor : Single;
     FAttackRecovery : Integer;
     FHitRecovery : Integer;
-    FCastRecovery : Integer;
     FRecoveryCount : Integer;
     FMana : Single;
     FRestriction : Integer;
@@ -782,14 +599,11 @@ type
     FAttackSound : string;
     AttackSounds : TDynamicSmallIntArray;
     FDeathSound : string;
-    DeathSounds : TDynamicSmallIntArray;
     FPainSound : string;
-    PainSounds : TDynamicSmallIntArray;
     FBattleCry : string;
     BattleCries : TDynamicSmallIntArray;
     FOnEquipmentChange : TNotifyEvent;
     FMoney : longint;
-    InPain : boolean;
     FName : string;
     FFrozen : boolean;
     FCombatMode : boolean;
@@ -804,7 +618,6 @@ type
     FDeviance : integer;
     ThresholdOfPain : integer;
     FVision : integer; //Sensory values are in horizontal units
-    procedure SetAI( const Value : TAI );
     function GetEquipment( Slot : TSlot ) : TItem;
     procedure SetEquipment( Slot : TSlot; const Value : TItem );
     procedure SetCharm( const Value : Integer );
@@ -848,6 +661,10 @@ type
   protected
     FWounds : Double;
     FDrain : Double;
+    FCurrentSpell : TObject; // TSpell;
+    FHotKey : array[ 1..10 ] of TObject; // TSpell;
+//    procedure SetAI( const Value : TAI );
+    FAI : TObject; // TAI;
     procedure Render; override;
     function GetProperty( const Name : string ) : string; override;
     procedure SetProperty( const Name : string; const Value : string ); override;
@@ -865,11 +682,15 @@ type
     procedure SetResource( const Value : TAniResource ); override;
     function GetName : string; override;
   public
+    PainSounds : TDynamicSmallIntArray;
+    DeathSounds : TDynamicSmallIntArray;
+    InPain : boolean;
     BaseResistance : TDamageResistanceProfile;
     BaseUnArmedDamage : TDamageProfile;
     UnArmedDamage : TDamageProfile;
+    FCastRecovery : Integer;
     FAIMode : TAIMode;
-    FAI : TAI;
+//    FAI : TAI;
     NewAIMode : TAIMode;
     FEquipment : array[ slLeg1..slMisc3 ] of TItem;
     EquipmentLocked : array[ slLeg1..slMisc3 ] of boolean;
@@ -897,7 +718,6 @@ type
     CombatAI : string;
     PartyAI : string;
     OnDie : string;
-    CurrentSpell : TSpell;
     Hearing : Integer;
     Smell : Integer;
     MysticVision : Integer;
@@ -912,7 +732,6 @@ type
     Titles : TStringList;
     AutoFight : boolean;
     NextAction : TNextAction;
-    HotKey : array[ 1..10 ] of TSpell;
     Companion : array[ 1..MaxCompanions ] of TCompanionCharacter;
     NoItemPlacement : boolean;
     IntendToZone : boolean;
@@ -1000,7 +819,7 @@ type
     property Ready : Boolean read FReady;
     property Equipment[ Slot : TSlot ] : TItem read GetEquipment write SetEquipment;
     property Inventory : TList read FInventory;
-    property AI : TAI read FAI write SetAI;
+//    property AI : TAI read FAI write SetAI;
     property Dead : Boolean read FDead write SetDead;
     property Range : Integer read FRange;
     property AIMode : TAIMode read FAIMode write SetAIMode;
@@ -1088,6 +907,9 @@ var
 implementation
 
 uses
+  SoAOS.Projectile,
+  SoAOS.AI.Helper,
+  SoAOS.Spells,
   System.SysUtils,
   DXUtil,
   SoAOS.Graphics.Draw,
@@ -1099,12 +921,12 @@ uses
   Sound,
   System.IniFiles,
   AI1,
+  Spells,
   BasicHumanoidAI,
   UndeadAI,
   WolfAI,
   MiscAI,
-  AniDemo,
-  Spells;
+  AniDemo;
 
 //fix for bad character names
 
@@ -2108,188 +1930,6 @@ begin
   end;
 end;
 
-{ TAI }
-
-procedure TAI.CallToArms( Source, Target : TAniFigure );
-begin
-
-end;
-
-procedure TAI.Clicked;
-begin
-
-end;
-
-procedure TAI.Execute;
-begin
-  Inc( FrameCount );
-end;
-
-procedure TAI.Follow( Source, Target : TAniFigure );
-begin
-
-end;
-
-function TAI.GetCollideCount: Integer;
-begin
-  Result := FCollideCount;
-end;
-
-function TAI.GetDelay: Integer;
-begin
-  Result := FDelay;
-end;
-
-function TAI.GetWalking: Boolean;
-begin
-  Result := FWalking;
-end;
-
-procedure TAI.Init;
-begin
-
-end;
-
-procedure TAI.MoveAwayAI(radius, deviance: Integer; enface, run: Boolean);
-const
-  FailName : string = 'TAI.MoveAwayAI';
-begin
-  Log.DebugLog( FailName );
-  try
-    var diameter: integer := 2*radius;
-    if enface then
-    begin
-      if run then
-      case Character.Facing of
-        fNE,fEE,fSE: Character.RunTo( Character.X - radius, Character.Y + random( diameter ) - radius, deviance );
-        fNW,fSW,fWW: Character.RunTo( Character.X + radius, Character.Y + random( diameter ) - radius, deviance );
-        fSS: Character.RunTo( Character.X + random( diameter ) - radius, Character.Y - radius, deviance );
-        fNN: Character.RunTo( Character.X + random( diameter ) - radius, Character.Y + radius, deviance );
-      end
-      else
-      case Character.Facing of
-        fNE,fEE,fSE: Character.WalkTo( Character.X - radius, Character.Y + random( diameter ) - radius, deviance );
-        fNW,fSW,fWW: Character.WalkTo( Character.X + radius, Character.Y + random( diameter ) - radius, deviance );
-        fSS: Character.WalkTo( Character.X + random( diameter ) - radius, Character.Y - radius, deviance );
-        fNN: Character.WalkTo( Character.X + random( diameter ) - radius, Character.Y + radius, deviance );
-      end;
-    end
-    else // Bandits, Scouts.Wait and WolfCombat.Wait - might be a stupid idea not very SOLID
-    begin
-      var halfradius: integer := radius div 2;
-      Character.WalkTo( Character.X + random( diameter ) - radius, Character.Y + random( radius ) - halfradius, deviance );
-    end;
-  except
-    on E : Exception do
-      Log.log( FailName + E.Message );
-  end;
-end;
-
-procedure TAI.NotifyOfDeath( Source : TAniFigure );
-begin
-
-end;
-
-function TAI.OnCollideFigure( Target : TAniFigure ) : Boolean;
-begin
-  Result := False;
-end;
-
-procedure TAI.OnCollideItem;
-begin
-
-end;
-
-function TAI.OnCollideObject( Target : TAniFigure ) : Boolean;
-begin
-  Result := False;
-end;
-
-procedure TAI.OnNoPath;
-begin
-
-end;
-
-procedure TAI.OnStop;
-begin
-
-end;
-
-procedure TAI.Regroup( Source : TAniFigure; NewX, NewY : Integer );
-begin
-
-end;
-
-procedure TAI.SetCollideCount(const Value: Integer);
-begin
-
-end;
-
-procedure TAI.SetDelay(const Value: Integer);
-begin
-  FDelay := Value;
-end;
-
-procedure TAI.SetWalking(const Value: Boolean);
-begin
-
-end;
-
-procedure TAI.TrackChanged;
-begin
-
-end;
-
-procedure TAI.Wait;
-const
-  FailName : string = 'TAI.Wait';
-begin
-  Log.DebugLog( FailName );
-  try
-    MoveAwayAI(40, 16, False);
-    FCollideCount := 0;
-    FWalking := True;
-    FDelay := random( 10 ) + 10;
-  except
-    on E : Exception do
-      Log.log( FailName + E.Message );
-  end;
-end;
-
-procedure TAI.WasAttacked( Source : TAniFigure; Damage : Single );
-const
-  FailName : string = 'TAI.WasAttacked';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    if not Character.InPain then
-    begin
-      Character.InPain := true;
-      PlaySound( Character.PainSounds, Character.X, Character.Y );
-    end;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
-procedure TAI.WasKilled( Source : TAniFigure );
-const
-  FailName : string = 'TAI.WasKilled';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    PlaySound( Character.DeathSounds, Character.X, Character.Y );
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
 { TCharacter }
 
 function TCharacter.GetName : string;
@@ -2619,7 +2259,6 @@ const
 begin
   Log.DebugLog( FailName );
   try
-
     AI.Free;
     FInventory.Free;
     if assigned( Avoid ) then
@@ -2772,9 +2411,9 @@ begin
     end;
 
     Dieing := true;
-    if Assigned( FAI ) then
+    if Assigned( AI ) then
     begin
-      FAI.WasKilled( nil );
+      AI.WasKilled( nil );
     end
     else
     begin
@@ -3252,9 +2891,9 @@ begin
 
       if FReady and ( RecoveryCount = 0 ) and not FFrozen then
       begin
-        if Assigned( FAI ) then
+        if Assigned( AI ) then
         begin
-          FAI.Execute;
+          AI.Execute;
         end;
       end;
     end;
@@ -3285,28 +2924,28 @@ begin
   Result := FEquipment[ Slot ];
 end;
 
-procedure TCharacter.SetAI( const Value : TAI );
-const
-  FailName : string = 'TCharacter.SetAI';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    if Assigned( FAI ) then
-      FAI.Free;
-    FAI := Value;
-    if Assigned( FAI ) then
-    begin
-      FAI.Character := Self;
-      if not Loading then
-        FAI.Init;
-    end;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
+//procedure TCharacter.SetAI( const Value : TAI );
+//const
+//  FailName : string = 'TCharacter.SetAI';
+//begin
+//  Log.DebugLog( FailName );
+//  try
+//
+//    if Assigned( FAI ) then
+//      FAI.Free;
+//    FAI := Value;
+//    if Assigned( FAI ) then
+//    begin
+//      FAI.Character := Self;
+//      if not Loading then
+//        FAI.Init;
+//    end;
+//
+//  except
+//    on E : Exception do
+//      Log.log( FailName, E.Message, [ ] );
+//  end;
+//end;
 
 procedure TCharacter.SetEquipment( Slot : TSlot; const Value : TItem );
 var
@@ -3401,7 +3040,7 @@ begin
     begin
       inherited Stop;
       if Assigned( FAI ) then
-        FAI.OnStop;
+        TAI(FAI).OnStop;
     end;
 
     if UseStealth then
@@ -3471,10 +3110,10 @@ begin
             end;
         end;
       end;
-      if Assigned( FAI ) then
+      if Assigned( AI ) then
       begin
-        FAI.WasAttacked( ApparentSource, Damage );
-        FAI.WasKilled( ApparentSource );
+        AI.WasAttacked( ApparentSource, Damage );
+        AI.WasKilled( ApparentSource );
       end
       else
       begin
@@ -3543,9 +3182,9 @@ begin
         AIMode := aiCombat;
         Track := ApparentSource;
       end;
-      if Assigned( FAI ) then
+      if Assigned( AI ) then
       begin
-        FAI.WasAttacked( ApparentSource, Damage );
+        AI.WasAttacked( ApparentSource, Damage );
       end
       else
       begin
@@ -4018,7 +3657,7 @@ begin
             Stop := True;
             FindAgain := True;
             if Assigned( FAI ) then
-              FindAgain := not FAI.OnCollideFigure( Target );
+              FindAgain := not AI.OnCollideFigure( Target );
             if FindAgain then
             begin
               if Assigned( Avoid ) then
@@ -4039,8 +3678,8 @@ begin
       else if Target is TDoor then
       begin
         Stop := TDoor( Target ).Closed;
-        if Assigned( FAI ) then
-          FAI.OnCollideObject( Target );
+        if Assigned( AI ) then
+          AI.OnCollideObject( Target );
         FindAgain := False;
       end
       else
@@ -4051,8 +3690,8 @@ begin
         else
         begin
           Stop := True;
-          if Assigned( FAI ) then
-            FindAgain := not FAI.OnCollideFigure( Target )
+          if Assigned( AI ) then
+            FindAgain := not AI.OnCollideFigure( Target )
           else
             FindAgain := true;
           if Assigned( Avoid ) then
@@ -4095,8 +3734,8 @@ begin
       Stop := True;
       if FDead then
         exit;
-      if Assigned( FAI ) then
-        FAI.OnCollideItem;
+      if Assigned( AI ) then
+        AI.OnCollideItem;
     end;
 
   except
@@ -4129,8 +3768,8 @@ begin
       exit; //Hold was recovering after push was cast
 //  FRecoveryCount := 0;          // vs walk in place?
     FReady := True;
-    if Assigned( FAI ) then
-      FAI.OnStop;
+    if Assigned( AI ) then
+      AI.OnStop;
 
   except
     on E : Exception do
@@ -4158,8 +3797,8 @@ begin
     else
       DoAction( StandAction );
     FReady := True;
-    if Assigned( FAI ) then
-      FAI.OnNoPath;
+    if Assigned( AI ) then
+      AI.OnNoPath;
 
   except
     on E : Exception do
@@ -5714,7 +5353,7 @@ begin
 
     FTrack := Character;
     if assigned( FAI ) then
-      FAI.TrackChanged;
+      AI.TrackChanged;
 
   except
     on E : Exception do
@@ -9389,614 +9028,6 @@ begin
   result := Enabled;
 end;
 
-{ TProjectile }
-
-procedure TProjectile.CollideFigure( Source, Target : TAniFigure;
-  var Stop : Boolean );
-var
-  Hit : boolean;
-const
-  FailName : string = 'TProjectile.CollideFigure';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    if Target = FSource then
-      Exit; //Don't allow projectiles to collide with their creator
-    if Target is TCharacter then
-    begin
-      if not TCharacter( Target ).Dead then
-      begin
-        if not assigned( FTarget ) then
-        begin
-          if TCharacter( FSource ).IsAlly( TCharacter( Target ) ) then
-            Hit := ( Random < HitIncidental )
-          else
-            Hit := ( Random < HitTarget );
-        end
-        else
-        begin
-          if ( Target = FTarget ) then
-          begin
-            Hit := ( Random < ( HitTarget + TrackingDegree / 15 ) );
-            TrackingDegree := 0;
-          end
-          else
-            Hit := ( Random < HitIncidental );
-        end;
-        if Hit then
-        begin
-{$IFDEF AILog}
-          Log.Log( 'Projectile strikes ' + TCharacter( Target ).GUID );
-{$ENDIF}
-          if assigned( TCharacter( Target ).Equipment[ slChest3 ] ) and
-            ( TCharacter( Target ).Equipment[ slChest3 ].Material = maMetal ) then
-            PlaySingleSound( StrikeMetalSound, X, Y )
-          else if assigned( TCharacter( Target ).Equipment[ slChest2 ] ) and
-            ( TCharacter( Target ).Equipment[ slChest2 ].Material = maMetal ) then
-            PlaySingleSound( StrikeMetalSound, X, Y )
-          else if assigned( TCharacter( Target ).Equipment[ slChest1 ] ) and
-            ( TCharacter( Target ).Equipment[ slChest1 ].Material = maMetal ) then
-            PlaySingleSound( StrikeMetalSound, X, Y )
-          else
-            PlaySingleSound( StrikeLeatherSound, X, Y );
-          if ActionExists( 'Explode' ) then
-          begin
-            FTarget := TSpriteObject( Target );
-            Exploding := True;
-            OnScriptEnd := ExplodeEnd;
-            DoAction( 'Explode' );
-          end
-          else
-          begin
-            DoDamage( TSpriteObject( Target ) );
-            Disable;
-          end;
-        end;
-      end;
-    end
-    else if Target is TDoor then
-    begin
-      if TDoor( Target ).Closed then
-      begin
-        PlaySingleSound( StrikeWallSound, X, Y );
-        Stop := True;
-        if ActionExists( 'Explode' ) then
-        begin
-          FTarget := nil;
-          Exploding := True;
-          OnScriptEnd := ExplodeEnd;
-          DoAction( 'Explode' );
-        end
-        else
-        begin
-          DoDamage( nil );
-          Disable;
-        end;
-      end;
-    end;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
-procedure TProjectile.CollideItem( Source : TAniFigure;
-  var Stop : Boolean );
-const
-  FailName : string = 'TProjectile.CollideItem';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    Stop := True;
-    PlaySingleSound( StrikeWallSound, X, Y );
-    if ActionExists( 'Explode' ) then
-    begin
-{$IFDEF AILog}
-      Log.Log( 'Projectile strikes wall' );
-{$ENDIF}
-      Exploding := True;
-      FTarget := nil;
-      OnScriptEnd := ExplodeEnd;
-      DoAction( 'Explode' );
-    end
-    else
-    begin
-      Disable;
-    end;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
-constructor TProjectile.Create( X, Y, Z : Longint; Frame : Word; Enabled : Boolean );
-begin
-  inherited;
-  DamageFactor := 1;
-  GlowEffect := nil;
-end;
-
-procedure TProjectile.Launch( Source : TCharacter; Target : TSpriteObject; X, Y : Longint );
-const
-  FailName : string = 'TProjectile.Launch';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    OnCollideFigure := CollideFigure;
-    OnCollideItem := CollideItem;
-    OnCollideBoundary := CollideBoundary;
-    OnMove := MoveEvent;
-    ZFix := Z;
-    FSource := Source;
-    FTarget := Target;
-    OnScriptEnd := nil;
-    Exploding := False;
-//  if Assigned(Target) then
-//    Move(Target.X, Target.Y, Target.Z + ZFix)
-//  else
-    Move( X, Y, Z );
-
-    FFAcing := GetFacing( Self.X, Self.Y, X, Y );
-    if ActionExists( 'Cast' ) then
-      DoAction( 'Cast' )
-    else
-      DoAction( 'Default' );
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
-procedure TProjectile.CollideBoundary( Source : TAniFigure );
-const
-  FailName : string = 'TProjectile.CollideBoundary';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    Disable;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
-procedure TProjectile.DoDamage( Target : TSpriteObject );
-var
-  Total, Stun : Single;
-  List : TStringList;
-  i : Integer;
-  D, F : Single;
-  NewDamage : TDamageProfile;
-const
-  FailName : string = 'TProjectile.DoDamage';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    if DamageRadius > 0 then
-    begin
-      List := GetCharactersInRadius( X, Y, Radius + DamageRadius );
-      if Assigned( List ) then
-      begin
-        for i := 0 to List.Count - 1 do
-        begin
-          if List.Objects[ i ] <> FSource then
-          begin
-            NewDamage := Damage;
-            if not TCharacter( List.Objects[ i ] ).AffectDamage( self, @NewDamage ) then
-            begin
-              D := TCharacter( List.Objects[ i ] ).Distance - TCharacter( List.Objects[ i ] ).Radius - Radius;
-              if D < 0 then
-                D := 0;
-              F := ( 1 - ( D / DamageRadius ) ) * DamageFactor;
-              if ( FTarget = Target ) and ( List.Objects[ i ] = Target ) then
-                Total := CalcTotalDamage( NewDamage, TCharacter( TCharacter( List.Objects[ i ] ) ).Resistance, F, Critical )
-              else
-                Total := CalcTotalDamage( NewDamage, TCharacter( TCharacter( List.Objects[ i ] ) ).Resistance, F, false );
-              if Total > 0 then
-              begin
-{$IFDEF AILog}
-                Log.Log( TCharacter( List.Objects[ i ] ).GUID + ' takes ' + IntToStr( Round( Total ) ) + ' points of damage from a projectile' );
-                if Assigned( FSource ) then
-                  Log.Log( '  fired by ' + FSource.GUID );
-{$ENDIF}
-              end;
-              Stun := CalcDamage( NewDamage.Stun ) * F - TCharacter( List.Objects[ i ] ).Resistance.Stun.Invulnerability;
-              if Stun > 0 then
-                Stun := Stun * ( 1 - TCharacter( List.Objects[ i ] ).Resistance.Stun.Resistance );
-              TCharacter( List.Objects[ i ] ).TakeDamage( FSource, Total, Stun, UseStealth );
-            end
-          end;
-        end;
-        List.Free;
-      end;
-    end
-    else
-    begin
-      if Assigned( Target ) then
-      begin
-        NewDamage := Damage;
-        if TCharacter( Target ).AffectDamage( self, @NewDamage ) then
-          exit;
-        if ( FTarget = Target ) then
-          Total := CalcTotalDamage( NewDamage, TCharacter( Target ).Resistance, DamageFactor, Critical )
-        else
-          Total := CalcTotalDamage( NewDamage, TCharacter( Target ).Resistance, DamageFactor, false );
-        if Total > 0 then
-        begin
-{$IFDEF AILog}
-          Log.Log( TCharacter( Target ).GUID + ' takes ' + IntToStr( Round( Total ) ) + ' points of damage from a projectile' );
-          if Assigned( FSource ) then
-            Log.Log( '  fired by ' + FSource.GUID );
-{$ENDIF}
-        end;
-        Stun := CalcDamage( NewDamage.Stun ) - TCharacter( Target ).Resistance.Stun.Invulnerability;
-        if Stun > 0 then
-          Stun := Stun * ( 1 - TCharacter( Target ).Resistance.Stun.Resistance );
-        TCharacter( Target ).TakeDamage( FSource, Total, Stun, UseStealth );
-      end;
-    end;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
-procedure TProjectile.ExplodeEnd( Sender : TObject );
-const
-  FailName : string = 'TProjectile.ExplodeEnd';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    Disable;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
-procedure TProjectile.Disable;
-const
-  FailName : string = 'TProjectile.Disable';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    if assigned( GlowEffect ) then
-    begin
-      GlowEffect.enabled := false;
-      GlowEffect := nil;
-    end;
-
-    if assigned( TrailedBy ) then
-      TrailedBy.Disable; //This will cascade
-
-    Enabled := False;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
-procedure TProjectile.DoFrame;
-var
-  AX, Bx : Double;
-  AY, By : Double;
-  NewX, NewY : Longint;
-  at, AT1, DT, T1, T2, T3 : Single;
-  iX1, iY1, iZ1 : integer;
-  iX2, iY2, iZ2 : integer;
-  Tail : TProjectile;
-const
-  FailName : string = 'TProjectile.DoFrame';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    if Exploding then
-    begin
-      if ( ScriptFrame = TProjectileResource( Resource ).ContactFrame ) and ( Delay = 0 ) then
-      begin
-        DoDamage( TSpriteObject( FTarget ) );
-      end;
-    end
-    else if Passive then
-    begin
-    end
-    else
-    begin
-      if Assigned( FTarget ) and ( TrackingDegree <> 0 ) then
-      begin
-        if ( FTarget is TCharacter ) and TCharacter( FTarget ).Dead then
-          TrackingDegree := 0
-        else
-        begin
-          AX := StepX;
-          AY := StepY;
-          Bx := FTarget.X;
-          By := FTarget.Y;
-
-          T1 := ATan( SlopeX, SlopeY );
-          T2 := ATan( Bx - AX, By - AY );
-          at := T2 - T1;
-          if at > 0 then
-          begin
-            T3 := T1 + 2 * PI;
-            AT1 := T2 - T3;
-            if Abs( AT1 ) < Abs( at ) then
-            begin
-              at := AT1;
-              T1 := T3;
-            end;
-          end
-          else
-          begin
-            T3 := T2 + 2 * PI;
-            AT1 := T3 - T1;
-            if Abs( AT1 ) < Abs( at ) then
-            begin
-              at := AT1;
-              T2 := T3;
-            end;
-          end;
-          DT := PI * TrackingDegree / 180;
-          if T2 >= T1 then
-          begin
-            if at > DT then
-              at := DT;
-            T1 := T1 + at;
-          end
-          else
-          begin
-            if at < -DT then
-              at := -DT;
-            T1 := T1 + at;
-          end;
-
-          NewX := Round( AX + 128 * Cos( T1 ) );
-          NewY := Round( AY + 128 * Sin( T1 ) );
-          Move( NewX, NewY, FTarget.Z + ZFix );
-        end;
-      end;
-
-      Dec( Duration );
-      if Duration <= 0 then
-        Disable;
-    end;
-
-    if not Passive then
-    begin
-      if assigned( TrailedBy ) then
-      begin
-        iX1 := X;
-        iY1 := Y;
-        iZ1 := Z;
-        Tail := TrailedBy;
-        while assigned( Tail ) do
-        begin
-          iX2 := Tail.X;
-          iY2 := Tail.Y;
-          iZ2 := Tail.Z;
-          Tail.SetPos( iX1, iY1, iZ1 );
-          iX1 := iX2;
-          iY1 := iY2;
-          iZ1 := iZ2;
-          Tail := Tail.TrailedBy;
-        end;
-      end;
-    end;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
-procedure TProjectile.MoveEvent( Sender : TObject );
-const
-  FailName : string = 'TProjectile.MoveEvent';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    if assigned( GlowEffect ) then
-    begin
-      if Exploding then
-      begin
-        GlowEffect.enabled := Z < 150;
-        if GlowEffect.enabled then
-        begin
-          GlowEffect.SetPos( X, Y - 1, 0 );
-          GlowEffect.Alpha := 150 - Z;
-          View.TransFigure( GlowEffect );
-        end;
-      end
-      else
-      begin
-        GlowEffect.enabled := Z < 100;
-        if GlowEffect.enabled then
-        begin
-          GlowEffect.SetPos( X, Y - 1, 0 );
-          GlowEffect.Alpha := 100 - Z;
-          View.TransFigure( GlowEffect );
-        end;
-      end;
-    end;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
-{ TArrow }
-
-procedure TArrow.Render;
-var
-  R : Integer;
-  X1, Y1, X2, Y2 : Integer;
-  DstX1, DstY1 : Integer;
-  ddsd : TDDSurfaceDesc;
-  Bits : BITPLANE;
-  RFactor, GFactor, BFactor : integer;
-const
-  FailName : string = 'TArrow.Render';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    if not Visible then
-      Exit;
-    if TrackingDegree <> 0 then
-    begin
-      if ( SlopeX <> PrevSlopeX ) or ( SlopeY <> PrevSlopeY ) then
-      begin
-        PrevSlopeX := SlopeX;
-        PrevSlopeY := SlopeY;
-        R := ( width - 4 ) div 2;
-        X2 := Round( R * SlopeX );
-        Y2 := Round( R * SlopeY );
-        X1 := Height - X2;
-        Y1 := Height div 2 - Y2;
-        Inc( X2, Height );
-        Inc( Y2, Height div 2 );
-        Draw( X1, Y1, X2, Y2, R, SlopeY, SlopeX );
-      end;
-    end;
-
-    DstX1 := View.Left + PosX;
-    DstY1 := View.Top + PosY;
-
-    ddsd.dwSize := SizeOf( ddsd );
-    if lpDDSBack.Lock( nil, ddsd, DDLOCK_WAIT, 0 ) = DD_OK then
-    begin
-      try
-        Bits.bitsPtr := ddsd.lpSurface;
-        Bits.bitsWdh := ResWidth;
-        Bits.bitsHgh := ResHeight;
-        Bits.bitsFmt := dfx_pixelformat;
-        Bits.bitsPitch := ddsd.lPitch;
-        Bits.BaseX := -DstX1;
-        Bits.BaseY := -DstY1;
-
-        RFactor := 100 * LightR div 255;
-        GFactor := 100 * LightG div 255;
-        BFactor := 100 * LightB div 255;
-        RLE.DrawColorize( 0, 0, 0, @Bits, RFactor, GFactor, BFactor, 100, 0 );
-      finally
-        lpDDSBack.Unlock( nil );
-      end;
-    end;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
-destructor TArrow.Destroy;
-begin
-  RLE.Free;
-  if Assigned( BM ) then
-  begin
-    BM.Free;
-  end;
-  inherited;
-end;
-
-procedure TArrow.Draw( X1, Y1, X2, Y2, R : Integer; SinT, CosT : Single );
-var
-  X0, Y0 : Integer;
-const
-  FailName : string = 'TArrow.Draw';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    with BM.Canvas do
-    begin
-      // Beware below fix is temporary - due to issue with DDrawCompat ddraw.dll
-//      Y1 := Height-Y1;
-//      Y2 := Height-Y2;
-      //
-
-      PatBlt( Handle, 0, 0, BM.width, BM.Height, BLACKNESS );
-      X0 := R - Round( ( R - 4 ) * CosT );
-      // Beware below fix is temporary - due to issue with DDrawCompat ddraw.dll
-//      Y0 := Height - ( R div 2 - Round( ( R - 4 ) * SinT ) );
-      Y0 := R div 2 - Round( ( R - 4 ) * SinT );
-      Pen.Color := FletchingColor;
-      Pen.Width := 3;
-      MoveTo( X0, Y0 );
-      LineTo( X1, Y1 );
-      Pen.Color := $204080;
-      Pen.Width := 1;
-      MoveTo( X1, Y1 );
-      LineTo( X2, Y2 );
-      Pen.Color := clSilver;
-      X0 := Height + Round( ( R - 2 ) * CosT );
-      // Beware below fix is temporary - due to issue with DDrawCompat ddraw.dll
-//      Y0 := Height - ( Height div 2 + Round( ( R - 2 ) * SinT ) );
-      Y0 := Height div 2 + Round( ( R - 2 ) * SinT );
-      MoveTo( X0, Y0 );
-      LineTo( X2, Y2 );
-    end;
-    RLE.LoadFromBitmap( BM, Width, Height, clBlack );
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
-procedure TArrow.Launch( Source : TCharacter; Target : TSpriteObject; X, Y : Longint );
-const
-  FailName : string = 'TArrow.Launch';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    inherited;
-    PrevSlopeX := SlopeX;
-    PrevSlopeY := SlopeY;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
-procedure TArrow.Disable;
-const
-  FailName : string = 'TArrow.Disable';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    inherited;
-    RLE.free;
-    RLE := nil;
-    BM.Free;
-    BM := nil;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
 { TLauncher }
 
 procedure TLauncher.DoDamage( Source, Target : TCharacter );
@@ -11149,159 +10180,6 @@ begin
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
   end;
-end;
-
-{ TSpell }
-
-function TSpell.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
-const
-  FailName : string = 'TSpell.Cast';
-begin
-  result := False;
-
-  Log.DebugLog( FailName );
-  try
-
-    Source.FCastRecovery := Recovery( Source );
-
-    if SoundInCast then
-      PlaySound( Source.X, Source.Y );
-    result := True;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
-constructor TSpell.Create;
-const
-  FailName : string = 'TSpell.Create';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    inherited;
-    CastSounds := nil;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
-destructor TSpell.Destroy;
-const
-  FailName : string = 'TSpell.Destroy';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    if assigned( SoundLib ) then
-    begin
-      SoundLib.FreeSound( CastSounds );
-    end;
-    inherited;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
-function TSpell.Drain( Source : TCharacter ) : Single;
-begin
-  result := 0;
-end;
-
-function TSpell.GetInfo( Source : TCharacter ) : string;
-begin
-  result := InfoText;
-end;
-
-procedure TSpell.Casting( Source : TCharacter );
-begin
-
-end;
-
-function TSpell.GetLoaded : Boolean;
-begin
-  result := True;
-end;
-
-procedure TSpell.LoadCastSounds( const NameList : string );
-const
-  FailName : string = 'TSpell.LoadCastSounds';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    if assigned( SoundLib ) then
-    begin
-      if assigned( CastSounds ) then
-        SoundLib.FreeSound( CastSounds );
-      CastSounds := SoundLib.OpenSound( NameList, SoundPreloadCount, CastSoundCount );
-    end;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
-procedure TSpell.PlaySound( X, Y : longint );
-var
-  i : integer;
-const
-  FailName : string = 'TSpell.PlaySound';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    if assigned( CastSounds ) then
-    begin
-      i := random( CastSoundCount );
-      PlaySingleSound( CastSounds[ CastSoundCounter * CastSoundCount + i ], X, Y );
-      inc( CastSoundCounter );
-      if CastSoundCounter >= SoundPreloadCount then
-        CastSoundCounter := 0;
-    end;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
-function TSpell.Range( Source : TCharacter ) : Integer;
-begin
-  result := 0;
-end;
-
-function TSpell.Recovery( Source : TCharacter ) : Integer;
-begin
-  result := 0;
-end;
-
-procedure TSpell.Clear;
-begin
-
-end;
-
-procedure TSpell.Replace( var S : string; const Symbol, Value : string );
-var
-  i : integer;
-  S1 : string;
-begin
-  S1 := '#' + Symbol;
-  i := Pos( S1, S );
-  if i > 0 then
-    S := copy( S, 1, i - 1 ) + Value + copy( S, i + length( S1 ), length( S ) - i - length( S1 ) + 1 );
-end;
-
-procedure TSpell.SetInfoText( const Value : string );
-begin
-  FInfoText := Value.Replace('|',#13);
 end;
 
 { TTrigger }
@@ -13002,122 +11880,6 @@ begin
   end;
 end;
 
-{ TPartyAI }
-
-procedure TPartyAI.AIChanged;
-begin
-
-end;
-
-procedure TPartyAI.SetLeader( const Value : TCharacter );
-begin
-  FLeader := Value;
-end;
-
-{ TGlow }
-
-procedure TGlow.CollideBoundary( Source : TAniFigure );
-begin
-
-end;
-
-procedure TGlow.CollideFigure( Source, Target : TAniFigure;
-  var Stop : Boolean );
-begin
-
-end;
-
-procedure TGlow.CollideItem( Source : TAniFigure; var Stop : Boolean );
-begin
-
-end;
-
-constructor TGlow.Create( X, Y, Z : Integer;
-  Frame : Word; Enabled : Boolean );
-const
-  FailName : string = 'TGlow.Create';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    inherited;
-    Width := 111;
-    Height := 60;
-    CenterX := 55;
-    CenterY := 30;
-    Speed := 0;
-    Radius := 0;
-    UseLighting := false;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
-procedure TGlow.Disable;
-begin
-
-end;
-
-procedure TGlow.DoDamage( Target : TSpriteObject );
-begin
-
-end;
-
-procedure TGlow.DoFrame;
-begin
-
-end;
-
-procedure TGlow.ExplodeEnd( Sender : TObject );
-begin
-
-end;
-
-procedure TGlow.MoveEvent( Sender : TObject );
-begin
-
-end;
-
-procedure TGlow.Render;
-var
-  DstX1, DstY1 : Integer;
-  ddsd : TDDSurfaceDesc;
-  Bits : BITPLANE;
-const
-  FailName : string = 'TGlow.Render';
-begin
-  Log.DebugLog( FailName );
-  try
-
-    DstX1 := View.Left + PosX;
-    DstY1 := View.Top + PosY;
-
-    ddsd.dwSize := SizeOf( ddsd );
-    if lpDDSBack.Lock( nil, ddsd, DDLOCK_WAIT, 0 ) = DD_OK then
-    begin
-      try
-        Bits.bitsPtr := ddsd.lpSurface;
-        Bits.bitsWdh := ResWidth;
-        Bits.bitsHgh := ResHeight;
-        Bits.bitsFmt := dfx_pixelformat;
-        Bits.bitsPitch := ddsd.lPitch;
-        Bits.BaseX := -DstX1;
-        Bits.BaseY := -DstY1;
-
-        GlowImage.DrawColorize( 0, 0, 0, @Bits, RFactor, GFactor, BFactor, Alpha, 100 );
-      finally
-        lpDDSBack.Unlock( nil );
-      end;
-    end;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
 { TEventTimer }
 
 procedure TEventTimer.Execute;
@@ -13381,125 +12143,6 @@ begin
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
-  end;
-end;
-
-{ TBodyRotEffect }
-
-procedure TBodyRotEffect.Adjust( Character : TCharacter );
-begin
-  inherited;
-  if not assigned( FCharacter ) then
-  begin
-    FCharacter := Character;
-    Facing := ord( FCharacter.Facing ) * 3;
-    Frame := -1;
-    DisableWhenDone := true;
-    AnimationDuration := 3300;
-  end;
-end;
-
-constructor TBodyRotEffect.Create;
-begin
-  inherited;
-  if not assigned( BodyRotResource ) then
-  begin
-    BodyRotResource := LoadArtResource( 'engine\fx\CorpseRot.gif' );
-  end;
-end;
-
-function TBodyRotEffect.DoFrame : boolean;
-begin
-  result := inherited DoFrame;
-  if not Result then
-  begin
-    if ( ( AnimationDuration - 100 ) mod 800 ) = 0 then
-    begin
-      inc( Frame );
-      Fade := 100;
-      if Frame = 0 then
-      begin
-        if FCharacter.SpecialEffect <> seTranslucent then
-        begin
-          FCharacter.SpecialEffect := seTranslucent;
-          FCharacter.Alpha := 100;
-        end;
-        if Fade < FCharacter.Alpha then
-          FCharacter.Alpha := Fade;
-      end;
-    end
-    else if Fade > 0 then
-    begin
-      dec( Fade );
-      if ( Frame = 0 ) then
-      begin
-        if ( Fade = 0 ) then
-          FCharacter.Frame := 0
-        else
-        begin
-          if Fade < FCharacter.Alpha then
-            FCharacter.Alpha := Fade;
-        end;
-      end;
-    end;
-  end;
-end;
-
-procedure TBodyRotEffect.RenderLocked( Figure : TAniFigure; Bits : PBITPLANE );
-var
-  R, G, B : integer;
-begin
-  if assigned( BodyRotResource ) then
-  begin
-    if Figure.UseLighting then
-    begin
-      R := 100 * Figure.LightR div 255;
-      G := 100 * Figure.LightG div 255;
-      B := 100 * Figure.LightB div 255;
-      if Fade > 0 then
-      begin
-        if Frame = 0 then
-        begin
-          BodyRotResource.RLE.DrawColorize( Facing + Frame, 0, 0, Bits, R, G, B, 100 - Fade, Fade );
-        end
-        else if Frame < 3 then
-        begin
-          BodyRotResource.RLE.DrawColorize( Facing + Frame - 1, 0, 0, Bits, R, G, B, Fade, 100 - Fade );
-          BodyRotResource.RLE.DrawColorize( Facing + Frame, 0, 0, Bits, R, G, B, 100 - Fade, Fade );
-        end
-        else
-        begin
-          BodyRotResource.RLE.DrawColorize( Facing + Frame - 1, 0, 0, Bits, R, G, B, Fade, 100 - Fade );
-        end;
-      end
-      else if Frame >= 0 then
-      begin
-        BodyRotResource.RLE.DrawColorize( Facing + Frame, 0, 0, Bits, R, G, B, 100, 0 );
-      end;
-    end
-    else
-    begin
-      if Fade > 0 then
-      begin
-        if Frame = 0 then
-        begin
-          BodyRotResource.RLE.DrawBlend( Facing + Frame, 0, 0, Bits, 100 - Fade, Fade );
-        end
-        else if Frame < 3 then
-        begin
-          BodyRotResource.RLE.DrawBlend( Facing + Frame - 1, 0, 0, Bits, Fade, 100 - Fade );
-          BodyRotResource.RLE.DrawBlend( Facing + Frame, 0, 0, Bits, 100 - Fade, Fade );
-        end
-        else
-        begin
-          BodyRotResource.RLE.DrawBlend( Facing + Frame - 1, 0, 0, Bits, Fade, 100 - Fade );
-        end;
-      end
-      else if Frame >= 0 then
-      begin
-        BodyRotResource.RLE.Draw( Facing + Frame, 0, 0, Bits );
-      end;
-    end;
   end;
 end;
 

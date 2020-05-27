@@ -28,7 +28,7 @@ unit Effects;
   WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
   for the specific language governing rights and limitations under the License.
 
-  Description:
+  Description: SoAOS Effect classes - was named of Effect.pas
 
   Requires: Delphi 10.3.3 or later
 
@@ -111,6 +111,81 @@ type
     procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); override;
     function DoFrame : boolean; override;
   end;
+
+  TBodyRotEffect = class( TEffect )
+  private
+    FCharacter : TCharacter;
+    Facing : integer;
+    Frame : integer;
+    Fade : integer;
+  public
+    constructor Create;
+    procedure Adjust( Character : TCharacter ); override;
+    procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); override;
+    function DoFrame : boolean; override;
+  end;
+
+  TForgetEffect = class( TEffect )
+  private
+    Points : integer;
+    PointList : pointer;
+    FCharacter : TCharacter;
+    OldAI : TAI;
+    OldAIMode : TAIMode;
+    Applied : boolean;
+  public
+    constructor Create;
+    destructor Destroy; override;
+    procedure Refresh( NewEffect : TEffect ); override;
+    procedure Adjust( Character : TCharacter ); override;
+    procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); override;
+    function DoFrame : boolean; override;
+  end;
+
+  TAuraEffect = class( TEffect )
+  private
+    HitResource : TResource;
+    FCharacter : TCharacter;
+  public
+    procedure Adjust( Character : TCharacter ); override;
+    function Hit( Source : TAniFigure; Damage : PDamageProfile ) : boolean; override;
+  end;
+
+  TReflectEffect = class( TEffect )
+  private
+    HitResource : TResource;
+    FCharacter : TCharacter;
+    Reflect : boolean;
+  public
+    procedure Adjust( Character : TCharacter ); override;
+    function Hit( Source : TAniFigure; Damage : PDamageProfile ) : boolean; override;
+  end;
+
+  TThiefEffect = class( TEffect )
+  private
+    List : TStringList;
+    FCharacter : TCharacter;
+    FrameCount : integer;
+  public
+    constructor Create;
+    destructor Destroy; override;
+    procedure Adjust( Character : TCharacter ); override;
+    function DoFrame : boolean; override;
+  end;
+
+  TDamagingEffect = class( TEffect )
+  private
+    FCharacter : TCharacter;
+    FrameCount : integer;
+  public
+    Damage : TDamageProfile;
+    TriggerFrame : integer;
+    Source : TCharacter;
+    UseStealth : boolean;
+    procedure Adjust( Character : TCharacter ); override;
+    function DoFrame : boolean; override;
+  end;
+
 
 type
   TSwirlBead = record
@@ -445,5 +520,403 @@ begin
 
 end;
 
+{ TBodyRotEffect }
+
+procedure TBodyRotEffect.Adjust( Character : TCharacter );
+begin
+  inherited;
+  if not assigned( FCharacter ) then
+  begin
+    FCharacter := Character;
+    Facing := ord( FCharacter.Facing ) * 3;
+    Frame := -1;
+    DisableWhenDone := true;
+    AnimationDuration := 3300;
+  end;
+end;
+
+constructor TBodyRotEffect.Create;
+begin
+  inherited;
+  if not assigned( BodyRotResource ) then
+  begin
+    BodyRotResource := LoadArtResource( 'engine\fx\CorpseRot.gif' );
+  end;
+end;
+
+function TBodyRotEffect.DoFrame : boolean;
+begin
+  result := inherited DoFrame;
+  if not Result then
+  begin
+    if ( ( AnimationDuration - 100 ) mod 800 ) = 0 then
+    begin
+      inc( Frame );
+      Fade := 100;
+      if Frame = 0 then
+      begin
+        if FCharacter.SpecialEffect <> seTranslucent then
+        begin
+          FCharacter.SpecialEffect := seTranslucent;
+          FCharacter.Alpha := 100;
+        end;
+        if Fade < FCharacter.Alpha then
+          FCharacter.Alpha := Fade;
+      end;
+    end
+    else if Fade > 0 then
+    begin
+      dec( Fade );
+      if ( Frame = 0 ) then
+      begin
+        if ( Fade = 0 ) then
+          FCharacter.Frame := 0
+        else
+        begin
+          if Fade < FCharacter.Alpha then
+            FCharacter.Alpha := Fade;
+        end;
+      end;
+    end;
+  end;
+end;
+
+procedure TBodyRotEffect.RenderLocked( Figure : TAniFigure; Bits : PBITPLANE );
+var
+  R, G, B : integer;
+begin
+  if assigned( BodyRotResource ) then
+  begin
+    if Figure.UseLighting then
+    begin
+      R := 100 * Figure.LightR div 255;
+      G := 100 * Figure.LightG div 255;
+      B := 100 * Figure.LightB div 255;
+      if Fade > 0 then
+      begin
+        if Frame = 0 then
+        begin
+          BodyRotResource.RLE.DrawColorize( Facing + Frame, 0, 0, Bits, R, G, B, 100 - Fade, Fade );
+        end
+        else if Frame < 3 then
+        begin
+          BodyRotResource.RLE.DrawColorize( Facing + Frame - 1, 0, 0, Bits, R, G, B, Fade, 100 - Fade );
+          BodyRotResource.RLE.DrawColorize( Facing + Frame, 0, 0, Bits, R, G, B, 100 - Fade, Fade );
+        end
+        else
+        begin
+          BodyRotResource.RLE.DrawColorize( Facing + Frame - 1, 0, 0, Bits, R, G, B, Fade, 100 - Fade );
+        end;
+      end
+      else if Frame >= 0 then
+      begin
+        BodyRotResource.RLE.DrawColorize( Facing + Frame, 0, 0, Bits, R, G, B, 100, 0 );
+      end;
+    end
+    else
+    begin
+      if Fade > 0 then
+      begin
+        if Frame = 0 then
+        begin
+          BodyRotResource.RLE.DrawBlend( Facing + Frame, 0, 0, Bits, 100 - Fade, Fade );
+        end
+        else if Frame < 3 then
+        begin
+          BodyRotResource.RLE.DrawBlend( Facing + Frame - 1, 0, 0, Bits, Fade, 100 - Fade );
+          BodyRotResource.RLE.DrawBlend( Facing + Frame, 0, 0, Bits, 100 - Fade, Fade );
+        end
+        else
+        begin
+          BodyRotResource.RLE.DrawBlend( Facing + Frame - 1, 0, 0, Bits, Fade, 100 - Fade );
+        end;
+      end
+      else if Frame >= 0 then
+      begin
+        BodyRotResource.RLE.Draw( Facing + Frame, 0, 0, Bits );
+      end;
+    end;
+  end;
+end;
+
+{ TForgetEffect }
+
+procedure TForgetEffect.Adjust( Character : TCharacter );
+begin
+  FCharacter := Character;
+
+  if not Applied then
+  begin
+    if assigned( FCharacter.AI ) then
+    begin
+      OldAI := FCharacter.AI;
+      OldAIMode := FCharacter.FAIMode;
+      FCharacter.AI := TMeander.create;
+      FCharacter.AI.Character := FCharacter;
+      FCharacter.AI.Init;
+    end;
+    Applied := true;
+  end;
+
+  inherited;
+end;
+
+constructor TForgetEffect.Create;
+var
+  i : integer;
+  p : ^TSwirlBead;
+begin
+  inherited;
+  AnimationDuration := 80;
+  Resource := TLightning( Lightning ).MediumResource;
+  Points := 20;
+  GetMem( PointList, Points * sizeof( TSwirlBead ) );
+  p := PointList;
+  for i := 1 to Points do
+  begin
+    p^.X := 0;
+    p^.Y := 0;
+    p^.Z := random * 10;
+    p^.Angle := random * c2PI;
+    p^.Rise := 2.5 + random / 2;
+    p^.Offset := random * 30 - 15;
+    inc( p );
+  end;
+end;
+
+destructor TForgetEffect.Destroy;
+begin
+  if assigned( OldAI ) then
+    OldAI.free;
+  FreeMem( PointList );
+  inherited;
+end;
+
+function TForgetEffect.DoFrame : boolean;
+var
+  i : integer;
+  p : ^TSwirlBead;
+begin
+  result := inherited DoFrame;
+  if not result and ( AnimationDuration > 0 ) then
+  begin
+    p := PointList;
+    for i := 1 to Points do
+    begin
+      p^.Angle := p^.Angle - 30 / 180;
+      p^.Z := p^.Z + p^.Rise;
+      p^.X := ( 80 + p^.Offset ) * cos( p^.Angle ) / 4;
+      p^.Y := ( 80 + p^.Offset ) * sin( p^.Angle ) / 4;
+      inc( p );
+    end;
+  end;
+  if Applied and ( Duration = 0 ) then
+  begin
+    Applied := false;
+    FCharacter.AI.free;
+    FCharacter.AI := OldAI;
+    OldAI := nil;
+    FCharacter.FAIMode := OldAIMode;
+  end;
+end;
+
+procedure TForgetEffect.Refresh( NewEffect : TEffect );
+var
+  i : integer;
+  p : ^TSwirlBead;
+begin
+  Duration := NewEffect.Duration;
+  AnimationDuration := 80;
+  p := PointList;
+  for i := 1 to Points do
+  begin
+    p^.X := 0;
+    p^.Y := 0;
+    p^.Z := random * 10;
+    p^.Angle := random * c2PI;
+    p^.Rise := 2.5 + random / 2;
+    p^.Offset := random * 30 - 15;
+    inc( p );
+  end;
+end;
+
+procedure TForgetEffect.RenderLocked( Figure : TAniFigure; Bits : PBITPLANE );
+var
+  i : integer;
+  p : ^TSwirlBead;
+  Blend : integer;
+  Color : integer;
+begin
+  p := PointList;
+  for i := 1 to Points do
+  begin
+    Blend := 100 - round( p^.Z / 2 );
+    Color := round( p^.Z * 2 );
+    if Color > 200 then
+      Color := 200;
+    if Blend > 0 then
+      Resource.RLE.DrawColorize( 5, Figure.CenterX + round( p^.X ), Figure.CenterY + round( ( p^.Y - p^.Z ) / 2 ),
+        Bits, 200 - Color, Color, 50, Blend, 100 );
+    inc( p );
+  end;
+end;
+
+{ TAuraEffect }
+
+procedure TAuraEffect.Adjust( Character : TCharacter );
+begin
+  inherited;
+  FCharacter := Character;
+end;
+
+function TAuraEffect.Hit( Source : TAniFigure; Damage : PDamageProfile ) : boolean;
+var
+  Effect : TEffect;
+  Direction : TFacing;
+begin
+  result := false;
+  Direction := Character.GetFacing( FCharacter.X, FCharacter.Y, Source.X, Source.Y );
+
+  Effect := TEffect.Create;
+  Effect.Resource := HitResource;
+  Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
+  Effect.ColorR := ColorR;
+  Effect.ColorG := ColorG;
+  Effect.ColorB := ColorB;
+  Effect.ApplyColor := true;
+  Effect.DoAction( 'Default', Direction );
+
+  FCharacter.AddEffect( Effect );
+end;
+
+{ TThiefEffect }
+
+procedure TThiefEffect.Adjust( Character : TCharacter );
+begin
+  inherited;
+  FCharacter := Character;
+end;
+
+constructor TThiefEffect.Create;
+begin
+  inherited;
+end;
+
+destructor TThiefEffect.Destroy;
+begin
+  List.free;
+  inherited;
+end;
+
+function TThiefEffect.DoFrame : boolean;
+var
+  Drain, M : single;
+  i : integer;
+begin
+  result := inherited DoFrame;
+  if not result and ( AnimationDuration > 0 ) then
+  begin
+    inc( FrameCount );
+    if FrameCount >= 10 then
+    begin
+      List.free;
+      List := GetNearbyCharacter( FCharacter, Power * 4 );
+      FrameCount := 0;
+    end;
+    if assigned( List ) then
+    begin
+      Drain := Power / 2000;
+      for i := 0 to List.count - 1 do
+      begin
+        M := TCharacter( List.objects[ i ] ).Mana - TCharacter( List.objects[ i ] ).Drain;
+        if M > Drain then
+          M := Drain;
+        TCharacter( List.objects[ i ] ).Drain := TCharacter( List.objects[ i ] ).Drain + M;
+        if M > FCharacter.Drain then
+          M := FCharacter.Drain;
+        FCharacter.Drain := FCharacter.Drain - M;
+      end;
+    end;
+  end;
+end;
+
+{ TReflectEffect }
+
+procedure TReflectEffect.Adjust( Character : TCharacter );
+begin
+  inherited;
+  FCharacter := Character;
+end;
+
+function TReflectEffect.Hit( Source : TAniFigure; Damage : PDamageProfile ) : boolean;
+var
+  Effect : TEffect;
+  Direction : TFacing;
+begin
+  result := false;
+  if Source is TProjectile then
+  begin
+    if TProjectile( Source ).Magic > 0 then
+    begin
+      if TProjectile( Source ).Magic > Power then
+      begin
+        Power := 0;
+        Duration := 0;
+      end
+      else
+      begin
+        Power := Power - TProjectile( Source ).Magic;
+        Direction := Character.GetFacing( FCharacter.X, FCharacter.Y, Source.X, Source.Y );
+
+        Effect := TEffect.Create;
+        Effect.Resource := HitResource;
+        Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
+        Effect.DoAction( 'Default', Direction );
+
+        result := true;
+        if Reflect then
+        begin
+          TProjectile( Source ).Launch( FCharacter, TProjectile( Source ).FSource, //Reflect
+            TProjectile( Source ).FSource.X, TProjectile( Source ).FSource.Y );
+        end
+        else
+        begin
+          TProjectile( Source ).Launch( FCharacter, nil, //Deflect
+            TProjectile( Source ).FTarget.X, TProjectile( Source ).FTarget.Y );
+        end;
+
+        FCharacter.AddEffect( Effect );
+      end;
+    end;
+  end;
+end;
+
+{ TDamagingEffect }
+
+procedure TDamagingEffect.Adjust( Character : TCharacter );
+begin
+  inherited;
+  FCharacter := Character;
+end;
+
+function TDamagingEffect.DoFrame : boolean;
+var
+  Stun, Total : single;
+begin
+  result := inherited DoFrame;
+  if not result then
+  begin
+    inc( FrameCount );
+    if FrameCount = TriggerFrame then
+    begin
+      FCharacter.AffectDamage( Source, @Damage );
+      Total := CalcTotalDamage( Damage, FCharacter.Resistance, 1, false );
+      Stun := CalcDamage( Damage.Stun ) - FCharacter.Resistance.Stun.Invulnerability;
+      if Stun > 0 then
+        Stun := Stun * ( 1 - FCharacter.Resistance.Stun.Resistance );
+      FCharacter.TakeDamage( Source, Total, Stun, UseStealth );
+    end;
+  end;
+end;
 
 end.

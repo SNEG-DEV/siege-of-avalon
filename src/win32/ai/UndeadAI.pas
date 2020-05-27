@@ -45,6 +45,7 @@ uses
   System.Classes,
   System.Types,
   SoAOS.Types,
+  SoAOS.AI,
   Character,
   Anigrp30;
 
@@ -65,7 +66,7 @@ type
     procedure Meander;
     procedure Fight;
     procedure IdleAction;
-  protected
+  public
     procedure OnStop; override;
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
   public
@@ -87,7 +88,7 @@ type
     procedure FindTarget;
     procedure Attack;
     procedure Eat;
-  protected
+  public
     procedure OnStop; override;
     procedure OnNoPath; override;
     procedure WasAttacked( Source : TAniFigure; Damage : single ); override;
@@ -118,7 +119,7 @@ type
     procedure Attack;
     procedure FindTarget;
     procedure BattleTatic;
-  protected
+  public
     procedure OnStop; override;
     procedure WasAttacked( Source : TAniFigure; Damage : single ); override;
     procedure WasKilled( Source : TAniFigure ); override;
@@ -152,7 +153,7 @@ type
     procedure FindTarget;
     procedure CastHeal;
     procedure BattleTatic;
-  protected
+  public
     procedure OnStop; override;
     procedure OnNoPath; override;
     procedure WasAttacked( Source : TAniFigure; Damage : single ); override;
@@ -188,12 +189,6 @@ type
     procedure FindTarget;
     procedure CastHeal;
     procedure BattleTatic;
-  protected
-    procedure OnStop; override;
-    procedure OnNoPath; override;
-    procedure WasAttacked( Source : TAniFigure; Damage : single ); override;
-    procedure WasKilled( Source : TAniFigure ); override;
-    function OnCollideFigure( Target : TAniFigure ) : boolean; override;
   public
     destructor Destroy; override;
     procedure Init; override;
@@ -201,6 +196,11 @@ type
     procedure CallToArms( Source, Target : TAniFigure ); override;
     procedure Regroup( Source : TAniFigure; NewX, NewY : Integer ); override;
     procedure NotifyOfDeath( Source : TAniFigure ); override;
+    procedure OnStop; override;
+    procedure OnNoPath; override;
+    procedure WasAttacked( Source : TAniFigure; Damage : single ); override;
+    procedure WasKilled( Source : TAniFigure ); override;
+    function OnCollideFigure( Target : TAniFigure ) : boolean; override;
   end;
 
 function RangeTest( Target, Source : TAniFigure; iDist : integer ) : boolean;
@@ -211,6 +211,8 @@ implementation
 
 uses
   System.SysUtils,
+  SoAOS.AI.Types,
+  SoAOS.AI.Helper,
   AniDemo,
   Engine,
   LogFile;
@@ -1372,17 +1374,7 @@ begin
     ShotCounter := 0;
     MaxShots := Random( 3 ) + 1;
 
-    S := LowerCase( Character.Properties[ 'TakeOrders' ] );
-    try
-      if S = '' then
-        bTakeOrders := true
-      else if S = 'false' then
-        bTakeOrders := False
-      else
-        bTakeOrders := true;
-    except
-      bTakeOrders := true;
-    end;
+    bTakeOrders := StrToBoolDef( Character.Properties[ 'TakeOrders' ], True );
 
     S := LowerCase( Character.Properties[ 'BalanceWithPlayer' ] );
     try
@@ -1429,21 +1421,8 @@ begin
     except
     end;
 
-    S := LowerCase( Character.Properties[ 'Moveable' ] );
-    try
-      if S = '' then
-        bMove := true
-      else if S = 'false' then
-        bMove := False
-      else
-        bMove := true;
-    except
-      bMove := true;
-    end;
-
-
-    S := Character.Properties[ 'Distance' ];
-    iDistance := StrToIntDef( S, 175 );
+    bMove := StrToBoolDef( Character.Properties[ 'Moveable' ], True );
+    iDistance := StrToIntDef( Character.Properties[ 'Distance' ], 175 );
 
     PartyTotal := 1;
     if character.GroupName <> '' then
@@ -1911,24 +1890,14 @@ begin
     CirclePoint := Random( 360 ) + 180;
     NukeCounter := 0;
     CastTimes := Random( 3 ) + 1;
-    S := LowerCase( Character.Properties[ 'Moveable' ] );
+
     character.AddTitle( 'Flame' );
     character.AddTitle( 'Push' );
     character.AddTitle( 'Frost' );
     character.AddTitle( 'Heal' );
     character.AddTitle( 'Charge' );
 
-
-    try
-      if S = '' then
-        bMove := true
-      else if S = 'false' then
-        bMove := False
-      else
-        bMove := true;
-    except
-      bMove := true;
-    end;
+    bMove := StrToBoolDef( Character.Properties[ 'Moveable' ], True );
 
     S := LowerCase( Character.Properties[ 'BalanceWithPlayer' ] );
     try
@@ -1975,36 +1944,10 @@ begin
     except
     end;
 
-    S := LowerCase( Character.Properties[ 'HealFirst' ] );
-    try
-      if S = '' then
-        bHealFirst := true
-      else if S = 'false' then
-        bHealFirst := False
-      else
-        bHealFirst := true;
+    bHealFirst := StrToBoolDef( Character.Properties[ 'HealFirst' ], True );
+    bTakeOrders := StrToBoolDef( Character.Properties[ 'TakeOrders' ], True );
 
-    except
-      bHealFirst := true;
-    end;
-
-
-
-    S := LowerCase( Character.Properties[ 'TakeOrders' ] );
-    try
-      if S = '' then
-        bTakeOrders := true
-      else if S = 'false' then
-        bTakeOrders := False
-      else
-        bTakeOrders := true;
-    except
-      bTakeOrders := true;
-    end;
-
-
-    S := Character.Properties[ 'Distance' ];
-    iDistance := StrToIntDef( S, 175 );
+    iDistance := StrToIntDef( Character.Properties[ 'Distance' ], 175 );
 
     if character.GroupName <> '' then
       FriendsList := GetGroup( Character, Character.GroupName );
@@ -2534,30 +2477,9 @@ begin
     CirclePoint := Random( 360 ) + 180;
     NukeCounter := 0;
     CastTimes := Random( 3 ) + 1;
-    S := LowerCase( Character.Properties[ 'Moveable' ] );
-    try
-      if S = '' then
-        bMove := true
-      else if S = 'false' then
-        bMove := False
-      else
-        bMove := true;
-    except
-      bMove := true;
-    end;
 
-    S := LowerCase( Character.Properties[ 'HealFirst' ] );
-    try
-      if S = '' then
-        bHealFirst := true
-      else if S = 'false' then
-        bHealFirst := False
-      else
-        bHealFirst := true;
-
-    except
-      bHealFirst := true;
-    end;
+    bMove := StrToBoolDef( Character.Properties[ 'Moveable' ], True );
+    bHealFirst := StrToBoolDef( Character.Properties[ 'HealFirst' ], True );
 
     S := LowerCase( Character.Properties[ 'BalanceWithPlayer' ] );
     try
@@ -2604,18 +2526,7 @@ begin
     except
     end;
 
-
-    S := LowerCase( Character.Properties[ 'TakeOrders' ] );
-    try
-      if S = '' then
-        bTakeOrders := true
-      else if S = 'false' then
-        bTakeOrders := False
-      else
-        bTakeOrders := true;
-    except
-      bTakeOrders := true;
-    end;
+    bTakeOrders := StrToBoolDef( Character.Properties[ 'TakeOrders' ], True );
 
     S := LowerCase( Character.Properties[ 'MainStat' ] );
     try
@@ -2637,8 +2548,7 @@ begin
       MainStat := msCombat
     end;
 
-    S := Character.Properties[ 'Distance' ];
-    iDistance := StrToIntDef( S, 175 );
+    iDistance := StrToIntDef( Character.Properties[ 'Distance' ], 175 );
     
     if character.GroupName <> '' then
       FriendsList := GetGroup( Character, Character.GroupName );

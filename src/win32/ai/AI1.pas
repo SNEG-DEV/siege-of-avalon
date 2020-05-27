@@ -43,15 +43,16 @@ interface
 
 uses
   Character,
+  SoAOS.AI,
   Anigrp30;
 
 type
-  TMeander = class( TAI )
+  TMeander = class( TAI ) // Wander aimlessly
   private
     Leash : Integer;
     CenterX : Integer;
     CenterY : Integer;
-  protected
+  public
     procedure OnStop; override;
     procedure OnNoPath; override;
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
@@ -69,7 +70,7 @@ type
     RunAway : Boolean;
     TrackX, TrackY : Longint;
     PostDelay : Integer;
-  protected
+  public
     procedure OnStop; override;
     procedure OnNoPath; override;
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
@@ -82,7 +83,7 @@ type
   TFollowPath = class( TAI )
   private
     CurrentPath : TGameObject;
-  protected
+  public
     procedure OnStop; override;
     procedure OnNoPath; override;
   public
@@ -98,6 +99,8 @@ uses
   System.Classes,
   System.Types,
   System.SysUtils,
+  SoAOS.AI.Types,
+  SoAOS.AI.Helper,
   LogFile;
 
 function AssignAI1( AIName : string ) : TAI;
@@ -188,16 +191,7 @@ begin
     else
       CenterY := StrToIntDef( S, Character.Y );
 
-    S := Character.Properties[ 'LeashLength' ];
-    try
-      if S = '' then
-        Leash := 50
-      else
-        Leash := StrToInt( S );
-    except
-      Leash := 50;
-    end;
-
+    Leash := StrToIntDef( Character.Properties[ 'LeashLength' ], 50 );
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );

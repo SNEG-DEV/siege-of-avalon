@@ -129,6 +129,8 @@ implementation
 
 uses
   SoAOS.Types,
+  SoAOS.AI,
+  SoAOS.AI.Helper,
   SoAOS.Intrface.Text,
   AniDemo,
   Character,

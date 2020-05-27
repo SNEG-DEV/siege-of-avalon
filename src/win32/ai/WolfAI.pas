@@ -43,6 +43,7 @@ interface
 
 uses
   Character,
+  SoAOS.AI,
   Anigrp30;
 
 type
@@ -61,13 +62,11 @@ type
     procedure Meander;
     procedure Eat;
     //temp
-
-  protected
+  public
     procedure OnStop; override;
     procedure OnNoPath; override;
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
     procedure WasKilled( Source : TAniFigure ); override;
-  public
     procedure Init; override;
     property WolfType : TWolfType read FWolfType write FWolfType;
     procedure Follow( Source, Target : TAniFigure ); override;
@@ -86,12 +85,11 @@ type
     procedure RunAway;
     procedure FindTarget;
     procedure Attack;
-  protected
+  public
     procedure OnStop; override;
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
     procedure WasKilled( Source : TAniFigure ); override;
     procedure OnNoPath; override;
-  public
     procedure Init; override;
     procedure Execute; override;
     procedure CallToArms( Source, Target : TAniFigure ); override;
@@ -109,6 +107,8 @@ uses
   System.SysUtils,
   System.Types,
   SoAOS.Types,
+  SoAOS.AI.Types,
+  SoAOS.AI.Helper,
   AniDemo,
   LogFile,
   Resource;

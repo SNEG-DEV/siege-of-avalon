@@ -111,7 +111,12 @@ uses
   SoAOS.Data.DB in 'engine\SoAOS.Data.DB.pas',
   SoAOS.Intrface.Transit in 'interface\SoAOS.Intrface.Transit.pas',
   SoAOS.Intrface.Dialogs in 'interface\SoAOS.Intrface.Dialogs.pas',
-  SoAOS.Intrface.Text in 'interface\SoAOS.Intrface.Text.pas';
+  SoAOS.Intrface.Text in 'interface\SoAOS.Intrface.Text.pas',
+  SoAOS.AI.Types in 'ai\SoAOS.AI.Types.pas',
+  SoAOS.AI in 'ai\SoAOS.AI.pas',
+  SoAOS.AI.Helper in 'ai\SoAOS.AI.Helper.pas',
+  SoAOS.Spells in 'engine\SoAOS.Spells.pas',
+  SoAOS.Projectile in 'engine\SoAOS.Projectile.pas';
 
 {$R *.RES}
 
