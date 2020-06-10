@@ -52,8 +52,8 @@ uses
   Character,
   GameText,
   Display,
-  Anigrp30,
   Engine,
+  SoAOS.Animation,
   Logfile;
 
 type

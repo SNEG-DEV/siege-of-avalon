@@ -81,8 +81,8 @@ uses
   SoAOS.Intrface.Text,
   SoAOS.Graphics.Draw,
   AniDemo,
-  Anigrp30,
   Engine,
+  SoAOS.Animation,
   Logfile,
   Display;
 

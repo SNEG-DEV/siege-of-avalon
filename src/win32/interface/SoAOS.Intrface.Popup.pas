@@ -66,8 +66,8 @@ uses
   Engine,
   Display,
   MousePtr,
-  AniDemo,
-  AniGrp30;
+  SoAOS.Animation,
+  AniDemo;
 
 { TPopup }
 

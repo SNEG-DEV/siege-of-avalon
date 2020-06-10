@@ -68,9 +68,9 @@ uses
   System.Types,
   SoAOS.Types,
   SoAOS.AI,
+  SoAOS.Animation,
   Character,
   Engine,
-  Anigrp30,
   LogFile,
   Resource;
 

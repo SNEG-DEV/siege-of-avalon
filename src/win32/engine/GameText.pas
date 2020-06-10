@@ -49,7 +49,6 @@ uses
   System.Classes,
   System.SysUtils,
   System.IOUtils,
-  Anigrp30,
   Logfile;
 
 type
@@ -123,6 +122,7 @@ implementation
 uses
   SoAOS.Types,
   SoAOS.Graphics.Draw,
+  SoAOS.Animation,
   AniDemo;
 
 { TGameText }

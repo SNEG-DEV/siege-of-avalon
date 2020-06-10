@@ -54,9 +54,10 @@ uses
   Vcl.ExtCtrls,
   SoAOS.Intrface.Dialogs,
   GameText,
-  Anigrp30,
   Engine,
+  SoAOS.Animation,
   Logfile;
+
 type
 
   pItem = ^SelectableRect;

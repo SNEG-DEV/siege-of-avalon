@@ -46,8 +46,8 @@ uses
   System.Types,
   SoAOS.Types,
   SoAOS.AI,
-  Character,
-  Anigrp30;
+  SoAOS.Animation,
+  Character;
 
 type
   TUndeadType = ( utSkeleton, utLich, utGhoul, utGhost );

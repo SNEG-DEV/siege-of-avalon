@@ -45,7 +45,6 @@ uses
   System.Classes,
   Winapi.Windows,
   System.Types,
-  Anigrp30,
   SoAOS.Graphics.Types,
   SoAOS.AI.Types,
   SoAOS.AI,
@@ -53,6 +52,7 @@ uses
   Character,
   Resource,
 
+  SoAOS.Animation,
   SoAOS.Projectile;
 
 var
@@ -625,7 +625,7 @@ uses
   SoAOS.Types,
   SoAOS.AI.Helper,
   SoAOS.Intrface.Text,
-  AniDec30,
+  SoAOS.Map,
   AI1,
   MiscAI,
   AniDemo,

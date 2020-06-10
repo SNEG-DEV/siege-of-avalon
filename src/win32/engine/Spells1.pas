@@ -46,6 +46,7 @@ uses
   SoAOS.AI.Types,
   Character,
   SoAOS.Spells,
+  SoAOS.Animation,
   Resource;
 
 var

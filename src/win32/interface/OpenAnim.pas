@@ -51,9 +51,9 @@ uses
   Vcl.Controls,
   Vcl.Forms,
   Display,
-  Anigrp30,
   Music,
   Resource,
+  SoAOS.Animation,
   LogFile;
 
 type

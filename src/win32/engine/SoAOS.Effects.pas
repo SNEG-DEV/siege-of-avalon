@@ -47,10 +47,10 @@ uses
   System.Types,
   Resource,
   Character,
-  Anigrp30,
   SoAOS.Graphics.Types,
   SoAOS.AI.Types,
   SoAOS.AI,
+  SoAOS.Animation,
   Spells;
 
 type

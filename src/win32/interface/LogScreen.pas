@@ -52,10 +52,10 @@ uses
   Vcl.Controls,
   GameText,
   Display,
-  Anigrp30,
   Engine,
   System.IniFiles,
   LogFile,
+  SoAOS.Animation,
   Resource;
 
 type

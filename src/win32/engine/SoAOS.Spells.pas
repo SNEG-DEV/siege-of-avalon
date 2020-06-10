@@ -36,6 +36,7 @@ uses
   System.Types,
   SoAOS.AI.Types,
   Character,
+  SoAOS.Animation,
   Resource;
 
 type

@@ -43,8 +43,8 @@ interface
 
 uses
   Character,
-  SoAOS.AI,
-  Anigrp30;
+  SoAOS.Animation,
+  SoAOS.AI;
 
 type
   TMeander = class( TAI ) // Wander aimlessly

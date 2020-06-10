@@ -51,7 +51,7 @@ uses
   Vcl.Controls,
   Vcl.Forms,
   SoAOS.Intrface.Dialogs,
-  Anigrp30,
+  SoAOS.Animation,
   Music;
   
 type

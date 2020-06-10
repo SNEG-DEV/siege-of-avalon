@@ -44,7 +44,6 @@ interface
 uses
   System.Classes,
   System.SysUtils,
-  AniDec30,
   Resource,
   Character,
   SoAOS.Data.DB,

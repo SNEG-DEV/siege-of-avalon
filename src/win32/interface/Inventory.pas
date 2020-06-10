@@ -56,8 +56,8 @@ uses
   GameText,
   Display,
   Scroll,
-  Anigrp30,
   Engine,
+  SoAOS.Animation,
   Logfile;
 
 type
@@ -133,7 +133,7 @@ type
     procedure MouseUp( Sender : TAniview; Button : TMouseButton;
       Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
   public
-    Character : Tcharacter;
+    Character : TCharacter;
     GroundList : TList;
     Locked : Boolean;
     DrawGuy : TNotifyEvent;

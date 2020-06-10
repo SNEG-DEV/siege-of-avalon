@@ -117,6 +117,7 @@ object frmMain: TfrmMain
     007FF000007FFC00007FFF8000FFFFF001FFFFFC03FFFFFF1FFFFFFFFFFF}
   OldCreateOrder = True
   Scaled = False
+  StyleElements = [seFont, seBorder]
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown

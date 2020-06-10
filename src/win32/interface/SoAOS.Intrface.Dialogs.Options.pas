@@ -53,8 +53,8 @@ uses
   SoAOS.Intrface.Dialogs,
   Character,
   GameText,
-  Anigrp30,
   Logfile,
+  SoAOS.Animation,
   Engine;
 
 type

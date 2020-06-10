@@ -61,8 +61,7 @@ uses
   SoAOS.Types,
   SoAOS.AI.Types,
   SoAOS.Intrface.Popup,
-  Anigrp30,
-  AniDec30,
+  SoAOS.Map,
   Character,
   Loader,
   Resource,
@@ -89,6 +88,7 @@ uses
   SoAOS.Intrface.Dialogs.HelpCredit,
   LogScreen,
   SoAOS.Intrface.Transit,
+  SoAOS.Animation,
   AddKickNPC;
 
 const

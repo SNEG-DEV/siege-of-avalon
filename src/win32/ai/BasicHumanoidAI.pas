@@ -70,10 +70,10 @@ uses
   SoAOS.AI,
   SoAOS.AI.Helper,
   SoAOS.Spells,
-  Anigrp30,
   Resource,
   SoAOS.StrUtils,
   SoAOS.Graphics.Types,
+  SoAOS.Animation,
   anidemo,
   spells1;
 

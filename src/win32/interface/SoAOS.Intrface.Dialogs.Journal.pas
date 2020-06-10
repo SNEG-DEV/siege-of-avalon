@@ -56,9 +56,9 @@ uses
   SoAOS.Intrface.Dialogs,
   Resource,
   GameText,
-  Anigrp30,
   AdventureLog,
   LogFile,
+  SoAOS.Animation,
   Engine;
 
 type

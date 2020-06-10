@@ -50,13 +50,13 @@ uses
 //  Winapi.DirectDraw,
   DirectX,
   Gametext,
-  Anigrp30,
-  AniDec30,
+  SoAOS.Map,
   Engine,
   DXEffects,
   DXUtil,
   Character,
   Display,
+  SoAOS.Animation,
   LogFile;
 
 type

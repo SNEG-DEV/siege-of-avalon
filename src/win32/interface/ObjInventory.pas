@@ -57,8 +57,8 @@ uses
   Display,
   Parts,
   Scroll,
-  Anigrp30,
   Logfile,
+  SoAOS.Animation,
   Engine;
 
 type

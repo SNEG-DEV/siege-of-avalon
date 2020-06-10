@@ -49,7 +49,7 @@ uses
   Vcl.Controls,
   Character,
   Display,
-  Anigrp30,
+  SoAOS.Animation,
   MiscAI;
 
 type

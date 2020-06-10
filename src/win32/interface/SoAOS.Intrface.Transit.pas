@@ -49,8 +49,8 @@ uses
   Vcl.Forms,
 //  Winapi.DirectDraw,
   DirectX,
-  Anigrp30,
   Display,
+  SoAOS.Animation,
   MMTimer;
 
 type

@@ -47,8 +47,8 @@ uses
   System.Types,
   Vcl.Controls,
   Gametext,
-  Anigrp30,
   Engine,
+  SoAOS.Animation,
   System.IniFiles,
   LogFile;
 

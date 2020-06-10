@@ -61,8 +61,6 @@ uses
   BasicHumanoidAI in 'AI\BasicHumanoidAI.pas',
   MiscAI in 'ai\MiscAI.pas',
   WolfAI in 'ai\WolfAI.pas',
-  Anigrp30 in 'engine\Anigrp30.pas',
-  AniDec30 in 'engine\AniDec30.pas',
   DXEffects in 'graphics\DXEffects.pas',
   DXUtil in 'graphics\DXUtil.pas',
   LogFile in 'Engine\LogFile.pas',
@@ -116,7 +114,9 @@ uses
   SoAOS.AI in 'ai\SoAOS.AI.pas',
   SoAOS.AI.Helper in 'ai\SoAOS.AI.Helper.pas',
   SoAOS.Spells in 'engine\SoAOS.Spells.pas',
-  SoAOS.Projectile in 'engine\SoAOS.Projectile.pas';
+  SoAOS.Projectile in 'engine\SoAOS.Projectile.pas',
+  SoAOS.Map in 'engine\SoAOS.Map.pas',
+  SoAOS.Animation in 'engine\SoAOS.Animation.pas';
 
 {$R *.RES}
 

@@ -56,7 +56,7 @@ uses
   SoAOS.AI.Types,
   GameText,
   Display,
-  Anigrp30,
+  SoAOS.Animation,
   Engine;
 
 type

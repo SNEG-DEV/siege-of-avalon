@@ -101,8 +101,8 @@
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <VerInfo_MinorVer>20</VerInfo_MinorVer>
         <VerInfo_Release>2</VerInfo_Release>
-        <VerInfo_Build>1313</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.20.2.1313;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Build>1332</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.20.2.1332;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <DCC_Optimize>false</DCC_Optimize>
         <DCC_DebugInformation>2</DCC_DebugInformation>
         <DCC_LocalDebugSymbols>true</DCC_LocalDebugSymbols>
@@ -1148,8 +1148,6 @@
         <DCCReference Include="AI\BasicHumanoidAI.pas"/>
         <DCCReference Include="ai\MiscAI.pas"/>
         <DCCReference Include="ai\WolfAI.pas"/>
-        <DCCReference Include="engine\Anigrp30.pas"/>
-        <DCCReference Include="engine\AniDec30.pas"/>
         <DCCReference Include="graphics\DXEffects.pas"/>
         <DCCReference Include="graphics\DXUtil.pas"/>
         <DCCReference Include="Engine\LogFile.pas"/>
@@ -1206,6 +1204,8 @@
         <DCCReference Include="ai\SoAOS.AI.Helper.pas"/>
         <DCCReference Include="engine\SoAOS.Spells.pas"/>
         <DCCReference Include="engine\SoAOS.Projectile.pas"/>
+        <DCCReference Include="engine\SoAOS.Map.pas"/>
+        <DCCReference Include="engine\SoAOS.Animation.pas"/>
         <RcItem Include="..\..\assets\Interface\blkchcry.ttf">
             <ResourceType>FONT</ResourceType>
             <ResourceId>1</ResourceId>

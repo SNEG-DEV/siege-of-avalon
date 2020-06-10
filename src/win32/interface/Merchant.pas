@@ -58,8 +58,8 @@ uses
   Display,
   Parts,
   Scroll,
-  Anigrp30,
   Engine,
+  SoAOS.Animation,
   LogFile;
 
 type

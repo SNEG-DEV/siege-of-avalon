@@ -128,8 +128,8 @@ implementation
 
 uses
   System.SysUtils,
+  SoAOS.Animation,
   DXUtil,
-  Anigrp30,
   LogFile;
 
 procedure DFXClearBitPlane( Plane : BITPLANE; Color : DWORD );

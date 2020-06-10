@@ -46,8 +46,7 @@ uses
   System.IOUtils,
   System.UITypes,
   System.SysUtils,
-  Anigrp30,
-  AniDec30,
+  SoAOS.Map,
   Character,
   Resource,
   Engine,
@@ -82,6 +81,7 @@ uses
   SoAOS.AI.Types,
   Parts,
   AniDemo,
+  SoAOS.Animation,
   System.Variants;
 
 function LoadMap( var Map : TAniMap; const Filename, Scene : string; IgnoreDefaultSprites, IgnoreSceneSprites : boolean ) : boolean;

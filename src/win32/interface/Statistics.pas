@@ -48,8 +48,8 @@ uses
   System.Classes,
   Vcl.Controls,
   Character,
-  Display,
-  Anigrp30;
+  SoAOS.Animation,
+  Display;
 
 type
   InformationRect = record

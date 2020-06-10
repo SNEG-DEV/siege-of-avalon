@@ -63,10 +63,9 @@ implementation
 uses
   System.SysUtils,
   AniDemo,
-  Anigrp30,
   Engine,
   LogFile,
-
+  SoAOS.Animation,
   DXUtil;
 
 procedure SoAOS_DX_BltFront;
@@ -189,7 +188,6 @@ begin
         pdds.ReleaseDC( DC );
       end;
     end;
-
     ddsd.dwSize := SizeOf( ddsd );
     hres := pdds.Lock( nil, ddsd, 0, 0 );
     while ( hres = DDERR_WASSTILLDRAWING ) do
@@ -201,7 +199,6 @@ begin
         dw := dw and ( ( 1 shl ddsd.ddpfPixelFormat.dwRGBBitCount ) - 1 ); // Mask it to bpp
       pdds.Unlock( nil );
     end;
-
     if ( RGB <> CLR_INVALID ) then
     begin
       if ( pdds.GetDC( DC ) = DD_OK ) then

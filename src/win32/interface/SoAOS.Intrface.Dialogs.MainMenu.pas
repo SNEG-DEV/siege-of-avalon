@@ -53,8 +53,8 @@ uses
   Vcl.Controls,
   SoAOS.Intrface.Dialogs,
   GameText,
-  Anigrp30,
   Engine,
+  SoAOS.Animation,
   LogFile;
 
 type

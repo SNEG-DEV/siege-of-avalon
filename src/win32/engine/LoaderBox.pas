@@ -48,7 +48,6 @@ uses
   System.Classes,
   System.Types,
   System.SysUtils,
-  Anigrp30,
   Logfile;
 
 type
@@ -72,7 +71,8 @@ implementation
 
 uses
   SoAOS.Types,
-  SoAOS.Graphics.Draw;
+  SoAOS.Graphics.Draw,
+  SoAOS.Animation;
 
 { TLoaderBox }
 

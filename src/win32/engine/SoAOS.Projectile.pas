@@ -38,7 +38,7 @@ uses
   System.SysUtils,
   System.UITypes,
   Vcl.Graphics,
-  AniGrp30,
+  SoAOS.Animation,
   Character,
   Resource,
   LogFile,
@@ -179,7 +179,7 @@ type
 implementation
 
 uses
-  AniDec30,
+  SoAOS.Map,
   SoAOS.Graphics.Types,
   DirectX;
 

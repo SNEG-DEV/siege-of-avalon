@@ -56,8 +56,8 @@ uses
   Character,
   Resource,
   SoAOS.Types,
-  SoAOS.Intrface.Dialogs,
-  Anigrp30;
+  SoAOS.Animation,
+  SoAOS.Intrface.Dialogs;
 
 type
   TBoxEnum = (bxNone=-1, bxShirt=12, bxPants=13, bxHairColor=14, bxHairStyle=15, bxBeard=16, bxTraining=17);

@@ -50,7 +50,6 @@ uses
   System.Classes,
   Vcl.Controls,
   Vcl.ExtCtrls,
-  Anigrp30,
   LogFile;
 
 type
@@ -93,6 +92,7 @@ implementation
 uses
   SoAOS.Types,
   SoAOS.Graphics.Draw,
+  SoAOS.Animation,
   AniDemo;
 
 const

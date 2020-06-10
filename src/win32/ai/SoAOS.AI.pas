@@ -35,7 +35,7 @@ interface
 uses
   System.Classes,
   SoAOS.AI.Types,
-  Anigrp30;
+  SoAOS.Animation;
 
 type
   TAI = class( TObject )
