@@ -91,10 +91,10 @@ type
     procedure ShowChars;
     procedure SetUpCollRects;
   protected
-    procedure MouseDown( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
-    procedure MouseMove( Sender : TAniview;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
+    procedure MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
   public
     Character : TCharacter;
     //procedure DrawThem(Character: TCharacter; X,Y:integer);
@@ -240,7 +240,8 @@ begin
 end; //Init
 
 
-procedure TAddKickNPC.MouseDown( Sender : TAniview; Button : TMouseButton; Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TAddKickNPC.MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 var
   i : integer;
   pr : TRect;
@@ -400,7 +401,8 @@ begin
   end;
 end; //MouseDown
 
-procedure TAddKickNPC.MouseMove( Sender : TAniview; Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TAddKickNPC.MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 var
   i : integer;
   pr : TRect;

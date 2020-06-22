@@ -116,10 +116,10 @@ type
     procedure LoadAIData;
     procedure WriteAIData;
   protected
-    procedure MouseDown( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
-    procedure MouseMove( Sender : TAniview;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
+    procedure MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
   public
     CharAI : TPartyAI;
     DXSpellIcons : IDirectDrawSurface;
@@ -722,7 +722,8 @@ end; //PlotMenu
 
 
 
-procedure TNPCBehavior.MouseDown( Sender : TAniview; Button : TMouseButton; Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TNPCBehavior.MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 var
   i : integer;
   tempx, tempy, ti : integer;
@@ -1044,7 +1045,8 @@ begin
 
 end; //MouseDown
 
-procedure TNPCBehavior.MouseMove( Sender : TAniview; Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TNPCBehavior.MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 var
   i : integer;
   tempx, tempy, ti : integer;

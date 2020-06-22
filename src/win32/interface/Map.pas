@@ -68,10 +68,10 @@ type
     MouseOverBack : boolean;
     ShowAll : boolean;
   protected
-    procedure MouseDown( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
-    procedure MouseMove( Sender : TAniview;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
+    procedure MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
   public
     Map : TAniMap;
     Character : TCharacter;
@@ -396,8 +396,8 @@ begin
 
 end;
 
-procedure TMap.MouseDown( Sender : TAniview; Button : TMouseButton;
-  Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TMap.MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 const
   FailName : string = 'TMap.MouseDown';
 begin
@@ -417,8 +417,8 @@ begin
 
 end; //MouseDown
 
-procedure TMap.MouseMove( Sender : TAniview; Shift : TShiftState; X, Y, GridX,
-  GridY : integer );
+procedure TMap.MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 const
   FailName : string = 'TMap.MouseMove';
 var

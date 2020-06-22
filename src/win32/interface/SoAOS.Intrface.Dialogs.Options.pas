@@ -77,12 +77,12 @@ type
     procedure PlotMenu;
     function GetContinueRect: TRect;
   protected
-    procedure MouseDown( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
-    procedure MouseMove( Sender : TAniview;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
-    procedure MouseUp( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
+    procedure MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : integer ); override;
+    procedure MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : integer ); override;
+    procedure MouseUp( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : integer ); override;
     procedure KeyDown( Sender : TObject; var key : Word; Shift : TShiftState ); override;
   public
     SoundVolume : integer;
@@ -312,7 +312,8 @@ if Character.HotKey[ key - 47 ] = Character.HotKey[ i ] then
   end;
 end; //KeyDown
 
-procedure TOptions.MouseDown( Sender : TAniview; Button : TMouseButton; Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TOptions.MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 var
   pr1, pr2, pr3 : TRect;
 const
@@ -402,7 +403,8 @@ begin
   end;
 end; //mouseDown
 
-procedure TOptions.MouseMove( Sender : TAniview; Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TOptions.MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 var
   i, j, k : integer;
   pt : TPoint;
@@ -678,8 +680,8 @@ begin
   end;
 end;
 
-procedure TOptions.MouseUp( Sender : TAniview; Button : TMouseButton;
-  Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TOptions.MouseUp( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : integer );
 begin
   inherited;
   ScrollState := 0;

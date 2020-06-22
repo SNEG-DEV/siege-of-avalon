@@ -122,12 +122,12 @@ type
     procedure MoveAll( Source, Destination : integer ); //move as much of players inventory into object2 inventory as we can
     {procedure DebugPlot(i: integer);    }
   protected
-    procedure MouseDown( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
-    procedure MouseMove( Sender : TAniview;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
-    procedure MouseUp( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
+    procedure MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseUp( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
   public
     Character : TCharacter; //the charachter we draw inventory from to fill left box
     OtherOb : TSpriteObject; //Tcharacter; //Either use this or
@@ -401,8 +401,8 @@ begin
 
 end; //TLootCorpse.Init
 
-procedure TLootCorpse.MouseDown( Sender : TAniview; Button : TMouseButton;
-  Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TLootCorpse.MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 var
   i, j : integer;
   B1, B2, B3, B4, B5 : Boolean;
@@ -775,8 +775,8 @@ begin
 
 end; //TLootCorpse.MouseDown
 
-procedure TLootCorpse.MouseMove( Sender : TAniview; Shift : TShiftState; X,
-  Y, GridX, GridY : integer );
+procedure TLootCorpse.MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 var
   Tw, Th : Integer;
   i : Integer;
@@ -975,8 +975,8 @@ begin
 
 end; //TLootCorpse.MouseMove
 
-procedure TLootCorpse.MouseUp( Sender : TAniview; Button : TMouseButton;
-  Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TLootCorpse.MouseUp( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 const
   FailName : string = 'TLootCorpse.MouseUp';
 begin

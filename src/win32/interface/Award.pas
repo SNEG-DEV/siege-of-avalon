@@ -73,10 +73,10 @@ type
     txtMessage : array[ 0..17 ] of string;
     procedure ShowText( Page : integer );
   protected
-    procedure MouseDown( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
-    procedure MouseMove( Sender : TAniview;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
+    procedure MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
   public
     Character : TCharacter;
     constructor Create;
@@ -214,7 +214,8 @@ begin
 end; //Init
 
 
-procedure TAward.MouseDown( Sender : TAniview; Button : TMouseButton; Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TAward.MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 var
   i : integer;
   pr : TRect;
@@ -261,7 +262,8 @@ begin
   end;
 end; //MouseDown
 
-procedure TAward.MouseMove( Sender : TAniview; Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TAward.MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 const
   FailName : string = 'TAward.MouseMove';
 var

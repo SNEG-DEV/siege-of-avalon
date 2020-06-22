@@ -88,12 +88,12 @@ type
     procedure ShowStats; //plots all the numbers on the screen
 //    procedure DebugPlot(i: integer);
   protected
-    procedure MouseDown( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
-    procedure MouseMove( Sender : TAniview;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
-    procedure MouseUp( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
+    procedure MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseUp( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
   public
     Character : Tcharacter;
     constructor Create;
@@ -235,8 +235,8 @@ begin
 
 end; //TStatistics.Release
 
-procedure TStatistics.MouseDown( Sender : TAniview; Button : TMouseButton;
-  Shift : TShiftState; X, Y : Integer; GridX, GridY : integer );
+procedure TStatistics.MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 var
   B1, B2, B3, B4 : boolean;
   OneLessBack : boolean;
@@ -494,7 +494,8 @@ begin
 
 end; //TStatistics.MouseDown
 
-procedure TStatistics.MouseMove( Sender : TAniview; Shift : TShiftState; X, Y : Integer; GridX, GridY : integer );
+procedure TStatistics.MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 var
   i, j : integer;
   Info, HitPointSecMsg,
@@ -624,8 +625,8 @@ begin
 
 end; //TStatistics.MouseMove
 
-procedure TStatistics.MouseUp( Sender : TAniview; Button : TMouseButton;
-  Shift : TShiftState; X, Y : Integer; GridX, GridY : integer );
+procedure TStatistics.MouseUp( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 const
   FailName : string = 'TStatistics.Mouseup';
 begin

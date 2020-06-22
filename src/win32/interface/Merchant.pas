@@ -130,12 +130,12 @@ type
     //procedure MoveAll(Source, Destination: integer); //move as much of players inventory into object2 inventory as we can
     procedure DropOnGround( ItemIndex : integer );
   protected
-    procedure MouseDown( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
-    procedure MouseMove( Sender : TAniview;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
-    procedure MouseUp( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
+    procedure MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseUp( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
   public
     Character : TCharacter; //the charachter we draw inventory from to fill left box
     Merchant : TCharacter;
@@ -402,8 +402,8 @@ begin
   end;
 end; //TMerchant.Init
 
-procedure TMerchant.MouseDown( Sender : TAniview; Button : TMouseButton;
-  Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TMerchant.MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 var
   i, j : integer;
   pTemp : Pointer;
@@ -772,8 +772,8 @@ begin
   end;
 end; //TMerchant.MouseDown
 
-procedure TMerchant.MouseMove( Sender : TAniview; Shift : TShiftState; X,
-  Y, GridX, GridY : integer );
+procedure TMerchant.MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 var
   Tw, Th : Integer;
   i : Integer;
@@ -1004,8 +1004,8 @@ begin
   end;
 end; //TMerchant.MouseMove
 
-procedure TMerchant.MouseUp( Sender : TAniview; Button : TMouseButton;
-  Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TMerchant.MouseUp( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 const
   FailName : string = 'TMerchant.MouseUp';
 begin

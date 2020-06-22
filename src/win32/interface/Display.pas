@@ -48,8 +48,6 @@ uses
   Vcl.Controls,
   Gametext,
   Engine,
-  SoAOS.Animation,
-  System.IniFiles,
   LogFile;
 
 type
@@ -59,12 +57,12 @@ type
   protected
     WasActive : Boolean;
     InBound : Boolean;
-    procedure MouseDown( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); virtual;
-    procedure MouseMove( Sender : TAniview;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); virtual;
-    procedure MouseUp( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); virtual;
+    procedure MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); virtual;
+    procedure MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); virtual;
+    procedure MouseUp( Sender : TObject; Button : TMouseButton;
+  Shift : TShiftState; X, Y, GridX, GridY : Integer ); virtual;
     procedure KeyDown( Sender : TObject; var key : Word;
       Shift : TShiftState ); virtual;
     procedure Close; virtual;
@@ -161,8 +159,8 @@ begin
 
 end;
 
-procedure TDisplay.MouseDown( Sender : TAniview; Button : TMouseButton;
-  Shift : TShiftState; X, Y : Integer; GridX, GridY : integer );
+procedure TDisplay.MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 const
   FailName : string = 'TDisplay.Mousedown';
 begin
@@ -175,7 +173,8 @@ begin
 
 end;
 
-procedure TDisplay.MouseMove( Sender : TAniview; Shift : TShiftState; X, Y : Integer; GridX, GridY : integer );
+procedure TDisplay.MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 const
   FailName : string = 'TDisplay.MouseMove';
 begin
@@ -188,10 +187,10 @@ begin
 
 end;
 
-procedure TDisplay.MouseUp( Sender : TAniview; Button : TMouseButton;
-  Shift : TShiftState; X, Y : Integer; GridX, GridY : integer );
+procedure TDisplay.MouseUp( Sender : TObject; Button : TMouseButton;
+  Shift : TShiftState; X, Y, GridX, GridY : Integer );
 const
-  FailName : string = 'TDisplay.MosueUp';
+  FailName : string = 'TDisplay.MouseUp';
 begin
   try
     InBound := ( X >= X1 ) and ( X < X2 ) and ( Y >= Y1 ) and ( Y < Y2 );

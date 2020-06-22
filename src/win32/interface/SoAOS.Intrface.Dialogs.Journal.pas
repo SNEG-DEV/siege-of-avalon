@@ -77,12 +77,12 @@ type
     procedure FormMouseDown( Sender : TObject; Button : TMouseButton; Shift : TShiftState; X, Y : Integer );
     procedure FormMouseMove( Sender : TObject; Shift : TShiftState; X, Y : Integer );
   protected
-    procedure MouseDown( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
-    procedure MouseMove( Sender : TAniview;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
-    procedure MouseUp( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
+    procedure MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseUp( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
   public
     frmMain : TForm;
     //LogFile: string;
@@ -243,7 +243,8 @@ begin
   end;
 end; //FormMouseMove
 
-procedure TJournal.MouseDown( Sender : TAniview; Button : TMouseButton; Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TJournal.MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 var
   pr1, pr2, pr3: TRect;
 begin
@@ -279,12 +280,14 @@ begin
   end;
 end; //MouseDown
 
-procedure TJournal.MouseMove( Sender : TAniview; Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TJournal.MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 begin
 
 end; //MouseMove
 
-procedure TJournal.MouseUp( Sender : TAniview; Button : TMouseButton; Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TJournal.MouseUp( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 begin
 
 end;

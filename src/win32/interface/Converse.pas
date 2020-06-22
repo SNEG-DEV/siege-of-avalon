@@ -73,11 +73,11 @@ type
     procedure LoadConversation;
   protected
     Image : IDirectDrawSurface;
-    procedure MouseDown( Sender : TAniView; Button : TMouseButton;
+    procedure MouseDown( Sender : TObject; Button : TMouseButton;
       Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
-    procedure MouseMove( Sender : TAniView;
-      Shift : TShiftState; X, Y : Integer; MapX, mapY : Integer ); override;
-    procedure MouseUp( Sender : TAniView; Button : TMouseButton;
+    procedure MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, MapX, MapY : Integer ); override;
+    procedure MouseUp( Sender : TObject; Button : TMouseButton;
       Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
   public
     ObjectRef : TGameObject;
@@ -218,8 +218,8 @@ begin
   end;
 end;
 
-procedure TConverseBox.MouseDown( Sender : TAniView; Button : TMouseButton;
-  Shift : TShiftState; X, Y, GridX, GridY : Integer );
+procedure TConverseBox.MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 var
   strResponse : TTokenString;
 const
@@ -269,8 +269,8 @@ begin
   end;
 end;
 
-procedure TConverseBox.MouseMove( Sender : TAniView; Shift : TShiftState; X,
-  Y, MapX, MapY : Integer );
+procedure TConverseBox.MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, MapX, MapY : Integer );
 var
   i : Integer;
 const
@@ -307,8 +307,8 @@ begin
   end;
 end;
 
-procedure TConverseBox.MouseUp( Sender : TAniView; Button : TMouseButton;
-  Shift : TShiftState; X, Y, GridX, GridY : Integer );
+procedure TConverseBox.MouseUp( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 begin
 
 end;

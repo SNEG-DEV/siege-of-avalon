@@ -126,12 +126,12 @@ type
 //    procedure DebugPlot(i: integer);
     function DropAnItem( X, Y : integer ) : boolean;
   protected
-    procedure MouseDown( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
-    procedure MouseMove( Sender : TAniview;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
-    procedure MouseUp( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
+    procedure MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseUp( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
   public
     Character : TCharacter;
     GroundList : TList;
@@ -513,8 +513,8 @@ begin
 
 end; //Tinventory.init
 
-procedure TInventory.MouseDown( Sender : TAniview; Button : TMouseButton;
-  Shift : TShiftState; X, Y : Integer; GridX, GridY : integer );
+procedure TInventory.MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 var
   i, j : Integer;
   pTemp : Pointer;
@@ -973,7 +973,8 @@ begin
 end; //TInventory.MouseDown
 
 
-procedure TInventory.MouseMove( Sender : TAniview; Shift : TShiftState; X, Y : Integer; GridX, GridY : integer );
+procedure TInventory.MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 var
   Tw, Th : Integer;
   i : Integer;
@@ -1124,8 +1125,8 @@ begin
 end; //TInventory.MouseMove
 
 
-procedure TInventory.MouseUp( Sender : TAniview; Button : TMouseButton;
-  Shift : TShiftState; X, Y : Integer; GridX, GridY : integer );
+procedure TInventory.MouseUp( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 const
   FailName : string = 'TInventory.MouseUp';
 begin

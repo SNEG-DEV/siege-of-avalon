@@ -64,11 +64,11 @@ type
   TAniSpecialEffect = (seNone, seTranslucent, seSilhouette, seInvert, seSpooky,
     seFunky, seWhite, seNegative, seStrange, seAdd, seSubtract, seMultiply);
 
-  TExtMouseEvent = procedure(Sender: TAniView; Button: TMouseButton;
-    Shift: TShiftState; X, Y: Integer; MapX, MapY: Integer) of object;
+  TExtMouseEvent = procedure(Sender: TObject; Button: TMouseButton;
+    Shift: TShiftState; X, Y, MapX, MapY: Integer) of object;
 
-  TExtMouseMoveEvent = procedure(Sender: TAniView; Shift: TShiftState;
-    X, Y: Integer; MapX, MapY: Integer) of object;
+  TExtMouseMoveEvent = procedure(Sender: TObject; Shift: TShiftState;
+    X, Y, MapX, MapY: Integer) of object;
 
   TCollideFigureEvent = procedure(Source, Target: TAniFigure; var Stop: Boolean)
     of object;

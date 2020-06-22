@@ -119,7 +119,7 @@ type
     Timer3 : TTimer;
     procedure FormShow( Sender : TObject );
     procedure Timer1Timer( Sender : TObject );
-    procedure AniView1MouseDown( Sender : TAniView; Button : TMouseButton;
+    procedure AniView1MouseDown( Sender : TObject; Button : TMouseButton;
       Shift : TShiftState; X, Y, GridX, GridY : Integer );
     procedure FormKeyDown( Sender : TObject; var key : Word;
       Shift : TShiftState );
@@ -1307,7 +1307,7 @@ begin
   end;
 end;
 
-procedure TfrmMain.AniView1MouseDown( Sender : TAniView; Button : TMouseButton;
+procedure TfrmMain.AniView1MouseDown( Sender : TObject; Button : TMouseButton;
   Shift : TShiftState; X, Y, GridX, GridY : Integer );
 const
   FailName : string = 'Main.AniView1MouseDown';

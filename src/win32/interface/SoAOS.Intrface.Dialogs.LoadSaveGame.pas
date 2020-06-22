@@ -114,12 +114,12 @@ type
     function GetCancelRect: TRect;
     function GetLoadSaveRect: TRect;
   protected
-    procedure MouseDown( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
-    procedure MouseMove( Sender : TAniview;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
-    procedure MouseUp( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
+    procedure MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseUp( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
     procedure KeyDown( Sender : TObject; var key : Word; Shift : TShiftState ); override;
   public
     frmMain : TForm; //we need the  form passed into handle form mouse events
@@ -628,7 +628,8 @@ begin
 end; //TCreation.CaratTimerEvent
 
 
-procedure TLoadGame.MouseDown( Sender : TAniview; Button : TMouseButton; Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TLoadGame.MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 var
   i : integer;
   nRect : TRect;
@@ -826,7 +827,8 @@ begin
   end;
 end; //MouseDown
 
-procedure TLoadGame.MouseMove( Sender : TAniview; Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TLoadGame.MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 const
   FailName : string = 'TLoadGame.MouseMove ';
 var
@@ -1335,8 +1337,8 @@ begin
   end;
 end;
 
-procedure TLoadGame.MouseUp( Sender : TAniview; Button : TMouseButton;
-  Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TLoadGame.MouseUp( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 begin
   inherited;
 

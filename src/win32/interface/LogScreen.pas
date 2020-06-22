@@ -79,10 +79,10 @@ type
     txtMessage : array[ 0..1 ] of string;
     procedure ShowText( Page : integer );
   protected
-    procedure MouseDown( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
-    procedure MouseMove( Sender : TAniview;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
+    procedure MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
   public
     PageNumber : integer;
     LogInfo : TStringList;
@@ -253,7 +253,8 @@ begin
 end; //Init
 
 
-procedure TLogScreen.MouseDown( Sender : TAniview; Button : TMouseButton; Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TLogScreen.MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 const
   FailName : string = 'TLogScreen.Mousedown';
 var
@@ -308,7 +309,8 @@ begin
   end;
 end; //MouseDown
 
-procedure TLogScreen.MouseMove( Sender : TAniview; Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TLogScreen.MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 const
   FailName : string = 'TLogScreen.mouseMove';
 var

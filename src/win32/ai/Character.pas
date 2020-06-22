@@ -175,30 +175,6 @@ type
     property Resource: TResource read FResource write SetResource;
   end;
 
-//  TGameObject = class(TAniFigure)
-//  private
-//    FProperties: TStringList;
-//    LoadCount: Integer;
-//  protected
-//    function GetProperty(const Name: string): string; virtual;
-//    procedure SetProperty(const Name: string; const Value: string); virtual;
-//  public
-//    Loading: boolean;
-//    GUID: string;
-//    GroupName: string;
-//    OnLoad: string;
-//    CreatedFromLvlFile: boolean;
-//    constructor Create(X, Y, Z: longint; Frame: Word; Enabled: boolean);
-//    destructor Destroy; override;
-//    function PropertyExists(const Name: string): boolean;
-//    procedure LoadProperties(const List: TStringList); virtual;
-//    procedure SaveProperties(List: TStringList); virtual;
-//    procedure Init; virtual;
-//    procedure DoLoad;
-//    property Properties[const Name: string]: string read GetProperty
-//      write SetProperty;
-//  end;
-
   TAbstractObject = class(TGameObject)
   public
     constructor Create(X, Y, Z: longint);
@@ -291,44 +267,6 @@ type
     procedure Execute;
     procedure SaveProperties(List: TStringList); override;
   end;
-
-//  TSpriteObject = class(TGameObject)
-//  private
-//    ActivateCount: Integer;
-//    CollideCount: Integer;
-//    MsgDuration: Integer;
-//    MsgImage: IDirectDrawSurface;
-//    MsgWidth: Integer;
-//    MsgHeight: Integer;
-//    procedure SetFacing(const Value: TFacing);
-//  protected
-//    FFacing: TFacing;
-//    procedure SetResource(const Value: TAniResource); override;
-//    function GetProperty(const Name: string): string; override;
-//    procedure SetProperty(const Name: string; const Value: string); override;
-//    function GetName: string; virtual;
-//  public
-//    SpecialEffect: TAniSpecialEffect;
-//    MaskHeight: Integer;
-//    OnActivate: string;
-//    OnCollide: string;
-//    Alpha: Integer;
-//    UnMoveable: boolean;
-//    ColorR, ColorG, ColorB: Integer;
-//    constructor Create(X, Y, Z: longint; Frame: Word;
-//      Enabled: boolean); virtual;
-//    destructor Destroy; override;
-//    function ActionExists(const Action: string): boolean;
-//    function DoAction(const Action: string): boolean; virtual;
-//    procedure Activate; virtual;
-//    procedure Say(const Msg: string; Color: TColor);
-//    procedure UpdateSay;
-//    procedure Init; override;
-//    procedure SaveProperties(List: TStringList); override;
-//    function ShouldSave: boolean; virtual;
-//    property Facing: TFacing read FFacing write SetFacing;
-//    property Name: string read GetName;
-//  end;
 
   TItem = class(TSpriteObject)
   private
@@ -976,14 +914,6 @@ begin
   finally
     INI.free;
   end;
-end;
-
-function FmtBool(A: boolean): string;
-begin
-  if A then
-    result := 'True'
-  else
-    result := 'False';
 end;
 
 function IsAnybodyInTheWay(Source, Dest: TGameObject; Radius: Integer): boolean;
@@ -4172,15 +4102,15 @@ begin
     List.add(S);
     S := 'myenemies=' + Self.Enemies;
     List.add(S);
-    S := 'frozen=' + FmtBool(Frozen);
+    S := 'frozen=' + BoolToStr(Frozen, True);
     List.add(S);
-    S := 'partymember=' + FmtBool(PartyMember);
+    S := 'partymember=' + BoolToStr(PartyMember, True);
     List.add(S);
-    S := 'willbedisabled=' + FmtBool(WillBeDisabled);
+    S := 'willbedisabled=' + BoolToStr(WillBeDisabled, True);
     List.add(S);
-    S := 'combatmode=' + FmtBool(CombatMode);
+    S := 'combatmode=' + BoolToStr(CombatMode, True);
     List.add(S);
-    S := 'ismerchant=' + FmtBool(IsMerchant);
+    S := 'ismerchant=' + BoolToStr(IsMerchant, True);
     List.add(S);
     S := 'buyingdiscount=' + FormatFP(BuyingDiscount);
     List.add(S);
@@ -4188,7 +4118,7 @@ begin
     List.add(S);
     S := 'moneyamount=' + IntToStr(Money);
     List.add(S);
-    S := 'looted=' + FmtBool(Looted);
+    S := 'looted=' + BoolToStr(Looted, True);
     List.add(S);
     S := 'titles=' + Self.TitleList;
     List.add(S);
@@ -4202,7 +4132,7 @@ begin
     List.add(S);
     S := 'battlecry=' + BattleCry;
     List.add(S);
-    S := 'dead=' + FmtBool(FDead);
+    S := 'dead=' + BoolToStr(FDead, True);
     List.add(S);
     S := 'deadcount=' + IntToStr(FDeadCount);
     List.add(S);
@@ -4498,15 +4428,15 @@ begin
     else if S = 'myenemies' then
       result := Self.Enemies
     else if S = 'frozen' then
-      result := FmtBool(Frozen)
+      result := BoolToStr(Frozen, True)
     else if S = 'partymember' then
-      result := FmtBool(PartyMember)
+      result := BoolToStr(PartyMember, True)
     else if S = 'willbedisabled' then
-      result := FmtBool(WillBeDisabled)
+      result := BoolToStr(WillBeDisabled, True)
     else if S = 'combatmode' then
-      result := FmtBool(CombatMode)
+      result := BoolToStr(CombatMode, True)
     else if S = 'ismerchant' then
-      result := FmtBool(IsMerchant)
+      result := BoolToStr(IsMerchant, True)
     else if S = 'buyingdiscount' then
       result := FormatFP(BuyingDiscount)
     else if S = 'sellingmarkup' then
@@ -4514,13 +4444,13 @@ begin
     else if S = 'moneyamount' then
       result := IntToStr(Money)
     else if S = 'looted' then
-      result := FmtBool(Looted)
+      result := BoolToStr(Looted, True)
     else if S = 'titles' then
       result := Self.TitleList
     else if S = 'trainingpoints' then
       result := IntToStr(FTrainingPoints)
     else if S = 'dead' then
-      result := FmtBool(FDead)
+      result := BoolToStr(FDead, True)
     else if S = 'attacksounds' then
       result := AttackSound
     else if S = 'deathsounds' then
@@ -6886,7 +6816,7 @@ begin
 
     S := LowerCase(Name);
     if S = 'twohanded' then
-      result := FmtBool(TwoHanded)
+      result := BoolToStr(TwoHanded, True)
     else if S = 'range' then
       result := IntToStr(Range)
     else if S = 'minstrength' then
@@ -6926,7 +6856,7 @@ begin
   log.DebugLog(FailName);
   try
 
-    S := 'twohanded=' + FmtBool(TwoHanded);
+    S := 'twohanded=' + BoolToStr(TwoHanded, True);
     List.add(S);
     S := 'range=' + IntToStr(Range);
     List.add(S);
@@ -7288,7 +7218,7 @@ begin
     else if S = 'name' then
       result := Self.Name
     else if S = 'closed' then
-      result := FmtBool(FClosed)
+      result := BoolToStr(FClosed, True)
     else if S = 'onopen' then
       result := OnOpen
     else if S = 'onclose' then
@@ -7306,7 +7236,7 @@ begin
     else if S = 'openattemptcount' then
       result := IntToStr(OpenAttemptCount)
     else if S = 'alwaysopen' then
-      result := FmtBool(AlwaysOpen)
+      result := BoolToStr(AlwaysOpen, True)
     else if S = 'opensounds' then
       result := OpenSound
     else if S = 'closesounds' then
@@ -7601,7 +7531,7 @@ begin
     List.add(S);
     S := 'name=' + Self.Name;
     List.add(S);
-    S := 'closed=' + FmtBool(FClosed);
+    S := 'closed=' + BoolToStr(FClosed, True);
     List.add(S);
     S := 'onopen=' + OnOpen;
     List.add(S);
@@ -7619,7 +7549,7 @@ begin
     List.add(S);
     S := 'openattemptcount=' + IntToStr(OpenAttemptCount);
     List.add(S);
-    S := 'alwaysopen=' + FmtBool(AlwaysOpen);
+    S := 'alwaysopen=' + BoolToStr(AlwaysOpen, True);
     List.add(S);
     S := 'opensounds=' + OpenSound;
     List.add(S);
@@ -8009,7 +7939,7 @@ begin
     if S = 'keyname' then
       result := KeyName
     else if S = 'closed' then
-      result := FmtBool(FClosed)
+      result := BoolToStr(FClosed, True)
     else if S = 'onopen' then
       result := OnOpen
     else if S = 'onclose' then
@@ -8234,7 +8164,7 @@ begin
 
     S := 'keyname=' + KeyName;
     List.add(S);
-    S := 'closed=' + FmtBool(FClosed);
+    S := 'closed=' + BoolToStr(FClosed, True);
     List.add(S);
     S := 'onopen=' + OnOpen;
     List.add(S);
@@ -8863,7 +8793,7 @@ begin
     else if S = 'layerindex' then
       result := IntToStr(LayerIndex)
     else if S = 'identified' then
-      result := FmtBool(Identified)
+      result := BoolToStr(Identified, True)
     else if S = 'secretname' then
       result := SecretName
     else if S = 'secretinfo' then
@@ -9039,7 +8969,7 @@ begin
     List.add(S);
     S := 'layerindex=' + IntToStr(LayerIndex);
     List.add(S);
-    S := 'identified=' + FmtBool(Identified);
+    S := 'identified=' + BoolToStr(Identified, True);
     List.add(S);
     S := 'secretname=' + SecretName;
     List.add(S);
@@ -10643,7 +10573,7 @@ begin
 
     S := LowerCase(Name);
     if S = 'triggerenabled' then
-      result := FmtBool(TriggerEnabled)
+      result := BoolToStr(TriggerEnabled, True)
     else if S = 'ontrigger' then
       result := OnTrigger
     else if S = 'triggerdelay' then
@@ -10670,7 +10600,7 @@ begin
   log.DebugLog(FailName);
   try
 
-    S := 'triggerenabled=' + FmtBool(TriggerEnabled);
+    S := 'triggerenabled=' + BoolToStr(TriggerEnabled, True);
     List.add(S);
     S := 'ontrigger=' + OnTrigger;
     List.add(S);
@@ -10957,7 +10887,7 @@ begin
 
     S := LowerCase(Name);
     if S = 'on' then
-      result := FmtBool(SoundOn)
+      result := BoolToStr(SoundOn, True)
     else if S = 'selfplay' then
     begin
       if RandomInterval then
@@ -10970,13 +10900,13 @@ begin
     else if S = 'intervalperiod' then
       result := IntToStr(Interval) + '-' + IntToStr(MaxInterval)
     else if S = 'useasambientfill' then
-      result := FmtBool(Ambient)
+      result := BoolToStr(Ambient, True)
     else if S = 'audiofile' then
       result := FileName
     else if S = 'continuous' then
-      result := FmtBool(Continuous)
+      result := BoolToStr(Continuous, True)
     else if S = 'rndlocation' then
-      result := FmtBool(RndLocation)
+      result := BoolToStr(RndLocation, True)
     else if S = 'playbackspeed' then
       result := IntToStr(PlaybackSpeed)
     else if S = 'radius' then
@@ -11014,7 +10944,7 @@ begin
   log.DebugLog(FailName);
   try
 
-    S := 'on=' + FmtBool(SoundOn);
+    S := 'on=' + BoolToStr(SoundOn, True);
     List.add(S);
     if RandomInterval then
       S := 'selfplay=RndInterval'
@@ -11025,13 +10955,13 @@ begin
     List.add(S);
     S := 'intervalperiod=' + IntToStr(Interval) + '-' + IntToStr(MaxInterval);
     List.add(S);
-    S := 'useasambientfill=' + FmtBool(Ambient);
+    S := 'useasambientfill=' + BoolToStr(Ambient, True);
     List.add(S);
     S := 'audiofile=' + FileName;
     List.add(S);
-    S := 'continuous=' + FmtBool(Continuous);
+    S := 'continuous=' + BoolToStr(Continuous, True);
     List.add(S);
-    S := 'rndlocation=' + FmtBool(RndLocation);
+    S := 'rndlocation=' + BoolToStr(RndLocation, True);
     List.add(S);
     S := 'playbackspeed=' + IntToStr(PlaybackSpeed);
     List.add(S);
@@ -12362,9 +12292,9 @@ begin
     if S = 'interval' then
       result := IntToStr(Interval)
     else if S = 'enabled' then
-      result := FmtBool(Enabled)
+      result := BoolToStr(Enabled, True)
     else if S = 'autoreset' then
-      result := FmtBool(AutoReset)
+      result := BoolToStr(AutoReset, True)
     else if S = 'countdown' then
       result := IntToStr(CountDown)
     else if S = 'timercount' then
@@ -12391,9 +12321,9 @@ begin
 
     S := 'interval=' + IntToStr(Interval);
     List.add(S);
-    S := 'enabled=' + FmtBool(Enabled);
+    S := 'enabled=' + BoolToStr(Enabled, True);
     List.add(S);
-    S := 'autoreset=' + FmtBool(AutoReset);
+    S := 'autoreset=' + BoolToStr(AutoReset, True);
     List.add(S);
     S := 'countdown=' + IntToStr(CountDown);
     List.add(S);

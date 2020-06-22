@@ -124,10 +124,10 @@ type
     procedure FormMouseDown( Sender : TObject; Button : TMouseButton; Shift : TShiftState; X, Y : Integer );
     procedure FormMouseMove( Sender : TObject; Shift : TShiftState; X, Y : Integer );
   protected
-    procedure MouseDown( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
-    procedure MouseMove( Sender : TAniview;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
+    procedure MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
   public
     DefaultName : string;
     DefaultMap : string;
@@ -297,7 +297,7 @@ begin
   end;
 end;
 
-procedure TTransit.MouseDown( Sender : TAniview; Button : TMouseButton;
+procedure TTransit.MouseDown( Sender : TObject; Button : TMouseButton;
   Shift : TShiftState; X, Y, GridX, GridY : integer );
 const
   FailName : string = 'TTransit.MouseDown';
@@ -409,8 +409,8 @@ begin
 
 end; //MouseDown
 
-procedure TTransit.MouseMove( Sender : TAniview; Shift : TShiftState; X, Y, GridX,
-  GridY : integer );
+procedure TTransit.MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer );
 const
   FailName : string = 'TTransit.MouseMove';
 var

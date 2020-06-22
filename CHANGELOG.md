@@ -5,13 +5,17 @@ All notable changes to this project will be documented in this file.
 - Refactor all save/load rutines - honor file-formats
 - Reduce the file I/O overhead
 - Add documentation on the assets file-formats used.
-- Getting rid of need for custem ddraw.dll
+- Getting rid of need for custom ddraw.dll
 - Replacing DirectDraw with cross-platform library
 - Mod selection - more DLC style - extendable instead of destructive copy/paste exercises.
 - Better multi-language support - right now it is crippled, like other parts of the UI code.
 - REFACTOR: Remove casting and add helpers to improve readability/mainability
 - REFACTOR: Too much copy/paste code - (re)Moved method up to base class or extract
 - REFACTOR: Reorg classes
+
+## 2020-06-11
+### Changed
+- Using RTL boolToStr and cleanup of MouseEvent signatures.
 
 ## 2020-05-24
 ### Added

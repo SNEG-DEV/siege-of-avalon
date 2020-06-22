@@ -135,12 +135,12 @@ type
     function GetPlayerININame: string;
 
   protected
-    procedure MouseDown( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
-    procedure MouseMove( Sender : TAniview;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
-    procedure MouseUp( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
+    procedure MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseUp( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
     procedure KeyDown( Sender : TObject; var key : Word; Shift : TShiftState ); override;
   private
     ixSelectedShirt : integer; //current selected shirt color
@@ -409,8 +409,8 @@ end;
 
 //TCreation.Release
 
-procedure TCreation.MouseDown( Sender : TAniview; Button : TMouseButton;
-  Shift : TShiftState; X, Y : Integer; GridX, GridY : integer );
+procedure TCreation.MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 var
   i : integer;
   bx : TBoxEnum;
@@ -632,7 +632,8 @@ begin
 
 end; //TCreation.MouseDown
 
-procedure TCreation.MouseMove( Sender : TAniview; Shift : TShiftState; X, Y : Integer; GridX, GridY : integer );
+procedure TCreation.MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 var
   i : integer;
   pr : TRect;
@@ -776,8 +777,8 @@ begin
 
 end; //TCreation.MouseMove
 
-procedure TCreation.MouseUp( Sender : TAniview; Button : TMouseButton;
-  Shift : TShiftState; X, Y : Integer; GridX, GridY : integer );
+procedure TCreation.MouseUp( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 const
   FailName : string = 'TCreation.MouseUp';
 begin

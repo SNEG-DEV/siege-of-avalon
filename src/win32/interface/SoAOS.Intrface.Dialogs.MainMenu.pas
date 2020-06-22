@@ -74,10 +74,10 @@ type
     function GetNoRect: TRect;
     function GetYesRect: TRect;
   protected
-    procedure MouseDown( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
-    procedure MouseMove( Sender : TAniview;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
+    procedure MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
     procedure KeyDown( Sender : TObject; var key : Word; Shift : TShiftState ); override;
   public
     Captions : array[ 1..8 ] of TIntroRect;
@@ -290,7 +290,8 @@ begin
     //pFloater.init;
 end;
 
-procedure TIntro.MouseDown( Sender : TAniview; Button : TMouseButton; Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TIntro.MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 var
   i : integer;
   pr : TRect;
@@ -344,7 +345,8 @@ begin
   end;
 end;
 
-procedure TIntro.MouseMove( Sender : TAniview; Shift : TShiftState; X, Y,  GridX, GridY : integer );
+procedure TIntro.MouseMove( Sender : TObject;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 var
   Choice : integer;
   i : integer;

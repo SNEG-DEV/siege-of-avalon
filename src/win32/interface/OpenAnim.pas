@@ -69,8 +69,8 @@ type
     FCancel : boolean;
     procedure PlayAnim;
   protected
-    procedure MouseDown( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
+    procedure MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
     procedure KeyDown( Sender : TObject; var key : Word; Shift : TShiftState ); override;
   public
     pMusic : TMusic;
@@ -183,7 +183,8 @@ begin
 
 end; //keyDown
 
-procedure TOpenAnim.MouseDown( Sender : TAniview; Button : TMouseButton; Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TOpenAnim.MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 const
   FailName : string = 'TOpenAnim.Mousedown';
 begin

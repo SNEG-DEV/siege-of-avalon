@@ -65,8 +65,8 @@ type
     procedure SetMusicFileName(const Value: string);
     procedure SetBMPFileName(const Value: string);
   protected
-    procedure MouseDown( Sender : TAniview; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer; GridX, GridY : integer ); override;
+    procedure MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
     procedure KeyDown( Sender : TObject; var key : Word; Shift : TShiftState ); override;
   public
     frmMain : TForm;
@@ -126,7 +126,8 @@ begin
   Close;
 end; //keyDown
 
-procedure TShowGraphic.MouseDown( Sender : TAniview; Button : TMouseButton; Shift : TShiftState; X, Y, GridX, GridY : integer );
+procedure TShowGraphic.MouseDown( Sender : TObject; Button : TMouseButton;
+      Shift : TShiftState; X, Y, GridX, GridY : Integer );
 const
   FailName : string = 'TShowGraphic.mousedown';
 begin
