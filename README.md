@@ -9,6 +9,8 @@ Startup launch dialog enable choice of Original/HD/FullHD resolutions and langua
 
 Tested with "Siege of Avalon Anthology - Chapters 1-6" build 1.1.2001.1104 from 2001 - just copy Siege.exe and DDraw.dll found under releases - and the game can be played in higher resolutions.
 
+Also now testing German chapters 1-6 with the SoAmigos Patch v0.7 applied. Since that patch does contain missing translations among other things. Was only relevant for German version.
+
 ## How to complie ##
 Install Delphi 10.3.3 or newer - the free Community Edition found at https://www.embarcadero.com/products/delphi/starter will do fine.  
 Open the Siege.dpr project file and compile.

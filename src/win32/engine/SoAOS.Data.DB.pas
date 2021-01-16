@@ -387,7 +387,7 @@ begin
       fields := TSoAOSFields.Create([doOwnsValues]);
       for col := 1 to fieldcount-1 do
         fields.Add(col, TSoAOSField.Create(col, coldata[col], rowdata[col]));
-      FData.Add(rowdata[0].ToLower, fields);
+      FData.AddOrSetValue(rowdata[0].ToLower, fields);
     end;
 
   finally

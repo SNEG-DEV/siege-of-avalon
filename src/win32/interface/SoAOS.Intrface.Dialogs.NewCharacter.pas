@@ -254,6 +254,8 @@ begin
         Players.Add( 'players\' + ExtractFileName( playpox ) )
     end;
     PlayerResourceIdx := Players.IndexOf(TCharacterResource(Character.Resource).Filename);
+    if PlayerResourceIdx = -1 then // non-selected or selectable
+      PlayerResourceIdx := 0; //first
 
     if Players.Count>1 then
     begin

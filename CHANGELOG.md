@@ -13,6 +13,11 @@ All notable changes to this project will be documented in this file.
 - REFACTOR: Too much copy/paste code - (re)Moved method up to base class or extract
 - REFACTOR: Reorg classes
 
+## 2021-01-16
+### Fixed
+- A problem with double entries in title.db from the SoAmigos Path v0.7 fixed.
+- Character selection with only 1 character are now dressed - it is still winter.
+
 ## 2020-06-11
 ### Changed
 - Using RTL boolToStr and cleanup of MouseEvent signatures.
