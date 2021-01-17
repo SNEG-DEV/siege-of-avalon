@@ -332,18 +332,13 @@ end;
 function LoadResource( const Filename : string; OnDemand : boolean ) : TResource;
 var
   POXFile : string;
-//  GIFDate, POXDate : TDateTime;
   INI : TStringINIFile;
-//  FrameCount : integer;
   Stream : TMemoryStream;
-//  BM : TBitmap;
   S : AnsiString;
   TextOnly : boolean;
   L : longword;
   M : array[ 1..2 ] of AnsiChar;
   EOB, BB : word;
-//  C : TColor;
-//  Convert : boolean;
 const
   FailName : string = 'Resource.LoadResource';
 begin
@@ -802,7 +797,6 @@ procedure TResource.LoadGraphic;
 var
   Stream : TFileStream;
   L : longword;
-  M : array[ 1..2 ] of Char;
   EOB, BB : word;
 begin
   if assigned( RLE ) then
@@ -810,14 +804,13 @@ begin
   EOB := $4242;
   Stream := TFileStream.create( ResourcePath + ChangeFileExt( Filename, '.pox' ), fmOpenRead or fmShareCompat );
   try
-    Stream.Read( L, sizeof( L ) );
+    Stream.Read( L, 4 );
     if ( L <> $41584F50 ) then
       exit;
-    Stream.Read( M, sizeof( M ) );
-    Stream.Read( BB, sizeof( BB ) ); //CRLF
-    Stream.Read( L, sizeof( L ) );
-    Stream.Position := Stream.Position + L; // Stream.Seek( L, soFromCurrent );
-    Stream.Read( BB, sizeof( BB ) );
+    Stream.Seek(4, soFromCurrent);
+    Stream.Read( L, 4);
+    Stream.Seek(L, soFromCurrent);
+    Stream.Read( BB, 2 );
     if BB = EOB then
     begin
       RLE := TRLESprite.create;
