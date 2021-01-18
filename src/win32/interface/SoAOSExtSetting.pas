@@ -127,8 +127,16 @@ begin
   try
 
     try
-      if FCurrentLanguage <> cNoLanguage then
-        INI.WriteString('Settings', 'LanguagePath', FCurrentLanguage);
+      if (FCurrentLanguage <> cNoLanguage) then
+      begin
+        if TDirectory.Exists(TPath.Combine(FInterfacePath, FCurrentLanguage)) then
+          INI.WriteString('Settings', 'LanguagePath', FCurrentLanguage)
+        else
+        begin
+          INI.WriteString('Settings', 'LanguagePath', '');
+          FCurrentLanguage := cNoLanguage;
+        end;
+      end;
       INI.WriteInteger('Settings', 'ScreenResolution', r);
       INI.UpdateFile;
     except
@@ -181,6 +189,8 @@ begin
   INI := TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini'));
   try
     FCurrentLanguage := INI.ReadString('Settings', 'LanguagePath', cNoLanguage);
+    if FCurrentLanguage='' then
+      FCurrentLanguage := cNoLanguage;
     lInterfacePath := INI.ReadString('Settings', 'Interface', 'Interface');
   finally
     INI.Free;

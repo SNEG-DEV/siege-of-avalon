@@ -23,7 +23,7 @@ object frmLaunchSetting: TfrmLaunchSetting
   OnDestroy = FormDestroy
   OnShow = FormShow
   PixelsPerInch = 96
-  TextHeight = 22
+  TextHeight = 23
   object imgPage1: TImage
     Left = 0
     Top = 0
@@ -7503,16 +7503,16 @@ object frmLaunchSetting: TfrmLaunchSetting
   object StaticText1: TStaticText
     Left = 40
     Top = 242
-    Width = 484
-    Height = 26
+    Width = 414
+    Height = 27
     Caption = 'Select Language and screen resolution to start the game.'
     TabOrder = 1
   end
   object StaticText2: TStaticText
     Left = 40
     Top = 275
-    Width = 140
-    Height = 37
+    Width = 117
+    Height = 38
     Alignment = taRightJustify
     Caption = 'Language:'
     Font.Charset = DEFAULT_CHARSET

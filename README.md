@@ -5,7 +5,7 @@ _"Siege of Avalon : Open Source is an attempt to keep this great isometric RPG g
 ![Siege of Avalon in HD with room for party of 4.](SoAOS_HD.png)Siege of Avalon in HD with room for party of 4.
 
 ## Latest feature added!! ##
-Startup launch dialog enable choice of Original/HD/FullHD resolutions and language - if any available - also on old retail releases.
+Startup launch dialog enable choice of Original/HD/FullHD resolutions and language - if any available - also on old retail releases. Note: I have seen that on some older laptops the FullHD is not working - to be investigated - might just mean that its graphics card is not able to run FullHD.
 
 Tested with "Siege of Avalon Anthology - Chapters 1-6" build 1.1.2001.1104 from 2001 - just copy Siege.exe and DDraw.dll found under releases - and the game can be played in higher resolutions.
 
@@ -19,7 +19,7 @@ Open the Siege.dpr project file and compile.
 
 Copy or download Siege.exe together with ddraw.dll from the latest releases - and copy into the games install folder.
 
-To play the game your need additional files in the assets/install folder:
+To play the game your need additional files in the game/install folder:
 - soundlib.dll
 - fmod.dll
 - DFX_P5S.DLL
@@ -31,7 +31,7 @@ The newest ddraw.dll from [**DDrawCompat**](https://github.com/narzoul/DDrawComp
 
 ## Playing ##
 
-You launch the game by running Siege.exe that is build into the assets folder.
+You launch the game by running Siege.exe that is build into the game folder.
 
 ## New Settings added ##
 
@@ -45,7 +45,7 @@ As mentioned there is also:
 
 - ScreenResolution (defaults to 600) - possible other values are 720 and 1080
 
-There is also a language path that was not surfaced in the Options dialog of the released code - but assets where available in the release - english, spanish and german are available currently.
+There is also a language path that was not surfaced in the Options dialog of the released code - but assets where available in the release - english, spanish and german are available currently. The released assets are now found under releases - and has been removed from the repo since they do not a such belong to the engine and makes testing various game releases cumbersome.
 
 - LanguagePath (defaults to english) 
 

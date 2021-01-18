@@ -13,6 +13,13 @@ All notable changes to this project will be documented in this file.
 - REFACTOR: Too much copy/paste code - (re)Moved method up to base class or extract
 - REFACTOR: Reorg classes
 
+## 2021-01-18
+### Fixed
+- Small issue with language picker
+
+### Changed
+- Cleaned up the folder structures for the repo and moved the SoAOS assets out. Makes tesing easier and is also more correct since they are not part of the engine but included when code was originally released.
+
 ## 2021-01-17
 ### Fixed
 - On demand load of resources like spells were broken.
