@@ -5,7 +5,7 @@ _"Siege of Avalon : Open Source is an attempt to keep this great isometric RPG g
 ![Siege of Avalon in HD with room for party of 4.](SoAOS_HD.png)Siege of Avalon in HD with room for party of 4.
 
 ## Latest feature added!! ##
-Startup launch dialog enable choice of Original/HD/FullHD resolutions and language - if any available - also on old retail releases. Note: I have seen that on some older laptops the FullHD is not working - to be investigated - might just mean that its graphics card is not able to run FullHD.
+Startup launch dialog enable choice of Original/HD/FullHD resolutions and language - if any available - also on old retail releases.
 
 Tested with "Siege of Avalon Anthology - Chapters 1-6" build 1.1.2001.1104 from 2001 - just copy Siege.exe and DDraw.dll found under releases - and the game can be played in higher resolutions.
 
@@ -35,7 +35,7 @@ You launch the game by running Siege.exe that is build into the game folder.
 
 ## New Settings added ##
 
-Unlike the original game, it is now possible - based on the work of Rucksacksepp from the SOAmigos forum - in the Options dialog to select either Original, HD or FullHD sceen resolutions. The game runs only full screen.  
+Unlike the original game, it is now possible - based on the work of Rucksacksepp from the SOAmigos forum - in the Options dialog to select either Original, HD or FullHD screen resolutions. The game runs only full screen.  
 Also added are improvements in how hit point are distributed to the party of companions and their AI behaviour - these are found in the siege.ini file:
 
 - AdjustedPartyHitPoints (defaults to false)

@@ -66,6 +66,9 @@ type
     FScrollDirLeft: Boolean;
     FScrollText: string;
     FInterfacePath: string;
+
+    Support720p: Boolean;
+    Support1080p: Boolean;
   public
     class function Execute: TModalResult;
   end;
@@ -203,6 +206,15 @@ begin
   FCurrentLanguageIdx := FLanguages.IndexOf(FCurrentLanguage);
   if FCurrentLanguageIdx=-1 then
     FCurrentLanguageIdx := 0;
+  for var i: integer := 0 to screen.MonitorCount-1 do
+  begin
+    var mon: TMonitor := screen.Monitors[i];
+    if mon.Primary then
+    begin
+      Support1080p := (mon.Height >= 1080);
+      Support720p := (mon.Height >= 720);
+    end;
+  end;
 end;
 
 procedure TfrmLaunchSetting.FormDestroy(Sender: TObject);
@@ -231,9 +243,11 @@ begin
   if Rect(100,327,186,380).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
     Done(600);
   if Rect(241,327,327,380).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
-    Done(720);
+    if Support720p then Done(720)
+    else ShowMessage('The current resolution of primary monitor does not support 720p/HD.');
   if Rect(373,327,459,380).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
-    Done(1080);
+    if Support1080p then Done(1080)
+    else ShowMessage('The current resolution of primary monitor does not support 1080p/FullHD.');
 end;
 
 procedure TfrmLaunchSetting.LinkLabelLinkClick(Sender: TObject;

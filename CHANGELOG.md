@@ -13,6 +13,10 @@ All notable changes to this project will be documented in this file.
 - REFACTOR: Too much copy/paste code - (re)Moved method up to base class or extract
 - REFACTOR: Reorg classes
 
+## 2021-01-19
+### Fixed
+- Detecting current screen resolution of primary monitor, to stop picking unsupported HW resolution.
+
 ## 2021-01-18
 ### Fixed
 - Small issue with language picker
