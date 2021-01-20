@@ -191,10 +191,12 @@ begin
   else
     fldn := FieldName.ToLower;
 
-  if (FCurrentDataRow<>nil) and FFieldNames.TryGetValue(fldn, idx) then
+  if (FCurrentDataRow<>nil) then
   begin
+    if not FFieldNames.TryGetValue(fldn, idx) then  // Version 1.5 - brought by the Elves...
+      idx := 1;
     if not FCurrentDataRow.TryGetValue(idx, Result) then
-    Result := nil;
+      Result := nil;
   end
   else
     Result := nil;

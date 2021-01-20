@@ -9,6 +9,8 @@ There are two formats of this file - the original 2001 and the one released with
 **V1:** A single .gif file reference in each column without relative path:  
 Line 1: `Base|BaseHumanMale.gif|BaseHumanFemale.gif|BaseSkeleton.gif|BaseAhoul.gif|`
 
+There is a variation of V1 introduced by the Elves around chapter 3 - no extra columns/fields where added for this so the they used the first column as placeholder?
+
 **V2:** Multiple .gif files references in a column with relative path:  
 Line 1: `Base|humanmalelayers\BaseHumanMale.gif,humanmalelayers\BaseSkeleton.gif,humanmalelayers\BaseAhoul.gif,humanmalelayers\BaseShaman.gif,humanmalelayers\BaseHumanBlank.gif|humanfemalelayers\BaseHumanFemale.gif|humanfemale2layers\BaseHumanFemale.gif|ElfMaleLayers\BaseElf.gif|NagaMale\BaseNaga1.gif,NagaMale\BaseNaga1.gif|`  
 

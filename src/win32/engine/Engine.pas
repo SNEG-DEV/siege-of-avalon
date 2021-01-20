@@ -1468,52 +1468,64 @@ begin
     GetMem( CacheList, Count * sizeof( TCacheInfo ) );
     pList := CacheList;
     TotalSize := 0;
+    L := 0;
     //Calculate TotalSize, Load Name and Size fields
     for i := 0 to Count - 1 do
     begin
       pList^.Name := ShortString( ChangeFileExt( FileList.strings[ i ], '' ) );
 
-
-      AssignFile( F, Dir + FileList.strings[ i ] );
-      try
-        Reset( F, 1 );
-        L := filesize( F );
-        CloseFile( F );
-      except
-        L := 0;
-      end;
-
-      AssignFile( F, Dir + ChangeFileExt( FileList.strings[ i ], '.pit' ) );
-      try
-        Reset( F, 1 );
-        L := L + filesize( F );
-        CloseFile( F );
-      except
-      end;
-
-      AssignFile( F, Dir + ChangeFileExt( FileList.strings[ i ], '.dit' ) );
-      try
-        Reset( F, 1 );
-        L := L + filesize( F );
-        CloseFile( F );
-      except
-      end;
-
-      AssignFile( F, Dir + ChangeFileExt( FileList.strings[ i ], '.cit' ) );
-      try
-        Reset( F, 1 );
-        L := L + filesize( F );
-        if filesize( F ) > 12 then
-        begin
-          Seek( F, 12 );
-          BlockRead( F, pList^.Date, sizeof( TDateTime ) );
-        end
-        else
-        begin
-          pList^.Date := 0;
+      if TFile.Exists(Dir + FileList.strings[ i ]) then
+      begin
+        AssignFile( F, Dir + FileList.strings[ i ] );
+        try
+          Reset( F, 1 );
+          L := filesize( F );
+          CloseFile( F );
+        except
+          L := 0;
         end;
-        CloseFile( F );
-      except
+      end;
+
+      if TFile.Exists(Dir + ChangeFileExt( FileList.strings[ i ], '.pit') ) then
+      begin
+        AssignFile( F, Dir + ChangeFileExt( FileList.strings[ i ], '.pit' ) );
+        try
+          Reset( F, 1 );
+          L := L + filesize( F );
+          CloseFile( F );
+        except
+        end;
+      end;
+
+      if TFile.Exists( Dir + ChangeFileExt( FileList.strings[ i ], '.dit' ) ) then
+      begin
+        AssignFile( F, Dir + ChangeFileExt( FileList.strings[ i ], '.dit' ) );
+        try
+          Reset( F, 1 );
+          L := L + filesize( F );
+          CloseFile( F );
+        except
+        end;
+      end;
+
+      if TFile.Exists( Dir + ChangeFileExt( FileList.strings[ i ], '.cit' ) ) then
+      begin
+        AssignFile( F, Dir + ChangeFileExt( FileList.strings[ i ], '.cit' ) );
+        try
+          Reset( F, 1 );
+          L := L + filesize( F );
+          if filesize( F ) > 12 then
+          begin
+            Seek( F, 12 );
+            BlockRead( F, pList^.Date, sizeof( TDateTime ) );
+          end
+          else
+          begin
+            pList^.Date := 0;
+          end;
+          CloseFile( F );
+        except
+        end;
       end;
 //Log.Log(pList^.Name+' - '+DateTimeToStr(pList^.Date)+' ('+inttostr(L)+')');
 

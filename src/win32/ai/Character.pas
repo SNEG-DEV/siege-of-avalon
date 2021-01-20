@@ -681,7 +681,7 @@ type
     SellingMarkup: Single;
     Alliance: string;
     PrevAlliance: string;
-    Effects: TObjectList<TEffect>;
+    Effects: TList<TEffect>;
     PrevAIMode: TAIMode;
     UseDefaultEquipment: boolean;
     Titles: TStringList;
@@ -2278,7 +2278,7 @@ begin
     FEnemies := TStringList.Create;
     FEnemies.Sorted := true;
     FEnemies.Duplicates := dupIgnore;
-    Effects := TObjectList<TEffect>.Create;
+    Effects := TList<TEffect>.Create;
     CalcStats;
     FrameCount := random(10);
     FCombatMode := true;
@@ -2505,9 +2505,9 @@ begin
       begin
         if Effects[i].DisableWhenDone then
         begin
-          // Effects[ i ].free;
-          Effects.ExtractAt(i);
-          // Delete( i );
+          Effects[ i ].free;
+          // Effects.ExtractAt(i);
+          Effects.Delete( i );
           Enabled := false;
           exit;
         end

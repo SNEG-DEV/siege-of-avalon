@@ -852,10 +852,10 @@ begin
             Assigned( TCreation( Sender ).SelectedPants.Resource ) and
             Assigned( TLayerResource( TCreation( Sender ).SelectedPants.Resource ).RLE ) then
             TLayerResource( TCreation( Sender ).SelectedPants.Resource ).RLE.Draw( Frame, 0, 0, @Bits );
-//          if Assigned( Player.Equipment[ slBoot ] ) and
-//            Assigned( Player.Equipment[ slBoot ].Resource ) and
-//            Assigned( TLayerResource( Player.Equipment[ slBoot ].Resource ).RLE ) then
-//            TLayerResource( Player.Equipment[ slBoot ].Resource ).RLE.Draw( Frame, 0, 0, @Bits );
+          if Assigned( Player.Equipment[ slBoot ] ) and
+            Assigned( Player.Equipment[ slBoot ].Resource ) and
+            Assigned( TLayerResource( Player.Equipment[ slBoot ].Resource ).RLE ) then
+            TLayerResource( Player.Equipment[ slBoot ].Resource ).RLE.Draw( Frame, 0, 0, @Bits );
           if Assigned( TCreation( Sender ).SelectedShirt ) and
             Assigned( TCreation( Sender ).SelectedShirt.Resource ) and
             Assigned( TLayerResource( TCreation( Sender ).SelectedShirt.Resource ).RLE ) then

@@ -13,6 +13,13 @@ All notable changes to this project will be documented in this file.
 - REFACTOR: Too much copy/paste code - (re)Moved method up to base class or extract
 - REFACTOR: Reorg classes
 
+## 2021-01-20
+### Fixed
+- Barefeet in New Game dialog.
+- Effects list management, that could cause hidden AVs
+- Xref.db variation found - so no more meeting naked Elfs in the wood. Updated Xref.db document.
+- Handle annoying I/O messages in CheckCache
+
 ## 2021-01-19
 ### Fixed
 - Detecting current screen resolution of primary monitor, to stop picking unsupported HW resolution.
