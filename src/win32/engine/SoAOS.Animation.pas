@@ -4672,7 +4672,7 @@ end;
 
 function TAniFigure.GetLightIndex: single;
 begin
-  if LightComputed <> FView.FRameCount then
+  if Assigned(FView.FMap) and (LightComputed <> FView.FRameCount) then
   begin
     FView.ComputeLight(Self);
   end;

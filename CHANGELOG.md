@@ -13,6 +13,13 @@ All notable changes to this project will be documented in this file.
 - REFACTOR: Too much copy/paste code - (re)Moved method up to base class or extract
 - REFACTOR: Reorg classes
 
+## 2021-01-21
+### Fixed
+- Old AV bug in Character.Perceptible
+
+### Added
+- Mouse wheel support in Load/Save dialog
+
 ## 2021-01-20
 ### Fixed
 - Barefeet in New Game dialog.

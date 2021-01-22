@@ -120,6 +120,7 @@ type
       Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
     procedure MouseUp( Sender : TObject; Button : TMouseButton;
       Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseWheel( Sender: TObject; Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean );
     procedure KeyDown( Sender : TObject; var key : Word; Shift : TShiftState ); override;
   public
     frmMain : TForm; //we need the  form passed into handle form mouse events
@@ -183,6 +184,7 @@ begin
     //Set mouse events for form
 //  frmMain.OnMouseDown := FormMouseDown;
     frmMain.OnMouseMove := FormMouseMove;
+    frmMain.OnMouseWheel := MouseWheel;
 
     SelectRect := TList.create;
 
@@ -1217,6 +1219,7 @@ begin
       CaratTimer := nil;
     end;
 
+    frmMain.OnMouseWheel := nil;
     pText.UnloadGoldFontGraphic;
     DXBack := nil;
     DXBackHighlight := nil;
@@ -1343,6 +1346,35 @@ begin
   inherited;
 
   ScrollState := 0;
+end;
+
+procedure TLoadGame.MouseWheel(Sender: TObject; Shift: TShiftState;
+  WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+begin
+  Handled := True;
+
+  if WheelDelta<0 then
+  begin //up arrow
+    if StartFile > 0 then
+    begin
+      StartFile := StartFile - 1;
+      MoveList;
+      ShowScreen;
+      ScrollState := -3;
+    end;
+  end
+  else if WheelDelta>0 then
+  begin //down arrow
+    if StartFile + 8 < SelectRect.count - 1 then
+    begin
+      StartFile := StartFile + 1;
+      MoveList;
+      ShowScreen;
+      ScrollState := 3
+    end;
+  end //endif arrows
+  else
+    ScrollState := 0;
 end;
 
 end.
