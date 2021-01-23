@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 - KeyEvents code isolated and rewritten
 - Spell hotkeys are 0-9 but also F3-F12 works
 - Screenshots are now saved in <MyPictures> and can be grabbed with 'G'
+- X-Ray back to original toggle functionality
 
 ## 2021-01-21
 ### Fixed

@@ -3258,23 +3258,6 @@ var
   BitMask: Word;
   XRayOn: Boolean;
 begin
-  // Test and keep?
-  // Keep X pressed for XRayOn
-  if (Winapi.Windows.GetKeyState(88) < 0) then
-  begin
-    XRayOn := True;
-    if Assigned(Current) then
-      TCharacter(Current).AutoTransparent := XRayOn;
-    // Log.log('XRayOn');
-  end;
-  if (Winapi.Windows.GetKeyState(88) >= 0) then
-  begin
-    XRayOn := false;
-    if Assigned(Current) then
-      TCharacter(Current).AutoTransparent := XRayOn;
-    // Log.log('XRayOff');
-  end;
-  // Keep X pressed for XRayOn
   Top := 0;
   Bottom := 0;
   Dx := Figure.DestX - Figure.StepX;
