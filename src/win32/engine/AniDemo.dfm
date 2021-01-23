@@ -120,7 +120,6 @@ object frmMain: TfrmMain
   StyleElements = [seFont, seBorder]
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  OnKeyDown = FormKeyDown
   OnMouseDown = FormMouseDown
   OnMouseMove = FormMouseMove
   OnShow = FormShow

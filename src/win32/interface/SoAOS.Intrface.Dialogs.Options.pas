@@ -76,6 +76,7 @@ type
     procedure TimerEvent( Sender : TObject );
     procedure PlotMenu;
     function GetContinueRect: TRect;
+    procedure DrawList;
   protected
     procedure MouseDown( Sender : TObject; Button : TMouseButton;
       Shift : TShiftState; X, Y, GridX, GridY : integer ); override;
@@ -83,6 +84,7 @@ type
       Shift : TShiftState; X, Y, GridX, GridY : integer ); override;
     procedure MouseUp( Sender : TObject; Button : TMouseButton;
       Shift : TShiftState; X, Y, GridX, GridY : integer ); override;
+    procedure MouseWheel( Sender: TObject; Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean );
     procedure KeyDown( Sender : TObject; var key : Word; Shift : TShiftState ); override;
   public
     SoundVolume : integer;
@@ -106,6 +108,48 @@ uses
   AniDemo;
 
 { TOptions }
+
+procedure TOptions.DrawList;
+var
+  i, j, k : integer;
+  pt: TPoint;
+  pr: TRect;
+begin
+  if CurrentSelectedListItem <> -1 then
+  begin
+    pr := ApplyOffset( Rect( 167, ( CurrentSelectedListItem - StartSpell ) * 35 + 259, 595, ( CurrentSelectedListItem - StartSpell ) * 35 + 35 + 259 ) );
+    DrawAlpha( lpDDSBack, pr, rect( 0, 0, 12, 12 ), DXYellow, True, 40 );
+  end;
+  if Character <> nil then
+  begin
+    pr := Rect( 114, 259, 663, 434 );
+    lpDDSBack.BltFast( pr.Left + Offset.X, pr.Top + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
+    j := 0;
+    for i := 0 to SpellList.count - 1 do
+    begin
+      if ( i >= StartSpell ) and ( i < StartSpell + 5 ) then
+      begin //only show 10 files
+            //Show a hotkey if associated
+            //  for k := 1 to 8 do
+        for k := 1 to 10 do
+        begin
+          if TSpell( SpellList.objects[ i ] ) = Character.HotKey[ k ] then
+          begin
+            //  pText.PlotText( 'F' + intToStr( k + 4 ), 611, 264 + j * 35, 240 );
+            pText.PlotText( intToStr( k - 1 ), 611+Offset.X, 264 + j * 35+Offset.Y, 240 );
+          end;
+        end;
+            //Plot The Spell Icons
+        pt := TSpell( SpellList.objects[ i ] ).GetIconXY( Character );
+        pr := ApplyOffset( Rect( 130, 260 + j * 35, 130 + 32, 260 + j * 35 + 32 ) );
+        DrawAlpha( lpDDSBack, pr, Rect( pt.x, pt.y, pt.x + 32, pt.y + 32 ), IconDX, True, 200 );
+        pText.PlotText( TSpell( SpellList.Objects[ i ] ).DisplayName, 181+Offset.X, 264 + j * 35+Offset.Y, 240 );
+        j := j + 1;
+      end
+    end; //end for
+    SoAOS_DX_BltFront;
+  end;
+end;
 
 function TOptions.GetContinueRect: TRect;
 begin
@@ -158,6 +202,8 @@ begin
     PlotMenu;
 
     ScrollState := 0;
+    frmMain.OnMouseWheel := MouseWheel;
+
     Timer := TTimer.create( nil );
     Timer.onTimer := TimerEvent;
     Timer.Interval := 100;
@@ -237,15 +283,7 @@ begin
       begin
         if ( i >= StartSpell ) and ( i < StartSpell + 5 ) then
         begin //only show 10 files
-            //Show a hotkey if associated
-//          for k := 1 to 8 do  // F3-F12
-//          begin
-//            if TSpell( SpellList.objects[ i ] ) = Character.HotKey[ k ] then
-//            begin
-//              pText.PlotText( 'F' + intToStr( k + 2 ), 611, 264 + j * 35, 240 );
-//            end;
-//          end;
-		  for k := 0 to 10 do // Keys 0-9
+		  for k := 1 to 10 do // Keys 0-9
           begin
             if TSpell( SpellList.objects[ i ] ) = Character.HotKey[ k ] then
             begin
@@ -564,6 +602,7 @@ begin
       Timer := nil;
     end;
     ScrollState := 0;
+    frmMain.OnMouseWheel := nil;
 
     ExText.close;
     pText.UnloadGoldFontGraphic;
@@ -585,49 +624,6 @@ end;
 
 
 procedure TOptions.TimerEvent( Sender : TObject );
-
-  procedure DrawList;
-  var
-    i, j, k : integer;
-    pt: TPoint;
-    pr: TRect;
-  begin
-    if CurrentSelectedListItem <> -1 then
-    begin
-      pr := ApplyOffset( Rect( 167, ( CurrentSelectedListItem - StartSpell ) * 35 + 259, 595, ( CurrentSelectedListItem - StartSpell ) * 35 + 35 + 259 ) );
-      DrawAlpha( lpDDSBack, pr, rect( 0, 0, 12, 12 ), DXYellow, True, 40 );
-    end;
-    if Character <> nil then
-    begin
-      pr := Rect( 114, 259, 663, 434 );
-      lpDDSBack.BltFast( pr.Left + Offset.X, pr.Top + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
-      j := 0;
-      for i := 0 to SpellList.count - 1 do
-      begin
-        if ( i >= StartSpell ) and ( i < StartSpell + 5 ) then
-        begin //only show 10 files
-              //Show a hotkey if associated
-              //  for k := 1 to 8 do
-          for k := 1 to 10 do
-          begin
-            if TSpell( SpellList.objects[ i ] ) = Character.HotKey[ k ] then
-            begin
-              //  pText.PlotText( 'F' + intToStr( k + 4 ), 611, 264 + j * 35, 240 );
-              pText.PlotText( intToStr( k - 1 ), 611+Offset.X, 264 + j * 35+Offset.Y, 240 );
-            end;
-          end;
-              //Plot The Spell Icons
-          pt := TSpell( SpellList.objects[ i ] ).GetIconXY( Character );
-          pr := ApplyOffset( Rect( 130, 260 + j * 35, 130 + 32, 260 + j * 35 + 32 ) );
-          DrawAlpha( lpDDSBack, pr, Rect( pt.x, pt.y, pt.x + 32, pt.y + 32 ), IconDX, True, 200 );
-          pText.PlotText( TSpell( SpellList.Objects[ i ] ).DisplayName, 181+Offset.X, 264 + j * 35+Offset.Y, 240 );
-          j := j + 1;
-        end
-      end; //end for
-      SoAOS_DX_BltFront;
-    end;
-  end;
-
 var
   P : TPoint;
   pr: TRect;
@@ -685,6 +681,37 @@ procedure TOptions.MouseUp( Sender : TObject; Button : TMouseButton;
 begin
   inherited;
   ScrollState := 0;
+end;
+
+procedure TOptions.MouseWheel(Sender: TObject; Shift: TShiftState;
+  WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+begin
+  Handled := True;
+
+  if WheelDelta<0 then
+  begin //move up
+    if StartSpell > 0 then
+    begin
+      StartSpell := StartSpell - 1;
+      if CurrentSelectedListItem > StartSpell + 4 then //clear it if offscreen
+        CurrentSelectedListItem := -1;
+      ScrollState := -3;
+      DrawList;
+    end;
+  end
+  else if WheelDelta>0 then
+  begin //move down
+    if StartSpell + 4 < SpellList.count - 1 then
+    begin
+      StartSpell := StartSpell + 1;
+      if CurrentSelectedListItem < StartSpell then //clear it if offscreen
+        CurrentSelectedListItem := -1;
+      ScrollState := 3;
+      DrawList;
+    end;
+  end
+  else
+    ScrollState := 0;
 end;
 
 end.

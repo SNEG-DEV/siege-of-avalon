@@ -13,6 +13,16 @@ All notable changes to this project will be documented in this file.
 - REFACTOR: Too much copy/paste code - (re)Moved method up to base class or extract
 - REFACTOR: Reorg classes
 
+## 2021-01-23
+### Added
+- Keys assigned as Hotkeys shown in spells panel
+- Mouse wheel support in Spell list in Options dialog
+
+### Changed
+- KeyEvents code isolated and rewritten
+- Spell hotkeys are 0-9 but also F3-F12 works
+- Screenshots are now saved in <MyPictures> and can be grabbed with 'G'
+
 ## 2021-01-21
 ### Fixed
 - Old AV bug in Character.Perceptible

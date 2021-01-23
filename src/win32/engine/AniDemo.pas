@@ -121,14 +121,11 @@ type
     procedure Timer1Timer( Sender : TObject );
     procedure AniView1MouseDown( Sender : TObject; Button : TMouseButton;
       Shift : TShiftState; X, Y, GridX, GridY : Integer );
-    procedure FormKeyDown( Sender : TObject; var key : Word;
-      Shift : TShiftState );
     procedure AniView1AfterDisplay( Sender : TObject );
     procedure AniView1BeforeDisplay( Sender : TObject );
     procedure FormDestroy( Sender : TObject );
     procedure FormCreate( Sender : TObject );
-    procedure FormMouseDown( Sender : TObject; Button : TMouseButton;
-      Shift : TShiftState; X, Y : Integer );
+    procedure FormMouseDown( Sender : TObject; Button : TMouseButton; Shift : TShiftState; X, Y : Integer );
     procedure Timer2Timer( Sender : TObject );
     procedure WMStartMainMenu( var Message : TWMNoParams ); message WM_StartMainMenu;
     procedure WMStartOptions( var Message : TWMNoParams ); message WM_StartOptions;
@@ -154,13 +151,12 @@ type
     HistoryLog : TAdventureLog;
     SoundCount : LongWord;
     Seconds : LongWord;
-    HLFigure : TAniFigure;
+
     Mana : Double;
     Drain : Double;
     Life : Double;
     Wounds : Double;
     FSpellBarActive : Boolean;
-    XRayOn : Boolean;
     LoadNewLevel : Integer;
     NewLVLFile : string;
     NewScene : string;
@@ -172,7 +168,7 @@ type
     SoundOK : Boolean;
 //    Spinner : Integer;
     NewGame : Boolean;
-    OverlayB : IDirectDrawSurface;
+
     OverlayR : IDirectDrawSurface;
     ManaEmpty : IDirectDrawSurface;
     LifeEmpty : IDirectDrawSurface;
@@ -180,23 +176,22 @@ type
     SpellGlyphs : IDirectDrawSurface;
     NoSpellIcon : IDirectDrawSurface;
     HelpBox : IDirectDrawSurface;
-    PauseImage : IDirectDrawSurface;
     FCurrentTheme : string;
-    ScreenShot : TBitmap;
+
     imgGlow : TBitmap;
     imgHelp : TBitmap;
     imgCombat : TBitmap;
     imgAutoTransparent : TBitmap;
     imgSidebar : TBitmap;
     imgSpellBar : TBitmap;
-    imgBottomBar : TBitmap;
+
 
     LastFileSaved : string;
     UseVideoRAM : Boolean;
     UseTimer : Boolean;
     QuickMessage : string;
     PrevQuickMessage : string;
-    MouseMessage : string;
+
     QuickMessageCount : Integer;
     Initialized : Boolean;
     NeedToReload : Boolean;
@@ -204,23 +199,21 @@ type
     Transitionscreen : string;
     DefaultTransition : string;
     LastSpellName : string;
-    Paused : Boolean;
+
     PrevTriggerID : Smallint;
     Zonable : Boolean;
-    NPCHealthBltFx : TDDBLTFX;
-    NPCManaBltFx : TDDBLTFX;
-    NPCBarXCoord : array[ 1..4 ] of Integer;
+
     FActive : Boolean;
     InTimerLoop : Boolean;
     Interval : Integer;
     NewPartyMember : TCharacter;
     SongDuration : Integer;
-    DoNotRestartTimer : Boolean;
+
     MapName : string;
     trNewFile, trSceneName, trStartingPoint, trTransition, trTargetList : string;
     Popup : TPopup;
 
-    procedure CloseAllDialogs( Sender : TObject );
+
     procedure OpenDialog( Dialog : TDisplay; CloseProcedure : TNotifyEvent );
     procedure CloseCreateDialog( Sender : TObject );
     procedure CloseIntroDialog( Sender : TObject );
@@ -231,8 +224,6 @@ type
     procedure CloseRosterDialog( Sender : TObject );
     procedure CloseTransit( Sender : TObject );
     procedure SaveOptions;
-    procedure DrawSpellGlyphs;
-    procedure DrawCurrentSpell;
     procedure SetCurrentTheme( const Value : string );
     procedure AppException( Sender : TObject; E : Exception );
     procedure DrawHealthBars;
@@ -244,11 +235,25 @@ type
     procedure DrawRosterGuy( Character : TCharacter; X, Y : Integer );
     procedure SetActive( const Value : Boolean );
   public
-    Keymap : TKeymapData;
     DeathScreen : string;
     DisableConsole : Boolean;
     SoundTimer : TTimer;
     FadeIn, FadeOut : Integer;
+    XRayOn : Boolean;
+    Paused : Boolean;
+    MouseMessage : string;
+    HLFigure : TAniFigure;
+    OverlayB : IDirectDrawSurface;
+    PauseImage : IDirectDrawSurface;
+    imgBottomBar : TBitmap;
+    NPCHealthBltFx : TDDBLTFX;
+    NPCManaBltFx : TDDBLTFX;
+    NPCBarXCoord : array[ 1..4 ] of Integer;
+    DoNotRestartTimer : Boolean;
+    ScreenShot : TBitmap;
+    procedure CloseAllDialogs( Sender : TObject );
+    procedure DrawSpellGlyphs;
+    procedure DrawCurrentSpell;
     procedure FreeAll;
     procedure BeginConverse( ObjectRef : TGameObject; Conversation : string );
     procedure BeginInventory( Character : TCharacter );
@@ -296,13 +301,25 @@ type
     procedure SaveAGame( const Name : string );
     property CurrentTheme : string read FCurrentTheme write SetCurrentTheme;
     property Active : Boolean read FActive write SetActive;
-    property SpellBarActive : Boolean read FSpellBarActive;
+    property SpellBarActive : Boolean read FSpellBarActive write FSpellBarActive;
   end;
 
 var
   SetAppExStyleCount : Integer;
   ScreenMetrics : TScreenResolutionData;
   DlgRect : TDialogData;
+  DlgMap : TMap;
+  DlgRoster : TAddKickNPC;
+  DlgTitles : TAward;
+  DlgQuestLog : TQuestLog;
+  DlgJournal : TJournal;
+  DlgAdvLog : TAdvLog;
+  DlgOptions : TOptions;
+  DlgInventory : TInventory;
+  DlgStatistics : TStatistics;
+  DlgShow : TShowGraphic;
+  DlgTransit : TTransit;
+
   AdjustedPartyHitPoints : Boolean;
   AdjustedCompanionAI : Boolean;  // Rucksacksepp's improved Companion AI - default to true
   frmMain : TfrmMain;
@@ -319,6 +336,7 @@ uses
   SoAOS.Graphics.Types,
   SoAOS.AI,
   SoAOS.AI.Helper,
+  SoAOS.Intrface.KeyEvents,
   System.Types,
   DFX,
   Parts,
@@ -333,26 +351,16 @@ uses
 
 var
   DlgConverse : TConverseBox;
-  DlgInventory : TInventory;
   DlgLoot : TLootCorpse;
   DlgMerchant : TMerchant;
   DlgObjInventory : TObjInventory;
-  DlgMap : TMap;
-  DlgTitles : TAward;
+
 
   DlgNPC : TNPCBehavior;
-  DlgShow : TShowGraphic;
-  DlgJournal : TJournal;
-  DlgOptions : TOptions;
   DlgLoad : TLoadGame;
   DlgCreation : TCreation;
   DlgIntro : TIntro;
   DlgText : TGameText;
-  DlgStatistics : TStatistics;
-  DlgQuestLog : TQuestLog;
-  DlgAdvLog : TAdvLog;
-  DlgRoster : TAddKickNPC;
-  DlgTransit : TTransit;
 
 procedure TfrmMain.CloseAllDialogs( Sender : TObject );
 var
@@ -455,7 +463,7 @@ begin
     Game.OnMouseDown := AniView1MouseDown;
     Game.OnMouseMove := nil;
     Game.OnMouseUp := nil;
-    OnKeyDown := FormKeyDown;
+    OnKeyDown := TKeyEvent.FormKeyDown;
     OnMouseDown := FormMouseDown;
     OnMouseMove := FormMouseMove;
     DisableConsole := False;
@@ -525,7 +533,7 @@ begin
     Game.OnMouseMove := nil;
     Game.OnMouseUp := nil;
     OnKeyDown := nil;
-    Dialog.OldKeyDown := FormKeyDown;
+    Dialog.OldKeyDown := TKeyEvent.FormKeyDown;
     Dialog.pText := DlgText;
     Dialog.OnClose := CloseProcedure;
     MouseCursor.SetFrame( 37 );
@@ -554,7 +562,7 @@ begin
     Game.OnMouseDown := AniView1MouseDown;
     Game.OnMouseMove := nil;
     Game.OnMouseUp := nil;
-    OnKeyDown := FormKeyDown;
+    OnKeyDown := TKeyEvent.FormKeyDown;
     OnMouseDown := FormMouseDown;
     OnMouseMove := FormMouseMove;
 
@@ -1440,642 +1448,6 @@ begin
   end;
 end;
 
-procedure TfrmMain.FormKeyDown( Sender : TObject; var key : Word;
-  Shift : TShiftState );
-var
-  i : Integer;
-  DC : HDC;
-  BM : TBitmap;
-  S, {S1,S2,} TempName : string;
-  HpDistance, ManaDistance : Double;
-  pr, pr0: TRect;
-const
-  FailName : string = 'Main.FormKeyDown';
-begin
-  Log.DebugLog(FailName);
-  try
-
-    if DisableConsole then
-      Exit;
-    if ( key = Keymap.Spell ) then
-    begin //S
-      FSpellBarActive := not FSpellBarActive;
-      if FSpellBarActive then
-        DrawSpellGlyphs;
-    end
-    else if ( key = Keymap.XRay ) then
-    begin //X
-      XRayOn := not XRayOn;
-      if Assigned( Current ) then
-        TCharacter( Current ).AutoTransparent := XRayOn;
-    end
-    else if ( key = Keymap.Pause ) then
-    begin //P - Pause
-      if Active xor Paused then
-      begin
-        Paused := not Paused;
-        if Paused then
-        begin
-          Active := False;
-          ShowQuickMessage( '', 1 );
-          MouseMessage := '';
-          if Assigned( HLFigure ) then
-          begin
-            HLFigure.Highlighted := False;
-            HLFigure := nil;
-          end;
-          OverlayB.GetDC( DC );
-          try
-            BitBlt( DC, 391, 30, 202, 68, imgBottomBar.Canvas.Handle, 391, 30, SRCCOPY );
-          finally
-            OverlayB.ReleaseDC( DC );
-          end;
-          DrawAlpha( OverlayB, Rect( 456, 53, 456 + 73 {imgPaused.width}, 53 + 23 {imgPaused.Height} ),
-            Rect( 0, 0, 73 {imgPaused.width}, 23 {imgPaused.Height} ), PauseImage, True, 170 );
-          pr := Rect( 0, 0, 800, 114 );
-          lpDDSFront.BltFast( 0, 486, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-
-          for i := 1 to NPCList.Count - 1 do
-          begin
-            HpDistance := TCharacter( NPCList[ i ] ).HitPoints - TCharacter( NPCList[ i ] ).Wounds;
-            if HPDistance > TCharacter( NPCList[ i ] ).HitPoints then
-              HPDistance := TCharacter( NPCList[ i ] ).HitPoints
-            else if HPDistance < 0 then
-              HPDistance := 0;
-
-            ManaDistance := TCharacter( NPCList[ i ] ).Mana - TCharacter( NPCList[ i ] ).Drain;
-            if ManaDistance > TCharacter( NPCList[ i ] ).Mana then
-              ManaDistance := TCharacter( NPCList[ i ] ).Mana
-            else if ManaDistance < 0 then
-              ManaDistance := 0;
-
-            HPDistance := HPDistance * ( 66 / TCharacter( NPCList[ i ] ).HitPoints );
-            ManaDistance := ManaDistance * ( 66 / TCharacter( NPCList[ i ] ).Mana );
-            pr := Rect( NPCBarXCoord[ i ], ScreenMetrics.NPCBarY - Round( HPDistance ), NPCBarXCoord[ i ] + 5, ScreenMetrics.NPCBarY );
-
-            pr0 := Rect( 0, 0, 0, 0 );
-            lpDDSFront.Blt( @pr, nil, @pr0, DDBLT_COLORFILL + DDBLT_WAIT, @NPCHealthBltFx );
-            pr := Rect( NPCBarXCoord[ i ] + 7, ScreenMetrics.NPCBarY - Round( ManaDistance ), NPCBarXCoord[ i ] + 7 + 5, ScreenMetrics.NPCBarY );
-
-            lpDDSFront.Blt( @pr, nil, @pr0, DDBLT_COLORFILL + DDBLT_WAIT, @NPCManaBltFx );
-          end;
-        end
-        else
-        begin
-          Active := True;
-        end;
-      end;
-    end
-    else if ( key = Keymap.Map ) then
-    begin //M
-      if DlgMap.Loaded then
-        CloseAllDialogs( DlgMap )
-      else
-      begin
-        DoNotRestartTimer := True;
-        CloseAllDialogs( DlgMap );
-        BeginMap( Current );
-      end;
-    end
-    else if (key = 90) then  //FIX - German only :(
-    begin //Z Zweischwerterstilfunktion
-         if player.titleexists('geschicklichkeit1') then
-          begin
-               if player.titleexists('Dagger') then
-                  begin
-                  RunScript(Player,'player.additem(DaggerShield)');
-                  RunScript(Player,'player.removeitem(Dagger)');
-                  end;
-               if player.titleexists('Daggershield') then
-                  begin
-                  RunScript(Player,'player.additem(Dagger)');
-                  RunScript(Player,'player.removeitem(DaggerShield)');
-                  end;
-               if player.titleexists('Daggerworn') then
-                  begin
-                  RunScript(Player,'player.additem(DaggerwornShield)');
-                  RunScript(Player,'player.removeitem(Daggerworn)');
-                  end;
-               if player.titleexists('Daggershieldworn') then
-                  begin
-                  RunScript(Player,'player.additem(Daggerworn)');
-                  RunScript(Player,'player.removeitem(DaggerwornShield)');
-                  end;
-               if player.titleexists('DaggerFine') then
-                  begin
-                  RunScript(Player,'player.additem(DaggerFineShield)');
-                  RunScript(Player,'player.removeitem(DaggerFine)');
-                  end;
-               if player.titleexists('DaggershieldFine') then
-                  begin
-                  RunScript(Player,'player.additem(DaggerFine)');
-                  RunScript(Player,'player.removeitem(DaggerFineShield)');
-                  end;
-               if player.titleexists('Axe') then
-                  begin
-                  RunScript(Player,'player.additem(Axeshield)');
-                  RunScript(Player,'player.removeitem(Axe)');
-                  end;
-               if player.titleexists('Axeshield') then
-                  begin
-                  RunScript(Player,'player.additem(Axe)');
-                  RunScript(Player,'player.removeitem(Axeshield)');
-                  end;
-               if player.titleexists('AxeFine') then
-                  begin
-                  RunScript(Player,'player.additem(AxeFineshield)');
-                  RunScript(Player,'player.removeitem(AxeFine)');
-                  end;
-               if player.titleexists('AxeshieldFine') then
-                  begin
-                  RunScript(Player,'player.additem(AxeFine)');
-                  RunScript(Player,'player.removeitem(AxeFineshield)');
-                  end;
-               if player.titleexists('AxeWorn') then
-                  begin
-                  RunScript(Player,'player.additem(AxeWornshield)');
-                  RunScript(Player,'player.removeitem(AxeWorn)');
-                  end;
-               if player.titleexists('AxeshieldWorn') then
-                  begin
-                  RunScript(Player,'player.additem(AxeWorn)');
-                  RunScript(Player,'player.removeitem(AxeWornshield)');
-                  end;
-               if player.titleexists('Shortsword') then
-                  begin
-                  if (player.strength > 6) and (player.coordination > 11) then
-                     begin
-                     RunScript(Player,'player.additem(ShortswordShield)');
-                     RunScript(Player,'player.removeitem(Shortsword)');
-                     end;
-                  end;
-               if player.titleexists('ShortswordShield') then
-                  begin
-                  RunScript(Player,'player.additem(Shortsword)');
-                  RunScript(Player,'player.removeitem(ShortswordShield)');
-                  end;
-               if player.titleexists('Shortswordworn') then
-                  begin
-                  if (player.strength > 6) and (player.coordination > 11) then
-                     begin
-                     RunScript(Player,'player.additem(ShortswordwornShield)');
-                     RunScript(Player,'player.removeitem(Shortswordworn)');
-                     end;
-                  end;
-               if player.titleexists('ShortswordShieldworn') then
-                  begin
-                  RunScript(Player,'player.additem(Shortswordworn)');
-                  RunScript(Player,'player.removeitem(ShortswordwornShield)');
-                  end;
-          end;
-    if player.titleexists('geschicklichkeit2') then
-    begin
-         if (player.strength > 11) and (player.coordination > 15) then
-         begin
-         if player.titleexists('Gladius') then
-            begin
-            RunScript(Player,'player.additem(GladiusswordShield)');
-            RunScript(Player,'player.removeitem(Gladiussword)');
-            end;
-         if player.titleexists('gladiusworn') then
-            begin
-            RunScript(Player,'player.additem(GladiusswordwornShield)');
-            RunScript(Player,'player.removeitem(Gladiusswordworn)');
-            end;
-         if player.titleexists('GladiusFine') then
-            begin
-            RunScript(Player,'player.additem(gladiusswordFineShield)');
-            RunScript(Player,'player.removeitem(gladiusswordFine)');
-            end;
-         end;
-    if player.titleexists('gladiusshield') then
-       begin
-       RunScript(Player,'player.additem(gladiussword)');
-       RunScript(Player,'player.removeitem(gladiusswordShield)');
-       end;
-    if player.titleexists('gladiusshieldworn') then
-       begin
-       RunScript(Player,'player.additem(gladiusswordworn)');
-       RunScript(Player,'player.removeitem(gladiusswordwornShield)');
-       end;
-    if player.titleexists('gladiusshieldFine') then
-       begin
-       RunScript(Player,'player.additem(gladiusswordFine)');
-       RunScript(Player,'player.removeitem(gladiusswordFineShield)');
-       end;
-       if (player.strength > 12) and (player.coordination > 15) then
-         begin
-         if player.titleexists('Scimitar') then
-            begin
-            RunScript(Player,'player.additem(scimitarShield)');
-            RunScript(Player,'player.removeitem(scimitar)');
-            end;
-         if player.titleexists('scimitarworn') then
-            begin
-            RunScript(Player,'player.additem(scimitarwornShield)');
-            RunScript(Player,'player.removeitem(scimitarworn)');
-            end;
-         if player.titleexists('scimitarFine') then
-            begin
-            RunScript(Player,'player.additem(scimitarFineShield)');
-            RunScript(Player,'player.removeitem(scimitarFine)');
-            end;
-         end;
-    if player.titleexists('scimitarshield') then
-       begin
-       RunScript(Player,'player.additem(scimitar)');
-       RunScript(Player,'player.removeitem(scimitarShield)');
-       end;
-    if player.titleexists('scimitarshieldworn') then
-       begin
-       RunScript(Player,'player.additem(scimitarworn)');
-       RunScript(Player,'player.removeitem(scimitarwornShield)');
-       end;
-    if player.titleexists('scimitarshieldFine') then
-       begin
-       RunScript(Player,'player.additem(scimitarFine)');
-       RunScript(Player,'player.removeitem(scimitarFineShield)');
-       end;
-    end;
-    if player.titleexists('geschicklichkeit3') then
-    begin
-    if (player.strength > 14) and (player.coordination > 17) then
-         begin
-         if player.titleexists('Bastardsword') then
-            begin
-            RunScript(Player,'player.additem(BastardswordShield)');
-            RunScript(Player,'player.removeitem(Bastardsword)');
-            end;
-         if player.titleexists('Bastardswordworn') then
-            begin
-            RunScript(Player,'player.additem(BastardswordwornShield)');
-            RunScript(Player,'player.removeitem(Bastardswordworn)');
-            end;
-         if player.titleexists('BastardswordFine') then
-            begin
-            RunScript(Player,'player.additem(BastardswordFineShield)');
-            RunScript(Player,'player.removeitem(BastardswordFine)');
-            end;
-         end;
-    if player.titleexists('Bastardswordshield') then
-       begin
-       RunScript(Player,'player.additem(Bastardsword)');
-       RunScript(Player,'player.removeitem(BastardswordShield)');
-       end;
-    if player.titleexists('Bastardswordshieldworn') then
-       begin
-       RunScript(Player,'player.additem(Bastardswordworn)');
-       RunScript(Player,'player.removeitem(BastardswordwornShield)');
-       end;
-    if player.titleexists('BastardswordshieldFine') then
-       begin
-       RunScript(Player,'player.additem(BastardswordFine)');
-       RunScript(Player,'player.removeitem(BastardswordFineShield)');
-       end;
-        if (player.strength > 15) and (player.coordination > 19) then
-         begin
-         if player.titleexists('Officersword') then
-            begin
-            RunScript(Player,'player.additem(OfficerswordShield)');
-            RunScript(Player,'player.removeitem(Officersword)');
-            end;
-         end;
-    if player.titleexists('Officerswordshield') then
-       begin
-       RunScript(Player,'player.additem(OfficerswordFine)');
-       RunScript(Player,'player.removeitem(OfficerswordFineShield)');
-       end;
-    end;
-    end
-        else if ( key = 84 ) then  //FIX - German only :( Transit
-    begin //T
-    if not player.titleexists('Schnellerwechselaus') then
-    begin
-    if player.titleexists('chapter04') then
-    begin
-        runscript(player,'Loadmap(03Wald1,default,forst,Wald|#Schnellreise.Fall3#)');
-    end;
-    if player.titleexists('chapter03') then
-    begin
-        if not player.titleexists('chapter04') then
-        begin
-             runscript(player,'Loadmap(03Wald1,default,forst,Wald|#Schnellreise.Fall2#)');
-        end;
-    end;
-    if player.titleexists('chapter02') then
-    begin
-         if not player.titleexists('chapter03') then
-         begin
-              if player.titleexists('ImForst') then
-                 runscript(player,'Loadmap(Wald1,default,forst,Wald|#Schnellreise.Fall1#)')
-              else
-                  runscript(player,'Loadmap(southgate1b,default,Levelpoint4|#Schnellreise.Fall1#)');
-         end;
-    end;
-    if not player.titleexists('chapter02') then
-    begin
-         runscript(player,'Loadmap(southgate1b,default,Levelpoint4|#Schnellreise.Fall1#)');
-    end;
-    end;
-    end
-    {else if ( key = 76 ) then
-    begin //L
-       //player.hitpoints := -1;
-
-      // for i := 0 to  Npclist.Count -1 do
-      // TCharacter(npclist.Items[i]).hitpoints := -1;
-
- //  Player.AddTitle('Firefly');
- //  Player.Frozen:=false;
- //  ShowQuickMessage('EmHmImKmXmYm0123456789',8000);
- //  ShowQuickMessage('AÄOÖUÜBßaäoöuüO',8000);
- //  ShowQuickMessage('Ab Kb Lb Qb Rb Xb Yb',8000);
- //  ShowQuickMessage('m0m1m2m3m4m5m6m78m9m',8000);
- //  Player.Mysticism:=100;
- //  Player.AddEffect(TBodyRotEffect.create);
- //  BeginTransit('Spawn','','Group1','','|ob1,,group2|spawn,,test');
- //    DlgTransit.frmMain:=self;
- //    OpenDialog(DlgTransit,CloseTransit);
- //  Player.Mysticism:=1000;
- //end
- //  RunScript(Player,'player.additem(AhoulArmGuards,1234)')
- //          RunScript(Player,'Targetable200008110049155730.doaction(death)');
- //          RunScript(Player,'Lich200008250075954760.doaction(death)');
- //  RunScript(Player,'SaveGame(baba)');
- //Player.AddEffect(GetNamedEffect('deathpulse'));
- //  Player.AddEffect(TBurningRam.create);
-   RunScript(Player,'doaction(death);doeffect(spirit)');
-   ShowQuickmessage( 'Suizid ist auch eine Lösung',300);
-    end}
-      {  for i:=0 to FigureInstances.count-1 do begin
-          if FigureInstances.objects[i] is tcharacter then begin
-            if pos('88620',tcharacter(FigureInstances.objects[i]).guid)>0 then begin
-              AddToParty(tcharacter(FigureInstances.objects[i]));
-              ShowQuickMessage('Found him!',600);
-            end;
-          end;
-        end; }
-      //  RunScript(Current,'journalentry(A);adventure(B);AddQuest(quest1)');
-      //end
-      //else if (Key = 68) then begin //D
-      {  for i:=0 to FigureInstances.count-1 do begin
-          if (FigureInstances.Objects[i] is TCharacter) and (FigureInstances.Objects[i]<>Player) then begin
-            AddToParty(TAniFigure(FigureInstances.Objects[i]));
-            break;
-          end;
-        end;     }
-      //  AddAdventure('a');
-      //  AddQuest('a');
-      //  AddLogEntry('a');
-      //end
-    else if ( key = Keymap.Roster ) then
-    begin //R
-      if DlgRoster.Loaded then
-        CloseAllDialogs( DlgRoster )
-      else
-      begin
-        DoNotRestartTimer := True;
-        CloseAllDialogs( DlgRoster );
-        BeginRoster( nil );
-      end;
-    end
-    else if ( key = Keymap.Award ) then
-    begin //A
-      if DlgTitles.Loaded then
-        CloseAllDialogs( Dlgtitles )
-      else
-      begin
-        DoNotRestartTimer := True;
-        CloseAllDialogs( Dlgtitles );
-        BeginTitles( Current );
-      end;
-    end
-    else if ( key = Keymap.QuestLog ) then
-    begin //Q
-      if DlgQuestLog.Loaded then
-        CloseAllDialogs( DlgQuestLog )
-      else
-      begin
-        DoNotRestartTimer := True;
-        CloseAllDialogs( DlgQuestLog );
-        BeginQuestLog;
-      end;
-    end
-    else if ( key = Keymap.AdventureLog ) then
-    begin //W
-      if DlgAdvLog.Loaded then
-        CloseAllDialogs( DlgAdvLog )
-      else
-      begin
-        DoNotRestartTimer := True;
-        CloseAllDialogs( DlgAdvLog );
-        BeginAdvLog;
-      end;
-    end
-    else if ( key = Keymap.Journal ) then
-    begin //J
-      if DlgJournal.Loaded then
-        CloseAllDialogs( DlgJournal )
-      else
-      begin
-        DoNotRestartTimer := True;
-        CloseAllDialogs( DlgJournal );
-        BeginJournal;
-      end;
-    end
-    else if ( key = Keymap.Option ) then
-    begin //O
-      if DlgOptions.Loaded then
-        CloseAllDialogs( DlgOptions )
-      else
-      begin
-        DoNotRestartTimer := True;
-        CloseAllDialogs( DlgOptions );
-        BeginOptions( Current );
-      end;
-    end
-    else if ( key = Keymap.Inventory ) then
-    begin //I
-      if DlgInventory.Loaded then
-        CloseAllDialogs( DlgInventory )
-      else
-      begin
-        DoNotRestartTimer := True;
-        CloseAllDialogs( DlgInventory );
-        BeginInventory( Current );
-      end;
-    end
-    else if ( key = Keymap.Character ) then
-    begin //C
-      if DlgStatistics.Loaded then
-        CloseAllDialogs( DlgStatistics )
-      else
-      begin
-        DoNotRestartTimer := True;
-        CloseAllDialogs( DlgStatistics );
-        BeginStatistics( Current );
-      end;
-    end
-    else if ( key = Keymap.BattleCry ) then
-    begin //B - Battlecry
-      Current.DoBattleCry;
-    end
-    else if ( key = Keymap.CombatToggle ) then
-    begin //space
-      Current.CombatMode := not Current.CombatMode;
-      for i := 0 to NPCList.Count - 1 do
-      begin
-        TCharacter( NPCList.Items[ i ] ).CombatMode := Current.CombatMode;
-        PaintCharacterOnBorder( TSpriteObject( NPCList.Items[ i ] ), i );
-      end;
-      if Current.CombatMode then
-      begin
-        if Assigned( HLFigure ) then
-        begin
-          HLFigure.Highlighted := False;
-          HLFigure := nil;
-        end;
-      end;
-    end
-//    else if ( key >= 116 ) and ( key < 124 ) then   //  F5 - F12 spell hotkeys
-//    begin
-//      if Assigned( Current.HotKey[ key - 115 ] ) then
-//      begin
-//        Current.CurrentSpell := Current.HotKey[ key - 115 ];
-//       DrawCurrentSpell;
-//     end;
-    else if ( key >= 48 ) and ( key < 58 ) then
-    begin
-      if Assigned( Current.HotKey[ key - 47 ] ) then
-      begin
-        Current.CurrentSpell := Current.HotKey[ key - 47 ];
-        DrawCurrentSpell;
-      end;
-      if FSpellbarActive then
-        DrawSpellGlyphs;
-    end
-    else if ( key = Keymap.Help ) then
-    begin
-      if DlgShow.Loaded then
-        CloseAllDialogs( DlgShow )
-      else
-      begin
-        DoNotRestartTimer := True;
-        CloseAllDialogs( DlgShow );
-        BeginHelp;
-      end;
-    end
-    else if ( key = Keymap.QuickSave ) then
-    begin
-      if Active then
-      begin
-        Active := False;
-        Log.Log( 'QuickSave' );
-        TempName := GameName;
-        try
-          GameName := QuickSave;
-          {        S1:=DefaultPath+'games\'+TempGame+'.sav';
-                  S2:=DefaultPath+'games\'+GameName+'.sav';
-                  if TFile.Exists(S1) then begin
-                    try
-                      if TFile.Exists(S2) then TFile.Delete(S2);
-                      TFile.Copy(S1, S2, True);
-                    except
-                      Log.Log('Error: *** Could not copy '+S1+' to ' + S2);
-                    end;
-                  end;    }
-          if SaveGame then
-          begin
-            MouseCursor.Cleanup;
-            lpDDSFront.GetDC( DC );
-            try
-              SetStretchBltMode( ScreenShot.Canvas.Handle, HALFTONE );
-              StretchBlt( ScreenShot.Canvas.Handle, 0, 0, ScreenShot.width, ScreenShot.Height,
-                DC, 0, 0, ScreenShot.width * 3, ScreenShot.Height * 3, SRCCOPY );
-            finally
-              lpDDSFront.ReleaseDC( DC );
-            end;
-            try
-              if Assigned( ScreenShot ) then
-              begin
-                Log.Log( 'Saving screenshot: ' + GamesPath + GameName + '.bmp' );
-                ScreenShot.SaveToFile( GamesPath + GameName + '.bmp' );
-              end;
-            except
-            end;
-            ShowQuickMessage( SaveMsg, 100 );
-          end;
-        finally
-          GameName := TempName;
-        end;
-        Active := True;
-      end;
-    end
-	//TODO: Remove DEBUG keys...unless they work
-      {else if (Key=114) or (Key=115) then begin     // F3 - F4 Debugmode
-        if CurrDbgLvl=0 then begin
-          CurrDbgLvl:=3;
-          ShowQuickMessage('Debug On',150);
-        end
-        else begin
-          CurrDbgLvl:=0;
-          ShowQuickMessage('Debug Off',150);
-        end;
-      end  }
-    else if ( key = Keymap.Menu ) then
-    begin
-      Active := False;
-
-      MouseCursor.Cleanup;
-      lpDDSFront.GetDC( DC );
-      try
-        SetStretchBltMode( ScreenShot.Canvas.Handle, HALFTONE );
-        StretchBlt( ScreenShot.Canvas.Handle, 0, 0, ScreenShot.width, ScreenShot.Height,
-          DC, 0, 0, ScreenShot.width * 3, ScreenShot.Height * 3, SRCCOPY );
-      finally
-        lpDDSFront.ReleaseDC( DC );
-      end;
-
-      PostMessage( Handle, WM_StartMainMenu, 0, 0 ); //Restart the intro
-    end
-    else if ( key = Keymap.Screenshot ) then
-    begin
-      try
-        BM := TBitmap.Create;
-        try
-          BM.width := ResWidth;
-          BM.Height := ResHeight;
-          MouseCursor.Cleanup;
-          lpDDSFront.GetDC( DC );
-          try
-            BitBlt( BM.Canvas.Handle, 0, 0, ResWidth, ResHeight, DC, 0, 0, SRCCOPY );
-          finally
-            lpDDSFront.ReleaseDC( DC );
-          end;
-          i := Trunc( Date );
-          i := i shl 12;
-          repeat
-            Inc( i );
-            S := AppPath + 'SS' + IntToHex( i, 8 ) + '.bmp';
-          until not TFile.Exists( S );
-          BM.PixelFormat := pf24bit;
-          BM.SaveToFile( S );
-        finally
-          BM.Free;
-        end;
-      except
-      end;
-    end
-    else
-    begin
-      //    Log.Log(inttostr(key));
-    end;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
-end;
 
 procedure TfrmMain.AniView1AfterDisplay( Sender : TObject );
 var
@@ -2428,7 +1800,6 @@ begin
   imgBottomBar := TBitmap.Create;
 
   ScreenMetrics := cOriginal; // cOriginal or  cHD or cFullHD - TBA
-  Keymap := cKeyOrig; // cKeyGerman .. - TBA
   AdjustedPartyHitPoints := False; // True = Rucksacksepp's HP adjusted by number of PartyMembers
 
   Application.OnException := AppException;
@@ -2443,6 +1814,8 @@ begin
   AdventureLog1 := TAdventureLog.create;
   HistoryLog := TAdventureLog.create;
 
+  OnKeyDown := TKeyEvent.FormKeyDown;
+
   Game := TAniView.Create( frmMain );
   Game.Parent := frmMain;
   Game.Height := ScreenMetrics.GameHeight; // 511; In HD there was a diff 991 <-> 997?
@@ -2453,7 +1826,6 @@ begin
   Game.OnAfterDisplay := AniView1AfterDisplay;
   Game.OnBeforeDisplay := AniView1BeforeDisplay;
   Game.OnMouseDown := AniView1MouseDown;
-
 
   GameMap := TAniMap.Create( frmMain );
   GameMap.AmbientColor := cBlackBackground;
@@ -5233,7 +4605,7 @@ end;
 
 procedure TfrmMain.DrawSpellGlyphs;
 var
-  i : Integer;
+  i, h : Integer;
   SpellList : TStringList;
   Point : TPoint;
   DC : HDC;
@@ -5271,12 +4643,18 @@ begin
             begin
               FillRectAlpha( SpellBar, Rect( X - 2, Y - 2, X + 34, Y + 34 ), clMaroon, 200 );
               //SpellBar.bltfast(X, Y,Spellglyphs, Rect ( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-              DrawAlpha( SpellBar, Rect( X, Y, X + 32, Y + 32 ),
-			    Rect( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), SpellGlyphs, False, 160 );
+              DrawAlpha( SpellBar, Rect( X, Y, X + 32, Y + 32 ), Rect( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), SpellGlyphs, False, 160 );
             end
             else
-            //SpellBar.bltfast(X, Y,Spellglyphs, Rect ( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+              //SpellBar.bltfast(X, Y,Spellglyphs, Rect ( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
               DrawAlpha( SpellBar, Rect( X, Y, X + 32, Y + 32 ), Rect( Point.X, Point.Y, Point.X + 32, Point.Y + 32 ), SpellGlyphs, False, 200 );
+            // Draw hotkey.
+            for h := 0 to 9 do
+              if Current.HotKey[h+1]=Spells[i] then
+              begin
+                DlgText.PlotF13Block( SpellBar, h.ToString, X + 28, X + 38, Y-10, 240 );
+                break;
+              end;
           end;
         end;
       finally
@@ -5391,7 +4769,7 @@ begin
     Game.OnMouseDown := AniView1MouseDown;
     Game.OnMouseMove := nil;
     Game.OnMouseUp := nil;
-    OnKeyDown := FormKeyDown;
+    OnKeyDown := TKeyEvent.FormKeyDown;
     OnMouseDown := FormMouseDown;
     OnMouseMove := FormMouseMove;
 
@@ -5635,7 +5013,7 @@ begin
     Game.OnMouseMove := nil;
     Game.OnMouseUp := nil;
     OnKeyDown := nil;
-    DlgOptions.OldKeyDown := FormKeyDown;
+    DlgOptions.OldKeyDown := TKeyEvent.FormKeyDown;
     DlgOptions.pText := DlgText;
     DlgOptions.OnClose := CloseOptions;
     MouseCursor.SetFrame( 37 );
@@ -5665,7 +5043,7 @@ begin
         Game.OnMouseDown := AniView1MouseDown;
         Game.OnMouseMove := nil;
         Game.OnMouseUp := nil;
-        OnKeyDown := FormKeyDown;
+        OnKeyDown := TKeyEvent.FormKeyDown;
         OnMouseDown := FormMouseDown;
         OnMouseMove := FormMouseMove;
         PostMessage( Handle, WM_StartMainMenu, 0, 0 ); //Restart the intro
@@ -5759,7 +5137,7 @@ begin
         Game.OnMouseDown := AniView1MouseDown;
         Game.OnMouseMove := nil;
         Game.OnMouseUp := nil;
-        OnKeyDown := FormKeyDown;
+        OnKeyDown := TKeyEvent.FormKeyDown;
         OnMouseDown := FormMouseDown;
         OnMouseMove := FormMouseMove;
         PostMessage( Handle, WM_StartMainMenu, 0, 0 ); //Restart the intro
@@ -5812,7 +5190,7 @@ begin
     Game.OnMouseMove := nil;
     Game.OnMouseUp := nil;
     OnKeyDown := nil;
-    DlgLoad.OldKeyDown := FormKeyDown;
+    DlgLoad.OldKeyDown := TKeyEvent.FormKeyDown;
     DlgLoad.pText := DlgText;
     DlgLoad.OnClose := CloseLoad;
     DlgLoad.frmMain := Self;
@@ -5839,7 +5217,7 @@ begin
     Game.OnMouseMove := nil;
     Game.OnMouseUp := nil;
     OnKeyDown := nil;
-    DlgLoad.OldKeyDown := FormKeyDown;
+    DlgLoad.OldKeyDown := TKeyEvent.FormKeyDown;
     DlgLoad.pText := DlgText;
     DlgLoad.OnClose := CloseSave;
     DlgLoad.frmMain := Self;
@@ -6095,7 +5473,7 @@ begin
     Game.OnMouseMove := nil;
     Game.OnMouseUp := nil;
     OnKeyDown := nil;
-    DlgShow.OldKeyDown := FormKeyDown;
+    DlgShow.OldKeyDown := TKeyEvent.FormKeyDown;
     DlgShow.pText := DlgText;
     DlgShow.OnClose := CloseShow;
     DlgShow.frmMain := Self;
@@ -6181,7 +5559,7 @@ begin
     Game.OnMouseDown := AniView1MouseDown;
     Game.OnMouseMove := nil;
     Game.OnMouseUp := nil;
-    OnKeyDown := FormKeyDown;
+    OnKeyDown := TKeyEvent.FormKeyDown;
     OnMouseDown := FormMouseDown;
     OnMouseMove := FormMouseMove;
     FreeAll;
@@ -6203,7 +5581,7 @@ begin
     Game.OnMouseMove := nil;
     Game.OnMouseUp := nil;
     OnKeyDown := nil;
-    DlgShow.OldKeyDown := FormKeyDown;
+    DlgShow.OldKeyDown := TKeyEvent.FormKeyDown;
     DlgShow.pText := DlgText;
     DlgShow.OnClose := CloseShow;
     DlgShow.frmMain := Self;

@@ -123,7 +123,7 @@ var
   FullInvMsg : string;
   ChestMsg : string;
   SOLName : string;
-  QuickSave : string;
+  QuickSaveName : string;
   BlackScript : string;
 
 implementation
@@ -195,9 +195,9 @@ begin
     SOLName := ExText.GetText( 'SOL' );
     if SOLName = '' then
       SOLName := 'Start of Level';
-    QuickSave := ExText.GetText( 'QuickSave' );
-    if QuickSave = '' then
-      QuickSave := 'QuickSave';
+    QuickSaveName := ExText.GetText( 'QuickSave' );
+    if QuickSaveName = '' then
+      QuickSaveName := 'QuickSave';
     ExtExt.Close;
 
   except

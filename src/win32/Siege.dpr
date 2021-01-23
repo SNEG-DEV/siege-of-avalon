@@ -116,7 +116,8 @@ uses
   SoAOS.Spells in 'engine\SoAOS.Spells.pas',
   SoAOS.Projectile in 'engine\SoAOS.Projectile.pas',
   SoAOS.Map in 'engine\SoAOS.Map.pas',
-  SoAOS.Animation in 'engine\SoAOS.Animation.pas';
+  SoAOS.Animation in 'engine\SoAOS.Animation.pas',
+  SoAOS.Intrface.KeyEvents in 'interface\SoAOS.Intrface.KeyEvents.pas';
 
 {$R *.RES}
 
