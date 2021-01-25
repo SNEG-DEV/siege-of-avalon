@@ -51,9 +51,11 @@ type
 
   TWolfIdle = class( TAI )
   private
+    Walking : Boolean;
     Leash : Integer;
     PercentageWounded : Integer;
     bCombative : Boolean;
+    Delay : Integer;
     FWolfType : TWolfType;
     CenterX : Integer;
     CenterY : Integer;
@@ -78,13 +80,17 @@ type
   TWolfCombat = class( TAI )
   private
     RunAwayTime : integer;
+    Walking : Boolean;
+    Delay : Integer;
     AttackDelay : integer;
     WolfType : string;
     PercentageWounded : Integer;
+    CollideCount : Integer;
     bRunaway : Boolean;
     procedure RunAway;
     procedure FindTarget;
     procedure Attack;
+    procedure Wait;
   public
     procedure OnStop; override;
     procedure WasAttacked( Source : TAniFigure; Damage : Single ); override;
@@ -742,6 +748,23 @@ begin
       Log.log( FailName + E.Message );
   end;
 
+end;
+
+procedure TWolfCombat.Wait;
+const
+  FailName : string = 'TWolfCombat.Wait';
+begin
+  Log.DebugLog( FailName );
+  try
+
+    Character.WalkTo( Character.X + random( 80 ) - 40, Character.Y + random( 40 ) - 20, 16 );
+    CollideCount := 0;
+    Walking := true;
+    Delay := random( 10 ) + 10;
+  except
+    on E : Exception do
+      Log.log( FailName + E.Message );
+  end;
 end;
 
 procedure TWolfCombat.WasAttacked( Source : TAniFigure; Damage : single );

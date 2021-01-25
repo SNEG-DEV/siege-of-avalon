@@ -13,6 +13,10 @@ All notable changes to this project will be documented in this file.
 - REFACTOR: Too much copy/paste code - (re)Moved method up to base class or extract
 - REFACTOR: Reorg classes
 
+## 2021-01-25
+### Fixed
+- A nasty AI helper bug in ForgetEffect - introduced by me :(
+
 ## 2021-01-23
 ### Added
 - Keys assigned as Hotkeys shown in spells panel

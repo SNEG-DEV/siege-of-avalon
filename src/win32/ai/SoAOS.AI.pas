@@ -39,16 +39,6 @@ uses
 
 type
   TAI = class( TObject )
-  private
-    FWalking : Boolean;
-    FDelay : integer;
-    FCollideCount : integer;
-    procedure SetDelay(const Value: Integer);
-    function GetDelay: Integer;
-    function GetWalking: Boolean;
-    procedure SetWalking(const Value: Boolean);
-    function GetCollideCount: Integer;
-    procedure SetCollideCount(const Value: Integer);
   protected
     FCharacter : TObject; // TCharacter by class helper;
     FrameCount : LongWord;
@@ -69,10 +59,6 @@ type
     procedure Follow( Source, Target : TAniFigure ); virtual;
     procedure Clicked; virtual;
     procedure MoveAwayAI(radius, deviance: Integer; enface: Boolean = True; run: Boolean = False);
-    procedure Wait; virtual;
-    property Walking: Boolean read GetWalking write SetWalking;
-    property Delay: Integer read GetDelay write SetDelay;
-    property CollideCount: Integer read GetCollideCount write SetCollideCount;
   end;
 
   TPartyAI = class( TAI )
@@ -119,21 +105,6 @@ end;
 procedure TAI.Follow( Source, Target : TAniFigure );
 begin
 
-end;
-
-function TAI.GetCollideCount: Integer;
-begin
-  Result := FCollideCount;
-end;
-
-function TAI.GetDelay: Integer;
-begin
-  Result := FDelay;
-end;
-
-function TAI.GetWalking: Boolean;
-begin
-  Result := FWalking;
 end;
 
 procedure TAI.Init;
@@ -211,40 +182,9 @@ begin
 
 end;
 
-procedure TAI.SetCollideCount(const Value: Integer);
-begin
-
-end;
-
-procedure TAI.SetDelay(const Value: Integer);
-begin
-  FDelay := Value;
-end;
-
-procedure TAI.SetWalking(const Value: Boolean);
-begin
-
-end;
-
 procedure TAI.TrackChanged;
 begin
 
-end;
-
-procedure TAI.Wait;
-const
-  FailName : string = 'TAI.Wait';
-begin
-  Log.DebugLog( FailName );
-  try
-    MoveAwayAI(40, 16, False);
-    FCollideCount := 0;
-    FWalking := True;
-    FDelay := random( 10 ) + 10;
-  except
-    on E : Exception do
-      Log.log( FailName + E.Message );
-  end;
 end;
 
 procedure TAI.WasAttacked( Source : TAniFigure; Damage : Single );

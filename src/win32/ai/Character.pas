@@ -572,6 +572,7 @@ type
     FDeviance: Integer;
     ThresholdOfPain: Integer;
     FVision: Integer; // Sensory values are in horizontal units
+    procedure SetAI( const Value : TAI );
     function GetEquipment(Slot: TSlot): TItem;
     procedure SetEquipment(Slot: TSlot; const Value: TItem);
     procedure SetCharm(const Value: Integer);
@@ -618,8 +619,6 @@ type
     FDrain: Double;
     FCurrentSpell: TObject; // TSpell;
     FHotKey: array [1 .. 10] of TObject; // TSpell;
-    // procedure SetAI( const Value : TAI );
-    FAI: TObject; // TAI;
     procedure Render; override;
     function GetProperty(const Name: string): string; override;
     procedure SetProperty(const Name: string; const Value: string); override;
@@ -645,7 +644,7 @@ type
     UnArmedDamage: TDamageProfile;
     FCastRecovery: Integer;
     FAIMode: TAIMode;
-    // FAI : TAI;
+    FAI : TAI;
     NewAIMode: TAIMode;
     FEquipment: array [slLeg1 .. slMisc3] of TItem;
     EquipmentLocked: array [slLeg1 .. slMisc3] of boolean;
@@ -777,7 +776,7 @@ type
     property Ready: boolean read FReady;
     property Equipment[Slot: TSlot]: TItem read GetEquipment write SetEquipment;
     property Inventory: TList read FInventory;
-    // property AI : TAI read FAI write SetAI;
+    property AI : TAI read FAI write SetAI;
     property Dead: boolean read FDead write SetDead;
     property Range: Integer read FRange;
     property AIMode: TAIMode read FAIMode write SetAIMode;
@@ -2990,29 +2989,6 @@ function TCharacter.GetEquipment(Slot: TSlot): TItem;
 begin
   result := FEquipment[Slot];
 end;
-
-// procedure TCharacter.SetAI( const Value : TAI );
-// const
-// FailName : string = 'TCharacter.SetAI';
-// begin
-// Log.DebugLog( FailName );
-// try
-//
-// if Assigned( FAI ) then
-// FAI.Free;
-// FAI := Value;
-// if Assigned( FAI ) then
-// begin
-// FAI.Character := Self;
-// if not Loading then
-// FAI.Init;
-// end;
-//
-// except
-// on E : Exception do
-// Log.log( FailName, E.Message, [ ] );
-// end;
-// end;
 
 procedure TCharacter.SetEquipment(Slot: TSlot; const Value: TItem);
 var
@@ -5382,6 +5358,28 @@ begin
     pr := Rect(X + 1, Y + 1, X + BarWidth, Y + Height - 1);
     pr0 := Rect(0, 0, 0, 0);
     lpDDSBack.Blt(@pr, nil, @pr0, DDBLT_COLORFILL + DDBLT_WAIT, @BltFx);
+  end;
+end;
+
+procedure TCharacter.SetAI(const Value: TAI);
+const
+  FailName : string = 'TCharacter.SetAI';
+begin
+  try
+
+    if Assigned( FAI ) then
+      FAI.Free;
+    FAI := Value;
+    if Assigned( FAI ) then
+    begin
+      FAI.Character := Self;
+      if not Loading then
+        FAI.Init;
+    end;
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
   end;
 end;
 

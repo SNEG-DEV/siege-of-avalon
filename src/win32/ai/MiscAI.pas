@@ -81,6 +81,7 @@ type
 
   TCompanion = class( TPartyAI )
   private
+    Delay : Integer;
     ShotCounter : integer;
     BuffCount : integer;
     MaxBuffs : integer;
@@ -107,6 +108,7 @@ type
 
     FHealFirst : Boolean;
  //   fStayClose: Boolean;
+    Walking : Boolean;
     ReadyToAttack : Boolean;
 //    FCaster: Boolean;
     bMove : Boolean;
@@ -172,8 +174,11 @@ type
 
   TMeleeTraining = class( TAI )
   private
+    Walking : Boolean;
     ReadyToAttack : Boolean;
     //RunAway: Boolean;
+    Delay : integer;
+    CollideCount : integer;
     waiting : boolean;
     //Soft
     procedure FindNextTarget;
@@ -190,8 +195,10 @@ type
 
   TMeleeSparing = class( TAI )
   private
+    Walking : Boolean;
     ReadyToAttack : Boolean;
     iTimeToRun : integer;
+    Delay : integer;
     //Soft
     procedure Attack;
   public
@@ -206,6 +213,7 @@ type
 
   TMeleePratice = class( TAI )
   private
+    Delay : integer;
     PartyTotal : integer;
     Partylist : TstringList;
   public
@@ -219,6 +227,7 @@ type
 
   TRitual = class( TAI )
   private
+    Delay : Integer;
     strSpell : string;
     iSpellCount : Integer;
   protected
@@ -254,6 +263,7 @@ type
   private
     FMaster : TCharacter;
     GroupList : TStringList;
+    Delay : Integer;
     FCombative : Boolean;
     Fighting : Boolean;
     FFighter : Boolean;
@@ -337,6 +347,7 @@ type
 
   TPriortyCompanion = class( TPartyAI )
   private
+    Delay : Integer;
     FCombative : Boolean;
     Friendly : TCharacter;
     FriendsList : TStringList;
@@ -383,6 +394,7 @@ type
 
   TWorms = class( TAI )
   private
+    Delay : Integer;
     Fighting : Boolean;
     ReadyToAttack : Boolean;
     Revealed : Boolean;
@@ -402,6 +414,7 @@ type
 
   TWatchDog = class( TAI )
   private
+    Delay : Integer;
     FCombative : Boolean;
     iLeash : Integer;
     CenterX : Integer;
@@ -409,6 +422,7 @@ type
     strTitle : string;
     IdleDuty : string;
     Fighting : Boolean;
+    Walking : Boolean;
     ReadyToAttack : Boolean;
     FCaster : Boolean;
     bMove : Boolean;
@@ -442,6 +456,7 @@ type
 
   TDrunk = class( TAI )
   private
+    Delay : Integer;
     FCombative : Boolean;
     bHarassing : Boolean;
     bShutUp : Boolean;
@@ -449,6 +464,7 @@ type
     CenterX : Integer;
     CenterY : Integer;
     Fighting : Boolean;
+    Walking : Boolean;
     ReadyToAttack : Boolean;
     FCaster : Boolean;
     bMove : Boolean;
@@ -484,15 +500,19 @@ type
     RunAwayTime : Integer;
     FBaseCourage : Integer;
     FBonusCourage : Integer;
+    Walking : Boolean;
+    Delay : Integer;
     TimeToAttack : Integer;
     MainStat : string;
     OrigPartyTot : Integer;
     OrdersGiven : Boolean;
     WaitingToKill : Boolean;
+    CollideCount : Integer;
     bRunAway : Boolean;
     procedure Attack;
     procedure FindTarget;
     procedure Run;
+    procedure Wait;
   public
     procedure OnStop; override;
     procedure OnNoPath; override;
@@ -509,7 +529,9 @@ type
 
   TOrcIdle = class( TAI )
   private
+    Walking : Boolean;
     FFighting : Boolean;
+    Delay : Integer;
     CenterX : Integer;
     CenterY : Integer;
     //Soft
@@ -536,6 +558,8 @@ type
 
   TScoutIdle = class( TAI )
   private
+    Walking : Boolean;
+    Delay : Integer;
     CenterX : Integer;
     CenterY : Integer;
     MyGroup : TStringList;
@@ -543,6 +567,7 @@ type
     MyPathCorners : TStringList;
     CurrentPath : TGameObject;
     ReturnPath : TGameObject;
+    CollideCount : Integer;
     //Soft
     iLeash : Integer;
     IdleDuty : TIdleDuty;
@@ -553,6 +578,7 @@ type
     procedure WalkPath;
     procedure GotoFriends;
     procedure GetPath( ToX, ToY : Integer );
+    procedure Wait;
   public
     procedure OnStop; override;
     procedure OnNoPath; override;
@@ -3839,6 +3865,22 @@ begin
   end;
 end;
 
+procedure TCommanderCombat.Wait;
+const
+  FailName : string = 'MiscAI.TCommanderCombat.Wait';
+begin
+  Log.DebugLog( FailName );
+  try
+    Character.WalkTo( Character.X + random( 80 ) - 40, Character.Y + random( 40 ) - 20, 16 );
+    CollideCount := 0;
+    Walking := True;
+    Delay := random( 10 ) + 10;
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
 procedure TCommanderCombat.WasAttacked( Source : TAniFigure; Damage : Single );
 const
   FailName : string = 'MiscAI.TCommanderCombat.WasAttacked';
@@ -4436,6 +4478,22 @@ begin
         end;
       end;
     end;
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+procedure TScoutIdle.Wait;
+const
+  FailName : string = 'MiscAI.TScoutIdle.Wait';
+begin
+  Log.DebugLog( FailName );
+  try
+    Character.WalkTo( Character.X + random( 80 ) - 40, Character.Y + random( 40 ) - 20, 16 );
+    CollideCount := 0;
+    Walking := True;
+    Delay := random( 10 ) + 10;
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );

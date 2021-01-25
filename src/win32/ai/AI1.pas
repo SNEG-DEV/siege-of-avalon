@@ -49,6 +49,8 @@ uses
 type
   TMeander = class( TAI ) // Wander aimlessly
   private
+    Walking : Boolean;
+    Delay : Integer;
     Leash : Integer;
     CenterX : Integer;
     CenterY : Integer;
@@ -64,12 +66,14 @@ type
 
   TBanditCombat = class( TAI )
   private
+    Walking : Boolean;
     Waiting : Boolean;
     ReadyToAttack : Boolean;
     OldTrack : TCharacter;
     RunAway : Boolean;
+    CollideCount : Integer;
     TrackX, TrackY : Longint;
-    PostDelay : Integer;
+    Delay, PostDelay : Integer;
   public
     procedure OnStop; override;
     procedure OnNoPath; override;
@@ -83,6 +87,7 @@ type
   TFollowPath = class( TAI )
   private
     CurrentPath : TGameObject;
+    Walking : boolean;
   public
     procedure OnStop; override;
     procedure OnNoPath; override;

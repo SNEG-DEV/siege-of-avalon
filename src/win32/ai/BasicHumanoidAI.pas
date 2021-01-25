@@ -88,7 +88,9 @@ type
     OldStand : string;
     NewStand : string;
     StandInterval : integer;
+    Walking : Boolean;
     PathDev : integer;
+    Delay : Integer;
     CenterX : Integer;
     CenterY : Integer;
     GroupList : TStringList;
@@ -185,13 +187,16 @@ type
 
   THumanoidMeleeCombat = class( THumanoidCombat )
   private
+    Walking : Boolean;
     ReadyToAttack : Boolean;
     CirclePoint : integer;
     RunForIt : Boolean;
     CombatSay : string;
     FSpellEffectResource : TResource;
     //RunAway: Boolean;
+    Delay : Integer;
     PartyTotal : integer;
+    CollideCount : integer;
     waiting : boolean;
     OldRadius : integer;
     NewRadius : integer;
@@ -228,8 +233,10 @@ type
 
   THumanoidArcherCombat = class( THumanoidCombat )
   private
+    Walking : boolean;
     FriendsList : TStringList;
     CirclePoint : integer;
+    Delay : integer;
     PartyTotal : integer;
     ShotCounter : integer;
     RunOrFight : boolean;
@@ -269,10 +276,12 @@ type
 
   THumanoidCasterCombat = class( THumanoidCombat )
   private
+    Walking : boolean;
     mirror : boolean;
     Friendly : TCharacter;
     FriendsList : TStringList;
     CirclePoint : integer;
+    Delay : integer;
     PauseAndExit : integer;
     PartyTotal : integer;
     NukeCounter : integer;
@@ -332,6 +341,8 @@ type
 
   THumanoidHeroCombat = class( TAI )
   private
+    Walking : Boolean;
+    Delay : integer;
     PartyTotal : integer;
     GoodCollideCount : integer;
     BadCollideCount : integer;
@@ -368,9 +379,12 @@ type
 
   THumanoidHunterCombat = class( THumanoidCombat )
   private
+    Walking : Boolean;
     ReadyToAttack : Boolean;
     bRunAway : Boolean;
+    Delay : integer;
     PartyTotal : integer;
+    CollideCount : integer;
     RangeAttack : boolean;
     bHasBow : Boolean;
     AttackDelay : integer;

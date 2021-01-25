@@ -55,6 +55,8 @@ type
 
   TUndeadIdle = class( TAI )
   private
+    Walking : Boolean;
+    Delay : Integer;
     Leash : Integer;
     CenterX : Integer;
     CenterY : Integer;
@@ -80,11 +82,14 @@ type
 
   TUndeadMeleeCombat = class( TAI )
   private
+    Walking : boolean;
     bTakeOrders : boolean;
     CirclePoint : integer;
     waiting : boolean;
     realStop : boolean;
+    Delay : integer;
     FUnDeadType : TUndeadType;
+    CollideCount : integer;
     procedure FindTarget;
     procedure Attack;
     procedure Eat;
@@ -104,8 +109,10 @@ type
 
   TUndeadArcherCombat = class( TAI )
   private
+    Walking : boolean;
     FriendsList : TStringList;
     CirclePoint : integer;
+    Delay : integer;
     PartyTotal : integer;
     ShotCounter : integer;
     RunOrFight : boolean;
@@ -136,8 +143,10 @@ type
 
   TUndeadCasterCombat = class( TAI )
   private
+    Walking : boolean;
     Friendly : TCharacter;
     FriendsList : TStringList;
+    Delay : integer;
     NukeCounter : integer;
     CirclePoint : integer;
     RunAway : boolean;
@@ -170,8 +179,10 @@ type
 
   TUndeadCommanderCombat = class( TAI )
   private
+    Walking : boolean;
     Friendly : TCharacter;
     FriendsList : TStringList;
+    Delay : integer;
     NukeCounter : integer;
     CirclePoint : integer;
     RunAway : boolean;

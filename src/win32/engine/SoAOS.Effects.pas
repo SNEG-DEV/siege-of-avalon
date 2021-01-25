@@ -51,6 +51,7 @@ uses
   SoAOS.AI.Types,
   SoAOS.AI,
   SoAOS.Animation,
+  LogFile,
   Spells;
 
 type
@@ -656,11 +657,11 @@ begin
   begin
     if assigned( FCharacter.AI ) then
     begin
-      OldAI := FCharacter.AI;
+      OldAI := FCharacter.FAI;
       OldAIMode := FCharacter.FAIMode;
-      FCharacter.AI := TMeander.create;
-      FCharacter.AI.Character := FCharacter;
-      FCharacter.AI.Init;
+      FCharacter.FAI := TMeander.create;
+      FCharacter.FAI.Character := FCharacter;
+      FCharacter.FAI.Init;
     end;
     Applied := true;
   end;
@@ -720,8 +721,8 @@ begin
   if Applied and ( Duration = 0 ) then
   begin
     Applied := false;
-    FCharacter.AI.free;
-    FCharacter.AI := OldAI;
+    FCharacter.FAI.free;
+    FCharacter.FAI := OldAI;
     OldAI := nil;
     FCharacter.FAIMode := OldAIMode;
   end;

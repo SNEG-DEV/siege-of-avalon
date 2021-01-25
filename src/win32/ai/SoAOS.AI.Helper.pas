@@ -64,13 +64,10 @@ type
   private
     procedure SetCurrentSpell(Value: TSpell);
     function GetCurrentSpell: TSpell;
-    function GetAI: TAI;
-    procedure SetAI(const Value: TAI);
     function GetHotKey(Index: Integer): TSpell;
     procedure SetHotKey(Index: Integer; const Value: TSpell);
   public
     property CurrentSpell : TSpell read GetCurrentSpell write SetCurrentSpell;
-    property AI: TAI read GetAI write SetAI;
     property HotKey[Index: Integer]: TSpell read GetHotKey write SetHotKey;
   end;
 
@@ -124,11 +121,6 @@ end;
 
 { TCharacterClassHelper }
 
-function TCharacterClassHelper.GetAI: TAI;
-begin
-  Result := TAI(FAI);
-end;
-
 function TCharacterClassHelper.GetCurrentSpell: TSpell;
 begin
   Result := TSpell(FCurrentSpell);
@@ -137,19 +129,6 @@ end;
 function TCharacterClassHelper.GetHotKey(Index: Integer): TSpell;
 begin
   Result := TSpell(FHotKey[Index]);
-end;
-
-procedure TCharacterClassHelper.SetAI(const Value: TAI);
-begin
-  if Assigned( FAI ) then
-    FAI.Free;
-  FAI := Value;
-  if Assigned( FAI ) then
-  begin
-    TAI(FAI).Character := Self;
-    if not Self.Loading then
-      TAI(FAI).Init;
-  end;
 end;
 
 procedure TCharacterClassHelper.SetCurrentSpell(Value: TSpell);
