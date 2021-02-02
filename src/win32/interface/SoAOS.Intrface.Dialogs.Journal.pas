@@ -132,10 +132,10 @@ begin
   //JournalLog.LogDirectory:=ExtractFilePath(Application.ExeName) + 'Journal\';
     INI := TIniFile.Create( SiegeINIFile );
 
-    if ( INI.readinteger( 'Settings', 'JournalFont', 0 ) = 1 ) and TDirectory.Exists( ResourcePath + 'journalalt' ) then
-      JournalLog.LogDirectory := ResourcePath + 'journalalt\'
+    if ( INI.readinteger( 'Settings', 'JournalFont', 0 ) = 1 ) and TDirectory.Exists( ResourcePath + 'journalalt\'  + Language ) then
+      JournalLog.LogDirectory := ResourcePath + 'journalalt\' + Language + '\'
     else
-      JournalLog.LogDirectory := ResourcePath + 'journal\';
+      JournalLog.LogDirectory := ResourcePath + 'journal\' + Language + '\';
 
     ini.free;
   //LogText:=JournalLog.ReadLogByName(LogFile);

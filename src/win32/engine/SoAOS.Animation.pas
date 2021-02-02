@@ -5641,7 +5641,7 @@ begin
           if (j < length(S)) and (S[j + 1] = '#') then
           begin
             if not assigned(INI) then
-              INI := TINIFile.Create(MapPath + 'symbols.ini');
+              INI := TINIFile.Create(MapPath + Language + '\symbols.ini');
             S0 := copy(S, j + 1, length(S) - j);
             S1 := Parse(S0, 1, '#');
             StrTmp := S1;

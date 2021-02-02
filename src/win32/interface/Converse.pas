@@ -195,7 +195,7 @@ begin
       Close;
       exit;
     end;
-    Filename := ResourcePath + 'conversations\' + Filename + '.cnv';
+    Filename := ResourcePath + 'conversations\' + Language + '\' + Filename + '.cnv';
     INI := TMemINIFile.Create( Filename );
 
     LoadConversation;

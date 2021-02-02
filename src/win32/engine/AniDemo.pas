@@ -108,6 +108,7 @@ var
   DlgProgress : TLoaderBox;
   InterfacePath : string;
   MapPath : AnsiString;
+  Language : string;
   MaxPartyMembers : Integer;
   bPlayClosingMovie : Boolean;
   OpeningMovie : string;
@@ -891,6 +892,8 @@ begin
 
       GetChapters( INI );
 
+      Language := INI.ReadString('Settings', 'LanguagePath', 'english');
+
       ItemDB := TPath.GetFullPath(INI.ReadString( 'Settings', 'ItemDB', ItemDB ));
       XRefDB := TPath.GetFullPath(INI.ReadString( 'Settings', 'XRefDB', XRefDB ));
       TitlesDB := TPath.GetFullPath(INI.ReadString( 'Settings', 'TitlesDB', TitlesDB ));
@@ -1075,10 +1078,10 @@ begin
       GameMap.UseAmbientOnly := ( LowerCase( INI.ReadString( 'Settings', 'AmbientOnly', '' ) ) = 'true' );
       Log.flush;
 
-      if ( INI.ReadInteger( 'Settings', 'JournalFont', 0 ) = 1 ) and TDirectory.Exists( ResourcePath + 'journalalt' ) then
-        AdventureLog1.LogDirectory := ResourcePath + 'journalalt\'
+      if ( INI.ReadInteger( 'Settings', 'JournalFont', 0 ) = 1 ) and TDirectory.Exists( ResourcePath + 'journalalt\'  + Language ) then
+        AdventureLog1.LogDirectory := ResourcePath + 'journalalt\' + Language + '\'
       else
-        AdventureLog1.LogDirectory := ResourcePath + 'journal\';
+        AdventureLog1.LogDirectory := ResourcePath + 'journal\' + Language + '\';
 
       //cue intro music
       Log.Log( 'Start event timer' );
@@ -6866,10 +6869,10 @@ var
 begin
   INI := TIniFile.Create( SiegeINIFile );
 
-  if ( INI.ReadInteger( 'Settings', 'JournalFont', 0 ) = 1 ) and TDirectory.Exists( ResourcePath + 'journalalt' ) then
-    HistoryLog.LogDirectory := ResourcePath + 'journalalt\'
+  if ( INI.ReadInteger( 'Settings', 'JournalFont', 0 ) = 1 ) and TDirectory.Exists( ResourcePath + 'journalalt\' + Language) then
+    HistoryLog.LogDirectory := ResourcePath + 'journalalt\' + Language + '\'
   else
-    HistoryLog.LogDirectory := ResourcePath + 'journal\';
+    HistoryLog.LogDirectory := ResourcePath + 'journal\' + Language + '\';
 
   try
     S := INI.ReadString( 'Settings', 'History', '' );

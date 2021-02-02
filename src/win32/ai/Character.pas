@@ -903,7 +903,7 @@ var
   INI: TINIFile;
   StrTmp: string;
 begin
-  INI := TINIFile.Create(MapPath + 'symbols.ini');
+  INI := TINIFile.Create(MapPath + Language + '\symbols.ini');
   try
     StrTmp := '#' + Value;
     result := INI.ReadString(Parse(Value, 0, '.'),
