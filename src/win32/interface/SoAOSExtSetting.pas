@@ -190,7 +190,7 @@ begin
   FLanguages := TStringList.Create(dupIgnore, True, False);
   if LoadResourceFontByID(1, RT_FONT) then
     Self.Font.Name := 'BlackChancery';
-  SendMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0) ;
+  SendMessageTimeout(HWND_BROADCAST, WM_FONTCHANGE, 0, 0, SMTO_NORMAL, 100, 0);
   Application.ProcessMessages;
   INI := TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini'));
   try
