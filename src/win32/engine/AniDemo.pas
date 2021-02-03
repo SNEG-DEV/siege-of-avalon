@@ -3047,26 +3047,16 @@ begin
       Log.Log( 'Loading console...' );
       SpellGlyphs := SoAOS_DX_LoadBMP( InterfacePath + 'SpellGlyphs.bmp', cBlackBackground );
       imgCombat.LoadFromFile( InterfacePath + 'combat.bmp' );
-
-      if FileExists(InterfacePath + ScreenMetrics.bottombarFile + '.bmp') then
-        imgBottomBar.LoadFromFile( InterfacePath + ScreenMetrics.bottombarFile + '.bmp' )
-      else
-        imgBottomBar.LoadFromResourceName( HInstance, ScreenMetrics.bottombarFile );
+      imgBottomBar.LoadFromFile( InterfacePath + ScreenMetrics.bottombarFile + '.bmp' );
       OverlayB := SoAOS_DX_SurfaceFromBMP( imgBottomBar, cTransparent );
 
-      if FileExists(InterfacePath + ScreenMetrics.sidebarFile + '.bmp') then
-        imgSidebar.LoadFromFile( InterfacePath + ScreenMetrics.sidebarFile + '.bmp' )
-      else
-        imgSidebar.LoadFromResourceName( HInstance, ScreenMetrics.sidebarFile );
+      imgSidebar.LoadFromFile( InterfacePath + ScreenMetrics.sidebarFile + '.bmp' );
       OverlayR := SoAOS_DX_SurfaceFromBMP( imgSidebar, cTransparent );
 
       ManaEmpty := SoAOS_DX_LoadBMP( InterfacePath + 'mana.bmp', cBlackBackground );
       LifeEmpty := SoAOS_DX_LoadBMP( InterfacePath + 'health.bmp', cBlackBackground );
 
-      if FileExists(InterfacePath + ScreenMetrics.spellbarFile + '.bmp') then
-        imgSpellBar.LoadFromFile( InterfacePath + ScreenMetrics.spellbarFile + '.bmp' )
-      else
-        imgSpellBar.LoadFromResourceName( HInstance, ScreenMetrics.spellbarFile );
+      imgSpellBar.LoadFromFile( InterfacePath + ScreenMetrics.spellbarFile + '.bmp' );
       SpellBar := SoAOS_DX_SurfaceFromBMP( imgSpellBar, cTransparent );
 
       ShadowImage := SoAOS_DX_LoadBMPResource( 'shadow', cBlackBackground );
