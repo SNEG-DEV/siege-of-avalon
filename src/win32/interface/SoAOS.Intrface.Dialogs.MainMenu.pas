@@ -100,9 +100,8 @@ uses
 
 const
   XFrame = 106;
-  YFrame = 41;
 
-procedure MakeRect( var Caption : TIntroRect; X, Y : integer; BM : TBitmap );
+procedure MakeRect( var Caption : TIntroRect; X, Y, YOffset : integer; BM : TBitmap );
 const
   FailName : string = 'Intro.MakeRect';
   W = 582;
@@ -116,7 +115,7 @@ begin
     Caption.Image := DDGetSurface( lpDD, W, H, BM.Canvas.Pixels[1,1], true ); // The asset released has a "color" issue - this hack solves it
     Caption.Image.GetDC( DC );
     try
-      BitBlt( DC, 0, 0, W, H, BM.canvas.handle, 0, Y - YFrame, SRCCOPY );
+      BitBlt( DC, 0, 0, W, H, BM.canvas.handle, 0, Y - YOffset, SRCCOPY );
     finally
       Caption.Image.ReleaseDC( DC );
     end;
@@ -193,7 +192,7 @@ procedure TIntro.Init;
 var
   BM : TBitmap;
   DC : HDC;
-  Y1 : integer;
+  Y1, YWidth, YOffset : integer;
   pr : TRect;
 const
   FailName : string = 'TIntro.Init';
@@ -212,6 +211,7 @@ begin
     AreYouSureBoxVisible := false;
     pText.LoadFontGraphic( 'createchar' );
 
+    { TODO -cUI : Currently old, new multilanguage, and russian menu implementations - pick one }
     BM := TBitmap.Create;
     try
       if FileExists( InterfacePath + 'gMainMenuBlank.bmp' ) then   // multi language setup
@@ -220,7 +220,10 @@ begin
         BM.LoadFromFile( InterfacePath + 'gMainMenuText.bmp' );
         DXBack.GetDC( DC );
         try
-          BitBlt( DC, 106, 41, 582, 416, BM.canvas.handle, 0, 0, SRCCOPY );
+          if Language = 'russian' then
+            BitBlt( DC, 106, 31, 582, 440, BM.canvas.handle, 0, 0, SRCCOPY )
+          else
+            BitBlt( DC, 106, 41, 582, 416, BM.canvas.handle, 0, 0, SRCCOPY );
         finally
           DXBack.ReleaseDC( DC );
         end;
@@ -236,22 +239,32 @@ begin
       if FileExists( InterfacePath + 'gMainMenuTextBttns.bmp' ) then
       begin
         BM.LoadFromFile( InterfacePath + 'gMainMenuTextBttns.bmp' );
-        Y1 := YFrame;
-        MakeRect( Captions[ 1 ], XFrame, Y1, BM );  // New game
-        inc( Y1, 52 );
-        MakeRect( Captions[ 2 ], XFrame, Y1, BM );  // Load
-        inc( Y1, 52 );
-        MakeRect( Captions[ 3 ], XFrame, Y1, BM );  // Save
-        inc( Y1, 52 );
-        MakeRect( Captions[ 4 ], XFrame, Y1, BM );  // Options
-        inc( Y1, 52 );
-        MakeRect( Captions[ 5 ], XFrame, Y1, BM );  // History
-        inc( Y1, 52 );
-        MakeRect( Captions[ 6 ], XFrame, Y1, BM );  // Credits
-        inc( Y1, 52 );
-        MakeRect( Captions[ 7 ], XFrame, Y1, BM );  // Exit
-        inc( Y1, 52 );
-        MakeRect( Captions[ 8 ], XFrame, Y1, BM );  // Resume
+        if Language = 'russian' then
+        begin
+          YWidth := 55;
+          YOffset := 30;
+        end
+        else
+        begin
+          YWidth := 52;
+          YOffset := 41;
+        end;
+        Y1 := YOffset;
+        MakeRect( Captions[ 1 ], XFrame, Y1, YOffset, BM );  // New game
+        inc( Y1, YWidth );
+        MakeRect( Captions[ 2 ], XFrame, Y1, YOffset, BM );  // Load
+        inc( Y1, YWidth );
+        MakeRect( Captions[ 3 ], XFrame, Y1, YOffset, BM );  // Save
+        inc( Y1, YWidth );
+        MakeRect( Captions[ 4 ], XFrame, Y1, YOffset, BM );  // Options
+        inc( Y1, YWidth );
+        MakeRect( Captions[ 5 ], XFrame, Y1, YOffset, BM );  // History
+        inc( Y1, YWidth );
+        MakeRect( Captions[ 6 ], XFrame, Y1, YOffset, BM );  // Credits
+        inc( Y1, YWidth );
+        MakeRect( Captions[ 7 ], XFrame, Y1, YOffset, BM );  // Exit
+        inc( Y1, YWidth );
+        MakeRect( Captions[ 8 ], XFrame, Y1, YOffset, BM );  // Resume
       end
       else
       begin
