@@ -75,7 +75,7 @@ constructor TPopup.Create;
 begin
   inherited;
   Messages := TStringList.Create;
-  ExText.Open( 'Popup' );
+  ExText.OpenEncoded( 'Popup' );
   ExText.GetSection( Messages );
   ExText.Close;
   Count := 0;
@@ -92,7 +92,7 @@ procedure TPopup.Draw;
 var
   DC : HDC;
   MsgID : Integer;
-  Msg : string;
+  Msg : String;
   BM : TBitmap;
 const
   Height = 20;

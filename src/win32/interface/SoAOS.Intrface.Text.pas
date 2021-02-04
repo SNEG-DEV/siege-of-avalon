@@ -32,6 +32,8 @@ unit SoAOS.Intrface.Text;
 
   TODO: Should not use initialize and finalize - should just be read into memory at startup - less I/O
 
+  Dual usage - The GameText uses the bitmap fonts which are ANSI mapped - and the TTF popups needs the encoded text.
+
   Requires: Delphi 10.3.3 or later
 
   Revision History:
@@ -50,13 +52,15 @@ uses
 type
   TExternalizer = class( TObject )
   private
-    INI : TINIFile;
+    INI : TMemINIFile;
     FSection : string;
+    Encoded : boolean;
   public
     destructor Destroy; override;
     procedure Open( const Section : string );
+    procedure OpenEncoded( const Section : string );
     procedure Close;
-    function GetText( const ID : string ) : string;
+    function GetText( const ID : string ) : String;
     procedure GetSection( Strings : TStrings );
   end;
 
@@ -87,7 +91,7 @@ begin
   INI.ReadSectionValues( FSection, Strings );
 end;
 
-function TExternalizer.GetText(const ID: string): string;
+function TExternalizer.GetText(const ID: string): String;
 begin
   if Assigned( INI ) then
     Result := INI.ReadString( FSection, ID, '' )
@@ -98,8 +102,25 @@ end;
 procedure TExternalizer.Open(const Section: string);
 begin
   FSection := Section;
+  if Assigned( INI) and Encoded then
+    FreeAndNil(INI);
   if not Assigned( INI ) then
-    INI := TIniFile.Create( InterfacePath + 'text.ini' );
+  begin
+    INI := TMemIniFile.Create( InterfacePath + 'text.ini' );
+    Encoded := False;
+  end;
+end;
+
+procedure TExternalizer.OpenEncoded(const Section: string);
+begin
+  FSection := Section;
+  if Assigned( INI) and (not Encoded) then
+    FreeAndNil(INI);
+  if not Assigned( INI ) then
+  begin
+    INI := TMemIniFile.Create( InterfacePath + 'text.ini', TEncoding.GetEncoding(INICodepage) );
+    Encoded := True;
+  end;
 end;
 
 initialization

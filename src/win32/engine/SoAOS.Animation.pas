@@ -5621,7 +5621,7 @@ var
   S, S0, S1: string;
   StrTmp: string;
   i, j, L: Integer;
-  INI: TINIFile;
+  INI: TMemINIFile;
 const
   FailName: string = 'TGameObject.LoadProperties';
 begin
@@ -5641,7 +5641,8 @@ begin
           if (j < length(S)) and (S[j + 1] = '#') then
           begin
             if not assigned(INI) then
-              INI := TINIFile.Create(MapPath + Language + '\symbols.ini');
+              INI := TMemINIFile.Create( MapPath + Language + '\symbols.ini', TEncoding.GetEncoding(INICodepage) );
+
             S0 := copy(S, j + 1, length(S) - j);
             S1 := Parse(S0, 1, '#');
             StrTmp := S1;

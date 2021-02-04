@@ -334,7 +334,7 @@ function SymbolReplacement( const Script : string ) : string;
 var
   S, S0, S1, S2 : string;
   i, j : integer;
-  INI : TINIFile;
+  INI : TMemINIFile;
 begin
   INI := nil;
   result := Script;
@@ -344,7 +344,7 @@ begin
     S := Parse( result, 1, '#' );
     j := Length( S );
     if not assigned( INI ) then
-      INI := TINIFile.create( MapPath + Language + '\symbols.ini' );
+      INI := TMemINIFile.create( MapPath + Language + '\symbols.ini', TEncoding.GetEncoding(INICodePage) );
     S1 := Parse( S, 0, '.' );
     S2 := Parse( S, 1, '.' );
     S0 := INI.ReadString( S1, S2, '' );

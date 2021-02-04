@@ -900,10 +900,11 @@ uses
 
 function FixCharacterName(const Value: string): string;
 var
-  INI: TINIFile;
+  INI: TMemINIFile;
   StrTmp: string;
 begin
-  INI := TINIFile.Create(MapPath + Language + '\symbols.ini');
+  INI := TMemINIFile.Create( MapPath + Language + '\symbols.ini', TEncoding.GetEncoding(INICodepage) );
+
   try
     StrTmp := '#' + Value;
     result := INI.ReadString(Parse(Value, 0, '.'),

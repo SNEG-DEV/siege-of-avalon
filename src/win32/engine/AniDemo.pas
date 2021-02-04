@@ -109,6 +109,7 @@ var
   InterfacePath : string;
   MapPath : AnsiString;
   Language : string;
+  INICodepage : Integer;
   MaxPartyMembers : Integer;
   bPlayClosingMovie : Boolean;
   OpeningMovie : string;
@@ -893,6 +894,14 @@ begin
       GetChapters( INI );
 
       Language := INI.ReadString('Settings', 'LanguagePath', 'english');
+
+      // Quick PL and RU Symbol.ini hacks - until better way found
+      if Language = 'russian' then
+        INICodePage := 1251
+      else if Language = 'polish' then
+        INICodePage := 1250
+      else
+        INICodePage := 1252;
 
       ItemDB := TPath.GetFullPath(INI.ReadString( 'Settings', 'ItemDB', ItemDB ));
       XRefDB := TPath.GetFullPath(INI.ReadString( 'Settings', 'XRefDB', XRefDB ));
