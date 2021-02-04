@@ -215,6 +215,7 @@ begin
   TfrmLaunchSetting.Execute;
 
   Application.Initialize;
+  Application.MainFormOnTaskbar := True;
   Application.HelpFile := 'help.htm';
   Application.Title := 'Siege of Avalon';
 
