@@ -516,6 +516,7 @@ uses
   System.SysUtils,
   System.IniFiles,
   Vcl.Forms,
+  Vcl.Dialogs,
   DXUtil,
   DXEffects,
   SoAOS.Graphics.Draw,
@@ -524,6 +525,12 @@ uses
   Resource,
   Character,
   LogFile;
+
+function EnumDevices(lpGUID: PGUID; lpDriverDescription: PAnsiChar; lpDriverName: PAnsiChar; lpContext: Pointer; Monitor: HMonitor): BOOL; stdcall;
+begin
+  TStringList(lpContext).AddObject(lpDriverName+' - '+lpDriverDescription, TObject(lpGUID));
+  Result := True;
+end;
 
 procedure Clip(ClipX1, ClipX2: Integer; var DestX1, DestX2, SrcX1,
   SrcX2: Integer);
@@ -625,20 +632,51 @@ var
   C: Longint;
   pr: TRect;
   tmpDD: IDirectDraw;
+  devices: TStringList;
+  deviceGUID: PGUID;
+  res: HRESULT;
 begin
   // Log.Log('InitDX');
   if DXMode then
     Exit;
   ResWidth := ResW;
   ResHeight := ResH;
-  DirectDrawCreate(nil, tmpDD, nil); // Prepare for DirectX 7 or newer
+// Enumerate devices - should make some proper checking and actually run on the HW that works?
+  devices := TStringList.Create;
+  try
+    res := DirectDrawEnumerateExA(EnumDevices, devices, 0);
+    if res<>DD_OK then
+      Log.Log( 'DX: Failed to enumerate drivers.' );
+
+    if devices.Count<DeviceDriverIndex+1 then
+    begin
+      DeviceDriverIndex := devices.Count-1;
+      Log.Log( 'DX: INI DeviceDriverIndex exceeds number of drivers - using highest: '+DeviceDriverIndex.ToString );
+    end;
+
+    deviceGUID := PGUID(devices.Objects[DeviceDriverIndex]);
+    Log.Log( 'DX: Using Device driver: '+devices[DeviceDriverIndex] );
+
+    res := DirectDrawCreate(deviceGUID, tmpDD, nil); // Prepare for DirectX 7 or newer
+    if res<>DD_OK then
+      Log.Log( 'DX: Failed to create directdraw.' );
+  finally
+    devices.Free;
+  end;
+
   try
     tmpDD.QueryInterface(IID_IDirectDraw, lpDD);
   finally
     tmpDD := nil;
   end;
-  lpDD.SetCooperativeLevel(Handle, DDSCL_EXCLUSIVE or DDSCL_FULLSCREEN);
-  lpDD.SetDisplayMode(ResW, ResH, BPP);
+
+  res := lpDD.SetCooperativeLevel(Handle, DDSCL_EXCLUSIVE or DDSCL_FULLSCREEN);
+  if res<>DD_OK then
+    Log.Log( 'DX: Failed to set cooperative level.' );
+
+  res := lpDD.SetDisplayMode(ResW, ResH, BPP);
+  if res<>DD_OK then
+    Log.Log( 'DX: Failed to set display mode.' );
 
   ddsd.dwSize := SizeOf(ddsd);
   ddsd.dwFlags := DDSD_CAPS or DDSD_BACKBUFFERCOUNT;
@@ -5641,7 +5679,7 @@ begin
           if (j < length(S)) and (S[j + 1] = '#') then
           begin
             if not assigned(INI) then
-              INI := TMemINIFile.Create( MapPath + Language + '\symbols.ini', TEncoding.GetEncoding(INICodepage) );
+              INI := TMemINIFile.Create( MapPath + 'symbols.'+ Language +'.ini', TEncoding.GetEncoding(INICodepage) );
 
             S0 := copy(S, j + 1, length(S) - j);
             S1 := Parse(S0, 1, '#');

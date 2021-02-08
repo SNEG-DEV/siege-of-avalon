@@ -109,6 +109,7 @@ var
   InterfacePath : string;
   MapPath : AnsiString;
   Language : string;
+  DeviceDriverIndex : Integer;
   INICodepage : Integer;
   MaxPartyMembers : Integer;
   bPlayClosingMovie : Boolean;
@@ -809,6 +810,7 @@ end;
 procedure TfrmMain.FormShow( Sender : TObject );
 var
   INI : TIniFile;
+  INILanguage : TIniFile;
   ShowIntro : Boolean;
   rtString : string;
   PopupEnabled : Boolean;
@@ -893,6 +895,8 @@ begin
 
       GetChapters( INI );
 
+      DeviceDriverIndex := INI.ReadInteger('Settings', 'DeviceDriverIndex', 0);
+
       Language := INI.ReadString('Settings', 'LanguagePath', 'english');
 
       // Quick PL and RU Symbol.ini hacks - until better way found
@@ -903,9 +907,19 @@ begin
       else
         INICodePage := 1252;
 
-      ItemDB := TPath.GetFullPath(INI.ReadString( 'Settings', 'ItemDB', ItemDB ));
+      SiegeINILanguageFile :=  AppPath + 'siege.'+Language+'.ini';
+
+      INILanguage := TIniFile.Create(SiegeINILanguageFile);
+      try
+        ItemDB := TPath.GetFullPath(INILanguage.ReadString( 'Settings', 'ItemDB', ItemDB ));
+        TitlesDB := TPath.GetFullPath(INILanguage.ReadString( 'Settings', 'TitlesDB', TitlesDB ));
+
+      finally
+        INILanguage.Free;
+      end;
+
       XRefDB := TPath.GetFullPath(INI.ReadString( 'Settings', 'XRefDB', XRefDB ));
-      TitlesDB := TPath.GetFullPath(INI.ReadString( 'Settings', 'TitlesDB', TitlesDB ));
+
       Log.Log( 'Item DB=' + ItemDB );
       Log.Log( 'XRef DB=' + XRefDB );
       Log.Log( 'Titles DB=' + TitlesDB );
@@ -3213,7 +3227,7 @@ var
   Brightness : Longint;
   SceneName : string;
   TimeStamp : TDateTime;
-  INI : TIniFile;
+  INILanguage : TIniFile;
 const
   FailName : string = 'Main.LoadMapFile';
 begin
@@ -3353,11 +3367,11 @@ begin
         end;
       end;
 
-      INI := TIniFile.Create( SiegeINIFile );
+      INILanguage := TIniFile.Create( SiegeINILanguageFile );
       try
-        MapName := INI.ReadString( 'MapNames', Level, Level );
+        MapName := INILanguage.ReadString( 'MapNames', Level, Level );
       finally
-        INI.Free;
+        INILanguage.Free;
       end;
       DlgProgress.SetBar( Round( DlgProgress.MaxValue * 0.81 ) );
       { INI := TIniFile.Create(DefaultPath + 'siege.ini');
@@ -4878,6 +4892,7 @@ var
   S : string;
   i : Integer;
   INI : TIniFile;
+  INILanguage : TIniFile;
   List : TArray<string>; //TStringList;
   PlayerResource : string;
 const
@@ -4959,7 +4974,13 @@ begin
 
       CurrentScene := '';
       //Add first log entry
-      S := INI.ReadString( 'Settings', 'JournalIntro', '' );
+    finally
+      INI.Free;
+    end;
+
+    INILanguage := TIniFile.Create(SiegeINILanguageFile);
+    try
+      S := INILanguage.ReadString( 'Settings', 'JournalIntro', '' );
       if S <> '' then
       begin
         List := S.Split([',']);
@@ -4967,7 +4988,7 @@ begin
           AdventureLog1.AddLogEntry( List[ i ] + '.jrn' );
       end;
     finally
-      INI.Free;
+      INILanguage.Free;
     end;
 
     DlgCreation.Character := Player;
@@ -5239,6 +5260,7 @@ procedure TfrmMain.WMStartIntro( var Message : TWMNoParams );
 var
   DlgOpenAnim : TOpenAnim;
   INI : TIniFile;
+  INILanguage : TIniFile;
   S : string;
   List : TArray<string>;
   i : Integer;
@@ -5269,7 +5291,12 @@ begin
     begin
       INI := TIniFile.Create( SiegeINIFile );
       try
-        S := INI.ReadString( 'Settings', 'History', '' );
+        INILanguage := TIniFile.Create( SiegeINILanguageFile );
+        try
+          S := INI.ReadString( 'Settings', 'History', '' );
+        finally
+          INILanguage.Free;
+        end;
         if LowerCase( Ini.ReadString( 'Settings', 'ShowHistory', 'false' ) ) = 'false' then
         begin
           PostMessage( Handle, WM_StartMainMenu, 0, 0 );
@@ -6296,7 +6323,7 @@ var
   PathCornerList : TStringList;
   p1 : ^Byte;
   Offset, Bit : Longint;
-  INI : TIniFile;
+  INILanguage : TIniFile;
 begin
   Log.Log( 'Transit' );
   Log.Log( '  From: ' + LVLFile );
@@ -6363,11 +6390,11 @@ begin
     begin
       //Show transit screen
       Log.Log( '  Show transit' );
-      INI := TIniFile.Create( SiegeINIFile );
+      INILanguage := TIniFile.Create( SiegeINILanguageFile );
       try
-        DlgTransit.DefaultName := INI.ReadString( 'MapNames', trNewFile, trNewFile );
+        DlgTransit.DefaultName := INILanguage.ReadString( 'MapNames', trNewFile, trNewFile );
       finally
-        INI.Free;
+        INILanguage.Free;
       end;
       PathCornerList.Add( trNewFile + '|' + trStartingPoint );
       DlgTransit.DefaultMap := trNewFile;
@@ -6415,7 +6442,7 @@ var
   BlockFound: boolean;
   GridSize,MemSize: longint;
   MapKnown,p1: ^byte;
-  INI: TINIFile;
+  INILanguage: TINIFile;
 begin
 Log.Log('Transit');
 Log.Log('  From: '+LVLFile);
@@ -6609,11 +6636,11 @@ Log.Log('  Starting Point: '+trStartingPoint);
     if PathCornerList.count>0 then begin
       //Show transit screen
 Log.Log('  Show transit');
-      INI := TIniFile.Create(DefaultPath + 'siege.ini');
+      INILanguage := TIniFile.Create(SiegeLanaguageINIflie);
       try
-        DlgTransit.DefaultName:=INI.ReadString('MapNames',trNewFile,trNewFile);
+        DlgTransit.DefaultName:=INILanguage.ReadString('MapNames',trNewFile,trNewFile);
       finally
-        INI.free;
+        INILanguage.free;
       end;
       PathCornerList.add(trNewFile+'|'+trStartingPoint);
       DlgTransit.DefaultMap:=trNewFile;
@@ -6771,15 +6798,15 @@ end;
 
 procedure TfrmMain.ShowEnding;
 var
-  INI : TIniFile;
+  INILanguage : TIniFile;
   S : string;
   List : TArray<string>;
   i : Integer;
 begin
   AdventureLog1.Clear;
-  INI := TIniFile.Create( SiegeINIFile );
+  INILanguage := TIniFile.Create( SiegeINILanguageFile );
   try
-    S := INI.ReadString( 'Settings', 'Ending', '' );
+    S := INILanguage.ReadString( 'Settings', 'Ending', '' );
     if S = '' then
     begin
       PostMessage( Handle, WM_StartMainMenu, 0, 0 );
@@ -6806,7 +6833,7 @@ begin
       OpenDialog( DlgJournal, CloseEnding );
     end;
   finally
-    INI.Free;
+    INILanguage.Free;
   end;
 
 end;
@@ -6862,6 +6889,7 @@ procedure TfrmMain.ShowHistroy;
 var
   //HistoryLog: TAdventureLog;
   Ini : TIniFile;
+  IniLanguage : TIniFile;
   s : string;
   i : Integer;
   List : TArray<string>;
@@ -6874,7 +6902,12 @@ begin
     HistoryLog.LogDirectory := ResourcePath + 'journal\' + Language + '\';
 
   try
-    S := INI.ReadString( 'Settings', 'History', '' );
+    IniLanguage := TIniFile.Create( SiegeINILanguageFile );
+    try
+      S := INILanguage.ReadString( 'Settings', 'History', '' );
+    finally
+      IniLanguage.Free;
+    end;
     if S = '' then
     begin
       PostMessage( Handle, WM_StartMainMenu, 0, 0 );

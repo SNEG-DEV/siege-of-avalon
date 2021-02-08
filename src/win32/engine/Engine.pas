@@ -81,6 +81,7 @@ var
   BaseLightType : longint;
   AppPath: string;
   SiegeINIFile: string;
+  SiegeINILanguageFile: string;
   GamesPath: string;
 //  MapsPath: string;
   CachePath : string;
@@ -344,7 +345,7 @@ begin
     S := Parse( result, 1, '#' );
     j := Length( S );
     if not assigned( INI ) then
-      INI := TMemINIFile.create( MapPath + Language + '\symbols.ini', TEncoding.GetEncoding(INICodePage) );
+      INI := TMemINIFile.create( MapPath + 'symbols.'+Language+'.ini', TEncoding.GetEncoding(INICodePage) );
     S1 := Parse( S, 0, '.' );
     S2 := Parse( S, 1, '.' );
     S0 := INI.ReadString( S1, S2, '' );

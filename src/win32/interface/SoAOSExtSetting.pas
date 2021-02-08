@@ -158,9 +158,6 @@ begin
         fdest := TPath.Combine( FInterfacePath, TPath.GetFileName( fsrc ) );
         TFile.Copy( fsrc, fdest, True);
       end;
-      INI.WriteString( 'Settings', 'ItemDB', 'ArtLib/Resources/Database/'+FCurrentLanguage+'/Items.DB' );
-//      INI.WriteString( 'Settings', 'XRefDB', 'ArtLib/Resources/Database/'+FCurrentLanguage+'/xref.db' );
-      INI.WriteString( 'Settings', 'TitlesDB', 'ArtLib/Resources/Database/'+FCurrentLanguage+'/Title.db' );
     end;
 
   finally

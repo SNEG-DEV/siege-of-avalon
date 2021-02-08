@@ -94,7 +94,7 @@ end;
 function TExternalizer.GetText(const ID: string): String;
 begin
   if Assigned( INI ) then
-    Result := INI.ReadString( FSection, ID, '' )
+    Result := AnsiDequotedStr(INI.ReadString( FSection, ID, '' ), '"')
   else
     Result := '';
 end;
