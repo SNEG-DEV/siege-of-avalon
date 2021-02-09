@@ -528,7 +528,10 @@ uses
 
 function EnumDevices(lpGUID: PGUID; lpDriverDescription: PAnsiChar; lpDriverName: PAnsiChar; lpContext: Pointer; Monitor: HMonitor): BOOL; stdcall;
 begin
-  TStringList(lpContext).AddObject(lpDriverName+' - '+lpDriverDescription, TObject(lpGUID));
+   if lpGUID <> nil then
+    TStringList(lpContext).Add(lpDriverName+' - '+lpDriverDescription + '=' + GUIDtoString(lpGUID^))
+   else
+     TStringList(lpContext).Add(lpDriverName+' - '+lpDriverDescription + '=' + 'nil')  ;
   Result := True;
 end;
 
@@ -633,8 +636,10 @@ var
   pr: TRect;
   tmpDD: IDirectDraw;
   devices: TStringList;
-  deviceGUID: PGUID;
+  pdeviceGUID: PGUID;
+  deviceGUID: TGUID;
   res: HRESULT;
+  guidStr : String;
 begin
   // Log.Log('InitDX');
   if DXMode then
@@ -643,8 +648,9 @@ begin
   ResHeight := ResH;
 // Enumerate devices - should make some proper checking and actually run on the HW that works?
   devices := TStringList.Create;
+  devices.NameValueSeparator := '=';
   try
-    res := DirectDrawEnumerateExA(EnumDevices, devices, 0);
+    res := DirectDrawEnumerateExA(EnumDevices, devices, DDENUM_ATTACHEDSECONDARYDEVICES);
     if res<>DD_OK then
       Log.Log( 'DX: Failed to enumerate drivers.' );
 
@@ -654,10 +660,19 @@ begin
       Log.Log( 'DX: INI DeviceDriverIndex exceeds number of drivers - using highest: '+DeviceDriverIndex.ToString );
     end;
 
-    deviceGUID := PGUID(devices.Objects[DeviceDriverIndex]);
+    guidStr := devices.ValueFromIndex[DeviceDriverIndex];
+
+    if guidStr = 'nil' then
+      pdeviceGUID := nil
+    else
+    begin
+      deviceGUID := StringToGUID(guidStr);
+      pdeviceGUID := @deviceGUID;
+    end;
+
     Log.Log( 'DX: Using Device driver: '+devices[DeviceDriverIndex] );
 
-    res := DirectDrawCreate(deviceGUID, tmpDD, nil); // Prepare for DirectX 7 or newer
+    res := DirectDrawCreate(pdeviceGUID, tmpDD, nil); // Prepare for DirectX 7 or newer
     if res<>DD_OK then
       Log.Log( 'DX: Failed to create directdraw.' );
   finally
