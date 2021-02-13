@@ -913,7 +913,7 @@ begin
       try
         ItemDB := TPath.GetFullPath(INILanguage.ReadString( 'Settings', 'ItemDB', ItemDB ));
         TitlesDB := TPath.GetFullPath(INILanguage.ReadString( 'Settings', 'TitlesDB', TitlesDB ));
-
+        UseSmallFont := ( LowerCase( INI.ReadString( 'Settings', 'UseSmallFont', '' ) ) = 'true' );
       finally
         INILanguage.Free;
       end;
@@ -1058,9 +1058,6 @@ begin
       begin
         INI.WriteString( 'Settings', 'UseVideo', 'false' )
       end;
-      GIFToPOX := ( LowerCase( INI.ReadString( 'Settings', 'GIFToPOX', '' ) ) = 'true' );
-      if GIFToPOX then
-        Log.Log( 'GIFToPOX enabled' );
       AllSpells := ( LowerCase( INI.ReadString( 'Settings', 'AllSpells', '' ) ) = 'true' );
       if AllSpells then
         Log.Log( 'AllSpells enabled' );
@@ -1086,7 +1083,6 @@ begin
       end;
       Bikini := ( lowercase( INI.ReadString( 'Settings', 'Bikini', '' ) ) = 'true' );
       NoPageNumbers := ( LowerCase( INI.ReadString( 'Settings', 'NoPageNumbers', '' ) ) = 'true' );
-      UseSmallFont := ( LowerCase( INI.ReadString( 'Settings', 'UseSmallFont', '' ) ) = 'true' );
       NoTransit := ( LowerCase( INI.ReadString( 'Settings', 'NoTransit', '' ) ) = 'true' );
       GameMap.UseLighting := ( LowerCase( INI.ReadString( 'Settings', 'Lighting', '' ) ) <> 'false' );
       if GameMap.UseLighting then

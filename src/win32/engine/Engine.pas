@@ -101,7 +101,6 @@ var
   WolfResource : TCharacterResource;
   GolemResource : TCharacterResource;
   SkeletonResource : TCharacterResource;
-  GIFToPOX : boolean;
   AllSpells : boolean;
   Bikini : boolean;
   Quests : TStringList;
@@ -1170,7 +1169,7 @@ begin
         else if Token = 'setmaxparty' then
         begin
           try
-            MaxPartyMembers := strtoint( Parms );
+            MaxPartyMembers := strtoint( Parms ); { TODO -oSN -cLogic : Check on Params vs. Max slots }
           except
           end;
         end

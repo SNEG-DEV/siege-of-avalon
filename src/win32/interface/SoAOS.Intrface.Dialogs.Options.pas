@@ -455,7 +455,7 @@ begin
   try
 
   //Clear rollover text area
-    pr := Rect( 351, 113, 684, 206 );
+    pr := Rect( 345, 110, 690, 240 );
     lpDDSBack.BltFast( pr.Left + Offset.X, pr.Top + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
   //clear Volume bars
     pr := Rect( 100, 92, 336, 155 );
@@ -568,16 +568,16 @@ begin
       SpllRect := ApplyOffset( Rect( 101, 229, 694, 448 ) );
 
       if FXRect.Contains( Point( X, Y ) ) then //over SoundFX
-        PlotTextBlock( txtMessage[ 0 ], 359, 670, 121, 240 )
+        PlotTextBlock( txtMessage[ 0 ], 359, 670, 121, 240, UseSmallFont )
       else if MusRect.Contains( Point( X, Y ) ) then //over music
-        PlotTextBlock( txtMessage[ 1 ], 359, 670, 121, 240 )
+        PlotTextBlock( txtMessage[ 1 ], 359, 670, 121, 240, UseSmallFont )
       else if ShdwRect.Contains( Point( X, Y ) ) then //over Shadows
-        PlotTextBlock( txtMessage[ 2 ], 359, 670, 121, 240 )
+        PlotTextBlock( txtMessage[ 2 ], 359, 670, 121, 240, UseSmallFont )
       else if SpllRect.Contains( Point( X, Y ) ) then //over Spells list
         if Character = nil then
-          PlotTextBlock( txtMessage[ 3 ], 359, 670, 121, 240 )
+          PlotTextBlock( txtMessage[ 3 ], 359, 670, 121, 240, UseSmallFont )
         else
-          PlotTextBlock( txtMessage[ 4 ], 359, 670, 121, 240 );
+          PlotTextBlock( txtMessage[ 4 ], 359, 670, 121, 240, UseSmallFont );
     end;
 
     SoAOS_DX_BltFront;
