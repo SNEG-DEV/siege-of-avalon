@@ -48,6 +48,7 @@ type
     StaticText1: TStaticText;
     StaticText2: TStaticText;
     lblLanguage: TStaticText;
+    StaticText3: TStaticText;
     procedure FormCreate(Sender: TObject);
     procedure tmrScrollTimer(Sender: TObject);
     procedure TxtScrollLeft;
@@ -58,6 +59,7 @@ type
     procedure LinkLabelLinkClick(Sender: TObject; const Link: string;
       LinkType: TSysLinkType);
     procedure FormShow(Sender: TObject);
+    procedure StaticText3Click(Sender: TObject);
   private
     { Private declarations }
     FLanguages: TStringList;
@@ -254,6 +256,11 @@ procedure TfrmLaunchSetting.LinkLabelLinkClick(Sender: TObject;
   const Link: string; LinkType: TSysLinkType);
 begin
   ShellExecute(0, nil, PChar(Link), nil, nil, 1);
+end;
+
+procedure TfrmLaunchSetting.StaticText3Click(Sender: TObject);
+begin
+  ModalResult := mrCancel;
 end;
 
 procedure TfrmLaunchSetting.tmrScrollTimer(Sender: TObject);

@@ -212,20 +212,20 @@ begin
 //  bPlayClosingMovie := False; // Game must force to true to show closing movie
 
   // Launch dialog until game UI is redone - SDL2 - ran out of room on the ingame graphic.
-  TfrmLaunchSetting.Execute;
+  if (TfrmLaunchSetting.Execute = mrOK) then
+  begin
+    Application.Initialize;
+    Application.MainFormOnTaskbar := True;
+//    Application.HelpFile := 'help.htm';
+    Application.Title := 'Siege of Avalon';
 
-  Application.Initialize;
-  Application.MainFormOnTaskbar := True;
-  Application.HelpFile := 'help.htm';
-  Application.Title := 'Siege of Avalon';
-
-  Application.ProcessMessages;
-  Application.CreateForm(TfrmMain, frmMain);
-  Application.Run;
+    Application.ProcessMessages;
+    Application.CreateForm(TfrmMain, frmMain);
+    Application.Run;
+  end;
 
   ReleaseMutex( hMutex );
   CloseHandle( hMutex );
-
 //  PlayClosingMovie;
 
 end.

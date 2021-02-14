@@ -114,7 +114,7 @@ begin
     begin
       pMusic.OpenThisSong( AnsiString ( SoundPath + 'Theme\' + FMusicFileName ) );
       pMusic.PlayThisSong;
-      pMusic.SetSongVolume( 99 );
+      pMusic.SetSongVolume( MasterMusicVolume );
     end;
   end;
 end; //Init

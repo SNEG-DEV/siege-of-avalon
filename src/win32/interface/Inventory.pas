@@ -132,6 +132,7 @@ type
       Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
     procedure MouseUp( Sender : TObject; Button : TMouseButton;
       Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseWheel( Sender: TObject; Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean );
   public
     Character : TCharacter;
     GroundList : TList;
@@ -312,6 +313,9 @@ begin
     if Loaded then
       Exit;
     inherited;
+
+    frmMain.OnMouseWheel := MouseWheel;
+
     MouseCursor.Cleanup;
 
     pr := Rect( 0, 0, ResWidth, ResHeight );
@@ -1139,6 +1143,25 @@ begin
 
 end;
 
+procedure TInventory.MouseWheel(Sender: TObject; Shift: TShiftState;
+  WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+begin
+  Handled := True;
+
+  if DlgScroll.ScrollIsShowing then
+  begin
+    if WheelDelta<0 then
+      DlgScroll.ScrollAmount := 1
+    else if WheelDelta>0 then
+      DlgScroll.ScrollAmount := -1
+    else
+      DlgScroll.ScrollAmount := 0;
+    DlgScroll.KeepOnScrolling := true;
+    DlgScroll.ScrollStatsScroll;
+  end;
+
+end;
+
 procedure TInventory.Paint;
 var
   i : Integer;
@@ -1561,6 +1584,7 @@ const
 begin
   Log.DebugLog(FailName);
   try
+    frmMain.OnMouseWheel := nil;
     CheckForGroundDrop := true;
     WriteTheInventoryData;
     ExText.Close;

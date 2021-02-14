@@ -7539,6 +7539,21 @@ object frmLaunchSetting: TfrmLaunchSetting
     ParentFont = False
     TabOrder = 3
   end
+  object StaticText3: TStaticText
+    Left = 512
+    Top = 24
+    Width = 20
+    Height = 27
+    Caption = 'X'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -19
+    Font.Name = 'BlackChancery'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 4
+    OnClick = StaticText3Click
+  end
   object tmrScroll: TTimer
     Enabled = False
     Interval = 10
