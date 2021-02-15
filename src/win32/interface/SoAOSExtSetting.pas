@@ -60,6 +60,7 @@ type
       LinkType: TSysLinkType);
     procedure FormShow(Sender: TObject);
     procedure StaticText3Click(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     { Private declarations }
     FLanguages: TStringList;
@@ -71,6 +72,8 @@ type
 
     Support720p: Boolean;
     Support1080p: Boolean;
+
+    function AppHookFunc(var Message : TMessage) : Boolean;
   public
     class function Execute: TModalResult;
   end;
@@ -120,6 +123,16 @@ begin
   FScrollText := FCurrentLanguage.PadRight(30,' ');
   FScrollDirLeft := False;
   tmrScroll.Enabled := True;
+end;
+
+function TfrmLaunchSetting.AppHookFunc(var Message: TMessage): Boolean;
+begin
+  Result := False;
+  if Message.Msg = WM_SYSCOMMAND then
+  begin
+    PostMessage(Handle, WM_CLOSE, 0, 0);
+    Result := True;
+  end;
 end;
 
 procedure TfrmLaunchSetting.Done(r: integer);
@@ -180,12 +193,22 @@ begin
   end;
 end;
 
+procedure TfrmLaunchSetting.FormCloseQuery(Sender: TObject;
+  var CanClose: Boolean);
+begin
+  CanClose := True;
+  if ModalResult=mrNone then
+    ModalResult := mrCancel;
+end;
+
 procedure TfrmLaunchSetting.FormCreate(Sender: TObject);
 var
   INI: TIniFile;
   lInterfacePath: string;
   dir: string;
 begin
+  Application.HookMainWindow(AppHookFunc);
+
   FLanguages := TStringList.Create(dupIgnore, True, False);
   if LoadResourceFontByID(1, RT_FONT) then
     Self.Font.Name := 'BlackChancery';
@@ -222,6 +245,8 @@ end;
 procedure TfrmLaunchSetting.FormDestroy(Sender: TObject);
 begin
   FLanguages.Free;
+
+  Application.UnHookMainWindow(AppHookFunc);
 end;
 
 procedure TfrmLaunchSetting.FormShow(Sender: TObject);
