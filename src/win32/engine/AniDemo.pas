@@ -1486,13 +1486,14 @@ begin
       if Game.MouseOverTile.TriggerID <> PrevTriggerID then
       begin
         Zonable := False;
+
         if Game.MouseOverTile.TriggerID > 0 then
         begin
           i := Game.MouseOverTile.TriggerID - 1;
           if ( i < FigureInstances.Count ) and Assigned( FigureInstances.Objects[ i ] ) and ( FigureInstances.Objects[ i ] is TTrigger ) then
           begin
             j := Pos( 'loadmap(', LowerCase( TTrigger( FigureInstances.Objects[ i ] ).OnTrigger ) );
-            if j > 0 then
+            if (j > 0) and TTrigger( FigureInstances.Objects[ i ] ).TriggerEnabled then
             begin
               S := Parse( AnsiString( Copy( TTrigger( FigureInstances.Objects[ i ] ).OnTrigger, j + 8, Length( TTrigger( FigureInstances.Objects[ i ] ).OnTrigger ) - j - 7 )), 0, ',' );
               if TFile.Exists( FindMap( S ) ) then

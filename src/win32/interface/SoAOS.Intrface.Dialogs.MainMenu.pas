@@ -179,13 +179,21 @@ begin
 end;
 
 function TIntro.GetNoRect: TRect;
+var
+  y: Integer;
 begin
-  Result := ApplyOffset( Rect( 438, 456, 488, 484 ) );
+  // Dynamic due to Russian menu variation.
+  y := Captions[ 7 ].Rect.Top + 110;
+  Result := ApplyOffset( Rect( 437, y, 489, y + 31 ) );
 end;
 
 function TIntro.GetYesRect: TRect;
+var
+  y: Integer;
 begin
-  Result := ApplyOffset( Rect( 303, 456, 352, 484 ) );
+  // Dynamic due to Russian menu variation.
+  y := Captions[ 7 ].Rect.Top + 110;
+  Result := ApplyOffset( Rect( 303, y, 355, y + 31 ) );
 end;
 
 procedure TIntro.Init;
