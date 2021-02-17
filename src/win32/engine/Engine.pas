@@ -344,7 +344,7 @@ begin
     S := Parse( result, 1, '#' );
     j := Length( S );
     if not assigned( INI ) then
-      INI := TMemINIFile.create( MapPath + 'symbols.'+Language+'.ini', TEncoding.GetEncoding(INICodePage) );
+      INI := TMemINIFile.create( MapPath + 'symbols.'+Language+'.ini', TEncoding.ANSI); // GetEncoding(INICodePage) );
     S1 := Parse( S, 0, '.' );
     S2 := Parse( S, 1, '.' );
     S0 := INI.ReadString( S1, S2, '' );

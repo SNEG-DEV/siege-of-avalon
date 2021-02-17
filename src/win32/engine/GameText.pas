@@ -377,15 +377,17 @@ var
   i : integer;
   j : integer;
   XStart : integer;
+  AnsiCodePoints: AnsiString; // The bitmap font is depending on an Ansi position - not its representation
 const
   FailName : string = 'TGameText.PLotDarkText';
 begin
   Log.DebugLog(FailName);
   try
+    AnsiCodePoints := AnsiString(Sentence);
     XStart := 0;
-    for i := 1 to Length( Sentence ) do
+    for i := 1 to Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       DrawAlpha( DX, Rect( X + XStart + DarkLetter[ j ].AdjPrev, Y + DarkLetter[ j ].AdjTop, X + XStart + DarkLetter[ j ].sw + DarkLetter[ j ].AdjPrev, Y + DarkLetter[ j ].AdjTop + DarkLetter[ j ].sh ), Rect( DarkLetter[ j ].sx, DarkLetter[ j ].sy, DarkLetter[ j ].sx + DarkLetter[ j ].sw, DarkLetter[ j ].sy + DarkLetter[ j ].sh ), DXDarkSurface, true, Alpha );
       XStart := XStart + DarkLetter[ j ].sw + DarkLetter[ j ].AdjPrev + DarkLetter[ j ].AdjNext;
       XStart := XStart - 1;
@@ -401,15 +403,17 @@ var
   i : integer;
   j : integer;
   XStart : integer;
+  AnsiCodePoints: AnsiString; // The bitmap font is depending on an Ansi position - not its representation
 const
   FailName : string = 'TGameText.PlotTinyText';
 begin
   Log.DebugLog(FailName);
   try
+    AnsiCodePoints := AnsiString(Sentence);
     XStart := 0;
-    for i := 1 to Length( Sentence ) do
+    for i := 1 to Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       DrawAlpha( DX, Rect( X + XStart + TinyLetter[ j ].AdjPrev, Y + TinyLetter[ j ].AdjTop, X + XStart + TinyLetter[ j ].sw + TinyLetter[ j ].AdjPrev, Y + TinyLetter[ j ].AdjTop + TinyLetter[ j ].sh ), Rect( TinyLetter[ j ].sx, TinyLetter[ j ].sy, TinyLetter[ j ].sx + TinyLetter[ j ].sw, TinyLetter[ j ].sy + TinyLetter[ j ].sh ), DXTinySurface, true, Alpha );
       XStart := XStart + TinyLetter[ j ].sw + TinyLetter[ j ].AdjPrev + TinyLetter[ j ].AdjNext;
     end;
@@ -429,15 +433,17 @@ var
   i : integer;
   j : integer;
   XStart : integer;
+  AnsiCodePoints: AnsiString; // The bitmap font is depending on an Ansi position - not its representation
 const
   FailName : string = 'TGameText.PlotMegaTinyText';
 begin
   Log.DebugLog(FailName);
   try
+    AnsiCodePoints := AnsiString(Sentence);
     XStart := 0;
-    for i := 1 to Length( Sentence ) do
+    for i := 1 to Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       DrawAlpha( DX, Rect( X + XStart + MegaTinyLetter[ j ].AdjPrev, Y + MegaTinyLetter[ j ].AdjTop, X + XStart + MegaTinyLetter[ j ].sw + MegaTinyLetter[ j ].AdjPrev, Y + MegaTinyLetter[ j ].AdjTop + MegaTinyLetter[ j ].sh ), Rect( MegaTinyLetter[ j ].sx, MegaTinyLetter[ j ].sy, MegaTinyLetter[ j ].sx + MegaTinyLetter[ j ].sw, MegaTinyLetter[ j ].sy + MegaTinyLetter[ j ].sh ), DXMegaTinySurface, true, Alpha );
       XStart := XStart + MegaTinyLetter[ j ].sw + MegaTinyLetter[ j ].AdjPrev + MegaTinyLetter[ j ].AdjNext;
     end; //end for
@@ -452,15 +458,17 @@ var
   i : integer;
   j : integer;
   XStart : integer;
+  AnsiCodePoints: AnsiString; // The bitmap font is depending on an Ansi position - not its representation
 const
   FailName : string = 'TGameText.PlotF13Text';
 begin
   Log.DebugLog(FailName);
   try
+    AnsiCodePoints := AnsiString(Sentence);
     XStart := 0;
-    for i := 1 to Length( Sentence ) do
+    for i := 1 to Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       DrawAlpha( DX, Rect( X + XStart + F13Letter[ j ].AdjPrev, Y + F13Letter[ j ].AdjTop, X + XStart + F13Letter[ j ].sw + F13Letter[ j ].AdjPrev, Y + F13Letter[ j ].AdjTop + F13Letter[ j ].sh ), Rect( F13Letter[ j ].sx, F13Letter[ j ].sy, F13Letter[ j ].sx + F13Letter[ j ].sw, F13Letter[ j ].sy + F13Letter[ j ].sh ), DX13Surface, true, Alpha );
       XStart := XStart + F13Letter[ j ].sw + F13Letter[ j ].AdjPrev + F13Letter[ j ].AdjNext;
     end;
@@ -476,15 +484,17 @@ var
   j : integer;
   XStart : integer;
   pr : TRect;
+  AnsiCodePoints: AnsiString; // The bitmap font is depending on an Ansi position - not its representation
 const
   FailName : string = 'TGameText.Plottext';
 begin
   Log.DebugLog(FailName);
   try
+    AnsiCodePoints := AnsiString(Sentence);
     XStart := 0;
-    for i := 1 to Length( Sentence ) do
+    for i := 1 to Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       if Alpha > 0 then
         DrawAlpha( lpDDSBack, Rect( X + XStart + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop, X + XStart + Letter[ j ].sw + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop + Letter[ j ].sh ), Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh ), DXSurface, true, Alpha )
       else
@@ -506,15 +516,17 @@ var
   j : integer;
   XStart : integer;
   pr : TRect;
+  AnsiCodePoints: AnsiString; // The bitmap font is depending on an Ansi position - not its representation
 const
   FailName : string = 'TGameText.PlotText2';
 begin
   Log.DebugLog(FailName);
   try
+    AnsiCodePoints := AnsiString(Sentence);
     XStart := 0;
-    for i := 1 to Length( Sentence ) do
+    for i := 1 to Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       if Alpha > 0 then
         DrawAlpha( DX, Rect( X + XStart + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop, X + XStart + Letter[ j ].sw + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop + Letter[ j ].sh ), Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh ), DXSurface, true, Alpha )
       else
@@ -536,15 +548,17 @@ var
   j : integer;
   XStart : integer;
   pr : TRect;
+  AnsiCodePoints: AnsiString; // The bitmap font is depending on an Ansi position - not its representation
 const
   FailName : string = 'TGameText.PlotSquishedText';
 begin
   Log.DebugLog(FailName);
   try
+    AnsiCodePoints := AnsiString(Sentence);
     XStart := 0;
-    for i := 1 to Length( Sentence ) do
+    for i := 1 to Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       if Alpha > 0 then
         DrawAlpha( lpDDSBack, Rect( X + XStart + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop, X + XStart + Letter[ j ].sw + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop + Letter[ j ].sh ), Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh ), DXSurface, true, Alpha )
       else
@@ -570,16 +584,18 @@ var
   TheLength : integer;
   ThereWasRoom : boolean;
   pr : TRect;
+  AnsiCodePoints: AnsiString; // The bitmap font is depending on an Ansi position - not its representation
 const
   FailName : string = 'TGameText.PlotTextCentered';
 begin
   Log.DebugLog(FailName);
   Result := false;
   try
+    AnsiCodePoints := AnsiString(Sentence);
     TheLength := 0;
-    for i := 1 to length( Sentence ) do
+    for i := 1 to length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       TheLength := TheLength + Letter[ j ].sw + Letter[ j ].AdjPrev + Letter[ j ].AdjNext;
     end; //wend
     ThereWasRoom := True;
@@ -589,9 +605,9 @@ begin
       ThereWasRoom := false;
     end;
 
-    for i := 1 to Length( Sentence ) do
+    for i := 1 to Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       if Alpha > 0 then
         DrawAlpha( lpDDSBack, Rect( X + XStart + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop, X + XStart + Letter[ j ].sw + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop + Letter[ j ].sh ), Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh ), DXSurface, true, Alpha )
       else
@@ -619,16 +635,18 @@ var
   TheLength : integer;
   ThereWasRoom : boolean;
   pr : TRect;
+  AnsiCodePoints: AnsiString; // The bitmap font is depending on an Ansi position - not its representation
 const
   FailName : string = 'TGameText.PlotTextCentered2';
 begin
   Log.DebugLog(FailName);
   Result := false;
   try
+    AnsiCodePoints := AnsiString(Sentence);
     TheLength := 0;
-    for i := 1 to length( Sentence ) do
+    for i := 1 to length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       TheLength := TheLength + Letter[ j ].sw + Letter[ j ].AdjPrev + Letter[ j ].AdjNext;
     end; //wend
 
@@ -639,9 +657,9 @@ begin
       ThereWasRoom := false;
     end;
 
-    for i := 1 to Length( Sentence ) do
+    for i := 1 to Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       if Alpha > 0 then
         DrawAlpha( DX, Rect( X + XStart + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop, X + XStart + Letter[ j ].sw + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop + Letter[ j ].sh ), Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh ), DXSurface, true, Alpha )
       else
@@ -668,18 +686,19 @@ var
   TheLength : integer;
   ThereWasRoom : boolean;
   pr : TRect;
+  AnsiCodePoints: AnsiString; // The bitmap font is depending on an Ansi position - not its representation
 const
   FailName : string = 'TGameText.PlotDarktextCentered2';
 begin
   Log.DebugLog(FailName);
   Result := false;
   try
-
+    AnsiCodePoints := AnsiString(Sentence);
     TheLength := 0;
 
-    for i := 1 to length( Sentence ) do
+    for i := 1 to length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       TheLength := TheLength + DarkLetter[ j ].sw + DarkLetter[ j ].AdjPrev + DarkLetter[ j ].AdjNext - 1;
     end; //wend
 
@@ -690,9 +709,9 @@ begin
       ThereWasRoom := false;
     end;
 
-    for i := 1 to Length( Sentence ) do
+    for i := 1 to Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       if Alpha > 0 then
         DrawAlpha( DX, Rect( X + XStart + DarkLetter[ j ].AdjPrev, Y + DarkLetter[ j ].AdjTop, X + XStart + DarkLetter[ j ].sw + DarkLetter[ j ].AdjPrev, Y + DarkLetter[ j ].AdjTop + DarkLetter[ j ].sh ), Rect( DarkLetter[ j ].sx, DarkLetter[ j ].sy, DarkLetter[ j ].sx + DarkLetter[ j ].sw, DarkLetter[ j ].sy + DarkLetter[ j ].sh ), DXDarkSurface, true, Alpha )
       else
@@ -722,21 +741,23 @@ var
   LastSpace, PrevLastSpace : integer;
   LineBreak : array[ 0..50 ] of integer;
   pr : TRect;
+  AnsiCodePoints: AnsiString; // The bitmap font is depending on an Ansi position - not its representation
 const
   FailName : string = 'TGameText.PlotTextBlock';
 begin
   Log.DebugLog(FailName);
   Result := 0;
   try
+    AnsiCodePoints := AnsiString(Sentence);
     i := 1;
     k := 0;
     TheLength := 0;
     LastSpace := 0;
     PrevLastSpace := 0;
     LineBreak[ 0 ] := 9999; //in case there are no line breaks, we initalize to an absurdly high number
-    while i <= Length( Sentence ) do
+    while i <= Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
 
       if j = 13 then
       begin
@@ -773,9 +794,9 @@ begin
     XStart := 0;
     k := 0;
     NL := 0;
-    for i := 1 to Length( Sentence ) do
+    for i := 1 to Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       if j = 13 then
       begin
         XStart := 0;
@@ -819,22 +840,23 @@ var
   TheLength : integer;
   LastSpace, PrevLastSpace : integer;
   LineBreak : array[ 0..50 ] of integer;
+  AnsiCodePoints: AnsiString; // The bitmap font is depending on an Ansi position - not its representation
 const
   FailName : string = 'TGameText.PlotTextBlock';
 begin
   Log.DebugLog(FailName);
   Result := 0;
   try
-
+    AnsiCodePoints := AnsiString(Sentence);
     i := 1;
     k := 0;
     TheLength := 0;
     LastSpace := 0;
     PrevLastSpace := 0;
     LineBreak[ 0 ] := 9999; //in case there are no line breaks, we initalize to an absurdly high number
-    while i <= Length( Sentence ) do
+    while i <= Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
 
       if j = 13 then
       begin
@@ -870,9 +892,9 @@ begin
 
     XStart := 0;
     k := 0;
-    for i := 1 to Length( Sentence ) do
+    for i := 1 to Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       if j = 13 then
       begin
         XStart := 0;
@@ -911,22 +933,23 @@ var
   LastSpace, PrevLastSpace : integer;
   LineBreak : array[ 0..50 ] of integer;
   pr : TRect;
+  AnsiCodePoints: AnsiString; // The bitmap font is depending on an Ansi position - not its representation
 const
   FailName : string = 'TGameText.Plotf13block';
 begin
   Log.DebugLog(FailName);
   Result := 0;
   try
-
+    AnsiCodePoints := AnsiString(Sentence);
     i := 1;
     k := 0;
     TheLength := 0;
     LastSpace := 0;
     PrevLastSpace := 0;
     LineBreak[ 0 ] := 9999; //in case there are no line breaks, we initalize to an absurdly high number
-    while i <= Length( Sentence ) do
+    while i <= Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
 
       if j = 13 then
       begin
@@ -963,9 +986,9 @@ begin
     XStart := 0;
     k := 0;
     NL := 0;
-    for i := 1 to Length( Sentence ) do
+    for i := 1 to Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       if j = 13 then
       begin
         XStart := 0;
@@ -1012,13 +1035,14 @@ var
   LineBreak : array[ 0..500 ] of integer;
   rRect : TRect;
   pr : TRect;
+  AnsiCodePoints: AnsiString; // The bitmap font is depending on an Ansi position - not its representation
 const
   FailName : string = 'TGameText.PlotTextAroundBlock';
 begin
   Log.DebugLog(FailName);
   Result := 0;
   try
-
+    AnsiCodePoints := AnsiString(Sentence);
     i := 1;
     k := 0;
     TheLength := 0;
@@ -1026,9 +1050,9 @@ begin
     LineBreak[ 0 ] := 9999; //in case there are no line breaks, we initalize to an absurdly high number
 
     NL := 0;
-    while i <= Length( Sentence ) do
+    while i <= Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
 
       if ( j = 13 ) then
       begin
@@ -1079,9 +1103,9 @@ begin
     XStart := 0;
     k := 0;
     NL := 0;
-    for i := 1 to Length( Sentence ) do
+    for i := 1 to Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       if j = 13 then
       begin
         XStart := 0;
@@ -1126,17 +1150,18 @@ var
   i : integer;
   j : integer;
   XStart : integer;
+  AnsiCodePoints: AnsiString; // The bitmap font is depending on an Ansi position - not its representation
 const
   FailName : string = 'TGameText.TextLength';
 begin
   Log.DebugLog(FailName);
   Result := 0;
   try
-
+    AnsiCodePoints := AnsiString(Sentence);
     XStart := 0;
-    for i := 1 to Length( Sentence ) do
+    for i := 1 to Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       XStart := XStart + Letter[ j ].sw + Letter[ j ].AdjPrev + Letter[ j ].AdjNext;
     end; //wend
 
@@ -1152,17 +1177,18 @@ var
   i : integer;
   j : integer;
   XStart : integer;
+  AnsiCodePoints: AnsiString; // The bitmap font is depending on an Ansi position - not its representation
 const
   FailName : string = 'TGameText.TinyTextlength';
 begin
   Log.DebugLog(FailName);
   Result := 0;
   try
-
+    AnsiCodePoints := AnsiString(Sentence);
     XStart := 0;
-    for i := 1 to Length( Sentence ) do
+    for i := 1 to Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       XStart := XStart + TinyLetter[ j ].sw + TinyLetter[ j ].AdjPrev + TinyLetter[ j ].AdjNext;
     end; //wend
 
@@ -1185,20 +1211,21 @@ var
   LastSpace : integer;
   LineBreak : array[ 0..50 ] of integer;
   daString : string;
+  AnsiCodePoints: AnsiString; // The bitmap font is depending on an Ansi position - not its representation
 const
   FailName : string = 'TGameText.BreakTextIntoAStringList';
 begin
   Log.DebugLog(FailName);
   try
-
+    AnsiCodePoints := AnsiString(Sentence);
     i := 1;
     k := 0;
     TheLength := 0;
     LastSpace := 0;
     LineBreak[ 0 ] := 9999; //in case there are no line breaks, we initalize to an absurdly high number
-    while i <= Length( Sentence ) do
+    while i <= Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
 
       if j = 13 then
       begin
@@ -1234,9 +1261,9 @@ begin
     daString := '';
     XStart := 0;
     k := 0;
-    for i := 1 to Length( Sentence ) do
+    for i := 1 to Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       if j = 13 then
       begin
         daList.add( daString );
@@ -1288,25 +1315,26 @@ var
   XStart : integer;
   TheLength : integer;
   pr : TRect;
+  AnsiCodePoints: AnsiString; // The bitmap font is depending on an Ansi position - not its representation
 const
   FailName : string = 'TGameText.PlotTextCentered2';
 begin
   Log.DebugLog(FailName);
   try
-
+    AnsiCodePoints := AnsiString(Sentence);
     TheLength := 0;
   //while (Sentence[i] <> #0) do begin
-    for i := 1 to length( Sentence ) do
+    for i := 1 to length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       TheLength := TheLength + F13Letter[ j ].sw + F13Letter[ j ].AdjPrev + F13Letter[ j ].AdjNext;
     end; //wend
 
     XStart := ( ( X2 - X ) - TheLength ) div 2; //center the line of text
 
-    for i := 1 to Length( Sentence ) do
+    for i := 1 to Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       if Alpha > 0 then
         DrawAlpha( DX, Rect( X + XStart + F13Letter[ j ].AdjPrev, Y + F13Letter[ j ].AdjTop, X + XStart + F13Letter[ j ].sw + F13Letter[ j ].AdjPrev, Y + F13Letter[ j ].AdjTop + F13Letter[ j ].sh ), Rect( F13Letter[ j ].sx, F13Letter[ j ].sy, F13Letter[ j ].sx + F13Letter[ j ].sw, F13Letter[ j ].sy + F13Letter[ j ].sh ), DX13Surface, true, Alpha )
       else
@@ -1337,16 +1365,17 @@ var
   j : integer;
   XStart : integer;
   pr : TRect;
+  AnsiCodePoints: AnsiString; // The bitmap font is depending on an Ansi position - not its representation
 const
   FailName : string = 'TGameText.PlotText2';
 begin
   Log.DebugLog(FailName);
   try
-
+    AnsiCodePoints := AnsiString(Sentence);
     XStart := 0;
-    for i := 1 to Length( Sentence ) do
+    for i := 1 to Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       if Alpha > 0 then
         DrawAlpha( DX, Rect( X + XStart + TinyLetter[ j ].AdjPrev, Y + TinyLetter[ j ].AdjTop, X + XStart + TinyLetter[ j ].sw + TinyLetter[ j ].AdjPrev, Y + TinyLetter[ j ].AdjTop + TinyLetter[ j ].sh ), Rect( TinyLetter[ j ].sx, TinyLetter[ j ].sy, TinyLetter[ j ].sx + TinyLetter[ j ].sw, TinyLetter[ j ].sy + TinyLetter[ j ].sh ), DXGoldSurface, true, Alpha )
       else
@@ -1375,21 +1404,23 @@ var
   LastSpace, PrevLastSpace : integer;
   LineBreak : array[ 0..50 ] of integer;
   pr : TRect;
+  AnsiCodePoints: AnsiString; // The bitmap font is depending on an Ansi position - not its representation
 const
   FailName : string = 'TGameText.PlotTextBlock';
 begin
   Log.DebugLog(FailName);
   Result := 0;
   try
+    AnsiCodePoints := AnsiString(Sentence);
     i := 1;
     k := 0;
     TheLength := 0;
     LastSpace := 0;
     PrevLastSpace := 0;
     LineBreak[ 0 ] := 9999; //in case there are no line breaks, we initalize to an absurdly high number
-    while i <= Length( Sentence ) do
+    while i <= Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
 
       if j = 13 then
       begin
@@ -1426,9 +1457,9 @@ begin
     XStart := 0;
     k := 0;
     NL := 0;
-    for i := 1 to Length( Sentence ) do
+    for i := 1 to Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       if j = 13 then
       begin
         XStart := 0;
@@ -1472,18 +1503,19 @@ var
   TheLength : integer;
   ThereWasRoom : boolean;
   pr : TRect;
+  AnsiCodePoints: AnsiString; // The bitmap font is depending on an Ansi position - not its representation
 const
   FailName : string = 'TGameText.PlotTextCentered2';
 begin
   Log.DebugLog(FailName);
   Result := false;
   try
-
+    AnsiCodePoints := AnsiString(Sentence);
     TheLength := 0;
   //while (Sentence[i] <> #0) do begin
-    for i := 1 to length( Sentence ) do
+    for i := 1 to length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       TheLength := TheLength + TinyLetter[ j ].sw + TinyLetter[ j ].AdjPrev + TinyLetter[ j ].AdjNext;
     end; //wend
 
@@ -1494,9 +1526,9 @@ begin
       ThereWasRoom := false;
     end;
 
-    for i := 1 to Length( Sentence ) do
+    for i := 1 to Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       if Alpha > 0 then
         DrawAlpha( DX, Rect( X + XStart + TinyLetter[ j ].AdjPrev, Y + TinyLetter[ j ].AdjTop, X + XStart + TinyLetter[ j ].sw + TinyLetter[ j ].AdjPrev, Y + TinyLetter[ j ].AdjTop + TinyLetter[ j ].sh ), Rect( TinyLetter[ j ].sx, TinyLetter[ j ].sy, TinyLetter[ j ].sx + TinyLetter[ j ].sw, TinyLetter[ j ].sy + TinyLetter[ j ].sh ), DXGoldSurface, true, Alpha )
       else
@@ -1533,21 +1565,23 @@ var
   LastSpace, PrevLastSpace : integer;
   LineBreak : array[ 0..50 ] of integer;
   pr : TRect;
+  AnsiCodePoints: AnsiString; // The bitmap font is depending on an Ansi position - not its representation
 const
   FailName : string = 'TGameText.PlotTextBlock';
 begin
   Log.DebugLog(FailName);
   Result := 0;
   try
+    AnsiCodePoints := AnsiString(Sentence);
     i := 1;
     k := 0;
     TheLength := 0;
     LastSpace := 0;
     PrevLastSpace := 0;
     LineBreak[ 0 ] := 9999; //in case there are no line breaks, we initalize to an absurdly high number
-    while i <= Length( Sentence ) do
+    while i <= Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
 
       if j = 13 then
       begin
@@ -1584,9 +1618,9 @@ begin
     XStart := 0;
     k := 0;
     NL := 0;
-    for i := 1 to Length( Sentence ) do
+    for i := 1 to Length( AnsiCodePoints ) do
     begin
-      j := integer( Sentence[ i ] );
+      j := integer( AnsiCodePoints[ i ] );
       if j = 13 then
       begin
         XStart := 0;

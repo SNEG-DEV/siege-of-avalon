@@ -5694,7 +5694,7 @@ begin
           if (j < length(S)) and (S[j + 1] = '#') then
           begin
             if not assigned(INI) then
-              INI := TMemINIFile.Create( MapPath + 'symbols.'+ Language +'.ini', TEncoding.GetEncoding(INICodepage) );
+              INI := TMemINIFile.Create( MapPath + 'symbols.'+ Language +'.ini', TEncoding.ANSI); // GetEncoding(INICodepage) );
 
             S0 := copy(S, j + 1, length(S) - j);
             S1 := Parse(S0, 1, '#');
