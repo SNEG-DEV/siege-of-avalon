@@ -1210,22 +1210,22 @@ var
   TheLength : integer;
   LastSpace : integer;
   LineBreak : array[ 0..50 ] of integer;
-  daString : string;
-  AnsiCodePoints: AnsiString; // The bitmap font is depending on an Ansi position - not its representation
+  daString : RawByteString;
+  bytes: RawByteString;
 const
   FailName : string = 'TGameText.BreakTextIntoAStringList';
 begin
   Log.DebugLog(FailName);
   try
-    AnsiCodePoints := AnsiString(Sentence);
     i := 1;
     k := 0;
     TheLength := 0;
     LastSpace := 0;
     LineBreak[ 0 ] := 9999; //in case there are no line breaks, we initalize to an absurdly high number
-    while i <= Length( AnsiCodePoints ) do
+    bytes := Sentence;
+    while i <= Length( bytes ) do
     begin
-      j := integer( AnsiCodePoints[ i ] );
+      j := ord( bytes[ i ] );
 
       if j = 13 then
       begin
@@ -1261,9 +1261,9 @@ begin
     daString := '';
     XStart := 0;
     k := 0;
-    for i := 1 to Length( AnsiCodePoints ) do
+    for i := 1 to Length( bytes ) do
     begin
-      j := integer( AnsiCodePoints[ i ] );
+      j := ord( bytes[ i ] );
       if j = 13 then
       begin
         daList.add( daString );
@@ -1283,7 +1283,7 @@ begin
       end
       else
       begin
-        daString := daString + chr( j );
+        daString := daString + AnsiChar( j );
         XStart := XStart + Letter[ j ].sw + Letter[ j ].AdjPrev + Letter[ j ].AdjNext;
       end;
     end; //endfor

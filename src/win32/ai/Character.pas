@@ -903,7 +903,7 @@ var
   INI: TMemINIFile;
   StrTmp: string;
 begin
-  INI := TMemINIFile.Create( MapPath + 'symbols.'+ Language +'.ini', TEncoding.ANSI); //  GetEncoding(INICodepage) );
+  INI := TMemINIFile.Create( MapPath + 'symbols.'+ Language +'.ini', TEncoding.GetEncoding(INICodepage) );
 
   try
     StrTmp := '#' + Value;

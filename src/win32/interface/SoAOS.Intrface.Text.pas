@@ -118,7 +118,7 @@ begin
     FreeAndNil(INI);
   if not Assigned( INI ) then
   begin
-    INI := TMemIniFile.Create( InterfacePath + 'text.ini', TEncoding.ANSI); // GetEncoding(INICodepage) );
+    INI := TMemIniFile.Create( InterfacePath + 'text.ini', TEncoding.GetEncoding(INICodepage) );
     Encoded := True;
   end;
 end;

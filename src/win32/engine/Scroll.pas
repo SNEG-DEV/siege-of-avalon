@@ -157,7 +157,7 @@ begin
     MaxScroll := 0;
     if ( My + 40 > ScrollStartValue ) and ( My + 40 < ScrollEndValue ) then
     begin
-      if pText.PlotTextCentered( PChar( StatsScrollItem.Name ), Mx, Mx + 330, My + 40, 0 ) then
+      if pText.PlotTextCentered( StatsScrollItem.Name, Mx, Mx + 330, My + 40, 0 ) then
       begin
       //DebugPrint('Error- not enough room to center name of item ' + StatsScrollItem.Name);
       end;
@@ -249,7 +249,7 @@ begin
       if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
       begin
         pText.PlotText( txtMessage[ 4 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( PChar( b + a ), Mx + 240, My + 40 + i * 22, 0 );
+        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -264,7 +264,7 @@ begin
       if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
       begin
         pText.PlotText( txtMessage[ 5 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( PChar( b + a ), Mx + 240, My + 40 + i * 22, 0 );
+        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -279,7 +279,7 @@ begin
       if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
       begin
         pText.PlotText( txtMessage[ 6 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( PChar( b + a ), Mx + 240, My + 40 + i * 22, 0 );
+        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -294,7 +294,7 @@ begin
       if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
       begin
         pText.PlotText( txtMessage[ 7 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( PChar( b + a ), Mx + 240, My + 40 + i * 22, 0 );
+        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -309,7 +309,7 @@ begin
       if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
       begin
         pText.PlotText( txtMessage[ 8 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( PChar( b + a ), Mx + 240, My + 40 + i * 22, 0 );
+        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -324,7 +324,7 @@ begin
       if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
       begin
         pText.PlotText( txtMessage[ 9 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( PChar( b + a ), Mx + 240, My + 40 + i * 22, 0 );
+        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -336,9 +336,9 @@ begin
       begin
         pText.PlotText( txtMessage[ 10 ], Mx + 50, My + 40 + i * 22, 0 );
         if k > 0 then
-          pText.PlotText( PChar( a ), Mx + 249, My + 40 + i * 22, 0 )
+          pText.PlotText( a, Mx + 249, My + 40 + i * 22, 0 )
         else
-          pText.PlotText( PChar( a ), Mx + 240, My + 40 + i * 22, 0 )
+          pText.PlotText( a, Mx + 240, My + 40 + i * 22, 0 )
       end;
       i := i + 1;
     end;
@@ -350,9 +350,9 @@ begin
       begin
         pText.PlotText( txtMessage[ 11 ], Mx + 50, My + 40 + i * 22, 0 );
         if k > 0 then
-          pText.PlotText( PChar( a ), Mx + 249, My + 40 + i * 22, 0 )
+          pText.PlotText( a, Mx + 249, My + 40 + i * 22, 0 )
         else
-          pText.PlotText( PChar( a ), Mx + 240, My + 40 + i * 22, 0 );
+          pText.PlotText( a, Mx + 240, My + 40 + i * 22, 0 );
 
       end;
       i := i + 1;
@@ -368,7 +368,7 @@ begin
       if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
       begin
         pText.PlotText( txtMessage[ 12 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( PChar( b + a ), Mx + 240, My + 40 + i * 22, 0 );
+        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -383,7 +383,7 @@ begin
       if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
       begin
         pText.PlotText( txtMessage[ 13 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( PChar( b + a ), Mx + 240, My + 40 + i * 22, 0 );
+        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -398,7 +398,7 @@ begin
       if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
       begin
         pText.PlotText( txtMessage[ 14 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( PChar( b + a ), Mx + 240, My + 40 + i * 22, 0 );
+        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -413,7 +413,7 @@ begin
       if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
       begin
         pText.PlotText( txtMessage[ 15 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( PChar( b + a ), Mx + 240, My + 40 + i * 22, 0 );
+        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -428,7 +428,7 @@ begin
       if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
       begin
         pText.PlotText( txtMessage[ 16 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( PChar( b + a ), Mx + 240, My + 40 + i * 22, 0 );
+        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -443,7 +443,7 @@ begin
       if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
       begin
         pText.PlotText( txtMessage[ 17 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( PChar( b + a ), Mx + 240, My + 40 + i * 22, 0 );
+        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -458,7 +458,7 @@ begin
       if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
       begin
         pText.PlotText( txtMessage[ 18 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( PChar( b + a ), Mx + 240, My + 40 + i * 22, 0 );
+        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -473,7 +473,7 @@ begin
       if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
       begin
         pText.PlotText( txtMessage[ 19 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( PChar( b + a ), Mx + 240, My + 40 + i * 22, 0 );
+        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -488,7 +488,7 @@ begin
       if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
       begin
         pText.PlotText( txtMessage[ 20 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( PChar( b + a ), Mx + 240, My + 40 + i * 22, 0 );
+        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -513,7 +513,7 @@ begin
         Str( k, a );
         Str( Round( StatsScrollItem.resistance.Piercing.Resistance * 100 ), b );
         pText.PlotText( txtMessage[ 22 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( PChar( a + '-' + b + '%' ), Mx + 240, My + 40 + YAdj + i * 22, 0 );
+        pText.PlotText( a + '-' + b + '%', Mx + 240, My + 40 + YAdj + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -526,7 +526,7 @@ begin
         Str( k, a );
         Str( Round( StatsScrollItem.resistance.Crushing.Resistance * 100 ), b );
         pText.PlotText( txtMessage[ 23 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( PChar( a + '-' + b + '%' ), Mx + 240, My + 40 + YAdj + i * 22, 0 );
+        pText.PlotText( a + '-' + b + '%', Mx + 240, My + 40 + YAdj + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -539,7 +539,7 @@ begin
         Str( k, a );
         Str( Round( StatsScrollItem.resistance.Cutting.Resistance * 100 ), b );
         pText.PlotText( txtMessage[ 24 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( PChar( a + '-' + b + '%' ), Mx + 240, My + 40 + YAdj + i * 22, 0 );
+        pText.PlotText( a + '-' + b + '%', Mx + 240, My + 40 + YAdj + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -552,7 +552,7 @@ begin
         Str( k, a );
         Str( Round( StatsScrollItem.resistance.Heat.Resistance * 100 ), b );
         pText.PlotText( txtMessage[ 25 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( PChar( a + '-' + b + '%' ), Mx + 240, My + 40 + YAdj + i * 22, 0 );
+        pText.PlotText( a + '-' + b + '%', Mx + 240, My + 40 + YAdj + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -565,7 +565,7 @@ begin
         Str( k, a );
         Str( Round( StatsScrollItem.resistance.Cold.Resistance * 100 ), b );
         pText.PlotText( txtMessage[ 26 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( PChar( a + '-' + b + '%' ), Mx + 240, My + 40 + YAdj + i * 22, 0 );
+        pText.PlotText( a + '-' + b + '%', Mx + 240, My + 40 + YAdj + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -578,7 +578,7 @@ begin
         Str( k, a );
         Str( Round( StatsScrollItem.resistance.Electric.Resistance * 100 ), b );
         pText.PlotText( txtMessage[ 27 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( PChar( a + '-' + b + '%' ), Mx + 240, My + 40 + YAdj + i * 22, 0 );
+        pText.PlotText( a + '-' + b + '%', Mx + 240, My + 40 + YAdj + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -591,7 +591,7 @@ begin
         Str( k, a );
         Str( Round( StatsScrollItem.resistance.Poison.Resistance * 100 ), b );
         pText.PlotText( txtMessage[ 28 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( PChar( a + '-' + b + '%' ), Mx + 240, My + 40 + YAdj + i * 22, 0 );
+        pText.PlotText( a + '-' + b + '%', Mx + 240, My + 40 + YAdj + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -604,7 +604,7 @@ begin
         Str( k, a );
         Str( Round( StatsScrollItem.resistance.Magic.Resistance * 100 ), b );
         pText.PlotText( txtMessage[ 29 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( PChar( a + '-' + b + '%' ), Mx + 240, My + 40 + YAdj + i * 22, 0 );
+        pText.PlotText( a + '-' + b + '%', Mx + 240, My + 40 + YAdj + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -617,7 +617,7 @@ begin
         Str( k, a );
         Str( Round( StatsScrollItem.resistance.Mental.Resistance * 100 ), b );
         pText.PlotText( txtMessage[ 30 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( PChar( a + '-' + b + '%' ), Mx + 240, My + 40 + YAdj + i * 22, 0 );
+        pText.PlotText( a + '-' + b + '%', Mx + 240, My + 40 + YAdj + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -630,7 +630,7 @@ begin
         Str( k, a );
         Str( Round( StatsScrollItem.resistance.Stun.Resistance * 100 ), b );
         pText.PlotText( txtMessage[ 31 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( PChar( a + '-' + b + '%' ), Mx + 240, My + 40 + YAdj + i * 22, 0 );
+        pText.PlotText( a + '-' + b + '%', Mx + 240, My + 40 + YAdj + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -654,7 +654,7 @@ begin
         Str( k, b );
         Str( Round( StatsScrollItem.damage.Piercing.Min ), a );
         pText.PlotText( txtMessage[ 22 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( PChar( a + '-' + b ), Mx + 240, My + 40 + YAdj + i * 22, 0 );
+        pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -666,7 +666,7 @@ begin
         Str( k, b );
         Str( Round( StatsScrollItem.damage.Crushing.Min ), a );
         pText.PlotText( txtMessage[ 23 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( PChar( a + '-' + b ), Mx + 240, My + 40 + YAdj + i * 22, 0 );
+        pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -678,7 +678,7 @@ begin
         Str( k, b );
         Str( Round( StatsScrollItem.damage.Cutting.Min ), a );
         pText.PlotText( txtMessage[ 24 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( PChar( a + '-' + b ), Mx + 240, My + 40 + YAdj + i * 22, 0 );
+        pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -690,7 +690,7 @@ begin
         Str( k, b );
         Str( Round( StatsScrollItem.damage.Heat.Min ), a );
         pText.PlotText( txtMessage[ 25 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( PChar( a + '-' + b ), Mx + 240, My + 40 + YAdj + i * 22, 0 );
+        pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -702,7 +702,7 @@ begin
         Str( k, b );
         Str( Round( StatsScrollItem.damage.Cold.Min ), a );
         pText.PlotText( txtMessage[ 26 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( PChar( a + '-' + b ), Mx + 240, My + 40 + YAdj + i * 22, 0 );
+        pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -714,7 +714,7 @@ begin
         Str( k, b );
         Str( Round( StatsScrollItem.damage.Electric.Min ), a );
         pText.PlotText( txtMessage[ 27 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( PChar( a + '-' + b ), Mx + 240, My + 40 + YAdj + i * 22, 0 );
+        pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -726,7 +726,7 @@ begin
         Str( k, b );
         Str( Round( StatsScrollItem.damage.Poison.Min ), a );
         pText.PlotText( txtMessage[ 28 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( PChar( a + '-' + b ), Mx + 240, My + 40 + YAdj + i * 22, 0 );
+        pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -738,7 +738,7 @@ begin
         Str( k, b );
         Str( Round( StatsScrollItem.damage.Magic.Min ), a );
         pText.PlotText( txtMessage[ 29 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( PChar( a + '-' + b ), Mx + 240, My + 40 + YAdj + i * 22, 0 );
+        pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -750,7 +750,7 @@ begin
         Str( k, b );
         Str( Round( StatsScrollItem.damage.Mental.Min ), a );
         pText.PlotText( txtMessage[ 30 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( PChar( a + '-' + b ), Mx + 240, My + 40 + YAdj + i * 22, 0 );
+        pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -762,7 +762,7 @@ begin
         Str( k, b );
         Str( Round( StatsScrollItem.damage.Stun.Min ), a );
         pText.PlotText( txtMessage[ 31 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( PChar( a + '-' + b ), Mx + 240, My + 40 + YAdj + i * 22, 0 );
+        pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
       end;
       i := i + 1;
     end;
@@ -774,7 +774,7 @@ begin
         Str( k, b );
         Str( Round( StatsScrollItem.damage.Special.Min ), a );
         pText.PlotText( txtMessage[ 33 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( PChar( a + '-' + b ), Mx + 240, My + 40 + YAdj + i * 22, 0 );
+        pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
       end;
     end;
     if i > TitleY + 1 then

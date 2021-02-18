@@ -166,13 +166,13 @@ begin
             //            BM.Canvas.Font.Name:='fixedsys';
             BM.Canvas.Font.Style := [ fsBold ];
             var R:TRect := Rect( 0, 0, 0, Height );
-            DrawText( BM.Canvas.Handle, PChar( Msg ), Length( Msg ), R, DT_SINGLELINE or DT_CALCRECT or DT_NOPREFIX );
+            DrawText( BM.Canvas.Handle, PWideChar( Msg ), Length( Msg ), R, DT_SINGLELINE or DT_CALCRECT or DT_NOPREFIX );
             Inc( R.Right, 8 );
             R.Bottom := Height;
             FWidth := R.Right;
             BM.width := FWidth;
             BM.Height := Height;
-            DrawText( BM.Canvas.Handle, PChar( Msg ), Length( Msg ), R, DT_CENTER or DT_SINGLELINE or DT_VCENTER or DT_NOPREFIX );
+            DrawText( BM.Canvas.Handle, PWideChar( Msg ), Length( Msg ), R, DT_CENTER or DT_SINGLELINE or DT_VCENTER or DT_NOPREFIX );
 
             Surface := DDGetSurface( lpDD, FWidth, Height, $C0FFE0, True );
             Surface.GetDC( DC );

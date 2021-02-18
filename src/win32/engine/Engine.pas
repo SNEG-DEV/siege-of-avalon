@@ -335,8 +335,11 @@ var
   S, S0, S1, S2 : string;
   i, j : integer;
   INI : TMemINIFile;
+  SayINI: TMemIniFile;
 begin
+  { TODO -cLocalize : Someday find a better way to handle the ANSI vs CP encoded need. }
   INI := nil;
+  SayINI := nil;
   result := Script;
   i := Pos( '#', result );
   while ( i > 0 ) do
@@ -344,15 +347,24 @@ begin
     S := Parse( result, 1, '#' );
     j := Length( S );
     if not assigned( INI ) then
-      INI := TMemINIFile.create( MapPath + 'symbols.'+Language+'.ini', TEncoding.ANSI); // GetEncoding(INICodePage) );
+      INI := TMemINIFile.create( MapPath + 'symbols.'+Language+'.ini', TEncoding.ANSI );
     S1 := Parse( S, 0, '.' );
     S2 := Parse( S, 1, '.' );
-    S0 := INI.ReadString( S1, S2, '' );
+    if S1='Say' then // Say section should be read with correct encoding - due to DrawText
+    begin
+      if not assigned( SayINI ) then
+        SayINI := TMemINIFile.create( MapPath + 'symbols.'+Language+'.ini', TEncoding.GetEncoding(INICodePage) );
+      S0 := SayINI.ReadString( S1, S2, '' );
+    end
+    else
+      S0 := INI.ReadString( S1, S2, '' );
     result := Copy( result, 1, i - 1 ) + S0 + Copy( result, i + j + 2, Length( result ) - i - j - 1 );
     i := Pos( '#', result );
   end;
   if assigned( INI ) then
     INI.free;
+  if assigned( SayINI ) then
+    SayINI.free;
 
   i := Pos( #13#10, result ); //Strip CRLFs
   while ( i > 0 ) do

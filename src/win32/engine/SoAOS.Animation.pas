@@ -5456,7 +5456,7 @@ begin
     MsgDuration := 100;
     BM := TBitmap.Create;
     R := Rect(0, 0, Width * 2, 0);
-    DrawText(BM.Canvas.Handle, PChar(Msg), -1, R, DT_CALCRECT or DT_CENTER or
+    DrawText(BM.Canvas.Handle, PWideChar(Msg), -1, R, DT_CALCRECT or DT_CENTER or
       DT_NOCLIP or DT_NOPREFIX or DT_WORDBREAK);
     MsgWidth := R.Right;
     MsgHeight := R.Bottom;
@@ -5465,7 +5465,7 @@ begin
     SetTextColor(BM.Canvas.Handle, ColorToRGB(Color));
     SetBkMode(BM.Canvas.Handle, TRANSPARENT);
     PatBlt(BM.Canvas.Handle, 0, 0, MsgWidth, MsgHeight, BLACKNESS);
-    DrawText(BM.Canvas.Handle, PChar(Msg), -1, R, DT_CENTER or DT_NOCLIP or
+    DrawText(BM.Canvas.Handle, PWideChar(Msg), -1, R, DT_CENTER or DT_NOCLIP or
       DT_NOPREFIX or DT_WORDBREAK);
     MsgImage := SoAOS_DX_SurfaceFromBMP(BM, clBlack);
     BM.free;
