@@ -157,7 +157,7 @@ const
      spellbarFile: 'spellbar';
      sidebarFile: 'sidebar';
      bottombarFile: 'bottombar';
-     IniIdent : 'SDAOA';
+     IniIdent : 'Original';
      popInventoryRect: ( Left: 726; Top: 429; Right: 772; Bottom: 473 );
      popMapRect: ( Left: 732; Top: 511; Right: 781; Bottom: 555 );
      popQuestRect: ( Left: 666; Top: 511; Right: 715; Bottom: 531 );

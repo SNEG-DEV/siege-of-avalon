@@ -657,20 +657,17 @@ begin
       begin
         Player.AddTitle( 'Squire' );
         Player.AddTitle( 'Siegeexe' );
-        Player.AddTitle( 'AoAFull' );
       end
       else if SelectedTraining = 1 then
       begin
         Player.AddTitle( 'Hunter' );
         Player.AddTitle( 'Siegeexe' );
-        Player.AddTitle( 'AoAFull' );
       end
       else if SelectedTraining = 2 then
       begin
         Player.AddTitle( 'Apprentice' );
         Player.AddTitle( 'Charge' );
         Player.AddTitle( 'Siegeexe' );
-        Player.AddTitle( 'AoAFull' );
       end;
 
       if AllSpells then

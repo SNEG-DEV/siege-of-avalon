@@ -320,24 +320,18 @@ const
 begin
   Log.DebugLog(FailName);
   try
-
-   //was function key f3 to f12, now 0-9
+   //was function key f3 to f12, now only 0-9
     if Character <> nil then
     begin
-//      if ( key > 115 ) and ( key < 124 ) and ( CurrentSelectedListItem <> -1 ) then
-if ( key > 47 ) and ( key < 58 ) and ( CurrentSelectedListItem <> -1 ) then
+      if ( key > 47 ) and ( key < 58 ) and ( CurrentSelectedListItem <> -1 ) then
       begin
-//        Character.HotKey[ key - 115 ] := TSpell( SpellList.objects[ CurrentSelectedListItem ] );
-Character.HotKey[ key - 47 ] := TSpell( SpellList.objects[ CurrentSelectedListItem ] );
+        Character.HotKey[ key - 47 ] := TSpell( SpellList.objects[ CurrentSelectedListItem ] );
            //We dont want more than one key pointing at the same spell, so if allready assigned, change to nil.
-//        for i := 1 to 8 do
-for i := 1 to 10 do
+        for i := 1 to 10 do
         begin
-//          if i <> key - 115 then
-if i <> key - 47 then
+          if i <> key - 47 then
           begin
-//            if Character.HotKey[ key - 115 ] = Character.HotKey[ i ] then
-if Character.HotKey[ key - 47 ] = Character.HotKey[ i ] then
+            if Character.HotKey[ key - 47 ] = Character.HotKey[ i ] then
               Character.HotKey[ i ] := nil;
           end
         end;

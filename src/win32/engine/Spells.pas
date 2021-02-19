@@ -766,8 +766,8 @@ begin
   MakeSpell( ManaThief, TManaThief );
   MakeSpell( GreatHand, TGreatHand );
   MakeSpell( GreatWolf, TGreatWolf );
-  MakeSpell( Bloodlust, TBloodlust ); // Should be checked upon?
-  MakeSpell( IceBlock, TIceBlock );
+//  MakeSpell( Bloodlust, TBloodlust ); // Should be checked upon?
+//  MakeSpell( IceBlock, TIceBlock );
   if not MakeSpell( FlameStrike, TFlameStrike ) then
     exit;
   if not MakeSpell( Blizzard, TBlizzard ) then

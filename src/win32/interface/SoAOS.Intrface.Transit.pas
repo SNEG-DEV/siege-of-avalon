@@ -282,17 +282,19 @@ var
   S, S1 : string;
   i, j : integer;
 begin
-//TODO: Redo
-  Result := -1;
-  if Assigned( MapsAvailable ) then
+  result := -1;
+  if assigned( MapsAvailable ) then
   begin
     S := lowercase( MapName ) + '|';
     for i := 0 to MapsAvailable.count - 1 do
     begin
       S1 := lowercase( MapsAvailable.strings[ i ] );
-      j := S1.IndexOf( S );
+      j := Pos( S, S1 );
       if ( j = 1 ) or ( j = 2 ) then
-        Exit(i);
+      begin
+        result := i;
+        exit;
+      end;
     end;
   end;
 end;

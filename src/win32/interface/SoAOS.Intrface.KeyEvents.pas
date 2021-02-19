@@ -135,7 +135,7 @@ begin
       90: TwinWeaponToggle; // Z - FIX - German only :(
       112: if ToggleShow(DlgShow) then frmMain.BeginHelp; // F1
       113: QuickSave; // F2
-      114..123: SpellHotKey(Key); // F3-F12
+//      114..123: SpellHotKey(Key); // F3-F12
     end;
 
 //    else if ( key = 76 ) then LforWhat  // L test code
@@ -307,10 +307,10 @@ var
   offset: Word;
 begin
   offset := 0;
-
-  if ( key >= 114 ) and ( key < 124 ) then   // F3 - F12 spell hotkeys
-    offset := 115
-  else if (Key >= 48) and (Key < 58) then    // 0-9
+//  if ( key >= 114 ) and ( key < 124 ) then   // F3 - F12 spell hotkeys
+//    offset := 115
+//  else
+  if (Key >= 48) and (Key < 58) then    // 0-9
     offset := 47;
 
   if (offset>0) and Assigned(Current.HotKey[Key - offset]) then

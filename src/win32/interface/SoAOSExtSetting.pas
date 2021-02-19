@@ -138,7 +138,6 @@ end;
 procedure TfrmLaunchSetting.Done(r: integer);
 var
   INI: TIniFile;
-  files: TArray<string>;
 begin
   INI := TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini'));
   try
