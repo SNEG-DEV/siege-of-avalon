@@ -107,6 +107,7 @@ const
 var
   DlgProgress : TLoaderBox;
   InterfacePath : string;
+  InterfaceLanguagePath : string;
   MapPath : AnsiString;
   Language : string;
   DeviceDriverIndex : Integer;
@@ -857,7 +858,10 @@ begin
       Log.Log( 'SoundPath=' + SoundPath );
       Log.flush;
 
-      InterfacePath := TPath.GetFullPath(IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'Interface', InterfacePath ) ) );
+      Language := INI.ReadString('Settings', 'LanguagePath', 'english');
+      InterfacePath := TPath.GetFullPath(IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'Interface', InterfacePath )));
+      InterfaceLanguagePath := IncludeTrailingPathDelimiter( TPath.Combine( InterfacePath, Language ));
+
       Log.Log( 'InterfacePath=' + InterfacePath );
       Log.flush;
 
@@ -875,7 +879,7 @@ begin
         end;
       end;
 
-      if FileExists( InterfacePath + 'gMainMenuBlank.bmp' ) then
+      if FileExists( InterfaceLanguagePath + 'gMainMenuBlank.bmp' ) then
         DlgRect := cMultilingualDialogs
       else
         DlgRect := cClassicDialogs;
@@ -896,8 +900,6 @@ begin
       GetChapters( INI );
 
       DeviceDriverIndex := INI.ReadInteger('Settings', 'DeviceDriverIndex', 0);
-
-      Language := INI.ReadString('Settings', 'LanguagePath', 'english');
 
       // Quick PL and RU Symbol.ini hacks - until better way found
       if Language = 'russian' then
@@ -3067,16 +3069,16 @@ begin
       Log.Log( 'Loading console...' );
       SpellGlyphs := SoAOS_DX_LoadBMP( InterfacePath + 'SpellGlyphs.bmp', cBlackBackground );
       imgCombat.LoadFromFile( InterfacePath + 'combat.bmp' );
-      imgBottomBar.LoadFromFile( InterfacePath + ScreenMetrics.bottombarFile + '.bmp' );
+      imgBottomBar.LoadFromFile( InterfaceLanguagePath + ScreenMetrics.bottombarFile + '.bmp' );
       OverlayB := SoAOS_DX_SurfaceFromBMP( imgBottomBar, cTransparent );
 
-      imgSidebar.LoadFromFile( InterfacePath + ScreenMetrics.sidebarFile + '.bmp' );
+      imgSidebar.LoadFromFile( InterfaceLanguagePath + ScreenMetrics.sidebarFile + '.bmp' );
       OverlayR := SoAOS_DX_SurfaceFromBMP( imgSidebar, cTransparent );
 
       ManaEmpty := SoAOS_DX_LoadBMP( InterfacePath + 'mana.bmp', cBlackBackground );
       LifeEmpty := SoAOS_DX_LoadBMP( InterfacePath + 'health.bmp', cBlackBackground );
 
-      imgSpellBar.LoadFromFile( InterfacePath + ScreenMetrics.spellbarFile + '.bmp' );
+      imgSpellBar.LoadFromFile( InterfaceLanguagePath + ScreenMetrics.spellbarFile + '.bmp' );
       SpellBar := SoAOS_DX_SurfaceFromBMP( imgSpellBar, cTransparent );
 
       ShadowImage := SoAOS_DX_LoadBMPResource( 'shadow', cBlackBackground );
@@ -3089,7 +3091,7 @@ begin
       NoSpellIcon.BltFast( 0, 0, OverlayB, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
       imgHelp.LoadFromFile( InterfacePath + 'spellinfo.bmp' );
       HelpBox := SoAOS_DX_LoadBMP( InterfacePath + 'spellinfo.bmp', cTransparent );
-      PauseImage := SoAOS_DX_LoadBMP( InterfacePath + 'paused.bmp', cTransparent );
+      PauseImage := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'paused.bmp', cTransparent );
 
       imgGlow := TBitmap.Create;
       try

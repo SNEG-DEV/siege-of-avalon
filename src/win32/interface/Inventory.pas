@@ -484,10 +484,10 @@ begin
   //Load the Background Bitmap and plot it
     DXRightArrow := SoAOS_DX_LoadBMP( InterfacePath + 'invRightArrow.bmp', cInvisColor );
     DXLeftArrow := SoAOS_DX_LoadBMP( InterfacePath + 'invLeftArrow.bmp', cInvisColor );
-    DXBackToGame := SoAOS_DX_LoadBMP( InterfacePath + 'invBackToGame.bmp', cInvisColor );
+    DXBackToGame := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'invBackToGame.bmp', cInvisColor );
     DXCircle := SoAOS_DX_LoadBMP( InterfacePath + 'invRedCircle.bmp', cInvisColor );
     DXBrown := SoAOS_DX_LoadBMP( InterfacePath + 'merBackHighlight.bmp', cInvisColor );
-    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'inventory.bmp', cInvisColor, width, height );
+    DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'inventory.bmp', cInvisColor, width, height );
     pr := Rect( 0, 0, width, height );
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   //Now for the Alpha'ed edges

@@ -219,10 +219,10 @@ begin
     DXBrown := SoAOS_DX_LoadBMP( InterfacePath + 'merBackHighlight.bmp', cInvisColor );
     DXRightArrow := SoAOS_DX_LoadBMP( InterfacePath + 'invRightArrow.bmp', cInvisColor );
     DXLeftArrow := SoAOS_DX_LoadBMP( InterfacePath + 'invLeftArrow.bmp', cInvisColor );
-    DXBackToGame := SoAOS_DX_LoadBMP( InterfacePath + 'obInvBackToGame.bmp', cInvisColor );
-    DXRightAll := SoAOS_DX_LoadBMP( InterfacePath + 'obInvRightAll.bmp', cInvisColor );
-    DXLeftAll := SoAOS_DX_LoadBMP( InterfacePath + 'obInvLeftAll.bmp', cInvisColor );
-    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'obInvCharacterToObjectInventory.bmp', cInvisColor, width, height );
+    DXBackToGame := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'obInvBackToGame.bmp', cInvisColor );
+    DXRightAll := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'obInvRightAll.bmp', cInvisColor );
+    DXLeftAll := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'obInvLeftAll.bmp', cInvisColor );
+    DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'obInvCharacterToObjectInventory.bmp', cInvisColor, width, height );
   //DxDirty := DDGetImage(lpDD, BMBack, InvisColor, False); //for now this is how we will do it
   //build the left side inventory space
     BuildGrid;

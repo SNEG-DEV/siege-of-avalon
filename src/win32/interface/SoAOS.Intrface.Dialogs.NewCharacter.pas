@@ -271,12 +271,12 @@ begin
 
     DXCircle := SoAOS_DX_LoadBMP( InterfacePath + 'chaRedOval.bmp', cInvisColor );
     DXBlack := SoAOS_DX_LoadBMP( InterfacePath + 'chaBlack.bmp', cInvisColor );
-    DXBox := SoAOS_DX_LoadBMP( InterfacePath + 'chaChooseBox.bmp', cInvisColor );
+    DXBox := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'chaChooseBox.bmp', cInvisColor );
 
-    DXContinue := SoAOS_DX_LoadBMP( InterfacePath + 'chaContinue.bmp', cInvisColor );
-    DXCancel := SoAOS_DX_LoadBMP( InterfacePath + 'chaCancel.bmp', cInvisColor, width, height );
+    DXContinue := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'chaContinue.bmp', cInvisColor );
+    DXCancel := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'chaCancel.bmp', cInvisColor, width, height );
 
-    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'CharCreate.bmp', cInvisColor, DlgWidth, DlgHeight );
+    DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'CharCreate.bmp', cInvisColor, DlgWidth, DlgHeight );
 
     if Players.Count>1 then
     begin

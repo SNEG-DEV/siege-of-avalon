@@ -189,11 +189,11 @@ begin
     pText.LoadFontGraphic( 'createchar' ); //load the GoldFont font graphic in
     if UseSmallFont then
       pText.LoadGoldFontGraphic;
-    DXContinue := SoAOS_DX_LoadBMP( InterfacePath + 'opContinue.bmp', cInvisColor );
+    DXContinue := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'opContinue.bmp', cInvisColor );
     DXYellow := SoAOS_DX_LoadBMP( InterfacePath + 'opYellow.bmp', cInvisColor );
     DXVolumeSlider := SoAOS_DX_LoadBMP( InterfacePath + 'opVolume.bmp', cInvisColor );
     DXVolumeShadow := SoAOS_DX_LoadBMP( InterfacePath + 'opVolumeShadow.bmp', cInvisColor );
-    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'options.bmp', cInvisColor, DlgWidth, DlgHeight );
+    DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'options.bmp', cInvisColor, DlgWidth, DlgHeight );
 
   //now we blit the screen to the backbuffer
     pr := Rect( 0, 0, DlgWidth, DlgHeight );

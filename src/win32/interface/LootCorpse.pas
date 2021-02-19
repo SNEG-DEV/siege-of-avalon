@@ -229,12 +229,12 @@ begin
     DXBrown := SoAOS_DX_LoadBMP( InterfacePath + 'merBackHighlight.bmp', cInvisColor );
     DXRightArrow := SoAOS_DX_LoadBMP( InterfacePath + 'invRightArrow.bmp', cInvisColor );
     DXLeftArrow := SoAOS_DX_LoadBMP( InterfacePath + 'invLeftArrow.bmp', cInvisColor );
-    DXBackToGame := SoAOS_DX_LoadBMP( InterfacePath + 'obInvBackToGame.bmp', cInvisColor );
+    DXBackToGame := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'obInvBackToGame.bmp', cInvisColor );
     DXPatch := SoAOS_DX_LoadBMP( InterfacePath + 'ltPatch.bmp', cInvisColor );
-    DXPrev := SoAOS_DX_LoadBMP( InterfacePath + 'ltPrevDark.bmp', cInvisColor );
-    DXNext := SoAOS_DX_LoadBMP( InterfacePath + 'ltNextDark.bmp', cInvisColor );
-    DXLeftAll := SoAOS_DX_LoadBMP( InterfacePath + 'obInvLeftAll.bmp', cInvisColor );
-    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'obInvCharacterToObjectInventory.bmp', cInvisColor, width, height );
+    DXPrev := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'ltPrevDark.bmp', cInvisColor );
+    DXNext := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'ltNextDark.bmp', cInvisColor );
+    DXLeftAll := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'obInvLeftAll.bmp', cInvisColor );
+    DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'obInvCharacterToObjectInventory.bmp', cInvisColor, width, height );
     BuildGrid;
   //now we blit the screen to the backbuffer
     pr := Rect( 0, 0, width, height );
@@ -1355,11 +1355,11 @@ begin
   Log.DebugLog( FailName );
   try
     //Load the grid graphic, and draw the left inventory area before we blit the screen to the backbuffer
-    DXGrid := SoAOS_DX_LoadBMP( InterfacePath + 'ltPrev.bmp', cInvisColor, width, height );
+    DXGrid := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'ltPrev.bmp', cInvisColor, width, height );
     pr := rect( 0, 0, width, height );
     DXBack.BltFast( 415, 357, DXGrid, @pr, DDBLTFAST_WAIT );
     DXGrid := nil;
-    DXGrid := SoAOS_DX_LoadBMP( InterfacePath + 'ltNext.bmp', cInvisColor, width, height );
+    DXGrid := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'ltNext.bmp', cInvisColor, width, height );
     pr := rect( 0, 0, width, height );
     DXBack.BltFast( 576, 357, DXGrid, @pr, DDBLTFAST_WAIT );
     DXGrid := nil;

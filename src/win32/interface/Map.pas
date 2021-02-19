@@ -126,8 +126,8 @@ begin
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
 
-    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'MapBack.bmp', cInvisColor );
-    DXDirty := SoAOS_DX_LoadBMP( InterfacePath + 'MapBack.bmp', cInvisColor );
+    DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'MapBack.bmp', cInvisColor );
+    DXDirty := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'MapBack.bmp', cInvisColor );
 
     Image := SoAOS_DX_LoadBMP( InterfacePath + 'MapMaskedShadowLayer.bmp', cBlackBackground, width, height );
     try
@@ -139,7 +139,7 @@ begin
       Image := nil;
     end;
 
-    Image := SoAOS_DX_LoadBMP( InterfacePath + 'MapColorLayer.bmp', cInvisColor, width, height );
+    Image := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'MapColorLayer.bmp', cInvisColor, width, height );
     try
       if assigned( Image ) then
       begin

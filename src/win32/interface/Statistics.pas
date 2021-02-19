@@ -181,8 +181,8 @@ begin
   //Load the Background Bitmap and plot it
     DXRightArrow := SoAOS_DX_LoadBMP( InterfacePath + 'staRightArrow.bmp', cInvisColor );
     DXLeftArrow := SoAOS_DX_LoadBMP( InterfacePath + 'staLeftArrow.bmp', cInvisColor );
-    DXBackToGame := SoAOS_DX_LoadBMP( InterfacePath + 'staBackToGame.bmp', cInvisColor );
-    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'Statistics.bmp', cInvisColor, width, height );
+    DXBackToGame := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'staBackToGame.bmp', cInvisColor );
+    DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'Statistics.bmp', cInvisColor, width, height );
   //Plot the arrows on the background
     for i := 0 to 15 do
     begin

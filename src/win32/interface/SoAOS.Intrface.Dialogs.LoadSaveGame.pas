@@ -203,31 +203,31 @@ begin
 
     //TODO: The rects are defined identical - clean
     if LoadFile then
-      DXLoad := SoAOS_DX_LoadBMP( InterfacePath + 'ldLoadLight.bmp', cInvisColor )
+      DXLoad := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'ldLoadLight.bmp', cInvisColor )
     else
-      DXLoad := SoAOS_DX_LoadBMP( InterfacePath + 'ldSaveLight.bmp', cInvisColor );
+      DXLoad := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'ldSaveLight.bmp', cInvisColor );
 
-    DXCancel := SoAOS_DX_LoadBMP( InterfacePath + 'ldCancel.bmp', cInvisColor );
+    DXCancel := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'ldCancel.bmp', cInvisColor );
 
-    DXok := SoAOS_DX_LoadBMP( InterfacePath + 'ldOk.bmp', cInvisColor );
+    DXok := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'ldOk.bmp', cInvisColor );
 
     DXBackHighlight := SoAOS_DX_LoadBMP( InterfacePath + 'opYellow.bmp', cInvisColor );
 
-    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'ldLoadSave.bmp', cInvisColor, DlgWidth, DlgHeight );
+    DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'ldLoadSave.bmp', cInvisColor, DlgWidth, DlgHeight );
 
     if LoadFile then
-      DXTemp := SoAOS_DX_LoadBMP( InterfacePath + 'ldLoadDark.bmp', cInvisColor )
+      DXTemp := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'ldLoadDark.bmp', cInvisColor )
     else
-      DXTemp := SoAOS_DX_LoadBMP( InterfacePath + 'ldSaveDark.bmp', cInvisColor );
+      DXTemp := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'ldSaveDark.bmp', cInvisColor );
     pr := Rect( 0, 0, DlgRect.dlgLoadSaveRect.Width, DlgRect.dlgLoadSaveRect.Height );
     DXBack.BltFast( DlgRect.dlgLoadSaveRect.Left, DlgRect.dlgLoadSaveRect.Top, DXTemp, @pr, DDBLTFAST_WAIT );
 
     DXTemp := nil;
 
     if LoadFile then
-      DXTemp := SoAOS_DX_LoadBMP( InterfacePath + 'ldLoadUpper.bmp', cInvisColor )
+      DXTemp := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'ldLoadUpper.bmp', cInvisColor )
     else
-      DXTemp := SoAOS_DX_LoadBMP( InterfacePath + 'ldSaveUpper.bmp', cInvisColor );
+      DXTemp := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'ldSaveUpper.bmp', cInvisColor );
     pr := Rect( 0, 0, DlgRect.dlgLoadSaveTitleRect.Width, DlgRect.dlgLoadSaveTitleRect.Height );
     DXBack.BltFast( DlgRect.dlgLoadSaveTitleRect.Left, DlgRect.dlgLoadSaveTitleRect.Top, DXTemp, @pr, DDBLTFAST_WAIT );
     pr := Rect( 0, 0, DlgWidth, DlgHeight );
@@ -971,7 +971,7 @@ begin
   Log.DebugLog( FailName );
   try
 
-    DXBorders := SoAOS_DX_LoadBMP( InterfacePath + 'ldChooseBox.bmp', cInvisColor, width, height );
+    DXBorders := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'ldChooseBox.bmp', cInvisColor, width, height );
     nRect := pItem( SelectRect.Items[ CurrentSelectedListItem ] ).Rect;
     pr := Rect( 0, 0, width, height );
     lpDDSBack.BltFast( nRect.left - 10, nRect.top + 32, DXBorders, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
@@ -1004,7 +1004,7 @@ begin
   Log.DebugLog( FailName );
   try
 
-    DXBorders := SoAOS_DX_LoadBMP( InterfacePath + 'ldChooseBox.bmp', cInvisColor, width, height );
+    DXBorders := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'ldChooseBox.bmp', cInvisColor, width, height );
     nRect := pItem( SelectRect.Items[ CurrentSelectedListItem ] ).Rect;
     pr := Rect( 0, 0, width, height );
     lpDDSBack.BltFast( nRect.left - 10, nRect.top + 32, DXBorders, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
@@ -1031,7 +1031,7 @@ var
   nRect : TRect;
   pr : TRect;
 begin
-  DXBorders := SoAOS_DX_LoadBMP( InterfacePath + 'ldChooseBox.bmp', cInvisColor, width, height );
+  DXBorders := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'ldChooseBox.bmp', cInvisColor, width, height );
   nRect := pItem( SelectRect.Items[ CurrentSelectedListItem ] ).Rect;
   pr := Rect( 0, 0, width, height );
   lpDDSBack.BltFast( nRect.left - 10, nRect.top + 32, DXBorders, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );

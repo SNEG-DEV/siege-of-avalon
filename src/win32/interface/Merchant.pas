@@ -232,10 +232,10 @@ begin
     Alpha := 220; //alpha value for all alphabet plots
 
   //We have to do this part up here in order to get coordinated from buildgrid
-    DXGroundBox := SoAOS_DX_LoadBMP( InterfacePath + 'merGroundBox.bmp', cInvisColor );
+    DXGroundBox := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'merGroundBox.bmp', cInvisColor );
     DXRightArrow := SoAOS_DX_LoadBMP( InterfacePath + 'invRightArrow.bmp', cInvisColor );
     DXLeftArrow := SoAOS_DX_LoadBMP( InterfacePath + 'invLeftArrow.bmp', cInvisColor );
-    DXBackToGame := SoAOS_DX_LoadBMP( InterfacePath + 'obInvBackToGame.bmp', cInvisColor );
+    DXBackToGame := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'obInvBackToGame.bmp', cInvisColor );
     DXBackHighlight := SoAOS_DX_LoadBMP( InterfacePath + 'merBackHighlight.bmp', cInvisColor );
 {  BMBack.LoadFromFile(InterfacePath + 'merBuyItem.bmp');
   DXBuyItem := DDGetImage(lpDD, BMBack, InvisColor, False);
@@ -271,7 +271,7 @@ begin
     ScrollArrows[ 7 ].Y := ScrollArrows[ 3 ].Y;
  //end of arrows
 
-    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'Merchant.bmp', cInvisColor, width, height );
+    DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'Merchant.bmp', cInvisColor, width, height );
     DXDirty := DDGetSurface( lpDD, GroundListWidth, GroundListHeight, cInvisColor, true );
   //build the left side inventory space
     BuildGrid;

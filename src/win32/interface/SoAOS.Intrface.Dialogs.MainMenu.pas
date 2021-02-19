@@ -222,10 +222,10 @@ begin
     { TODO -cUI : Currently old, new multilanguage, and russian menu implementations - pick one }
     BM := TBitmap.Create;
     try
-      if FileExists( InterfacePath + 'gMainMenuBlank.bmp' ) then   // multi language setup
+      if FileExists( InterfaceLanguagePath + 'gMainMenuBlank.bmp' ) then   // multi language setup
       begin
-        DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'gMainMenuBlank.bmp', cInvisColor, DlgWidth, DlgHeight );
-        BM.LoadFromFile( InterfacePath + 'gMainMenuText.bmp' );
+        DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'gMainMenuBlank.bmp', cInvisColor, DlgWidth, DlgHeight );
+        BM.LoadFromFile( InterfaceLanguagePath + 'gMainMenuText.bmp' );
         DXBack.GetDC( DC );
         try
           if Language = 'russian' then
@@ -244,9 +244,9 @@ begin
       pr := Rect( 0, 0, DlgWidth, DlgHeight );
       lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
 
-      if FileExists( InterfacePath + 'gMainMenuTextBttns.bmp' ) then
+      if FileExists( InterfaceLanguagePath + 'gMainMenuTextBttns.bmp' ) then
       begin
-        BM.LoadFromFile( InterfacePath + 'gMainMenuTextBttns.bmp' );
+        BM.LoadFromFile( InterfaceLanguagePath + 'gMainMenuTextBttns.bmp' );
         if Language = 'russian' then
         begin
           YWidth := 55;
@@ -429,7 +429,7 @@ begin
 
   Log.DebugLog( FailName );
   try
-    DXBorders := SoAOS_DX_LoadBMP( InterfacePath + 'ldChooseBox.bmp', cInvisColor, width, height );
+    DXBorders := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'ldChooseBox.bmp', cInvisColor, width, height );
     nRect := Captions[ 7 ].Rect; //Exit
 
     pr := Rect( 0, 0, DlgWidth, DlgHeight );

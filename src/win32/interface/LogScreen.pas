@@ -210,14 +210,14 @@ begin
 
     if IniFileFound and ( MaxPages > 0 ) then
     begin //(LogInfo.count > 15) then begin
-      DXPrev := SoAOS_DX_LoadBMP( InterfacePath + 'logPrevious.bmp', cTransparent );
-      DXPrev2 := SoAOS_DX_LoadBMP( InterfacePath + 'logPrevious2.bmp', cTransparent );
-      DXNext := SoAOS_DX_LoadBMP( InterfacePath + 'logNext.bmp', cTransparent );
-      DXNext2 := SoAOS_DX_LoadBMP( InterfacePath + 'logNext2.bmp', cTransparent );
+      DXPrev := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'logPrevious.bmp', cTransparent );
+      DXPrev2 := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'logPrevious2.bmp', cTransparent );
+      DXNext := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'logNext.bmp', cTransparent );
+      DXNext2 := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'logNext2.bmp', cTransparent );
     end;
 
-    DXBackToGame := SoAOS_DX_LoadBMP( InterfacePath + 'obInvBackToGame.bmp', cInvisColor );
-    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'LogScreen.bmp', cTransparent, width, height );
+    DXBackToGame := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'obInvBackToGame.bmp', cInvisColor );
+    DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'LogScreen.bmp', cTransparent, width, height );
     pr := Rect( 0, 0, width, height );
     lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 

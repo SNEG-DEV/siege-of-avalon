@@ -102,7 +102,7 @@ begin
 
   frmMain.OnMouseDown := FormMouseDown; //TODO: Use Callback
 
-  DXBack := SoAOS_DX_LoadBMP( InterfacePath + FBMPFileName, cInvisColor, DlgWidth, DlgHeight );
+  DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + FBMPFileName, cInvisColor, DlgWidth, DlgHeight );
   pr := Rect( 0, 0, DlgWidth, DlgHeight );
   lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
 

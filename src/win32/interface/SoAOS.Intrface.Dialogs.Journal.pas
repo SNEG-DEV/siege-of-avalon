@@ -152,7 +152,7 @@ begin
 
     pText.LoadFontGraphic( 'inventory' ); //load the statistics font graphic in
 
-    DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'Journal.bmp', cInvisColor, DlgWidth, DlgHeight );
+    DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'Journal.bmp', cInvisColor, DlgWidth, DlgHeight );
 
   {//Now for the Alpha'ed edges
   BMBack.LoadFromFile(ExtractFilePath(Application.ExeName) + 'Options\Dialog-Shadow.bmp');

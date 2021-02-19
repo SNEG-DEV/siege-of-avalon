@@ -185,7 +185,7 @@ begin
     else if Lowercase( Screenname ) = 'createchar' then
       fileName := 'fntGoldFont.bmp';
 
-    DXSurface := SoAOS_DX_LoadBMP( InterfacePath + fileName, cInvisColor );
+    DXSurface := SoAOS_DX_LoadBMP( InterfaceLanguagePath + fileName, cInvisColor );
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -201,7 +201,7 @@ begin
 
     if assigned( DXDarkSurface ) then
       exit;
-    DXDarkSurface := SoAOS_DX_LoadBMP( InterfacePath + 'fntBoldFont.bmp', cInvisColor );
+    DXDarkSurface := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'fntBoldFont.bmp', cInvisColor );
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -212,7 +212,7 @@ procedure TGameText.LoadTinyFontGraphic( );
 begin
   if assigned( DXTinySurface ) then
     exit;
-  DXTinySurface := SoAOS_DX_LoadBMP( InterfacePath + 'fntTinyFont.bmp', cInvisColor );
+  DXTinySurface := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'fntTinyFont.bmp', cInvisColor );
 end; //TGameText.LoadTinyFontGraphic
 
 procedure TGameText.UnloadTinyFontGraphic( );
@@ -225,7 +225,7 @@ procedure TGameText.Load13Graphic( );
 begin
   if assigned( DX13Surface ) then
     exit;
-  DX13Surface := SoAOS_DX_LoadBMP( InterfacePath + 'fnt13.bmp', cInvisColor );
+  DX13Surface := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'fnt13.bmp', cInvisColor );
 end; //TGameText.Load13Graphic
 
 procedure TGameText.Unload13Graphic( );
@@ -238,7 +238,7 @@ procedure TGameText.LoadMegaTinyFontGraphic( );
 begin
   if assigned( DXMegaTinySurface ) then
     exit;
-  DXMegaTinySurface := SoAOS_DX_LoadBMP( InterfacePath + 'fntMegaTinyFont.bmp', cInvisColor );
+  DXMegaTinySurface := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'fntMegaTinyFont.bmp', cInvisColor );
 end; //TGameText.LoadMegaTinyFontGraphic
 
 procedure TGameText.UnloadMegaTinyFontGraphic( );
@@ -257,9 +257,9 @@ begin
   Log.DebugLog(FailName);
   try
 
-    if TFile.Exists( InterfacePath + 'fntAlphaCoords.dat' ) then
+    if TFile.Exists( InterfaceLanguagePath + 'fntAlphaCoords.dat' ) then
     begin
-      AssignFile( F, InterfacePath + 'fntAlphaCoords.dat' );
+      AssignFile( F, InterfaceLanguagePath + 'fntAlphaCoords.dat' );
       Reset( F );
       i := 32;
       while not Eof( F ) do
@@ -279,9 +279,9 @@ begin
       CloseFile( F );
     end;
   //And Now the Dark Font
-    if TFile.Exists( InterfacePath + 'fntDarkAlphaCoords.dat' ) then
+    if TFile.Exists( InterfaceLanguagePath + 'fntDarkAlphaCoords.dat' ) then
     begin
-      AssignFile( F, InterfacePath + 'fntDarkAlphaCoords.dat' );
+      AssignFile( F, InterfaceLanguagePath + 'fntDarkAlphaCoords.dat' );
       Reset( F );
       i := 32;
       while not Eof( F ) do
@@ -301,9 +301,9 @@ begin
       CloseFile( F );
     end;
   //And Now the Tiny Font
-    if TFile.Exists( InterfacePath + 'fntTinyCoords.dat' ) then
+    if TFile.Exists( InterfaceLanguagePath + 'fntTinyCoords.dat' ) then
     begin
-      AssignFile( F, InterfacePath + 'fntTinyCoords.dat' );
+      AssignFile( F, InterfaceLanguagePath + 'fntTinyCoords.dat' );
       Reset( F );
       i := 32;
       while not Eof( F ) do
@@ -323,9 +323,9 @@ begin
       CloseFile( F );
     end;
   //And Now the Mega Tiny Font
-    if TFile.Exists( InterfacePath + 'fntMegaTinyCoords.dat' ) then
+    if TFile.Exists( InterfaceLanguagePath + 'fntMegaTinyCoords.dat' ) then
     begin
-      AssignFile( F, InterfacePath + 'fntMegaTinyCoords.dat' );
+      AssignFile( F, InterfaceLanguagePath + 'fntMegaTinyCoords.dat' );
       Reset( F );
       i := 32;
       while not Eof( F ) do
@@ -345,9 +345,9 @@ begin
       CloseFile( F );
     end;
   //And Now the 13 Tiny Font
-    if TFile.Exists( InterfacePath + 'fnt13Coords.dat' ) then
+    if TFile.Exists( InterfaceLanguagePath + 'fnt13Coords.dat' ) then
     begin
-      AssignFile( F, InterfacePath + 'fnt13Coords.dat' );
+      AssignFile( F, InterfaceLanguagePath + 'fnt13Coords.dat' );
       Reset( F );
       i := 32;
       while not Eof( F ) do
@@ -1355,7 +1355,7 @@ procedure TGameText.LoadGoldFontGraphic;
 begin
   if assigned( DXGoldSurface ) then
     exit;
-  DXGoldSurface := SoAOS_DX_LoadBMP( InterfacePath + 'fntTinyGold.bmp', cInvisColor );
+  DXGoldSurface := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'fntTinyGold.bmp', cInvisColor );
 end;
 
 procedure TGameText.PlotGoldText( DX : IDirectDrawSurface; Sentence : string;

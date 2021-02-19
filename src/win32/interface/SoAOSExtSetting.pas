@@ -138,7 +138,6 @@ end;
 procedure TfrmLaunchSetting.Done(r: integer);
 var
   INI: TIniFile;
-  languagePath, fsrc, fdest: string;
   files: TArray<string>;
 begin
   INI := TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini'));
@@ -161,17 +160,6 @@ begin
       on EIniFileException do
       begin
         RaiseLastOsError;
-      end;
-    end;
-
-    if FCurrentLanguage <> cNoLanguage then
-    begin
-      languagePath := IncludeTrailingPathDelimiter(TPath.Combine(FInterfacePath, FCurrentLanguage));
-      files := TDirectory.GetFiles(languagePath);
-      for fsrc in files do
-      begin
-        fdest := TPath.Combine( FInterfacePath, TPath.GetFileName( fsrc ) );
-        TFile.Copy( fsrc, fdest, True);
       end;
     end;
 

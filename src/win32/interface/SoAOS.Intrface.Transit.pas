@@ -253,7 +253,7 @@ begin
     DXBack := DDGetSurface( lpDD, DirtyRect.Width, DirtyRect.Height, cInvisColor, False );
     DXDirty := DDGetSurface( lpDD, DirtyRect.Width, DirtyRect.Height, cInvisColor, False );
 
-    Background := SoAOS_DX_LoadBMP( InterfacePath + 'TransitDefault.bmp', cInvisColor );
+    Background := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'TransitDefault.bmp', cInvisColor );
     try
       if Assigned( Background ) then
       begin
@@ -712,7 +712,7 @@ begin
   FRegion.Top := y;
   if image <> '' then
   begin
-    FImage := SoAOS_DX_LoadBMP( InterfacePath + image, cInvisColor, width, height );
+    FImage := SoAOS_DX_LoadBMP( InterfaceLanguagePath + image, cInvisColor, width, height );
     FRegion.Right := Region.Left + width;
     FRegion.Bottom := Region.Top + height;
   end;

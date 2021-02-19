@@ -187,7 +187,7 @@ begin
   //create the dirty surface
   DXDirty := DDGetSurface( lpDD, 35, 35, cInvisColor, true );
 
-  DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'NPC.bmp', cInvisColor, width, height );
+  DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'NPC.bmp', cInvisColor, width, height );
 
   DXTarget[ 0 ] := SoAOS_DX_LoadBMP( InterfacePath + 'NPCTarget1.bmp', cInvisColor);
   DXTarget[ 1 ] := SoAOS_DX_LoadBMP( InterfacePath + 'NPCTarget2.bmp', cInvisColor );
@@ -195,7 +195,7 @@ begin
   DXTarget[ 3 ] := SoAOS_DX_LoadBMP( InterfacePath + 'NPCTarget4.bmp', cInvisColor );
 
   DXIcons := SoAOS_DX_LoadBMP( InterfacePath + 'NPCActionIcons.bmp', cTransparent );
-  DXBackToGame := SoAOS_DX_LoadBMP( InterfacePath + 'NPCBackToGame.bmp', cTransparent );
+  DXBackToGame := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'NPCBackToGame.bmp', cTransparent );
 
   LoadTargetActionIcons;
   pr := Rect( 0, 0, width, height );
