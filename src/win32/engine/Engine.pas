@@ -65,7 +65,6 @@ procedure RunScript( Me : TObject; Script : string );
 procedure Converse( ObjectRef : TObject; Conversation : string );
 function FormatFP( D : double ) : string;
 function UnFormatFP( S : string ) : double;
-procedure CheckCache;
 procedure GetChapters( INI : TINIFile );
 function SymbolReplacement( const Script : string ) : string;
 
@@ -83,8 +82,6 @@ var
   SiegeINIFile: string;
   SiegeINILanguageFile: string;
   GamesPath: string;
-//  MapsPath: string;
-  CachePath : string;
   MapKnown : boolean;
   Themes : TStringList;
   GameName : string;
@@ -106,11 +103,8 @@ var
   Quests : TStringList;
   Adventures : TStringList;
   MouseCursor : TMousePtr;
-  ReadCache : boolean;
-  WriteCache : boolean;
   GlobalBrightness : longint;
   UseDirectSound : boolean;
-  MaxCacheSize : int64;
   LoadingFromSaveFile : boolean;
   SpawnList : TList;
   Chapters : int64;
@@ -140,13 +134,6 @@ uses
   SoAOS.Effects,
   Display,
   Music;
-
-type
-  TCacheInfo = record
-    Name : ShortString;
-    Size : longint;
-    Date : TDateTime;
-  end;
 
 const
   MaxScriptEntry = 40;
@@ -1181,7 +1168,7 @@ begin
         else if Token = 'setmaxparty' then
         begin
           try
-            MaxPartyMembers := strtoint( Parms ); { TODO -oSN -cLogic : Check on Params vs. Max slots }
+            MaxPartyMembers := ScreenMetrics.PartyMemberSlots; // strtoint( Parms );
           except
           end;
         end
@@ -1458,166 +1445,6 @@ begin
     found := FindNext( SearchRec );
   end;
   FindClose( SearchRec );
-end;
-
-procedure CheckCache;
-var
-  F : file;
-//  INI: TINIFile;
-  FileList : TStringList;
-  TotalSize : int64;
-  Dir : string;
-  i, j : integer;
-  L : longint;
-//  L64: int64;
-  CacheList, pList, pList1, pList2 : ^TCacheInfo;
-  CacheItem : TCacheInfo;
-  Count : integer;
-begin
-  FileList := GetFileList( CachePath, '.zit' );
-  try
-    Count := FileList.count;
-    GetMem( CacheList, Count * sizeof( TCacheInfo ) );
-    pList := CacheList;
-    TotalSize := 0;
-    L := 0;
-    //Calculate TotalSize, Load Name and Size fields
-    for i := 0 to Count - 1 do
-    begin
-      pList^.Name := ShortString( ChangeFileExt( FileList.strings[ i ], '' ) );
-
-      if TFile.Exists(Dir + FileList.strings[ i ]) then
-      begin
-        AssignFile( F, Dir + FileList.strings[ i ] );
-        try
-          Reset( F, 1 );
-          L := filesize( F );
-          CloseFile( F );
-        except
-          L := 0;
-        end;
-      end;
-
-      if TFile.Exists(Dir + ChangeFileExt( FileList.strings[ i ], '.pit') ) then
-      begin
-        AssignFile( F, Dir + ChangeFileExt( FileList.strings[ i ], '.pit' ) );
-        try
-          Reset( F, 1 );
-          L := L + filesize( F );
-          CloseFile( F );
-        except
-        end;
-      end;
-
-      if TFile.Exists( Dir + ChangeFileExt( FileList.strings[ i ], '.dit' ) ) then
-      begin
-        AssignFile( F, Dir + ChangeFileExt( FileList.strings[ i ], '.dit' ) );
-        try
-          Reset( F, 1 );
-          L := L + filesize( F );
-          CloseFile( F );
-        except
-        end;
-      end;
-
-      if TFile.Exists( Dir + ChangeFileExt( FileList.strings[ i ], '.cit' ) ) then
-      begin
-        AssignFile( F, Dir + ChangeFileExt( FileList.strings[ i ], '.cit' ) );
-        try
-          Reset( F, 1 );
-          L := L + filesize( F );
-          if filesize( F ) > 12 then
-          begin
-            Seek( F, 12 );
-            BlockRead( F, pList^.Date, sizeof( TDateTime ) );
-          end
-          else
-          begin
-            pList^.Date := 0;
-          end;
-          CloseFile( F );
-        except
-        end;
-      end;
-//Log.Log(pList^.Name+' - '+DateTimeToStr(pList^.Date)+' ('+inttostr(L)+')');
-
-      pList^.Size := L;
-      TotalSize := TotalSize + L;
-      inc( pList );
-    end;
-  finally
-    FileList.free;
-  end;
-
-  if TotalSize > MaxCacheSize then
-  begin
-    Log.Log( 'Clearing cache...' );
-    //Load Date field
-//    INI:=TINIFile.create(DefaultPath + 'siege.ini');
-
-//    try
-    {  pList:=CacheList;
-      for i:=1 to Count do begin
-        S:=INI.ReadString('Cache',pList^.Name,'');
-        try
-          L64:=StrToInt64(S);
-        except
-          L64:=0;
-        end;
-        pList^.Date:=TDateTime(addr(L64)^);
-        inc(pList);
-      end;    }
-
-      //Sort by Date
-    pList := CacheList;
-    for i := 1 to Count - 1 do
-    begin
-      pList1 := pList;
-      pList2 := pList;
-      for j := i + 1 to Count do
-      begin
-        inc( pList1 );
-        if pList1.Date < pList2.Date then
-          pList2 := pList1;
-      end;
-      if pList2 <> pList then
-      begin
-        CacheItem := pList^;
-        pList^ := pList2^;
-        pList2^ := CacheItem;
-      end;
-      inc( pList );
-    end;
-
-    pList := CacheList;
-    while ( TotalSize > MaxCacheSize ) do
-    begin
-      Log.Log( '  ' + pList^.Name );
-      try
-        DeleteFile( Dir + pList^.Name + '.zit' );
-      except
-      end;
-      try
-        DeleteFile( Dir + pList^.Name + '.pit' );
-      except
-      end;
-      try
-        DeleteFile( Dir + pList^.Name + '.dit' );
-      except
-      end;
-      try
-        DeleteFile( Dir + pList^.Name + '.cit' );
-      except
-      end;
-      dec( TotalSize, pList^.Size );
-//        INI.DeleteKey('Cache',pList^.Name);
-      inc( pList );
-    end;
-//    finally
-//      INI.free
-//    end;
-  end;
-  FreeMem( CacheList );
 end;
 
 end.

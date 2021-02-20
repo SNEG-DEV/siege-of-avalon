@@ -109,8 +109,6 @@ var
   Resource : TResource;
   Zones : TStringList;
   Zone : integer;
-  UseCache : boolean;
-  CacheFileA, CacheFileB : string;
   StaticObject : boolean;
   NewObject : boolean;
   DumpMode : boolean;
@@ -387,31 +385,29 @@ var
           FlickerType := flFluorescent
         else
           FlickerType := flNone;
-        if not UseCache then
-        begin
-          zone := Map.AddLight( Color, Intensity, Radius, FlickerType, X, Y, Z );
-    //    Log.Log('Light Zone: '+inttostr(zone));
 
-          S := MapPath + ChangeFileExt( ExtractFilename( LVLFile ), '.zit' );
-          if TFile.Exists( S ) then
+        zone := Map.AddLight( Color, Intensity, Radius, FlickerType, X, Y, Z );
+  //    Log.Log('Light Zone: '+inttostr(zone));
+
+        S := MapPath + ChangeFileExt( ExtractFilename( LVLFile ), '.zit' );
+        if TFile.Exists( S ) then
+        try
+          ZoneStream := TFileStream.Create( S, fmOpenRead or fmShareDenyWrite );
           try
-            ZoneStream := TFileStream.Create( S, fmOpenRead or fmShareDenyWrite );
-            try
-              if ZoneStream.Size >= ( zone + 1 ) * 24 then
-              begin //we know this data is 24 bytes long
-                ZoneStream.Position := zone * 24;
-                try
-                  Map.Zones[ zone ].LoadFromStream( ZoneStream );
-                except
-                end;
+            if ZoneStream.Size >= ( zone + 1 ) * 24 then
+            begin //we know this data is 24 bytes long
+              ZoneStream.Position := zone * 24;
+              try
+                Map.Zones[ zone ].LoadFromStream( ZoneStream );
+              except
               end;
-            finally
-              ZoneStream.free;
             end;
-          except
+          finally
+            ZoneStream.free;
           end;
-
+        except
         end;
+
       except
         on E : Exception do
           Log.log( FailName + E.Message );
@@ -535,8 +531,7 @@ var
                 CreatedFromLvlFile := true;
                 Resource := TResource( Figures.objects[ i ] );
                 LoadProperties( Attributes );
-                if not UseCache then
-                  Init;
+                Init;
               end;
             end
             else
@@ -722,101 +717,94 @@ var
       end
       else if OIndex[ Index ] > 0 then
       begin
-        if UseCache then
+//        Log.Log('  #'+IntToStr(OIndex[Index])+' at ('+IntToStr(X)+','+IntToStr(Y)+','+IntToStr(Z)+')');
+        if lowercase( Attributes.Values[ 'Collidable' ] ) = 'false' then
+          Collidable := False
+        else
+          Collidable := True;
+        if assigned( Attributes ) then
         begin
-//        Log.Log('Skipping cached item');
+          S := Attributes.values[ 'FilterID' ];
+          if S = '' then
+            i := 0
+          else
+            i := StrToInt( S );
+          pBase := Map.AddItem( ZIndex[ Index ], OIndex[ Index ] + ImageIndex, X, Y, Z, -i, Collidable );
+        end
+        else
+          pBase := Map.AddItem( ZIndex[ Index ], OIndex[ Index ] + ImageIndex, X, Y, Z, 0, Collidable );
+
+        AutoTransparent := pBase.AutoTransparent;
+        XRayID := pBase.XRayID;
+        Slope := pBase.Slope0;
+        S := lowercase( Attributes.values[ 'ini.XRayable' ] );
+        if ( S = '' ) then
+        else if ( S = 'no' ) then
+        begin
+          AutoTransparent := False;
+          XRayID := 0;
+          Slope := 0;
         end
         else
         begin
-//        Log.Log('  #'+IntToStr(OIndex[Index])+' at ('+IntToStr(X)+','+IntToStr(Y)+','+IntToStr(Z)+')');
-          if lowercase( Attributes.Values[ 'Collidable' ] ) = 'false' then
-            Collidable := False
-          else
-            Collidable := True;
-          if assigned( Attributes ) then
-          begin
-            S := Attributes.values[ 'FilterID' ];
-            if S = '' then
-              i := 0
-            else
-              i := StrToInt( S );
-            pBase := Map.AddItem( ZIndex[ Index ], OIndex[ Index ] + ImageIndex, X, Y, Z, -i, Collidable );
-          end
-          else
-            pBase := Map.AddItem( ZIndex[ Index ], OIndex[ Index ] + ImageIndex, X, Y, Z, 0, Collidable );
-
-          AutoTransparent := pBase.AutoTransparent;
-          XRayID := pBase.XRayID;
-          Slope := pBase.Slope0;
-          S := lowercase( Attributes.values[ 'ini.XRayable' ] );
-          if ( S = '' ) then
-          else if ( S = 'no' ) then
-          begin
-            AutoTransparent := False;
-            XRayID := 0;
-            Slope := 0;
-          end
-          else
-          begin
-            try
-              A := UnFormatFP( S );
-              if A <> 90 then
-              begin
-                A := -PI * A / 180;
-                Slope := Sin( A ) / Cos( A ) / 2;
-                AutoTransparent := True;
-              end;
-            except
-            end;
-            S := Attributes.values[ 'XRayID' ];
-            if S <> '' then
-              XRayID := StrToInt( S );
-          end;
-
-          pRefItem := pBase;
-          InitDelta := false;
-          RefDelta := 0;
-          pItem := pBase;
-          while True do
-          begin
-            pItem.AutoTransparent := AutoTransparent;
-            if AutoTransparent then
-              pItem.Slope0 := Slope;
-            pItem.XRayID := XRayID;
-
-            if pItem.VHeight <> 0 then
+          try
+            A := UnFormatFP( S );
+            if A <> 90 then
             begin
-              Delta := pItem.Y - round( ( pItem.X - pBase.X ) * Slope );
-              if InitDelta then
-              begin
-                if Delta < RefDelta then
-                begin
-                  RefDelta := Delta;
-                  pRefItem := pItem
-                end;
-              end
-              else
+              A := -PI * A / 180;
+              Slope := Sin( A ) / Cos( A ) / 2;
+              AutoTransparent := True;
+            end;
+          except
+          end;
+          S := Attributes.values[ 'XRayID' ];
+          if S <> '' then
+            XRayID := StrToInt( S );
+        end;
+
+        pRefItem := pBase;
+        InitDelta := false;
+        RefDelta := 0;
+        pItem := pBase;
+        while True do
+        begin
+          pItem.AutoTransparent := AutoTransparent;
+          if AutoTransparent then
+            pItem.Slope0 := Slope;
+          pItem.XRayID := XRayID;
+
+          if pItem.VHeight <> 0 then
+          begin
+            Delta := pItem.Y - round( ( pItem.X - pBase.X ) * Slope );
+            if InitDelta then
+            begin
+              if Delta < RefDelta then
               begin
                 RefDelta := Delta;
-                pRefItem := pItem;
-                InitDelta := true;
+                pRefItem := pItem
               end;
+            end
+            else
+            begin
+              RefDelta := Delta;
+              pRefItem := pItem;
+              InitDelta := true;
             end;
-
-            if pItem.Last then
-              break;
-            inc( pItem );
           end;
 
-          ItemIndex := Map.GetItemIndex( pRefItem );
-          pItem := PBase;
-          while True do
-          begin
-            pItem.RefItem := ItemIndex;
-            if pItem.Last then
-              break;
-            inc( pItem );
-          end;
+          if pItem.Last then
+            break;
+          inc( pItem );
+        end;
+
+        ItemIndex := Map.GetItemIndex( pRefItem );
+        pItem := PBase;
+        while True do
+        begin
+          pItem.RefItem := ItemIndex;
+          if pItem.Last then
+            break;
+          inc( pItem );
         end;
 
       end;
@@ -979,7 +967,6 @@ var
     S : AnsiString;
     z : word;
     ZoneStream : TFileStream;
-    P : longint;
   const
     FailName : string = 'Loader.ReadZonesBlock';
   begin
@@ -1017,84 +1004,25 @@ var
       end;
 
       ZoneStream := nil;
-      if UseCache then
+
+      S := AnsiString( MapPath + ChangeFileExt( ExtractFilename( LVLFile ), '.zit' ) );
+      try
+        if TFile.Exists( S ) then
+          ZoneStream := TFileStream.Create( S, fmOpenRead or fmShareDenyWrite )
+      except
+      end;
+
+      for i := 1 to MaxZone do
       begin
-        Log.Log( 'Loading cache' );
-        try
-          ZoneStream := TFileStream.Create( CacheFileA, fmOpenRead or fmShareDenyWrite );
-          try
-            Map.LoadFromStream( ZoneStream );
-          finally
-            ZoneStream.Free;
-          end;
-        except
-        end;
-
-        try
-          ZoneStream := TFileStream.Create( CacheFileB, fmOpenRead or fmShareDenyWrite );
-        except
-        end;
-
-        z := 0;
-        TZone.Skip( ZoneStream );
-        for i := 1 to MaxZone do
+        z := Map.AddZone;
+        if assigned( ZoneStream ) then
         begin
-          z := Map.AddZone;
-          if assigned( ZoneStream ) then
-          begin
+          if ZoneStream.Size >= ( z + 1 ) * 24 then
+          begin //we know this data is 24 bytes long
+            ZoneStream.Position := z * 24;
             try
               Map.Zones[ z ].LoadFromStream( ZoneStream );
             except
-            end;
-          end;
-        end;
-
-        if assigned( ZoneStream ) then
-        begin
-          P := ZoneStream.position;
-          Count := 0;
-          while ZoneStream.position < ZoneStream.Size do
-          begin
-            Map.AddLightZone;
-            TZone.Skip( ZoneStream );
-            inc( Count );
-          end;
-
-          ZoneStream.position := P;
-          for i := 1 to Count do
-          begin
-            if assigned( ZoneStream ) then
-            begin
-              inc( z );
-              try
-                Map.Zones[ z ].LoadFromStream( ZoneStream );
-              except
-              end;
-            end;
-          end;
-        end;
-      end
-      else
-      begin
-        S := AnsiString( MapPath + ChangeFileExt( ExtractFilename( LVLFile ), '.zit' ) );
-        try
-          if TFile.Exists( S ) then
-            ZoneStream := TFileStream.Create( S, fmOpenRead or fmShareDenyWrite )
-        except
-        end;
-
-        for i := 1 to MaxZone do
-        begin
-          z := Map.AddZone;
-          if assigned( ZoneStream ) then
-          begin
-            if ZoneStream.Size >= ( z + 1 ) * 24 then
-            begin //we know this data is 24 bytes long
-              ZoneStream.Position := z * 24;
-              try
-                Map.Zones[ z ].LoadFromStream( ZoneStream );
-              except
-              end;
             end;
           end;
         end;
@@ -1133,48 +1061,26 @@ begin
       SceneName := 'Default Scene';
     Log.Log( 'Scene=' + SceneName );
     SceneName := lowercase( SceneName );
-    CacheFileA := CachePath + ChangeFileExt( ExtractFilename( LVLFile ), '' ) + '_' + SceneName + '.pit';
-    CacheFileB := CachePath + ChangeFileExt( ExtractFilename( LVLFile ), '' ) + '_' + SceneName + '.zit';
-    UseCache := ReadCache and TFile.Exists( CacheFileA ) and TFile.Exists( CacheFileB );
 
     Zones := TStringList.Create;
     try
       Stream := nil;
-      if UseCache then
+
+      S := AnsiString( MapPath + ChangeFileExt( ExtractFilename( LVLFile ), '.zit' ));
+      try
+        if TFile.Exists( S ) then
+          Stream := TFileStream.Create( S, fmOpenRead or fmShareDenyWrite )
+      except
+      end;
+
+      if assigned( Stream ) then
       begin
         try
-          Stream := TFileStream.Create( CacheFileB, fmOpenRead or fmShareDenyWrite )
+          Map.Zones[ 0 ].LoadFromStream( Stream );
         except
         end;
-
-        if assigned( Stream ) then
-        begin
-          try
-            Map.Zones[ 0 ].LoadFromStream( Stream );
-          except
-          end;
-          Stream.free;
-          Stream := nil;
-        end;
-      end
-      else
-      begin
-        S := AnsiString( MapPath + ChangeFileExt( ExtractFilename( LVLFile ), '.zit' ));
-        try
-          if TFile.Exists( S ) then
-            Stream := TFileStream.Create( S, fmOpenRead or fmShareDenyWrite )
-        except
-        end;
-
-        if assigned( Stream ) then
-        begin
-          try
-            Map.Zones[ 0 ].LoadFromStream( Stream );
-          except
-          end;
-          Stream.free;
-          Stream := nil;
-        end;
+        Stream.free;
+        Stream := nil;
       end;
 
       try
@@ -1200,120 +1106,102 @@ begin
           Dec( BlockSize, sizeof( longint ) + sizeof( longint ) ); //Substract size of block type and size fields
           case TMapBlockTypes( L ) of
             mbHeader : ReadHeaderBlock;
-            mbMap : if not UseCache then
-                ReadMapHeaderBlock;
-            mbLayer0 : if not UseCache then
-                ReadLayer0Block;
-            mbLayer1 : if not UseCache then
-                ReadLayer1Block;
-            mbLayerDiamond : if not UseCache then
-                ReadDiamondBlock;
+            mbMap : ReadMapHeaderBlock;
+            mbLayer0 : ReadLayer0Block;
+            mbLayer1 : ReadLayer1Block;
+            mbLayerDiamond : ReadDiamondBlock;
             mbObject : ReadObjectBlock;
             mbRectResourceList, mbAltRectResourceList :
               begin
-                if UseCache then
+                Log.Log( 'Loading rect resources...' );
+                RNames := TStringList.create;
+                ReadResourceList( RNames );
+                RNames.Insert( 0, '' );
+                RIndex := VarArrayCreate( [ 0, RNames.count ], varInteger );
+                RIndex[ 0 ] := 0;
+                RIndex[ 1 ] := TileIndex;
+                for i := 1 to RNames.count - 1 do
                 begin
-                  Log.Log( 'Skipping rect resources because of cache...' );
-                end
-                else
-                begin
-                  Log.Log( 'Loading rect resources...' );
-                  RNames := TStringList.create;
-                  ReadResourceList( RNames );
-                  RNames.Insert( 0, '' );
-                  RIndex := VarArrayCreate( [ 0, RNames.count ], varInteger );
-                  RIndex[ 0 ] := 0;
-                  RIndex[ 1 ] := TileIndex;
-                  for i := 1 to RNames.count - 1 do
-                  begin
-                    S := AnsiString( RNames.Strings[ i ] + '.gif');
+                  S := AnsiString( RNames.Strings[ i ] + '.gif');
 //                  Log.Log('  '+S);
-                    try
-                      Resource := LoadResource( TilePath + S );
-                      if assigned( Resource ) and ( Resource is TTileResource ) then
-                      begin
+                  try
+                    Resource := LoadResource( TilePath + S );
+                    if assigned( Resource ) and ( Resource is TTileResource ) then
+                    begin
 //                      j:=Zones.IndexOf(S);
 //                      if j>=0 then Zone:=integer(Zones.objects[j])
 //                      else Zone:=1;
-                        Zone := 1;
-                        TileIndex := TTileResource( Resource ).Define( Map, Zone, TileIndex );
-                        Resource.free;
-                        RIndex[ i + 1 ] := TileIndex;
-                      end;
-                    except
-                      Log.Log( '  *** Error: Could not load ' + S );
-                      RIndex[ i + 1 ] := 0;
+                      Zone := 1;
+                      TileIndex := TTileResource( Resource ).Define( Map, Zone, TileIndex );
+                      Resource.free;
+                      RIndex[ i + 1 ] := TileIndex;
                     end;
+                  except
+                    Log.Log( '  *** Error: Could not load ' + S );
+                    RIndex[ i + 1 ] := 0;
                   end;
-                  RNames.free;
-                  Log.Log( 'Rect resources complete' );
                 end;
+                RNames.free;
+                Log.Log( 'Rect resources complete' );
               end;
             mbDiamResourceList, mbAltDiamResourceList :
               begin
-                if UseCache then
+                Log.Log( 'Loading diamond resources...' );
+                DNames := TStringList.create;
+                ReadResourceList( DNames );
+                DIndex := VarArrayCreate( [ 0, DNames.count ], varInteger );
+                DVariations := VarArrayCreate( [ 0, DNames.Count - 1, ord( dqCenter ), ord( dqIS ) ], varVariant );
+                DIndex[ 0 ] := TileIndex;
+                for i := 0 to DNames.count - 1 do
                 begin
-                  Log.Log( 'Skipping diamond resources because of cache...' );
-                end
-                else
-                begin
-                  Log.Log( 'Loading diamond resources...' );
-                  DNames := TStringList.create;
-                  ReadResourceList( DNames );
-                  DIndex := VarArrayCreate( [ 0, DNames.count ], varInteger );
-                  DVariations := VarArrayCreate( [ 0, DNames.Count - 1, ord( dqCenter ), ord( dqIS ) ], varVariant );
-                  DIndex[ 0 ] := TileIndex;
-                  for i := 0 to DNames.count - 1 do
-                  begin
-                    S := AnsiString( DNames.Strings[ i ] + '.gif' );
+                  S := AnsiString( DNames.Strings[ i ] + '.gif' );
 //                  Log.Log('  '+S);
-                    try
-                      Resource := LoadResource( TilePath + S );
-                      if assigned( Resource ) and ( Resource is TTileResource ) then
-                      begin
+                  try
+                    Resource := LoadResource( TilePath + S );
+                    if assigned( Resource ) and ( Resource is TTileResource ) then
+                    begin
 //                      j:=Zones.IndexOf(S);
 //                      if j>=0 then Zone:=integer(Zones.objects[j])
 //                      else Zone:=2;
-                        Zone := 2;
-                        TileIndex := TTileResource( Resource ).Define( Map, Zone, TileIndex );
-                        INI := TTileResource( Resource ).INI;
-                        S := AnsiString( INI.ReadString( 'ImageList', 'Center', '' ) );
-                        DVariations[ i, ord( dqCenter ) ] := LoadIndexes( S );
-                        S := AnsiString( INI.ReadString( 'ImageList', 'EECornerIn', '' ) );
-                        DVariations[ i, ord( dqIE ) ] := LoadIndexes( S );
-                        S := AnsiString( INI.ReadString( 'ImageList', 'EECornerOut', '' ) );
-                        DVariations[ i, ord( dqOE ) ] := LoadIndexes( S );
-                        S := AnsiString( INI.ReadString( 'ImageList', 'NEEdge', '' ) );
-                        DVariations[ i, ord( dqNE ) ] := LoadIndexes( S );
-                        S := AnsiString( INI.ReadString( 'ImageList', 'NNCornerIn', '' ) );
-                        DVariations[ i, ord( dqIN ) ] := LoadIndexes( S );
-                        S := AnsiString( INI.ReadString( 'ImageList', 'NNCornerOut', '' ) );
-                        DVariations[ i, ord( dqON ) ] := LoadIndexes( S );
-                        S := AnsiString( INI.ReadString( 'ImageList', 'NWEdge', '' ) );
-                        DVariations[ i, ord( dqNW ) ] := LoadIndexes( S );
-                        S := AnsiString( INI.ReadString( 'ImageList', 'WWCornerIn', '' ) );
-                        DVariations[ i, ord( dqIW ) ] := LoadIndexes( S );
-                        S := AnsiString( INI.ReadString( 'ImageList', 'WWCornerOut', '' ) );
-                        DVariations[ i, ord( dqOW ) ] := LoadIndexes( S );
-                        S := AnsiString( INI.ReadString( 'ImageList', 'SWEdge', '' ) );
-                        DVariations[ i, ord( dqSW ) ] := LoadIndexes( S );
-                        S := AnsiString( INI.ReadString( 'ImageList', 'SSCornerIn', '' ) );
-                        DVariations[ i, ord( dqIS ) ] := LoadIndexes( S );
-                        S := AnsiString( INI.ReadString( 'ImageList', 'SSCornerOut', '' ) );
-                        DVariations[ i, ord( dqOS ) ] := LoadIndexes( S );
-                        S := AnsiString( INI.ReadString( 'ImageList', 'SEEdge', '' ) );
-                        DVariations[ i, ord( dqSE ) ] := LoadIndexes( S );
-                        Resource.Free;
-                        DIndex[ i + 1 ] := TileIndex;
-                      end;
-                    except
-                      Log.Log( '  *** Error: Could not load ' + S );
-                      DIndex[ i + 1 ] := 0;
+                      Zone := 2;
+                      TileIndex := TTileResource( Resource ).Define( Map, Zone, TileIndex );
+                      INI := TTileResource( Resource ).INI;
+                      S := AnsiString( INI.ReadString( 'ImageList', 'Center', '' ) );
+                      DVariations[ i, ord( dqCenter ) ] := LoadIndexes( S );
+                      S := AnsiString( INI.ReadString( 'ImageList', 'EECornerIn', '' ) );
+                      DVariations[ i, ord( dqIE ) ] := LoadIndexes( S );
+                      S := AnsiString( INI.ReadString( 'ImageList', 'EECornerOut', '' ) );
+                      DVariations[ i, ord( dqOE ) ] := LoadIndexes( S );
+                      S := AnsiString( INI.ReadString( 'ImageList', 'NEEdge', '' ) );
+                      DVariations[ i, ord( dqNE ) ] := LoadIndexes( S );
+                      S := AnsiString( INI.ReadString( 'ImageList', 'NNCornerIn', '' ) );
+                      DVariations[ i, ord( dqIN ) ] := LoadIndexes( S );
+                      S := AnsiString( INI.ReadString( 'ImageList', 'NNCornerOut', '' ) );
+                      DVariations[ i, ord( dqON ) ] := LoadIndexes( S );
+                      S := AnsiString( INI.ReadString( 'ImageList', 'NWEdge', '' ) );
+                      DVariations[ i, ord( dqNW ) ] := LoadIndexes( S );
+                      S := AnsiString( INI.ReadString( 'ImageList', 'WWCornerIn', '' ) );
+                      DVariations[ i, ord( dqIW ) ] := LoadIndexes( S );
+                      S := AnsiString( INI.ReadString( 'ImageList', 'WWCornerOut', '' ) );
+                      DVariations[ i, ord( dqOW ) ] := LoadIndexes( S );
+                      S := AnsiString( INI.ReadString( 'ImageList', 'SWEdge', '' ) );
+                      DVariations[ i, ord( dqSW ) ] := LoadIndexes( S );
+                      S := AnsiString( INI.ReadString( 'ImageList', 'SSCornerIn', '' ) );
+                      DVariations[ i, ord( dqIS ) ] := LoadIndexes( S );
+                      S := AnsiString( INI.ReadString( 'ImageList', 'SSCornerOut', '' ) );
+                      DVariations[ i, ord( dqOS ) ] := LoadIndexes( S );
+                      S := AnsiString( INI.ReadString( 'ImageList', 'SEEdge', '' ) );
+                      DVariations[ i, ord( dqSE ) ] := LoadIndexes( S );
+                      Resource.Free;
+                      DIndex[ i + 1 ] := TileIndex;
                     end;
+                  except
+                    Log.Log( '  *** Error: Could not load ' + S );
+                    DIndex[ i + 1 ] := 0;
                   end;
-                  DNames.free;
-                  Log.Log( 'Diamond resources complete' );
                 end;
+                DNames.free;
+                Log.Log( 'Diamond resources complete' );
               end;
             mbObjResourceList, mbAltObjResourceList :
               begin
@@ -1328,7 +1216,6 @@ begin
                 DumpMode := false;
                 for i := 1 to ONames.count - 1 do
                 begin
-
                   S := AnsiString( AnsiLowerCase( ONames.Strings[ i ] ) );
                   if copy( S, 1, 7 ) = 'editor\' then
                   begin
@@ -1339,112 +1226,96 @@ begin
                   begin
 //                  Log.Log('  '+S);
                     StaticObject := ( copy( S, 1, 13 ) = 'staticobject\' );
-                    if UseCache and StaticObject then
-                    begin //Prevent loading of static if cache loaded
-//                    Log.Log('  Skipping '+S+' because of cache');
-                      OIndex[ i ] := X + 1;
+                    if DumpMode then
+                    begin
+                      if not TFile.Exists( ResourcePath + S + '.pox' ) then
+                        Log.Log( '*** Error: Resource does not exist ' + S );
                     end
                     else
                     begin
-                      if DumpMode then
+                      if StaticObject then
                       begin
-                        if not TFile.Exists( ResourcePath + S + '.pox' ) then
-                          Log.Log( '*** Error: Resource does not exist ' + S );
+                        Resource := LoadArtResource( S + '.gif' );
+                        NewObject := true;
+                        Y := 0;
                       end
                       else
                       begin
-                        if StaticObject then
+                        Y := Figures.IndexOf( ONames.Strings[ i ] );
+                        if Y >= 0 then
                         begin
-                          Resource := LoadArtResource( S + '.gif' );
+                          NewObject := false;
+                          Resource := TResource( Figures.objects[ Y ] );
+                          Resource.Reload := true;
+                          Log.Log( '  Resource already loaded ' + S );
+                        end
+                        else
+                        begin
                           NewObject := true;
-                          Y := 0;
-                        end
-                        else
-                        begin
-                          Y := Figures.IndexOf( ONames.Strings[ i ] );
-                          if Y >= 0 then
-                          begin
-                            NewObject := false;
-                            Resource := TResource( Figures.objects[ Y ] );
-                            Resource.Reload := true;
-                            Log.Log( '  Resource already loaded ' + S );
-                          end
-                          else
-                          begin
-                            NewObject := true;
-                            Resource := LoadArtResource( S + '.gif' );
-                          end;
+                          Resource := LoadArtResource( S + '.gif' );
                         end;
-                        if assigned( Resource ) then
-                        begin
-                          if Resource is TDoorResource then
-                          begin //Door Resource is descendant from
-                            if NewObject then
-                            begin
-                              Y := Figures.add( ONames.Strings[ i ] ); //TStaticResource, so it must go first.
-                              Figures.objects[ Y ] := Resource;
-                            end;
-                            j := Zones.IndexOf( S );
-                            if j >= 0 then
-                              Zone := integer( Zones.objects[ j ] )
-                            else
-                              Zone := 0;
-                            ZIndex[ i ] := Zone;
-                            if UseCache then
-                            begin
-                              TDoorResource( Resource ).ItemIndex := X;
-                              TDoorResource( Resource ).ItemZone := Zone;
-                            end
-                            else
-                            begin
-                              X := TDoorResource( Resource ).Define( Map, Zone, X );
-                            end;
-                            OIndex[ i ] := -Y - 1;
-//                          Log.Log('  Assigned to (door) #'+IntToStr(X)+IntToStr(OIndex[i]));
-                          end
-                          else if Resource is TStaticResource then
+                      end;
+                      if assigned( Resource ) then
+                      begin
+                        if Resource is TDoorResource then
+                        begin //Door Resource is descendant from
+                          if NewObject then
                           begin
-                            OIndex[ i ] := X + 1;
-//                          Log.Log('  Assigned to (static) #'+IntToStr(OIndex[i]));
-                            j := Zones.IndexOf( S );
-                            if j >= 0 then
-                              Zone := integer( Zones.objects[ j ] )
-                            else
-                              Zone := 0;
-//else Zone:=X mod 128;
-                            ZIndex[ i ] := Zone;
-                            X := TStaticResource( Resource ).Define( Map, Zone, X );
-                            Resource.free;
-                          end
-                          else
-                          begin
-                            if NewObject then
-                            begin
-                              Y := Figures.add( ONames.Strings[ i ] );
-                              Figures.objects[ Y ] := Resource;
-                            end
-                            else
-                            begin
-                              if Resource is TCharacterResource then
-                              begin
-                                if assigned( TCharacterResource( Resource ).NakedResource ) then
-                                  TCharacterResource( Resource ).NakedResource.Reload := true;
-                                if assigned( TCharacterResource( Resource ).HeadResource ) then
-                                  TCharacterResource( Resource ).HeadResource.Reload := true;
-                              end;
-                            end;
-                            OIndex[ i ] := -Y - 1;
-//                          Log.Log('  Assigned to (sprite) #'+IntToStr(-OIndex[i]));
+                            Y := Figures.add( ONames.Strings[ i ] ); //TStaticResource, so it must go first.
+                            Figures.objects[ Y ] := Resource;
                           end;
+                          j := Zones.IndexOf( S );
+                          if j >= 0 then
+                            Zone := integer( Zones.objects[ j ] )
+                          else
+                            Zone := 0;
+                          ZIndex[ i ] := Zone;
+                          X := TDoorResource( Resource ).Define( Map, Zone, X );
+                          OIndex[ i ] := -Y - 1;
+//                          Log.Log('  Assigned to (door) #'+IntToStr(X)+IntToStr(OIndex[i]));
+                        end
+                        else if Resource is TStaticResource then
+                        begin
+                          OIndex[ i ] := X + 1;
+//                          Log.Log('  Assigned to (static) #'+IntToStr(OIndex[i]));
+                          j := Zones.IndexOf( S );
+                          if j >= 0 then
+                            Zone := integer( Zones.objects[ j ] )
+                          else
+                            Zone := 0;
+//else Zone:=X mod 128;
+                          ZIndex[ i ] := Zone;
+                          X := TStaticResource( Resource ).Define( Map, Zone, X );
+                          Resource.free;
                         end
                         else
                         begin
-                          OIndex[ i ] := 0;
-                          if s <> '' then
+                          if NewObject then
                           begin
-                            Log.Log( '*** Error: Resource could not be loaded ' + S );
-                            DumpMode := true;
+                            Y := Figures.add( ONames.Strings[ i ] );
+                            Figures.objects[ Y ] := Resource;
+                          end
+                          else
+                          begin
+                            if Resource is TCharacterResource then
+                            begin
+                              if assigned( TCharacterResource( Resource ).NakedResource ) then
+                                TCharacterResource( Resource ).NakedResource.Reload := true;
+                              if assigned( TCharacterResource( Resource ).HeadResource ) then
+                                TCharacterResource( Resource ).HeadResource.Reload := true;
+                            end;
                           end;
+                          OIndex[ i ] := -Y - 1;
+//                          Log.Log('  Assigned to (sprite) #'+IntToStr(-OIndex[i]));
+                        end;
+                      end
+                      else
+                      begin
+                        OIndex[ i ] := 0;
+                        if s <> '' then
+                        begin
+                          Log.Log( '*** Error: Resource could not be loaded ' + S );
+                          DumpMode := true;
                         end;
                       end;
                     end;
@@ -1463,10 +1334,8 @@ begin
             mbZones : ReadZonesBlock;
             mbSceneKnown : ReadSceneKnownBlock;
             mbTheme : ReadThemeBlock;
-            mbBB1, mbBB2 :
-              begin
-              end;
-            mbChapt :
+            mbBB1, mbBB2 : begin end;
+            mbChapt : begin end;
           else
             begin
               Log.Log( '*** Error: Unknown block: ' + IntToStr( L ) );

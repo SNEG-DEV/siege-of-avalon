@@ -222,7 +222,6 @@ type
     Strips : Integer;
     ItemIndex : Integer;
     ItemZone : Integer;
-    CacheLoaded : boolean;
     procedure LoadData( INI : TStringINIFile ); override;
     function Define( Map : TAniMap; Zone : byte; Index : Word ) : integer; override;
     procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); override;

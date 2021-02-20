@@ -298,7 +298,7 @@ type
     function FindMap( const FileName : string ) : string;
     procedure InventoryDraw( Sender : TObject );
     function SaveGame : Boolean;
-    function LoadGame( FullLoad, UseCache : Boolean ) : Boolean;
+    function LoadGame( FullLoad : Boolean ) : Boolean;
     procedure PlaceNPCList;
     procedure CueTune( const FileList : string; Instant : Boolean );
     procedure ClearOverlayB;
@@ -826,7 +826,6 @@ begin
 
     MapPath := AnsiString(IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'maps')));
     GamesPath := IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'games'));
-    CachePath := IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'cache'));
     ResourcePath := IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'ArtLib/Resources'));
     TilePath := IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'ArtLib/Tiles'));
     SoundPath := IncludeTrailingPathDelimiter(TPath.Combine(ResourcePath, 'Audio'));
@@ -928,10 +927,6 @@ begin
 
       UseDirectSound := False;
 
-      CachePath := TPath.GetFullPath(IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'CachePath', CachePath ) ) );
-      Log.Log( 'CachePath=' + CachePath );
-      Log.flush;
-
       MapPath := AnsiString( TPath.GetFullPath(IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'MapPath', MapPath ) ) ) );
       Log.Log( 'MapPath=' + MapPath );
       Log.flush;
@@ -941,10 +936,6 @@ begin
         DefaultTransition := InterfacePath + DefaultTransition + '.bmp';
       Log.Log( 'DefaultTransition=' + DefaultTransition );
       Log.flush;
-
-      MaxCacheSize := INI.ReadInteger( 'Settings', 'CacheSize', 640 );
-      INI.WriteInteger( 'Settings', 'CacheSize', MaxCacheSize );
-      MaxCacheSize := MaxCacheSize * 1024 * 1024;
 
       GlobalBrightness := INI.ReadInteger( 'Settings', 'Brightness', 0 );
       INI.WriteInteger( 'Settings', 'Brightness', GlobalBrightness );
@@ -1060,26 +1051,7 @@ begin
       AllSpells := ( LowerCase( INI.ReadString( 'Settings', 'AllSpells', '' ) ) = 'true' );
       if AllSpells then
         Log.Log( 'AllSpells enabled' );
-      ReadCache := ( LowerCase( INI.ReadString( 'Settings', 'ReadCache', '' ) ) <> 'false' );
-      if ReadCache then
-      begin
-        INI.WriteString( 'Settings', 'ReadCache', 'true' );
-        Log.Log( 'ReadCache enabled' );
-      end
-      else
-      begin
-        INI.WriteString( 'Settings', 'ReadCache', 'false' );
-      end;
-      WriteCache := ( LowerCase( INI.ReadString( 'Settings', 'WriteCache', '' ) ) <> 'false' );
-      if WriteCache then
-      begin
-        INI.WriteString( 'Settings', 'WriteCache', 'true' );
-        Log.Log( 'WriteCache enabled' );
-      end
-      else
-      begin
-        INI.WriteString( 'Settings', 'WriteCache', 'false' );
-      end;
+
       Bikini := ( lowercase( INI.ReadString( 'Settings', 'Bikini', '' ) ) = 'true' );
       NoPageNumbers := ( LowerCase( INI.ReadString( 'Settings', 'NoPageNumbers', '' ) ) = 'true' );
       NoTransit := ( LowerCase( INI.ReadString( 'Settings', 'NoTransit', '' ) ) = 'true' );
@@ -1109,7 +1081,7 @@ begin
 
       ShowIntro := ( LowerCase( INI.ReadString( 'Settings', 'ShowIntro', 'true' ) ) = 'true' );
 
-      PopupEnabled := ( LowerCase( INI.ReadString( 'Settings', 'Popup', '' ) ) <> 'false' );
+      PopupEnabled := ( LowerCase( INI.ReadString( 'Settings', 'Popup', 'true' ) ) = 'true' );
 
     finally
       INI.Free;
@@ -1184,7 +1156,6 @@ begin
     end
     else
     begin
-      CheckCache;
       if ShowIntro and not Initialized then
         PostMessage( Handle, WM_StartIntro, 0, 0 )
       else
@@ -3216,10 +3187,6 @@ var
   IgnoreDefaultObjects, IgnoreSceneObjects : Boolean;
   Level : AnsiString;
   ZoneTotal, ZoneMem : LongWord;
-  CacheFileA, CacheFileB, CacheFileC, CacheFileD : string;
-  CacheExists : Boolean;
-  UseCache : Boolean;
-  LVLDate, CacheDate : TDateTime;
   Brightness : Longint;
   SceneName : string;
   TimeStamp : TDateTime;
@@ -3259,69 +3226,6 @@ begin
         SceneName := 'Default Scene'
       else
         SceneName := CurrentScene;
-      S := CachePath;
-      CacheFileA := S + Level + '_' + LowerCase( SceneName ) + '.pit';
-      CacheFileB := S + Level + '_' + LowerCase( SceneName ) + '.zit';
-      CacheFileC := S + Level + '_' + LowerCase( SceneName ) + '.dit';
-      CacheFileD := S + Level + '_' + LowerCase( SceneName ) + '.cit';
-      ForceNotReadOnly( CacheFileA );
-      ForceNotReadOnly( CacheFileB );
-      ForceNotReadOnly( CacheFileC );
-      ForceNotReadOnly( CacheFileD );
-      CacheExists := False;
-      //Check to see if cache needs to be updated
-      try
-        if ReadCache or WriteCache then
-        begin
-          LVLDate := GetFileDate( LVLFile );
-          if not TDirectory.Exists( S ) then
-            TDirectory.CreateDirectory( S );
-          CacheExists := TFile.Exists( CacheFileA ) and TFile.Exists( CacheFileB );
-          if CacheExists then
-          begin
-            if TFile.Exists( CacheFileD ) then
-            begin
-              try
-                Stream := TFileStream.Create( CacheFileD, fmOpenRead or fmShareDenyWrite );
-                try
-                  Stream.Read( CacheDate, SizeOf( CacheDate ) );
-                  Stream.Read( Brightness, SizeOf( Brightness ) );
-                  if ( LVLDate <> CacheDate ) or ( Brightness <> GlobalBrightness ) then
-                  begin
-                    Log.Log( 'Deleting cache' );
-                    try
-                      TFile.Delete( CacheFileA );
-                      TFile.Delete( CacheFileB );
-                      TFile.Delete( CacheFileC );
-                      TFile.Delete( CacheFileD );
-                    except
-                    end;
-                    CacheExists := False;
-                  end;
-                finally
-                  Stream.Free;
-                end;
-              except
-              end;
-            end;
-          end;
-          if not CacheExists and WriteCache then
-          begin
-            try
-              Stream := TFileStream.Create( CacheFileD, fmCreate or fmShareDenyWrite );
-              try
-                Stream.Write( LVLDate, SizeOf( LVLDate ) );
-                Stream.Write( GlobalBrightness, SizeOf( GlobalBrightness ) );
-              finally
-                Stream.Free;
-              end;
-            except
-            end;
-          end;
-        end;
-      except
-      end;
-      UseCache := ReadCache and CacheExists;
 
       Log.Log( 'Loading map...' );
 
@@ -3348,21 +3252,6 @@ begin
       end;
       Log.Log( 'Map load complete' );
 
-      if TFile.Exists( CacheFileD ) then
-      begin
-        try
-          Stream := TFileStream.Create( CacheFileD, fmOpenReadWrite or fmShareCompat );
-          try
-            Stream.Seek( 12, soFromBeginning );
-            TimeStamp := Now;
-            Stream.Write( TimeStamp, SizeOf( TimeStamp ) );
-          finally
-            Stream.Free;
-          end;
-        except
-        end;
-      end;
-
       INILanguage := TMemIniFile.Create( SiegeINILanguageFile, TEncoding.ANSI );
       try
         MapName := INILanguage.ReadString( 'MapNames', Level, Level );
@@ -3371,21 +3260,11 @@ begin
         INILanguage.Free;
       end;
       DlgProgress.SetBar( Round( DlgProgress.MaxValue * 0.81 ) );
-      { INI := TIniFile.Create(DefaultPath + 'siege.ini');
-       try
-         S:=Level+'_'+lowercase(SceneName);
-         TimeStamp:=now;
-         p:=addr(TimeStamp);
-         INI.WriteString('Cache',S,inttostr(int64(p^)));
-   //      INI.WriteDateTime('CacheTest',S,TimeStamp);
-       finally
-         INI.free;
-       end;  }
 
       if not New then
       begin
         Log.Log( 'Loading scene' );
-        if not LoadGame( FullLoad, UseCache ) then
+        if not LoadGame( FullLoad ) then
         begin
           FreeAll;
           Close;
@@ -3394,46 +3273,6 @@ begin
         end;
       end;
       DlgProgress.SetBar( Round( DlgProgress.MaxValue * 0.87 ) );
-      if UseCache then
-      begin
-        if TFile.Exists( CacheFileC ) then
-        begin
-          Stream := TFileStream.Create( CacheFileC, fmOpenRead or fmShareDenyWrite );
-          try
-            for i := 0 to FigureInstances.Count - 1 do
-            begin
-              if FigureInstances.Objects[ i ] is TDoor then
-              begin
-                Stream.Read( L, SizeOf( L ) );
-                TDoor( FigureInstances.Objects[ i ] ).Frame1 := GameMap.GetItemAddress( L );
-                Stream.Read( L, SizeOf( L ) );
-                TDoorResource( TDoor( FigureInstances.Objects[ i ] ).Resource ).Strips := L;
-                TDoor( FigureInstances.Objects[ i ] ).Init;
-              end;
-            end;
-          finally
-            Stream.Free;
-          end;
-        end;
-      end
-      else if not CacheExists and WriteCache then
-      begin
-        Stream := TFileStream.Create( CacheFileC, fmCreate or fmShareDenyWrite );
-        try
-          for i := 0 to FigureInstances.Count - 1 do
-          begin
-            if FigureInstances.Objects[ i ] is TDoor then
-            begin
-              L := GameMap.GetItemIndex( TDoor( FigureInstances.Objects[ i ] ).Frame1 );
-              Stream.Write( L, SizeOf( L ) );
-              L := TDoorResource( TDoor( FigureInstances.Objects[ i ] ).Resource ).Strips;
-              Stream.Write( L, SizeOf( L ) );
-            end;
-          end;
-        finally
-          Stream.Free;
-        end;
-      end;
 
       DlgProgress.SetBar( Round( DlgProgress.MaxValue * 0.88 ) );
 
@@ -3525,57 +3364,34 @@ begin
         Current.AutoFight := False;
 
         DlgProgress.SetBar( Round( DlgProgress.MaxValue * 0.9 ) );
-        if not UseCache then
+
+        Log.Log( 'Freeing unused resources' );
+        GameMap.FreeDefinitions;
+        DlgProgress.SetBar( Round( DlgProgress.MaxValue * 0.91 ) );
+        Log.Log( 'Sorting' );
+        GameMap.Sort;
+        DlgProgress.SetBar( Round( DlgProgress.MaxValue * 0.92 ) );
+        Log.Log( 'Rendering light sources' );
+        GameMap.RenderMap;
+        DlgProgress.SetBar( Round( DlgProgress.MaxValue * 0.98 ) );
+
+        S := MapPath + ChangeFileExt( ExtractFileName( LVLFile ), '.zit' );
+        if TFile.Exists( S ) then
         begin
-          Log.Log( 'Freeing unused resources' );
-          GameMap.FreeDefinitions;
-          DlgProgress.SetBar( Round( DlgProgress.MaxValue * 0.91 ) );
-          Log.Log( 'Sorting' );
-          GameMap.Sort;
-          DlgProgress.SetBar( Round( DlgProgress.MaxValue * 0.92 ) );
-          Log.Log( 'Rendering light sources' );
-          GameMap.RenderMap;
-          DlgProgress.SetBar( Round( DlgProgress.MaxValue * 0.98 ) );
-
-          S := MapPath + ChangeFileExt( ExtractFileName( LVLFile ), '.zit' );
-          if TFile.Exists( S ) then
+          ForceNotReadOnly( S );
+          Stream := TFileStream.Create( S, fmOpenReadWrite or fmShareDenyWrite );
+        end
+        else
+          Stream := TFileStream.Create( S, fmCreate or fmShareDenyWrite );
+        try
+          for i := 0 to GameMap.ZoneCount - 1 do
           begin
-            ForceNotReadOnly( S );
-            Stream := TFileStream.Create( S, fmOpenReadWrite or fmShareDenyWrite );
-          end
-          else
-            Stream := TFileStream.Create( S, fmCreate or fmShareDenyWrite );
-          try
-            for i := 0 to GameMap.ZoneCount - 1 do
-            begin
-              GameMap.Zones[ i ].SaveToStream( Stream, False );
-            end;
-          finally
-            Stream.Free;
+            GameMap.Zones[ i ].SaveToStream( Stream, False );
           end;
-
-          if not CacheExists and WriteCache then
-          begin
-            Stream := TFileStream.Create( CacheFileA, fmCreate or fmShareDenyWrite );
-            try
-              GameMap.SaveToStream( Stream );
-            finally
-              Stream.Free;
-            end;
-
-            Stream := TFileStream.Create( CacheFileB, fmCreate or fmShareDenyWrite );
-            try
-              for i := 0 to GameMap.ZoneCount - 1 do
-              begin
-                GameMap.Zones[ i ].SaveToStream( Stream, True );
-              end;
-            finally
-              Stream.Free;
-            end;
-
-            CheckCache;
-          end;
+        finally
+          Stream.Free;
         end;
+
         DlgProgress.SetBar( Round( DlgProgress.MaxValue * 0.99 ) );
 
         DlgProgress.SetBar( DlgProgress.MaxValue );
@@ -4007,7 +3823,7 @@ begin
   end;
 end;
 
-function TfrmMain.LoadGame( FullLoad, UseCache : Boolean ) : Boolean;
+function TfrmMain.LoadGame( FullLoad : Boolean ) : Boolean;
 var
   EOB, BB : Word;
 
@@ -4360,8 +4176,7 @@ var
                   else if ObjectRef is TDoor then
                   begin
                     ObjectRef.LoadProperties( List );
-                    if not UseCache then
-                      ObjectRef.Init;
+                    ObjectRef.Init;
                   end
                   else
                   begin

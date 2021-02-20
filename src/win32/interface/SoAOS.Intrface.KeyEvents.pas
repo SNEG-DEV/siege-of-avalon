@@ -58,7 +58,7 @@ type
     class procedure ScreenShot;
     class procedure ShowMenu;
     class procedure SpellHotKey(key: Word);
-    class procedure TransitBack; // Revise
+    class procedure TravelFast; // Revise
     class procedure TwinWeaponToggle; // Revise
 
     class procedure DemoOrDeath; // Testcode addparty sample
@@ -153,7 +153,7 @@ begin
       81: if ToggleShow(DlgQuestLog) then frmMain.BeginQuestLog; // Q
       82: if ToggleShow(DlgRoster) then frmMain.BeginRoster(nil); // R
       83: ToggleSpell; // S
-      84: TransitBack; // T
+      84: TravelFast; // T
       87: if ToggleShow(DlgAdvLog) then frmMain.BeginAdvLog; // W
       88: ToggleXRay; // X
       90: TwinWeaponToggle; // Z - FIX - German only :(
@@ -469,26 +469,31 @@ begin
     TCharacter(Current).AutoTransparent := frmMain.XRayOn;
 end;
 
-class procedure TKeyEvent.TransitBack;
+class procedure TKeyEvent.TravelFast;
 begin
-  if not player.titleexists('Schnellerwechselaus') then
+// NoTransit
+// LoadNewMap( const NewFile(lvl), SceneName, StartingPoint, Transition(bmp) : string );
+  if not NoTransit then
   begin
-    if player.titleexists('chapter04') then
-      RunScript(player, 'Loadmap(03Wald1,default,forst,Wald|#Schnellreise.Fall3#)');
-    if player.titleexists('chapter03') and not player.titleexists('chapter04') then
-      RunScript(player, 'Loadmap(03Wald1,default,forst,Wald|#Schnellreise.Fall2#)');
-    if player.titleexists('chapter02') then
-    begin
-      if not player.titleexists('chapter03') then
-      begin
-        if player.titleexists('ImForst') then
-          RunScript(player, 'Loadmap(Wald1,default,forst,Wald|#Schnellreise.Fall1#)')
-        else
-          RunScript(player, 'Loadmap(southgate1b,default,Levelpoint4|#Schnellreise.Fall1#)');
-      end;
-    end;
-    if not player.titleexists('chapter02') then
-      RunScript(player, 'Loadmap(southgate1b,default,Levelpoint4|#Schnellreise.Fall1#)');
+//    if player.titleexists('04Chapter4') then
+//      RunScript(player, 'Loadmap(03Wald1,default,forst,Wald|#Schnellreise.Fall3#)');
+//    if player.titleexists('03Chapter3') and not player.titleexists('04Chapter4') then
+//      RunScript(player, 'Loadmap(03Wald1,default,forst,Wald|#Schnellreise.Fall2#)');
+//    if player.titleexists('02Chapter2') then
+//    begin
+//      if not player.titleexists('03Chapter3') then
+//      begin
+//        if player.titleexists('ImForst') then
+//          RunScript(player, 'Loadmap(Wald1,default,forst,Wald|#Schnellreise.Fall1#)')
+//        else
+//          RunScript(player, 'Loadmap(southgate1b,default,Levelpoint4|#Schnellreise.Fall1#)');
+//      end;
+//    end;
+//    if not player.titleexists('02Chapter2') then
+    if player.titleexists('02Chapter2') then
+      RunScript(player, 'Loadmap(southgate1b,default,Levelpoint4|#FastTransit.Default#)')
+    else
+      RunScript(player, 'Loadmap(okeepl2,default,Start|#FastTransit.Default#)')
   end;
 end;
 
