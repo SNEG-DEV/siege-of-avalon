@@ -69,8 +69,7 @@ type
     PreMapHeight: integer;
     GameWidth: integer;
     GameHeight: integer;
-    GameMapWidth: integer;
-    GameMapHeight: integer;
+    HearingRange: integer;
     SpellX : integer;
   	SpellBarX : integer;
    	SpellBarY : integer;
@@ -133,8 +132,7 @@ const
      PreMapHeight: 544;
      GameWidth : 703;
      GameHeight : 511;
-     GameMapWidth : 200;
-     GameMapHeight : 400;
+     HearingRange : 400;
      SpellX : 339;
 	   SpellBarX : 683;
 	   SpellBarY : 486;
@@ -183,8 +181,7 @@ const
      PreMapHeight: 720;
      GameWidth : 1183;
      GameHeight : 631;
-     GameMapWidth : 200;  // ??
-     GameMapHeight : 400; // ??
+     HearingRange : 450;
      SpellX : 508;
   	 SpellBarX : 1163;  // ??
 	   SpellBarY : 606;
@@ -197,7 +194,7 @@ const
    	 ManaEmptyX : 1179;
    	 LifeEmptyX : 1189;
 	   LogX : 1139; // ??
-     VisibilityFactor : 1.5; // Visibility factor used on Vision property
+     VisibilityFactor : 41/30; // Visibility factor used on Vision property 410/300
      CharacterMysticVision: 800;
      CharacterDistance: 375;
      CharacterRange: 650;
@@ -233,8 +230,7 @@ const
      PreMapHeight: 1080;
      GameWidth : 1823;
      GameHeight : 997;  // 997?
-     GameMapWidth : 200;  // ??
-     GameMapHeight : 400; // ??
+     HearingRange : 525;
      SpellX : 508;
   	 SpellBarX : 1803;
 	   SpellBarY : 966;
@@ -247,7 +243,7 @@ const
 	   ManaEmptyX : 1819;
 	   LifeEmptyX : 1829;
 	   LogX : 1139;
-     VisibilityFactor : 7/3; // Visibility factor used on Vision property
+     VisibilityFactor : 9/4; // Visibility factor used on Vision property 675/300
      CharacterMysticVision: 1000;
      CharacterDistance: 775;
      CharacterRange: 950;

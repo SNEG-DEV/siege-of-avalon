@@ -976,7 +976,7 @@ begin
 
     if not assigned(Sounds) then
       exit;
-    HearingRange := 400;
+    HearingRange := ScreenMetrics.HearingRange;
     if HearingRange <= 0 then
       exit;
     PanD := X - Current.X;
@@ -1013,8 +1013,7 @@ const
 begin
   log.DebugLog(FailName);
   try
-
-    HearingRange := 400;
+    HearingRange := ScreenMetrics.HearingRange;
     if HearingRange <= 0 then
       exit;
     PanD := X - Current.X;
@@ -10776,7 +10775,7 @@ var
     end
     else
     begin
-      HearingRange := Radius;
+      HearingRange := Radius + (ScreenMetrics.HearingRange-400);
       if HearingRange <= 0 then
         exit;
       PanD := X - Current.X;

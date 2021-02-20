@@ -51,6 +51,7 @@ type
     class function ToggleShow(dialog: TDisplay): Boolean;
     class procedure ToggleSpell;
     class procedure ToggleXRay;
+    class procedure AdjustGlobalBrightness(step: Integer);
     class procedure TogglePause;
     class procedure ToggleCombat;
     class procedure QuickSave;
@@ -72,6 +73,7 @@ implementation
 uses
   Winapi.Windows,
   System.IOUtils,
+  System.IniFiles,
   Vcl.Graphics,
   AniDemo,
   SoAOS.AI.Helper,
@@ -82,6 +84,29 @@ uses
   SoAOS.Effects,
   DirectX,
   DXEffects;
+
+class procedure TKeyEvent.AdjustGlobalBrightness(step: Integer);
+var
+  newGlobalBrightness: Integer;
+  INI: TINIFile;
+begin
+  newGlobalBrightness := GlobalBrightness + step;
+  if newGlobalBrightness>255 then newGlobalBrightness := 255;
+  if newGlobalBrightness<0 then newGlobalBrightness := 0;
+
+  if newGlobalBrightness<>GlobalBrightness then
+  begin
+    INI := TIniFile.Create(SiegeINIFile);
+    try
+      { TODO : Save and reload map/lvl - or find a way to refresh with new brightness }
+      INI.WriteInteger( 'Settings', 'Brightness', newGlobalBrightness );
+      GlobalBrightness := newGlobalBrightness;
+      // Game.RefreshMap;
+    finally
+      INI.Free;
+    end;
+  end;
+end;
 
 class procedure TKeyEvent.DemoOrDeath;
 //var
@@ -112,10 +137,8 @@ begin
       Exit;
 
     case Key of
-      19: TogglePause; // Pause
-      27: ShowMenu; // ESC
-      32: ToggleCombat; // Space
-      44: ScreenShot; // PrtScn
+      VK_ESCAPE: ShowMenu; // ESC
+      VK_SPACE: ToggleCombat; // Space
       48..57: SpellHotKey(Key); // 0-9 alternative to F-keys
       65: if ToggleShow(DlgTitles) then frmMain.BeginTitles(Current); // A
       66: Current.DoBattleCry; // B
@@ -123,9 +146,10 @@ begin
       71: ScreenShot; // G
       73: if ToggleShow(DlgInventory) then frmMain.BeginInventory(Current); // I
       74: if ToggleShow(DlgJournal) then frmMain.BeginJournal; // J
+      76: if ToggleShow(DlgAdvLog) then frmMain.BeginAdvLog; // L
       77: if ToggleShow(DlgMap) then frmMain.BeginMap(Current); // M
       79: if ToggleShow(DlgOptions) then frmMain.BeginOptions(Current); // O
-      80: TogglePause; // P
+      80, VK_PAUSE: TogglePause; // P or Pause
       81: if ToggleShow(DlgQuestLog) then frmMain.BeginQuestLog; // Q
       82: if ToggleShow(DlgRoster) then frmMain.BeginRoster(nil); // R
       83: ToggleSpell; // S
@@ -133,9 +157,10 @@ begin
       87: if ToggleShow(DlgAdvLog) then frmMain.BeginAdvLog; // W
       88: ToggleXRay; // X
       90: TwinWeaponToggle; // Z - FIX - German only :(
-      112: if ToggleShow(DlgShow) then frmMain.BeginHelp; // F1
-      113: QuickSave; // F2
-//      114..123: SpellHotKey(Key); // F3-F12
+      VK_F1: if ToggleShow(DlgShow) then frmMain.BeginHelp; // F1
+      VK_F2: QuickSave; // F2
+      VK_OEM_PLUS, VK_ADD: AdjustGlobalBrightness(10);
+      VK_OEM_MINUS, VK_SUBTRACT: AdjustGlobalBrightness(-10);
     end;
 
 //    else if ( key = 76 ) then LforWhat  // L test code
