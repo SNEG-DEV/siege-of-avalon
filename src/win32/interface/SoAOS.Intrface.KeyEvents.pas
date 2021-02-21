@@ -61,6 +61,8 @@ type
     class procedure TravelFast; // Revise
     class procedure TwinWeaponToggle; // Revise
 
+    class procedure MarkSpotInLog; // Temp.
+
     class procedure DemoOrDeath; // Testcode addparty sample
     class procedure LforWhat; // Testcode mess sample
   public
@@ -143,6 +145,9 @@ begin
       65: if ToggleShow(DlgTitles) then frmMain.BeginTitles(Current); // A
       66: Current.DoBattleCry; // B
       67: if ToggleShow(DlgStatistics) then frmMain.BeginStatistics(Current); // C
+
+      70: MarkSpotInLog; // F
+
       71: ScreenShot; // G
       73: if ToggleShow(DlgInventory) then frmMain.BeginInventory(Current); // I
       74: if ToggleShow(DlgJournal) then frmMain.BeginJournal; // J
@@ -156,7 +161,7 @@ begin
       84: TravelFast; // T
       87: if ToggleShow(DlgAdvLog) then frmMain.BeginAdvLog; // W
       88: ToggleXRay; // X
-      90: TwinWeaponToggle; // Z - FIX - German only :(
+//      90: TwinWeaponToggle; // Z - FIX - German only :(
       VK_F1: if ToggleShow(DlgShow) then frmMain.BeginHelp; // F1
       VK_F2: QuickSave; // F2
       VK_OEM_PLUS, VK_ADD: AdjustGlobalBrightness(10);
@@ -228,6 +233,11 @@ begin //L
 //  end;
 //
 //  RunScript(Current,'journalentry(A);adventure(B);AddQuest(quest1)');
+end;
+
+class procedure TKeyEvent.MarkSpotInLog;
+begin
+  Log.Log('Mark spot: GameName: ' + GameName + ', LVLFile: ' + LVLFile + ', CurrentScene: ' + CurrentScene + ', CurrentStartingPoint: ' + CurrentStartingPoint);
 end;
 
 class procedure TKeyEvent.QuickSave;
@@ -390,17 +400,17 @@ begin
       end;
       frmMain.OverlayB.GetDC(DC);
       try
-        BitBlt(DC, 391, 30, 202, 68, frmMain.imgBottomBar.Canvas.Handle,
-          391, 30, SRCCOPY);
+        BitBlt( DC, ScreenMetrics.BottomBarX, 30, 202, 68, frmMain.imgBottomBar.Canvas.Handle, ScreenMetrics.BottomBarX, 30, SRCCOPY );
       finally
         frmMain.OverlayB.ReleaseDC(DC);
       end;
+
       DrawAlpha(frmMain.OverlayB,
-        Rect(456, 53, 456 + 73 { imgPaused.width } ,
+        Rect(ScreenMetrics.PauseX, 53, ScreenMetrics.PauseX + 73 { imgPaused.width } ,
         53 + 23 { imgPaused.Height } ), Rect(0, 0, 73 { imgPaused.width } ,
         23 { imgPaused.Height } ), frmMain.PauseImage, True, 170);
-      pr := Rect(0, 0, 800, 114);
-      lpDDSFront.BltFast(0, 486, frmMain.OverlayB, @pr,
+      pr := Rect(0, 0, ScreenMetrics.ScreenWidth, 114);
+      lpDDSFront.BltFast(0, ScreenMetrics.SpellBarY, frmMain.OverlayB, @pr,
         DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
 
       for i := 1 to NPCList.Count - 1 do
@@ -477,8 +487,8 @@ begin
   begin
 //    if player.titleexists('04Chapter4') then
 //      RunScript(player, 'Loadmap(03Wald1,default,forst,Wald|#Schnellreise.Fall3#)');
-//    if player.titleexists('03Chapter3') and not player.titleexists('04Chapter4') then
-//      RunScript(player, 'Loadmap(03Wald1,default,forst,Wald|#Schnellreise.Fall2#)');
+    if player.titleexists('03Chapter3') and not player.titleexists('04Chapter4') then
+      RunScript(player, 'Loadmap(forest05,default,Start,ForestChpt3|#FastTransit.Default#)');
 //    if player.titleexists('02Chapter2') then
 //    begin
 //      if not player.titleexists('03Chapter3') then
@@ -491,7 +501,7 @@ begin
 //    end;
 //    if not player.titleexists('02Chapter2') then
     if player.titleexists('02Chapter2') then
-      RunScript(player, 'Loadmap(southgate1b,default,Levelpoint4|#FastTransit.Default#)')
+      RunScript(player, 'Loadmap(southgate1b,default,Levelpoint4,VillagetoSouthGate|#FastTransit.Default#)')
     else
       RunScript(player, 'Loadmap(okeepl2,default,Start|#FastTransit.Default#)')
   end;

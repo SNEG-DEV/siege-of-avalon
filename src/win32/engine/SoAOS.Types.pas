@@ -77,6 +77,7 @@ type
    	StatsY : integer;
   	HelpBoxY : integer;
   	MouseMsgX : integer;
+    PauseX: integer;
   	BottomBarX : integer;
   	NPCBarY : integer;
   	ManaEmptyX : integer;
@@ -140,6 +141,7 @@ const
 	   StatsY : 498;
 	   HelpBoxY : 455;
 	   MouseMsgX : 394;
+     PauseX : 456;
 	   BottomBarX : 391;
 	   NPCBarY : 581;
 	   ManaEmptyX : 699;
@@ -189,6 +191,7 @@ const
 	   StatsY : 966;
 	   HelpBoxY : 575;
 	   MouseMsgX : 566;
+     PauseX : 628;
 	   BottomBarX : 564;  //??
 	   NPCBarY : 701;
    	 ManaEmptyX : 1179;
@@ -238,6 +241,7 @@ const
 	   StatsY : 966;
 	   HelpBoxY : 935;
 	   MouseMsgX : 566;
+     PauseX : 628;
 	   BottomBarX : 564;
 	   NPCBarY : 1061;
 	   ManaEmptyX : 1819;
