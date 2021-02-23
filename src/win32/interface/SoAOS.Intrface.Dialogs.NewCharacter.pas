@@ -117,6 +117,8 @@ type
     PlayerResourceIdx: Integer;
     LayeredImage : string;
 
+    Female : Boolean;
+
     procedure DrawNewPlayer;
     procedure OpenBox( box : TBoxEnum );
     procedure CaratTimerEvent( Sender : TObject );
@@ -153,12 +155,14 @@ type
     SelectedTraining : integer;
     SelectedShirt : TItem; //current selected shirt color
     SelectedPants : TItem; //current selected pants color
+    SelectedBoots : TItem; //current selected pants color
     SelectedHair : TResource; //current selected Hair color
     SelectRect : array[ 0..20 ] of TSelectionRect; //collision rects for selectable text
 
     shirt : array[ 1..4 ] of TItem;
     pants : array[ 1..4 ] of TItem;
     hair : array[ 1..4, 1..4, 1..2 ] of TResource;
+    boots : TItem;
 
     Character : TCharacter;
     Cancel : boolean; //was Cancel Pressed?
@@ -302,6 +306,7 @@ begin
 
     Player.Resource := LoadArtResource( ChangeFileExt( Players[PlayerResourceIdx], '.gif' ) );
     Player.LoadEquipment( True );
+
     updateClothing;
 
     DrawNewPlayer;
@@ -852,10 +857,10 @@ begin
             Assigned( TCreation( Sender ).SelectedPants.Resource ) and
             Assigned( TLayerResource( TCreation( Sender ).SelectedPants.Resource ).RLE ) then
             TLayerResource( TCreation( Sender ).SelectedPants.Resource ).RLE.Draw( Frame, 0, 0, @Bits );
-          if Assigned( Player.Equipment[ slBoot ] ) and
-            Assigned( Player.Equipment[ slBoot ].Resource ) and
+          if Assigned( TCreation( Sender ).SelectedBoots ) and
+            Assigned( TCreation( Sender ).SelectedBoots.Resource ) and
             Assigned( TLayerResource( Player.Equipment[ slBoot ].Resource ).RLE ) then
-            TLayerResource( Player.Equipment[ slBoot ].Resource ).RLE.Draw( Frame, 0, 0, @Bits );
+            TLayerResource( TCreation( Sender ).SelectedBoots.Resource ).RLE.Draw( Frame, 0, 0, @Bits );
           if Assigned( TCreation( Sender ).SelectedShirt ) and
             Assigned( TCreation( Sender ).SelectedShirt.Resource ) and
             Assigned( TLayerResource( TCreation( Sender ).SelectedShirt.Resource ).RLE ) then
@@ -1115,6 +1120,8 @@ var
   i: Integer;
   S: string;
 begin
+  Female := TCharacterResource( Player.Resource ).Female;
+
   shirt[ 1 ] := PartManager.LoadItem( 'TunicBlue', TCharacterResource( Player.Resource ).NakedName );
   shirt[ 2 ] := PartManager.LoadItem( 'TunicBrown', TCharacterResource( Player.Resource ).NakedName );
   shirt[ 3 ] := PartManager.LoadItem( 'TunicYellow', TCharacterResource( Player.Resource ).NakedName );
@@ -1127,6 +1134,10 @@ begin
   pants[ 2 ] := PartManager.LoadItem( 'BrownPants', TCharacterResource( Player.Resource ).NakedName );
   pants[ 3 ] := PartManager.LoadItem( 'YellowPants', TCharacterResource( Player.Resource ).NakedName );
   pants[ 4 ] := PartManager.LoadItem( 'GreenPants', TCharacterResource( Player.Resource ).NakedName );
+
+  boots := PartManager.LoadItem( 'LowLeatherBoots', TCharacterResource( Player.Resource ).NakedName );
+
+  boots.Resource := PartManager.GetLayerResource( boots.LayeredImage );
 
   for i := 1 to 4 do
     pants[ i ].Resource := PartManager.GetLayerResource( pants[ i ].LayeredImage );
@@ -1292,7 +1303,9 @@ begin
   Hair[4, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairGrey');
   Hair[4, 2, 2] := PartManager.GetLayerResource(S + 'LongHairGrey');
   Hair[4, 3, 2] := PartManager.GetLayerResource(S + 'PonyTailGrey');
-  {if Female then
+
+
+  if Female then
     Hair[1, 3, 2] := PartManager.GetLayerResource(S + 'FemHiPonytailLight')
   else
     Hair[1, 3, 2] := PartManager.GetLayerResource(S + 'PonytailLight');
@@ -1320,7 +1333,7 @@ begin
     Hair[4, 3, 2] := PartManager.GetLayerResource(S + 'FemHiPonytailGrey')
   else
     Hair[4, 3, 2] := PartManager.GetLayerResource(S + 'PonytailGrey');
-  Hair[4, 4, 2] := nil;}
+  Hair[4, 4, 2] := nil;
 end;
 
 //TCreation.ShowStats
@@ -1659,6 +1672,7 @@ begin
     SelectedShirt := shirt[ ixSelectedShirt + 1 ];
     SelectedPants := pants[ ( ixSelectedPants ) + 1 ];
     SelectedHair := hair[ ( ixSelectedHair ) + 1, ( ixSelectedHairStyle ) + 1, ( ixSelectedBeard ) + 1 ];
+    SelectedBoots := boots;
     if assigned( OnDraw ) then
       OnDraw( self );
     SoAOS_DX_BltFront;

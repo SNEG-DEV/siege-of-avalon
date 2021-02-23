@@ -581,6 +581,7 @@ begin
           Pants[ i ].Free;
           Pants[ i ] := nil;
         end;
+        FreeAndNil(boots);
       end;
 
       for i := 0 to FigureInstances.Count - 1 do
@@ -621,6 +622,7 @@ begin
     begin
       Player.Equipment[ slChest1 ] := SelectedShirt;
       Player.Equipment[ slLeg1 ] := SelectedPants;
+      Player.Equipment[ slBoot ] := SelectedBoots;
       if Assigned( SelectedHair ) then
       begin
         TCharacterResource( Player.Resource ).HeadName := AnsiString( ExtractFilePath( TCharacterResource( Player.Resource ).NakedName ) + ChangeFileExt( ExtractFileName( SelectedHair.FileName ), '.gif' ));
@@ -650,6 +652,9 @@ begin
         else
           Pants[ i ].Free;
       end;
+
+      j := FigureInstances.Add( '' );
+      FigureInstances.Objects[ j ] := SelectedBoots;
 
       Player.Properties[ 'HeadLayer' ] := TCharacterResource( Player.Resource ).HeadName;
 

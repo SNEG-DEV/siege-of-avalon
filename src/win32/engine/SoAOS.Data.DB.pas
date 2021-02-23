@@ -349,6 +349,7 @@ begin
       FFieldNames.Add('qSndStone', 78);
 
       FFieldNames.Add('iMaterial', 74);
+      fieldcount := 81;
     end
     else
     begin
@@ -373,6 +374,7 @@ begin
       FFieldNames.Add('ttAttack', 17);
       FFieldNames.Add('ttDefense', 18);
       FFieldNames.Add('ttDisplayName', 19);
+      fieldcount := 19;
     end;
     if (FDatasetType <> dst) then
     begin
@@ -387,7 +389,7 @@ begin
 //      if Length(rowdata)<>fieldcount then // skip when field count mismatch
 //        Continue;
       fields := TSoAOSFields.Create([doOwnsValues]);
-      for col := 1 to fieldcount-1 do
+      for col := 1 to fieldcount do
         fields.Add(col, TSoAOSField.Create(col, coldata[col], rowdata[col]));
       FData.AddOrSetValue(rowdata[0].ToLower, fields);
     end;
