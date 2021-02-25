@@ -528,10 +528,8 @@ uses
 
 function EnumDevices(lpGUID: PGUID; lpDriverDescription: PAnsiChar; lpDriverName: PAnsiChar; lpContext: Pointer; Monitor: HMonitor): BOOL; stdcall;
 begin
-   if lpGUID <> nil then
-    TStringList(lpContext).Add(lpDriverName+' - '+lpDriverDescription + '=' + GUIDtoString(lpGUID^))
-   else
-     TStringList(lpContext).Add(lpDriverName+' - '+lpDriverDescription + '=' + 'nil')  ;
+  if lpGUID <> nil then
+    TStringList(lpContext).Add(lpDriverName + '=' + GUIDtoString(lpGUID^));
   Result := True;
 end;
 
@@ -635,9 +633,9 @@ var
   C: Longint;
   pr: TRect;
   tmpDD: IDirectDraw;
-  devices: TStringList;
   pdeviceGUID: PGUID;
   deviceGUID: TGUID;
+  devices: TStringList;
   res: HRESULT;
   guidStr : String;
 begin
@@ -646,38 +644,37 @@ begin
     Exit;
   ResWidth := ResW;
   ResHeight := ResH;
-// Enumerate devices - should make some proper checking and actually run on the HW that works?
-  devices := TStringList.Create;
-  devices.NameValueSeparator := '=';
-  try
-    res := DirectDrawEnumerateExA(EnumDevices, devices, DDENUM_ATTACHEDSECONDARYDEVICES);
-    if res<>DD_OK then
-      Log.Log( 'DX: Failed to enumerate drivers.' );
 
-    if devices.Count<DeviceDriverIndex+1 then
-    begin
-      DeviceDriverIndex := devices.Count-1;
-      Log.Log( 'DX: INI DeviceDriverIndex exceeds number of drivers - using highest: '+DeviceDriverIndex.ToString );
+  if DeviceDriverName = '' then
+    pdeviceGUID := nil
+  else
+  begin
+    devices := TStringList.Create;
+    devices.NameValueSeparator := '=';
+    try
+      res := DirectDrawEnumerateExA(EnumDevices, devices, DDENUM_ATTACHEDSECONDARYDEVICES);
+      if res<>DD_OK then
+        Log.Log( 'DX: Failed to enumerate drivers.' );
+
+      guidStr := devices.Values[DeviceDriverName];
+
+      if guidStr = '' then
+        pdeviceGUID := nil
+      else
+      begin
+        deviceGUID := StringToGUID(guidStr);
+        pdeviceGUID := @deviceGUID;
+      end;
+
+      Log.Log( 'DX: Using Device driver: '+DeviceDriverName );
+    finally
+      devices.Free;
     end;
-
-    guidStr := devices.ValueFromIndex[DeviceDriverIndex];
-
-    if guidStr = 'nil' then
-      pdeviceGUID := nil
-    else
-    begin
-      deviceGUID := StringToGUID(guidStr);
-      pdeviceGUID := @deviceGUID;
-    end;
-
-    Log.Log( 'DX: Using Device driver: '+devices[DeviceDriverIndex] );
-
-    res := DirectDrawCreate(pdeviceGUID, tmpDD, nil); // Prepare for DirectX 7 or newer
-    if res<>DD_OK then
-      Log.Log( 'DX: Failed to create directdraw.' );
-  finally
-    devices.Free;
   end;
+
+  res := DirectDrawCreate(pdeviceGUID, tmpDD, nil); // Prepare for DirectX 7 or newer
+  if res<>DD_OK then
+    Log.Log( 'DX: Failed to create directdraw.' );
 
   try
     tmpDD.QueryInterface(IID_IDirectDraw, lpDD);

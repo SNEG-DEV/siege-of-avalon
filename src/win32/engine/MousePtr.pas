@@ -105,6 +105,7 @@ const
 constructor TMousePtr.Create;
 var
   pr : TRect;
+  absPt: TPoint;
 const
   FailName : string = 'TMousePtr.Create';
 begin
@@ -116,7 +117,10 @@ begin
   //pre-load Dirty
     FPlotDirty := false;
     DXSurface := lpDDSFront;
-    mPt := Mouse.CursorPos;
+    absPt := Mouse.CursorPos;
+    absPt.X := absPt.X - frmMain.Left;
+    absPt.Y := absPt.Y - frmMain.Top;
+    mPt := TPoint.Create(absPt.X, absPt.Y);
     pr := Rect( mPt.x, mPt.y, mPt.x + PtrWidth, mPt.y + PtrHeight );
     DXDirty.BltFast( 0, 0, DXSurface, @pr, DDBLTFAST_WAIT );
     MouseTimer := TTimer.create( nil );
@@ -151,7 +155,7 @@ end; //Destroy
 
 procedure TMousePtr.MouseTimerEvent( Sender : TObject );
 var
-  PrevPt : TPoint;
+  PrevPt, absPt : TPoint;
   X, Y : longint;
   pr : TRect;
 begin
@@ -159,7 +163,10 @@ begin
     exit;
 
   PrevPt := mPt;
-  mPt := Mouse.CursorPos;
+  absPt := Mouse.CursorPos;
+  absPt.X := absPt.X - frmMain.Left;
+  absPt.Y := absPt.Y - frmMain.Top;
+  mPt := TPoint.Create(absPt.X, absPt.Y);
 //  if ( MouseAnimationCycle > 0 ) and ( MouseCounter > MouseAnimationCycle ) then
 //  begin
 //    inc( MouseFrame );

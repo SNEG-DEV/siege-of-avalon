@@ -110,7 +110,7 @@ var
   InterfaceLanguagePath : string;
   MapPath : AnsiString;
   Language : string;
-  DeviceDriverIndex : Integer;
+  DeviceDriverName : string;
   INICodepage : Integer;
   MaxPartyMembers : Integer;
   bPlayClosingMovie : Boolean;
@@ -826,8 +826,6 @@ begin
     Log.flush;
     // Setting all paths and file references - move into record or class - SoAOSPath struct
     // Start with defaults and missing - OS agnostic
-    AppPath := ExtractFilePath( Application.ExeName );
-    SiegeINIFile := AppPath + 'siege.ini';
 
     MapPath := AnsiString(IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'maps')));
     GamesPath := IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'games'));
@@ -900,7 +898,7 @@ begin
 
       GetChapters( INI );
 
-      DeviceDriverIndex := INI.ReadInteger('Settings', 'DeviceDriverIndex', 0);
+      DeviceDriverName := INI.ReadString('Settings', 'DeviceName', '');
 
       // Quick PL and RU Symbol.ini hacks - until better way found
       if Language = 'russian' then
@@ -1094,10 +1092,19 @@ begin
 
     Log.Log( 'Initializing DX...' );
     Log.flush;
+
     Game.InitDX( Handle, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight, ScreenMetrics.BPP );  // 800, 600, 16
+
     Game.PreCreateMap( ScreenMetrics.PreMapWidth, ScreenMetrics.PreMapHeight );  // 768, 544
     Log.Log( 'DX initialization complete' );
     Log.flush;
+
+    SetCursorPos(frmMain.Left+(frmMain.Width div 2), frmMain.Top+(frmMain.Height div 2));
+//    Log.Log( 'MOUSE - X-Y'+Mouse.CursorPos.X.ToString+', '+Mouse.CursorPos.Y.ToString);
+    Screen.Cursor := crNone;
+
+//    Log.Log( 'FORM - X-Y'+frmMain.Left.ToString+', '+frmMain.Top.ToString);
+
     if PixelFormat = pf555 then
       Log.Log( 'Using 555 Driver' )
     else if PixelFormat = pf565 then
@@ -1109,7 +1116,6 @@ begin
     Log.Log( 'Loading cursor' );
     Log.flush;
     MouseCursor := TMousePtr.Create;
-    Screen.Cursor := crNone;
 
     Log.Log( 'Initializing DFX...' );
     Log.flush;
@@ -1783,8 +1789,11 @@ end;
 
 procedure TfrmMain.FormCreate( Sender : TObject );
 var
-  ExStyle : Integer;
+  ExStyle: Integer;
 begin
+  AppPath := ExtractFilePath( Application.ExeName );
+  SiegeINIFile := AppPath + 'siege.ini';
+
   Scaled := False;
   BorderStyle := bsNone;
   BorderIcons := [];

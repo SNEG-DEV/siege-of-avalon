@@ -49,6 +49,8 @@ type
     StaticText2: TStaticText;
     lblLanguage: TStaticText;
     StaticText3: TStaticText;
+    cmbMonitors: TComboBox;
+    stMonitor: TStaticText;
     procedure FormCreate(Sender: TObject);
     procedure tmrScrollTimer(Sender: TObject);
     procedure TxtScrollLeft;
@@ -61,6 +63,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure StaticText3Click(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure cmbMonitorsChange(Sender: TObject);
   private
     { Private declarations }
     FLanguages: TStringList;
@@ -72,6 +75,9 @@ type
 
     Support720p: Boolean;
     Support1080p: Boolean;
+    monitorCnt: Integer;
+    devices: TStringList;
+    CurrentDeviceName: string;
 
     function AppHookFunc(var Message : TMessage) : Boolean;
   public
@@ -135,13 +141,19 @@ begin
   end;
 end;
 
+procedure TfrmLaunchSetting.cmbMonitorsChange(Sender: TObject);
+begin
+  Support1080p := (screen.Monitors[cmbMonitors.ItemIndex].Height >= 1080);
+  Support720p := (screen.Monitors[cmbMonitors.ItemIndex].Height >= 720);
+  CurrentDeviceName := devices.ValueFromIndex[cmbMonitors.ItemIndex];
+end;
+
 procedure TfrmLaunchSetting.Done(r: integer);
 var
   INI: TIniFile;
 begin
   INI := TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini'));
   try
-
     try
       if (FCurrentLanguage <> cNoLanguage) then
       begin
@@ -154,6 +166,7 @@ begin
         end;
       end;
       INI.WriteInteger('Settings', 'ScreenResolution', r);
+      INI.WriteString('Settings', 'DeviceName', CurrentDeviceName);
       INI.UpdateFile;
     except
       on EIniFileException do
@@ -193,6 +206,11 @@ var
   INI: TIniFile;
   lInterfacePath: string;
   dir: string;
+  I, prim: Integer;
+
+  devName: string;
+  DisplayDevice: TDisplayDevice;
+  iDevNum: DWORD;
 begin
   Application.HookMainWindow(AppHookFunc);
 
@@ -218,21 +236,50 @@ begin
   FCurrentLanguageIdx := FLanguages.IndexOf(FCurrentLanguage);
   if FCurrentLanguageIdx=-1 then
     FCurrentLanguageIdx := 0;
-  for var i: integer := 0 to screen.MonitorCount-1 do
+
+  monitorCnt := Screen.MonitorCount;
+  cmbMonitors.Visible := monitorCnt > 1;
+  stMonitor.Visible := cmbMonitors.Visible;
+
+  CurrentDeviceName := '';
+  if monitorCnt > 1 then
   begin
-    var mon: TMonitor := screen.Monitors[i];
-    if mon.Primary then
-    begin
-      Support1080p := (mon.Height >= 1080);
-      Support720p := (mon.Height >= 720);
-    end;
+    prim := 0;
+// DeviceDrivers
+    devices := TStringList.Create;
+    devices.NameValueSeparator := '=';
+
+    DisplayDevice.cb := SizeOf(DisplayDevice);
+    for iDevNum := 0 to monitorCnt-1 do
+      if EnumDisplayDevices(NIL, iDevNum, DisplayDevice, 0) then
+      begin
+        devName := displayDevice.DeviceName;
+        EnumDisplayDevices(PChar(devName), 0, displayDevice, 0);
+        // below does not work - redo used WMI?
+//        if (DISPLAY_DEVICE_PRIMARY_DEVICE and DisplayDevice.StateFlags)<>0 then
+//        begin
+//          prim := iDevNum;
+//          devices.Add(string(DisplayDevice.DeviceString) + ' (primary)=' + devName);
+//        end
+//        else
+          devices.Add('Display '+(iDevNum+1).ToString+' - '+string(DisplayDevice.DeviceString) + '=' + devName);
+      end;
+
+    for I := 0 to devices.Count-1 do
+      cmbMonitors.Items.Add(devices.KeyNames[i]);
+
+    cmbMonitors.ItemIndex := prim;
+    CurrentDeviceName := devices.ValueFromIndex[cmbMonitors.ItemIndex];
   end;
+
+  Support1080p := (screen.Monitors[cmbMonitors.ItemIndex].Height >= 1080);
+  Support720p := (screen.Monitors[cmbMonitors.ItemIndex].Height >= 720);
 end;
 
 procedure TfrmLaunchSetting.FormDestroy(Sender: TObject);
 begin
   FLanguages.Free;
-
+  devices.Free;
   Application.UnHookMainWindow(AppHookFunc);
 end;
 
@@ -258,10 +305,10 @@ begin
     Done(600);
   if Rect(241,327,327,380).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
     if Support720p then Done(720)
-    else ShowMessage('The current resolution of primary monitor does not support 720p/HD.');
+    else ShowMessage('The current resolution of selected monitor does not support 720p/HD.');
   if Rect(373,327,459,380).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
     if Support1080p then Done(1080)
-    else ShowMessage('The current resolution of primary monitor does not support 1080p/FullHD.');
+    else ShowMessage('The current resolution of selected monitor does not support 1080p/FullHD.');
 end;
 
 procedure TfrmLaunchSetting.LinkLabelLinkClick(Sender: TObject;

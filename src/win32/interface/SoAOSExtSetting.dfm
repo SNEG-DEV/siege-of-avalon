@@ -7503,7 +7503,7 @@ object frmLaunchSetting: TfrmLaunchSetting
   end
   object StaticText1: TStaticText
     Left = 40
-    Top = 242
+    Top = 248
     Width = 414
     Height = 27
     Caption = 'Select Language and screen resolution to start the game.'
@@ -7554,6 +7554,32 @@ object frmLaunchSetting: TfrmLaunchSetting
     ParentFont = False
     TabOrder = 4
     OnClick = StaticText3Click
+  end
+  object cmbMonitors: TComboBox
+    Left = 170
+    Top = 217
+    Width = 335
+    Height = 27
+    BevelEdges = []
+    Ctl3D = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'BlackChancery'
+    Font.Style = []
+    ParentCtl3D = False
+    ParentFont = False
+    TabOrder = 5
+    TextHint = 'Select monitor'
+    OnChange = cmbMonitorsChange
+  end
+  object stMonitor: TStaticText
+    Left = 40
+    Top = 217
+    Width = 124
+    Height = 27
+    Caption = 'Select Monitor:'
+    TabOrder = 6
   end
   object tmrScroll: TTimer
     Enabled = False
