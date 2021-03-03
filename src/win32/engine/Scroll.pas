@@ -62,7 +62,13 @@ type
     StatsScrollItem : TItem; //Index for scroll item
     MaxScroll : integer; //max Scroll YCoord
     txtMessage : array[ 0..34 ] of string;
-    procedure ShowStatsScroll; //the stats scroll
+    procedure ShowStatsScroll;
+    procedure PlotScrollText(Mx: Integer; My: Integer; ScrollStartValue: Integer; ScrollEndValue: Integer; var i: Integer; k: Integer; txtMsg: string);
+    procedure PlotScrollText2(Mx: Integer; My: Integer; ScrollStartValue: Integer; ScrollEndValue: Integer; var i: Integer; k: Integer; txtMsg: string);
+    procedure PlotScrollTextPlus(Mx: Integer; My: Integer; ScrollStartValue: Integer; ScrollEndValue: Integer; var i: Integer; k: Integer; txtMsg: string);
+    procedure PlotScrollTextResistance(Mx, My, Yadj, ScrollStartValue, ScrollEndValue: Integer; var i: Integer; resistance: TDamageResistance; txtMsg: string);
+    procedure PlotScrollTextRange(Mx, My, Yadj, ScrollStartValue, ScrollEndValue: Integer; var i: Integer; range: TDamageRange; txtMsg: string);
+
   public
     pText : TGameText;
     ScrollIsShowing : Boolean;
@@ -126,11 +132,106 @@ begin
   end;
 end;
 
+procedure TScroll.PlotScrollText(Mx: Integer; My: Integer; ScrollStartValue: Integer; ScrollEndValue: Integer; var i: Integer; k: Integer; txtMsg: string);
+var
+  a: string;
+begin
+  if k <> 0 then
+  begin
+    Str(k, a);
+    if ((My + 40 + i * 22) > ScrollStartValue) and ((My + 40 + i * 22) < ScrollEndValue - 24) then
+    begin
+      pText.PlotText(txtMsg, Mx + 50, My + 40 + i * 22, 0);
+      pText.PlotText(a, Mx + 249, My + 40 + i * 22, 0);
+    end;
+    i := i + 1;
+  end;
+end;
+
+procedure TScroll.PlotScrollText2(Mx, My, ScrollStartValue,
+  ScrollEndValue: Integer; var i: Integer; k: Integer; txtMsg: string);
+var
+  a: string;
+begin
+  if k <> 0 then
+  begin
+    Str( k, a );
+    if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
+    begin
+      pText.PlotText( txtMsg, Mx + 50, My + 40 + i * 22, 0 );
+      if k > 0 then
+        pText.PlotText( a, Mx + 249, My + 40 + i * 22, 0 )
+      else
+        pText.PlotText( a, Mx + 240, My + 40 + i * 22, 0 )
+    end;
+    i := i + 1;
+  end;
+end;
+
+procedure TScroll.PlotScrollTextRange(Mx, My, Yadj, ScrollStartValue, ScrollEndValue: Integer; var i: Integer; range: TDamageRange; txtMsg: string);
+var
+  a, b: string;
+  k: Integer;
+begin
+  k := Round( range.Max );
+  if k <> 0 then
+  begin
+    if ( ( My + 40 + YAdj + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + i * 22 ) < ScrollEndValue - 24 ) then
+    begin
+      Str( k, b );
+      Str( Round( range.Min ), a );
+      pText.PlotText( txtMsg, Mx + 50, My + 40 + YAdj + i * 22, 0 );
+      pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
+    end;
+    i := i + 1;
+  end;
+end;
+
+procedure TScroll.PlotScrollTextResistance(Mx, My, Yadj, ScrollStartValue, ScrollEndValue: Integer; var i: Integer; resistance: TDamageResistance; txtMsg: string);
+var
+  a, b: string;
+  k, j: Integer;
+begin
+  k := Round( resistance.Invulnerability );
+  j := Round( resistance.Resistance * 100 );
+
+  if ( k <> 0 ) or ( j <> 0 ) then
+  begin
+    if ( ( My + 40 + YAdj + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + i * 22 ) < ScrollEndValue - 24 ) then
+    begin
+      Str( k, a );
+      Str( j, b );
+      pText.PlotText( txtMsg, Mx + 50, My + 40 + YAdj + i * 22, 0 );
+      pText.PlotText( a + '-' + b + '%', Mx + 240, My + 40 + YAdj + i * 22, 0 );
+    end;
+    i := i + 1;
+  end;
+end;
+
+procedure TScroll.PlotScrollTextPlus(Mx, My, ScrollStartValue, ScrollEndValue: Integer; var i: Integer; k: Integer; txtMsg: string);
+var
+  a, b: string;
+begin
+  if k <> 0 then
+  begin
+    Str( k, a );
+    if k > 0 then
+      b := '+'
+    else
+      b := '';
+    if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
+    begin
+      pText.PlotText( txtMsg, Mx + 50, My + 40 + i * 22, 0 );
+      pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
+    end;
+    i := i + 1;
+  end;
+end;
+
 procedure TScroll.ShowStatsScroll;
 var
   Mx, My : Integer;
-  i, j, k : Integer;
-  a, b : string;
+  i, j : Integer;
   TitleY : integer;
   Yadj : integer;
   ScrollStartValue : integer; //top of scroll
@@ -190,39 +291,9 @@ begin
   //restrictions
     if StatsScrollItem is TWeapon then
     begin
-      k := TWeapon( StatsScrollItem ).MinStrength;
-      if k <> 0 then
-      begin
-        Str( k, a );
-        if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
-        begin
-          pText.PlotText( txtMessage[ 0 ], Mx + 50, My + 40 + i * 22, 0 );
-          pText.PlotText( a, Mx + 249, My + 40 + i * 22, 0 );
-        end;
-        i := i + 1;
-      end;
-      k := TWeapon( StatsScrollItem ).MinCoordination;
-      if k <> 0 then
-      begin
-        Str( k, a );
-        if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
-        begin
-          pText.PlotText( txtMessage[ 1 ], Mx + 50, My + 40 + i * 22, 0 );
-          pText.PlotText( a, Mx + 249, My + 40 + i * 22, 0 );
-        end;
-        i := i + 1;
-      end;
-      k := TWeapon( StatsScrollItem ).MaxRestriction;
-      if k <> 0 then
-      begin
-        Str( k, a );
-        if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
-        begin
-          pText.PlotText( txtMessage[ 2 ], Mx + 50, My + 40 + i * 22, 0 );
-          pText.PlotText( a, Mx + 249, My + 40 + i * 22, 0 );
-        end;
-        i := i + 1;
-      end;
+      PlotScrollText(Mx, My, ScrollStartValue, ScrollEndValue, i, TWeapon( StatsScrollItem ).MinStrength, txtMessage[0]);
+      PlotScrollText(Mx, My, ScrollStartValue, ScrollEndValue, i, TWeapon( StatsScrollItem ).MinCoordination, txtMessage[1]);
+      PlotScrollText(Mx, My, ScrollStartValue, ScrollEndValue, i, TWeapon( StatsScrollItem ).MaxRestriction, txtMessage[2]);
 
       if i > TitleY + 1 then
       begin
@@ -238,260 +309,26 @@ begin
     end; //endif weapon
 
   //stats bonuses
-    k := StatsScrollItem.modifier.Strength;
-    if k <> 0 then
-    begin
-      Str( k, a );
-      if k > 0 then
-        b := '+'
-      else
-        b := '';
-      if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        pText.PlotText( txtMessage[ 4 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := StatsScrollItem.modifier.Coordination;
-    if k <> 0 then
-    begin
-      Str( k, a );
-      if k > 0 then
-        b := '+'
-      else
-        b := '';
-      if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        pText.PlotText( txtMessage[ 5 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := StatsScrollItem.modifier.Constitution;
-    if k <> 0 then
-    begin
-      Str( k, a );
-      if k > 0 then
-        b := '+'
-      else
-        b := '';
-      if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        pText.PlotText( txtMessage[ 6 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := StatsScrollItem.modifier.Mysticism;
-    if k <> 0 then
-    begin
-      Str( k, a );
-      if k > 0 then
-        b := '+'
-      else
-        b := '';
-      if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        pText.PlotText( txtMessage[ 7 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := StatsScrollItem.modifier.Combat;
-    if k <> 0 then
-    begin
-      Str( k, a );
-      if k > 0 then
-        b := '+'
-      else
-        b := '';
-      if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        pText.PlotText( txtMessage[ 8 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := StatsScrollItem.modifier.Stealth;
-    if k <> 0 then
-    begin
-      Str( k, a );
-      if k > 0 then
-        b := '+'
-      else
-        b := '';
-      if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        pText.PlotText( txtMessage[ 9 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := StatsScrollItem.modifier.AttackRecovery;
-    if k <> 0 then
-    begin
-      Str( k, a );
-      if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        pText.PlotText( txtMessage[ 10 ], Mx + 50, My + 40 + i * 22, 0 );
-        if k > 0 then
-          pText.PlotText( a, Mx + 249, My + 40 + i * 22, 0 )
-        else
-          pText.PlotText( a, Mx + 240, My + 40 + i * 22, 0 )
-      end;
-      i := i + 1;
-    end;
-    k := StatsScrollItem.modifier.HitRecovery;
-    if k <> 0 then
-    begin
-      Str( k, a );
-      if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        pText.PlotText( txtMessage[ 11 ], Mx + 50, My + 40 + i * 22, 0 );
-        if k > 0 then
-          pText.PlotText( a, Mx + 249, My + 40 + i * 22, 0 )
-        else
-          pText.PlotText( a, Mx + 240, My + 40 + i * 22, 0 );
+    PlotScrollTextPlus(Mx, My, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.modifier.Strength, txtMessage[ 4 ]);
+    PlotScrollTextPlus(Mx, My, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.modifier.Coordination, txtMessage[ 5 ]);
+    PlotScrollTextPlus(Mx, My, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.modifier.Constitution, txtMessage[ 6 ]);
+    PlotScrollTextPlus(Mx, My, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.modifier.Mysticism, txtMessage[ 7 ]);
+    PlotScrollTextPlus(Mx, My, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.modifier.Combat, txtMessage[ 8 ]);
+    PlotScrollTextPlus(Mx, My, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.modifier.Stealth, txtMessage[ 9 ]);
 
-      end;
-      i := i + 1;
-    end;
-    k := StatsScrollItem.modifier.Perception;
-    if k <> 0 then
-    begin
-      Str( k, a );
-      if k > 0 then
-        b := '+'
-      else
-        b := '';
-      if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        pText.PlotText( txtMessage[ 12 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := StatsScrollItem.modifier.Charm;
-    if k <> 0 then
-    begin
-      Str( k, a );
-      if k > 0 then
-        b := '+'
-      else
-        b := '';
-      if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        pText.PlotText( txtMessage[ 13 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := StatsScrollItem.modifier.HealingRate;
-    if k <> 0 then
-    begin
-      Str( k, a );
-      if k > 0 then
-        b := '+'
-      else
-        b := '';
-      if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        pText.PlotText( txtMessage[ 14 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := StatsScrollItem.modifier.RechargeRate;
-    if k <> 0 then
-    begin
-      Str( k, a );
-      if k > 0 then
-        b := '+'
-      else
-        b := '';
-      if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        pText.PlotText( txtMessage[ 15 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := StatsScrollItem.modifier.HitPoints;
-    if k <> 0 then
-    begin
-      Str( k, a );
-      if k > 0 then
-        b := '+'
-      else
-        b := '';
-      if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        pText.PlotText( txtMessage[ 16 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := StatsScrollItem.modifier.Mana;
-    if k <> 0 then
-    begin
-      Str( k, a );
-      if k > 0 then
-        b := '+'
-      else
-        b := '';
-      if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        pText.PlotText( txtMessage[ 17 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := StatsScrollItem.modifier.Attack;
-    if k <> 0 then
-    begin
-      Str( k, a );
-      if k > 0 then
-        b := '+'
-      else
-        b := '';
-      if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        pText.PlotText( txtMessage[ 18 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := StatsScrollItem.modifier.Defense;
-    if k <> 0 then
-    begin
-      Str( k, a );
-      if k > 0 then
-        b := '+'
-      else
-        b := '';
-      if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        pText.PlotText( txtMessage[ 19 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := StatsScrollItem.modifier.Restriction;
-    if k <> 0 then
-    begin
-      Str( k, a );
-      if k > 0 then
-        b := '+'
-      else
-        b := '';
-      if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        pText.PlotText( txtMessage[ 20 ], Mx + 50, My + 40 + i * 22, 0 );
-        pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
+    PlotScrollText2(Mx, My, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.modifier.AttackRecovery, txtMessage[ 10 ]);
+    PlotScrollText2(Mx, My, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.modifier.HitRecovery, txtMessage[ 11 ]);
+
+    PlotScrollTextPlus(Mx, My, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.modifier.Perception, txtMessage[ 12 ]);
+    PlotScrollTextPlus(Mx, My, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.modifier.Charm, txtMessage[ 13 ]);
+    PlotScrollTextPlus(Mx, My, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.modifier.HealingRate, txtMessage[ 14 ]);
+    PlotScrollTextPlus(Mx, My, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.modifier.RechargeRate, txtMessage[ 15 ]);
+    PlotScrollTextPlus(Mx, My, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.modifier.HitPoints, txtMessage[ 16 ]);
+    PlotScrollTextPlus(Mx, My, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.modifier.Mana, txtMessage[ 17 ]);
+    PlotScrollTextPlus(Mx, My, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.modifier.Attack, txtMessage[ 18 ]);
+    PlotScrollTextPlus(Mx, My, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.modifier.Defense, txtMessage[ 19 ]);
+    PlotScrollTextPlus(Mx, My, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.modifier.Restriction, txtMessage[ 20 ]);
+
     if i > TitleY + 1 then
     begin
       MaxScroll := -( ScrollFactor - ( ( My + 40 + YAdj + TitleY * 22 ) - 88 ) );
@@ -504,136 +341,18 @@ begin
       Yadj := Yadj + 10;
     end;
 //Next is Resistances
-    k := Round( StatsScrollItem.resistance.Piercing.Invulnerability );
-    j := Round( StatsScrollItem.resistance.Piercing.Resistance * 100 );
-    if ( k <> 0 ) or ( j <> 0 ) then
-    begin
-      if ( ( My + 40 + YAdj + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        Str( k, a );
-        Str( Round( StatsScrollItem.resistance.Piercing.Resistance * 100 ), b );
-        pText.PlotText( txtMessage[ 22 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( a + '-' + b + '%', Mx + 240, My + 40 + YAdj + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := Round( StatsScrollItem.resistance.Crushing.Invulnerability );
-    j := Round( StatsScrollItem.resistance.Crushing.Resistance * 100 );
-    if ( k <> 0 ) or ( j <> 0 ) then
-    begin
-      if ( ( My + 40 + YAdj + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        Str( k, a );
-        Str( Round( StatsScrollItem.resistance.Crushing.Resistance * 100 ), b );
-        pText.PlotText( txtMessage[ 23 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( a + '-' + b + '%', Mx + 240, My + 40 + YAdj + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := Round( StatsScrollItem.resistance.Cutting.Invulnerability );
-    j := Round( StatsScrollItem.resistance.Cutting.Resistance * 100 );
-    if ( k <> 0 ) or ( j <> 0 ) then
-    begin
-      if ( ( My + 40 + YAdj + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        Str( k, a );
-        Str( Round( StatsScrollItem.resistance.Cutting.Resistance * 100 ), b );
-        pText.PlotText( txtMessage[ 24 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( a + '-' + b + '%', Mx + 240, My + 40 + YAdj + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := Round( StatsScrollItem.resistance.Heat.Invulnerability );
-    j := Round( StatsScrollItem.resistance.Heat.Resistance * 100 );
-    if ( k <> 0 ) or ( j <> 0 ) then
-    begin
-      if ( ( My + 40 + YAdj + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        Str( k, a );
-        Str( Round( StatsScrollItem.resistance.Heat.Resistance * 100 ), b );
-        pText.PlotText( txtMessage[ 25 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( a + '-' + b + '%', Mx + 240, My + 40 + YAdj + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := Round( StatsScrollItem.resistance.Cold.Invulnerability );
-    j := Round( StatsScrollItem.resistance.Cold.Resistance * 100 );
-    if ( k <> 0 ) or ( j <> 0 ) then
-    begin
-      if ( ( My + 40 + YAdj + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        Str( k, a );
-        Str( Round( StatsScrollItem.resistance.Cold.Resistance * 100 ), b );
-        pText.PlotText( txtMessage[ 26 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( a + '-' + b + '%', Mx + 240, My + 40 + YAdj + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := Round( StatsScrollItem.resistance.Electric.Invulnerability );
-    j := Round( StatsScrollItem.resistance.Electric.Resistance * 100 );
-    if ( k <> 0 ) or ( j <> 0 ) then
-    begin
-      if ( ( My + 40 + YAdj + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        Str( k, a );
-        Str( Round( StatsScrollItem.resistance.Electric.Resistance * 100 ), b );
-        pText.PlotText( txtMessage[ 27 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( a + '-' + b + '%', Mx + 240, My + 40 + YAdj + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := Round( StatsScrollItem.resistance.Poison.Invulnerability );
-    j := Round( StatsScrollItem.resistance.Poison.Resistance * 100 );
-    if ( k <> 0 ) or ( j <> 0 ) then
-    begin
-      if ( ( My + 40 + YAdj + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        Str( k, a );
-        Str( Round( StatsScrollItem.resistance.Poison.Resistance * 100 ), b );
-        pText.PlotText( txtMessage[ 28 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( a + '-' + b + '%', Mx + 240, My + 40 + YAdj + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := Round( StatsScrollItem.resistance.Magic.Invulnerability );
-    j := Round( StatsScrollItem.resistance.Magic.Resistance * 100 );
-    if ( k <> 0 ) or ( j <> 0 ) then
-    begin
-      if ( ( My + 40 + YAdj + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        Str( k, a );
-        Str( Round( StatsScrollItem.resistance.Magic.Resistance * 100 ), b );
-        pText.PlotText( txtMessage[ 29 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( a + '-' + b + '%', Mx + 240, My + 40 + YAdj + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := Round( StatsScrollItem.resistance.Mental.Invulnerability );
-    j := Round( StatsScrollItem.resistance.Mental.Resistance * 100 );
-    if ( k <> 0 ) or ( j <> 0 ) then
-    begin
-      if ( ( My + 40 + YAdj + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        Str( k, a );
-        Str( Round( StatsScrollItem.resistance.Mental.Resistance * 100 ), b );
-        pText.PlotText( txtMessage[ 30 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( a + '-' + b + '%', Mx + 240, My + 40 + YAdj + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := Round( StatsScrollItem.resistance.Stun.Invulnerability );
-    j := Round( StatsScrollItem.resistance.Stun.Resistance * 100 );
-    if ( k <> 0 ) or ( j <> 0 ) then
-    begin
-      if ( ( My + 40 + YAdj + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        Str( k, a );
-        Str( Round( StatsScrollItem.resistance.Stun.Resistance * 100 ), b );
-        pText.PlotText( txtMessage[ 31 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( a + '-' + b + '%', Mx + 240, My + 40 + YAdj + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
+
+    PlotScrollTextResistance(Mx, My, Yadj, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.resistance.Piercing, txtMessage[ 22 ]);
+    PlotScrollTextResistance(Mx, My, Yadj, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.resistance.Crushing, txtMessage[ 23 ]);
+    PlotScrollTextResistance(Mx, My, Yadj, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.resistance.Cutting, txtMessage[ 24 ]);
+    PlotScrollTextResistance(Mx, My, Yadj, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.resistance.Heat, txtMessage[ 25 ]);
+    PlotScrollTextResistance(Mx, My, Yadj, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.resistance.Cold, txtMessage[ 26 ]);
+    PlotScrollTextResistance(Mx, My, Yadj, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.resistance.Electric, txtMessage[ 27 ]);
+    PlotScrollTextResistance(Mx, My, Yadj, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.resistance.Poison, txtMessage[ 28 ]);
+    PlotScrollTextResistance(Mx, My, Yadj, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.resistance.Magic, txtMessage[ 29 ]);
+    PlotScrollTextResistance(Mx, My, Yadj, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.resistance.Mental, txtMessage[ 30 ]);
+    PlotScrollTextResistance(Mx, My, Yadj, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.resistance.Stun, txtMessage[ 31 ]);
+
     if i > TitleY + 1 then
     begin
       MaxScroll := -( ScrollFactor - ( ( My + 40 + YAdj + TitleY * 22 ) - 88 ) );
@@ -646,137 +365,19 @@ begin
       Yadj := Yadj + 10;
     end;
 //Next is Damage adjustments
-    k := Round( StatsScrollItem.damage.Piercing.Max );
-    if k <> 0 then
-    begin
-      if ( ( My + 40 + YAdj + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        Str( k, b );
-        Str( Round( StatsScrollItem.damage.Piercing.Min ), a );
-        pText.PlotText( txtMessage[ 22 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := Round( StatsScrollItem.damage.Crushing.Max );
-    if k <> 0 then
-    begin
-      if ( ( My + 40 + YAdj + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        Str( k, b );
-        Str( Round( StatsScrollItem.damage.Crushing.Min ), a );
-        pText.PlotText( txtMessage[ 23 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := Round( StatsScrollItem.damage.Cutting.Max );
-    if k <> 0 then
-    begin
-      if ( ( My + 40 + YAdj + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        Str( k, b );
-        Str( Round( StatsScrollItem.damage.Cutting.Min ), a );
-        pText.PlotText( txtMessage[ 24 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := Round( StatsScrollItem.damage.Heat.Max );
-    if k <> 0 then
-    begin
-      if ( ( My + 40 + YAdj + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        Str( k, b );
-        Str( Round( StatsScrollItem.damage.Heat.Min ), a );
-        pText.PlotText( txtMessage[ 25 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := Round( StatsScrollItem.damage.Cold.Max );
-    if k <> 0 then
-    begin
-      if ( ( My + 40 + YAdj + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        Str( k, b );
-        Str( Round( StatsScrollItem.damage.Cold.Min ), a );
-        pText.PlotText( txtMessage[ 26 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := Round( StatsScrollItem.damage.Electric.Max );
-    if k <> 0 then
-    begin
-      if ( ( My + 40 + YAdj + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        Str( k, b );
-        Str( Round( StatsScrollItem.damage.Electric.Min ), a );
-        pText.PlotText( txtMessage[ 27 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := Round( StatsScrollItem.damage.Poison.Max );
-    if k <> 0 then
-    begin
-      if ( ( My + 40 + YAdj + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        Str( k, b );
-        Str( Round( StatsScrollItem.damage.Poison.Min ), a );
-        pText.PlotText( txtMessage[ 28 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := Round( StatsScrollItem.damage.Magic.Max );
-    if k <> 0 then
-    begin
-      if ( ( My + 40 + YAdj + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        Str( k, b );
-        Str( Round( StatsScrollItem.damage.Magic.Min ), a );
-        pText.PlotText( txtMessage[ 29 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := Round( StatsScrollItem.damage.Mental.Max );
-    if k <> 0 then
-    begin
-      if ( ( My + 40 + YAdj + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        Str( k, b );
-        Str( Round( StatsScrollItem.damage.Mental.Min ), a );
-        pText.PlotText( txtMessage[ 30 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := Round( StatsScrollItem.damage.Stun.Max );
-    if k <> 0 then
-    begin
-      if ( ( My + 40 + YAdj + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        Str( k, b );
-        Str( Round( StatsScrollItem.damage.Stun.Min ), a );
-        pText.PlotText( txtMessage[ 31 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
-      end;
-      i := i + 1;
-    end;
-    k := Round( StatsScrollItem.damage.Special.Max );
-    if k <> 0 then
-    begin
-      if ( ( My + 40 + YAdj + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + i * 22 ) < ScrollEndValue - 24 ) then
-      begin
-        Str( k, b );
-        Str( Round( StatsScrollItem.damage.Special.Min ), a );
-        pText.PlotText( txtMessage[ 33 ], Mx + 50, My + 40 + YAdj + i * 22, 0 );
-        pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
-      end;
-    end;
+
+    PlotScrollTextRange(Mx, My, Yadj, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.damage.Piercing, txtMessage[ 22 ]);
+    PlotScrollTextRange(Mx, My, Yadj, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.damage.Crushing, txtMessage[ 23 ]);
+    PlotScrollTextRange(Mx, My, Yadj, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.damage.Cutting, txtMessage[ 24 ]);
+    PlotScrollTextRange(Mx, My, Yadj, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.damage.Heat, txtMessage[ 25 ]);
+    PlotScrollTextRange(Mx, My, Yadj, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.damage.Cold, txtMessage[ 26 ]);
+    PlotScrollTextRange(Mx, My, Yadj, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.damage.Electric, txtMessage[ 27 ]);
+    PlotScrollTextRange(Mx, My, Yadj, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.damage.Poison, txtMessage[ 28 ]);
+    PlotScrollTextRange(Mx, My, Yadj, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.damage.Magic, txtMessage[ 29 ]);
+    PlotScrollTextRange(Mx, My, Yadj, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.damage.Mental, txtMessage[ 30 ]);
+    PlotScrollTextRange(Mx, My, Yadj, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.damage.Stun, txtMessage[ 31 ]);
+    PlotScrollTextRange(Mx, My, Yadj, ScrollStartValue, ScrollEndValue, i, StatsScrollItem.damage.Special, txtMessage[ 33 ]);
+
     if i > TitleY + 1 then
     begin
       MaxScroll := -( ScrollFactor - ( ( My + 40 + YAdj + TitleY * 22 ) - 88 ) );
