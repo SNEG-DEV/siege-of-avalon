@@ -44,13 +44,15 @@ type
   TfrmLaunchSetting = class(TForm)
     imgPage1: TImage;
     tmrScroll: TTimer;
-    LinkLabel: TLinkLabel;
     StaticText1: TStaticText;
     StaticText2: TStaticText;
     lblLanguage: TStaticText;
     StaticText3: TStaticText;
     cmbMonitors: TComboBox;
     stMonitor: TStaticText;
+    imgSD: TImage;
+    imgHD: TImage;
+    imgFullHD: TImage;
     procedure FormCreate(Sender: TObject);
     procedure tmrScrollTimer(Sender: TObject);
     procedure TxtScrollLeft;
@@ -58,12 +60,13 @@ type
     procedure imgPage1Click(Sender: TObject);
     procedure Done(r: integer);
     procedure FormDestroy(Sender: TObject);
-    procedure LinkLabelLinkClick(Sender: TObject; const Link: string;
-      LinkType: TSysLinkType);
     procedure FormShow(Sender: TObject);
     procedure StaticText3Click(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure cmbMonitorsChange(Sender: TObject);
+    procedure imgSDClick(Sender: TObject);
+    procedure imgHDClick(Sender: TObject);
+    procedure imgFullHDClick(Sender: TObject);
   private
     { Private declarations }
     FLanguages: TStringList;
@@ -73,13 +76,12 @@ type
     FScrollText: string;
     FInterfacePath: string;
 
-    Support720p: Boolean;
-    Support1080p: Boolean;
     monitorCnt: Integer;
     devices: TStringList;
     CurrentDeviceName: string;
 
     function AppHookFunc(var Message : TMessage) : Boolean;
+    procedure SetResolutionSupport(lpszDeviceName: LPCWSTR);
   public
     class function Execute: TModalResult;
   end;
@@ -143,9 +145,8 @@ end;
 
 procedure TfrmLaunchSetting.cmbMonitorsChange(Sender: TObject);
 begin
-  Support1080p := (screen.Monitors[cmbMonitors.ItemIndex].Height >= 1080);
-  Support720p := (screen.Monitors[cmbMonitors.ItemIndex].Height >= 720);
   CurrentDeviceName := devices.ValueFromIndex[cmbMonitors.ItemIndex];
+  SetResolutionSupport(PWideChar(CurrentDeviceName));
 end;
 
 procedure TfrmLaunchSetting.Done(r: integer);
@@ -272,8 +273,7 @@ begin
     CurrentDeviceName := devices.ValueFromIndex[cmbMonitors.ItemIndex];
   end;
 
-  Support1080p := (screen.Monitors[cmbMonitors.ItemIndex].Height >= 1080);
-  Support720p := (screen.Monitors[cmbMonitors.ItemIndex].Height >= 720);
+  SetResolutionSupport(PWideChar(CurrentDeviceName));
 end;
 
 procedure TfrmLaunchSetting.FormDestroy(Sender: TObject);
@@ -290,6 +290,16 @@ begin
  // lblLanguageCaption.Font.Name := 'BlackChancery';
 end;
 
+procedure TfrmLaunchSetting.imgFullHDClick(Sender: TObject);
+begin
+  Done(1080);
+end;
+
+procedure TfrmLaunchSetting.imgHDClick(Sender: TObject);
+begin
+  Done(720);
+end;
+
 procedure TfrmLaunchSetting.imgPage1Click(Sender: TObject);
 var
   lInterfacePath: string;
@@ -301,20 +311,34 @@ begin
     TxtScrollLeft;
   if Rect(455,283,476,304).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
     TxtScrollRight;
-  if Rect(100,327,186,380).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
-    Done(600);
-  if Rect(241,327,327,380).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
-    if Support720p then Done(720)
-    else ShowMessage('The current resolution of selected monitor does not support 720p/HD.');
-  if Rect(373,327,459,380).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
-    if Support1080p then Done(1080)
-    else ShowMessage('The current resolution of selected monitor does not support 1080p/FullHD.');
 end;
 
-procedure TfrmLaunchSetting.LinkLabelLinkClick(Sender: TObject;
-  const Link: string; LinkType: TSysLinkType);
+procedure TfrmLaunchSetting.imgSDClick(Sender: TObject);
 begin
-  ShellExecute(0, nil, PChar(Link), nil, nil, 1);
+  Done(600);
+end;
+
+procedure TfrmLaunchSetting.SetResolutionSupport(lpszDeviceName: LPCWSTR);
+var
+  iModeNum: DWORD;
+  lpDevMode: TDeviceMode;
+begin
+  imgSD.Visible := False;
+  imgHD.Visible := False;
+  imgFullHD.Visible := False;
+  iModeNum := 0;
+  if lpszDeviceName='' then
+    lpszDeviceName := nil;
+  while EnumDisplaySettings(lpszDeviceName, iModeNum, lpDevMode) do
+  begin
+    if (lpDevMode.dmPelsWidth = 800) and (lpDevMode.dmPelsHeight = 600) then
+      imgSD.Visible := True;
+    if (lpDevMode.dmPelsWidth = 1280) and (lpDevMode.dmPelsHeight = 720) then
+      imgHD.Visible := True;
+    if (lpDevMode.dmPelsWidth = 1920) and (lpDevMode.dmPelsHeight = 1080) then
+      imgFullHD.Visible := True;
+    Inc( iModeNum );
+  end;
 end;
 
 procedure TfrmLaunchSetting.StaticText3Click(Sender: TObject);
