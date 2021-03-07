@@ -277,7 +277,7 @@ begin
           application.ProcessMessages;
           Adj := Adj - Trunc( Adj );
           application.ProcessMessages;
-          lpDDSFront.Flip( nil, DDFLIP_WAIT );
+          lpDDSFront_Flip( nil, DDFLIP_WAIT );
           application.ProcessMessages;
           SoAOS_DX_BltFastWaitXY( lpDDSFront, Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight ) );
           application.ProcessMessages;
@@ -320,7 +320,7 @@ begin
                  //DrawAlpha(lpDDSBack,Rect(0, 250, 800, 250+228),Rect(0, 250, 800, 250+228),DXBack,true,Alpha);
           application.ProcessMessages;
           Adj := Adj - Trunc( Adj );
-          lpDDSFront.Flip( nil, DDFLIP_WAIT );
+          lpDDSFront_Flip( nil, DDFLIP_WAIT );
           application.ProcessMessages;
           SoAOS_DX_BltFastWaitXY( lpDDSFront, Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight ) );
           application.ProcessMessages;
@@ -370,7 +370,7 @@ begin
           application.ProcessMessages;
           Adj := Adj - Trunc( Adj );
           application.ProcessMessages;
-          lpDDSFront.Flip( nil, DDFLIP_WAIT );
+          lpDDSFront_Flip( nil, DDFLIP_WAIT );
           application.ProcessMessages;
           SoAOS_DX_BltFastWaitXY( lpDDSFront, Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight ) );
           application.ProcessMessages;

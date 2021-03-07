@@ -24,7 +24,7 @@ object frmLaunchSetting: TfrmLaunchSetting
   OnDestroy = FormDestroy
   OnShow = FormShow
   PixelsPerInch = 96
-  TextHeight = 23
+  TextHeight = 22
   object imgPage1: TImage
     Left = 0
     Top = 0
@@ -7478,10 +7478,7 @@ object frmLaunchSetting: TfrmLaunchSetting
       CF856D319D230000000049454E44AE426082}
     Transparent = True
     OnClick = imgPage1Click
-    ExplicitLeft = 64
-    ExplicitTop = 120
-    ExplicitWidth = 105
-    ExplicitHeight = 105
+    ExplicitLeft = -8
   end
   object LinkLabel: TLinkLabel
     Left = 416
@@ -7504,16 +7501,16 @@ object frmLaunchSetting: TfrmLaunchSetting
   object StaticText1: TStaticText
     Left = 40
     Top = 248
-    Width = 414
-    Height = 27
+    Width = 484
+    Height = 26
     Caption = 'Select Language and screen resolution to start the game.'
     TabOrder = 1
   end
   object StaticText2: TStaticText
     Left = 40
     Top = 275
-    Width = 117
-    Height = 38
+    Width = 140
+    Height = 37
     Alignment = taRightJustify
     Caption = 'Language:'
     Font.Charset = DEFAULT_CHARSET
@@ -7543,8 +7540,8 @@ object frmLaunchSetting: TfrmLaunchSetting
   object StaticText3: TStaticText
     Left = 512
     Top = 24
-    Width = 20
-    Height = 27
+    Width = 17
+    Height = 26
     Caption = 'X'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -7559,7 +7556,7 @@ object frmLaunchSetting: TfrmLaunchSetting
     Left = 170
     Top = 217
     Width = 335
-    Height = 27
+    Height = 26
     BevelEdges = []
     Ctl3D = False
     Font.Charset = DEFAULT_CHARSET
@@ -7576,10 +7573,29 @@ object frmLaunchSetting: TfrmLaunchSetting
   object stMonitor: TStaticText
     Left = 40
     Top = 217
-    Width = 124
-    Height = 27
+    Width = 130
+    Height = 26
     Caption = 'Select Monitor:'
     TabOrder = 6
+  end
+  object WindowedMode: TCheckBox
+    Left = 223
+    Top = 382
+    Width = 13
+    Height = 13
+    Color = clNone
+    ParentColor = False
+    TabOrder = 7
+  end
+  object StaticText4: TStaticText
+    Left = 242
+    Top = 379
+    Width = 94
+    Height = 26
+    Caption = 'Windowed'
+    TabOrder = 8
+    OnClick = StaticText4Click
+    OnDblClick = StaticText4Click
   end
   object tmrScroll: TTimer
     Enabled = False

@@ -124,6 +124,7 @@ var
   DestSurface, SrcSurface : TDXR_Surface;
   Blend : TDXR_Blend;
 begin
+  FillChar(Src_ddsd, sizeof(Src_ddsd), 0);
   if dxrDDSurfaceLock( Dest, DestSurface ) then
   begin
     try
@@ -204,6 +205,7 @@ var
   DestSurface, SrcSurface : TDXR_Surface;
   Blend : TDXR_Blend;
 begin
+  FillChar(Src_ddsd, sizeof(Src_ddsd), 0);
   if dxrDDSurfaceLock( Dest, DestSurface ) then
   begin
     try

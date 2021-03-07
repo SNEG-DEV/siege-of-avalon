@@ -436,7 +436,7 @@ type
     ForceRefresh: Boolean;
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    procedure InitDX(Handle: HWND; ResW, ResH, BPP: Integer);
+    procedure InitDX(Handle: HWND; ResW, ResH, BPP: Integer; Windowed: Boolean);
     procedure CloseDX;
     property Active: Boolean read FActive write SetActive;
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState;
@@ -500,6 +500,24 @@ procedure Clip(ClipX1, ClipX2: Integer; var DestX1, DestX2, SrcX1,
 procedure Clip1(ClipX1, ClipX2: Integer; var DestX1, SrcX1, SrcX2: Integer);
 procedure Clip2(ClipX1, ClipX2: Integer; var DestX1, SrcX1, W: Integer);
 
+{
+ Windowed mode support functions
+ The idea is to intercept references to BltFast and Flip and add additional code
+ which will blit the result to the window surface.
+ This introduces some memory overhead which I believe can be negleted nowadays.
+}
+
+function lpDDSFront_BltFast (dwX: DWORD; dwY: DWORD;
+        lpDDSrcSurface: IDirectDrawSurface; lpSrcRect: PRect;
+        dwTrans: DWORD) : HResult;
+
+function lpDDSFront_Flip (lpDDSurfaceTargetOverride: IDirectDrawSurface;
+        dwFlags: DWORD) : HResult;
+
+function lpDD_CreateSurface (var lpDDSurfaceDesc: TDDSurfaceDesc;
+        out lplpDDSurface: IDirectDrawSurface;
+        pUnkOuter: IUnknown) : HResult;
+
 var
   lpDD: IDirectDraw;
   lpDDSFront: IDirectDrawSurface;
@@ -524,7 +542,99 @@ uses
   Engine,
   Resource,
   Character,
-  LogFile;
+  LogFile,
+  Math;
+
+var
+  BltWindowed : Boolean;
+  WindowHandle: HWND;
+
+function lpDDSFront_BltFast(dwX: DWORD; dwY: DWORD;
+        lpDDSrcSurface: IDirectDrawSurface; lpSrcRect: PRect;
+        dwTrans: DWORD) : HResult;
+var
+  res: HRESULT;
+  srcDC: HDC;
+  dstDC: HDC;
+begin
+  if BltWindowed then
+  begin
+    lpDDSFront.BltFast(dwX, dwY, lpDDSrcSurface, lpSrcRect, dwTrans);
+    res := lpDDSFront.GetDC(srcDC);
+    dstDC := GetDC(WindowHandle);
+    BitBlt(dstDC, dwX, dwY, lpSrcRect.Width, lpSrcRect.Height, srcDC, dwX, dwY, SRCCOPY);
+    ReleaseDC(WindowHandle, dstDC);
+    lpDDSFront.ReleaseDC(srcDC);
+    Result := DD_OK;
+  end
+  else
+    Result := lpDDSFront.BltFast(dwX, dwY, lpDDSrcSurface, lpSrcRect, dwTrans);
+end;
+
+function lpDDSFront_Flip(lpDDSurfaceTargetOverride: IDirectDrawSurface;
+        dwFlags: DWORD) : HResult;
+var
+  res: HRESULT;
+  srcDC: HDC;
+  dstDC: HDC;
+  rc: TRECT;
+  srcdesc: TDDSurfaceDesc;
+  w, h: DWORD;
+  tmp: IDirectDrawSurface;
+begin
+  if BltWindowed then
+  begin
+    res := lpDDSBack.GetDC(srcDC);
+    dstDC := GetDC(WindowHandle);
+
+    BitBlt(dstDC, 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight, srcDC, 0, 0, SRCCOPY);
+
+    ReleaseDC(WindowHandle, dstDC);
+    lpDDSBack.ReleaseDC(srcDC);
+
+    { swap the surfaces to simulate hardware buffer flipping }
+    tmp := lpDDSBack;
+    lpDDSBack := lpDDSFront;
+    lpDDSFront := tmp;
+
+    Result := DD_OK;
+  end
+  else
+    Result := lpDDSFront.Flip(lpDDSurfaceTargetOverride, dwFlags);
+end;
+
+function lpDD_CreateSurface (var lpDDSurfaceDesc: TDDSurfaceDesc;
+        out lplpDDSurface: IDirectDrawSurface;
+        pUnkOuter: IUnknown) : HResult;
+begin
+  if BltWindowed then
+  begin
+    { force the game to use 565 surfaces only as it uses digifx which cannot handle 888 pixel format }
+    lpDDSurfaceDesc.dwFlags := lpDDSurfaceDesc.dwFlags or DDSD_PIXELFORMAT;
+    ZeroMemory(@lpDDSurfaceDesc.ddpfPixelFormat, sizeof(lpDDSurfaceDesc.ddpfPixelFormat));
+    lpDDSurfaceDesc.ddpfPixelFormat.dwSize := sizeof(TDDPIXELFORMAT);
+    lpDDSurfaceDesc.ddpfPixelFormat.dwFlags := DDPF_RGB;
+    lpDDSurfaceDesc.ddpfPixelFormat.dwRGBBitCount := 16;
+    lpDDSurfaceDesc.ddpfPixelFormat.dwRBitMask := $00007C00;
+    lpDDSurfaceDesc.ddpfPixelFormat.dwGBitMask := $000003E0;
+    lpDDSurfaceDesc.ddpfPixelFormat.dwBBitMask := $0000001F;
+    { force system memory surfaces because video memory surfaces seem to cause various incompatibilities }
+    { anyway, video memory surfaces are most likely emulated nowadays }
+    if (lpDDSurfaceDesc.dwFlags and DDSD_CAPS) <> 0 then
+    begin
+        if (lpDDSurfaceDesc.ddsCaps.dwCaps and DDSCAPS_VIDEOMEMORY) <> 0 then
+        begin
+          lpDDSurfaceDesc.ddsCaps.dwCaps := (lpDDSurfaceDesc.ddsCaps.dwCaps and not DDSCAPS_VIDEOMEMORY) or DDSCAPS_SYSTEMMEMORY;
+        end;
+    end
+    else
+    begin
+      lpDDSurfaceDesc.dwFlags := DDSD_CAPS;
+      lpDDSurfaceDesc.ddsCaps.dwCaps := DDSCAPS_SYSTEMMEMORY;
+    end;
+  end;
+  Result := lpDD.CreateSurface(lpDDSurfaceDesc, lplpDDSurface, pUnkOuter);
+end;
 
 function EnumDevices(lpGUID: PGUID; lpDriverDescription: PAnsiChar; lpDriverName: PAnsiChar; lpContext: Pointer; Monitor: HMonitor): BOOL; stdcall;
 begin
@@ -625,7 +735,7 @@ begin
   inherited Destroy;
 end;
 
-procedure TAniView.InitDX(Handle: HWND; ResW, ResH, BPP: Integer);
+procedure TAniView.InitDX(Handle: HWND; ResW, ResH, BPP: Integer; Windowed: Boolean);
 var
   ddsd: TDDSurfaceDesc;
   Caps: TDDSCaps;
@@ -639,6 +749,8 @@ var
   res: HRESULT;
   guidStr : String;
 begin
+  FillChar(ddsd, sizeof(ddsd), 0);
+  WindowHandle := Handle;
   // Log.Log('InitDX');
   if DXMode then
     Exit;
@@ -672,39 +784,109 @@ begin
     end;
   end;
 
-  res := DirectDrawCreate(pdeviceGUID, tmpDD, nil); // Prepare for DirectX 7 or newer
+  {$IFDEF DX7}
+  res := DirectDrawCreateEx(pdeviceGUID, tmpDD, IID_IDirectDraw7, nil); // Prepare for DirectX 7 or newer
+  {$ELSE}
+  res := DirectDrawCreate(pdeviceGUID, tmpDD, nil);
+  {$ENDIF}
   if res<>DD_OK then
+  begin
     Log.Log( 'DX: Failed to create directdraw.' );
+    Application.Terminate;
+  end;
+  if tmpDD = nil then
+  begin
+    Log.Log( 'DX: DirectDrawCreateEx returned nil' );
+    Application.Terminate;
+  end;
 
+  lpDD := nil;
   try
     tmpDD.QueryInterface(IID_IDirectDraw, lpDD);
   finally
     tmpDD := nil;
   end;
+  if lpDD = nil then
+  begin
+    Log.Log('DX: Failed to query IID_DirectDraw');
+    Application.Terminate;
+  end;
 
+  if Windowed then
+    res := lpDD.SetCooperativeLevel(Handle, DDSCL_NORMAL)
+  else
   res := lpDD.SetCooperativeLevel(Handle, DDSCL_EXCLUSIVE or DDSCL_FULLSCREEN);
+
   if res<>DD_OK then
     Log.Log( 'DX: Failed to set cooperative level.' );
 
-  res := lpDD.SetDisplayMode(ResW, ResH, BPP);
-  if res<>DD_OK then
-    Log.Log( 'DX: Failed to set display mode.' );
+  ZeroMemory(@ddsd, SizeOf(ddsd));
+  if Windowed then
+  begin
+    BltWindowed := True;
+    ddsd.dwSize := SizeOf(ddsd);
+    ddsd.dwFlags := DDSD_CAPS or DDSD_WIDTH or DDSD_HEIGHT;
+    ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN;
+    ddsd.dwWidth := ResW;
+    ddsd.dwHeight := ResH;
 
+    res := lpDD_CreateSurface(ddsd, lpDDSFront, nil);
+    if res = DD_OK then
+    begin
+      res := lpDD_CreateSurface(ddsd, lpDDSBack, nil);
+      if res = DD_OK then
+      begin
+        // Both offscreen surfaces created
+      end
+      else
+        Log.Log( 'DX: Failed to create back buffer.' );
+    end
+  end
+  else
+  begin
+    {$IFDEF DX7}
+    res := lpDD.SetDisplayMode(ResW, ResH, BPP, 60, 0);
+    {$ELSE}
+  res := lpDD.SetDisplayMode(ResW, ResH, BPP);
+    {$ENDIF}
+  if res<>DD_OK then
+      Log.Log( 'DX: Failed to set display mode.' )
+    else
+      Log.Log('DX: Display mode set.');
+    Log.Flush;
   ddsd.dwSize := SizeOf(ddsd);
   ddsd.dwFlags := DDSD_CAPS or DDSD_BACKBUFFERCOUNT;
   ddsd.dwBackBufferCount := 1;
   ddsd.ddsCaps.dwCaps := DDSCAPS_COMPLEX + DDSCAPS_FLIP +
     DDSCAPS_PRIMARYSURFACE;
-  if (lpDD.CreateSurface(ddsd, lpDDSFront, nil) = DD_OK) then
+    res := lpDD_CreateSurface(ddsd, lpDDSFront, nil);
+    if (res = DD_OK) then
   begin
+      ZeroMemory(@Caps, sizeof(Caps));
     Caps.dwCaps := DDSCAPS_BACKBUFFER;
     lpDDSFront.GetAttachedSurface(Caps, lpDDSBack);
+      if lpDDSBack = nil then
+      begin
+      Log.Log('DX: failed to get attached surface');
+      Log.Flush;
+      end;
+    end
+    else
+    begin
+      Log.Log('DX: failed to create surface');
+      Log.Flush;
+    end
   end;
+
+  BltWindowed := Windowed;
+
   BltFx.dwSize := SizeOf(BltFx);
   BltFx.dwFillColor := 0;
   pr := Rect(0, 0, ResWidth, ResHeight);
+
+
   lpDDSBack.Blt(@pr, nil, @pr, DDBLT_COLORFILL + DDBLT_WAIT, @BltFx);
-  lpDDSFront.Flip(nil, DDFLIP_WAIT);
+  lpDDSFront_Flip(nil, DDFLIP_WAIT);
   BltFx.dwSize := SizeOf(BltFx);
   BltFx.dwFillColor := 0;
   pr := Rect(0, 0, ResWidth, ResHeight);
@@ -717,6 +899,7 @@ begin
   else
     PixelFormat := pf555;
   DXMode := True;
+  BltWindowed := Windowed;
 end;
 
 procedure TAniView.CloseDX;
@@ -1428,7 +1611,7 @@ begin
   if Assigned(FOnBeforeDisplay) then
     FOnBeforeDisplay(Self);
 
-  lpDDSFront.Flip(nil, DDFLIP_WAIT);
+  lpDDSFront_Flip(nil, DDFLIP_WAIT);
 
   if Assigned(FOnAfterDisplay) then
     FOnAfterDisplay(Self);
@@ -1650,6 +1833,7 @@ var
   ddsd: TDDSurfaceDesc;
   ReturnCode: HRESULT;
 begin
+  FillChar(ddsd, sizeof(ddsd), 0);
   MapPreCreated := True;
   Log.Log('Creating map buffer');
   Log.Log(inttostr(W) + ' x ' + inttostr(H));
@@ -1660,7 +1844,7 @@ begin
   ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_VIDEOMEMORY;
   ddsd.dwWidth := W;
   ddsd.dwHeight := H;
-  ReturnCode := lpDD.CreateSurface(ddsd, lpDDSMap, nil);
+  ReturnCode := lpDD_CreateSurface(ddsd, lpDDSMap, nil);
   if (ReturnCode = DD_OK) then
   begin
     Log.Log('Map buffer created in VRAM');
@@ -1706,7 +1890,7 @@ begin
       Log.Log('DDERR_UNSUPPORTEDMODE');
 
     ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_SYSTEMMEMORY;
-    lpDD.CreateSurface(ddsd, lpDDSMap, nil);
+    lpDD_CreateSurface(ddsd, lpDDSMap, nil);
   end;
 
   Log.Log('Creating work buffer');
@@ -1717,10 +1901,10 @@ begin
   ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_VIDEOMEMORY;
   ddsd.dwWidth := WorkWidth;
   ddsd.dwHeight := WorkHeight;
-  if (lpDD.CreateSurface(ddsd, Work, nil) <> DD_OK) then
+  if (lpDD_CreateSurface(ddsd, Work, nil) <> DD_OK) then
   begin
     ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_SYSTEMMEMORY;
-    lpDD.CreateSurface(ddsd, Work, nil);
+    lpDD_CreateSurface(ddsd, Work, nil);
   end;
 end;
 
@@ -1742,6 +1926,7 @@ var
   ddck: TDDCOLORKEY;
   ReturnCode: HRESULT;
 begin
+  FillChar(ddsd, sizeof(ddsd), 0);
   if (FMap = nil) then
     Exit;
   // TZone(FMap.Zones[1]).ExportTiles('f:\zone1tiles.bmp');
@@ -1791,7 +1976,7 @@ begin
     ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_VIDEOMEMORY;
     ddsd.dwWidth := W;
     ddsd.dwHeight := H;
-    ReturnCode := lpDD.CreateSurface(ddsd, lpDDSMap, nil);
+    ReturnCode := lpDD_CreateSurface(ddsd, lpDDSMap, nil);
     if (ReturnCode = DD_OK) then
     begin
       Log.Log('Map buffer created in VRAM');
@@ -1837,7 +2022,7 @@ begin
         Log.Log('DDERR_UNSUPPORTEDMODE');
 
       ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_SYSTEMMEMORY;
-      lpDD.CreateSurface(ddsd, lpDDSMap, nil);
+      lpDD_CreateSurface(ddsd, lpDDSMap, nil);
     end;
   end;
 
@@ -1859,10 +2044,10 @@ begin
     ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_VIDEOMEMORY;
     ddsd.dwWidth := WorkWidth;
     ddsd.dwHeight := WorkHeight;
-    if (lpDD.CreateSurface(ddsd, Work, nil) <> DD_OK) then
+    if (lpDD_CreateSurface(ddsd, Work, nil) <> DD_OK) then
     begin
       ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_SYSTEMMEMORY;
-      lpDD.CreateSurface(ddsd, Work, nil);
+      lpDD_CreateSurface(ddsd, Work, nil);
     end;
   end;
 

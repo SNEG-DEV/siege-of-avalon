@@ -750,6 +750,7 @@ var
   ddsd : TDDSurfaceDesc;
   Bits : BITPLANE;
 begin
+  FillChar(ddsd, sizeof(ddsd), 0);
   if ( Figure.Frame = 0 ) or not Figure.Visible then
     Exit;
 
@@ -1094,6 +1095,7 @@ var
   Bits : BITPLANE;
   i : integer;
 begin
+  FillChar(ddsd, sizeof(ddsd), 0);
   if not Figure.Visible then
     exit;
   if ( Figure.Frame = 0 ) then
@@ -2261,6 +2263,7 @@ var
 const
   FailName : string = 'TStaticResource.GetImage1';
 begin
+  FillChar(ddsd, sizeof(ddsd), 0);
   Log.DebugLog(FailName);
   try
     ddsd.dwSize := SizeOf( ddsd );
@@ -2294,6 +2297,7 @@ var
 const
   FailName : string = 'TStaticResource.GetImage';
 begin
+  FillChar(ddsd, sizeof(ddsd), 0);
   Log.DebugLog(FailName);
   try
 

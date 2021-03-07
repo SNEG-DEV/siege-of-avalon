@@ -135,7 +135,7 @@ begin
       DrawSub( lpDDSBack, rect( 55, 505 + i, 745, 505 + i + 1 ), rect( 55, 505 + i, 745, 505 + i + 1 ), DXBox, False, 100 - i * 3 );
     end;
 
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
+    lpDDSFront_Flip( nil, DDFLIP_WAIT );
     SoAOS_DX_BltFastWaitXY( lpDDSFront, Rect( 0, 0, 800, 600 ) );  //NO HD
   except
     on E : Exception do

@@ -794,3 +794,13 @@
 {special feature for enumerate displayis like primary, secondary etc.}
 {only for special purpose, multimonitors etc.}
 {.$DEFINE _DMO_}
+
+//{$DEFINE DX7}
+//{$UNDEF D3D_DEPRECATED}
+
+//{$IFDEF DX7}
+//{$UNDEF D3D_DEPRECATED}
+//{$ELSE}
+//{$DEFINE D3D_DEPRECATED}
+//{$ENDIF}
+

@@ -51,12 +51,14 @@ type
     StaticText3: TStaticText;
     cmbMonitors: TComboBox;
     stMonitor: TStaticText;
+    WindowedMode: TCheckBox;
+    StaticText4: TStaticText;
     procedure FormCreate(Sender: TObject);
     procedure tmrScrollTimer(Sender: TObject);
     procedure TxtScrollLeft;
     procedure TxtScrollRight;
     procedure imgPage1Click(Sender: TObject);
-    procedure Done(r: integer);
+    procedure Done(r: integer; windowed: Boolean);
     procedure FormDestroy(Sender: TObject);
     procedure LinkLabelLinkClick(Sender: TObject; const Link: string;
       LinkType: TSysLinkType);
@@ -64,6 +66,7 @@ type
     procedure StaticText3Click(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure cmbMonitorsChange(Sender: TObject);
+    procedure StaticText4Click(Sender: TObject);
   private
     { Private declarations }
     FLanguages: TStringList;
@@ -148,7 +151,7 @@ begin
   CurrentDeviceName := devices.ValueFromIndex[cmbMonitors.ItemIndex];
 end;
 
-procedure TfrmLaunchSetting.Done(r: integer);
+procedure TfrmLaunchSetting.Done(r: integer; windowed: Boolean);
 var
   INI: TIniFile;
 begin
@@ -166,6 +169,7 @@ begin
         end;
       end;
       INI.WriteInteger('Settings', 'ScreenResolution', r);
+      INI.WriteBool('Settings', 'Windowed', windowed);
       INI.WriteString('Settings', 'DeviceName', CurrentDeviceName);
       INI.UpdateFile;
     except
@@ -211,6 +215,7 @@ var
   devName: string;
   DisplayDevice: TDisplayDevice;
   iDevNum: DWORD;
+  monitorIndex: Integer;
 begin
   Application.HookMainWindow(AppHookFunc);
 
@@ -225,6 +230,7 @@ begin
     if FCurrentLanguage='' then
       FCurrentLanguage := cNoLanguage;
     lInterfacePath := INI.ReadString('Settings', 'Interface', 'Interface');
+    WindowedMode.Checked := INI.ReadBool('Settings', 'Windowed', False);
   finally
     INI.Free;
   end;
@@ -270,10 +276,14 @@ begin
 
     cmbMonitors.ItemIndex := prim;
     CurrentDeviceName := devices.ValueFromIndex[cmbMonitors.ItemIndex];
+    monitorIndex := cmbMonitors.ItemIndex;
+  end
+  else
+  begin
+    monitorIndex := 0;
   end;
-
-  Support1080p := (screen.Monitors[cmbMonitors.ItemIndex].Height >= 1080);
-  Support720p := (screen.Monitors[cmbMonitors.ItemIndex].Height >= 720);
+  Support1080p := (screen.Monitors[monitorIndex].Height >= 1080);
+  Support720p := (screen.Monitors[monitorIndex].Height >= 720);
 end;
 
 procedure TfrmLaunchSetting.FormDestroy(Sender: TObject);
@@ -302,12 +312,12 @@ begin
   if Rect(455,283,476,304).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
     TxtScrollRight;
   if Rect(100,327,186,380).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
-    Done(600);
+    Done(600, WindowedMode.Checked);
   if Rect(241,327,327,380).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
-    if Support720p then Done(720)
+    if Support720p then Done(720, WindowedMode.Checked)
     else ShowMessage('The current resolution of selected monitor does not support 720p/HD.');
   if Rect(373,327,459,380).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
-    if Support1080p then Done(1080)
+    if Support1080p then Done(1080, WindowedMode.Checked)
     else ShowMessage('The current resolution of selected monitor does not support 1080p/FullHD.');
 end;
 
@@ -320,6 +330,11 @@ end;
 procedure TfrmLaunchSetting.StaticText3Click(Sender: TObject);
 begin
   ModalResult := mrCancel;
+end;
+
+procedure TfrmLaunchSetting.StaticText4Click(Sender: TObject);
+begin
+  WindowedMode.Checked := not WindowedMode.Checked;
 end;
 
 procedure TfrmLaunchSetting.tmrScrollTimer(Sender: TObject);

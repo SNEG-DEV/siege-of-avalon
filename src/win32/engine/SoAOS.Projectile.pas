@@ -709,6 +709,7 @@ var
 const
   FailName : string = 'TGlow.Render';
 begin
+  FillChar(ddsd, sizeof(ddsd), 0);
   Log.DebugLog( FailName );
   try
 
@@ -752,6 +753,7 @@ var
 const
   FailName : string = 'TArrow.Render';
 begin
+  FillChar(ddsd, sizeof(ddsd), 0);
   Log.DebugLog( FailName );
   try
 

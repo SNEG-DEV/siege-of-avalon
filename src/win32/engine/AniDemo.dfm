@@ -116,6 +116,7 @@ object frmMain: TfrmMain
     000000000000000000000000000100000003000000070000001F8000003FC000
     007FF000007FFC00007FFF8000FFFFF001FFFFFC03FFFFFF1FFFFFFFFFFF}
   OldCreateOrder = True
+  Position = poScreenCenter
   Scaled = False
   StyleElements = [seFont, seBorder]
   OnCreate = FormCreate

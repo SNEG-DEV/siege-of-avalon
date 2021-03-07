@@ -427,7 +427,7 @@ begin
     begin
       if not MouseOverBack then
       begin
-      //lpDDSFront.Flip(nil, DDFLIP_WAIT);
+      //lpDDSFront_Flip(nil, DDFLIP_WAIT);
         MouseCursor.Cleanup;
         SoAOS_DX_BltFastWaitXY( lpDDSFront, Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight ) );
         if assigned( DXBack ) then
@@ -435,7 +435,7 @@ begin
           pr := Rect( 0, 0, DirtyRect.Width, DirtYrect.Height );
           lpDDSBack.bltFast( DirtyRect.Left, DirtyRect.Top, DXBack, @pr, DDBLTFAST_WAIT );
         end;
-        lpDDSFront.Flip( nil, DDFLIP_WAIT );
+        lpDDSFront_Flip( nil, DDFLIP_WAIT );
         MouseCursor.PlotDirty := false;
         MouseOverBack := true;
       end;
@@ -452,7 +452,7 @@ begin
           pr := Rect( 0, 0, DirtyRect.Width, DirtYrect.Height );
           lpDDSBack.bltFast( DirtyRect.Left, DirtyRect.Top, DXDirty, @pr, DDBLTFAST_WAIT );
         end;
-        lpDDSFront.Flip( nil, DDFLIP_WAIT );
+        lpDDSFront_Flip( nil, DDFLIP_WAIT );
         MouseCursor.PlotDirty := false;
         MouseOverBack := false;
       end;
@@ -506,7 +506,7 @@ begin
   DrawAlpha( lpDDSBack, DefaultTransit.Region, Rect( 0, 0, DefaultTransit.Region.Width, DefaultTransit.Region.Height ),
       DefaultTransit.Image, true, 220 );
   
-  lpDDSFront.Flip( nil, DDFLIP_WAIT );
+  lpDDSFront_Flip( nil, DDFLIP_WAIT );
   MouseCursor.PlotDirty := false;
 end;
 
@@ -533,7 +533,7 @@ begin
   if Timer.tag >= 15 then
     Timer.enabled := false;
   MouseCursor.Cleanup;
-  lpDDSFront.Flip( nil, DDFLIP_WAIT );
+  lpDDSFront_Flip( nil, DDFLIP_WAIT );
   MouseCursor.PlotDirty := false;
 end;
 
@@ -759,6 +759,7 @@ var
   R : TRect;
   RLE : TRLESprite;
 begin
+  FillChar(ddsd, sizeof(ddsd), 0);
   R := Rect( Region.Left - 4, Region.Top - 4, Region.right + 4, Region.Bottom + 4 );
   FillRectAlpha( lpDDSBack, R, $2070A0, 40 );
   R := Rect( Region.Left - 3, Region.Top - 3, Region.right + 3, Region.Bottom + 3 );

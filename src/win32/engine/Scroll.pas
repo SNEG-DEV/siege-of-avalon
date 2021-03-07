@@ -400,7 +400,7 @@ begin
   //myPoint:=Game.ScreenToClient(myPoint);
   //if not PtInRect(Rect(119, 0, 600, 550),myPoint) then
     MouseCursor.Cleanup;
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
+    lpDDSFront_Flip( nil, DDFLIP_WAIT );
     pr := Rect( 119, 0, 600, 550 );
     lpDDSBack.BltFast( 119, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
   //if PtInRect(Rect(119, 0, 600, 550),myPoint) then

@@ -234,7 +234,7 @@ begin
      pText.PlotDarkText('Exit',740,570,240);
   end;
 
-  lpDDSFront.Flip(nil, DDFLIP_WAIT);
+  lpDDSFront_Flip(nil, DDFLIP_WAIT);
   lpDDSBack.BltFast(0, 0, lpDDSFront, Rect(0, 0, 800, 600), DDBLTFAST_WAIT);
   }
   except

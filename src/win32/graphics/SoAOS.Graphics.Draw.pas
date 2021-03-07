@@ -72,7 +72,7 @@ procedure SoAOS_DX_BltFront;
 var
   pr: TRect;
 begin
-  lpDDSFront.Flip( nil, DDFLIP_WAIT );
+  lpDDSFront_Flip( nil, DDFLIP_WAIT );
   pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
   lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
   MouseCursor.PlotDirty := false;
@@ -90,6 +90,7 @@ var
   DC   : HDC;
   ddck : TDDCOLORKEY;
 begin
+  ZeroMemory(@ddsd, sizeof(ddsd));
     try
       ddsd.dwSize := SizeOf( ddsd );
       ddsd.dwFlags := DDSD_CAPS + DDSD_HEIGHT + DDSD_WIDTH;
@@ -100,10 +101,10 @@ begin
       ddsd.dwWidth := bmp.width;
       ddsd.dwHeight := bmp.height;
       Result := nil;
-      if ( lpdd.CreateSurface( ddsd, pdds, nil ) <> DD_OK ) then
+      if ( lpdd_CreateSurface( ddsd, pdds, nil ) <> DD_OK ) then
       begin
         ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_SYSTEMMEMORY;
-        if ( lpdd.CreateSurface( ddsd, pdds, nil ) <> DD_OK ) then
+        if ( lpdd_CreateSurface( ddsd, pdds, nil ) <> DD_OK ) then
           Exit;
       end;
       pdds.GetDC( DC );
@@ -173,6 +174,7 @@ var
 const
   FailName : string = 'DXUtil.DDColorMatch';
 begin
+  ZeroMemory(@ddsd, sizeof(ddsd));
   Log.DebugLog(FailName);
   Result := 0;
   try

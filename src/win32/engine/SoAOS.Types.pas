@@ -65,6 +65,7 @@ type
     ScreenWidth: integer;
     ScreenHeight: integer;
     BPP: integer;
+    Windowed: Boolean;
     PreMapWidth: integer;
     PreMapHeight: integer;
     GameWidth: integer;

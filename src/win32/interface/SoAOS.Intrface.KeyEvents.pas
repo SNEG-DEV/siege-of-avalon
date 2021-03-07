@@ -410,7 +410,7 @@ begin
         53 + 23 { imgPaused.Height } ), Rect(0, 0, 73 { imgPaused.width } ,
         23 { imgPaused.Height } ), frmMain.PauseImage, True, 170);
       pr := Rect(0, 0, ScreenMetrics.ScreenWidth, 114);
-      lpDDSFront.BltFast(0, ScreenMetrics.SpellBarY, frmMain.OverlayB, @pr,
+      lpDDSFront_BltFast(0, ScreenMetrics.SpellBarY, frmMain.OverlayB, @pr,
         DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
 
       for i := 1 to NPCList.Count - 1 do

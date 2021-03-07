@@ -112,6 +112,7 @@ var
 const
   FailName : string = 'TMap.Init';
 begin
+  FillChar(ddsd, sizeof(ddsd), 0);
   Log.DebugLog(FailName);
   try
     inherited;
@@ -385,7 +386,7 @@ begin
     pText.LoadFontGraphic( 'statistics' );
     pText.PlotTextCentered( MapName, 60, 623, 5, 128 );
 
-    lpDDSFront.Flip( nil, DDFLIP_WAIT );
+    lpDDSFront_Flip( nil, DDFLIP_WAIT );
     pr := Rect( 0, 0, ResWidth, ResHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
@@ -437,7 +438,7 @@ begin
           pr := Rect( 0, 0, 61, 45 );
           lpDDSBack.bltFast( 560, 378, DXBack, @pr, DDBLTFAST_WAIT );
         end;
-        lpDDSFront.Flip( nil, DDFLIP_WAIT );
+        lpDDSFront_Flip( nil, DDFLIP_WAIT );
         MouseCursor.PlotDirty := false;
         MouseOverBack := true;
       end;
@@ -454,7 +455,7 @@ begin
           pr := Rect( 0, 0, 61, 45 );
           lpDDSBack.bltFast( 560, 378, DXDirty, @pr, DDBLTFAST_WAIT );
         end;
-        lpDDSFront.Flip( nil, DDFLIP_WAIT );
+        lpDDSFront_Flip( nil, DDFLIP_WAIT );
         MouseCursor.PlotDirty := false;
         MouseOverBack := false;
       end;
