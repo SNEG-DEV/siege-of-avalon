@@ -220,15 +220,18 @@ begin
     Self.Font.Name := 'BlackChancery';
   SendMessageTimeout(HWND_BROADCAST, WM_FONTCHANGE, 0, 0, SMTO_NORMAL, 100, nil);
   Application.ProcessMessages;
+
   INI := TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini'));
   try
     FCurrentLanguage := INI.ReadString('Settings', 'LanguagePath', cNoLanguage);
     if FCurrentLanguage='' then
       FCurrentLanguage := cNoLanguage;
     lInterfacePath := INI.ReadString('Settings', 'Interface', 'Interface');
+    CurrentDeviceName := INI.ReadString('Settings', 'DeviceName', '');
   finally
     INI.Free;
   end;
+
   FInterfacePath := IncludeTrailingPathDelimiter(TPath.GetFullPath(lInterfacePath));
   for dir in TDirectory.GetDirectories(FInterfacePath) do
     FLanguages.Add(Copy(dir, dir.LastIndexOf(PathDelim)+2));
@@ -242,7 +245,6 @@ begin
   cmbMonitors.Visible := monitorCnt > 1;
   stMonitor.Visible := cmbMonitors.Visible;
 
-  CurrentDeviceName := '';
   if monitorCnt > 1 then
   begin
     prim := 0;
@@ -256,14 +258,9 @@ begin
       begin
         devName := displayDevice.DeviceName;
         EnumDisplayDevices(PChar(devName), 0, displayDevice, 0);
-        // below does not work - redo used WMI?
-//        if (DISPLAY_DEVICE_PRIMARY_DEVICE and DisplayDevice.StateFlags)<>0 then
-//        begin
-//          prim := iDevNum;
-//          devices.Add(string(DisplayDevice.DeviceString) + ' (primary)=' + devName);
-//        end
-//        else
-          devices.Add('Display '+(iDevNum+1).ToString+' - '+string(DisplayDevice.DeviceString) + '=' + devName);
+        devices.Add('Display '+(iDevNum+1).ToString+' - '+string(DisplayDevice.DeviceString) + '=' + devName);
+        if devName=CurrentDeviceName then
+          prim := iDevNum;
       end;
 
     for I := 0 to devices.Count-1 do
@@ -271,7 +268,9 @@ begin
 
     cmbMonitors.ItemIndex := prim;
     CurrentDeviceName := devices.ValueFromIndex[cmbMonitors.ItemIndex];
-  end;
+  end
+  else
+    CurrentDeviceName := '';
 
   SetResolutionSupport(PWideChar(CurrentDeviceName));
 end;
