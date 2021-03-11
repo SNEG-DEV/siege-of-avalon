@@ -117,7 +117,10 @@ uses
   SoAOS.Projectile in 'engine\SoAOS.Projectile.pas',
   SoAOS.Map in 'engine\SoAOS.Map.pas',
   SoAOS.Animation in 'engine\SoAOS.Animation.pas',
-  SoAOS.Intrface.KeyEvents in 'interface\SoAOS.Intrface.KeyEvents.pas';
+  SoAOS.Intrface.KeyEvents in 'interface\SoAOS.Intrface.KeyEvents.pas',
+  D3DRenderer in 'graphics\D3DRenderer.pas',
+  D3DShader in 'graphics\D3DShader.pas',
+  D3DModel in 'graphics\D3DModel.pas';
 
 {$R *.RES}
 

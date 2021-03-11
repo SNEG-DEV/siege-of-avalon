@@ -858,17 +858,17 @@ begin
       if ItemsInVideo then
       begin
         ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_VIDEOMEMORY;
-        if lpdd.CreateSurface(ddsd, NewItemImages, nil) <> DD_OK then
+        if lpdd_CreateSurface(ddsd, NewItemImages, nil) <> DD_OK then
         begin
           ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_SYSTEMMEMORY;
-          lpdd.CreateSurface(ddsd, NewItemImages, nil);
+          lpdd_CreateSurface(ddsd, NewItemImages, nil);
           ItemsInVideo := False;
         end;
       end
       else
       begin
         ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_SYSTEMMEMORY;
-        lpdd.CreateSurface(ddsd, NewItemImages, nil);
+        lpdd_CreateSurface(ddsd, NewItemImages, nil);
       end;
 
       { BltFx.dwSize := SizeOf(BltFx);
@@ -984,17 +984,17 @@ begin
       if TilesInVideo then
       begin
         ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_VIDEOMEMORY;
-        if lpdd.CreateSurface(ddsd, NewTileImages, nil) <> DD_OK then
+        if lpdd_CreateSurface(ddsd, NewTileImages, nil) <> DD_OK then
         begin
           ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_SYSTEMMEMORY;
-          lpdd.CreateSurface(ddsd, NewTileImages, nil);
+          lpdd_CreateSurface(ddsd, NewTileImages, nil);
           TilesInVideo := False;
         end;
       end
       else
       begin
         ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_SYSTEMMEMORY;
-        lpdd.CreateSurface(ddsd, NewTileImages, nil);
+        lpdd_CreateSurface(ddsd, NewTileImages, nil);
       end;
 
       BltFx.dwSize := SizeOf(BltFx);

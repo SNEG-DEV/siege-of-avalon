@@ -150,6 +150,7 @@ type
     procedure ShowHistroy;
     procedure CloseEnding( Sender : TObject );
     procedure CloseHistory( Sender : TObject );
+    procedure FormPaint(Sender: TObject);
   private
     AdventureLog1 : TAdventureLog;
     HistoryLog : TAdventureLog;
@@ -234,6 +235,7 @@ type
     procedure CloseShow( Sender : TObject );
     procedure AppActivate( Sender : TObject );
     procedure AppDeactivate( Sender : TObject );
+    procedure AppIdle( Sender: TObject; var Done: Boolean );
     function ShouldRun( X, Y : Longint ) : Boolean;
     function IsOnZoneTile( Figure : TAniFigure ) : Boolean;
     procedure DrawRosterGuy( Character : TCharacter; X, Y : Integer );
@@ -349,7 +351,9 @@ uses
   MP3,
   Engine,
   MousePtr,
-  SaveFile;
+  SaveFile,
+  D3DRenderer
+  ;
 
 {$R *.DFM}
 
@@ -1791,6 +1795,7 @@ begin
     Application.OnException := nil;
     Application.OnActivate := nil;
     Application.OnDeactivate := nil;
+    Application.OnIdle := nil;
     Log.Log( 'Console destroyed' );
 
   except
@@ -1824,6 +1829,7 @@ begin
   Application.OnException := AppException;
   Application.OnActivate := AppActivate;
   Application.OnDeactivate := AppDeactivate;
+  Application.OnIdle := AppIdle;
 
   Inc( SetAppExStyleCount );
   ExStyle := GetWindowLong( Application.Handle, GWL_EXSTYLE );
@@ -2697,6 +2703,11 @@ begin
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
   end;
+end;
+
+procedure TfrmMain.FormPaint(Sender: TObject);
+begin
+  D3DPresent();
 end;
 
 procedure TfrmMain.ChangeFocus( Figure : TAniFigure );
@@ -5377,6 +5388,12 @@ begin
     end;  }
 end;
 
+procedure TfrmMain.AppIdle(Sender: TObject; var Done: Boolean);
+begin
+  Invalidate;
+  Done := False;
+end;
+
 procedure TfrmMain.AppActivate( Sender : TObject );
 const
   FailName : string = 'Main.AppActivate';
@@ -6639,7 +6656,7 @@ begin
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
   end;
-
+  Invalidate;
 end;
 
 procedure TfrmMain.ShowEnding;

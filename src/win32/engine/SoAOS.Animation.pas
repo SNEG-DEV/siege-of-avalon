@@ -528,6 +528,8 @@ var
   PixelFormat: TPixelFormat;
   Debug: Longint;
 
+procedure D3DPresent;
+
 implementation
 
 uses
@@ -543,11 +545,24 @@ uses
   Resource,
   Character,
   LogFile,
-  Math;
+  Math,
+  D3DRenderer,
+  Winapi.D3D11
+  ;
 
 var
   BltWindowed : Boolean;
   WindowHandle: HWND;
+  D3DRenderer: TDXRenderer;
+
+procedure D3DPresent;
+begin
+  if D3DRenderer <> nil then
+  begin
+    D3DRenderer.Render;
+    D3DRenderer.Present;
+  end;
+end;
 
 function lpDDSFront_BltFast(dwX: DWORD; dwY: DWORD;
         lpDDSrcSurface: IDirectDrawSurface; lpSrcRect: PRect;
@@ -556,15 +571,38 @@ var
   res: HRESULT;
   srcDC: HDC;
   dstDC: HDC;
+  srcdesc: TDDSurfaceDesc;
+  rc: TRect;
 begin
+  Result := DD_OK;
   if BltWindowed then
   begin
     lpDDSFront.BltFast(dwX, dwY, lpDDSrcSurface, lpSrcRect, dwTrans);
-    res := lpDDSFront.GetDC(srcDC);
-    dstDC := GetDC(WindowHandle);
-    BitBlt(dstDC, dwX, dwY, lpSrcRect.Width, lpSrcRect.Height, srcDC, dwX, dwY, SRCCOPY);
-    ReleaseDC(WindowHandle, dstDC);
-    lpDDSFront.ReleaseDC(srcDC);
+    if D3DRenderer = nil then
+    begin
+      res := lpDDSFront.GetDC(srcDC);
+      dstDC := GetDC(WindowHandle);
+      BitBlt(dstDC, dwX, dwY, lpSrcRect.Width, lpSrcRect.Height, srcDC, dwX, dwY, SRCCOPY);
+      ReleaseDC(WindowHandle, dstDC);
+      lpDDSFront.ReleaseDC(srcDC);
+    end
+    else
+    begin
+      ZeroMemory(@srcdesc, sizeof(srcdesc));
+      srcdesc.dwSize := sizeof(srcdesc);
+      res := lpDDSFront.Lock(nil, srcdesc,  DDLOCK_WAIT, 0);
+      if res = DD_OK then
+      begin
+        //D3DRenderer.UpdateTexture(srcdesc.lpSurface, srcdesc.lPitch);
+        rc.Left := dwX;
+        rc.Top := dwY;
+        rc.Width := lpSrcRect.Width;
+        rc.Height := lpSrcRect.Height;
+        D3DRenderer.UpdateTexture(srcdesc.lpSurface, srcdesc.lPitch, rc);
+        lpDDSFront.Unlock(nil);
+      end;
+      Result := DD_OK;
+    end;
     Result := DD_OK;
   end
   else
@@ -584,13 +622,26 @@ var
 begin
   if BltWindowed then
   begin
-    res := lpDDSBack.GetDC(srcDC);
-    dstDC := GetDC(WindowHandle);
-
-    BitBlt(dstDC, 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight, srcDC, 0, 0, SRCCOPY);
-
-    ReleaseDC(WindowHandle, dstDC);
-    lpDDSBack.ReleaseDC(srcDC);
+    if D3DRenderer <> nil then
+    begin
+      ZeroMemory(@srcdesc, sizeof(srcdesc));
+      srcdesc.dwSize := sizeof(srcdesc);
+      res := lpDDSBack.Lock(nil, srcdesc,  DDLOCK_WAIT, 0);
+      if res = DD_OK then
+      begin
+        D3DRenderer.UpdateTexture(srcdesc.lpSurface, srcdesc.lPitch);
+        lpDDSBack.Unlock(nil);
+      end;
+      Result := DD_OK;
+    end
+    else
+    begin
+      res := lpDDSBack.GetDC(srcDC);
+      dstDC := GetDC(WindowHandle);
+      BitBlt(dstDC, 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight, srcDC, 0, 0, SRCCOPY);
+      ReleaseDC(WindowHandle, dstDC);
+      lpDDSBack.ReleaseDC(srcDC);
+    end;
 
     { swap the surfaces to simulate hardware buffer flipping }
     tmp := lpDDSBack;
@@ -615,23 +666,9 @@ begin
     lpDDSurfaceDesc.ddpfPixelFormat.dwSize := sizeof(TDDPIXELFORMAT);
     lpDDSurfaceDesc.ddpfPixelFormat.dwFlags := DDPF_RGB;
     lpDDSurfaceDesc.ddpfPixelFormat.dwRGBBitCount := 16;
-    lpDDSurfaceDesc.ddpfPixelFormat.dwRBitMask := $00007C00;
-    lpDDSurfaceDesc.ddpfPixelFormat.dwGBitMask := $000003E0;
+    lpDDSurfaceDesc.ddpfPixelFormat.dwRBitMask := $0000F800;
+    lpDDSurfaceDesc.ddpfPixelFormat.dwGBitMask := $000007E0;
     lpDDSurfaceDesc.ddpfPixelFormat.dwBBitMask := $0000001F;
-    { force system memory surfaces because video memory surfaces seem to cause various incompatibilities }
-    { anyway, video memory surfaces are most likely emulated nowadays }
-    if (lpDDSurfaceDesc.dwFlags and DDSD_CAPS) <> 0 then
-    begin
-        if (lpDDSurfaceDesc.ddsCaps.dwCaps and DDSCAPS_VIDEOMEMORY) <> 0 then
-        begin
-          lpDDSurfaceDesc.ddsCaps.dwCaps := (lpDDSurfaceDesc.ddsCaps.dwCaps and not DDSCAPS_VIDEOMEMORY) or DDSCAPS_SYSTEMMEMORY;
-        end;
-    end
-    else
-    begin
-      lpDDSurfaceDesc.dwFlags := DDSD_CAPS;
-      lpDDSurfaceDesc.ddsCaps.dwCaps := DDSCAPS_SYSTEMMEMORY;
-    end;
   end;
   Result := lpDD.CreateSurface(lpDDSurfaceDesc, lplpDDSurface, pUnkOuter);
 end;
@@ -823,6 +860,8 @@ begin
   ZeroMemory(@ddsd, SizeOf(ddsd));
   if Windowed then
   begin
+    D3DREnderer := TDXRenderer.Create(Handle, ResW, ResH);
+
     BltWindowed := True;
     ddsd.dwSize := SizeOf(ddsd);
     ddsd.dwFlags := DDSD_CAPS or DDSD_WIDTH or DDSD_HEIGHT;
@@ -854,21 +893,21 @@ begin
     else
       Log.Log('DX: Display mode set.');
     Log.Flush;
-  ddsd.dwSize := SizeOf(ddsd);
-  ddsd.dwFlags := DDSD_CAPS or DDSD_BACKBUFFERCOUNT;
-  ddsd.dwBackBufferCount := 1;
-  ddsd.ddsCaps.dwCaps := DDSCAPS_COMPLEX + DDSCAPS_FLIP +
+    ddsd.dwSize := SizeOf(ddsd);
+    ddsd.dwFlags := DDSD_CAPS or DDSD_BACKBUFFERCOUNT;
+    ddsd.dwBackBufferCount := 1;
+    ddsd.ddsCaps.dwCaps := DDSCAPS_COMPLEX + DDSCAPS_FLIP +
     DDSCAPS_PRIMARYSURFACE;
     res := lpDD_CreateSurface(ddsd, lpDDSFront, nil);
     if (res = DD_OK) then
-  begin
+    begin
       ZeroMemory(@Caps, sizeof(Caps));
-    Caps.dwCaps := DDSCAPS_BACKBUFFER;
-    lpDDSFront.GetAttachedSurface(Caps, lpDDSBack);
+      Caps.dwCaps := DDSCAPS_BACKBUFFER;
+      lpDDSFront.GetAttachedSurface(Caps, lpDDSBack);
       if lpDDSBack = nil then
       begin
-      Log.Log('DX: failed to get attached surface');
-      Log.Flush;
+        Log.Log('DX: failed to get attached surface');
+        Log.Flush;
       end;
     end
     else
@@ -900,6 +939,8 @@ begin
     PixelFormat := pf555;
   DXMode := True;
   BltWindowed := Windowed;
+  if BltWindowed then
+    InvalidateRect(Handle, nil, FALSE);
 end;
 
 procedure TAniView.CloseDX;
@@ -1612,6 +1653,8 @@ begin
     FOnBeforeDisplay(Self);
 
   lpDDSFront_Flip(nil, DDFLIP_WAIT);
+  if BltWindowed then
+    InvalidateRect(WindowHandle, nil, FALSE);
 
   if Assigned(FOnAfterDisplay) then
     FOnAfterDisplay(Self);
