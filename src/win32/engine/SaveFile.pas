@@ -525,7 +525,7 @@ begin
             sbMaxPartyMembers :
               begin
                 Stream.Read( L, sizeof( L ) );
-                MaxPartyMembers := L;
+                MaxPartyMembers := ScreenMetrics.PartyMemberSlots; // L;
               end;
             sbDeathScreen :
               begin
@@ -663,7 +663,7 @@ begin
             sbMaxPartyMembers :
               begin
                 Stream.Read( L, sizeof( L ) );
-                MaxPartyMembers := L;
+                MaxPartyMembers := ScreenMetrics.PartyMemberSlots; // L;
               end;
             sbDeathScreen :
               begin

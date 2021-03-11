@@ -153,7 +153,7 @@ const
      CharacterRange: 300;
      CharacterReach: 160;
      CompanionRange: 300;
-     PartyMemberSlots: 2;
+     PartyMemberSlots: 4;
      spellbarFile: 'spellbar';
      sidebarFile: 'sidebar';
      bottombarFile: 'bottombar';
@@ -169,11 +169,11 @@ const
      popManaRect: ( Left: 708; Top: 146; Right: 765; Bottom: 203 );
      popHealthRect: ( Left: 711; Top: 258; Right: 759; Bottom: 348 );
      popSpellRect: ( Left: 337; Top: 547; Right: 371; Bottom: 582 );
-     popRosterRect: ( Left: 175; Top: 539; Right: 256; Bottom: 571 );
+     popRosterRect: ( Left: 101; Top: 491; Right: 192; Bottom: 509 );
      popParty1Rect: ( Left: 3; Top: 510; Right: 65; Bottom: 586 );
      popParty2Rect: ( Left: 80; Top: 510; Right: 151; Bottom: 586 );
-     popParty3Rect: ( Left: -1; Top: -1; Right: -1; Bottom: -1 );
-     popParty4Rect: ( Left: -1; Top: -1; Right: -1; Bottom: -1 );
+     popParty3Rect: ( Left: 166; Top: 510; Right: 233; Bottom: 586 );
+     popParty4Rect: ( Left: 248; Top: 510; Right: 319; Bottom: 586 );
     );
   cHD : TScreenResolutionData =
     (ScreenWidth : 1280;

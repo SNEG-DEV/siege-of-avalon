@@ -1341,16 +1341,20 @@ begin
 
     if Button = mbLeft then
     begin
-      {if (X>=120) and (X<179) and (Y>=490) and (Y<509) and not SpellBarActive then begin
+      // Due to SD placement of Roster trigger - we need to check here as well.
+      if ScreenMetrics.popRosterRect.Contains( Point(X, Y) ) and not SpellBarActive then
+      begin
         if DlgRoster.Loaded then
-          CloseAllDialogs(DlgRoster)
-        else begin
-          DoNotRestartTimer:=true;
-          CloseAllDialogs(DlgRoster);
-          BeginRoster(nil);
+          CloseAllDialogs( DlgRoster )
+        else
+        begin
+          ChangeFocus( player );
+          DoNotRestartTimer := True;
+          CloseAllDialogs( DlgRoster );
+          BeginRoster( nil );
         end;
-        exit;
-      end; }
+        Exit;
+      end;
 
       if Assigned( Game.MouseOverHLFigure ) then
       begin
@@ -2449,13 +2453,9 @@ begin
         begin  // Teammates
           i := -1;
           if ScreenMetrics.popParty1Rect.Contains( Point(x, y) ) then i := 1
-          else if ScreenMetrics.popParty2Rect.Contains( Point(x, y) ) then i := 2;
-
-          if ( MaxPartyMembers=4 ) then //HD always has 4 slots
-          begin
-            if ScreenMetrics.popParty3Rect.Contains( Point(x, y) ) then i := 3
-            else if ScreenMetrics.popParty4Rect.Contains( Point(x, y) ) then i := 4;
-          end
+          else if ScreenMetrics.popParty2Rect.Contains( Point(x, y) ) then i := 2
+          else if ScreenMetrics.popParty3Rect.Contains( Point(x, y) ) then i := 3
+          else if ScreenMetrics.popParty4Rect.Contains( Point(x, y) ) then i := 4
           else if ScreenMetrics.popStatsRect.Contains( Point(x, y) ) then i := 0;
 
           {      if i=0 then begin
@@ -5007,7 +5007,7 @@ begin
 
         TransitionScreen := '';
         DeathScreen := '';
-        MaxPartyMembers := 4;  // Was 2
+        MaxPartyMembers := ScreenMetrics.PartyMemberSlots;  // Was 2
         if not LoadMapFile( False, True ) then
           Exit;
         LastFileSaved := GameName;
