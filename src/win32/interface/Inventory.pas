@@ -1499,7 +1499,9 @@ const
 begin
   Log.DebugLog(FailName);
   try
-    GetClientRect(frmMain.Handle, prRect);
+    prRect.Left := 0;
+    prRect.Top := 0;
+    ClientToScreen(frmMain.Handle, prRect.TopLeft);
     if Action = 1 then
     begin //constrict to main inventory area
       prRect.bottom := prRect.Top + 456;

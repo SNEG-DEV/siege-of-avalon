@@ -44,13 +44,15 @@ type
   TfrmLaunchSetting = class(TForm)
     imgPage1: TImage;
     tmrScroll: TTimer;
-    LinkLabel: TLinkLabel;
     StaticText1: TStaticText;
     StaticText2: TStaticText;
     lblLanguage: TStaticText;
     StaticText3: TStaticText;
     cmbMonitors: TComboBox;
     stMonitor: TStaticText;
+    imgSD: TImage;
+    imgHD: TImage;
+    imgFullHD: TImage;
     WindowedMode: TCheckBox;
     StaticText4: TStaticText;
     procedure FormCreate(Sender: TObject);
@@ -60,13 +62,14 @@ type
     procedure imgPage1Click(Sender: TObject);
     procedure Done(r: integer; windowed: Boolean);
     procedure FormDestroy(Sender: TObject);
-    procedure LinkLabelLinkClick(Sender: TObject; const Link: string;
-      LinkType: TSysLinkType);
     procedure FormShow(Sender: TObject);
     procedure StaticText3Click(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure cmbMonitorsChange(Sender: TObject);
     procedure StaticText4Click(Sender: TObject);
+    procedure imgSDClick(Sender: TObject);
+    procedure imgHDClick(Sender: TObject);
+    procedure imgFullHDClick(Sender: TObject);
   private
     { Private declarations }
     FLanguages: TStringList;
@@ -76,13 +79,12 @@ type
     FScrollText: string;
     FInterfacePath: string;
 
-    Support720p: Boolean;
-    Support1080p: Boolean;
     monitorCnt: Integer;
     devices: TStringList;
     CurrentDeviceName: string;
 
     function AppHookFunc(var Message : TMessage) : Boolean;
+    procedure SetResolutionSupport(lpszDeviceName: LPCWSTR);
   public
     class function Execute: TModalResult;
   end;
@@ -146,9 +148,8 @@ end;
 
 procedure TfrmLaunchSetting.cmbMonitorsChange(Sender: TObject);
 begin
-  Support1080p := (screen.Monitors[cmbMonitors.ItemIndex].Height >= 1080);
-  Support720p := (screen.Monitors[cmbMonitors.ItemIndex].Height >= 720);
   CurrentDeviceName := devices.ValueFromIndex[cmbMonitors.ItemIndex];
+  SetResolutionSupport(PWideChar(CurrentDeviceName));
 end;
 
 procedure TfrmLaunchSetting.Done(r: integer; windowed: Boolean);
@@ -224,6 +225,7 @@ begin
     Self.Font.Name := 'BlackChancery';
   SendMessageTimeout(HWND_BROADCAST, WM_FONTCHANGE, 0, 0, SMTO_NORMAL, 100, nil);
   Application.ProcessMessages;
+
   INI := TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini'));
   try
     FCurrentLanguage := INI.ReadString('Settings', 'LanguagePath', cNoLanguage);
@@ -231,9 +233,11 @@ begin
       FCurrentLanguage := cNoLanguage;
     lInterfacePath := INI.ReadString('Settings', 'Interface', 'Interface');
     WindowedMode.Checked := INI.ReadBool('Settings', 'Windowed', False);
+    CurrentDeviceName := INI.ReadString('Settings', 'DeviceName', '');
   finally
     INI.Free;
   end;
+
   FInterfacePath := IncludeTrailingPathDelimiter(TPath.GetFullPath(lInterfacePath));
   for dir in TDirectory.GetDirectories(FInterfacePath) do
     FLanguages.Add(Copy(dir, dir.LastIndexOf(PathDelim)+2));
@@ -247,7 +251,6 @@ begin
   cmbMonitors.Visible := monitorCnt > 1;
   stMonitor.Visible := cmbMonitors.Visible;
 
-  CurrentDeviceName := '';
   if monitorCnt > 1 then
   begin
     prim := 0;
@@ -261,14 +264,9 @@ begin
       begin
         devName := displayDevice.DeviceName;
         EnumDisplayDevices(PChar(devName), 0, displayDevice, 0);
-        // below does not work - redo used WMI?
-//        if (DISPLAY_DEVICE_PRIMARY_DEVICE and DisplayDevice.StateFlags)<>0 then
-//        begin
-//          prim := iDevNum;
-//          devices.Add(string(DisplayDevice.DeviceString) + ' (primary)=' + devName);
-//        end
-//        else
-          devices.Add('Display '+(iDevNum+1).ToString+' - '+string(DisplayDevice.DeviceString) + '=' + devName);
+        devices.Add('Display '+(iDevNum+1).ToString+' - '+string(DisplayDevice.DeviceString) + '=' + devName);
+        if devName=CurrentDeviceName then
+          prim := iDevNum;
       end;
 
     for I := 0 to devices.Count-1 do
@@ -276,14 +274,11 @@ begin
 
     cmbMonitors.ItemIndex := prim;
     CurrentDeviceName := devices.ValueFromIndex[cmbMonitors.ItemIndex];
-    monitorIndex := cmbMonitors.ItemIndex;
   end
   else
-  begin
-    monitorIndex := 0;
-  end;
-  Support1080p := (screen.Monitors[monitorIndex].Height >= 1080);
-  Support720p := (screen.Monitors[monitorIndex].Height >= 720);
+    CurrentDeviceName := '';
+
+  SetResolutionSupport(PWideChar(CurrentDeviceName));
 end;
 
 procedure TfrmLaunchSetting.FormDestroy(Sender: TObject);
@@ -300,6 +295,16 @@ begin
  // lblLanguageCaption.Font.Name := 'BlackChancery';
 end;
 
+procedure TfrmLaunchSetting.imgFullHDClick(Sender: TObject);
+begin
+  Done(1080, WindowedMode.Checked);
+end;
+
+procedure TfrmLaunchSetting.imgHDClick(Sender: TObject);
+begin
+  Done(720, WindowedMode.Checked);
+end;
+
 procedure TfrmLaunchSetting.imgPage1Click(Sender: TObject);
 var
   lInterfacePath: string;
@@ -311,20 +316,34 @@ begin
     TxtScrollLeft;
   if Rect(455,283,476,304).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
     TxtScrollRight;
-  if Rect(100,327,186,380).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
-    Done(600, WindowedMode.Checked);
-  if Rect(241,327,327,380).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
-    if Support720p then Done(720, WindowedMode.Checked)
-    else ShowMessage('The current resolution of selected monitor does not support 720p/HD.');
-  if Rect(373,327,459,380).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
-    if Support1080p then Done(1080, WindowedMode.Checked)
-    else ShowMessage('The current resolution of selected monitor does not support 1080p/FullHD.');
 end;
 
-procedure TfrmLaunchSetting.LinkLabelLinkClick(Sender: TObject;
-  const Link: string; LinkType: TSysLinkType);
+procedure TfrmLaunchSetting.imgSDClick(Sender: TObject);
 begin
-  ShellExecute(0, nil, PChar(Link), nil, nil, 1);
+  Done(600, WindowedMode.Checked);
+end;
+
+procedure TfrmLaunchSetting.SetResolutionSupport(lpszDeviceName: LPCWSTR);
+var
+  iModeNum: DWORD;
+  lpDevMode: TDeviceMode;
+begin
+  imgSD.Visible := False;
+  imgHD.Visible := False;
+  imgFullHD.Visible := False;
+  iModeNum := 0;
+  if lpszDeviceName='' then
+    lpszDeviceName := nil;
+  while EnumDisplaySettings(lpszDeviceName, iModeNum, lpDevMode) do
+  begin
+    if (lpDevMode.dmPelsWidth = 800) and (lpDevMode.dmPelsHeight = 600) then
+      imgSD.Visible := True;
+    if (lpDevMode.dmPelsWidth = 1280) and (lpDevMode.dmPelsHeight = 720) then
+      imgHD.Visible := True;
+    if (lpDevMode.dmPelsWidth = 1920) and (lpDevMode.dmPelsHeight = 1080) then
+      imgFullHD.Visible := True;
+    Inc( iModeNum );
+  end;
 end;
 
 procedure TfrmLaunchSetting.StaticText3Click(Sender: TObject);

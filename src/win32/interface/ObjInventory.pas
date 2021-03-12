@@ -1174,7 +1174,6 @@ begin
     prRect.Left := 0;
     prRect.Top := 0;
     ClientToScreen(frmMain.Handle, prRect.TopLeft);
-    GetClientRect(frmMain.Handle, prRect);
     if Action = 1 then
     begin //restore to fullscreen
       prRect.bottom := 478;

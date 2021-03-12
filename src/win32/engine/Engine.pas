@@ -1182,9 +1182,7 @@ begin
         end
         else if Token = 'removequest' then
         begin
-          j := Quests.IndexOf( Parms );
-          if j >= 0 then
-            Quests.Delete( j );
+          frmMain.RemoveQuest( Parms );
         end
         else if Token = 'adventure' then
         begin

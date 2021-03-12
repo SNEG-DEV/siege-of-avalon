@@ -321,7 +321,6 @@ const
 begin
   Log.DebugLog( FailName );
   try
-    Log.log( 'MOUSECLICK '+ X.ToString+', '+Y.ToString );
     MenuChoice := 0;
 
     if AreYouSureBoxVisible = false then

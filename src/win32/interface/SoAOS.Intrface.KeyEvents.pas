@@ -64,7 +64,7 @@ type
     class procedure MarkSpotInLog; // Temp.
 
     class procedure DemoOrDeath; // Testcode addparty sample
-    class procedure LforWhat; // Testcode mess sample
+//    class procedure LforWhat; // Testcode mess sample
   public
     class procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -111,21 +111,28 @@ begin
 end;
 
 class procedure TKeyEvent.DemoOrDeath;
-//var
-//  i: Integer;
+var
+  i, n: Integer;
 begin
-//  for i:=0 to FigureInstances.count-1 do
-//  begin
-//    if (FigureInstances.Objects[i] is TCharacter) and (FigureInstances.Objects[i]<>Player) then
-//    begin
-//      frmMain.AddToParty(TAniFigure(FigureInstances.Objects[i]));
-//      break;
-//    end;
-//  end;
-    // AddAdventure('a');
-    // AddQuest('a');
-    // AddLogEntry('a');
-    // end
+  n := 0;
+  for i:=0 to FigureInstances.count-1 do
+  begin
+    if (FigureInstances.Objects[i] is TCharacter) and (FigureInstances.Objects[i]<>Player) then
+    begin
+      frmMain.AddToParty(TAniFigure(FigureInstances.Objects[i]));
+      inc(n);
+      if n >= MaxPartyMembers then
+        break;
+    end;
+  end;
+
+//  player.hitpoints := -1;
+  player.trainingpoints := 10000;
+
+//     AddAdventure('a');
+//     AddQuest('a');
+//     AddLogEntry('a');
+//     end
 end;
 
 class procedure TKeyEvent.FormKeyDown(Sender: TObject; var Key: Word;
@@ -145,7 +152,7 @@ begin
       65: if ToggleShow(DlgTitles) then frmMain.BeginTitles(Current); // A
       66: Current.DoBattleCry; // B
       67: if ToggleShow(DlgStatistics) then frmMain.BeginStatistics(Current); // C
-
+      68: DemoOrDeath; //D test code
       70: MarkSpotInLog; // F
 
       71: ScreenShot; // G
@@ -188,10 +195,10 @@ begin
   end;
 end;
 
-class procedure TKeyEvent.LforWhat;
+//class procedure TKeyEvent.LforWhat;
 //var
 //  i: Integer;
-begin //L
+//begin //L
 //  player.hitpoints := -1;
 //
 //  for i := 0 to  Npclist.Count -1 do
@@ -233,7 +240,7 @@ begin //L
 //  end;
 //
 //  RunScript(Current,'journalentry(A);adventure(B);AddQuest(quest1)');
-end;
+//end;
 
 class procedure TKeyEvent.MarkSpotInLog;
 begin

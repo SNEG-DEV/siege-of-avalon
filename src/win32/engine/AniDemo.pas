@@ -47,6 +47,7 @@ uses
   System.SysUtils,
   System.IOUtils,
   System.Classes,
+  System.Generics.Collections,
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
@@ -218,6 +219,9 @@ type
     trNewFile, trSceneName, trStartingPoint, trTransition, trTargetList : string;
     Popup : TPopup;
 
+    // Dictionary with questId, achiementId (type? GUID)
+    Achievements : TDictionary<string, string>;
+    procedure PopulateAchievementsDirectory;
 
     procedure OpenDialog( Dialog : TDisplay; CloseProcedure : TNotifyEvent );
     procedure CloseCreateDialog( Sender : TObject );
@@ -284,7 +288,8 @@ type
     procedure PaintCharacterOnBorder( Figure : TSpriteObject; Slot : Integer );
     procedure AddLogEntry( const FileName : string );
     procedure AddQuest( const Entry : string );
-    procedure AddAdventure( const Entry : string );
+    procedure RemoveQuest( const Entry : string ); // Also use Achievement trigger
+    procedure AddAdventure( const Entry : string ); // Also use Achievement trigger
     procedure ClearLogGraphic;
     procedure ClearQuestGraphic;
     procedure ClearAdventureGraphic;
@@ -1352,16 +1357,20 @@ begin
 
     if Button = mbLeft then
     begin
-      {if (X>=120) and (X<179) and (Y>=490) and (Y<509) and not SpellBarActive then begin
+      // Due to SD placement of Roster trigger - we need to check here as well.
+      if ScreenMetrics.popRosterRect.Contains( Point(X, Y) ) and not SpellBarActive then
+      begin
         if DlgRoster.Loaded then
-          CloseAllDialogs(DlgRoster)
-        else begin
-          DoNotRestartTimer:=true;
-          CloseAllDialogs(DlgRoster);
-          BeginRoster(nil);
+          CloseAllDialogs( DlgRoster )
+        else
+        begin
+          ChangeFocus( player );
+          DoNotRestartTimer := True;
+          CloseAllDialogs( DlgRoster );
+          BeginRoster( nil );
         end;
-        exit;
-      end; }
+        Exit;
+      end;
 
       if Assigned( Game.MouseOverHLFigure ) then
       begin
@@ -1789,8 +1798,9 @@ begin
     imgSpellBar.Free;
     imgBottomBar.Free;
 
-    AdventureLog1.free;
-    HistoryLog.free;
+    AdventureLog1.Free;
+    HistoryLog.Free;
+    Achievements.Free;
 
     Application.OnException := nil;
     Application.OnActivate := nil;
@@ -1838,6 +1848,8 @@ begin
 
   AdventureLog1 := TAdventureLog.create;
   HistoryLog := TAdventureLog.create;
+  Achievements := TDictionary<string, string>.Create; // Should we read this from somewhere?
+  PopulateAchievementsDirectory;
 
   OnKeyDown := TKeyEvent.FormKeyDown;
 
@@ -2459,13 +2471,9 @@ begin
         begin  // Teammates
           i := -1;
           if ScreenMetrics.popParty1Rect.Contains( Point(x, y) ) then i := 1
-          else if ScreenMetrics.popParty2Rect.Contains( Point(x, y) ) then i := 2;
-
-          if ( MaxPartyMembers=4 ) then //HD always has 4 slots
-          begin
-            if ScreenMetrics.popParty3Rect.Contains( Point(x, y) ) then i := 3
-            else if ScreenMetrics.popParty4Rect.Contains( Point(x, y) ) then i := 4;
-          end
+          else if ScreenMetrics.popParty2Rect.Contains( Point(x, y) ) then i := 2
+          else if ScreenMetrics.popParty3Rect.Contains( Point(x, y) ) then i := 3
+          else if ScreenMetrics.popParty4Rect.Contains( Point(x, y) ) then i := 4
           else if ScreenMetrics.popStatsRect.Contains( Point(x, y) ) then i := 0;
 
           {      if i=0 then begin
@@ -2825,6 +2833,21 @@ begin
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+procedure TfrmMain.RemoveQuest(const Entry: string);
+// Also Achievement triger - based on that if a quest is removed it is done/completed - which might not be a 100% true.
+var
+  j: Integer;
+  AchievementString: string;
+begin
+  j := Quests.IndexOf( Entry );
+  if j >= 0 then
+  begin
+    Quests.Delete( j );
+    if Achievements.TryGetValue('quest_'+Entry, AchievementString) then
+      Log.Log('Achievement unlocked: '+AchievementString);
   end;
 end;
 
@@ -4445,6 +4468,37 @@ begin
   end;
 end;
 
+procedure TfrmMain.PopulateAchievementsDirectory;
+begin
+  Achievements.Add('quest_ch1-01', 'Report to Avarous');
+  Achievements.Add('adventure_ch1-13', 'Sealed With A Kiss');
+  Achievements.Add('quest_ch1-22', 'Fetch The Herbs');
+  Achievements.Add('quest_ch1-02', 'What''s In The Basement');
+  Achievements.Add('quest_ch1-05', 'Brothers In Arms');
+  Achievements.Add('quest_ch1-07', 'Cold Hard Steel');
+  Achievements.Add('quest_ch1-19', 'Pell''s Sorrow');
+  Achievements.Add('quest_ch1-21', 'Case The Chest');
+  Achievements.Add('quest_ch1-23', 'Fetch The Amulet');
+  Achievements.Add('quest_ch1-25', 'Fetch The Chalice');
+  Achievements.Add('adventure_tla7', 'Retrieve The Earthstone');
+//  Achievements.Add('ch1-01', 'Who Poisoned The King?');
+//  Achievements.Add('ch1-01', 'Return Tracy''s Ring');
+//  Achievements.Add('ch1-01', 'Changing Of The Guard');
+//  Achievements.Add('ch1-01', 'Tristan''s Friend');
+//  Achievements.Add('ch1-01', 'Free The Lurkers');
+//  Achievements.Add('ch1-01', 'Free Lydia');
+//  Achievements.Add('ch1-01', 'Paper Pushing');
+//  Achievements.Add('ch1-01', 'Knight Quest');
+//  Achievements.Add('ch1-01', 'Salvage Run');
+//  Achievements.Add('ch1-01', 'Oskari''s Training Tasks');
+//  Achievements.Add('ch1-01', 'A Little Favor For Olon');
+//  Achievements.Add('ch1-01', 'Steal The Satchel');
+//  Achievements.Add('ch1-01', 'Rescue Edgard');
+//  Achievements.Add('ch1-01', 'Ranger Quest');
+//  Achievements.Add('ch1-01', 'Scoutmaster''s Training Tasks');
+//  Achievements.Add('ch1-01', 'Kill Ovoron');
+end;
+
 procedure TfrmMain.DrawCurrentSpell;
 var
   Point : TPoint;
@@ -4977,7 +5031,7 @@ begin
 
         TransitionScreen := '';
         DeathScreen := '';
-        MaxPartyMembers := 4;  // Was 2
+        MaxPartyMembers := ScreenMetrics.PartyMemberSlots;  // Was 2
         if not LoadMapFile( False, True ) then
           Exit;
         LastFileSaved := GameName;
@@ -5775,12 +5829,16 @@ procedure TfrmMain.AddAdventure( const Entry : string );
 var
   DC : HDC;
   i : Integer;
+  AchievementString : string;
 begin
   i := Adventures.IndexOf( Entry );
   if i >= 0 then
     Exit;
   if Adventures.Add( Entry ) < 0 then
     Exit;
+
+  if Achievements.TryGetValue('adventure_'+Entry, AchievementString) then
+    Log.Log('Achievement unlocked: '+AchievementString);
 
   OverlayB.GetDC( DC );
   try
