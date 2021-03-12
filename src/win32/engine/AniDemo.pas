@@ -5390,7 +5390,8 @@ end;
 
 procedure TfrmMain.AppIdle(Sender: TObject; var Done: Boolean);
 begin
-  Invalidate;
+  if ScreenMetrics.Windowed then
+    Invalidate;
   Done := False;
 end;
 

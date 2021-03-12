@@ -600,6 +600,7 @@ begin
         rc.Height := lpSrcRect.Height;
         D3DRenderer.UpdateTexture(srcdesc.lpSurface, srcdesc.lPitch, rc);
         lpDDSFront.Unlock(nil);
+        D3DPresent;
       end;
       Result := DD_OK;
     end;
@@ -632,6 +633,7 @@ begin
         D3DRenderer.UpdateTexture(srcdesc.lpSurface, srcdesc.lPitch);
         lpDDSBack.Unlock(nil);
       end;
+      D3DPresent;
       Result := DD_OK;
     end
     else

@@ -45,6 +45,41 @@ type
 
 implementation
 
+const
+  vertex_shader = 'struct VSInput'#13#10 +
+    '{'#13#10 +
+    '    float4 position : POSITION;'#13#10 +
+    '    float2 texcoords : TEXCOORD0;'#13#10 +
+    '};'#13#10 +
+    ''#13#10 +
+    'struct PSInput'#13#10 +
+    '{'#13#10 +
+    '    float4 position : SV_POSITION;'#13#10 +
+    '    float2 texcoords : TEXCOORD0;'#13#10 +
+    '};'#13#10 +
+    ''#13#10 +
+    'PSInput VSEntry(VSInput input)'#13#10 +
+    '{'#13#10 +
+    '    PSInput output;    '#13#10 +
+    '    output.position = input.position;'#13#10 +
+    '    output.texcoords = float2(input.texcoords.x, 1.0f - input.texcoords.y);'#13#10 +
+    '    return output;'#13#10 +
+    '}'#13#10;
+
+  fragment_shader = 'Texture2D DiffuseMap;'#13#10 +
+    'SamplerState SampleType;'#13#10 +
+    ''#13#10 +
+    'struct PSInput'#13#10 +
+    '{'#13#10 +
+    '    float4 position : SV_POSITION;'#13#10 +
+    '    float2 texcoords : TEXCOORD0;'#13#10 +
+    '};'#13#10 +
+    ''#13#10 +
+    'float4 PSEntry(PSInput vs_out) : SV_TARGET'#13#10 +
+    '{'#13#10 +
+    '	return DiffuseMap.Sample(SampleType, vs_out.texcoords); '#13#10 +
+    '}'#13#10;
+
 function TDXRenderer.Initialize(aHWND: HWND; aWidth, aHeight: Integer): HRESULT;
 var
   feature_level: Array[0..0] of TD3D_FEATURE_LEVEL;
@@ -142,8 +177,8 @@ begin
   FQuad := TDXModel.CreateQuad(FDeviceContext);
   FShader := TDXTextureShader.Create(
       FDevice,
-      'shaders/default.vs',
-      'shaders/default.ps'
+      vertex_shader,
+      fragment_shader
   );
 
   Result := InitializeTexture(aWidth, aHeight);
