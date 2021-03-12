@@ -94,6 +94,7 @@ type
     spellbarFile: string;
     sidebarFile: string;
     bottombarFile: string;
+    borderFile: string;
 //    MagicRange: integer;
     IniIdent: string;
     popInventoryRect: TRect;
@@ -157,6 +158,7 @@ const
      spellbarFile: 'spellbar';
      sidebarFile: 'sidebar';
      bottombarFile: 'bottombar';
+     borderFile: '';
      IniIdent : 'Original';
      popInventoryRect: ( Left: 726; Top: 429; Right: 772; Bottom: 473 );
      popMapRect: ( Left: 732; Top: 511; Right: 781; Bottom: 555 );
@@ -207,6 +209,7 @@ const
      spellbarFile: 'spellbarHD';
      sidebarFile: 'sidebarHD';
      bottombarFile: 'bottombarHD';
+     borderFile: 'gMainMenuOverlay720';
      IniIdent : 'HD';
      popInventoryRect: ( Left: 1206; Top: 429; Right: 1254; Bottom: 473 );
      popMapRect: ( Left: 1212; Top: 631; Right: 1263; Bottom: 675 );
@@ -257,6 +260,7 @@ const
      spellbarFile: 'spellbarFullHD';
      sidebarFile: 'sidebarFullHD';
      bottombarFile: 'bottombarFullHD';
+     borderFile: 'gMainMenuOverlay1080';
      IniIdent : 'FullHD';
      popInventoryRect: ( Left: 1846; Top: 885; Right: 1894; Bottom: 931 );
      popMapRect: ( Left: 1852; Top: 991; Right: 1903; Bottom: 1035 );

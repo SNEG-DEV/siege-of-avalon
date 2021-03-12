@@ -102,6 +102,9 @@ begin
 
   frmMain.OnMouseDown := FormMouseDown; //TODO: Use Callback
 
+  if ScreenMetrics.borderFile<>'' then
+    lpDDSBack.BltFast( 0, 0, TfrmMain(frmMain).FillBorder, nil, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+
   DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + FBMPFileName, cInvisColor, DlgWidth, DlgHeight );
   pr := Rect( 0, 0, DlgWidth, DlgHeight );
   lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );

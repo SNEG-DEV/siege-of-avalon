@@ -181,6 +181,7 @@ type
     SpellGlyphs : IDirectDrawSurface;
     NoSpellIcon : IDirectDrawSurface;
     HelpBox : IDirectDrawSurface;
+
     FCurrentTheme : string;
 
     imgGlow : TBitmap;
@@ -189,7 +190,7 @@ type
     imgAutoTransparent : TBitmap;
     imgSidebar : TBitmap;
     imgSpellBar : TBitmap;
-
+    imgFillBorder : TBitmap;
 
     LastFileSaved : string;
     UseVideoRAM : Boolean;
@@ -252,6 +253,7 @@ type
     MouseMessage : string;
     HLFigure : TAniFigure;
     OverlayB : IDirectDrawSurface;
+    FillBorder : IDirectDrawSurface;
     PauseImage : IDirectDrawSurface;
     imgBottomBar : TBitmap;
     NPCHealthBltFx : TDDBLTFX;
@@ -1781,6 +1783,7 @@ begin
     imgSidebar.Free;
     imgSpellBar.Free;
     imgBottomBar.Free;
+    imgFillBorder.Free;
 
     AdventureLog1.Free;
     HistoryLog.Free;
@@ -1815,6 +1818,7 @@ begin
   imgSidebar := TBitmap.Create;
   imgSpellBar := TBitmap.Create;
   imgBottomBar := TBitmap.Create;
+  imgFillBorder := TBitmap.Create;
 
   ScreenMetrics := cOriginal; // cOriginal or  cHD or cFullHD - TBA
   AdjustedPartyHitPoints := False; // True = Rucksacksepp's HP adjusted by number of PartyMembers
@@ -2307,6 +2311,7 @@ begin
     Log.Log( 'Freeing console' );
     OverlayB := nil;
     OverlayR := nil;
+    FillBorder := nil;
     ManaEmpty := nil;
     LifeEmpty := nil;
     SpellBar := nil;
@@ -3079,6 +3084,13 @@ begin
 
       imgSidebar.LoadFromFile( InterfaceLanguagePath + ScreenMetrics.sidebarFile + '.bmp' );
       OverlayR := SoAOS_DX_SurfaceFromBMP( imgSidebar, cTransparent );
+
+      FillBorder := nil;
+      if ScreenMetrics.borderFile<>'' then
+      begin
+        imgFillBorder.LoadFromFile( InterfacePath + ScreenMetrics.borderFile + '.bmp' );
+        FillBorder := SoAOS_DX_SurfaceFromBMP( imgFillBorder, cTransparent );
+      end;
 
       ManaEmpty := SoAOS_DX_LoadBMP( InterfacePath + 'mana.bmp', cBlackBackground );
       LifeEmpty := SoAOS_DX_LoadBMP( InterfacePath + 'health.bmp', cBlackBackground );

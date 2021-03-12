@@ -292,7 +292,6 @@ begin
 
 end;
 
-
 procedure TJournal.Release;
 const
   FailName : string = 'TJournal.release';
@@ -310,7 +309,6 @@ begin
   end;
 end;
 
-
 procedure TJournal.ShowText;
 var
   BM : TBitmap;
@@ -327,6 +325,8 @@ begin
     if CurrentLogIndex > StartLogIndex then
       StartLogIndex := CurrentLogIndex;
   //clear screen
+    if ScreenMetrics.borderFile<>'' then
+      lpDDSBack.BltFast( 0, 0, TfrmMain(frmMain).FillBorder, nil, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     pr := Rect( 0, 0, DlgWidth, DlgHeight );
     lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   //Plot buttons

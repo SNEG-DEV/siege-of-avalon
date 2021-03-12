@@ -478,6 +478,9 @@ var
   selDest : TTransitPoint;
   hotSpot : THotspot;
 begin
+  if ScreenMetrics.borderFile<>'' then
+    lpDDSBack.BltFast( 0, 0, TfrmMain(frmMain).FillBorder, nil, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+
   pr := Rect( 0, 0, 800, 600 );  //NOHD
   lpDDSBack.BltFast( Offset.X, Offset.Y, Background, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
   if assigned( DXDirty ) then

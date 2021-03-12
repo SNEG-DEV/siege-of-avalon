@@ -241,6 +241,8 @@ begin
         DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'gMainMenu.bmp', cInvisColor, DlgWidth, DlgHeight );
       end;
 
+      if ScreenMetrics.borderFile<>'' then
+        lpDDSBack.BltFast( 0, 0, frmMain.FillBorder, nil, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       pr := Rect( 0, 0, DlgWidth, DlgHeight );
       lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
 

@@ -195,6 +195,8 @@ begin
     DXVolumeShadow := SoAOS_DX_LoadBMP( InterfacePath + 'opVolumeShadow.bmp', cInvisColor );
     DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'options.bmp', cInvisColor, DlgWidth, DlgHeight );
 
+    if ScreenMetrics.borderFile<>'' then
+      lpDDSBack.BltFast( 0, 0, frmMain.FillBorder, nil, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   //now we blit the screen to the backbuffer
     pr := Rect( 0, 0, DlgWidth, DlgHeight );
     lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
