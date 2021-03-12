@@ -49,7 +49,7 @@ uses
   Vcl.Forms,
 //  Winapi.DirectDraw,
   DirectX,
-  Display,
+  SoAOS.Intrface.Dialogs,
   SoAOS.Animation,
   MMTimer;
 
@@ -59,6 +59,7 @@ type
   TTransitPoint = class( TObject )
   strict private
     FRegion: TRect;
+    FOffsetRegion: TRect;
     FBlend: Integer;
     FImage: IDirectDrawSurface;
     FIndex: Integer;
@@ -66,8 +67,8 @@ type
     FEnabled: boolean;
     FMapResult: string;
   public
-    constructor Create(const AOwner: TTransit; const x, y: Integer; const Image, MapName: string);
-    constructor CreateDefault(const AOwner: TTransit; const x, y, w, h: Integer);
+    constructor Create(const AOwner: TTransit; const x, y: Integer; const Image, MapName: string; const Offset: TPoint);
+    constructor CreateDefault(const AOwner: TTransit; const x, y, w, h: Integer; const Offset: TPoint);
     destructor Destroy; override;
     procedure Reset;
     procedure Update;
@@ -77,6 +78,7 @@ type
     property MapResult: string read FMapResult;
     property Enabled: Boolean read FEnabled;
     property Region: TRect read FRegion;
+    property OffsetRegion: TRect read FOffsetRegion;
     property Image: IDirectDrawSurface read FImage;
     property Blend: Integer read FBlend;
   end;
@@ -88,8 +90,9 @@ type
     FRedImage : IDirectDrawSurface;
     FEnabled : boolean;
     FDest : TObjectList<TTransitPoint>;
+    FOffset : TPoint;
   public
-    constructor Create( const AOwner : TTransit; const x, y: Integer; const redImage, grayImage: string );
+    constructor Create( const AOwner : TTransit; const x, y: Integer; const redImage, grayImage: string; const Offset: TPoint );
     procedure CreateOuterBailey( const AOwner : TTransit );
     procedure CreateInnerBailey( const AOwner : TTransit );
     procedure CreateOuterKeep( const AOwner : TTransit );
@@ -104,7 +107,7 @@ type
     property GrayImage: IDirectDrawSurface read FGrayImage;
   end;
 
-  TTransit = class( TDisplay )
+  TTransit = class( TDialog )
   private
     FOnClose : TNotifyEvent;
     DXBack : IDirectDrawSurface;
@@ -186,6 +189,9 @@ begin
     X2 := 800;
     Y2 := 600;
 
+    DlgWidth := 800;
+    DlgHeight := 600;
+
     ExText.Open( 'Transit' );
     MsgProceed := ExText.GetText( 'Message0' );
     MsgBack := ExText.GetText( 'Message1' );
@@ -202,50 +208,50 @@ begin
 
     HotspotList := TObjectList<THotspot>.Create;
 
-    NewHotspot := THotspot.Create( Self, 261, 301, 'InnerBaileyAvailable.bmp', 'InnerBaileyUnavailable.bmp' );
+    NewHotspot := THotspot.Create( Self, 261, 301, 'InnerBaileyAvailable.bmp', 'InnerBaileyUnavailable.bmp', Offset );
     NewHotspot.CreateInnerBailey( Self );
     HotspotList.Add( NewHotspot );
 
-    NewHotspot := THotspot.Create( Self, 276, 361, 'OuterKeepAvailable.bmp', '' );
+    NewHotspot := THotspot.Create( Self, 276, 361, 'OuterKeepAvailable.bmp', '', Offset );
     NewHotspot.CreateOuterKeep( Self );
     HotspotList.Add( NewHotspot );
 
-    NewHotspot := THotspot.Create( Self, 266, 501, 'SouthGateAvailable.bmp', 'SouthGateUnavailable.bmp' );
+    NewHotspot := THotspot.Create( Self, 266, 501, 'SouthGateAvailable.bmp', 'SouthGateUnavailable.bmp', Offset );
     NewHotspot.CreateSouthGate( Self );
     HotspotList.Add( NewHotspot );
 
-    NewHotspot := THotspot.Create( Self, 259, 463, 'OuterBaileyAvailable.bmp', '' );
+    NewHotspot := THotspot.Create( Self, 259, 463, 'OuterBaileyAvailable.bmp', '', Offset );
     NewHotspot.CreateOuterBailey( Self );
     HotspotList.Add( NewHotspot );
 
-    NewHotspot := THotspot.Create( Self, 250, 251, 'InnerKeepAvailable.bmp', 'InnerKeepUnavailable.bmp' );
+    NewHotspot := THotspot.Create( Self, 250, 251, 'InnerKeepAvailable.bmp', 'InnerKeepUnavailable.bmp', Offset );
     NewHotspot.CreateInnerKeep( Self );
     HotspotList.Add( NewHotspot );
 
-    NewHotspot := THotspot.Create( Self, 373, 464, 'Peasant''sBaileyAvailable.bmp', 'Peasant''sBaileyUnavailable.bmp' );
+    NewHotspot := THotspot.Create( Self, 373, 464, 'Peasant''sBaileyAvailable.bmp', 'Peasant''sBaileyUnavailable.bmp', Offset );
     NewHotspot.CreatePeasantsBailey( Self );
     HotspotList.Add( NewHotspot );
 
-    NewHotspot := THotspot.Create( Self, 377, 295, '', 'CattleBaileyOffLimits.bmp' );
+    NewHotspot := THotspot.Create( Self, 377, 295, '', 'CattleBaileyOffLimits.bmp', Offset );
     HotspotList.Add( NewHotspot );
 
-    NewHotspot := THotspot.Create( Self, 263, 191, '', 'NobleBaileyOffLimits.bmp' );
+    NewHotspot := THotspot.Create( Self, 263, 191, '', 'NobleBaileyOffLimits.bmp', Offset );
     HotspotList.Add( NewHotspot );
 
-    NewHotspot := THotspot.Create( Self, 158, 197, '', 'TrainingBaileyOffLimits.bmp' );
+    NewHotspot := THotspot.Create( Self, 158, 197, '', 'TrainingBaileyOffLimits.bmp', Offset );
     HotspotList.Add( NewHotspot );
 
-    NewHotspot := THotspot.Create( Self, 159, 299, '', 'Soldier''sBaileyOffLimits.bmp' );
+    NewHotspot := THotspot.Create( Self, 159, 299, '', 'Soldier''sBaileyOffLimits.bmp', Offset );
     HotspotList.Add( NewHotspot );
 
-    NewHotspot := THotspot.Create( Self, 154, 464, '', 'Merchant''sBaileyOffLimits.bmp' );
+    NewHotspot := THotspot.Create( Self, 154, 464, '', 'Merchant''sBaileyOffLimits.bmp', Offset );
     HotspotList.Add( NewHotspot );
 
-    NewHotspot := THotspot.Create( Self, 46, 438, '', 'Wharf''sBaileyOffLimits.bmp' );
+    NewHotspot := THotspot.Create( Self, 46, 438, '', 'Wharf''sBaileyOffLimits.bmp', Offset );
     HotspotList.Add( NewHotspot );
 
-    DefaultTransit := TTransitPoint.CreateDefault( Self, 606, 528, 174, 50 );
-    
+    DefaultTransit := TTransitPoint.CreateDefault( Self, 606, 528, 174, 50, Offset );
+
     MapsAvailable := nil;
 
     DirtyRect := Rect( 440, 545, 440 + 150, 545 + 30 );
@@ -262,6 +268,8 @@ begin
       end;
     except
     end;
+
+    DirtyRect := ApplyOffset( DirtyRect ); // From now on we need the offset rect
 
     pText.LoadDarkFontGraphic( 'inventory' );
     pText.PlotDarkText2( DXBack, MsgBack, 0, 0, 240 );
@@ -315,7 +323,7 @@ begin
 
     inherited;
   //if InBound then Close;
-    if X < 600 then
+    if ( X < 600 + Offset.X ) then
     begin
       if ptInRect( DirtyRect, point( x, y ) ) then
       begin
@@ -365,7 +373,7 @@ begin
     end
     else
     begin
-      if DefaultTransit.Enabled and ptInRect( DefaultTransit.Region, point( x, y ) ) then
+      if DefaultTransit.Enabled and ptInRect( DefaultTransit.OffsetRegion, point( x, y ) ) then
       begin
       //Proceed to default destination point
         ResultIndex := DefaultTransit.Index;
@@ -384,7 +392,7 @@ begin
       begin
         for selDest in Selected.Dest do
         begin
-          if selDest.Enabled  and  ptInRect( selDest.Region, Point( x, y ) ) then
+          if selDest.Enabled  and  ptInRect( selDest.OffsetRegion, Point( x, y ) ) then
           begin
           //We have a destination point
             ResultIndex := selDest.Index;
@@ -432,7 +440,7 @@ begin
         SoAOS_DX_BltFastWaitXY( lpDDSFront, Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight ) );
         if assigned( DXBack ) then
         begin
-          pr := Rect( 0, 0, DirtyRect.Width, DirtYrect.Height );
+          pr := Rect( 0, 0, DirtyRect.Width, DirtyRect.Height );
           lpDDSBack.bltFast( DirtyRect.Left, DirtyRect.Top, DXBack, @pr, DDBLTFAST_WAIT );
         end;
         lpDDSFront.Flip( nil, DDFLIP_WAIT );
@@ -471,7 +479,7 @@ var
   hotSpot : THotspot;
 begin
   pr := Rect( 0, 0, 800, 600 );  //NOHD
-  lpDDSBack.BltFast( 0, 0, Background, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+  lpDDSBack.BltFast( Offset.X, Offset.Y, Background, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
   if assigned( DXDirty ) then
   begin
     pr := Rect( 0, 0, DirtyRect.Width, DirtYrect.Height );
@@ -497,15 +505,15 @@ begin
     begin
       for selDest in Selected.Dest do
       begin
-        lpDDSBack.BltFast( selDest.Region.Left, selDest.Region.Top, Background, @selDest.Region, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
-        DrawAlpha( lpDDSBack, selDest.Region, Rect( 0, 0, selDest.Region.Width, selDest.Region.Height ), selDest.Image, True, selDest.Blend );
+        lpDDSBack.BltFast( selDest.OffsetRegion.Left, selDest.OffsetRegion.Top, Background, @selDest.Region, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
+        DrawAlpha( lpDDSBack, selDest.OffsetRegion, Rect( 0, 0, selDest.Region.Width, selDest.Region.Height ), selDest.Image, True, selDest.Blend );
       end;
     end;
   end;
 
-  DrawAlpha( lpDDSBack, DefaultTransit.Region, Rect( 0, 0, DefaultTransit.Region.Width, DefaultTransit.Region.Height ),
+  DrawAlpha( lpDDSBack, DefaultTransit.OffsetRegion, Rect( 0, 0, DefaultTransit.Region.Width, DefaultTransit.Region.Height ),
       DefaultTransit.Image, true, 220 );
-  
+
   lpDDSFront.Flip( nil, DDFLIP_WAIT );
   MouseCursor.PlotDirty := false;
 end;
@@ -522,7 +530,7 @@ begin
       begin
         with Selected.Dest[ i ] do
         begin
-          lpDDSBack.BltFast( Region.Left, Region.Top, Background,
+          lpDDSBack.BltFast( OffsetRegion.Left, OffsetRegion.Top, Background,
             @Region, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
           Selected.Dest[ i ].Update;
         end;
@@ -569,15 +577,16 @@ end;
 
 { THotspot }
 
-constructor THotspot.Create( const AOwner : TTransit; const x, y: Integer; const redImage, grayImage: string );
+constructor THotspot.Create( const AOwner : TTransit; const x, y: Integer; const redImage, grayImage: string; const Offset: TPoint );
 var
   width, height : Integer;
 begin
   inherited Create;
 //  Region.Right := X + Region.Right - Region.Left;
 //  Region.Top := Y + Region.Bottom - Region.Top;
-  FRegion.Left := x;
-  FRegion.Bottom := y;
+  FOffset := Offset;
+  FRegion.Left := x + FOffset.X;
+  FRegion.Bottom := y + FOffset.Y;
 
   if redImage <> '' then
   begin
@@ -599,7 +608,7 @@ var
   NewTransitPoint : TTransitPoint;
 begin
   FDest := TObjectList<TTransitPoint>.Create;
-  NewTransitPoint := TTransitPoint.Create( AOwner, 631, 173, 'CutInrBailey.bmp', 'IBailey01' );
+  NewTransitPoint := TTransitPoint.Create( AOwner, 631, 173, 'CutInrBailey.bmp', 'IBailey01', FOffset );
   FDest.Add( NewTransitPoint );
   FEnabled := FEnabled or NewTransitPoint.Enabled;
 end;
@@ -609,19 +618,19 @@ var
   NewTransitPoint : TTransitPoint;
 begin
   FDest := TObjectList<TTransitPoint>.Create;
-  NewTransitPoint := TTransitPoint.Create( AOwner, 605, 427, 'CutInrKepBas.bmp', 'KeepBsmt' );
+  NewTransitPoint := TTransitPoint.Create( AOwner, 605, 427, 'CutInrKepBas.bmp', 'KeepBsmt', FOffset );
   FDest.Add( NewTransitPoint );
   FEnabled := FEnabled or NewTransitPoint.Enabled;
 
-  NewTransitPoint := TTransitPoint.Create( AOwner, 701, 426, 'CutInrKepCave.bmp', 'caves01' );
+  NewTransitPoint := TTransitPoint.Create( AOwner, 701, 426, 'CutInrKepCave.bmp', 'caves01', FOffset );
   FDest.Add( NewTransitPoint );
   FEnabled := FEnabled or NewTransitPoint.Enabled;
 
-  NewTransitPoint := TTransitPoint.Create( AOwner, 627, 205, 'CutInrKepLev1.bmp', 'IKeep01' );
+  NewTransitPoint := TTransitPoint.Create( AOwner, 627, 205, 'CutInrKepLev1.bmp', 'IKeep01', FOffset );
   FDest.Add( NewTransitPoint );
   FEnabled := FEnabled or NewTransitPoint.Enabled;
 
-  NewTransitPoint := TTransitPoint.Create( AOwner, 628, 17, 'CutInrKepLev2.bmp', 'IKeep02' );
+  NewTransitPoint := TTransitPoint.Create( AOwner, 628, 17, 'CutInrKepLev2.bmp', 'IKeep02', FOffset );
   FDest.Add( NewTransitPoint );
   FEnabled := FEnabled or NewTransitPoint.Enabled;
 end;
@@ -631,7 +640,7 @@ var
   NewTransitPoint : TTransitPoint;
 begin
   FDest := TObjectList<TTransitPoint>.Create;
-  NewTransitPoint := TTransitPoint.Create( AOwner, 627, 151, 'CutOuterBailey.bmp', 'OB1b' );
+  NewTransitPoint := TTransitPoint.Create( AOwner, 627, 151, 'CutOuterBailey.bmp', 'OB1b', FOffset );
   FDest.Add( NewTransitPoint );
   FEnabled := FEnabled or NewTransitPoint.Enabled;
 end;
@@ -641,23 +650,23 @@ var
   NewTransitPoint : TTransitPoint;
 begin
   FDest := TObjectList<TTransitPoint>.Create;
-  NewTransitPoint := TTransitPoint.Create( AOwner, 622, 418, 'CutOutrKepBas1.bmp', 'Okeepsub1b' );
+  NewTransitPoint := TTransitPoint.Create( AOwner, 622, 418, 'CutOutrKepBas1.bmp', 'Okeepsub1b', FOffset );
   FDest.Add( NewTransitPoint );
   FEnabled := FEnabled or NewTransitPoint.Enabled;
 
-  NewTransitPoint := TTransitPoint.Create( AOwner, 622, 470, 'CutOutrKepBas2.bmp', 'okeepsub2' );
+  NewTransitPoint := TTransitPoint.Create( AOwner, 622, 470, 'CutOutrKepBas2.bmp', 'okeepsub2', FOffset );
   FDest.Add( NewTransitPoint );
   FEnabled := FEnabled or NewTransitPoint.Enabled;
 
-  NewTransitPoint := TTransitPoint.Create( AOwner, 644, 278, 'CutOutrKepLev1.bmp', 'OKeepL1');
+  NewTransitPoint := TTransitPoint.Create( AOwner, 644, 278, 'CutOutrKepLev1.bmp', 'OKeepL1', FOffset);
   FDest.Add( NewTransitPoint );
   FEnabled := FEnabled or NewTransitPoint.Enabled;
 
-  NewTransitPoint := TTransitPoint.Create( AOwner, 643, 149, 'CutOutrKepLev2.bmp', 'OKeepL2');
+  NewTransitPoint := TTransitPoint.Create( AOwner, 643, 149, 'CutOutrKepLev2.bmp', 'OKeepL2', FOffset);
   FDest.Add( NewTransitPoint );
   FEnabled := FEnabled or NewTransitPoint.Enabled;
 
-  NewTransitPoint := TTransitPoint.Create( AOwner, 640, 18, 'CutOutrKepLev3.bmp', 'OKeepL3' );
+  NewTransitPoint := TTransitPoint.Create( AOwner, 640, 18, 'CutOutrKepLev3.bmp', 'OKeepL3', FOffset );
   FDest.Add( NewTransitPoint );
   FEnabled := FEnabled or NewTransitPoint.Enabled;
 end;
@@ -667,7 +676,7 @@ var
   NewTransitPoint : TTransitPoint;
 begin
   FDest := TObjectList<TTransitPoint>.Create;
-  NewTransitPoint := TTransitPoint.Create( AOwner, 610, 45, 'CutPeasantsBailey.bmp', '?' );
+  NewTransitPoint := TTransitPoint.Create( AOwner, 610, 45, 'CutPeasantsBailey.bmp', '?', FOffset );
   Dest.Add( NewTransitPoint );
   FEnabled := FEnabled or NewTransitPoint.Enabled;
 end;
@@ -677,19 +686,19 @@ var
   NewTransitPoint : TTransitPoint;
 begin
   FDest := TObjectList<TTransitPoint>.Create;
-  NewTransitPoint := TTransitPoint.Create( AOwner, 616, 471, 'CutSouthGateBas.bmp', 'southgatesub1' );
+  NewTransitPoint := TTransitPoint.Create( AOwner, 616, 471, 'CutSouthGateBas.bmp', 'southgatesub1', FOffset );
   FDest.Add( NewTransitPoint );
   FEnabled := FEnabled or NewTransitPoint.Enabled;
 
-  NewTransitPoint := TTransitPoint.Create( AOwner, 611, 292, 'CutSouthGateLev1.bmp', 'Southgate1b' );
+  NewTransitPoint := TTransitPoint.Create( AOwner, 611, 292, 'CutSouthGateLev1.bmp', 'Southgate1b', FOffset );
   FDest.Add( NewTransitPoint );
   FEnabled := FEnabled or NewTransitPoint.Enabled;
 
-  NewTransitPoint := TTransitPoint.Create( AOwner, 640, 177, 'CutSouthGateLev2.bmp', 'Southgate2' );
+  NewTransitPoint := TTransitPoint.Create( AOwner, 640, 177, 'CutSouthGateLev2.bmp', 'Southgate2', FOffset );
   FDest.Add( NewTransitPoint );
   FEnabled := FEnabled or NewTransitPoint.Enabled;
 
-  NewTransitPoint := TTransitPoint.Create( AOwner, 641, 57, 'CutSouthGateLev3.bmp', 'Southgate3' );
+  NewTransitPoint := TTransitPoint.Create( AOwner, 641, 57, 'CutSouthGateLev3.bmp', 'Southgate3', FOffset );
   FDest.Add( NewTransitPoint );
   FEnabled := FEnabled or NewTransitPoint.Enabled;
 end;
@@ -705,7 +714,7 @@ end;
 
 { TTransitPoint }
 
-constructor TTransitPoint.Create(const AOwner: TTransit; const x, y: Integer; const Image, MapName: string);
+constructor TTransitPoint.Create(const AOwner: TTransit; const x, y: Integer; const Image, MapName: string; const Offset: TPoint);
 var
   width, height : Integer;
 begin
@@ -718,6 +727,9 @@ begin
     FRegion.Right := Region.Left + width;
     FRegion.Bottom := Region.Top + height;
   end;
+  FOffsetRegion := FRegion;
+  FOffsetRegion.Offset(Offset);
+
   FMapName := mapName;
   FIndex := AOwner.MapInList( mapName );
   FEnabled := ( FIndex >= 0 );
@@ -725,12 +737,14 @@ begin
     FMapResult := AOwner.MapsAvailable.strings[ FIndex ];
 end;
 
-constructor TTransitPoint.CreateDefault(const AOwner: TTransit; const x, y, w, h: Integer);
+constructor TTransitPoint.CreateDefault(const AOwner: TTransit; const x, y, w, h: Integer; const Offset: TPoint);
 begin
   inherited Create;
   FRegion.Left := x;
   FRegion.Top := y;
   FRegion.BottomRight := Point( x + w, y + h );
+  FOffsetRegion := FRegion;
+  FOffsetRegion.Offset(Offset);
   FImage := DDGetSurface( lpDD, w, h, cInvisColor, false );
   AOwner.pText.PlotF13TextCentered( FImage, AOwner.MsgProceed, 0, FRegion.Width, 3, 255 );
   AOwner.pText.PlotF13TextCentered( FImage, AOwner.DefaultName, 0, FRegion.Width, 23, 255 );
@@ -759,17 +773,17 @@ var
   R : TRect;
   RLE : TRLESprite;
 begin
-  R := Rect( Region.Left - 4, Region.Top - 4, Region.right + 4, Region.Bottom + 4 );
+  R := Rect( OffsetRegion.Left - 4, OffsetRegion.Top - 4, OffsetRegion.right + 4, OffsetRegion.Bottom + 4 );
   FillRectAlpha( lpDDSBack, R, $2070A0, 40 );
-  R := Rect( Region.Left - 3, Region.Top - 3, Region.right + 3, Region.Bottom + 3 );
+  R := Rect( OffsetRegion.Left - 3, OffsetRegion.Top - 3, OffsetRegion.right + 3, OffsetRegion.Bottom + 3 );
   FillRectAlpha( lpDDSBack, R, $2070A0, 40 );
-  R := Rect( Region.Left - 2, Region.Top - 2, Region.right + 2, Region.Bottom + 2 );
+  R := Rect( OffsetRegion.Left - 2, OffsetRegion.Top - 2, OffsetRegion.right + 2, OffsetRegion.Bottom + 2 );
   FillRectAlpha( lpDDSBack, R, $2070A0, 40 );
-  R := Rect( Region.Left - 1, Region.Top - 1, Region.right + 1, Region.Bottom + 1 );
+  R := Rect( OffsetRegion.Left - 1, OffsetRegion.Top - 1, OffsetRegion.right + 1, OffsetRegion.Bottom + 1 );
   FillRectAlpha( lpDDSBack, R, $2070A0, 40 );
 
   ddsd.dwSize := SizeOf( ddsd );
-  if lpDDSBack.Lock( @Region, ddsd, DDLOCK_WAIT, 0 ) = DD_OK then
+  if lpDDSBack.Lock( @OffsetRegion, ddsd, DDLOCK_WAIT, 0 ) = DD_OK then
   begin
     try
       DestBits.bitsPtr := ddsd.lpSurface;
@@ -819,7 +833,7 @@ begin
     Inc( FBlend, 17 );
 
   if Assigned( FImage ) then
-    DrawAlpha( lpDDSBack, FRegion, Rect( 0, 0, FRegion.Width, Region.Height ), FImage, True, FBlend );
+    DrawAlpha( lpDDSBack, OffsetRegion, Rect( 0, 0, Region.Width, Region.Height ), FImage, True, FBlend );
 end;
 
 end.

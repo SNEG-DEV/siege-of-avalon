@@ -166,7 +166,7 @@ begin
       82: if ToggleShow(DlgRoster) then frmMain.BeginRoster(nil); // R
       83: ToggleSpell; // S
       84: TravelFast; // T
-      87: if ToggleShow(DlgAdvLog) then frmMain.BeginAdvLog; // W
+//      87: if ToggleShow(DlgAdvLog) then frmMain.BeginAdvLog; // W
       88: ToggleXRay; // X
 //      90: TwinWeaponToggle; // Z - FIX - German only :(
       VK_F1: if ToggleShow(DlgShow) then frmMain.BeginHelp; // F1
