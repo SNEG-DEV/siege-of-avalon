@@ -114,7 +114,7 @@ begin
     Flags := 0;
   End;
 
-  feature_level[0] := D3D_FEATURE_LEVEL_11_0;
+  feature_level[0] := D3D_FEATURE_LEVEL_10_0;
 
   Result := D3D11CreateDeviceAndSwapChain(
       nil,
