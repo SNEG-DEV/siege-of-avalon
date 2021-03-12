@@ -216,7 +216,6 @@ var
   devName: string;
   DisplayDevice: TDisplayDevice;
   iDevNum: DWORD;
-  monitorIndex: Integer;
 begin
   Application.HookMainWindow(AppHookFunc);
 
