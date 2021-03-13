@@ -574,17 +574,19 @@ var
   srcdesc: TDDSurfaceDesc;
   rc: TRect;
 begin
-  Result := DD_OK;
   if BltWindowed then
   begin
     lpDDSFront.BltFast(dwX, dwY, lpDDSrcSurface, lpSrcRect, dwTrans);
     if D3DRenderer = nil then
     begin
       res := lpDDSFront.GetDC(srcDC);
-      dstDC := GetDC(WindowHandle);
-      BitBlt(dstDC, dwX, dwY, lpSrcRect.Width, lpSrcRect.Height, srcDC, dwX, dwY, SRCCOPY);
-      ReleaseDC(WindowHandle, dstDC);
-      lpDDSFront.ReleaseDC(srcDC);
+      if res = DD_OK then
+      begin
+        dstDC := GetDC(WindowHandle);
+        BitBlt(dstDC, dwX, dwY, lpSrcRect.Width, lpSrcRect.Height, srcDC, dwX, dwY, SRCCOPY);
+        ReleaseDC(WindowHandle, dstDC);
+        lpDDSFront.ReleaseDC(srcDC);
+      end;
     end
     else
     begin
@@ -602,7 +604,6 @@ begin
         lpDDSFront.Unlock(nil);
         D3DPresent;
       end;
-      Result := DD_OK;
     end;
     Result := DD_OK;
   end
@@ -616,9 +617,7 @@ var
   res: HRESULT;
   srcDC: HDC;
   dstDC: HDC;
-  rc: TRECT;
   srcdesc: TDDSurfaceDesc;
-  w, h: DWORD;
   tmp: IDirectDrawSurface;
 begin
   if BltWindowed then
@@ -634,15 +633,17 @@ begin
         lpDDSBack.Unlock(nil);
       end;
       D3DPresent;
-      Result := DD_OK;
     end
     else
     begin
       res := lpDDSBack.GetDC(srcDC);
-      dstDC := GetDC(WindowHandle);
-      BitBlt(dstDC, 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight, srcDC, 0, 0, SRCCOPY);
-      ReleaseDC(WindowHandle, dstDC);
-      lpDDSBack.ReleaseDC(srcDC);
+      if res = DD_OK then
+      begin
+        dstDC := GetDC(WindowHandle);
+        BitBlt(dstDC, 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight, srcDC, 0, 0, SRCCOPY);
+        ReleaseDC(WindowHandle, dstDC);
+        lpDDSBack.ReleaseDC(srcDC);
+      end;
     end;
 
     { swap the surfaces to simulate hardware buffer flipping }

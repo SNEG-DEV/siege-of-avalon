@@ -38,53 +38,52 @@ uses
   Vcl.Imaging.pngimage;
 
 const
-  cNoLanguage = 'default';
+  cNoLanguage = 'Default';
 
 type
   TfrmLaunchSetting = class(TForm)
     imgPage1: TImage;
     tmrScroll: TTimer;
-    StaticText1: TStaticText;
-    StaticText2: TStaticText;
     lblLanguage: TStaticText;
     StaticText3: TStaticText;
-    cmbMonitors: TComboBox;
-    stMonitor: TStaticText;
-    imgSD: TImage;
-    imgHD: TImage;
-    imgFullHD: TImage;
-    WindowedMode: TCheckBox;
-    StaticText4: TStaticText;
+    lblMonitor: TStaticText;
+    lblResolution: TStaticText;
+    imgFullscreen: TImage;
     procedure FormCreate(Sender: TObject);
     procedure tmrScrollTimer(Sender: TObject);
-    procedure TxtScrollLeft;
-    procedure TxtScrollRight;
     procedure imgPage1Click(Sender: TObject);
     procedure Done(r: integer; windowed: Boolean);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure StaticText3Click(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure cmbMonitorsChange(Sender: TObject);
-    procedure StaticText4Click(Sender: TObject);
-    procedure imgSDClick(Sender: TObject);
-    procedure imgHDClick(Sender: TObject);
-    procedure imgFullHDClick(Sender: TObject);
+    procedure imgFullscreenClick(Sender: TObject);
   private
     { Private declarations }
     FLanguages: TStringList;
     FCurrentLanguage: string;
     FCurrentLanguageIdx: Integer;
+
+    FMonitors: TStringList;
+    FCurrentDevice: string;
+    FCurrentDeviceIdx: Integer;
+
+    FResolutions: TStringList;
+    FCurrentResolution: string;
+    FCurrentResolutionIdx: Integer;
+
     FScrollDirLeft: Boolean;
     FScrollText: string;
+    FScrollFullText: string;
+    FScrollControl: TStaticText;
+
     FInterfacePath: string;
 
     monitorCnt: Integer;
-    devices: TStringList;
-    CurrentDeviceName: string;
 
     function AppHookFunc(var Message : TMessage) : Boolean;
     procedure SetResolutionSupport(lpszDeviceName: LPCWSTR);
+    function ScrollText(const goLeft: boolean; var idx: integer; const list: TStringList; const control: TStaticText): string;
   public
     class function Execute: TModalResult;
   end;
@@ -114,28 +113,6 @@ begin
   end;
 end;
 
-procedure TfrmLaunchSetting.TxtScrollLeft;
-begin
-  Dec(FCurrentLanguageIdx);
-  if FCurrentLanguageIdx=-1 then
-    FCurrentLanguageIdx := FLanguages.Count-1;
-  FCurrentLanguage := FLanguages[FCurrentLanguageIdx];
-  FScrollText := FCurrentLanguage.PadLeft(30,' ');
-  FScrollDirLeft := True;
-  tmrScroll.Enabled := True;
-end;
-
-procedure TfrmLaunchSetting.TxtScrollRight;
-begin
-  Inc(FCurrentLanguageIdx);
-  if FCurrentLanguageIdx=FLanguages.Count then
-    FCurrentLanguageIdx := 0;
-  FCurrentLanguage := FLanguages[FCurrentLanguageIdx];
-  FScrollText := FCurrentLanguage.PadRight(30,' ');
-  FScrollDirLeft := False;
-  tmrScroll.Enabled := True;
-end;
-
 function TfrmLaunchSetting.AppHookFunc(var Message: TMessage): Boolean;
 begin
   Result := False;
@@ -144,12 +121,6 @@ begin
     PostMessage(Handle, WM_CLOSE, 0, 0);
     Result := True;
   end;
-end;
-
-procedure TfrmLaunchSetting.cmbMonitorsChange(Sender: TObject);
-begin
-  CurrentDeviceName := devices.ValueFromIndex[cmbMonitors.ItemIndex];
-  SetResolutionSupport(PWideChar(CurrentDeviceName));
 end;
 
 procedure TfrmLaunchSetting.Done(r: integer; windowed: Boolean);
@@ -171,7 +142,7 @@ begin
       end;
       INI.WriteInteger('Settings', 'ScreenResolution', r);
       INI.WriteBool('Settings', 'Windowed', windowed);
-      INI.WriteString('Settings', 'DeviceName', CurrentDeviceName);
+      INI.WriteString('Settings', 'DeviceName', FCurrentDevice);
       INI.UpdateFile;
     except
       on EIniFileException do
@@ -211,15 +182,15 @@ var
   INI: TIniFile;
   lInterfacePath: string;
   dir: string;
-  I, prim: Integer;
+  prim: Integer;
 
   devName: string;
   DisplayDevice: TDisplayDevice;
   iDevNum: DWORD;
+  langStr: string;
 begin
   Application.HookMainWindow(AppHookFunc);
 
-  FLanguages := TStringList.Create(dupIgnore, True, False);
   if LoadResourceFontByID(1, RT_FONT) then
     Self.Font.Name := 'BlackChancery';
   SendMessageTimeout(HWND_BROADCAST, WM_FONTCHANGE, 0, 0, SMTO_NORMAL, 100, nil);
@@ -231,59 +202,53 @@ begin
     if FCurrentLanguage='' then
       FCurrentLanguage := cNoLanguage;
     lInterfacePath := INI.ReadString('Settings', 'Interface', 'Interface');
-    WindowedMode.Checked := INI.ReadBool('Settings', 'Windowed', False);
-    CurrentDeviceName := INI.ReadString('Settings', 'DeviceName', '');
+    imgFullscreen.Visible := not INI.ReadBool('Settings', 'Windowed', False);
+    FCurrentDevice := INI.ReadString('Settings', 'DeviceName', '');
+    FCurrentResolution := INI.ReadString('Settings', 'ScreenResolution', '600');
   finally
     INI.Free;
   end;
 
+  FLanguages := TStringList.Create(dupIgnore, True, False);
   FInterfacePath := IncludeTrailingPathDelimiter(TPath.GetFullPath(lInterfacePath));
   for dir in TDirectory.GetDirectories(FInterfacePath) do
-    FLanguages.Add(Copy(dir, dir.LastIndexOf(PathDelim)+2));
+  begin
+    langStr := AnsiLowerCase(Copy(dir, dir.LastIndexOf(PathDelim)+2));
+    FLanguages.Add(AnsiUpperCase(langStr[1])+copy(LangStr, 2));
+  end;
   if FLanguages.Count=0 then // no languages - other than english
     FLanguages.Add(cNoLanguage);
   FCurrentLanguageIdx := FLanguages.IndexOf(FCurrentLanguage);
   if FCurrentLanguageIdx=-1 then
     FCurrentLanguageIdx := 0;
 
+  FMonitors := TStringList.Create();
+  FMonitors.NameValueSeparator := '=';
   monitorCnt := Screen.MonitorCount;
-  cmbMonitors.Visible := monitorCnt > 1;
-  stMonitor.Visible := cmbMonitors.Visible;
-
-  if monitorCnt > 1 then
-  begin
-    prim := 0;
+  prim := 0;
 // DeviceDrivers
-    devices := TStringList.Create;
-    devices.NameValueSeparator := '=';
+  DisplayDevice.cb := SizeOf(DisplayDevice);
+  for iDevNum := 0 to monitorCnt-1 do
+    if EnumDisplayDevices(NIL, iDevNum, DisplayDevice, 0) then
+    begin
+      devName := displayDevice.DeviceName;
+      EnumDisplayDevices(PChar(devName), 0, displayDevice, 0);
+      FMonitors.Add('Display '+(iDevNum+1).ToString+' - '+string(DisplayDevice.DeviceString) + '=' + devName);
+      if devName=FCurrentDevice then
+        prim := iDevNum;
+    end;
+  FCurrentDeviceIdx := prim;
+  FCurrentDevice := FMonitors.ValueFromIndex[FCurrentDeviceIdx];
 
-    DisplayDevice.cb := SizeOf(DisplayDevice);
-    for iDevNum := 0 to monitorCnt-1 do
-      if EnumDisplayDevices(NIL, iDevNum, DisplayDevice, 0) then
-      begin
-        devName := displayDevice.DeviceName;
-        EnumDisplayDevices(PChar(devName), 0, displayDevice, 0);
-        devices.Add('Display '+(iDevNum+1).ToString+' - '+string(DisplayDevice.DeviceString) + '=' + devName);
-        if devName=CurrentDeviceName then
-          prim := iDevNum;
-      end;
-
-    for I := 0 to devices.Count-1 do
-      cmbMonitors.Items.Add(devices.KeyNames[i]);
-
-    cmbMonitors.ItemIndex := prim;
-    CurrentDeviceName := devices.ValueFromIndex[cmbMonitors.ItemIndex];
-  end
-  else
-    CurrentDeviceName := '';
-
-  SetResolutionSupport(PWideChar(CurrentDeviceName));
+  FResolutions := TStringList.Create(dupIgnore, True, False);
+  SetResolutionSupport(PWideChar(FCurrentDevice));
 end;
 
 procedure TfrmLaunchSetting.FormDestroy(Sender: TObject);
 begin
   FLanguages.Free;
-  devices.Free;
+  FMonitors.Free;
+  FResolutions.Free;
   Application.UnHookMainWindow(AppHookFunc);
 end;
 
@@ -291,17 +256,16 @@ procedure TfrmLaunchSetting.FormShow(Sender: TObject);
 begin
   lblLanguage.Font.Name := 'BlackChancery';
   lblLanguage.Caption := FLanguages[FCurrentLanguageIdx];
- // lblLanguageCaption.Font.Name := 'BlackChancery';
+  lblResolution.Font.Name := 'BlackChancery';
+  lblResolution.Caption := FResolutions.KeyNames[FCurrentResolutionIdx];
+  lblMonitor.Font.Name := 'BlackChancery';
+  lblMonitor.Caption := FMonitors.KeyNames[FCurrentDeviceIdx];
 end;
 
-procedure TfrmLaunchSetting.imgFullHDClick(Sender: TObject);
+procedure TfrmLaunchSetting.imgFullscreenClick(Sender: TObject);
 begin
-  Done(1080, WindowedMode.Checked);
-end;
-
-procedure TfrmLaunchSetting.imgHDClick(Sender: TObject);
-begin
-  Done(720, WindowedMode.Checked);
+  imgFullscreen.Visible := not imgFullscreen.Visible;
+  SetResolutionSupport(PWideChar(FCurrentDevice));
 end;
 
 procedure TfrmLaunchSetting.imgPage1Click(Sender: TObject);
@@ -311,48 +275,127 @@ begin
   lInterfacePath := FInterfacePath;
   if FCurrentLanguage <> cNoLanguage then
     lInterfacePath := IncludeTrailingPathDelimiter(TPath.Combine(FInterfacePath, FCurrentLanguage));
-  if Rect(321,283,342,304).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
-    TxtScrollLeft;
-  if Rect(455,283,476,304).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
-    TxtScrollRight;
+  // Language
+  if Rect(199,333,214,348).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
+    FCurrentLanguage := ScrollText(True, FCurrentLanguageIdx, FLanguages, lblLanguage);
+  if Rect(300,333,315,348).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
+    FCurrentLanguage := ScrollText(False, FCurrentLanguageIdx, FLanguages, lblLanguage);
+
+  // Resolution
+  if Rect(199,267,214,282).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
+    FCurrentResolution := ScrollText(True, FCurrentResolutionIdx, FResolutions, lblResolution);
+  if Rect(400,267,415,282).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
+    FCurrentResolution := ScrollText(False, FCurrentResolutionIdx, FResolutions, lblResolution);
+
+  // Monitor
+  if Rect(199,234,214,249).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
+  begin
+    FCurrentDevice := ScrollText(True, FCurrentDeviceIdx, FMonitors, lblMonitor);
+    SetResolutionSupport(PWideChar(FCurrentDevice));
+  end;
+  if Rect(493,234,508,249).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
+  begin
+    FCurrentDevice := ScrollText(False, FCurrentDeviceIdx, FMonitors, lblMonitor);
+    SetResolutionSupport(PWideChar(FCurrentDevice));
+  end;
+
+  // Fullscreen
+  if Rect(219,295,244,320).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
+  begin
+    imgFullscreen.Visible := not imgFullscreen.Visible;
+    SetResolutionSupport(PWideChar(FCurrentDevice));
+  end;
+
+  // Let's Play
+  if Rect(410,325,522,387).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
+  begin
+    Done(FCurrentResolution.ToInteger, not imgFullscreen.Visible);
+  end;
 end;
 
-procedure TfrmLaunchSetting.imgSDClick(Sender: TObject);
+function TfrmLaunchSetting.ScrollText(const goLeft: boolean; var idx: integer;
+  const list: TStringList; const control: TStaticText): string;
 begin
-  Done(600, WindowedMode.Checked);
+  if goLeft then
+  begin
+    Inc(idx);
+    if idx = list.Count then
+      idx := 0;
+  end
+  else
+  begin
+    Dec(idx);
+    if idx = -1 then
+      idx := list.Count-1;
+  end;
+
+  FScrollFullText := list[idx];
+  if Pos('=', FScrollFullText)>0 then
+  begin
+    Result := list.ValueFromIndex[idx];
+    FScrollFullText := list.KeyNames[idx];
+  end
+  else
+    Result := FScrollFullText;
+
+  if goLeft then
+    FScrollText := FScrollFullText.PadLeft(FScrollFullText.Length*3 ,' ')
+  else
+    FScrollText := FScrollFullText.PadRight(FScrollFullText.Length*3,' ');
+
+  FScrollDirLeft := goLeft;
+  FScrollControl := control;
+  tmrScroll.Enabled := True;
 end;
 
 procedure TfrmLaunchSetting.SetResolutionSupport(lpszDeviceName: LPCWSTR);
 var
   iModeNum: DWORD;
   lpDevMode: TDeviceMode;
+  i: Integer;
 begin
-  imgSD.Visible := False;
-  imgHD.Visible := False;
-  imgFullHD.Visible := False;
+  FResolutions.Clear;
   iModeNum := 0;
   if lpszDeviceName='' then
     lpszDeviceName := nil;
   while EnumDisplaySettings(lpszDeviceName, iModeNum, lpDevMode) do
   begin
-    if (lpDevMode.dmPelsWidth = 800) and (lpDevMode.dmPelsHeight = 600) then
-      imgSD.Visible := True;
-    if (lpDevMode.dmPelsWidth = 1280) and (lpDevMode.dmPelsHeight = 720) then
-      imgHD.Visible := True;
-    if (lpDevMode.dmPelsWidth = 1920) and (lpDevMode.dmPelsHeight = 1080) then
-      imgFullHD.Visible := True;
-    Inc( iModeNum );
+    if imgFullscreen.Visible then // exact resolution needed.
+    begin
+      if (lpDevMode.dmPelsWidth = 800) and (lpDevMode.dmPelsHeight = 600) then
+        FResolutions.Add('800 x 600 (Original)=600');
+      if (lpDevMode.dmPelsWidth = 1280) and (lpDevMode.dmPelsHeight = 720) then
+        FResolutions.Add('1280 x 720 (HD)=720');
+      if (lpDevMode.dmPelsWidth = 1920) and (lpDevMode.dmPelsHeight = 1080) then
+        FResolutions.Add('1920 x 1080 (FullHD)=1080');
+      Inc( iModeNum );
+    end
+    else
+    begin
+      if (lpDevMode.dmPelsWidth >= 800) and (lpDevMode.dmPelsHeight >= 600) then
+        FResolutions.Add('800 x 600 (Original)=600');
+      if (lpDevMode.dmPelsWidth >= 1280) and (lpDevMode.dmPelsHeight >= 720) then
+        FResolutions.Add('1280 x 720 (HD)=720');
+      if (lpDevMode.dmPelsWidth >= 1920) and (lpDevMode.dmPelsHeight >= 1080) then
+        FResolutions.Add('1920 x 1080 (FullHD)=1080');
+      Inc( iModeNum );
+    end;
   end;
+
+  FCurrentResolutionIdx := 0;
+  for i := 0 to FResolutions.Count-1 do
+  begin
+    if FResolutions.ValueFromIndex[i]=FCurrentResolution then
+      FCurrentResolutionIdx := i;
+  end;
+
+  FCurrentResolution := FResolutions.ValueFromIndex[FCurrentResolutionIdx];
+  lblResolution.Caption := FResolutions.KeyNames[FCurrentResolutionIdx];
 end;
 
 procedure TfrmLaunchSetting.StaticText3Click(Sender: TObject);
 begin
   ModalResult := mrCancel;
-end;
-
-procedure TfrmLaunchSetting.StaticText4Click(Sender: TObject);
-begin
-  WindowedMode.Checked := not WindowedMode.Checked;
 end;
 
 procedure TfrmLaunchSetting.tmrScrollTimer(Sender: TObject);
@@ -363,14 +406,14 @@ begin
     if FScrollText[2]<>' ' then
       tmrScroll.Enabled := False;
     FScrollText := copy(FScrollText, 2);
-    lblLanguage.Caption := copy(FScrollText, 1, Length(FCurrentLanguage));
+    FScrollControl.Caption := copy(FScrollText, 1, Length(FScrollFullText));
   end
   else
   begin
     if FScrollText[Length(FScrollText)-1]<>' ' then
       tmrScroll.Enabled := False;
     FScrollText := copy(FScrollText, 1, Length(FScrollText)-1);
-    lblLanguage.Caption := copy(FScrollText, Length(FScrollText)-Length(FCurrentLanguage));
+    FScrollControl.Caption := copy(FScrollText, Length(FScrollText)-Length(FScrollFullText));
   end;
 end;
 

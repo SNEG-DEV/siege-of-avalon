@@ -152,6 +152,7 @@ type
     procedure CloseEnding( Sender : TObject );
     procedure CloseHistory( Sender : TObject );
     procedure FormPaint(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     AdventureLog1 : TAdventureLog;
     HistoryLog : TAdventureLog;
@@ -1112,6 +1113,8 @@ begin
     begin
       { Adjust the window for windowed mode }
       BorderStyle := bsSingle;
+//      BorderIcons := [biSystemMenu];
+      FormStyle := fsNormal;
       ClientWidth := ScreenMetrics.ScreenWidth;
       ClientHeight := ScreenMetrics.ScreenHeight;
     end;
@@ -1123,10 +1126,7 @@ begin
     Log.flush;
 
     SetCursorPos(frmMain.Left+(frmMain.Width div 2), frmMain.Top+(frmMain.Height div 2));
-//    Log.Log( 'MOUSE - X-Y'+Mouse.CursorPos.X.ToString+', '+Mouse.CursorPos.Y.ToString);
     Screen.Cursor := crNone;
-
-//    Log.Log( 'FORM - X-Y'+frmMain.Left.ToString+', '+frmMain.Top.ToString);
 
     if PixelFormat = pf555 then
       Log.Log( 'Using 555 Driver' )
@@ -1815,6 +1815,17 @@ begin
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
   end;
+end;
+
+procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+// TODO: figure out if DX need deinit before.
+//  if ScreenMetrics.Windowed then
+//  begin
+//    CanClose := True;
+//    ExitCode := 0;
+//    PostMessage( Handle, WM_Done, 0, 0 );
+//  end;
 end;
 
 procedure TfrmMain.FormCreate( Sender : TObject );
@@ -5468,25 +5479,25 @@ begin
   Log.DebugLog(FailName);
   if not ScreenMetrics.Windowed then
   begin
-  try
+    try
 
-    Log.Log( 'App Activate' );
-    if Initialized then
-    begin
-      WindowState := wsNormal;
-      SetBounds( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-      Game.Enabled := True;
-      FormShow( Self );
-    end
-    else
-    begin
-      Initialized := True;
+      Log.Log( 'App Activate' );
+      if Initialized then
+      begin
+        WindowState := wsNormal;
+        SetBounds( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
+        Game.Enabled := True;
+        FormShow( Self );
+      end
+      else
+      begin
+        Initialized := True;
+      end;
+
+    except
+      on E : Exception do
+        Log.log( FailName, E.Message, [ ] );
     end;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
   end;
 end;
 
@@ -5497,34 +5508,34 @@ begin
   Log.DebugLog(FailName);
   if not ScreenMetrics.Windowed then
   begin
-  try
+    try
 
-    Log.Log( 'App Deactivate' );
-    if Active then
-    begin
-      Active := False;
-      GameName := '~AutoSave';
-      SaveGame;
-      NeedToReload := True;
-      KeepTravelList := TravelList.Text;
-    end
-    else
-    begin
-      NeedToReload := False;
+      Log.Log( 'App Deactivate' );
+      if Active then
+      begin
+        Active := False;
+        GameName := '~AutoSave';
+        SaveGame;
+        NeedToReload := True;
+        KeepTravelList := TravelList.Text;
+      end
+      else
+      begin
+        NeedToReload := False;
+      end;
+
+      Game.OnMouseDown := AniView1MouseDown;
+      Game.OnMouseMove := nil;
+      Game.OnMouseUp := nil;
+      OnKeyDown := TKeyEvent.FormKeyDown;
+      OnMouseDown := FormMouseDown;
+      OnMouseMove := FormMouseMove;
+      FreeAll;
+
+    except
+      on E : Exception do
+        Log.log( FailName, E.Message, [ ] );
     end;
-
-    Game.OnMouseDown := AniView1MouseDown;
-    Game.OnMouseMove := nil;
-    Game.OnMouseUp := nil;
-    OnKeyDown := TKeyEvent.FormKeyDown;
-    OnMouseDown := FormMouseDown;
-    OnMouseMove := FormMouseMove;
-    FreeAll;
-
-  except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
-  end;
   end;
 end;
 

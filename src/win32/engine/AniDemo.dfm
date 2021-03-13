@@ -119,6 +119,7 @@ object frmMain: TfrmMain
   Position = poScreenCenter
   Scaled = False
   StyleElements = [seFont, seBorder]
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnMouseDown = FormMouseDown
