@@ -50,7 +50,9 @@ uses
   Vcl.Graphics, // replace by System.UITypes,
   System.Sysutils,
   LogFile,
-  SoAOS.Graphics.Draw;
+  SoAOS.Graphics.Draw,
+  SoAOS.Animation
+  ;
 
 procedure GetSurfaceDims( var W, H : Integer; Surface : IDirectDrawSurface );
 function DDGetSurface( lpDD : IDirectDraw; W, H : integer; Color : TColor; Video : Boolean; var ColorMatch : integer ) : IDirectDrawSurface; overload;
@@ -64,6 +66,7 @@ var
 const
   FailName : string = 'DXUtil.GetSurfaceDims';
 begin
+  ZeroMemory(@lpDDSurfaceDesc, sizeof(lpDDSurfaceDesc));
   Log.DebugLog(FailName);
   try
     lpDDSurfaceDesc.dwSize := SizeOf( lpDDSurfaceDesc );
@@ -87,6 +90,7 @@ var
 const
   FailName : string = 'DXUtil.DDGetSurface2';
 begin
+  ZeroMemory(@ddsd, sizeof(ddsd));
   Log.DebugLog(FailName);
   try
     ddsd.dwSize := SizeOf( ddsd );
@@ -100,10 +104,10 @@ begin
 
     Result := nil;
 
-    if ( lpdd.CreateSurface( ddsd, pdds, nil ) <> DD_OK ) then
+    if ( lpdd_CreateSurface( ddsd, pdds, nil ) <> DD_OK ) then
     begin
       ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_SYSTEMMEMORY;
-      if ( lpdd.CreateSurface( ddsd, pdds, nil ) <> DD_OK ) then
+      if ( lpdd_CreateSurface( ddsd, pdds, nil ) <> DD_OK ) then
         Exit;
     end;
 
@@ -135,6 +139,7 @@ var
 const
   FailName : string = 'DXUtil.DDGetSurface1';
 begin
+  FillChar(ddsd, sizeof(ddsd), 0);
   Log.DebugLog(FailName);
   try
     ddsd.dwSize := SizeOf( ddsd );
@@ -147,10 +152,10 @@ begin
     ddsd.dwHeight := H;
 
     Result := nil;
-    if ( lpdd.CreateSurface( ddsd, pdds, nil ) <> DD_OK ) then
+    if ( lpdd_CreateSurface( ddsd, pdds, nil ) <> DD_OK ) then
     begin
       ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_SYSTEMMEMORY;
-      if ( lpdd.CreateSurface( ddsd, pdds, nil ) <> DD_OK ) then
+      if ( lpdd_CreateSurface( ddsd, pdds, nil ) <> DD_OK ) then
         Exit;
     end;
     ColorMatch := SoAOS_DX_ColorMatch( pdds, ColorToRGB( Color ) );

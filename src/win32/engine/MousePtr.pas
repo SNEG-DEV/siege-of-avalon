@@ -76,7 +76,7 @@ type
     procedure SetEnabled( const Value : boolean );
   protected
   public
-    DxSurface : IDirectDrawSurface; //surface to draw pointer to
+    //DxSurface : XDirectDrawSurface; //surface to draw pointer to
     constructor Create;
     destructor Destroy; override;
 //    procedure SetAnim( Frame, Frames, Speed : integer );
@@ -116,13 +116,13 @@ begin
     DXDirty := DDGetSurface( lpDD, PtrWidth, PtrHeight, cTransparent, true );
   //pre-load Dirty
     FPlotDirty := false;
-    DXSurface := lpDDSFront;
+    //DXSurface := lpDDSFront;
     absPt := Mouse.CursorPos;
     absPt.X := absPt.X - frmMain.Left;
     absPt.Y := absPt.Y - frmMain.Top;
     mPt := TPoint.Create(absPt.X, absPt.Y);
     pr := Rect( mPt.x, mPt.y, mPt.x + PtrWidth, mPt.y + PtrHeight );
-    DXDirty.BltFast( 0, 0, DXSurface, @pr, DDBLTFAST_WAIT );
+    DXDirty.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     MouseTimer := TTimer.create( nil );
     MouseTimer.Enabled := false;
     MouseTimer.onTimer := MouseTimerEvent;
@@ -163,9 +163,11 @@ begin
     exit;
 
   PrevPt := mPt;
-  absPt := Mouse.CursorPos;
-  absPt.X := absPt.X - frmMain.Left;
-  absPt.Y := absPt.Y - frmMain.Top;
+  absPt := frmMain.ScreenToClient(Mouse.CursorPos);
+
+//  absPt.X := absPt.X - frmMain.Left;
+//  absPt.Y := absPt.Y - frmMain.Top;
+
   mPt := TPoint.Create(absPt.X, absPt.Y);
 //  if ( MouseAnimationCycle > 0 ) and ( MouseCounter > MouseAnimationCycle ) then
 //  begin
@@ -204,21 +206,21 @@ begin
     if ( mPt.x <> PrevPt.x ) or ( mPt.y <> PrevPt.y ) then
     begin
       pr := Rect( 0, 0, PtrWidth - OldWAdj, PtrHeight - OldHAdj );
-      DXSurface.BltFast( PrevPt.x, PrevPt.y, DXDirty, @pr, DDBLTFAST_WAIT );
+      lpDDSFront_BltFast( PrevPt.x, PrevPt.y, DXDirty, @pr, DDBLTFAST_WAIT );
       pr := Rect( mPt.x, mPt.y, mPt.x + PtrWidth - WAdj, mPt.y + PtrHeight - HAdj );
-      DXDirty.BltFast( 0, 0, DXSurface, @pr, DDBLTFAST_WAIT );
+      DXDirty.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
     end;
   end
   else
   begin
     pr := Rect( mPt.x, mPt.y, mPt.x + PtrWidth - WAdj, mPt.y + PtrHeight - HAdj );
-    DXDirty.BltFast( 0, 0, DXSurface, @pr, DDBLTFAST_WAIT );
+    DXDirty.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
   end;
 
   X := ( MouseFrame mod SheetWidth ) * PtrWidth;
   Y := ( MouseFrame div SheetWidth ) * PtrHeight;
   pr := Rect( X, Y, X + PtrWidth - WAdj, Y + PtrHeight - HAdj );
-  DXSurface.BltFast( mPt.x, mPt.y, DXMousePtr, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+  lpDDSFront_BltFast( mPt.x, mPt.y, DXMousePtr, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   FPlotDirty := true;
 end; //MouseTimerEvent
 
@@ -295,7 +297,7 @@ begin
     if FPlotDirty then
     begin
       pr := Rect( 0, 0, PtrWidth - WAdj, PtrHeight - HAdj );
-      DXSurface.BltFast( mPt.x, mPt.y, DXDirty, @pr, DDBLTFAST_WAIT );
+      lpDDSFront_BltFast( mPt.x, mPt.y, DXDirty, @pr, DDBLTFAST_WAIT );
       FPlotDirty := false;
     end;
   except

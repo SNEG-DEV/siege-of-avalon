@@ -832,6 +832,7 @@ var
 const
   FailName : string = 'Main.CharCreationDraw';
 begin
+  FillChar(ddsd, sizeof(ddsd), 0);
   // Drawing Actor/Player
   Log.DebugLog(FailName);
   try
@@ -1542,7 +1543,7 @@ begin
     end;
     PlotText( CharacterName, 310, 95, 240 );
     DrawNewPlayer;
-//    lpDDSFront.Flip(nil, DDFLIP_WAIT);
+//    lpDDSFront_Flip(nil, DDFLIP_WAIT);
 //    lpDDSBack.BltFast(0, 0, lpDDSFront, Rect(0, 0, 800, 600), DDBLTFAST_WAIT);
   except
     on E : Exception do

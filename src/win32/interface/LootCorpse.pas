@@ -1315,28 +1315,26 @@ end; //TLootCorpse.WriteTheInventoryData
 
 procedure TLootCorpse.ContainCursor( action : integer );
 var
-  prRect : PRect;
+  prRect : TRect;
 const
   FailName : string = 'TLootCorpse.ContainCursor';
 begin
   Log.DebugLog( FailName );
   try
-    new( prRect );
-    prRect.top := 0;
-    prRect.left := 0;
+    prRect.Left := 0;
+    prRect.Top := 0;
+    ClientToScreen(frmMain.Handle, prRect.TopLeft);
     if Action = 1 then
     begin //restore to fullscreen
-      prRect.bottom := 478;
-      prRect.Right := 640;
+      prRect.bottom := prRect.top + 478;
+      prRect.Right := prRect.Left + 640;
+      ClipCursor( @prRect ); //TODO: Windows-ism - replace
     end
     else
     begin //constrict to main inventory area
-      prRect.bottom := ScreenMetrics.ScreenHeight;
-      prRect.Right := ScreenMetrics.ScreenWidth;
+      ClipCursor(nil);
       paint;
     end;
-    ClipCursor( prRect ); //TODO: Windows-ism - replace
-    Dispose( prRect );
   except
     on E : Exception do
       Log.log( FailName + E.Message );

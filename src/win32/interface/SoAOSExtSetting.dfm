@@ -24,7 +24,7 @@ object frmLaunchSetting: TfrmLaunchSetting
   OnDestroy = FormDestroy
   OnShow = FormShow
   PixelsPerInch = 96
-  TextHeight = 23
+  TextHeight = 22
   object imgPage1: TImage
     Left = 0
     Top = 0
@@ -7977,8 +7977,8 @@ object frmLaunchSetting: TfrmLaunchSetting
   object StaticText1: TStaticText
     Left = 40
     Top = 248
-    Width = 480
-    Height = 27
+    Width = 559
+    Height = 26
     Caption = 
       'Select Language and screen resolution to start and play the game' +
       '.'
@@ -7987,8 +7987,8 @@ object frmLaunchSetting: TfrmLaunchSetting
   object StaticText2: TStaticText
     Left = 40
     Top = 275
-    Width = 117
-    Height = 38
+    Width = 140
+    Height = 37
     Alignment = taRightJustify
     Caption = 'Language:'
     Font.Charset = DEFAULT_CHARSET
@@ -8018,8 +8018,8 @@ object frmLaunchSetting: TfrmLaunchSetting
   object StaticText3: TStaticText
     Left = 512
     Top = 24
-    Width = 20
-    Height = 27
+    Width = 17
+    Height = 26
     Caption = 'X'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -8034,7 +8034,7 @@ object frmLaunchSetting: TfrmLaunchSetting
     Left = 170
     Top = 217
     Width = 335
-    Height = 27
+    Height = 26
     BevelEdges = []
     Ctl3D = False
     Font.Charset = DEFAULT_CHARSET
@@ -8051,10 +8051,26 @@ object frmLaunchSetting: TfrmLaunchSetting
   object stMonitor: TStaticText
     Left = 40
     Top = 217
-    Width = 124
-    Height = 27
+    Width = 130
+    Height = 26
     Caption = 'Select Monitor:'
     TabOrder = 5
+  end
+  object WindowedMode: TCheckBox
+    Left = 219
+    Top = 377
+    Width = 13
+    Height = 13
+    Caption = 'WindowedMode'
+    TabOrder = 6
+  end
+  object StaticText4: TStaticText
+    Left = 238
+    Top = 372
+    Width = 94
+    Height = 26
+    Caption = 'Windowed'
+    TabOrder = 7
   end
   object tmrScroll: TTimer
     Enabled = False

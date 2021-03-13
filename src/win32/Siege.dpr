@@ -117,7 +117,10 @@ uses
   SoAOS.Projectile in 'engine\SoAOS.Projectile.pas',
   SoAOS.Map in 'engine\SoAOS.Map.pas',
   SoAOS.Animation in 'engine\SoAOS.Animation.pas',
-  SoAOS.Intrface.KeyEvents in 'interface\SoAOS.Intrface.KeyEvents.pas';
+  SoAOS.Intrface.KeyEvents in 'interface\SoAOS.Intrface.KeyEvents.pas',
+  D3DRenderer in 'graphics\D3DRenderer.pas',
+  D3DShader in 'graphics\D3DShader.pas',
+  D3DMesh in 'graphics\D3DMesh.pas';
 
 {$R *.RES}
 
@@ -221,7 +224,7 @@ begin
 
     Application.ProcessMessages;
     Application.CreateForm(TfrmMain, frmMain);
-    Application.Run;
+  Application.Run;
   end;
 
   ReleaseMutex( hMutex );

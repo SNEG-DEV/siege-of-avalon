@@ -22903,7 +22903,7 @@ begin
 
   if not IsNTandDelphiRunning then
   begin
-    DDrawDLL := LoadLibrary('DDraw.dll');
+    DDrawDLL := LoadLibrary('SoADDraw.dll'); // serge: windows antivirus complains on custom builds DDrawCompat, so I renamed it
     DirectDrawEnumerateA := GetProcAddress(DDrawDLL,'DirectDrawEnumerateA');
     DirectDrawEnumerateW := GetProcAddress(DDrawDLL,'DirectDrawEnumerateW');
 {$IFDEF UNICODE}

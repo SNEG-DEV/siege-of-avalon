@@ -151,6 +151,7 @@ type
     procedure ShowHistroy;
     procedure CloseEnding( Sender : TObject );
     procedure CloseHistory( Sender : TObject );
+    procedure FormPaint(Sender: TObject);
   private
     AdventureLog1 : TAdventureLog;
     HistoryLog : TAdventureLog;
@@ -239,6 +240,7 @@ type
     procedure CloseShow( Sender : TObject );
     procedure AppActivate( Sender : TObject );
     procedure AppDeactivate( Sender : TObject );
+    procedure AppIdle( Sender: TObject; var Done: Boolean );
     function ShouldRun( X, Y : Longint ) : Boolean;
     function IsOnZoneTile( Figure : TAniFigure ) : Boolean;
     procedure DrawRosterGuy( Character : TCharacter; X, Y : Integer );
@@ -356,7 +358,9 @@ uses
   MP3,
   Engine,
   MousePtr,
-  SaveFile;
+  SaveFile,
+  D3DRenderer
+  ;
 
 {$R *.DFM}
 
@@ -824,6 +828,7 @@ var
   ShowIntro : Boolean;
   rtString : string;
   PopupEnabled : Boolean;
+  Windowed: Boolean;
 const
   FailName : string = 'Main.FormShow';
 begin
@@ -872,6 +877,7 @@ begin
       Log.flush;
 
       PlotScreenRes := INI.ReadInteger( 'Settings', 'ScreenResolution', 600 );
+      Windowed := INI.ReadBool('Settings', 'Windowed', False);
 
       case PlotScreenRes of
          600 : ScreenMetrics := cOriginal;
@@ -884,6 +890,8 @@ begin
           ScreenMetrics := cOriginal;
         end;
       end;
+
+      ScreenMetrics.Windowed := Windowed;
 
       if FileExists( InterfaceLanguagePath + 'gMainMenuBlank.bmp' ) then
         DlgRect := cMultilingualDialogs
@@ -1100,7 +1108,15 @@ begin
     Log.Log( 'Initializing DX...' );
     Log.flush;
 
-    Game.InitDX( Handle, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight, ScreenMetrics.BPP );  // 800, 600, 16
+    if ScreenMetrics.Windowed then
+    begin
+      { Adjust the window for windowed mode }
+      BorderStyle := bsSingle;
+      ClientWidth := ScreenMetrics.ScreenWidth;
+      ClientHeight := ScreenMetrics.ScreenHeight;
+    end;
+
+    Game.InitDX( Handle, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight, ScreenMetrics.BPP, ScreenMetrics.Windowed );  // 800, 600, 16
 
     Game.PreCreateMap( ScreenMetrics.PreMapWidth, ScreenMetrics.PreMapHeight );  // 768, 544
     Log.Log( 'DX initialization complete' );
@@ -1792,6 +1808,7 @@ begin
     Application.OnException := nil;
     Application.OnActivate := nil;
     Application.OnDeactivate := nil;
+    Application.OnIdle := nil;
     Log.Log( 'Console destroyed' );
 
   except
@@ -1826,6 +1843,7 @@ begin
   Application.OnException := AppException;
   Application.OnActivate := AppActivate;
   Application.OnDeactivate := AppDeactivate;
+  Application.OnIdle := AppIdle;
 
   Inc( SetAppExStyleCount );
   ExStyle := GetWindowLong( Application.Handle, GWL_EXSTYLE );
@@ -2431,7 +2449,7 @@ begin
                   CloseAllDialogs( DlgStatistics );
                   ChangeFocus( NPCList.Items[ i ] );
                   pr := Rect( 16, 0, 117, 120 );          // 699 and 1819
-                  lpDDSFront.BltFast( ScreenMetrics.StatsX, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                  lpDDSFront_BltFast( ScreenMetrics.StatsX, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                   BeginStatistics( Current );
                 end
                 else if DlgInventory.Loaded then
@@ -2440,7 +2458,7 @@ begin
                   CloseAllDialogs( DlgStatistics );
                   ChangeFocus( NPCList.Items[ i ] );
                   pr := Rect( 16, 0, 117, 120 );
-                  lpDDSFront.BltFast( ScreenMetrics.StatsX, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                  lpDDSFront_BltFast( ScreenMetrics.StatsX, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                   BeginInventory( Current );
                 end
                 else if Active then
@@ -2501,9 +2519,9 @@ begin
                     CloseAllDialogs( DlgStatistics );
                     ChangeFocus( NPCList.Items[ i ] );
                     pr := Rect( 0, 12, 326, 114 );
-                    lpDDSFront.BltFast( 0, ScreenMetrics.StatsY, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                    lpDDSFront_BltFast( 0, ScreenMetrics.StatsY, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                     pr := Rect( 16, 0, 117, 120 );
-                    lpDDSFront.BltFast( ScreenMetrics.StatsX, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                    lpDDSFront_BltFast( ScreenMetrics.StatsX, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                     BeginStatistics( Current );
                   end
                   else if DlgInventory.Loaded then
@@ -2512,9 +2530,9 @@ begin
                     CloseAllDialogs( DlgStatistics );
                     ChangeFocus( NPCList.Items[ i ] );
                     pr := Rect( 0, 12, 326, 114 );
-                    lpDDSFront.BltFast( 0, ScreenMetrics.StatsY, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                    lpDDSFront_BltFast( 0, ScreenMetrics.StatsY, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                     pr := Rect( 16, 0, 117, 120 );
-                    lpDDSFront.BltFast( ScreenMetrics.StatsX, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+                    lpDDSFront_BltFast( ScreenMetrics.StatsX, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
                     BeginInventory( Current );
                   end
                   else if Active then
@@ -2700,6 +2718,11 @@ begin
   end;
 end;
 
+procedure TfrmMain.FormPaint(Sender: TObject);
+begin
+  D3DPresent();
+end;
+
 procedure TfrmMain.ChangeFocus( Figure : TAniFigure );
 var
   i : Integer;
@@ -2854,6 +2877,7 @@ var
 const
   FailName : string = 'Main.PaintCharacterOnBorder';
 begin
+  ZeroMemory(@ddsd, sizeof(ddsd));
   Log.DebugLog(FailName);
   try
 
@@ -4370,7 +4394,7 @@ begin
       pr := Rect( 0, 0, 117, ScreenMetrics.SpellBarY );
       lpDDSBack.BltFast( ScreenMetrics.SpellBarX, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       DrawHealthBars;
-      lpDDSFront.Flip( nil, DDFLIP_WAIT );
+      lpDDSFront_Flip( nil, DDFLIP_WAIT );
       MouseCursor.PlotDirty := False;
       Dec( LoadNewLevel );
       if LoadNewLevel = 0 then
@@ -5426,8 +5450,15 @@ begin
       Log.Log('Restoring');
       RestoreSurfaces;
   //    Game.Active:=true;
-  //    lpDDSFront.Flip(nil, DDFLIP_WAIT);
+  //    lpDDSFront_Flip(nil, DDFLIP_WAIT);
     end;  }
+end;
+
+procedure TfrmMain.AppIdle(Sender: TObject; var Done: Boolean);
+begin
+  if ScreenMetrics.Windowed then
+    Invalidate;
+  Done := False;
 end;
 
 procedure TfrmMain.AppActivate( Sender : TObject );
@@ -5435,6 +5466,8 @@ const
   FailName : string = 'Main.AppActivate';
 begin
   Log.DebugLog(FailName);
+  if not ScreenMetrics.Windowed then
+  begin
   try
 
     Log.Log( 'App Activate' );
@@ -5454,6 +5487,7 @@ begin
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
   end;
+  end;
 end;
 
 procedure TfrmMain.AppDeactivate( Sender : TObject );
@@ -5461,6 +5495,8 @@ const
   FailName : string = 'Main.AppDeactivate';
 begin
   Log.DebugLog(FailName);
+  if not ScreenMetrics.Windowed then
+  begin
   try
 
     Log.Log( 'App Deactivate' );
@@ -5488,6 +5524,7 @@ begin
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
+  end;
   end;
 end;
 
@@ -5676,6 +5713,7 @@ var
   ddsd : TDDSurfaceDesc;
   Bits : BITPLANE;
 begin
+  ZeroMemory(@ddsd, sizeof(ddsd));
   OldUseLighting := Character.UseLighting;
   OldDrawShadow := TResource( Character.Resource ).DrawShadow;
   OldComplexShadow := TResource( Character.Resource ).ComplexShadow;
@@ -5859,7 +5897,7 @@ begin
   begin
     MouseCursor.cleanup;
     pr := Rect( ScreenMetrics.LogX, 50, ScreenMetrics.LogX + 68, 50 + 24 );
-    lpDDSFront.BltFast( ScreenMetrics.LogX, ScreenMetrics.SpellBarY + 50, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    lpDDSFront_BltFast( ScreenMetrics.LogX, ScreenMetrics.SpellBarY + 50, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   end;
 end;
 
@@ -5890,7 +5928,7 @@ begin
   begin
     MouseCursor.cleanup;
     pr := Rect( ScreenMetrics.LogX, 26, ScreenMetrics.LogX + 68, 26 + 24 );
-    lpDDSFront.BltFast( ScreenMetrics.LogX, ScreenMetrics.SpellBarY + 26, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    lpDDSFront_BltFast( ScreenMetrics.LogX, ScreenMetrics.SpellBarY + 26, OverlayB, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   end;
 end;
 
@@ -6643,7 +6681,7 @@ begin
         pr := Rect( 0, 0, 117, ScreenMetrics.SpellBarY );
         lpDDSBack.BltFast( ScreenMetrics.SpellBarX, 0, OverlayR, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         DrawHealthBars;
-        lpDDSFront.Flip( nil, DDFLIP_WAIT );
+        lpDDSFront_Flip( nil, DDFLIP_WAIT );
         MouseCursor.PlotDirty := False;
         Timer3.Tag := Timer3.Tag - 1;
         if Timer3.Tag = 0 then
@@ -6689,7 +6727,7 @@ begin
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
   end;
-
+  Invalidate;
 end;
 
 procedure TfrmMain.ShowEnding;

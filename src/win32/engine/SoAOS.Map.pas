@@ -710,6 +710,7 @@ var
   NewItem: ItemInfo;
   pr: TRect;
 begin
+  FillChar(ddsd, sizeof(ddsd), 0);
   if Loaded then
   begin
     Result := nil;
@@ -857,17 +858,17 @@ begin
       if ItemsInVideo then
       begin
         ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_VIDEOMEMORY;
-        if lpdd.CreateSurface(ddsd, NewItemImages, nil) <> DD_OK then
+        if lpdd_CreateSurface(ddsd, NewItemImages, nil) <> DD_OK then
         begin
           ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_SYSTEMMEMORY;
-          lpdd.CreateSurface(ddsd, NewItemImages, nil);
+          lpdd_CreateSurface(ddsd, NewItemImages, nil);
           ItemsInVideo := False;
         end;
       end
       else
       begin
         ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_SYSTEMMEMORY;
-        lpdd.CreateSurface(ddsd, NewItemImages, nil);
+        lpdd_CreateSurface(ddsd, NewItemImages, nil);
       end;
 
       { BltFx.dwSize := SizeOf(BltFx);
@@ -932,6 +933,7 @@ var
   SrcX1, SrcX2, SrcY1, SrcY2: Integer;
   pr: TRect;
 begin
+  FillChar(ddsd, sizeof(ddsd), 0);
   if Loaded then
     exit;
 
@@ -982,17 +984,17 @@ begin
       if TilesInVideo then
       begin
         ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_VIDEOMEMORY;
-        if lpdd.CreateSurface(ddsd, NewTileImages, nil) <> DD_OK then
+        if lpdd_CreateSurface(ddsd, NewTileImages, nil) <> DD_OK then
         begin
           ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_SYSTEMMEMORY;
-          lpdd.CreateSurface(ddsd, NewTileImages, nil);
+          lpdd_CreateSurface(ddsd, NewTileImages, nil);
           TilesInVideo := False;
         end;
       end
       else
       begin
         ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_SYSTEMMEMORY;
-        lpdd.CreateSurface(ddsd, NewTileImages, nil);
+        lpdd_CreateSurface(ddsd, NewTileImages, nil);
       end;
 
       BltFx.dwSize := SizeOf(BltFx);
@@ -1106,6 +1108,7 @@ var
   MemSize: Longint;
   P0, P1: Longint;
 begin
+  FillChar(ddsd, sizeof(ddsd), 0);
   // Log.Log('Saving tiles '+IntToStr(FTileBitWidth)+'x'+IntToStr(FTileBitHeight));
   Stream.write(FTileBitWidth, SizeOf(FTileBitWidth));
   Stream.write(FTileBitHeight, SizeOf(FTileBitHeight));
@@ -1228,6 +1231,7 @@ var
   MemSize: Longint;
   pr: TRect;
 begin
+  FillChar(ddsd, sizeof(ddsd), 0);
   if Loaded then
     exit;
   Stream.read(FTileBitWidth, SizeOf(FTileBitWidth));
@@ -1252,7 +1256,7 @@ begin
       end
       else begin }
     ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_SYSTEMMEMORY;
-    lpdd.CreateSurface(ddsd, FTileImages, nil);
+    lpdd_CreateSurface(ddsd, FTileImages, nil);
     // end;
 
     BltFx.dwSize := SizeOf(BltFx);
@@ -1312,7 +1316,7 @@ begin
       end
       else begin }
     ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_SYSTEMMEMORY;
-    lpdd.CreateSurface(ddsd, FItemImages, nil);
+    lpdd_CreateSurface(ddsd, FItemImages, nil);
     // end;
 
     ddck.dwColorSpaceLowValue := FMap.ColorMatch;
@@ -1359,6 +1363,7 @@ var
 const
   SectionHeight = 256;
 begin
+  FillChar(ddsd, sizeof(ddsd), 0);
   if not ItemsInVideo then
   begin
     if FItemBitHeight = 0 then
@@ -1372,7 +1377,7 @@ begin
       ddsd.dwWidth := FItemBitWidth;
       ddsd.dwHeight := FItemBitHeight;
       ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_VIDEOMEMORY;
-      if lpdd.CreateSurface(ddsd, NewItemImages, nil) = DD_OK then
+      if lpdd_CreateSurface(ddsd, NewItemImages, nil) = DD_OK then
       begin
         for i := 0 to FItemBitHeight div SectionHeight - 1 do
         begin
@@ -1428,7 +1433,7 @@ begin
       ddsd.dwWidth := FTileBitWidth;
       ddsd.dwHeight := FTileBitHeight;
       ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_VIDEOMEMORY;
-      if lpdd.CreateSurface(ddsd, NewTileImages, nil) = DD_OK then
+      if lpdd_CreateSurface(ddsd, NewTileImages, nil) = DD_OK then
       begin
         for i := 0 to FTileBitHeight div SectionHeight - 1 do
         begin
@@ -1490,6 +1495,7 @@ var
   // BltFx: DDBLTFX;
   pr: TRect;
 begin
+  FillChar(ddsd, sizeof(ddsd), 0);
   if (Image = nil) then
     exit;
   GetSurfaceDims(W, H, Image);
@@ -1521,7 +1527,7 @@ begin
     ddsd.dwWidth := NewBitWidth;
     ddsd.dwHeight := NewBitHeight;
     ddsd.ddsCaps.dwCaps := DDSCAPS_OFFSCREENPLAIN or DDSCAPS_SYSTEMMEMORY;
-    lpdd.CreateSurface(ddsd, NewItemImages, nil);
+    lpdd_CreateSurface(ddsd, NewItemImages, nil);
 
     { BltFx.dwSize := SizeOf(BltFx);
       BltFx.dwFillColor := FMap.ColorMatch;
@@ -2275,6 +2281,7 @@ var
   TimeCount: longword;
   pr: TRect;
 begin
+  FillChar(ddsd, sizeof(ddsd), 0);
   if not UseLighting then
     exit;
 

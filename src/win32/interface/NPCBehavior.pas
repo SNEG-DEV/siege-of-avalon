@@ -1300,23 +1300,21 @@ end; //FadeTimerEvent
 
 procedure TNPCBehavior.ContainCursor( action : integer );
 var
-  prRect : PRect;
+  prRect : TRect;
 begin
-  new( prRect );
-  prRect.top := 0;
-  prRect.left := 0;
+  prRect.Left := 0;
+  prRect.Top := 0;
+  ClientToScreen(frmMain.Handle, prRect.TopLeft);
   if Action = 1 then
   begin //restore to fullscreen
-    prRect.bottom := 456;
-    prRect.Right := 659;
+    prRect.bottom := prRect.Top + 456;
+    prRect.Right := prRect.Left + 659;
+    ClipCursor( @prRect ); //TODO: Windows-ism - replace
   end
   else
   begin //constrict to main inventory area
-    prRect.bottom := ScreenMetrics.ScreenHeight;  // 600 - was 720 - should probably be 1080
-    prRect.Right := ScreenMetrics.ScreenWidth;  // 800 - was 1280 - shold probably be 1920
+    ClipCursor(nil); //TODO: Windows-ism - replace
   end;
-  ClipCursor( prRect ); //TODO: Windows-ism - replace
-  Dispose( prRect );
 end; //TNPCBehavior.ContainCursor
 
 procedure TNPCBehavior.WriteAIData;

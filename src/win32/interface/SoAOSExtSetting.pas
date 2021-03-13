@@ -53,17 +53,20 @@ type
     imgSD: TImage;
     imgHD: TImage;
     imgFullHD: TImage;
+    WindowedMode: TCheckBox;
+    StaticText4: TStaticText;
     procedure FormCreate(Sender: TObject);
     procedure tmrScrollTimer(Sender: TObject);
     procedure TxtScrollLeft;
     procedure TxtScrollRight;
     procedure imgPage1Click(Sender: TObject);
-    procedure Done(r: integer);
+    procedure Done(r: integer; windowed: Boolean);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure StaticText3Click(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure cmbMonitorsChange(Sender: TObject);
+    procedure StaticText4Click(Sender: TObject);
     procedure imgSDClick(Sender: TObject);
     procedure imgHDClick(Sender: TObject);
     procedure imgFullHDClick(Sender: TObject);
@@ -149,7 +152,7 @@ begin
   SetResolutionSupport(PWideChar(CurrentDeviceName));
 end;
 
-procedure TfrmLaunchSetting.Done(r: integer);
+procedure TfrmLaunchSetting.Done(r: integer; windowed: Boolean);
 var
   INI: TIniFile;
 begin
@@ -167,6 +170,7 @@ begin
         end;
       end;
       INI.WriteInteger('Settings', 'ScreenResolution', r);
+      INI.WriteBool('Settings', 'Windowed', windowed);
       INI.WriteString('Settings', 'DeviceName', CurrentDeviceName);
       INI.UpdateFile;
     except
@@ -227,6 +231,7 @@ begin
     if FCurrentLanguage='' then
       FCurrentLanguage := cNoLanguage;
     lInterfacePath := INI.ReadString('Settings', 'Interface', 'Interface');
+    WindowedMode.Checked := INI.ReadBool('Settings', 'Windowed', False);
     CurrentDeviceName := INI.ReadString('Settings', 'DeviceName', '');
   finally
     INI.Free;
@@ -291,12 +296,12 @@ end;
 
 procedure TfrmLaunchSetting.imgFullHDClick(Sender: TObject);
 begin
-  Done(1080);
+  Done(1080, WindowedMode.Checked);
 end;
 
 procedure TfrmLaunchSetting.imgHDClick(Sender: TObject);
 begin
-  Done(720);
+  Done(720, WindowedMode.Checked);
 end;
 
 procedure TfrmLaunchSetting.imgPage1Click(Sender: TObject);
@@ -314,7 +319,7 @@ end;
 
 procedure TfrmLaunchSetting.imgSDClick(Sender: TObject);
 begin
-  Done(600);
+  Done(600, WindowedMode.Checked);
 end;
 
 procedure TfrmLaunchSetting.SetResolutionSupport(lpszDeviceName: LPCWSTR);
@@ -343,6 +348,11 @@ end;
 procedure TfrmLaunchSetting.StaticText3Click(Sender: TObject);
 begin
   ModalResult := mrCancel;
+end;
+
+procedure TfrmLaunchSetting.StaticText4Click(Sender: TObject);
+begin
+  WindowedMode.Checked := not WindowedMode.Checked;
 end;
 
 procedure TfrmLaunchSetting.tmrScrollTimer(Sender: TObject);

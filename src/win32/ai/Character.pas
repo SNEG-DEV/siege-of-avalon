@@ -8554,6 +8554,7 @@ var
 const
   FailName: string = 'TItem.GetIconicImage';
 begin
+  ZeroMemory(@ddsd, sizeof(ddsd));
   log.DebugLog(FailName);
   try
 
@@ -8628,6 +8629,7 @@ var
 const
   FailName: string = 'TItem.GetInventoryImage';
 begin
+  ZeroMemory(@ddsd, sizeof(ddsd));
   log.DebugLog(FailName);
   try
 
@@ -8686,6 +8688,7 @@ var
 const
   FailName: string = 'TItem.GetInventoryShadow';
 begin
+  ZeroMemory(@ddsd, sizeof(ddsd));
   log.DebugLog(FailName);
   try
 

@@ -1493,27 +1493,27 @@ end; //TInventory.WriteTheInventoryData
 
 procedure TInventory.ContainCursor( action : integer );
 var
-  prRect : PRect;
+  prRect : TRect;
 const
   FailName : string = 'TInventory.ContianCursor';
 begin
   Log.DebugLog(FailName);
   try
-    new( prRect );
-    prRect.top := 0;
-    prRect.left := 0;
+    prRect.Left := 0;
+    prRect.Top := 0;
+    ClientToScreen(frmMain.Handle, prRect.TopLeft);
     if Action = 1 then
     begin //constrict to main inventory area
-      prRect.bottom := 456;
-      prRect.Right := 659;
+      prRect.bottom := prRect.Top + 456;
+      prRect.Right := prRect.Left + 659;
+      ClipCursor( @prRect ); //TODO: Windows-ism - replace
     end
     else
     begin //resote to fullscreen
-      prRect.bottom := ScreenMetrics.ScreenHeight;
-      prRect.Right := ScreenMetrics.ScreenWidth;
+//      prRect.bottom := ScreenMetrics.ScreenHeight;
+//      prRect.Right := ScreenMetrics.ScreenWidth;
+      ClipCursor(nil);
     end;
-    ClipCursor( prRect ); //TODO: Windows-ism - replace
-    Dispose( prRect );
   except
     on E : Exception do
       Log.log( FailName + E.Message );

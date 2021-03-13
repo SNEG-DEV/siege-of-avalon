@@ -396,7 +396,7 @@ begin
             lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
             pr := Rect( 0, 0, Captions[ i ].Rect.Width, Captions[ i ].Rect.Height );
             lpDDSBack.BltFast( Offset.X + Captions[ i ].Rect.Left, Offset.Y + Captions[ i ].Rect.Top, Captions[ i ].Image, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-            lpDDSFront.Flip( nil, DDFLIP_WAIT );
+            lpDDSFront_Flip( nil, DDFLIP_WAIT );
             MouseCursor.PlotDirty := false;
           end;
           break;
@@ -407,7 +407,7 @@ begin
       begin
         pr := Rect( 0, 0, DlgWidth, DlgHeight );
         lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
-        lpDDSFront.Flip( nil, DDFLIP_WAIT );
+        lpDDSFront_Flip( nil, DDFLIP_WAIT );
         MouseCursor.PlotDirty := false;
       end;
       PrevChoice := Choice;
