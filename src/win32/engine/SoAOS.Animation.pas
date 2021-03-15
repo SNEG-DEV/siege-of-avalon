@@ -855,7 +855,7 @@ begin
   if Windowed then
     res := lpDD.SetCooperativeLevel(Handle, DDSCL_NORMAL)
   else
-  res := lpDD.SetCooperativeLevel(Handle, DDSCL_EXCLUSIVE or DDSCL_FULLSCREEN);
+    res := lpDD.SetCooperativeLevel(Handle, DDSCL_EXCLUSIVE or DDSCL_FULLSCREEN);
 
   if res<>DD_OK then
     Log.Log( 'DX: Failed to set cooperative level.' );
@@ -889,28 +889,27 @@ begin
     {$IFDEF DX7}
     res := lpDD.SetDisplayMode(ResW, ResH, BPP, 60, 0);
     {$ELSE}
-  res := lpDD.SetDisplayMode(ResW, ResH, BPP);
+    res := lpDD.SetDisplayMode(ResW, ResH, BPP);
     {$ENDIF}
-  if res<>DD_OK then
-  begin
-    Log.Log( 'DX: Failed to set display mode.' );
-    if res = DDERR_GENERIC then Log.Log( 'DX: DDERR_GENERIC' );
-    if res = DDERR_INVALIDMODE then Log.Log( 'DX: DDERR_INVALIDMODE' );
-    if res = DDERR_INVALIDOBJECT then Log.Log( 'DX: DDERR_INVALIDOBJECT' );
-    if res = DDERR_INVALIDPARAMS then Log.Log( 'DX: DDERR_INVALIDPARAMS' );
-    if res = DDERR_LOCKEDSURFACES then Log.Log( 'DX: DDERR_LOCKEDSURFACES' );
-    if res = DDERR_NOEXCLUSIVEMODE then Log.Log( 'DX: DDERR_NOEXCLUSIVEMODE' );
-    if res = DDERR_SURFACEBUSY then Log.Log( 'DX: DDERR_SURFACEBUSY' );
-    if res = DDERR_UNSUPPORTED then Log.Log( 'DX: DDERR_UNSUPPORTED' );
-    if res = DDERR_UNSUPPORTEDMODE then Log.Log( 'DX: DDERR_UNSUPPORTEDMODE' );
-    if res = DDERR_WASSTILLDRAWING then Log.Log( 'DX: DDERR_WASSTILLDRAWING' );
-  end;
+    if res<>DD_OK then
+    begin
+      Log.Log( 'DX: Failed to set display mode.' );
+      if res = DDERR_GENERIC then Log.Log( 'DX: DDERR_GENERIC' );
+      if res = DDERR_INVALIDMODE then Log.Log( 'DX: DDERR_INVALIDMODE' );
+      if res = DDERR_INVALIDOBJECT then Log.Log( 'DX: DDERR_INVALIDOBJECT' );
+      if res = DDERR_INVALIDPARAMS then Log.Log( 'DX: DDERR_INVALIDPARAMS' );
+      if res = DDERR_LOCKEDSURFACES then Log.Log( 'DX: DDERR_LOCKEDSURFACES' );
+      if res = DDERR_NOEXCLUSIVEMODE then Log.Log( 'DX: DDERR_NOEXCLUSIVEMODE' );
+      if res = DDERR_SURFACEBUSY then Log.Log( 'DX: DDERR_SURFACEBUSY' );
+      if res = DDERR_UNSUPPORTED then Log.Log( 'DX: DDERR_UNSUPPORTED' );
+      if res = DDERR_UNSUPPORTEDMODE then Log.Log( 'DX: DDERR_UNSUPPORTEDMODE' );
+      if res = DDERR_WASSTILLDRAWING then Log.Log( 'DX: DDERR_WASSTILLDRAWING' );
+    end;
 
-  ddsd.dwSize := SizeOf(ddsd);
-  ddsd.dwFlags := DDSD_CAPS or DDSD_BACKBUFFERCOUNT;
-  ddsd.dwBackBufferCount := 1;
-  ddsd.ddsCaps.dwCaps := DDSCAPS_COMPLEX + DDSCAPS_FLIP +
-    DDSCAPS_PRIMARYSURFACE;
+    ddsd.dwSize := SizeOf(ddsd);
+    ddsd.dwFlags := DDSD_CAPS or DDSD_BACKBUFFERCOUNT;
+    ddsd.dwBackBufferCount := 1;
+    ddsd.ddsCaps.dwCaps := DDSCAPS_COMPLEX + DDSCAPS_FLIP + DDSCAPS_PRIMARYSURFACE;
     res := lpDD_CreateSurface(ddsd, lpDDSFront, nil);
     if (res = DD_OK) then
     begin

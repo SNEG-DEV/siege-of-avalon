@@ -99,7 +99,6 @@ var
   GolemResource : TCharacterResource;
   SkeletonResource : TCharacterResource;
   AllSpells : boolean;
-  Bikini : boolean;
   Quests : TStringList;
   Adventures : TStringList;
   MouseCursor : TMousePtr;

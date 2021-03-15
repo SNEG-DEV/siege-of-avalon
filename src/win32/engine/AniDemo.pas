@@ -313,6 +313,7 @@ type
     procedure CueTune( const FileList : string; Instant : Boolean );
     procedure ClearOverlayB;
     procedure SaveAGame( const Name : string );
+    procedure SaveGameScreenShot;
     property CurrentTheme : string read FCurrentTheme write SetCurrentTheme;
     property Active : Boolean read FActive write SetActive;
     property SpellBarActive : Boolean read FSpellBarActive write FSpellBarActive;
@@ -1071,7 +1072,6 @@ begin
       if AllSpells then
         Log.Log( 'AllSpells enabled' );
 
-      Bikini := ( lowercase( INI.ReadString( 'Settings', 'Bikini', '' ) ) = 'true' );
       NoPageNumbers := ( LowerCase( INI.ReadString( 'Settings', 'NoPageNumbers', '' ) ) = 'true' );
       NoTransit := ( LowerCase( INI.ReadString( 'Settings', 'NoTransit', '' ) ) = 'true' );
       GameMap.UseLighting := ( LowerCase( INI.ReadString( 'Settings', 'Lighting', '' ) ) <> 'false' );
@@ -3796,6 +3796,24 @@ begin
   end;
 end;
 
+procedure TfrmMain.SaveGameScreenShot;
+var
+  DC: HDC;
+begin
+  MouseCursor.Cleanup;
+  lpDDSFront.GetDC( DC );
+  try
+    var OffsetX := (ScreenMetrics.ScreenWidth - 800) div 2;
+    var OffsetY := (ScreenMetrics.ScreenHeight - 600) div 2;
+
+    SetStretchBltMode( ScreenShot.Canvas.Handle, HALFTONE );
+    StretchBlt( ScreenShot.Canvas.Handle, 0, 0, ScreenShot.width, ScreenShot.Height,
+      DC, OffsetX, OffsetY, ScreenShot.width * 3, ScreenShot.Height * 3, SRCCOPY );
+  finally
+    lpDDSFront.ReleaseDC( DC );
+  end;
+end;
+
 function TfrmMain.ClearResources( PreserveResourceList : Boolean ) : Boolean;
 var
   i : Integer;
@@ -6001,8 +6019,7 @@ end;
 
 procedure TfrmMain.SaveAGame( const Name : string );
 var
-  TempName {,S1,S2} : string;
-  DC : HDC;
+  TempName : string;
   WasActive : Boolean;
 begin
   WasActive := Active;
@@ -6012,29 +6029,11 @@ begin
   TempName := GameName;
   try
     GameName := Name;
-    {    S1:=DefaultPath+'games\'+TempGame+'.sav';
-        S2:=DefaultPath+'games\'+GameName+'.sav';
-        if TFile.Exists(S1) then begin
-          try
-            if TFile.Exists(S2) then TFile.Delete(S2);
-            TFile.Copy(S1, S2, True);
-          except
-            Log.Log('Error: *** Could not copy '+S1+' to ' + S2);
-          end;
-        end;    }
     if SaveGame then
     begin
       if WasActive then
       begin
-        MouseCursor.Cleanup;
-        lpDDSFront.GetDC( DC );
-        try
-          SetStretchBltMode( ScreenShot.Canvas.Handle, HALFTONE );
-          StretchBlt( ScreenShot.Canvas.Handle, 0, 0, ScreenShot.width, ScreenShot.Height,
-            DC, 0, 0, ScreenShot.width * 3, ScreenShot.Height * 3, SRCCOPY );
-        finally
-          lpDDSFront.ReleaseDC( DC );
-        end;
+        SaveGameScreenShot;
         try
           if Assigned( ScreenShot ) then
           begin

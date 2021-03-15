@@ -117,7 +117,8 @@ begin
   n := 0;
   for i:=0 to FigureInstances.count-1 do
   begin
-    if (FigureInstances.Objects[i] is TCharacter) and (FigureInstances.Objects[i]<>Player) then
+    if (FigureInstances.Objects[i] is TCharacter) and (FigureInstances.Objects[i]<>Player) and
+      Player.isAlly( TCharacter( FigureInstances.Objects[i] ) ) and not TCharacter( FigureInstances.Objects[i] ).Dead then
     begin
       frmMain.AddToParty(TAniFigure(FigureInstances.Objects[i]));
       inc(n);
@@ -126,8 +127,8 @@ begin
     end;
   end;
 
-//  player.hitpoints := -1;
-  player.trainingpoints := 10000;
+  player.hitpoints := -1;
+//  player.trainingpoints := 10000;
 
 //     AddAdventure('a');
 //     AddQuest('a');
@@ -249,7 +250,6 @@ end;
 
 class procedure TKeyEvent.QuickSave;
 var
-  DC: HDC;
   TempName: string;
 begin
   if frmMain.Active then
@@ -261,17 +261,7 @@ begin
       GameName := QuickSaveName;
       if frmMain.SaveGame then
       begin
-        MouseCursor.Cleanup;
-        lpDDSFront.GetDC(DC);
-        try
-          SetStretchBltMode(frmMain.ScreenShot.Canvas.Handle, HALFTONE);
-          StretchBlt(frmMain.ScreenShot.Canvas.Handle, 0, 0,
-            frmMain.ScreenShot.width, frmMain.ScreenShot.Height, DC, 0, 0,
-            frmMain.ScreenShot.width * 3, frmMain.ScreenShot.Height *
-            3, SRCCOPY);
-        finally
-          lpDDSFront.ReleaseDC(DC);
-        end;
+        frmMain.SaveGameScreenShot;
         try
           if Assigned(frmMain.ScreenShot) then
           begin
@@ -325,21 +315,9 @@ begin
 end;
 
 class procedure TKeyEvent.ShowMenu;
-var
-  DC: HDC;
 begin
   frmMain.Active := False;
-
-  MouseCursor.Cleanup;
-  lpDDSFront.GetDC(DC);
-  try
-    SetStretchBltMode(frmMain.ScreenShot.Canvas.Handle, HALFTONE);
-    StretchBlt(frmMain.ScreenShot.Canvas.Handle, 0, 0,
-      frmMain.ScreenShot.width, frmMain.ScreenShot.Height, DC, 0, 0,
-      frmMain.ScreenShot.width * 3, frmMain.ScreenShot.Height * 3, SRCCOPY);
-  finally
-    lpDDSFront.ReleaseDC(DC);
-  end;
+  frmMain.SaveGameScreenShot;
 
   PostMessage(frmMain.Handle, WM_StartMainMenu, 0, 0); // Restart the intro
 end;
@@ -349,9 +327,6 @@ var
   offset: Word;
 begin
   offset := 0;
-//  if ( key >= 114 ) and ( key < 124 ) then   // F3 - F12 spell hotkeys
-//    offset := 115
-//  else
   if (Key >= 48) and (Key < 58) then    // 0-9
     offset := 47;
 
