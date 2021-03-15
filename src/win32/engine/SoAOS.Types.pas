@@ -57,6 +57,9 @@ const
   cTalkBlueColor   = TColors.Blue;  // Undead
   cBlackBackground = TColors.Black;
 
+  cGroundListWidth : integer = 75;
+  cGroundListHeight : integer = 29;
+
 type
 //  class function AppPath: string; static;
 

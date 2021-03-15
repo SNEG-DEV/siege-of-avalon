@@ -81,9 +81,6 @@ type
   end;
 
 procedure DebugPrint( S : string );
-const
-  GroundListWidth : integer = 75;
-  GroundListHeight : integer = 29;
 
 implementation
 

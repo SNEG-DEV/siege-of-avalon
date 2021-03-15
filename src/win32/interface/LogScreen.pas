@@ -51,7 +51,7 @@ uses
   System.Classes,
   Vcl.Controls,
   GameText,
-  Display,
+  SoAOS.Intrface.Dialogs,
   Engine,
   System.IniFiles,
   LogFile,
@@ -59,7 +59,7 @@ uses
   Resource;
 
 type
-  TLogScreen = class( TDisplay )
+  TLogScreen = class( TDialog )
   private
     //Bitmap stuff
     DXBack : IDirectDrawSurface;
@@ -217,33 +217,35 @@ begin
     end;
 
     DXBackToGame := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'obInvBackToGame.bmp', cInvisColor );
-    DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'LogScreen.bmp', cTransparent, width, height );
-    pr := Rect( 0, 0, width, height );
-    lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'LogScreen.bmp', cTransparent, DlgWidth, DlgHeight );
+    pr := Rect( 0, 0, DlgWidth, DlgHeight );
+    lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
   //Now for the Alpha'ed edges
     DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'obInvRightShadow.bmp', cInvisColor, width, height );
-    DrawSub( lpDDSBack, Rect( 659, 0, 659 + width, height ), Rect( 0, 0, width, height ), DXBorder, True, 150 );
+    DrawSub( lpDDSBack, ApplyOffset( Rect( 659, 0, 659 + width, height ) ), Rect( 0, 0, width, height ), DXBorder, True, 150 );
 
     DXBorder := nil;
 
     DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'obInvBottomShadow.bmp', cInvisColor, width, height );
-    DrawSub( lpDDSBack, Rect( 0, 456, width, 456 + height ), Rect( 0, 0, width, height ), DXBorder, True, 150 );
+    DrawSub( lpDDSBack, ApplyOffset( Rect( 0, 456, width, 456 + height ) ), Rect( 0, 0, width, height ), DXBorder, True, 150 );
 
     DXBorder := nil; //release DXBorder
 
     if IniFileFound and ( MaxPages > 0 ) then
     begin //(LogInfo.count > 15) then begin
       pr := Rect( 0, 0, 86, 29 );
-      lpDDSBack.BltFast( 400, 424, DXPrev, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 400 + Offset.X , 424 + Offset.Y , DXPrev, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       pr := Rect( 0, 0, 62, 27 );
-      lpDDSBack.BltFast( 500, 424, DXNext, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 500 + Offset.X , 424 + Offset.Y , DXNext, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     end;
 
-    pText.PlotText( Title, 5, 5, 240 );
+//    pText.PlotText( Title, 5, 5, 240 );
+    PlotText( Title, 5, 5, 240 );
 
     ShowText( PageNumber );
-    pText.plotText( txtMessage[ 0 ] + inttostr( PageNumber + 1 ) + txtMessage[ 1 ] + inttostr( MaxPages + 1 ), 20, 424, 240 );
+//    pText.plotText( txtMessage[ 0 ] + inttostr( PageNumber + 1 ) + txtMessage[ 1 ] + inttostr( MaxPages + 1 ), 20, 424, 240 );
+    PlotText( txtMessage[ 0 ] + inttostr( PageNumber + 1 ) + txtMessage[ 1 ] + inttostr( MaxPages + 1 ), 20, 424, 240 );
 
     SoAOS_DX_BltFront;
   except
@@ -265,20 +267,21 @@ begin
 
     if IniFileFound and ( MaxPages > 0 ) then
     begin //(LogInfo.count > 15) then begin
-      if PtinRect( rect( 400, 424, 400 + 86, 424 + 29 ), point( X, Y ) ) then
+      if PtinRect( ApplyOffset( Rect( 400, 424, 400 + 86, 424 + 29 ) ), point( X, Y ) ) then
       begin //over prev
         if PageNumber > 0 then
         begin
           PageNumber := PageNumber - 1;
           pr := Rect( 0, 40, 650, 415 );
-          lpDDSBack.BltFast( 0, 40, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          lpDDSBack.BltFast( Offset.X, 40 + Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
           pr := Rect( 20, 424, 350, 450 );
-          lpDDSBack.BltFast( 20, 424, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-          pText.plotText( txtMessage[ 0 ] + inttostr( PageNumber + 1 ) + txtMessage[ 1 ] + inttostr( MaxPages + 1 ), 20, 424, 240 );
+          lpDDSBack.BltFast( 20 + Offset.X, 424 + Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          PlotText( txtMessage[ 0 ] + inttostr( PageNumber + 1 ) + txtMessage[ 1 ] + inttostr( MaxPages + 1 ), 20, 424, 240 );
+//          pText.plotText( txtMessage[ 0 ] + inttostr( PageNumber + 1 ) + txtMessage[ 1 ] + inttostr( MaxPages + 1 ), 20, 424, 240 );
           ShowText( PageNumber );
         end;
       end;
-      if PtinRect( rect( 500, 424, 500 + 86, 424 + 29 ), point( X, Y ) ) then
+      if PtinRect( ApplyOffset( Rect( 500, 424, 500 + 86, 424 + 29 ) ), point( X, Y ) ) then
       begin //over next
          //Get the mex number of pages
         { if (LogInfo.count mod 15) > 0 then  //if there's an extra few items add a page
@@ -290,16 +293,17 @@ begin
         begin
           PageNumber := PageNumber + 1;
           pr := Rect( 0, 40, 650, 415 );
-          lpDDSBack.BltFast( 0, 40, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          lpDDSBack.BltFast( Offset.X, 40 + Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
           pr := Rect( 20, 424, 350, 450 );
-          lpDDSBack.BltFast( 20, 424, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-          pText.plotText( txtMessage[ 0 ] + inttostr( PageNumber + 1 ) + txtMessage[ 1 ] + inttostr( MaxPages + 1 ), 20, 424, 240 );
+          lpDDSBack.BltFast( 20 + Offset.X , 424 + Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          PlotText( txtMessage[ 0 ] + inttostr( PageNumber + 1 ) + txtMessage[ 1 ] + inttostr( MaxPages + 1 ), 20, 424, 240 );
+//          pText.plotText( txtMessage[ 0 ] + inttostr( PageNumber + 1 ) + txtMessage[ 1 ] + inttostr( MaxPages + 1 ), 20, 424, 240 );
           ShowText( PageNumber );
         end;
 
       end;
     end;
-    if PtinRect( rect( 588, 407, 588 + 77, 412 + 54 ), point( X, Y ) ) then
+    if PtinRect( ApplyOffset( Rect( 588, 407, 588 + 77, 412 + 54 ) ), point( X, Y ) ) then
     begin //over back button
       Close;
     end;
@@ -319,32 +323,32 @@ begin
   Log.DebugLog( FailName );
   try
     pr := Rect( 588, 407, 588 + 77, 407 + 54 );
-    lpDDSBack.BltFast( 588, 407, DXBack, @pr, DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 588 + Offset.X, 407 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
     if IniFileFound and ( MaxPages > 0 ) then
     begin //(LogInfo.count > 15) then begin
       pr := Rect( 0, 0, 86, 29 );
-      lpDDSBack.BltFast( 400, 424, DXPrev, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 400 + Offset.X, 424 + Offset.Y, DXPrev, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       pr := Rect( 0, 0, 62, 27 );
-      lpDDSBack.BltFast( 500, 424, DXNext, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 500 + Offset.X, 424 + Offset.Y, DXNext, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     end;
     if IniFileFound and ( MaxPages > 0 ) then
     begin //(LogInfo.count > 15) then begin
-      if PtinRect( rect( 400, 424, 400 + 86, 424 + 29 ), point( X, Y ) ) then
+      if PtinRect( ApplyOffset( Rect( 400, 424, 400 + 86, 424 + 29 ) ), point( X, Y ) ) then
       begin //over prev
         pr := Rect( 0, 0, 86, 29 );
-        lpDDSBack.BltFast( 400, 424, DXPrev2, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        lpDDSBack.BltFast( 400 + Offset.X, 424 + Offset.Y, DXPrev2, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       end;
-      if PtinRect( rect( 500, 424, 500 + 86, 424 + 29 ), point( X, Y ) ) then
+      if PtinRect( ApplyOffset( Rect( 500, 424, 500 + 86, 424 + 29 ) ), point( X, Y ) ) then
       begin //over next
         pr := Rect( 0, 0, 62, 27 );
-        lpDDSBack.BltFast( 500, 424, DXNext2, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        lpDDSBack.BltFast( 500 + Offset.X, 424 + Offset.Y, DXNext2, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       end;
     end;
-    if PtinRect( rect( 588, 407, 588 + 77, 412 + 54 ), point( X, Y ) ) then
+    if PtinRect( ApplyOffset( Rect( 588, 407, 588 + 77, 412 + 54 ) ), point( X, Y ) ) then
     begin //over back button
       //plot highlighted back to game
       pr := Rect( 0, 0, 77, 54 );
-      lpDDSBack.BltFast( 588, 407, DXBackToGame, @pr, DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 588 + Offset.X, 407 + Offset.Y, DXBackToGame, @pr, DDBLTFAST_WAIT );
     end;
 
     SoAOS_DX_BltFront;
@@ -381,7 +385,8 @@ begin
             if BlockHeight + LineCount < 15 then
             begin //we have room
               if DontPlotText = false then
-                pText.PlotTextBlock( S, 20, 640, Y, 240 );
+//                pText.PlotTextBlock( S, 20, 640, Y, 240 );
+                PlotTextBlock( S, 20, 640, Y, 240 );
               Y := Y + BlockHeight * 25; //Y:=Y+25;
               if BlockHeight = 1 then
                 Y := Y + 6; //single lines come out too close- Kludge

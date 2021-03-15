@@ -443,8 +443,8 @@ begin
         SlotCoord[ pTempItems( ItemList.Items[ i ] ).BodySlot ].UsedBy := i;
     end;
   //Get the barbie pics for all the items, as well as the GroundIcons and Shadows
-    GreatestWidth := GroundListWidth; //we inot to ground list size - must be at least this big
-    GreatestHeight := GroundListHeight;
+    GreatestWidth := cGroundListWidth; //we inot to ground list size - must be at least this big
+    GreatestHeight := cGroundListHeight;
     for i := 0 to ItemList.Count - 1 do
     begin
       pTempItems( ItemList.Items[ i ] ).DXSurface := pTempItems( ItemList.Items[ i ] ).pItem.GetInventoryImage;
@@ -576,7 +576,7 @@ begin
           //Set the coordinates of the new item and Plot it
             pTempItems( GroundOrderList.Items[ j ] ).InvX := 277; //315-pTempItems(GroundOrderList.Items[j]).IW div 2;
             pTempItems( GroundOrderList.Items[ j ] ).InvY := 386; //401-pTempItems(GroundOrderList.Items[j]).IH div 2;
-            pr := Rect( 0, 0, GroundListWidth, GroundListHeight );
+            pr := Rect( 0, 0, cGroundListWidth, cGroundListHeight );
             lpDDSBack.BltFast( pTempItems( GroundOrderList.Items[ j ] ).InvX, pTempItems( GroundOrderList.Items[ j ] ).InvY, pTempItems( GroundOrderList.Items[ j ] ).DXSurfaceIcon, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
             TopGroundIndex := j;
           end
@@ -601,7 +601,7 @@ begin
           //Set the coordinates of the new item and Plot it
             pTempItems( GroundOrderList.Items[ j ] ).InvX := 277; //315-pTempItems(GroundOrderList.Items[j]).IW div 2;
             pTempItems( GroundOrderList.Items[ j ] ).InvY := 386; //401-pTempItems(GroundOrderList.Items[j]).IH div 2;
-            pr := Rect( 0, 0, GroundListWidth, GroundListHeight );
+            pr := Rect( 0, 0, cGroundListWidth, cGroundListHeight );
             lpDDSBack.BltFast( pTempItems( GroundOrderList.Items[ j ] ).InvX, pTempItems( GroundOrderList.Items[ j ] ).InvY, pTempItems( GroundOrderList.Items[ j ] ).DXSurfaceIcon, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
             TopGroundIndex := j;
           end
@@ -634,7 +634,7 @@ begin
                 j := j + 1;
               pTempItems( GroundOrderList.Items[ j ] ).InvX := 277; //315-pTempItems(GroundOrderList.Items[j]).IW div 2;
               pTempItems( GroundOrderList.Items[ j ] ).InvY := 386; //401-pTempItems(GroundOrderList.Items[j]).IH div 2;
-              pr := Rect( 0, 0, GroundListWidth, GroundListHeight );
+              pr := Rect( 0, 0, cGroundListWidth, cGroundListHeight );
               lpDDSBack.BltFast( pTempItems( GroundOrderList.Items[ j ] ).InvX, pTempItems( GroundOrderList.Items[ j ] ).InvY, pTempItems( GroundOrderList.Items[ j ] ).DXSurfaceIcon, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
               pTemp := Pointer( GroundOrderList.Items[ j ] ); //save the pointer to the new topmost item so we can do the delete and still track it
               GroundOrderList.Delete( TopGroundIndex ); //GroundOrderList.IndexOf(ItemList.Items[CurrentSelectedItem])); //remove this item from the GroundList pointer list
@@ -784,7 +784,7 @@ begin
         pTempItems( ItemList.Items[ CurrentSelectedItem ] ).InvY := 386; //401-pTempItems(ItemList.Items[CurrentSelectedItem]).IH div 2;
         pTempItems( ItemList.Items[ CurrentSelectedItem ] ).BodySlot := -1;
         pTempItems( ItemList.Items[ CurrentSelectedItem ] ).ItemType := 'Ground';
-        pr := Rect( 0, 0, GroundListWidth, GroundListHeight );
+        pr := Rect( 0, 0, cGroundListWidth, cGroundListHeight );
         lpDDSBack.BltFast( pTempItems( ItemList.Items[ CurrentSelectedItem ] ).InvX, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).InvY,
           pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXSurfaceIcon, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         pr := Rect( ClearLeft, ClearTop, ClearRight, ClearBottom );
@@ -1203,7 +1203,7 @@ begin
         begin //In the ground slot so plot iconic image
           if assigned( pTempItems( ItemList.Items[ i ] ).DXSurfaceIcon ) then
           begin
-            pr := Rect( 0, 0, GroundListWidth, GroundListHeight );
+            pr := Rect( 0, 0, cGroundListWidth, cGroundListHeight );
             lpDDSBack.BltFast( pTempItems( ItemList.Items[ i ] ).InvX, pTempItems( ItemList.Items[ i ] ).InvY, pTempItems( ItemList.Items[ i ] ).DXSurfaceIcon, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
           end;
         end;

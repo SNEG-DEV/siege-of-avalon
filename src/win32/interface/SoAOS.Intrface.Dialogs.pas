@@ -51,7 +51,7 @@ type
     procedure PlotText(const Sentence: string; const X, Y, Alpha: Integer);
     procedure PlotTextCentered( const DX : IDirectDrawSurface; const Sentence : string; const X1, X2, Y, Alpha : Integer; Const UseSmallFnt: Boolean = False );
     procedure PlotTextBlock( const Sentence : string; X1, X2, Y, Alpha : integer; Const UseSmallFnt: Boolean = False );
-    procedure PlotDarkText2( const DX : IDirectDrawSurface; const Sentence : string; const X, Y, Alpha : integer );
+//    procedure PlotDarkText2( const DX : IDirectDrawSurface; const Sentence : string; const X, Y, Alpha : integer );
     property Offset: TPoint read GetOffset;
   end;
 
@@ -73,11 +73,11 @@ begin
   Result := TPoint.Create((ScreenMetrics.ScreenWidth - DlgWidth) div 2, (ScreenMetrics.ScreenHeight - DlgHeight) div 2);
 end;
 
-procedure TDialog.PlotDarkText2(const DX: IDirectDrawSurface;
-  const Sentence: string; const X, Y, Alpha: integer);
-begin
-  pText.PlotDarkText2( DX, Sentence, X + Offset.X, Y + Offset.Y, Alpha );
-end;
+//procedure TDialog.PlotDarkText2(const DX: IDirectDrawSurface;
+//  const Sentence: string; const X, Y, Alpha: integer);
+//begin
+//  pText.PlotDarkText2( DX, Sentence, X + Offset.X, Y + Offset.Y, Alpha );
+//end;
 
 procedure TDialog.PlotText(const Sentence: string; const X, Y,
   Alpha: Integer);

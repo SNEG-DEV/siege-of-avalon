@@ -128,7 +128,9 @@ begin
   end;
 
   player.hitpoints := -1;
-//  player.trainingpoints := 10000;
+  player.trainingpoints := 10000;
+  player.money := 10000;
+  player.mana := 100;
 
 //     AddAdventure('a');
 //     AddQuest('a');

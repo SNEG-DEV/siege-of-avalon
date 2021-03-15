@@ -8559,8 +8559,8 @@ begin
   try
 
     result := nil;
-    W := GroundListWidth;
-    H := GroundListHeight;
+    W := cGroundListWidth;
+    H := cGroundListHeight;
     result := DDGetSurface(lpDD, W, H, cTransparent, true, ColorMatch);
     if assigned(result) then
     begin
