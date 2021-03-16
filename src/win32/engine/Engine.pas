@@ -178,6 +178,9 @@ begin
     ChestMsg := ExText.GetText( 'Chest' );
     if ChestMsg = '' then
       ChestMsg := '>>> Previously missing items placed on ground <<<';
+    ExtExt.Close;
+
+    ExText.OpenEncoded( 'Engine' );
     SOLName := ExText.GetText( 'SOL' );
     if SOLName = '' then
       SOLName := 'Start of Level';

@@ -871,7 +871,7 @@ begin
       Log.Log( 'SoundPath=' + SoundPath );
       Log.flush;
 
-      Language := INI.ReadString('Settings', 'LanguagePath', 'english');
+      Language := AnsiLowerCase( INI.ReadString('Settings', 'LanguagePath', 'english') );
       InterfacePath := TPath.GetFullPath(IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'Interface', InterfacePath )));
       InterfaceLanguagePath := IncludeTrailingPathDelimiter( TPath.Combine( InterfacePath, Language ));
 

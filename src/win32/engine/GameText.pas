@@ -115,11 +115,15 @@ type
     procedure PlotSquishedText( Sentence : string; X, Y, Alpha : integer );
     function PlotTextBlockAroundBox( Sentence : string; X, X2, Y, Alpha : integer; cRect : TRect ) : integer;
 
+    procedure WriteText( Sentence : string; X, Y, FontSize : Integer );
+
   end;
 
 implementation
 
 uses
+  Winapi.Windows,
+  VCL.Graphics,
   SoAOS.Types,
   SoAOS.Graphics.Draw,
   SoAOS.Animation,
@@ -164,6 +168,41 @@ begin
   except
     on E : Exception do
       Log.log( FailName + E.Message );
+  end;
+end;
+
+procedure TGameText.WriteText(Sentence: string; X, Y, FontSize: Integer);
+var
+  BM: TBitmap;
+  R: TRect;
+  MsgImage: IDirectDrawSurface;
+  MsgWidth: Integer;
+  MsgHeight: Integer;
+begin
+  BM := TBitmap.Create;
+  try
+    BM.Canvas.Font.Name:='BlackChancery';
+    BM.Canvas.Font.Size := FontSize;
+    R := Rect(0, 0, 300, 30);  // Width
+    DrawText(BM.Canvas.Handle, PWideChar(Sentence), -1, R, DT_CALCRECT or DT_CENTER or
+      DT_NOCLIP or DT_NOPREFIX or DT_WORDBREAK);
+    MsgWidth := R.Right;
+    MsgHeight := R.Bottom;
+    BM.Width := MsgWidth;
+    BM.Height := MsgHeight;
+    SetTextColor(BM.Canvas.Handle, $000082BD); //  ColorToRGB(clWhite)
+    SetBkMode(BM.Canvas.Handle, TRANSPARENT);
+    PatBlt(BM.Canvas.Handle, 0, 0, MsgWidth, MsgHeight, BLACKNESS);
+    DrawText(BM.Canvas.Handle, PWideChar(Sentence), -1, R, DT_CENTER or DT_NOCLIP or
+      DT_NOPREFIX or DT_WORDBREAK);
+    MsgImage := SoAOS_DX_SurfaceFromBMP(BM, clBlack);
+    DrawAlpha(lpDDSBack, Rect(X, Y, X + MsgWidth, Y + 30), Rect(0, 0, MsgWidth, MsgHeight), MsgImage, true, 245);
+
+//      pr := Rect( Letter[ j ].sx, Letter[ j ].sy, Letter[ j ].sx + Letter[ j ].sw, Letter[ j ].sy + Letter[ j ].sh );
+//      lpDDSBack.BltFast( X + XStart + Letter[ j ].AdjPrev, Y + Letter[ j ].AdjTop, DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+
+  finally
+    BM.Free;
   end;
 end;
 

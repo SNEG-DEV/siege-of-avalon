@@ -355,8 +355,10 @@ begin
       begin //only show 9 files
         r := ApplyOffset( Rect( 379, 66 + j * 35, 669, 66 + j * 35 + 35 ) );
         pItem( SelectRect.items[ i ] ).rect := r;
-        ptext.PlotText( pItem( SelectRect.items[ i ] ).text, pItem( SelectRect.items[ i ] ).rect.left, pItem( SelectRect.items[ i ] ).rect.top, 240 );
-        ptext.PlotText( pItem( SelectRect.items[ i ] ).date, 590 + Offset.X, pItem( SelectRect.items[ i ] ).rect.top, 240 );
+        pText.WriteText(pItem( SelectRect.items[ i ] ).text, pItem( SelectRect.items[ i ] ).rect.left, pItem( SelectRect.items[ i ] ).rect.top, 16);
+//        ptext.PlotText( pItem( SelectRect.items[ i ] ).text, pItem( SelectRect.items[ i ] ).rect.left, pItem( SelectRect.items[ i ] ).rect.top, 240 );
+        pText.WriteText(pItem( SelectRect.items[ i ] ).date, 590 + Offset.X, pItem( SelectRect.items[ i ] ).rect.top, 14);
+//        ptext.PlotText( pItem( SelectRect.items[ i ] ).date, 590 + Offset.X, pItem( SelectRect.items[ i ] ).rect.top, 240 );
         j := j + 1;
       end
       else
@@ -1080,8 +1082,10 @@ begin
             pr := Rect( nRect.left - 10, nRect.top - 5, nRect.right, nRect.bottom - 5 );
             DrawAlpha( lpDDSBack, pr, rect( 0, 0, 12, 12 ), DXBackHighlight, False, 40 );
           end;
-          pText.PlotText( pItem( SelectRect.items[ i ] ).text, pItem( SelectRect.items[ i ] ).rect.left, pItem( SelectRect.items[ i ] ).rect.top, 240 );
-          pText.PlotText( pItem( SelectRect.items[ i ] ).date, 590 + Offset.X, pItem( SelectRect.items[ i ] ).rect.top, 240 );
+          pText.WriteText(pItem( SelectRect.items[ i ] ).text, pItem( SelectRect.items[ i ] ).rect.left, pItem( SelectRect.items[ i ] ).rect.top, 16);
+//          pText.PlotText( pItem( SelectRect.items[ i ] ).text, pItem( SelectRect.items[ i ] ).rect.left, pItem( SelectRect.items[ i ] ).rect.top, 240 );
+          pText.WriteText(pItem( SelectRect.items[ i ] ).date, 590 + Offset.X, pItem( SelectRect.items[ i ] ).rect.top, 14);
+//          pText.PlotText( pItem( SelectRect.items[ i ] ).date, 590 + Offset.X, pItem( SelectRect.items[ i ] ).rect.top, 240 );
         end;
       end; //end for
 

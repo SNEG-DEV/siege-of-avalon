@@ -111,21 +111,21 @@ begin
 end;
 
 class procedure TKeyEvent.DemoOrDeath;
-var
-  i, n: Integer;
+//var
+//  i, n: Integer;
 begin
-  n := 0;
-  for i:=0 to FigureInstances.count-1 do
-  begin
-    if (FigureInstances.Objects[i] is TCharacter) and (FigureInstances.Objects[i]<>Player) and
-      Player.isAlly( TCharacter( FigureInstances.Objects[i] ) ) and not TCharacter( FigureInstances.Objects[i] ).Dead then
-    begin
-      frmMain.AddToParty(TAniFigure(FigureInstances.Objects[i]));
-      inc(n);
-      if n >= MaxPartyMembers then
-        break;
-    end;
-  end;
+//  n := 0;
+//  for i:=0 to FigureInstances.count-1 do
+//  begin
+//    if (FigureInstances.Objects[i] is TCharacter) and (FigureInstances.Objects[i]<>Player) and
+//      Player.isAlly( TCharacter( FigureInstances.Objects[i] ) ) and not TCharacter( FigureInstances.Objects[i] ).Dead then
+//    begin
+//      frmMain.AddToParty(TAniFigure(FigureInstances.Objects[i]));
+//      inc(n);
+//      if n >= MaxPartyMembers then
+//        break;
+//    end;
+//  end;
 
   player.hitpoints := -1;
   player.trainingpoints := 10000;
