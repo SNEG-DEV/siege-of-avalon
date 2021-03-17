@@ -729,7 +729,7 @@ begin
   else if NPCList.count = 4 then
   begin
     CharX := cOffset + ( 463 div 4 ) - cWidth div 2;
-    Selectrect[ 1 ].rect := rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 + 20 );
+    Selectrect[ 1 ].rect := rect( CharX + 45, vOffset + VAdj1 - 120, CharX + 125, vOffset + VAdj1 - 100 );
     SelectRect[ 1 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 1 ] ).name + txtMessage[ 15 ];
     SelectRect[ 1 ].Enabled := true;
     if not assigned( Character ) then
@@ -739,7 +739,7 @@ begin
     end;
 
     CharX := cOffset + ( 463 div 2 ) - cWidth div 2;
-    Selectrect[ 2 ].rect := rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 + 20 );
+    Selectrect[ 2 ].rect := rect( CharX + 45, vOffset + VAdj1 - 120, CharX + 125, vOffset + VAdj1 - 100 );
     SelectRect[ 2 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 2 ] ).name + txtMessage[ 15 ];
     SelectRect[ 2 ].Enabled := true;
     if not assigned( Character ) then
@@ -749,7 +749,7 @@ begin
     end;
 
     CharX := cOffset + ( 463 div 4 ) * 3 - cWidth div 2;
-    Selectrect[ 3 ].rect := rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 + 20 );
+    Selectrect[ 3 ].rect := rect( CharX + 45, vOffset + VAdj1 - 120, CharX + 125, vOffset + VAdj1 - 100 );
     SelectRect[ 3 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 3 ] ).name + txtMessage[ 15 ];
     SelectRect[ 3 ].Enabled := true;
     if not assigned( Character ) then
@@ -763,7 +763,7 @@ begin
   begin
     cOffset := cOffset - 50;
     CharX := cOffset + ( 563 div 5 ) - cWidth div 2;
-    Selectrect[ 1 ].rect := rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 + 20 );
+    Selectrect[ 1 ].rect := rect( CharX + 45, vOffset + VAdj1 - 120, CharX + 125, vOffset + VAdj1 - 100 );
     SelectRect[ 1 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 1 ] ).name + txtMessage[ 15 ];
     SelectRect[ 1 ].Enabled := true;
     if not assigned( Character ) then
@@ -773,7 +773,7 @@ begin
     end;
 
     CharX := cOffset + ( 563 div 5 ) * 2 - cWidth div 2;
-    Selectrect[ 2 ].rect := rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 + 20 );
+    Selectrect[ 2 ].rect := rect( CharX + 45, vOffset + VAdj1 - 120, CharX + 125, vOffset + VAdj1 - 100 );
     SelectRect[ 2 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 2 ] ).name + txtMessage[ 15 ];
     SelectRect[ 2 ].Enabled := true;
     if not assigned( Character ) then
@@ -782,7 +782,7 @@ begin
       AIBoxList.Add( NewAIBox );
     end;
     CharX := cOffset + ( 563 div 5 ) * 3 - cWidth div 2;
-    Selectrect[ 3 ].rect := rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 + 20 );
+    Selectrect[ 3 ].rect := rect( CharX + 45, vOffset + VAdj1 - 120, CharX + 125, vOffset + VAdj1 - 100 );
     SelectRect[ 3 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 3 ] ).name + txtMessage[ 15 ];
     SelectRect[ 3 ].Enabled := true;
     if not assigned( Character ) then
@@ -791,7 +791,7 @@ begin
       AIBoxList.Add( NewAIBox );
     end;
     CharX := cOffset + ( 563 div 5 ) * 4 - cWidth div 2;
-    Selectrect[ 4 ].rect := rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 + 20 );
+    Selectrect[ 4 ].rect := rect( CharX + 45, vOffset + VAdj1 - 120, CharX + 125, vOffset + VAdj1 - 100 );
     SelectRect[ 4 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 4 ] ).name + txtMessage[ 15 ];
     SelectRect[ 4 ].Enabled := true;
     if not assigned( Character ) then

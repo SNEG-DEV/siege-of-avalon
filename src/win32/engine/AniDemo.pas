@@ -2192,8 +2192,8 @@ const
 begin
   Log.DebugLog(FailName);
   try
-
-    Exit;
+{ TODO -oSN : Why was this never released originally. }
+//    Exit;
     if Assigned( Character ) and not Character.InterfaceLocked then
     begin
       if Character.AI is TPartyAI then
