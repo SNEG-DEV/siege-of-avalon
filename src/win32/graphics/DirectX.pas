@@ -21777,6 +21777,8 @@ function DMUS_EVENT_SIZE(cb: DWORD) : DWORD;
 
 Implementation
 
+uses SysUtils;
+
 //DirectDraw file
 
 
@@ -22903,7 +22905,13 @@ begin
 
   if not IsNTandDelphiRunning then
   begin
-    DDrawDLL := LoadLibrary('SoADDraw.dll'); // serge: windows antivirus complains on custom builds DDrawCompat, so I renamed it
+    DDrawDLL := 0;
+    if (TOSVersion.Major <> 6) or (TOSVersion.Minor <> 1) then // serge: Windows 7 does not require DDrawCompat
+      DDrawDLL := LoadLibrary('SoADDraw.dll'); // serge: windows antivirus complains on custom builds DDrawCompat, so I renamed it
+    if DDrawDLL = 0 then
+    begin
+      DDrawDll := LoadLibrary('DDraw.dll');
+    end;
     DirectDrawEnumerateA := GetProcAddress(DDrawDLL,'DirectDrawEnumerateA');
     DirectDrawEnumerateW := GetProcAddress(DDrawDLL,'DirectDrawEnumerateW');
 {$IFDEF UNICODE}

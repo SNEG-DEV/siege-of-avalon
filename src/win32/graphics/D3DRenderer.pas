@@ -45,8 +45,10 @@ type
 
 implementation
 
-const
-  vertex_shader = 'struct VSInput'#13#10 +
+uses IOUtils;
+
+var
+  vertex_shader: string = 'struct VSInput'#13#10 +
     '{'#13#10 +
     '    float4 position : POSITION;'#13#10 +
     '    float2 texcoords : TEXCOORD0;'#13#10 +
@@ -66,7 +68,7 @@ const
     '    return output;'#13#10 +
     '}'#13#10;
 
-  fragment_shader = 'Texture2D DiffuseMap;'#13#10 +
+  fragment_shader: string = 'Texture2D DiffuseMap;'#13#10 +
     'SamplerState SampleType;'#13#10 +
     ''#13#10 +
     'struct PSInput'#13#10 +
@@ -78,6 +80,25 @@ const
     'float4 PSEntry(PSInput vs_out) : SV_TARGET'#13#10 +
     '{'#13#10 +
     '	return DiffuseMap.Sample(SampleType, vs_out.texcoords); '#13#10 +
+    '}'#13#10;
+
+  fragment_shader2: string = 'Texture2D DiffuseMap;'#13#10 +
+    'SamplerState SampleType;'#13#10 +
+    ''#13#10 +
+    'struct PSInput'#13#10 +
+    '{'#13#10 +
+    '    float4 position : SV_POSITION;'#13#10 +
+    '    float2 texcoords : TEXCOORD0;'#13#10 +
+    '};'#13#10 +
+    ''#13#10 +
+    'float4 PSEntry(PSInput vs_out) : SV_TARGET'#13#10 +
+    '{'#13#10 +
+    '    float4 c = DiffuseMap.Sample(SampleType, vs_out.texcoords);'#13#10 +
+    '    int c565 = c.r * 65535;'#13#10 +
+    '    int r = (c565 & 0xF800) >> 11;'#13#10 +
+    '    int g = (c565 & 0x7E0) >> 5;'#13#10 +
+    '    int b = c565 & 0x1F;'#13#10 +
+    '	return float4(r / 32.0f, g / 64.0f, b / 32.0f, 1.0f);'#13#10 +
     '}'#13#10;
 
 function TDXRenderer.Initialize(aHWND: HWND; aWidth, aHeight: Integer): HRESULT;
@@ -175,10 +196,23 @@ begin
 
   FDeviceContext.RSSetViewports(1, @FViewport);
   FQuad := TDXModel.CreateQuad(FDeviceContext);
+
+  (*
+  if FileExists('shaders\default.vs') then
+  begin
+    vertex_shader := TFile.ReadAllText('shaders\default.vs');
+  end;
+
+  if FileExists('shaders\default.ps') then
+  begin
+    fragment_shader := TFile.ReadAllText('shaders\default.ps');
+  end;
+  *)
+
   FShader := TDXTextureShader.Create(
       FDevice,
       vertex_shader,
-      fragment_shader
+      fragment_shader2
   );
 
   Result := InitializeTexture(aWidth, aHeight);
@@ -226,7 +260,7 @@ begin
     Height := aHeight;
     MipLevels := 0;
     ArraySize := 1;
-    Format := DXGI_FORMAT_B5G6R5_UNORM;
+    Format :=  DXGI_FORMAT_R16_UNORM;// // DXGI_FORMAT_B5G6R5_UNORM;
     SampleDesc.Count := 1;
     SampleDesc.Quality := 0;
     Usage := D3D11_USAGE_DEFAULT;

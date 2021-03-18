@@ -554,6 +554,7 @@ var
   BltWindowed : Boolean;
   WindowHandle: HWND;
   D3DRenderer: TDXRenderer;
+  IsWindows7: Boolean;
 
 procedure D3DPresent;
 begin
@@ -672,6 +673,13 @@ begin
     lpDDSurfaceDesc.ddpfPixelFormat.dwRBitMask := $0000F800;
     lpDDSurfaceDesc.ddpfPixelFormat.dwGBitMask := $000007E0;
     lpDDSurfaceDesc.ddpfPixelFormat.dwBBitMask := $0000001F;
+
+    if (lpDDSurfaceDesc.dwFlags and DDSD_CAPS) = 0 then
+    begin
+      lpDDSurfaceDesc.dwFlags := lpDDSurfaceDesc.dwFlags or DDSD_CAPS;
+    end;
+    lpDDSurfaceDesc.ddsCaps.dwCaps := lpDDsurfaceDesc.ddsCaps.dwCaps (*or DDSCAPS_OFFSCREENPLAIN *) or DDSCAPS_SYSTEMMEMORY;
+
   end;
   Result := lpDD.CreateSurface(lpDDSurfaceDesc, lplpDDSurface, pUnkOuter);
 end;
@@ -733,6 +741,7 @@ var
 begin
   inherited Create(AOwner);
 
+  IsWindows7 := (TOSVersion.Major = 6) and (TOSVersion.Minor = 1);
   FInterval := 50;
   ShowRepaint := false;
 
@@ -1087,9 +1096,8 @@ begin
   while GetTickCount < NextTickCount do
   begin
     if Assigned(OnWaitForTimer) then
-      OnWaitForTimer(Self)
-    else
-      application.processmessages;
+      OnWaitForTimer(Self);
+    Application.HandleMEssage;
   end;
 end;
 

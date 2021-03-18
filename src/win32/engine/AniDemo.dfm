@@ -124,7 +124,6 @@ object frmMain: TfrmMain
   OnDestroy = FormDestroy
   OnMouseDown = FormMouseDown
   OnMouseMove = FormMouseMove
-  OnPaint = FormPaint
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13

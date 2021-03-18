@@ -1176,8 +1176,8 @@ begin
     ClientToScreen(frmMain.Handle, prRect.TopLeft);
     if Action = 1 then
     begin //restore to fullscreen
-      prRect.bottom := 478;
-      prRect.Right := 640;
+      prRect.Bottom := prRect.Top + 478;
+      prRect.Right := prRect.Left + 640;
       ClipCursor( @prRect ); //TODO: Windows-ism - replace
     end
     else
