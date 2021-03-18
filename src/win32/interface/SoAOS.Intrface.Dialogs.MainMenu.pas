@@ -219,26 +219,18 @@ begin
     AreYouSureBoxVisible := false;
     pText.LoadFontGraphic( 'createchar' );
 
-    { TODO -cUI : Currently old, new multilanguage, and russian menu implementations - pick one }
     BM := TBitmap.Create;
     try
-      if FileExists( InterfaceLanguagePath + 'gMainMenuBlank.bmp' ) then   // multi language setup
-      begin
-        DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'gMainMenuBlank.bmp', cInvisColor, DlgWidth, DlgHeight );
-        BM.LoadFromFile( InterfaceLanguagePath + 'gMainMenuText.bmp' );
-        DXBack.GetDC( DC );
-        try
-          if Language = 'russian' then
-            BitBlt( DC, 106, 31, 582, 440, BM.canvas.handle, 0, 0, SRCCOPY )
-          else
-            BitBlt( DC, 106, 41, 582, 416, BM.canvas.handle, 0, 0, SRCCOPY );
-        finally
-          DXBack.ReleaseDC( DC );
-        end;
-      end
-      else
-      begin // original 2001 setup
-        DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'gMainMenu.bmp', cInvisColor, DlgWidth, DlgHeight );
+      DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'gMainMenuBlank.bmp', cInvisColor, DlgWidth, DlgHeight );
+      BM.LoadFromFile( InterfaceLanguagePath + 'gMainMenuText.bmp' );
+      DXBack.GetDC( DC );
+      try
+        if Language = 'russian' then
+          BitBlt( DC, 106, 31, 582, 440, BM.canvas.handle, 0, 0, SRCCOPY )
+        else
+          BitBlt( DC, 106, 41, 582, 416, BM.canvas.handle, 0, 0, SRCCOPY );
+      finally
+        DXBack.ReleaseDC( DC );
       end;
 
       if ScreenMetrics.borderFile<>'' then
@@ -246,55 +238,33 @@ begin
       pr := Rect( 0, 0, DlgWidth, DlgHeight );
       lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
 
-      if FileExists( InterfaceLanguagePath + 'gMainMenuTextBttns.bmp' ) then
+      BM.LoadFromFile( InterfaceLanguagePath + 'gMainMenuTextBttns.bmp' );
+      if Language = 'russian' then
       begin
-        BM.LoadFromFile( InterfaceLanguagePath + 'gMainMenuTextBttns.bmp' );
-        if Language = 'russian' then
-        begin
-          YWidth := 55;
-          YOffset := 30;
-        end
-        else
-        begin
-          YWidth := 52;
-          YOffset := 41;
-        end;
-        Y1 := YOffset;
-        MakeRect( Captions[ 1 ], XFrame, Y1, YOffset, BM );  // New game
-        inc( Y1, YWidth );
-        MakeRect( Captions[ 2 ], XFrame, Y1, YOffset, BM );  // Load
-        inc( Y1, YWidth );
-        MakeRect( Captions[ 3 ], XFrame, Y1, YOffset, BM );  // Save
-        inc( Y1, YWidth );
-        MakeRect( Captions[ 4 ], XFrame, Y1, YOffset, BM );  // Options
-        inc( Y1, YWidth );
-        MakeRect( Captions[ 5 ], XFrame, Y1, YOffset, BM );  // History
-        inc( Y1, YWidth );
-        MakeRect( Captions[ 6 ], XFrame, Y1, YOffset, BM );  // Credits
-        inc( Y1, YWidth );
-        MakeRect( Captions[ 7 ], XFrame, Y1, YOffset, BM );  // Exit
-        inc( Y1, YWidth );
-        MakeRect( Captions[ 8 ], XFrame, Y1, YOffset, BM );  // Resume
+        YWidth := 55;
+        YOffset := 30;
       end
       else
       begin
-        BM.LoadFromFile( InterfacePath + 'gNEW.bmp' );
-        MakeOldRect( Captions[ 1 ], 255, 49, BM );  // New game
-        BM.LoadFromFile( InterfacePath + 'gLOAD.bmp' );
-        MakeOldRect( Captions[ 2 ], 323, 94, BM );  // Load
-        BM.LoadFromFile( InterfacePath + 'gSAVE.bmp' );
-        MakeOldRect( Captions[ 3 ], 294, 148, BM );  // Save
-        BM.LoadFromFile( InterfacePath + 'gOPTIONS.bmp' );
-        MakeOldRect( Captions[ 4 ], 284, 191, BM );  // Options
-        BM.LoadFromFile( InterfacePath + 'gUPDATE.bmp' );
-        MakeOldRect( Captions[ 5 ], 260, 254, BM );  // History
-        BM.LoadFromFile( InterfacePath + 'gCREDITS.bmp' );
-        MakeOldRect( Captions[ 6 ], 294, 297, BM );  // Credits
-        BM.LoadFromFile( InterfacePath + 'gEXIT.bmp' );
-        MakeOldRect( Captions[ 7 ], 300, 353, BM );  // Exit
-        BM.LoadFromFile( InterfacePath + 'gRESUME.bmp' );
-        MakeOldRect( Captions[ 8 ], 197, 400, BM );  // Resume
+        YWidth := 52;
+        YOffset := 41;
       end;
+      Y1 := YOffset;
+      MakeRect( Captions[ 1 ], XFrame, Y1, YOffset, BM );  // New game
+      inc( Y1, YWidth );
+      MakeRect( Captions[ 2 ], XFrame, Y1, YOffset, BM );  // Load
+      inc( Y1, YWidth );
+      MakeRect( Captions[ 3 ], XFrame, Y1, YOffset, BM );  // Save
+      inc( Y1, YWidth );
+      MakeRect( Captions[ 4 ], XFrame, Y1, YOffset, BM );  // Options
+      inc( Y1, YWidth );
+      MakeRect( Captions[ 5 ], XFrame, Y1, YOffset, BM );  // History
+      inc( Y1, YWidth );
+      MakeRect( Captions[ 6 ], XFrame, Y1, YOffset, BM );  // Credits
+      inc( Y1, YWidth );
+      MakeRect( Captions[ 7 ], XFrame, Y1, YOffset, BM );  // Exit
+      inc( Y1, YWidth );
+      MakeRect( Captions[ 8 ], XFrame, Y1, YOffset, BM );  // Resume
 
     finally
       BM.Free;
@@ -392,6 +362,8 @@ begin
           Choice := i;
           if Choice <> PrevChoice then
           begin
+            if ScreenMetrics.borderFile<>'' then
+              lpDDSBack.BltFast( 0, 0, frmMain.FillBorder, nil, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
             pr := Rect( 0, 0, DlgWidth, DlgHeight );
             lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
             pr := Rect( 0, 0, Captions[ i ].Rect.Width, Captions[ i ].Rect.Height );
@@ -405,6 +377,8 @@ begin
 
       if ( Choice = 0 ) and ( Choice <> PrevChoice ) then
       begin
+        if ScreenMetrics.borderFile<>'' then
+          lpDDSBack.BltFast( 0, 0, frmMain.FillBorder, nil, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         pr := Rect( 0, 0, DlgWidth, DlgHeight );
         lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
         lpDDSFront_Flip( nil, DDFLIP_WAIT );

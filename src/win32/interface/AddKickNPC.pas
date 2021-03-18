@@ -75,6 +75,9 @@ type
   end;
 
   TAddKickNPC = class( TDisplay )
+  strict private
+    procedure CreateNPCRects(const NPCidx, CharX: Integer);
+    procedure UpdateNPCRects(const NPCidx, CharX: Integer);
   private
     FOnDraw : TDrawTheGuyEvent;
     //Bitmap stuff
@@ -138,6 +141,39 @@ begin
       Log.log( FailName + E.Message );
   end;
 end; //Create
+
+procedure TAddKickNPC.CreateNPCRects(const NPCidx, CharX: integer);
+var
+  VAdj1, vOffset, vOffAdj, cWidth : integer;
+  NewAIBox : TAIOptions;
+begin
+  if NPCList.Count>=4 then // horizontal 4 member setup
+  begin
+   vAdj1 := -13;
+   cWidth := 25;
+   vOffAdj := 10;
+  end
+  else  // vertical 2 member setup
+  begin
+   vAdj1 := 107;
+   cWidth := TResource( TCharacter( NPCList.items[ 0 ] ).resource ).FrameWidth;
+   vOffAdj := 0;
+  end;
+
+  if assigned( Character ) then //we are adding a char, so make room
+    vOffset := 240
+  else
+    vOffset := 214 - TResource( TCharacter( NPCList.items[ 0 ] ).resource ).FrameHeight div 2;
+
+  Selectrect[ NPCidx ].rect := rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 + 20 );
+  SelectRect[ NPCidx ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ NPCidx ] ).name + txtMessage[ 15 ];
+  SelectRect[ NPCidx ].Enabled := true;
+  if not assigned( Character ) then
+  begin
+    NewAIBox := TAIOptions.create( TCharacter( NPCList.items[ NPCidx ] ), AIImage, DXBox2, CharX + cWidth, vOffset + vOffAdj );
+    AIBoxList.Add( NewAIBox );
+  end;
+end;
 
 destructor TAddKickNPC.Destroy;
 const
@@ -255,8 +291,7 @@ begin
       if PtInRect( SelectRect[ 0 ].rect, point( X, Y ) ) then
       begin //add character
           //check to see if we already have a full party and are trying to add a new player
-//          if (NPCList.count=5) and (CheckBox[0]=false) and (CheckBox[1]=false) and (CheckBox[2]=false) and (CheckBox[3]=false) and (CheckBox[4]=false) then begin
-        if ( NPCList.count = 3 ) and ( CheckBox[ 0 ] = false ) and ( CheckBox[ 1 ] = false ) and ( CheckBox[ 2 ] = false ) then
+        if (NPCList.count=5) and (CheckBox[0]=false) and (CheckBox[1]=false) and (CheckBox[2]=false) and (CheckBox[3]=false) and (CheckBox[4]=false) then
         begin
           pText.PlotTextBlock( txtMessage[ 6 ] + character.name + '.', 87, 590, 188, 240 );
         end
@@ -280,8 +315,7 @@ begin
     begin
       if PtInRect( SelectRect[ 1 ].rect, point( X, Y ) ) then
       begin
-//         if (NPCList.count=5) and (CheckBox[0]=true) and (CheckBox[1]=true) and (CheckBox[2]=false) and (CheckBox[3]=false) and (CheckBox[4]=false) then begin
-        if ( NPCList.count = 3 ) and ( CheckBox[ 0 ] = true ) and ( CheckBox[ 1 ] = true ) and ( CheckBox[ 2 ] = false ) then
+        if (NPCList.count=5) and (CheckBox[0]=true) and (CheckBox[1]=true) and (CheckBox[2]=false) and (CheckBox[3]=false) and (CheckBox[4]=false) then
         begin
           pText.PlotTextBlock( txtMessage[ 7 ] + Character.name + txtMessage[ 8 ] + TCharacter( NPCList.items[ 1 ] ).name + txtMessage[ 9 ], 87, 590, 174, 240 );
         end
@@ -303,8 +337,7 @@ begin
     begin
       if PtInRect( SelectRect[ 2 ].rect, point( X, Y ) ) then
       begin
-//         if assigned(Character) and (NPCList.count=5) and (CheckBox[0]=true) and (CheckBox[2]=true) and (CheckBox[1]=false) and (CheckBox[3]=false) and (CheckBox[4]=false) then begin
-        if assigned( Character ) and ( NPCList.count = 3 ) and ( CheckBox[ 0 ] = true ) and ( CheckBox[ 1 ] = true ) and ( CheckBox[ 2 ] = false ) then
+        if assigned(Character) and (NPCList.count=5) and (CheckBox[0]=true) and (CheckBox[2]=true) and (CheckBox[1]=false) and (CheckBox[3]=false) and (CheckBox[4]=false) then
         begin
           pText.PlotTextBlock( txtMessage[ 7 ] + Character.name + txtMessage[ 8 ] + TCharacter( NPCList.items[ 2 ] ).name + txtMessage[ 9 ], 87, 590, 174, 240 );
         end
@@ -326,8 +359,7 @@ begin
     begin
       if PtInRect( SelectRect[ 3 ].rect, point( X, Y ) ) then
       begin
-//         if assigned(Character) and (NPCList.count=5) and (CheckBox[0]=true) and (CheckBox[3]=true) and (CheckBox[2]=false) and (CheckBox[1]=false) and (CheckBox[4]=false) then begin
-        if assigned( Character ) and ( NPCList.count = 3 ) and ( CheckBox[ 0 ] = true ) and ( CheckBox[ 1 ] = true ) and ( CheckBox[ 2 ] = false ) then
+        if assigned(Character) and (NPCList.count=5) and (CheckBox[0]=true) and (CheckBox[3]=true) and (CheckBox[2]=false) and (CheckBox[1]=false) and (CheckBox[4]=false) then
         begin
           pText.PlotTextBlock( txtMessage[ 7 ] + Character.name + txtMessage[ 8 ] + TCharacter( NPCList.items[ 3 ] ).name + txtMessage[ 9 ], 87, 590, 174, 240 );
         end
@@ -349,8 +381,7 @@ begin
     begin
       if PtInRect( SelectRect[ 4 ].rect, point( X, Y ) ) then
       begin
-//         if assigned(Character) and (NPCList.count=5) and (CheckBox[0]=true) and (CheckBox[4]=true) and (CheckBox[2]=false) and (CheckBox[3]=false) and (CheckBox[1]=false) then begin
-        if assigned( Character ) and ( NPCList.count = 3 ) and ( CheckBox[ 0 ] = true ) and ( CheckBox[ 1 ] = true ) and ( CheckBox[ 2 ] = false ) then
+        if assigned(Character) and (NPCList.count=5) and (CheckBox[0]=true) and (CheckBox[4]=true) and (CheckBox[2]=false) and (CheckBox[3]=false) and (CheckBox[1]=false) then
         begin
           pText.PlotTextBlock( txtMessage[ 7 ] + Character.name + txtMessage[ 8 ] + TCharacter( NPCList.items[ 4 ] ).name + txtMessage[ 9 ], 87, 590, 174, 240 );
         end
@@ -381,19 +412,8 @@ begin
       end;
     end;
 
-    if PtinRect( rect( 588, 407, 588 + 77, 412 + 54 ), point( X, Y ) ) then
-    begin //over back button
+    if PtinRect( rect( 588, 407, 588 + 77, 412 + 54 ), point( X, Y ) ) then //over back button
       Close;
-    end
-    else if PtinRect( rect( 120, 499, 178, 508 ), point( X, Y ) ) then
-    begin //over wierd region used by Steven as cancel --- Old interface, Room for 4 teammates
-      for i := 0 to 4 do
-      begin
-        CheckBox[ i ] := false;
-      end;
-      Close;
-    end;
-
 
   except
     on E : Exception do
@@ -492,20 +512,18 @@ begin
   else
     vOffset := 214 - TResource( TCharacter( NPCList.items[ 0 ] ).resource ).FrameHeight div 2;
 
-
   cWidth := TResource( TCharacter( NPCList.items[ 0 ] ).resource ).FrameWidth;
-
 
 //clear checkboxes
   if NPCList.count >3 then
   begin
-  pr := Rect( 40, vOffset + VAdj1 - 120, 550, vOffset + VAdj1 - 100 );
-  lpDDSBack.BltFast( 40, vOffset + VAdj1 - 120, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT)
+    pr := Rect( 40, vOffset + VAdj1 - 120, 550, vOffset + VAdj1 - 100 );
+    lpDDSBack.BltFast( 40, vOffset + VAdj1 - 120, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT)
   end
   else
   begin
-  pr := Rect( 40, vOffset + VAdj1, 550, vOffset + VAdj1 + 24 );
-  lpDDSBack.BltFast( 40, vOffset + VAdj1, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 40, vOffset + VAdj1, 550, vOffset + VAdj1 + 24 );
+    lpDDSBack.BltFast( 40, vOffset + VAdj1, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   end;
 
   if assigned( character ) and assigned( OnDraw ) then
@@ -529,129 +547,35 @@ begin
     if NPCList.count = 2 then
     begin
       CharX := cOffset + ( 463 div 5 ) * 2 - cWidth div 2;
-      i := pText.TinyTextLength( TCharacter( NPCList.items[ 1 ] ).name );
-      pText.PlotTinyText( TCharacter( NPCList.items[ 1 ] ).name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset + 4, 240 );
-      OnDraw( TCharacter( NPCList.items[ 1 ] ), CharX, vOffset );
-      pText.PlotTinyText( txtMessage[ 11 ], CharX + 65, vOffset + VAdj2, 240 );
-      pr := Rect( 0, 0, 15, 15 );
-      if CheckBox[ 1 ] then
-        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1, DXBox2, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
-      else
-        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1, DXBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      UpdateNPCRects(1, CharX);
     end
     else if NPCList.count = 3 then
     begin
       CharX := cOffset + ( 463 div 10 ) * 1 - cWidth div 2;
-      i := pText.TinyTextLength( TCharacter( NPCList.items[ 1 ] ).name );
-      pText.PlotTinyText( TCharacter( NPCList.items[ 1 ] ).name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset + 4, 240 );
-      OnDraw( TCharacter( NPCList.items[ 1 ] ), CharX, vOffset );
-      pText.PlotTinyText( txtMessage[ 11 ], CharX + 65, vOffset + VAdj2, 240 );
-      pr := Rect( 0, 0, 15, 15 );
-      if CheckBox[ 1 ] then
-        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1, DXBox2, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
-      else
-        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1, DXBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-
-
+      UpdateNPCRects(1, CharX);
       CharX := cOffset + ( 463 div 7 ) * 5 - cWidth div 2;
-      i := pText.TinyTextLength( TCharacter( NPCList.items[ 2 ] ).name );
-      pText.PlotTinyText( TCharacter( NPCList.items[ 2 ] ).name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset + 4, 240 );
-      OnDraw( TCharacter( NPCList.items[ 2 ] ), CharX, vOffset );
-      pText.PlotTinyText( txtMessage[ 11 ], CharX + 65, vOffset + VAdj2, 240 );
-      pr := Rect( 0, 0, 15, 15 );
-      if CheckBox[ 2 ] then
-        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1, DXBox2, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
-      else
-        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1, DXBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-
+      UpdateNPCRects(2, CharX);
     end
     else if NPCList.count = 4 then
     begin
       CharX := cOffset + ( 463 div 4 ) - cWidth div 2;
-      i := pText.TinyTextLength( TCharacter( NPCList.items[ 1 ] ).name );
-      pText.PlotTinyText( TCharacter( NPCList.items[ 1 ] ).name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset - 124, 240 );
-      OnDraw( TCharacter( NPCList.items[ 1 ] ), CharX, vOffset - 128 );
-      pText.PlotTinyText( txtMessage[ 11 ], CharX + 65, vOffset + VAdj2 - 120, 240 );
-      pr := Rect( 0, 0, 15, 15 );
-      if CheckBox[ 1 ] then
-        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1 - 120, DXBox2, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
-      else
-        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1 - 120, DXBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-
-
+      UpdateNPCRects(1, CharX);
       CharX := cOffset + ( 463 div 2 ) - cWidth div 2;
-      i := pText.TinyTextLength( TCharacter( NPCList.items[ 2 ] ).name );
-      pText.PlotTinyText( TCharacter( NPCList.items[ 2 ] ).name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset - 124, 240 );
-      OnDraw( TCharacter( NPCList.items[ 2 ] ), CharX, vOffset - 128 );
-      pText.PlotTinyText( txtMessage[ 11 ], CharX + 65, vOffset + VAdj2 -120, 240 );
-      pr := Rect( 0, 0, 15, 15 );
-      if CheckBox[ 2 ] then
-        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1 - 120, DXBox2, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
-      else
-        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1 - 120, DXBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-
-
+      UpdateNPCRects(2, CharX);
       CharX := cOffset + ( 463 div 4 ) * 3 - cWidth div 2;
-      i := pText.TinyTextLength( TCharacter( NPCList.items[ 3 ] ).name );
-      pText.PlotTinyText( TCharacter( NPCList.items[ 3 ] ).name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset - 124, 240 );
-      OnDraw( TCharacter( NPCList.items[ 3 ] ), CharX, vOffset - 128 );
-      pText.PlotTinyText( txtMessage[ 11 ], CharX + 65, vOffset + VAdj2 - 120, 240 );
-      pr := Rect( 0, 0, 15, 15 );
-      if CheckBox[ 3 ] then
-        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1 - 120, DXBox2, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
-      else
-        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1 - 120, DXBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-
+      UpdateNPCRects(3, CharX);
     end
     else if NPCList.count = 5 then
     begin
       cOffset := cOffset - 50;
       CharX := cOffset + ( 563 div 5 ) - cWidth div 2;
-      i := pText.TinyTextLength( TCharacter( NPCList.items[ 1 ] ).name );
-      pText.PlotTinyText( TCharacter( NPCList.items[ 1 ] ).name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset - 124, 240 );
-      OnDraw( TCharacter( NPCList.items[ 1 ] ), CharX, vOffset - 128 );
-      pText.PlotTinyText( txtMessage[ 11 ], CharX + 65, vOffset + VAdj2 - 120, 240 );
-      pr := Rect( 0, 0, 15, 15 );
-      if CheckBox[ 1 ] then
-        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1 - 120, DXBox2, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
-      else
-        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1 - 120, DXBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-
-
+      UpdateNPCRects(1, CharX);
       CharX := cOffset + ( 563 div 5 ) * 2 - cWidth div 2;
-      i := pText.TinyTextLength( TCharacter( NPCList.items[ 2 ] ).name );
-      pText.PlotTinyText( TCharacter( NPCList.items[ 2 ] ).name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset - 124, 240 );
-      OnDraw( TCharacter( NPCList.items[ 2 ] ), CharX, vOffset - 128 );
-      pText.PlotTinyText( txtMessage[ 11 ], CharX + 65, vOffset + VAdj2 - 120, 240 );
-      pr := Rect( 0, 0, 15, 15 );
-      if CheckBox[ 2 ] then
-        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1 - 120, DXBox2, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
-      else
-        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1 - 120, DXBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-
-
+      UpdateNPCRects(2, CharX);
       CharX := cOffset + ( 563 div 5 ) * 3 - cWidth div 2;
-      i := pText.TinyTextLength( TCharacter( NPCList.items[ 3 ] ).name );
-      pText.PlotTinyText( TCharacter( NPCList.items[ 3 ] ).name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset - 124, 240 );
-      OnDraw( TCharacter( NPCList.items[ 3 ] ), CharX, vOffset - 128 );
-      pText.PlotTinyText( txtMessage[ 11 ], CharX + 65, vOffset + VAdj2 - 120, 240 );
-      pr := Rect( 0, 0, 15, 15 );
-      if CheckBox[ 3 ] then
-        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1 - 120, DXBox2, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
-      else
-        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1 - 120, DXBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-
-
+      UpdateNPCRects(3, CharX);
       CharX := cOffset + ( 563 div 5 ) * 4 - cWidth div 2;
-      i := pText.TinyTextLength( TCharacter( NPCList.items[ 4 ] ).name );
-      pText.PlotTinyText( TCharacter( NPCList.items[ 4 ] ).name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset - 124, 240 );
-      OnDraw( TCharacter( NPCList.items[ 4 ] ), CharX, vOffset - 128 );
-      pText.PlotTinyText( txtMessage[ 11 ], CharX + 65, vOffset + VAdj2 - 120, 240 );
-      pr := Rect( 0, 0, 15, 15 );
-      if CheckBox[ 4 ] then
-        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1 - 120, DXBox2, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
-      else
-        lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1 - 120, DXBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      UpdateNPCRects(4, CharX);
     end;
 
     for i := 0 to AIBoxList.count - 1 do
@@ -665,28 +589,57 @@ begin
     end;
 
   end; //endif
+end;
 
-end; //ShowChars
-
-procedure TAddKickNPC.SetUpCollRects;
+procedure TAddKickNPC.UpdateNPCRects(const NPCidx, CharX: Integer);
 var
-  VAdj1, VAdj2, vOffset, cOffset, CharX, cWidth : integer;
-  NewAIBox : TAIOptions;
-  i, j, k : integer;
+  Vadj1, Vadj2, vOffset, vOffAdj, cWidth : integer;
+  i : integer;
+  pr : TRect;
 begin
-  cOffset := 104;
-  Vadj1 := 107;
-  Vadj2 := 102;
+  if NPCList.Count>=4 then // horizontal 4 member setup
+  begin
+   vAdj1 := -13;
+   vOffAdj := 128;
+   vAdj2 := -18;
+  end
+  else  // vertical 2 member setup
+  begin
+   vAdj1 := 107;
+   vOffAdj := 0;
+   vAdj2 := 102;
+  end;
+
   if assigned( Character ) then //we are adding a char, so make room
     vOffset := 240
   else
     vOffset := 214 - TResource( TCharacter( NPCList.items[ 0 ] ).resource ).FrameHeight div 2;
 
   cWidth := TResource( TCharacter( NPCList.items[ 0 ] ).resource ).FrameWidth;
+
+  i := pText.TinyTextLength( TCharacter( NPCList.items[ NPCidx ] ).name );
+  pText.PlotTinyText( TCharacter( NPCList.items[ NPCidx ] ).name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset - vOffAdj + 4, 240 );
+  OnDraw( TCharacter( NPCList.items[ NPCidx ] ), CharX, vOffset - vOffAdj );
+  pText.PlotTinyText( txtMessage[ 11 ], CharX + 65, vOffset + VAdj2, 240 );
+  pr := Rect( 0, 0, 15, 15 );
+  if CheckBox[ NPCidx ] then
+    lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1, DXBox2, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
+  else
+    lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1, DXBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+end;
+
+procedure TAddKickNPC.SetUpCollRects;
+var
+  cOffset, CharX, cWidth : integer;
+  i, j, k : integer;
+begin
+  cOffset := 104;
+
+  cWidth := TResource( TCharacter( NPCList.items[ 0 ] ).resource ).FrameWidth;
   if assigned( character ) then
   begin
     CharX := cOffset + ( 463 div 2 ) - cWidth div 2;
-    Selectrect[ 0 ].rect := rect( CharX + 45, vOffset - 200 + VAdj2, CharX + 125, vOffset - 200 + VAdj2 + 20 );
+    Selectrect[ 0 ].rect := rect( CharX + 45, 142, CharX + 125, 142 + 20 );
     SelectRect[ 0 ].info := txtMessage[ 12 ] + Character.name + txtMessage[ 13 ];
     SelectRect[ 0 ].Enabled := true;
   end;
@@ -694,158 +647,37 @@ begin
   if NPCList.count = 2 then
   begin
     CharX := cOffset + ( 463 div 5 ) * 2 - cWidth div 2;
-    Selectrect[ 1 ].rect := rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 + 20 );
-    SelectRect[ 1 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 1 ] ).name + txtMessage[ 15 ];
-    SelectRect[ 1 ].Enabled := true;
-    if not assigned( Character ) then
-    begin
-      NewAIBox := TAIOptions.create( TCharacter( NPCList.items[ 1 ] ), AIImage, DXBox2, CharX + cWidth, vOffset );
-      AIBoxList.Add( NewAIBox );
-    end;
+    CreateNPCRects(1, CharX);
   end
   else if NPCList.count = 3 then
   begin
     CharX := cOffset + ( 463 div 10 ) * 1 - cWidth div 2;
-    Selectrect[ 1 ].rect := rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 + 20 );
-    SelectRect[ 1 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 1 ] ).name + txtMessage[ 15 ];
-    SelectRect[ 1 ].Enabled := true;
-    if not assigned( Character ) then
-    begin
-      NewAIBox := TAIOptions.create( TCharacter( NPCList.items[ 1 ] ), AIImage, DXBox2, CharX + cWidth, vOffset );
-      AIBoxList.Add( NewAIBox );
-    end;
-
+    CreateNPCRects(1, CharX);
     CharX := cOffset + ( 463 div 7 ) * 5 - cWidth div 2;
-    Selectrect[ 2 ].rect := rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 + 20 );
-    SelectRect[ 2 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 2 ] ).name + txtMessage[ 15 ];
-    SelectRect[ 2 ].Enabled := true;
-    if not assigned( Character ) then
-    begin
-      NewAIBox := TAIOptions.create( TCharacter( NPCList.items[ 2 ] ), AIImage, DXBox2, CharX + cWidth, vOffset );
-      AIBoxList.Add( NewAIBox );
-    end;
-
+    CreateNPCRects(2, CharX);
   end
   else if NPCList.count = 4 then
   begin
     CharX := cOffset + ( 463 div 4 ) - cWidth div 2;
-    Selectrect[ 1 ].rect := rect( CharX + 45, vOffset + VAdj1 - 120, CharX + 125, vOffset + VAdj1 - 100 );
-    SelectRect[ 1 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 1 ] ).name + txtMessage[ 15 ];
-    SelectRect[ 1 ].Enabled := true;
-    if not assigned( Character ) then
-    begin
-      NewAIBox := TAIOptions.create( TCharacter( NPCList.items[ 1 ] ), AIImage, DXBox2, CharX + 25, vOffset + 10 );
-      AIBoxList.Add( NewAIBox );
-    end;
-
+    CreateNPCRects(1, CharX);
     CharX := cOffset + ( 463 div 2 ) - cWidth div 2;
-    Selectrect[ 2 ].rect := rect( CharX + 45, vOffset + VAdj1 - 120, CharX + 125, vOffset + VAdj1 - 100 );
-    SelectRect[ 2 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 2 ] ).name + txtMessage[ 15 ];
-    SelectRect[ 2 ].Enabled := true;
-    if not assigned( Character ) then
-    begin
-      NewAIBox := TAIOptions.create( TCharacter( NPCList.items[ 2 ] ), AIImage, DXBox2, CharX + 25, vOffset + 10 );
-      AIBoxList.Add( NewAIBox );
-    end;
-
+    CreateNPCRects(2, CharX);
     CharX := cOffset + ( 463 div 4 ) * 3 - cWidth div 2;
-    Selectrect[ 3 ].rect := rect( CharX + 45, vOffset + VAdj1 - 120, CharX + 125, vOffset + VAdj1 - 100 );
-    SelectRect[ 3 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 3 ] ).name + txtMessage[ 15 ];
-    SelectRect[ 3 ].Enabled := true;
-    if not assigned( Character ) then
-    begin
-      NewAIBox := TAIOptions.create( TCharacter( NPCList.items[ 3 ] ), AIImage, DXBox2, CharX + 25, vOffset + 10 );
-      AIBoxList.Add( NewAIBox );
-    end;
-
+    CreateNPCRects(3, CharX);
   end
   else if NPCList.count = 5 then
   begin
     cOffset := cOffset - 50;
+
     CharX := cOffset + ( 563 div 5 ) - cWidth div 2;
-    Selectrect[ 1 ].rect := rect( CharX + 45, vOffset + VAdj1 - 120, CharX + 125, vOffset + VAdj1 - 100 );
-    SelectRect[ 1 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 1 ] ).name + txtMessage[ 15 ];
-    SelectRect[ 1 ].Enabled := true;
-    if not assigned( Character ) then
-    begin
-      NewAIBox := TAIOptions.create( TCharacter( NPCList.items[ 1 ] ), AIImage, DXBox2, CharX + 25, vOffset + 10 );
-      AIBoxList.Add( NewAIBox );
-    end;
-
+    CreateNPCRects(1, CharX);
     CharX := cOffset + ( 563 div 5 ) * 2 - cWidth div 2;
-    Selectrect[ 2 ].rect := rect( CharX + 45, vOffset + VAdj1 - 120, CharX + 125, vOffset + VAdj1 - 100 );
-    SelectRect[ 2 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 2 ] ).name + txtMessage[ 15 ];
-    SelectRect[ 2 ].Enabled := true;
-    if not assigned( Character ) then
-    begin
-      NewAIBox := TAIOptions.create( TCharacter( NPCList.items[ 2 ] ), AIImage, DXBox2, CharX + 25, vOffset + 10 );
-      AIBoxList.Add( NewAIBox );
-    end;
+    CreateNPCRects(2, CharX);
     CharX := cOffset + ( 563 div 5 ) * 3 - cWidth div 2;
-    Selectrect[ 3 ].rect := rect( CharX + 45, vOffset + VAdj1 - 120, CharX + 125, vOffset + VAdj1 - 100 );
-    SelectRect[ 3 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 3 ] ).name + txtMessage[ 15 ];
-    SelectRect[ 3 ].Enabled := true;
-    if not assigned( Character ) then
-    begin
-      NewAIBox := TAIOptions.create( TCharacter( NPCList.items[ 3 ] ), AIImage, DXBox2, CharX + 25, vOffset + 10 );
-      AIBoxList.Add( NewAIBox );
-    end;
+    CreateNPCRects(3, CharX);
     CharX := cOffset + ( 563 div 5 ) * 4 - cWidth div 2;
-    Selectrect[ 4 ].rect := rect( CharX + 45, vOffset + VAdj1 - 120, CharX + 125, vOffset + VAdj1 - 100 );
-    SelectRect[ 4 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 4 ] ).name + txtMessage[ 15 ];
-    SelectRect[ 4 ].Enabled := true;
-    if not assigned( Character ) then
-    begin
-      NewAIBox := TAIOptions.create( TCharacter( NPCList.items[ 4 ] ), AIImage, DXBox2, CharX + 25, vOffset + 10 );
-      AIBoxList.Add( NewAIBox );
-    end;
-    end;
-    {else if NPCList.count = 4 then
-  begin
-    CharX := cOffset + ( 463 div 4 ) - cWidth div 2;
-    Selectrect[ 1 ].rect := rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 - 20 );
-    SelectRect[ 1 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 1 ] ).name + txtMessage[ 15 ];
-    SelectRect[ 1 ].Enabled := true;
-
-    CharX := cOffset + ( 463 div 2 ) - cWidth div 2;
-    Selectrect[ 2 ].rect := rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 + 20 );
-    SelectRect[ 2 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 2 ] ).name + txtMessage[ 15 ];
-    SelectRect[ 2 ].Enabled := true;
-
-    CharX := cOffset + ( 463 div 4 ) * 3 - cWidth div 2;
-    Selectrect[ 3 ].rect := rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 + 20 );
-    SelectRect[ 3 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 3 ] ).name + txtMessage[ 15 ];
-    SelectRect[ 3 ].Enabled := true;
-        if not assigned( Character ) then
-    begin
-      NewAIBox := TAIOptions.create( TCharacter( NPCList.items[ 3 ] ), AIImage, DXBox2, CharX + cWidth, vOffset );
-      AIBoxList.Add( NewAIBox );
-    end;
-
-  end
-  else if NPCList.count = 5 then
-  begin
-    cOffset := cOffset - 50;
-    CharX := cOffset + ( 563 div 5 ) - cWidth div 2;
-    Selectrect[ 1 ].rect := rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 + 20 );
-    SelectRect[ 1 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 1 ] ).name + txtMessage[ 15 ];
-    SelectRect[ 1 ].Enabled := true;
-
-    CharX := cOffset + ( 563 div 5 ) * 2 - cWidth div 2;
-    Selectrect[ 2 ].rect := rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 + 20 );
-    SelectRect[ 2 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 2 ] ).name + txtMessage[ 15 ];
-    SelectRect[ 2 ].Enabled := true;
-
-    CharX := cOffset + ( 563 div 5 ) * 3 - cWidth div 2;
-    Selectrect[ 3 ].rect := rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 + 20 );
-    SelectRect[ 3 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 3 ] ).name + txtMessage[ 15 ];
-    SelectRect[ 3 ].Enabled := true;
-
-    CharX := cOffset + ( 563 div 5 ) * 4 - cWidth div 2;
-    Selectrect[ 4 ].rect := rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 + 20 );
-    SelectRect[ 4 ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ 4 ] ).name + txtMessage[ 15 ];
-    SelectRect[ 4 ].Enabled := true;
-  end;}
+    CreateNPCRects(4, CharX);
+  end;
 
   j := 5;
   for i := 0 to AIBoxList.count - 1 do
@@ -858,9 +690,9 @@ begin
       begin
         Selectrect[ j ].rect := CheckBox[ k ];
         if NPCList.count = 5 then
-        inc( Selectrect[ j ].rect.Right, 230 )
+          inc( Selectrect[ j ].rect.Right, 230 )
         else
-        inc( Selectrect[ j ].rect.Right, 170 );
+          inc( Selectrect[ j ].rect.Right, 170 );
         SelectRect[ j ].info := txtMessage[ 16 + k ];
         SelectRect[ j ].Enabled := true;
         inc( j );
@@ -868,23 +700,8 @@ begin
     end;
   end;
 
-
 end; //SetUpCollRects
 
-{procedure TAddKickNPC.DrawThem(Character: TCharacter; X, Y: integer);
-var
-  DXSurface: IDirectDrawSurface;
-  BM:Tbitmap;
-begin
-  BM:=TBitmap.create;
-  BM.LoadFromFile(InterfacePath + 'testGuy.bmp');
-  DXSurface := DDGetImage(lpDD, BM, rgb(255,0,255), False);
-  lpDDSBack.BltFast(X,Y,DXSurface,Rect(0,0,148,130),DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
-
-  BM.Free;
-  DXSurface:=nil;
-end;//DrawThem
-}
 { TAIOptions }
 
 procedure TAIOptions.Click( X, Y : integer );
