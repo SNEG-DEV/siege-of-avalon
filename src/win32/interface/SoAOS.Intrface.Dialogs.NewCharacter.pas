@@ -607,7 +607,7 @@ begin
         begin //Hasnt entered name- tell player to enter name or pick training
           if BoxOpen = bxTraining then
           begin
-            pr := Rect( 490, 239, 682, 430 );
+            pr := Rect( 490, 239, 720, 500 );   // 682, 430
             lpDDSBack.BltFast( pr.Left + Offset.X, pr.Top + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
             if ( ChosenTraining > -1 ) then
               PlotTextBlock( txtMessage[ 8 ], 500, 682, 239, 240, UseSmallFont )
@@ -616,7 +616,7 @@ begin
           end
           else
           begin
-            pr := Rect( 490, 160, 682, 430 );
+            pr := Rect( 490, 160, 720, 500 );
             lpDDSBack.BltFast( pr.Left + Offset.X, pr.Top + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
             if ( ChosenTraining > -1 ) then
               PlotTextBlock( txtMessage[ 10 ], 500, 682, 165, 240, UseSmallFont )
@@ -668,12 +668,12 @@ begin
 
       if BoxOpen = bxTraining then
       begin
-        pr := Rect( 490, 239, 682, 430 );
+        pr := Rect( 490, 239, 720, 500 );
         lpDDSBack.BltFast( pr.Left + Offset.X, pr.Top + Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       end
       else
       begin
-        pr := Rect( 490, 160, 682, 430 );
+        pr := Rect( 490, 160, 720, 500 );
         lpDDSBack.BltFast( pr.Left + Offset.X, pr.Top + Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       end;
     end;
@@ -1579,7 +1579,7 @@ begin
 
     if box = bxTraining then  // Training
     begin
-      pr := Rect( 490, 160, 682, 430 );
+      pr := Rect( 490, 160, 720, 500 );
       lpDDSBack.BltFast( pr.Left + Offset.x, pr.Top + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
       pr := Rect( 0, 0, 123, 180 );
       lpDDSBack.BltFast( 465 + Offset.X, 59 + Offset.Y, DXBox, @pr, DDBLTFAST_WAIT );
@@ -1740,12 +1740,12 @@ begin
     begin
       if BoxOpen = bxTraining then
       begin
-        pr := Rect( 490, 239, 682, 430 );
+        pr := Rect( 490, 239, 720, 500 );
         lpDDSBack.BltFast( pr.Left + Offset.X, pr.Top + Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       end
       else
       begin
-        pr := Rect( 490, 160, 682, 430 );
+        pr := Rect( 490, 160, 720, 500 );
         lpDDSBack.BltFast( pr.Left + Offset.X, pr.Top + Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       end;
     end;
