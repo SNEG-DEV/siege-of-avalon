@@ -488,6 +488,7 @@ begin
       DoNotRestartTimer := False
     else
       Active := True;
+
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -5508,7 +5509,10 @@ begin
       on E : Exception do
         Log.log( FailName, E.Message, [ ] );
     end;
-  end;
+  end
+  else
+    if Paused then
+      TKeyEvent.TogglePause;
 end;
 
 procedure TfrmMain.AppDeactivate( Sender : TObject );
@@ -5546,7 +5550,10 @@ begin
       on E : Exception do
         Log.log( FailName, E.Message, [ ] );
     end;
-  end;
+  end
+  else
+    if not Paused then
+      TKeyEvent.TogglePause;
 end;
 
 procedure TfrmMain.BeginDeath;
@@ -5629,7 +5636,6 @@ const
 begin
   Log.DebugLog(FailName);
   try
-
     ClearAdventureGraphic;
     DlgAdvLog.LogInfo := Adventures;
     OpenDialog( DlgAdvLog, CloseAllDialogs );
@@ -5646,7 +5652,6 @@ const
 begin
   Log.DebugLog(FailName);
   try
-
     ClearQuestGraphic;
     DlgQuestLog.LogInfo := Quests;
     OpenDialog( DlgQuestLog, CloseAllDialogs );

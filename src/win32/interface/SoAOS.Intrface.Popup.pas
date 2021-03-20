@@ -41,6 +41,8 @@ uses
 
 type
   TPopup = class
+  const
+    Height = 20;
   private
     Surface : IDirectDrawSurface;
     Count : Integer;
@@ -94,22 +96,20 @@ var
   MsgID : Integer;
   Msg : String;
   BM : TBitmap;
-const
-  Height = 20;
 begin
   Inc( Count );
   if ( Count >= 30 ) and MouseCursor.Enabled then
   begin
     Count := 0;
 //    GetCursorPos( P );
-    var P: TPoint := Mouse.CursorPos;
+    var P: TPoint := frmMain.ScreenToClient(Mouse.CursorPos);
     var SpellBarHidden: boolean := not frmMain.SpellBarActive;
 	//TODO: Adjust points to HD? Does disabled make a differnce?
     if ScreenMetrics.popInventoryRect.Contains(P) then MsgID := 1 //Inventory
     else if ScreenMetrics.popMapRect.Contains(P) then MsgID := 2 //Map
-    else if ScreenMetrics.popQuestRect.Contains(p) then MsgID := 3 //Quest
-    else if ScreenMetrics.popAdventureRect.Contains(P) then MsgID := 4 //Adventure
-    else if ScreenMetrics.popJournalRect.Contains(P) then MsgID := 5 //Journal
+//    else if ScreenMetrics.popQuestRect.Contains(p) then MsgID := 3 //Quest
+//    else if ScreenMetrics.popAdventureRect.Contains(P) then MsgID := 4 //Adventure
+//    else if ScreenMetrics.popJournalRect.Contains(P) then MsgID := 5 //Journal
     else if ScreenMetrics.popAwardsRect.Contains(P) and SpellBarHidden then MsgID := 6 //Awards
     else if ScreenMetrics.popMessageRect.Contains(P) and SpellBarHidden then MsgID := 7 //Message Area
     else if ScreenMetrics.popStatsRect.Contains(P) then MsgID := 8 //Player Stats

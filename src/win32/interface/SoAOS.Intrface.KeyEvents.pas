@@ -52,7 +52,6 @@ type
     class procedure ToggleSpell;
     class procedure ToggleXRay;
     class procedure AdjustGlobalBrightness(step: Integer);
-    class procedure TogglePause;
     class procedure ToggleCombat;
     class procedure QuickSave;
     class procedure ScreenShot;
@@ -66,6 +65,7 @@ type
     class procedure DemoOrDeath; // Testcode addparty sample
 //    class procedure LforWhat; // Testcode mess sample
   public
+    class procedure TogglePause;
     class procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
   end;
