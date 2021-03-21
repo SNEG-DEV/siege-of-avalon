@@ -635,6 +635,7 @@ type
     procedure DoFrame; override;
     procedure SetResource(const Value: TAniResource); override;
     function GetName: string; override;
+    procedure TriggerAchievements(Title: string);
   public
     PainSounds: TDynamicSmallIntArray;
     DeathSounds: TDynamicSmallIntArray;
@@ -3880,6 +3881,14 @@ begin
   end;
 end;
 
+procedure TCharacter.TriggerAchievements(Title: string);
+var
+  AchievementString: string;
+begin
+  if frmMain.Achievements.getIdByTitle(Title, self, AchievementString) then
+    Log.Log('Achievement unlocked: '+AchievementString);
+end;
+
 procedure TCharacter.Filter(Source: TAniFigure; ID, PrevID: SmallInt);
 const
   FailName: string = 'TCharacter.Filter';
@@ -5729,6 +5738,7 @@ begin
       i := Titles.add(Title);
       Titles.objects[i] := TObject(Modifier);
       CalcStats;
+      TriggerAchievements(Title);
     end;
 
   except

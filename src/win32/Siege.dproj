@@ -1447,6 +1447,7 @@
         <DCCReference Include="graphics\D3DRenderer.pas"/>
         <DCCReference Include="graphics\D3DShader.pas"/>
         <DCCReference Include="graphics\D3DMesh.pas"/>
+		<DCCReference Include="engine\Achievements.pas"/>
         <RcItem Include="..\..\assets\Interface\blkchcry.ttf">
             <ResourceType>FONT</ResourceType>
             <ResourceId>1</ResourceId>

@@ -71,6 +71,7 @@ uses
   Converse,
   Gametext,
   Statistics,
+  Achievements,
   ObjInventory,
   Map,
   Merchant,
@@ -220,10 +221,6 @@ type
     trNewFile, trSceneName, trStartingPoint, trTransition, trTargetList : string;
     Popup : TPopup;
 
-    // Dictionary with questId, achiementId (type? GUID)
-    Achievements : TDictionary<string, string>;
-    procedure PopulateAchievementsDirectory;
-
     procedure OpenDialog( Dialog : TDisplay; CloseProcedure : TNotifyEvent );
     procedure CloseCreateDialog( Sender : TObject );
     procedure CloseIntroDialog( Sender : TObject );
@@ -262,6 +259,7 @@ type
     NPCBarXCoord : array[ 1..4 ] of Integer;
     DoNotRestartTimer : Boolean;
     ScreenShot : TBitmap;
+    Achievements : TAchievements;
     procedure CloseAllDialogs( Sender : TObject );
     procedure DrawSpellGlyphs;
     procedure DrawCurrentSpell;
@@ -289,8 +287,8 @@ type
     procedure PaintCharacterOnBorder( Figure : TSpriteObject; Slot : Integer );
     procedure AddLogEntry( const FileName : string );
     procedure AddQuest( const Entry : string );
-    procedure RemoveQuest( const Entry : string ); // Also use Achievement trigger
-    procedure AddAdventure( const Entry : string ); // Also use Achievement trigger
+    procedure RemoveQuest( const Entry : string );
+    procedure AddAdventure( const Entry : string );
     procedure ClearLogGraphic;
     procedure ClearQuestGraphic;
     procedure ClearAdventureGraphic;
@@ -1169,6 +1167,8 @@ begin
     if PopupEnabled then
       Popup := TPopup.Create;
 
+    Achievements := TAchievements.Create;
+
     if NeedToReload then
     begin
       Log.Log( 'Reloading game=' + GameName );
@@ -1802,7 +1802,6 @@ begin
 
     AdventureLog1.Free;
     HistoryLog.Free;
-    Achievements.Free;
 
     Application.OnException := nil;
     Application.OnActivate := nil;
@@ -1861,8 +1860,6 @@ begin
 
   AdventureLog1 := TAdventureLog.create;
   HistoryLog := TAdventureLog.create;
-  Achievements := TDictionary<string, string>.Create; // Should we read this from somewhere?
-  PopulateAchievementsDirectory;
 
   OnKeyDown := TKeyEvent.FormKeyDown;
 
@@ -2351,6 +2348,7 @@ begin
     GlowImage.Free;
 
     Popup.Free;
+    Achievements.Free;
     MouseCursor.Free;
     Log.Log( 'Terminating DFX' );
     DFXShutdown;
@@ -2846,17 +2844,13 @@ begin
 end;
 
 procedure TfrmMain.RemoveQuest(const Entry: string);
-// Also Achievement triger - based on that if a quest is removed it is done/completed - which might not be a 100% true.
 var
   j: Integer;
-  AchievementString: string;
 begin
   j := Quests.IndexOf( Entry );
   if j >= 0 then
   begin
     Quests.Delete( j );
-    if Achievements.TryGetValue('quest_'+Entry, AchievementString) then
-      Log.Log('Achievement unlocked: '+AchievementString);
   end;
 end;
 
@@ -4502,44 +4496,6 @@ begin
   end;
 end;
 
-procedure TfrmMain.PopulateAchievementsDirectory;
-begin
-  Achievements.Add('quest_ch1-01', 'ACH_REPORT_TO_AVAROUS');
-  Achievements.Add('adventure_ch1-13', 'ACH_SEALED_WITH_A_KISS');
-  Achievements.Add('quest_ch1-22', 'ACH_FETCH_THE_HERBS');
-  Achievements.Add('quest_ch1-02', 'ACH_WHATS_IN_THE_BASEMENT');
-  Achievements.Add('quest_ch1-05', 'ACH_BROTHERS_IN_ARMS');
-  Achievements.Add('quest_ch1-07', 'ACH_COLD_HARD_STEEL');
-  Achievements.Add('quest_ch1-19', 'ACH_PELLS_SORROW');
-  Achievements.Add('quest_ch1-21', 'ACH_CASE_THE_CHEST');
-  Achievements.Add('quest_ch1-23', 'ACH_FETCH_THE_AMULET');
-  Achievements.Add('quest_ch1-25', 'ACH_FETCH_THE_CHALICE');
-  Achievements.Add('adventure_tla7', 'ACH_RETRIEVE_THE_EARTHSTONE');
-//  Achievements.Add('ch1-01', 'ACH_LETTER_FROM_A_TRAITOR');
-//  Achievements.Add('ch1-01', 'ACH_WHO_POISONED_THE_KING');
-//  Achievements.Add('ch1-01', 'ACH_RETURN_TRACYS_RING');
-//  Achievements.Add('ch1-01', 'ACH_CHANGING_OF_THE_GUARD');
-//  Achievements.Add('ch1-01', 'ACH_TRISTANS_FRIEND');
-//  Achievements.Add('ch1-01', 'ACH_LYDIAS_FATE');
-//  Achievements.Add('ch1-01', 'ACH_COURIER_WHAT_COURIER');
-//  Achievements.Add('ch1-01', 'ACH_FREE_THE_LURKERS');
-//  Achievements.Add('ch1-01', 'ACH_FREE_LYDIA');
-//  Achievements.Add('ch1-01', 'ACH_LETTER_TO_THE_KING');
-//  Achievements.Add('ch1-01', 'ACH_PAPER_PUSHING');
-//  Achievements.Add('ch1-01', 'ACH_KNIGHT_QUEST');
-//  Achievements.Add('ch1-01', 'ACH_SALVAGE_RUN');
-//  Achievements.Add('ch1-01', 'ACH_OSKARIS_TRAINING_TASKS');
-//  Achievements.Add('ch1-01', 'ACH_GO_BACK_TO_THE_FOREST');
-//  Achievements.Add('ch1-01', 'ACH_SCOUT_THE_ENEMY_CAMP');
-//  Achievements.Add('ch1-01', 'ACH_A_LITTLE_FAVOR_FOR_OLON');
-//  Achievements.Add('ch1-01', 'ACH_STEAL_THE_SATCHEL');
-//  Achievements.Add('ch1-01', 'ACH_RESCUE_EDGARD');
-//  Achievements.Add('ch1-01', 'ACH_RANGER_QUEST');
-//  Achievements.Add('ch1-01', 'ACH_SCOUTMASTERS_TRAINING_TASKS');
-//  Achievements.Add('ch1-01', 'ACH_DESTROY_THE_RAM');
-//  Achievements.Add('ch1-01', 'ACH_KILL_OVORON');
-end;
-
 procedure TfrmMain.DrawCurrentSpell;
 var
   Point : TPoint;
@@ -5867,16 +5823,12 @@ procedure TfrmMain.AddAdventure( const Entry : string );
 var
   DC : HDC;
   i : Integer;
-  AchievementString : string;
 begin
   i := Adventures.IndexOf( Entry );
   if i >= 0 then
     Exit;
   if Adventures.Add( Entry ) < 0 then
     Exit;
-
-  if Achievements.TryGetValue('adventure_'+Entry, AchievementString) then
-    Log.Log('Achievement unlocked: '+AchievementString);
 
   OverlayB.GetDC( DC );
   try

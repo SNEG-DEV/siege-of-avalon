@@ -120,7 +120,8 @@ uses
   SoAOS.Intrface.KeyEvents in 'interface\SoAOS.Intrface.KeyEvents.pas',
   D3DRenderer in 'graphics\D3DRenderer.pas',
   D3DShader in 'graphics\D3DShader.pas',
-  D3DMesh in 'graphics\D3DMesh.pas';
+  D3DMesh in 'graphics\D3DMesh.pas',
+  Achievements in 'engine\Achievements.pas';
 
 {$R *.RES}
 
