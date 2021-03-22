@@ -42,22 +42,22 @@ const
 
 type
   TfrmLaunchSetting = class(TForm)
-    imgPage1: TImage;
+    imgBack: TImage;
     tmrScroll: TTimer;
     lblLanguage: TStaticText;
     StaticText3: TStaticText;
     lblMonitor: TStaticText;
     lblResolution: TStaticText;
-    imgFullscreen: TImage;
+    imgCheck: TImage;
     procedure FormCreate(Sender: TObject);
     procedure tmrScrollTimer(Sender: TObject);
-    procedure imgPage1Click(Sender: TObject);
+    procedure imgBackClick(Sender: TObject);
     procedure Done(r: integer; windowed: Boolean);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure StaticText3Click(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure imgFullscreenClick(Sender: TObject);
+    procedure imgCheckClick(Sender: TObject);
   private
     { Private declarations }
     FLanguages: TStringList;
@@ -188,7 +188,35 @@ var
   DisplayDevice: TDisplayDevice;
   iDevNum: DWORD;
   langStr: string;
+
+  Png: TPngImage;
+  Bmp: TBitmap;
+  BlendFn: TBlendFunction;
 begin
+  Png := TPngImage.Create;
+  Png.LoadFromResourceName(HInstance, 'startupback');
+  Bmp := TBitmap.Create;
+  Bmp.Assign(Png);
+
+  // prepare TImage for accepting a partial transparent image
+  imgBack.Picture.Bitmap.PixelFormat := pf32bit;
+  imgBack.Picture.Bitmap.AlphaFormat := afPremultiplied;
+  imgBack.Picture.Bitmap.Canvas.Brush.Color := clLtGray;
+  imgBack.Picture.Bitmap.SetSize(Png.Width, Png.Height);
+
+  // alpha blend the temporary bitmap to the bitmap of the image
+  BlendFn.BlendOp := AC_SRC_OVER;
+  BlendFn.BlendFlags := 0;
+  BlendFn.SourceConstantAlpha := 240;  // set opacity here
+  BlendFn.AlphaFormat := AC_SRC_ALPHA;
+
+  winapi.windows.AlphaBlend(imgBack.Picture.Bitmap.Canvas.Handle,
+    0, 0, imgBack.Picture.Bitmap.Width, imgBack.Picture.Bitmap.Height,
+    Bmp.Canvas.Handle, 0, 0, Bmp.Width, Bmp.Height, BlendFn);
+
+  bmp.Free;
+  png.Free;
+
   Application.HookMainWindow(AppHookFunc);
 
   if LoadResourceFontByID(1, RT_FONT) then
@@ -202,7 +230,7 @@ begin
     if FCurrentLanguage='' then
       FCurrentLanguage := cNoLanguage;
     lInterfacePath := INI.ReadString('Settings', 'Interface', 'Interface');
-    imgFullscreen.Visible := not INI.ReadBool('Settings', 'Windowed', False);
+    imgCheck.Visible := not INI.ReadBool('Settings', 'Windowed', False);
     FCurrentDevice := INI.ReadString('Settings', 'DeviceName', '');
     FCurrentResolution := INI.ReadString('Settings', 'ScreenResolution', '600');
   finally
@@ -262,13 +290,13 @@ begin
   lblMonitor.Caption := FMonitors.KeyNames[FCurrentDeviceIdx];
 end;
 
-procedure TfrmLaunchSetting.imgFullscreenClick(Sender: TObject);
+procedure TfrmLaunchSetting.imgCheckClick(Sender: TObject);
 begin
-  imgFullscreen.Visible := not imgFullscreen.Visible;
+  imgCheck.Visible := not imgCheck.Visible;
   SetResolutionSupport(PWideChar(FCurrentDevice));
 end;
 
-procedure TfrmLaunchSetting.imgPage1Click(Sender: TObject);
+procedure TfrmLaunchSetting.imgBackClick(Sender: TObject);
 var
   lInterfacePath: string;
 begin
@@ -276,40 +304,40 @@ begin
   if FCurrentLanguage <> cNoLanguage then
     lInterfacePath := IncludeTrailingPathDelimiter(TPath.Combine(FInterfacePath, FCurrentLanguage));
   // Language
-  if Rect(199,333,214,348).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
+  if Rect(195,338,210,353).Contains(imgBack.ScreenToClient(Mouse.cursorpos)) then
     FCurrentLanguage := ScrollText(True, FCurrentLanguageIdx, FLanguages, lblLanguage);
-  if Rect(300,333,315,348).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
+  if Rect(295,338,310,353).Contains(imgBack.ScreenToClient(Mouse.cursorpos)) then
     FCurrentLanguage := ScrollText(False, FCurrentLanguageIdx, FLanguages, lblLanguage);
 
   // Resolution
-  if Rect(199,267,214,282).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
+  if Rect(195,274,210,289).Contains(imgBack.ScreenToClient(Mouse.cursorpos)) then
     FCurrentResolution := ScrollText(True, FCurrentResolutionIdx, FResolutions, lblResolution);
-  if Rect(400,267,415,282).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
+  if Rect(395,274,410,289).Contains(imgBack.ScreenToClient(Mouse.cursorpos)) then
     FCurrentResolution := ScrollText(False, FCurrentResolutionIdx, FResolutions, lblResolution);
 
   // Monitor
-  if Rect(199,234,214,249).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
+  if Rect(195,240,210,255).Contains(imgBack.ScreenToClient(Mouse.cursorpos)) then
   begin
     FCurrentDevice := ScrollText(True, FCurrentDeviceIdx, FMonitors, lblMonitor);
     SetResolutionSupport(PWideChar(FCurrentDevice));
   end;
-  if Rect(493,234,508,249).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
+  if Rect(488,240,503,255).Contains(imgBack.ScreenToClient(Mouse.cursorpos)) then
   begin
     FCurrentDevice := ScrollText(False, FCurrentDeviceIdx, FMonitors, lblMonitor);
     SetResolutionSupport(PWideChar(FCurrentDevice));
   end;
 
   // Fullscreen
-  if Rect(219,295,244,320).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
+  if Rect(214,300,240,326).Contains(imgBack.ScreenToClient(Mouse.cursorpos)) then
   begin
-    imgFullscreen.Visible := not imgFullscreen.Visible;
+    imgCheck.Visible := not imgCheck.Visible;
     SetResolutionSupport(PWideChar(FCurrentDevice));
   end;
 
   // Let's Play
-  if Rect(410,325,522,387).Contains(imgPage1.ScreenToClient(Mouse.cursorpos)) then
+  if Rect(400,320,520,385).Contains(imgBack.ScreenToClient(Mouse.cursorpos)) then
   begin
-    Done(FCurrentResolution.ToInteger, not imgFullscreen.Visible);
+    Done(FCurrentResolution.ToInteger, not imgCheck.Visible);
   end;
 end;
 
@@ -360,7 +388,7 @@ begin
     lpszDeviceName := nil;
   while EnumDisplaySettings(lpszDeviceName, iModeNum, lpDevMode) do
   begin
-    if imgFullscreen.Visible then // exact resolution needed.
+    if imgCheck.Visible then // exact resolution needed.
     begin
       if (lpDevMode.dmPelsWidth = 800) and (lpDevMode.dmPelsHeight = 600) then
         FResolutions.Add('800 x 600 (Original)=600');
