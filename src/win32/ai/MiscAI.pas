@@ -2826,7 +2826,6 @@ begin
     strdisguise := LowerCase( Character.Properties[ 'disguise' ] );
     if strdisguise <> '' then
     begin
-      strdisguise := s;
       if Character.Enemies.ToLower.Contains( 'party' ) then
       begin
         tmpEnemies := Character.Enemies;

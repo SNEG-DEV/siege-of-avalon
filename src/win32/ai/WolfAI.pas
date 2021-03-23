@@ -571,23 +571,6 @@ begin
 
 end;
 
-//procedure TWolfCombat.Wait;
-//const
-//  FailName : string = 'TWolfCombat.Wait';
-//begin
-//  Log.DebugLog( FailName );
-//  try
-//    MoveAwayAI(40, 16, False);
-//    CollideCount := 0;
-//    Walking := true;
-//    Delay := random( 10 ) + 10;
-//  except
-//    on E : Exception do
-//      Log.log( FailName + E.Message );
-//  end;
-//
-//end;
-
 procedure TWolfCombat.Attack;
 const
   FailName : string = 'TWolfCombat.Attack';
