@@ -49,7 +49,10 @@ type
     // PlotText(msg, x, x2, y, relativepoint=nil, centered=false) bla. bla. - will happen on gametext cleanup
     function ApplyOffset(const r: TRect): TRect;
     procedure PlotText(const Sentence: string; const X, Y, Alpha: Integer);
-    procedure PlotTextCentered( const DX : IDirectDrawSurface; const Sentence : string; const X1, X2, Y, Alpha : Integer; Const UseSmallFnt: Boolean = False );
+    procedure PlotTextCentered( const DX : IDirectDrawSurface; const Sentence : string; const X1, X2, Y, Alpha : Integer; Const UseSmallFnt: Boolean = False ); overload;
+    procedure PlotTextCentered(const Sentence: string; const X1, X2, Y, Alpha: Integer); overload;
+    procedure PlotDarkTextCentered(const Sentence: string; X, X2, Y, Alpha: integer);
+    procedure PlotTinyText( const Sentence : string; X, Y, Alpha : integer );
     procedure PlotTextBlock( const Sentence : string; X1, X2, Y, Alpha : integer; Const UseSmallFnt: Boolean = False );
 //    procedure PlotDarkText2( const DX : IDirectDrawSurface; const Sentence : string; const X, Y, Alpha : integer );
     property Offset: TPoint read GetOffset;
@@ -79,6 +82,11 @@ end;
 //  pText.PlotDarkText2( DX, Sentence, X + Offset.X, Y + Offset.Y, Alpha );
 //end;
 
+procedure TDialog.PlotDarkTextCentered(const Sentence: string; X, X2, Y, Alpha: integer);
+begin
+  pText.PlotDarkTextCentered( Sentence, X + Offset.X, X2 + Offset.X, Y + Offset.Y, Alpha );
+end;
+
 procedure TDialog.PlotText(const Sentence: string; const X, Y,
   Alpha: Integer);
 begin
@@ -92,6 +100,16 @@ begin
     pText.PlotGoldTextBlock( Sentence, X1 + Offset.X, X2 + Offset.X, Y + Offset.Y, Alpha )
   else
     pText.PlotTextBlock( Sentence, X1 + Offset.X, X2 + Offset.X, Y + Offset.Y, Alpha );
+end;
+
+procedure TDialog.PlotTextCentered(const Sentence: string; const X1, X2, Y, Alpha: Integer);
+begin
+  pText.PlotTextCentered( Sentence, X1 + Offset.X, X2 + Offset.X, Y + Offset.Y, Alpha );
+end;
+
+procedure TDialog.PlotTinyText(const Sentence: string; X, Y, Alpha: integer);
+begin
+  pText.PlotTinyText( Sentence, X + Offset.X, Y + Offset.Y, Alpha );
 end;
 
 procedure TDialog.PlotTextCentered(const DX: IDirectDrawSurface;

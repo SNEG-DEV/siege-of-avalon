@@ -51,13 +51,13 @@ uses
   Vcl.Controls,
   Character,
   GameText,
-  Display,
   Engine,
   SoAOS.Animation,
+  SoAOS.Intrface.Dialogs,
   Logfile;
 
 type
-  TAward = class( TDisplay )
+  TAward = class( TDialog )
   private
     //Bitmap stuff
     DXBack : IDirectDrawSurface;
@@ -176,32 +176,32 @@ begin
     DXBackToGame := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'obInvBackToGame.bmp', cInvisColor );
     DXLeftGeeble := SoAOS_DX_LoadBMP( InterfacePath + 'LogLeftGeeble.bmp', cTransparent );
     DXRightGeeble := SoAOS_DX_LoadBMP( InterfacePath + 'LogRightGeeble.bmp', cTransparent );
-    DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'LogScreen.bmp', cTransparent, width, height );
+    DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'LogScreen.bmp', cTransparent, DlgWidth, DlgHeight );
 
     DrawAlpha( DXBack, Rect( 0, 380, 213, 380 + 81 ), Rect( 0, 0, 213, 81 ), DXLeftGeeble, True, 80 );
     DrawAlpha( DXBack, Rect( 452, 0, 452 + 213, 81 ), Rect( 0, 0, 213, 81 ), DXRightGeeble, True, 80 );
-    pr := Rect( 0, 0, width, height );
-    lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, DlgWidth, DlgHeight );
+    lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
   //Now for the Alpha'ed edges
     DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'obInvRightShadow.bmp', cInvisColor, width, height );
-    DrawSub( lpDDSBack, Rect( 659, 0, 659 + width, height ), Rect( 0, 0, width, height ), DXBorder, True, 150 );
+    DrawSub( lpDDSBack, ApplyOffset( Rect( 659, 0, 659 + width, height ) ), Rect( 0, 0, width, height ), DXBorder, True, 150 );
     DXBorder := nil;
     DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'obInvBottomShadow.bmp', cInvisColor, width, height );
-    DrawSub( lpDDSBack, Rect( 0, 456, width, 456 + height ), Rect( 0, 0, width, height ), DXBorder, True, 150 );
+    DrawSub( lpDDSBack, ApplyOffset( Rect( 0, 456, width, 456 + height ) ), Rect( 0, 0, width, height ), DXBorder, True, 150 );
     DXBorder := nil; //release DXBorder
 
     DXLeftGeeble := nil;
     DXRightGeeble := nil;
 
-    pText.PlotText( txtMessage[ 0 ] + Character.name, 5, 5, 240 );
+    PlotText( txtMessage[ 0 ] + Character.name, 5, 5, 240 );
 
     if TitleCount > 15 then
     begin
       pr := Rect( 0, 0, 86, 29 );
-      lpDDSBack.BltFast( 400, 424, DXPrev, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 400 + Offset.X, 424 + Offset.Y, DXPrev, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       pr := Rect( 0, 0, 62, 27 );
-      lpDDSBack.BltFast( 500, 424, DXNext, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 500 + Offset.X, 424 + Offset.Y, DXNext, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     end;
 
     ShowText( PageNumber );
@@ -226,17 +226,17 @@ begin
   try
     if TitleCount > 15 then
     begin
-      if PtinRect( rect( 400, 424, 400 + 86, 424 + 29 ), point( X, Y ) ) then
+      if PtinRect( ApplyOffset( rect( 400, 424, 400 + 86, 424 + 29 ) ), point( X, Y ) ) then
       begin //over prev
         if PageNumber > 0 then
         begin
           PageNumber := PageNumber - 1;
           pr := Rect( 0, 40, 650, 415 );
-          lpDDSBack.BltFast( 0, 40, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          lpDDSBack.BltFast( Offset.X, 40 + Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
           ShowText( PageNumber );
         end;
       end;
-      if PtinRect( rect( 500, 424, 500 + 86, 424 + 29 ), point( X, Y ) ) then
+      if PtinRect( ApplyOffset( rect( 500, 424, 500 + 86, 424 + 29 ) ), point( X, Y ) ) then
       begin //over next
          //Get the mex number of pages
         if ( TitleCount mod 15 ) > 0 then //if there's an extra few items add a page
@@ -247,12 +247,12 @@ begin
         begin
           PageNumber := PageNumber + 1;
           pr := Rect( 0, 40, 650, 415 );
-          lpDDSBack.BltFast( 0, 40, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          lpDDSBack.BltFast( Offset.X, 40 + Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
           ShowText( PageNumber );
         end;
       end;
     end;
-    if PtinRect( rect( 588, 407, 588 + 77, 412 + 54 ), point( X, Y ) ) then
+    if PtinRect( ApplyOffset( rect( 588, 407, 588 + 77, 412 + 54 ) ), point( X, Y ) ) then
     begin //over back button
       Close;
     end;
@@ -272,29 +272,29 @@ begin
   Log.DebugLog(FailName);
   try
     pr := Rect( 588, 407, 588 + 77, 407 + 54 );
-    lpDDSBack.BltFast( 588, 407, DXBack, @pr, DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 588 + Offset.X, 407 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
     if TitleCount > 15 then
     begin
       pr := Rect( 0, 0, 86, 29 );
-      lpDDSBack.BltFast( 400, 424, DXPrev, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 400 + Offset.X, 424 + Offset.Y, DXPrev, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       pr := Rect( 0, 0, 62, 27 );
-      lpDDSBack.BltFast( 500, 424, DXNext, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-      if PtinRect( rect( 400, 424, 400 + 86, 424 + 29 ), point( X, Y ) ) then
+      lpDDSBack.BltFast( 500 + Offset.X, 424 + Offset.Y, DXNext, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      if PtinRect( ApplyOffset( rect( 400, 424, 400 + 86, 424 + 29 ) ), point( X, Y ) ) then
       begin //over prev
         pr := Rect( 0, 0, 86, 29 );
-        lpDDSBack.BltFast( 400, 424, DXPrev2, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        lpDDSBack.BltFast( 400 + Offset.X, 424 + Offset.Y, DXPrev2, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       end;
-      if PtinRect( rect( 500, 424, 500 + 86, 424 + 29 ), point( X, Y ) ) then
+      if PtinRect( ApplyOffset( rect( 500, 424, 500 + 86, 424 + 29 ) ), point( X, Y ) ) then
       begin //over next
         pr := Rect( 0, 0, 62, 27 );
-        lpDDSBack.BltFast( 500, 424, DXNext2, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        lpDDSBack.BltFast( 500 + Offset.X, 424 + Offset.Y, DXNext2, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       end;
     end;
-    if PtinRect( rect( 588, 407, 588 + 77, 412 + 54 ), point( X, Y ) ) then
+    if PtinRect( ApplyOffset( rect( 588, 407, 588 + 77, 412 + 54 ) ), point( X, Y ) ) then
     begin //over back button
       //plot highlighted back to game
       pr := Rect( 0, 0, 77, 54 );
-      lpDDSBack.BltFast( 588, 407, DXBackToGame, @pr, DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 588 + Offset.X, 407 + Offset.Y, DXBackToGame, @pr, DDBLTFAST_WAIT );
     end;
 
     SoAOS_DX_BltFront;
@@ -372,9 +372,9 @@ begin
 
               S := Copy( S, 1, length( S ) - 1 );
               if PStatModifier( Character.Titles.objects[ i ] ).DisplayName = '' then
-                pText.PlotTinyText( Character.Titles[ i ] + '   ' + S, 20, Y, 240 )
+                PlotTinyText( Character.Titles[ i ] + '   ' + S, 20, Y, 240 )
               else
-                pText.PlotTinyText( PStatModifier( Character.Titles.objects[ i ] ).DisplayName + '   ' + S, 20, Y, 240 );
+                PlotTinyText( PStatModifier( Character.Titles.objects[ i ] ).DisplayName + '   ' + S, 20, Y, 240 );
               Y := Y + 25;
               inc( LineCount );
             end;

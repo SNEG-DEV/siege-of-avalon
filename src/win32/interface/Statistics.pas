@@ -49,7 +49,7 @@ uses
   Vcl.Controls,
   Character,
   SoAOS.Animation,
-  Display;
+  SoAOS.Intrface.Dialogs;
 
 type
   InformationRect = record
@@ -58,7 +58,7 @@ type
     Disabled : boolean;
   end;
 
-  TStatistics = class( TDisplay )
+  TStatistics = class( TDialog )
   private
     DXBack : IDirectDrawSurface; //DD surface that holds the statistics screen before blit
     DXRightArrow : IDirectDrawSurface;
@@ -113,7 +113,6 @@ uses
   DXUtil,
   DXEffects,
   System.SysUtils,
-  GameText,
   Engine,
   Resource,
   Logfile;
@@ -182,7 +181,7 @@ begin
     DXRightArrow := SoAOS_DX_LoadBMP( InterfacePath + 'staRightArrow.bmp', cInvisColor );
     DXLeftArrow := SoAOS_DX_LoadBMP( InterfacePath + 'staLeftArrow.bmp', cInvisColor );
     DXBackToGame := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'staBackToGame.bmp', cInvisColor );
-    DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'Statistics.bmp', cInvisColor, width, height );
+    DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'Statistics.bmp', cInvisColor, DlgWidth, DlgHeight );
   //Plot the arrows on the background
     for i := 0 to 15 do
     begin
@@ -192,15 +191,15 @@ begin
         DrawAlpha( DXBack, rect( ArrowRect[ i ].rect.left - 4, ArrowRect[ i ].rect.top, ArrowRect[ i ].rect.left - 4 + 20, ArrowRect[ i ].rect.top + 15 ), rect( 0, 0, 20, 15 ), DXRightArrow, True, 100 );
     end; //end for
 
-    pr := Rect( 0, 0, width, height );
-    lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, DlgWidth, DlgHeight );
+    lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   //Now for the Alpha'ed edges
     DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'staRightshad.bmp', cInvisColor, width, height );
-    DrawSub( lpDDSBack, Rect( 647, 0, 647 + width, height ), Rect( 0, 0, width, height ), DXBorder, True, 128 );
+    DrawSub( lpDDSBack, ApplyOffset( Rect( 647, 0, 647 + width, height ) ), Rect( 0, 0, width, height ), DXBorder, True, 128 );
     DXBorder := nil;
 
     DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'staBottomshad.bmp', cInvisColor, width, height );
-    DrawSub( lpDDSBack, Rect( 0, 455, width, 455 + height ), Rect( 0, 0, width, height ), DXBorder, True, 128 );
+    DrawSub( lpDDSBack, ApplyOffset( Rect( 0, 455, width, 455 + height ) ), Rect( 0, 0, width, height ), DXBorder, True, 128 );
     DXBorder := nil; //release DXBorder
 
     ShowStats;
@@ -251,7 +250,7 @@ begin
     i := 0;
     while i < 16 do
     begin
-      if ptInRect( ArrowRect[ i ].rect, point( X, Y ) ) then
+      if ptInRect( ApplyOffset( ArrowRect[ i ].rect ), point( X, Y ) ) then
       begin //if over an Arrow
         //B1:= ((i > 7) and (i < 13 )and(Character.TrainingPoints > 3));
         B1 := false;
@@ -479,7 +478,7 @@ begin
     end
     else
     begin //we arent over anything else- check back button
-      if PtinRect( rect( 581, 414, 581 + 81, 414 + 57 ), point( X, Y ) ) then
+      if PtinRect( ApplyOffset( Rect( 581, 414, 581 + 81, 414 + 57 ) ), point( X, Y ) ) then
       begin //over back button
          //The new data is already saved- if we ever write a Cancel function then we can restore values
          //Exit the screen
@@ -513,27 +512,28 @@ begin
   try
 
     //Clean up arrows and back to game
-    SoAOS_DX_BltFastWaitXY( DXBack, Rect( 103, 105, 123, 321 ) );
-    SoAOS_DX_BltFastWaitXY( DXBack, Rect( 188, 105, 210, 315 ) );
-    SoAOS_DX_BltFastWaitXY( DXBack, Rect( 581, 414, 581 + 81, 414 + 57 ) );
+    pr := Rect( 103, 105, 123, 321 );
+    lpDDSBack.BltFast( 103 + Offset.X, 105 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
+    pr := Rect( 188, 105, 210, 315 );
+    lpDDSBack.BltFast( 188 + Offset.X, 105 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
+    pr := Rect( 581, 414, 581 + 81, 414 + 57 );
+    lpDDSBack.BltFast( 581 + Offset.X, 414 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
     //clear text
-    SoAOS_DX_BltFastWaitXY( DXBack, Rect( 10, 338, 587, 470 ) );
+    pr := Rect( 10, 338, 587, 470 );
+    lpDDSBack.BltFast( 10 + Offset.X, 338 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
     i := 0;
     j := 0;
     while i < 16 do
     begin
-      if ptInRect( ArrowRect[ i ].rect, point( X, Y ) ) then
+      if ptInRect( ApplyOffset( ArrowRect[ i ].rect ), point( X, Y ) ) then
       begin //if over an Arrow
         ArrowInfo( i );
         pr := Rect( 0, 0, 20, 15 );
         if i < 8 then
-          lpDDSBack.BltFast( ArrowRect[ i ].rect.left, ArrowRect[ i ].rect.top, DXLeftArrow, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ) //plot the highlight
+          lpDDSBack.BltFast( ArrowRect[ i ].rect.left + Offset.X, ArrowRect[ i ].rect.top + Offset.Y, DXLeftArrow, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ) //plot the highlight
         else
-          lpDDSBack.BltFast( ArrowRect[ i ].rect.left - 4, ArrowRect[ i ].rect.top, DXRightArrow, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //plot the highlight
-        if UseSmallFont then
-          pText.PlotTinyTextBlock( ArrowRect[ i ].Info, 10, 587, 376, 240 )
-        else
-          pText.PlotTextBlock( ArrowRect[ i ].Info, 10, 587, 376, 240 ); //Plot the info
+          lpDDSBack.BltFast( ArrowRect[ i ].rect.left - 4 + Offset.X, ArrowRect[ i ].rect.top + Offset.Y, DXRightArrow, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT ); //plot the highlight
+        PlotTextBlock( ArrowRect[ i ].Info, 10, 587, 376, 240, UseSmallFont ); //Plot the info
         i := 900; //drop out of the loop
       end;
       i := i + 1;
@@ -543,12 +543,9 @@ begin
       i := 0;
       while i < 95 do
       begin
-        if not InfoRect[ i ].Disabled and ptInRect( InfoRect[ i ].rect, point( X, Y ) ) then
+        if not InfoRect[ i ].Disabled and ptInRect( ApplyOffset( InfoRect[ i ].rect ), point( X, Y ) ) then
         begin //if over an Arrow
-          if UseSmallFont then
-            pText.PlotTinyTextBlock( InfoRect[ i ].Info, 10, 580, 376, 240 )
-          else
-            pText.PlotTextBlock( InfoRect[ i ].Info, 10, 580, 376, 240 ); //Plot the info
+          PlotTextBlock( InfoRect[ i ].Info, 10, 580, 376, 240, UseSmallFont ); //Plot the info
           j := i;
           i := 900;
         end;
@@ -587,10 +584,7 @@ begin
         Info := '* ' + inttostr( round( Rate * 60 ) ) + HitPointMinMsg
       else
         Info := '* ' + inttostr( round( Rate * 3600 ) ) + HitPointHrMsg;
-      if UseSmallFont then
-        pText.PlotTinyTextBlock( Info, 208, 580, 338, 240 )
-      else
-        pText.PlotTextBlock( Info, 208, 580, 338, 240 ); //Plot the info
+      PlotTextBlock( Info, 208, 580, 338, 240, UseSmallFont ); //Plot the info
     end
     else if j = 35 then
     begin
@@ -601,19 +595,16 @@ begin
         Info := '* ' + inttostr( round( Rate * 60 ) ) + ManaMinMsg
       else
         Info := '* ' + inttostr( round( Rate * 3600 ) ) + ManaHrMsg;
-      if UseSmallFont then
-        pText.PlotTinyTextBlock( Info, 208, 580, 338, 240 )
-      else
-        pText.PlotTextBlock( Info, 208, 580, 338, 240 ); //Plot the info
+      PlotTextBlock( Info, 208, 580, 338, 240, UseSmallFont ); //Plot the info
     end;
 
     if i <> 901 then
     begin //we arent over anything else- check back button
-      if PtinRect( rect( 581, 414, 581 + 81, 414 + 57 ), point( X, Y ) ) then
+      if PtinRect( ApplyOffset( rect( 581, 414, 581 + 81, 414 + 57 ) ), point( X, Y ) ) then
       begin //over back button
          //plot highlighted back to game
         pr := Rect( 0, 0, 81, 57 );
-        lpDDSBack.BltFast( 581, 414, DXBackToGame, @pr, DDBLTFAST_WAIT );
+        lpDDSBack.BltFast( 581 + Offset.X, 414 + Offset.Y, DXBackToGame, @pr, DDBLTFAST_WAIT );
       end;
     end;
 
@@ -651,7 +642,7 @@ begin
 
   //clear the back down to the text - but dont clear the info block
     pr := Rect( 0, 0, 677, 367 );
-    lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   //replot the entire screen statistics
     ShowStats;
     SoAOS_DX_BltFront;
@@ -962,9 +953,9 @@ begin
   try
 
     Alpha := 240; //blend value
-    pText.PlotTextCentered( Character.Name, 120, 640, 8, Alpha );
+    PlotTextCentered( nil, Character.Name, 120, 640, 8, Alpha, False );
     str( Character.TrainingPoints, a );
-    pText.PlotText( a, 130, 46, Alpha );
+    PlotText( a, 130, 46, Alpha );
    //primary stats column
     x1 := 118;
     x2 := 156;
@@ -975,104 +966,104 @@ begin
     str( Character.Strength, b );
     if StatAdjustments[ 0 ] < 1 then
     begin
-      pText.PlotTextCentered( a, x1, x2, i, Alpha );
-      pText.PlotTextCentered( b, x3, x4, i, Alpha );
+      PlotTextCentered( nil, a, x1, x2, i, Alpha, False );
+      PlotTextCentered( nil, b, x3, x4, i, Alpha, False );
     end
     else
     begin //darken it up
-      pText.PlotDarkTextCentered( a, x1, x2, i, 240 );
-      pText.PlotDarkTextCentered( b, x3, x4, i, 240 );
+      PlotDarkTextCentered( a, x1, x2, i, 240 );
+      PlotDarkTextCentered( b, x3, x4, i, 240 );
     end;
     i := i + 24;
     str( Character.BaseCoordination, a );
     str( Character.Coordination, b );
     if StatAdjustments[ 1 ] < 1 then
     begin
-      pText.PlotTextCentered( a, x1, x2, i, Alpha );
-      pText.PlotTextCentered( b, x3, x4, i, Alpha );
+      PlotTextCentered( a, x1, x2, i, Alpha );
+      PlotTextCentered( b, x3, x4, i, Alpha );
     end
     else
     begin //darken it up
-      pText.PlotDarkTextCentered( a, x1, x2, i, 240 );
-      pText.PlotDarkTextCentered( b, x3, x4, i, 240 );
+      PlotDarkTextCentered( a, x1, x2, i, 240 );
+      PlotDarkTextCentered( b, x3, x4, i, 240 );
     end;
     i := i + 24;
     str( Character.BaseConstitution, a );
     str( Character.Constitution, b );
     if StatAdjustments[ 2 ] < 1 then
     begin
-      pText.PlotTextCentered( a, x1, x2, i, Alpha );
-      pText.PlotTextCentered( b, x3, x4, i, Alpha );
+      PlotTextCentered( a, x1, x2, i, Alpha );
+      PlotTextCentered( b, x3, x4, i, Alpha );
     end
     else
     begin //darken it up
-      pText.PlotDarkTextCentered( a, x1, x2, i, 240 );
-      pText.PlotDarkTextCentered( b, x3, x4, i, 240 );
+      PlotDarkTextCentered( a, x1, x2, i, 240 );
+      PlotDarkTextCentered( b, x3, x4, i, 240 );
     end;
     i := i + 24;
     str( Character.BasePerception, a );
     str( Character.Perception, b );
     if StatAdjustments[ 3 ] < 1 then
     begin
-      pText.PlotTextCentered( a, x1, x2, i, Alpha );
-      pText.PlotTextCentered( b, x3, x4, i, Alpha );
+      PlotTextCentered( a, x1, x2, i, Alpha );
+      PlotTextCentered( b, x3, x4, i, Alpha );
     end
     else
     begin //darken it up
-      pText.PlotDarkTextCentered( a, x1, x2, i, 240 );
-      pText.PlotDarkTextCentered( b, x3, x4, i, 240 );
+      PlotDarkTextCentered( a, x1, x2, i, 240 );
+      PlotDarkTextCentered( b, x3, x4, i, 240 );
     end;
     i := i + 24;
     str( Character.BaseCharm, a );
     str( Character.Charm, b );
     if StatAdjustments[ 4 ] < 1 then
     begin
-      pText.PlotTextCentered( a, x1, x2, i, Alpha );
-      pText.PlotTextCentered( b, x3, x4, i, Alpha );
+      PlotTextCentered( a, x1, x2, i, Alpha );
+      PlotTextCentered( b, x3, x4, i, Alpha );
     end
     else
     begin //darken it up
-      pText.PlotDarkTextCentered( a, x1, x2, i, 240 );
-      pText.PlotDarkTextCentered( b, x3, x4, i, 240 );
+      PlotDarkTextCentered( a, x1, x2, i, 240 );
+      PlotDarkTextCentered( b, x3, x4, i, 240 );
     end;
     i := 248;
     str( Character.BaseMysticism, a );
     str( Character.Mysticism, b );
     if StatAdjustments[ 5 ] < 1 then
     begin
-      pText.PlotTextCentered( a, x1, x2, i, Alpha );
-      pText.PlotTextCentered( b, x3, x4, i, Alpha );
+      PlotTextCentered( a, x1, x2, i, Alpha );
+      PlotTextCentered( b, x3, x4, i, Alpha );
     end
     else
     begin //darken it up
-      pText.PlotDarkTextCentered( a, x1, x2, i, 240 );
-      pText.PlotDarkTextCentered( b, x3, x4, i, 240 );
+      PlotDarkTextCentered( a, x1, x2, i, 240 );
+      PlotDarkTextCentered( b, x3, x4, i, 240 );
     end;
     i := i + 24;
     str( Character.BaseCombat, a );
     str( Character.Combat, b );
     if StatAdjustments[ 6 ] < 1 then
     begin
-      pText.PlotTextCentered( a, x1, x2, i, Alpha );
-      pText.PlotTextCentered( b, x3, x4, i, Alpha );
+      PlotTextCentered( a, x1, x2, i, Alpha );
+      PlotTextCentered( b, x3, x4, i, Alpha );
     end
     else
     begin //darken it up
-      pText.PlotDarkTextCentered( a, x1, x2, i, 240 );
-      pText.PlotDarkTextCentered( b, x3, x4, i, 240 );
+      PlotDarkTextCentered( a, x1, x2, i, 240 );
+      PlotDarkTextCentered( b, x3, x4, i, 240 );
     end;
     i := i + 24;
     str( Character.BaseStealth, a );
     str( Character.Stealth, b );
     if StatAdjustments[ 7 ] < 1 then
     begin
-      pText.PlotTextCentered( a, x1, x2, i, Alpha );
-      pText.PlotTextCentered( b, x3, x4, i, Alpha );
+      PlotTextCentered( a, x1, x2, i, Alpha );
+      PlotTextCentered( b, x3, x4, i, Alpha );
     end
     else
     begin //darken it up
-      pText.PlotDarkTextCentered( a, x1, x2, i, 240 );
-      pText.PlotDarkTextCentered( b, x3, x4, i, 240 );
+      PlotDarkTextCentered( a, x1, x2, i, 240 );
+      PlotDarkTextCentered( b, x3, x4, i, 240 );
     end;
 
 
@@ -1082,21 +1073,21 @@ begin
     i := 104;
    //New
     str( round( Character.AttackBonus ), a );
-    pText.PlotTextCentered( a, x1, x2, i, Alpha );
+    PlotTextCentered( a, x1, x2, i, Alpha );
     i := i + 24;
     str( round( Character.Defense ), a );
-    pText.PlotTextCentered( a, x1, x2, i, Alpha );
+    PlotTextCentered( a, x1, x2, i, Alpha );
     i := i + 24;
     str( Character.AttackRecovery, a );
-    pText.PlotTextCentered( a, x1, x2, i, Alpha );
+    PlotTextCentered( a, x1, x2, i, Alpha );
     i := i + 24;
    //end new
     str( Character.restriction, a );
-    pText.PlotTextCentered( a, x1, x2, i, Alpha );
+    PlotTextCentered( a, x1, x2, i, Alpha );
     i := i + 24;
 //   str(round(Character.movement),a);
     str( round( TCharacterResource( Character.resource ).speed ), a );
-    pText.PlotTextCentered( a, x1, x2, i, Alpha );
+    PlotTextCentered( a, x1, x2, i, Alpha );
     i := i + 24;
    //str(Character.recovery,a);
    //pText.PlotText(a),327,i,Alpha);
@@ -1104,18 +1095,18 @@ begin
 //   str(Character.healingrate,a);
 //   str(round(Character.HitPoints * Character.HealingRate * Character.Constitution / 1000),a);
     a := '*';
-    pText.PlotTextCentered( a, x1, x2, i, Alpha );
+    PlotTextCentered( a, x1, x2, i, Alpha );
     i := i + 24;
 //   str(Character.rechargerate,a);
 //   str(round(Character.Mana * Character.RechargeRate * Character.Constitution / 200),a);
     a := '*';
-    pText.PlotTextCentered( a, x1, x2, i, Alpha );
+    PlotTextCentered( a, x1, x2, i, Alpha );
     i := i + 24;
     str( round( Character.hitpoints ), a );
-    pText.PlotTextCentered( a, x1, x2, i, Alpha );
+    PlotTextCentered( a, x1, x2, i, Alpha );
     i := i + 24;
     str( round( Character.mana ), a );
-    pText.PlotTextCentered( a, x1, x2, i, Alpha );
+    PlotTextCentered( a, x1, x2, i, Alpha );
 
    //Resistance column
     x1 := 439;
@@ -1125,63 +1116,63 @@ begin
     i := 104;
     ix := 3; //ix is the number of new items we inserted before these
     str( Round( Character.resistance.Piercing.Invulnerability ), a );
-    pText.PlotTextCentered( a, x1, x2, i, Alpha );
+    PlotTextCentered( a, x1, x2, i, Alpha );
     str( Round( Character.resistance.Piercing.Resistance * 100 ), b );
-    pText.PlotTextCentered( b, x3, x4, i, Alpha );
+    PlotTextCentered( b, x3, x4, i, Alpha );
     InfoRect[ ix + 48 ].info := txtMessage[ 19 ] + a + txtMessage[ 20 ] + StatName[ 1 ][ 1 ] + txtMessage[ 21 ];
     InfoRect[ ix + 48 + 11 ].info := txtMessage[ 22 ] + b + txtMessage[ 23 ] + StatName[ 1 ][ 1 ] + txtMessage[ 21 ];
 
     i := i + 24;
     str( Round( Character.resistance.crushing.Invulnerability ), a );
-    pText.PlotTextCentered( a, x1, x2, i, Alpha );
+    PlotTextCentered( a, x1, x2, i, Alpha );
     str( Round( Character.resistance.crushing.Resistance * 100 ), b );
-    pText.PlotTextCentered( b, x3, x4, i, Alpha );
+    PlotTextCentered( b, x3, x4, i, Alpha );
     InfoRect[ ix + 49 ].info := txtMessage[ 19 ] + a + txtMessage[ 20 ] + StatName[ 1 ][ 2 ] + txtMessage[ 21 ];
     InfoRect[ ix + 49 + 11 ].info := txtMessage[ 22 ] + b + txtMessage[ 23 ] + StatName[ 1 ][ 2 ] + txtMessage[ 21 ];
 
     i := i + 24;
     str( Round( Character.resistance.cutting.Invulnerability ), a );
-    pText.PlotTextCentered( a, x1, x2, i, Alpha );
+    PlotTextCentered( a, x1, x2, i, Alpha );
     str( Round( Character.resistance.cutting.Resistance * 100 ), b );
-    pText.PlotTextCentered( b, x3, x4, i, Alpha );
+    PlotTextCentered( b, x3, x4, i, Alpha );
     InfoRect[ ix + 50 ].info := txtMessage[ 19 ] + a + txtMessage[ 20 ] + StatName[ 1 ][ 3 ] + txtMessage[ 21 ];
     InfoRect[ ix + 50 + 11 ].info := txtMessage[ 22 ] + b + txtMessage[ 23 ] + StatName[ 1 ][ 3 ] + txtMessage[ 21 ];
 
     i := i + 24;
     str( Round( Character.resistance.heat.Invulnerability ), a );
-    pText.PlotTextCentered( a, x1, x2, i, Alpha );
+    PlotTextCentered( a, x1, x2, i, Alpha );
     str( Round( Character.resistance.heat.Resistance * 100 ), b );
-    pText.PlotTextCentered( b, x3, x4, i, Alpha );
+    PlotTextCentered( b, x3, x4, i, Alpha );
     InfoRect[ ix + 51 ].info := txtMessage[ 19 ] + a + txtMessage[ 20 ] + StatName[ 1 ][ 4 ] + txtMessage[ 21 ];
     InfoRect[ ix + 51 + 11 ].info := txtMessage[ 22 ] + b + txtMessage[ 23 ] + StatName[ 1 ][ 4 ] + txtMessage[ 21 ];
     i := i + 24;
     str( Round( Character.resistance.cold.Invulnerability ), a );
-    pText.PlotTextCentered( a, x1, x2, i, Alpha );
+    PlotTextCentered( a, x1, x2, i, Alpha );
     str( Round( Character.resistance.cold.Resistance * 100 ), b );
-    pText.PlotTextCentered( b, x3, x4, i, Alpha );
+    PlotTextCentered( b, x3, x4, i, Alpha );
     InfoRect[ ix + 52 ].info := txtMessage[ 19 ] + a + txtMessage[ 20 ] + StatName[ 1 ][ 5 ] + txtMessage[ 21 ];
     InfoRect[ ix + 52 + 11 ].info := txtMessage[ 22 ] + b + txtMessage[ 23 ] + StatName[ 1 ][ 5 ] + txtMessage[ 21 ];
     i := i + 24;
     str( Round( Character.resistance.electric.Invulnerability ), a );
-    pText.PlotTextCentered( a, x1, x2, i, Alpha );
+    PlotTextCentered( a, x1, x2, i, Alpha );
     str( Round( Character.resistance.electric.Resistance * 100 ), b );
-    pText.PlotTextCentered( b, x3, x4, i, Alpha );
+    PlotTextCentered( b, x3, x4, i, Alpha );
     InfoRect[ ix + 53 ].info := txtMessage[ 19 ] + a + txtMessage[ 20 ] + StatName[ 1 ][ 6 ] + txtMessage[ 21 ];
     InfoRect[ ix + 53 + 11 ].info := txtMessage[ 22 ] + b + txtMessage[ 23 ] + StatName[ 1 ][ 6 ] + txtMessage[ 21 ];
 
     i := i + 24;
     str( Round( Character.resistance.magic.Invulnerability ), a );
-    pText.PlotTextCentered( a, x1, x2, i, Alpha );
+    PlotTextCentered( a, x1, x2, i, Alpha );
     str( Round( Character.resistance.magic.Resistance * 100 ), b );
-    pText.PlotTextCentered( b, x3, x4, i, Alpha );
+    PlotTextCentered( b, x3, x4, i, Alpha );
     InfoRect[ ix + 54 ].info := txtMessage[ 19 ] + a + txtMessage[ 20 ] + StatName[ 1 ][ 7 ] + txtMessage[ 21 ];
     InfoRect[ ix + 54 + 11 ].info := txtMessage[ 22 ] + b + txtMessage[ 23 ] + StatName[ 1 ][ 7 ] + txtMessage[ 21 ];
 
     i := i + 24;
     str( Round( Character.resistance.stun.Invulnerability ), a );
-    pText.PlotTextCentered( a, x1, x2, i, Alpha );
+    PlotTextCentered( a, x1, x2, i, Alpha );
     str( Round( Character.resistance.stun.Resistance * 100 ), b );
-    pText.PlotTextCentered( b, x3, x4, i, Alpha );
+    PlotTextCentered( b, x3, x4, i, Alpha );
     InfoRect[ ix + 55 ].info := txtMessage[ 19 ] + a + txtMessage[ 20 ] + StatName[ 1 ][ 8 ] + txtMessage[ 21 ];
     InfoRect[ ix + 55 + 11 ].info := txtMessage[ 22 ] + b + txtMessage[ 23 ] + StatName[ 1 ][ 8 ] + txtMessage[ 21 ];
 
@@ -1213,49 +1204,49 @@ begin
     i := 104;
     str( Round( Character.damage.Piercing.Min ), a );
     str( Round( Character.damage.Piercing.Max ), b );
-    pText.PlotTextCentered( a + '-' + b, x1, x2, i, Alpha );
+    PlotTextCentered( a + '-' + b, x1, x2, i, Alpha );
     InfoRect[ ix + 81 ].info := txtMessage[ 24 ] + a + txtMessage[ 25 ] + b + txtMessage[ 26 ] + StatName[ 1 ][ 1 ] +
       txtMessage[ 27 ];
     i := i + 24;
     str( Round( Character.damage.crushing.Min ), a );
     str( Round( Character.damage.crushing.Max ), b );
-    pText.PlotTextCentered( a + '-' + b, x1, x2, i, Alpha );
+    PlotTextCentered( a + '-' + b, x1, x2, i, Alpha );
     InfoRect[ ix + 82 ].info := txtMessage[ 24 ] + a + txtMessage[ 25 ] + b + txtMessage[ 26 ] + StatName[ 1 ][ 2 ] +
       txtMessage[ 27 ];
     i := i + 24;
     str( Round( Character.damage.cutting.Min ), a );
     str( Round( Character.damage.cutting.Max ), b );
-    pText.PlotTextCentered( a + '-' + b, x1, x2, i, Alpha );
+    PlotTextCentered( a + '-' + b, x1, x2, i, Alpha );
     InfoRect[ ix + 83 ].info := txtMessage[ 24 ] + a + txtMessage[ 25 ] + b + txtMessage[ 26 ] + StatName[ 1 ][ 3 ] +
       txtMessage[ 27 ];
     i := i + 24;
     str( Round( Character.damage.heat.Min ), a );
     str( Round( Character.damage.heat.Max ), b );
-    pText.PlotTextCentered( a + '-' + b, x1, x2, i, Alpha );
+    PlotTextCentered( a + '-' + b, x1, x2, i, Alpha );
     InfoRect[ ix + 84 ].info := txtMessage[ 24 ] + a + txtMessage[ 25 ] + b + txtMessage[ 26 ] + StatName[ 1 ][ 4 ] +
       txtMessage[ 27 ];
     i := i + 24;
     str( Round( Character.damage.cold.Min ), a );
     str( Round( Character.damage.cold.Max ), b );
-    pText.PlotTextCentered( a + '-' + b, x1, x2, i, Alpha );
+    PlotTextCentered( a + '-' + b, x1, x2, i, Alpha );
     InfoRect[ ix + 85 ].info := txtMessage[ 24 ] + a + txtMessage[ 25 ] + b + txtMessage[ 26 ] + StatName[ 1 ][ 5 ] +
       txtMessage[ 27 ];
     i := i + 24;
     str( Round( Character.damage.electric.Min ), a );
     str( Round( Character.damage.electric.Max ), b );
-    pText.PlotTextCentered( a + '-' + b, x1, x2, i, Alpha );
+    PlotTextCentered( a + '-' + b, x1, x2, i, Alpha );
     InfoRect[ ix + 86 ].info := txtMessage[ 24 ] + a + txtMessage[ 25 ] + b + txtMessage[ 26 ] + StatName[ 1 ][ 6 ] +
       txtMessage[ 27 ];
     i := i + 24;
     str( Round( Character.damage.magic.Min ), a );
     str( Round( Character.damage.magic.Max ), b );
-    pText.PlotTextCentered( a + '-' + b, x1, x2, i, Alpha );
+    PlotTextCentered( a + '-' + b, x1, x2, i, Alpha );
     InfoRect[ ix + 87 ].info := txtMessage[ 24 ] + a + txtMessage[ 25 ] + b + txtMessage[ 26 ] + StatName[ 1 ][ 7 ] +
       txtMessage[ 27 ];
     i := i + 24;
     str( Round( Character.damage.stun.Min ), a );
     str( Round( Character.damage.stun.Max ), b );
-    pText.PlotTextCentered( a + '-' + b, x1, x2, i, Alpha );
+    PlotTextCentered( a + '-' + b, x1, x2, i, Alpha );
     InfoRect[ ix + 88 ].info := txtMessage[ 24 ] + a + txtMessage[ 25 ] + b + txtMessage[ 26 ] + StatName[ 1 ][ 8 ] +
       txtMessage[ 27 ];
 
