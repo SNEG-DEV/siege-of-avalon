@@ -57,6 +57,8 @@ type
 
 implementation
 
+uses LogFile;
+
 { TDXTextureShader }
 
 function TDXTextureShader.DecideInputLayout: HRESULT;
@@ -138,27 +140,13 @@ end;
 
 { TDXAbstractShader }
 
-function TDXAbstractShader.DumpErrorMessages(aFilename: string;
-  pErrorBuffer: ID3D10Blob): HRESULT;
+function TDXAbstractShader.DumpErrorMessages(aFilename: string; pErrorBuffer: ID3D10Blob): HRESULT;
 var
-  f: TextFile;
-  pErrBuff: PAnsiChar;
+  error: string;
 begin
-  Try
-    AssignFile(f, aFilename);
-    Rewrite(f);
-
-    Try
-      pErrBuff := PAnsiChar(pErrorBuffer.GetBufferPointer());
-      Writeln(f, AnsiString(pErrBuff));
-    Finally
-      CloseFile(f);
-    End;
-
-    Result := S_OK;
-  Except
-    Result := E_FAIL;
-  End;end;
+  error := PAnsiChar(pErrorBuffer.GetBufferPointer());
+  Log.Log('D3DShader', '%s', [error]);
+end;
 
 function TDXAbstractShader.Initialize(pDevice: ID3D11Device; aPSName,
   aVSName: string; aPSSource, aVSSource: string): HRESULT;
@@ -182,7 +170,7 @@ begin
     If pErrorMsgs = nil then Begin
       OutputDebugString(PChar(Format('Shader file "%s" not found.', [aVSName])));
       Exit;
-    End;
+  End;
     DumpErrorMessages('errors-vs.txt', pErrorMsgs);
     OutputDebugString(PChar(Format('Failed to compile vertex shader "%s". See file "errors-vs.txt" for more details.', [aVSName])));
     Exit;

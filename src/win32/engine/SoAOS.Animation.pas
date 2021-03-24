@@ -552,6 +552,7 @@ uses
 
 var
   BltWindowed : Boolean;
+  D3DFullscreen: Boolean;
   WindowHandle: HWND;
   D3DRenderer: TDXRenderer;
   IsWindows7: Boolean;
@@ -674,10 +675,10 @@ begin
     lpDDSurfaceDesc.ddpfPixelFormat.dwGBitMask := $000007E0;
     lpDDSurfaceDesc.ddpfPixelFormat.dwBBitMask := $0000001F;
 
-    if (lpDDSurfaceDesc.dwFlags and DDSD_CAPS) = 0 then
-    begin
+//    if (lpDDSurfaceDesc.dwFlags and DDSD_CAPS) = 0 then
+//    begin
       lpDDSurfaceDesc.dwFlags := lpDDSurfaceDesc.dwFlags or DDSD_CAPS;
-    end;
+//    end;
     lpDDSurfaceDesc.ddsCaps.dwCaps := lpDDsurfaceDesc.ddsCaps.dwCaps (*or DDSCAPS_OFFSCREENPLAIN *) or DDSCAPS_SYSTEMMEMORY;
 
   end;
@@ -798,6 +799,16 @@ var
   res: HRESULT;
   guidStr : String;
 begin
+  if (IsWindows7 and (not Windowed)) or ScreenMetrics.ForceD3DFullscreen then
+  begin
+    D3DFullscreen := True;
+    Windowed := True;
+  end
+  else
+  begin
+    D3DFullscreen := False;
+  end;
+
   FillChar(ddsd, sizeof(ddsd), 0);
   WindowHandle := Handle;
   // Log.Log('InitDX');
@@ -872,7 +883,7 @@ begin
   ZeroMemory(@ddsd, SizeOf(ddsd));
   if Windowed then
   begin
-    D3DREnderer := TDXRenderer.Create(Handle, ResW, ResH);
+    D3DREnderer := TDXRenderer.Create(Handle, ResW, ResH, not D3DFullscreen);
 
     BltWindowed := True;
     ddsd.dwSize := SizeOf(ddsd);

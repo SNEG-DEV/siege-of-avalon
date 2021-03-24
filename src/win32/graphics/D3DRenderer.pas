@@ -29,11 +29,11 @@ type
       FTexture: ID3D11Texture2D;
       FTextureSRV: ID3D11ShaderResourceView;
 
-      Function Initialize(aHWND: HWND; aWidth, aHeight: Integer): HRESULT;
+      Function Initialize(aHWND: HWND; aWidth, aHeight: Integer; bWindowed: Boolean): HRESULT;
       Function Uninitialize: HRESULT;
       Function InitializeTexture(aWidth, aHeight: Integer): HRESULT;
     public
-      Constructor Create(aHWND: HWND; aWidth, aHeight: Integer);
+      Constructor Create(aHWND: HWND; aWidth, aHeight: Integer; bWindowed: Boolean);
       Destructor Destroy; override;
 
       Procedure UpdateTexture(Data: Pointer; Stride: Cardinal); overload;
@@ -45,7 +45,7 @@ type
 
 implementation
 
-uses IOUtils;
+uses IOUtils, LogFile;
 
 var
   vertex_shader: string = 'struct VSInput'#13#10 +
@@ -101,7 +101,7 @@ var
     '	return float4(r / 32.0f, g / 64.0f, b / 32.0f, 1.0f);'#13#10 +
     '}'#13#10;
 
-function TDXRenderer.Initialize(aHWND: HWND; aWidth, aHeight: Integer): HRESULT;
+function TDXRenderer.Initialize(aHWND: HWND; aWidth, aHeight: Integer; bWindowed: Boolean): HRESULT;
 var
   feature_level: Array[0..0] of TD3D_FEATURE_LEVEL;
   pBackbuffer: ID3D11Texture2D;
@@ -129,7 +129,7 @@ begin
     OutputWindow := aHWND;
     SampleDesc.Count := 1;
     SampleDesc.Quality := 0;
-    Windowed := True;
+    Windowed := bWindowed;
 
     SwapEffect := DXGI_SWAP_EFFECT_SEQUENTIAL;
     Flags := 0;
@@ -151,13 +151,24 @@ begin
       FCurrentFeatureLevel,
       FDeviceContext
   );
-  If Failed(Result) then Exit;
+  If Failed(Result) then
+  begin
+    Log.Log('D3D', 'Failed to create device and swapchain (%.8X)', [Result]);
+  end;
 
   Result := FSwapchain.GetBuffer(0, ID3D11Texture2D, pBackbuffer);
-  If Failed(Result) then Exit;
+  If Failed(Result) then
+  begin
+    Log.Log('D3D', 'Failed get back buffer (%.8X)', [Result]);
+  end;
+
 
   Result := FDevice.CreateRenderTargetView(pBackbuffer, nil, FRenderTargetView);
-  If Failed(Result) then Exit;
+  If Failed(Result) then
+  begin
+    Log.Log('D3D', 'Failed to create render target view (%.8X)', [Result]);
+  end;
+
   pBackbuffer := nil;
 
   FDeviceContext.OMSetRenderTargets(1, FRenderTargetView, nil);
@@ -179,7 +190,7 @@ begin
   Result := FDevice.CreateRasterizerState(rast_state_desc, FRasterizerState);
   If Failed(Result) then
   begin
-    Exit;
+    Log.Log('D3D', 'Failed to create rasterizer state (%.8X)', [Result]);
   end;
 
   FDeviceContext.RSSetState(FRasterizerState);
@@ -216,13 +227,22 @@ begin
   );
 
   Result := InitializeTexture(aWidth, aHeight);
-  If Failed(Result) then Exit;
+  If Failed(Result) then
+  begin
+    Log.Log('D3D', 'Failed to initialize texture (%.8X)', [Result]);
+  end;
 
   Result := FShader.SetTexture(FDeviceContext, FTextureSRV);
-  If Failed(Result) then Exit;
+  If Failed(Result) then
+  begin
+    Log.Log('D3D', 'Failed to set texture to shader (%.8X)', [Result]);
+  end;
 
   Result := FShader.Activate(FDeviceContext);
-  If Failed(Result) then Exit;
+  If Failed(Result) then
+  begin
+    Log.Log('D3D', 'Failed to activate shader (%.8X)', [Result]);
+  end;
 
   FReady := True;
 end;
@@ -299,14 +319,14 @@ begin
   FDeviceContext.UpdateSubresource(FTexture, 0, nil, data, stride, 0);
 end;
 
-constructor TDXRenderer.Create(aHWND: HWND; aWidth, aHeight: Integer);
+constructor TDXRenderer.Create(aHWND: HWND; aWidth, aHeight: Integer; bWindowed: Boolean);
 begin
   Inherited Create;
 
   FReady := False;
   FEnableVSync := False;
 
-  If Failed(Initialize(aHWND, aWidth, aHeight)) then
+  If Failed(Initialize(aHWND, aWidth, aHeight, bWindowed)) then
      Raise Exception.Create('Direct3D 11 initialization failed');
 end;
 

@@ -69,6 +69,7 @@ type
     ScreenHeight: integer;
     BPP: integer;
     Windowed: Boolean;
+    ForceD3DFullscreen: Boolean;
     PreMapWidth: integer;
     PreMapHeight: integer;
     GameWidth: integer;

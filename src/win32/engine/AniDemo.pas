@@ -892,6 +892,8 @@ begin
 
       ScreenMetrics.Windowed := Windowed;
 
+      ScreenMetrics.ForceD3DFullscreen := INI.ReadBool('Settings', 'ForceD3DFullscreen', False);
+
       if FileExists( InterfaceLanguagePath + 'gMainMenuBlank.bmp' ) then
         DlgRect := cMultilingualDialogs
       else
@@ -5448,7 +5450,7 @@ const
   FailName : string = 'Main.AppActivate';
 begin
   Log.DebugLog(FailName);
-  if not ScreenMetrics.Windowed then
+  if (not ScreenMetrics.Windowed) and (not ScreenMetrics.ForceD3DFullscreen) then
   begin
     try
 
@@ -5480,7 +5482,7 @@ const
   FailName : string = 'Main.AppDeactivate';
 begin
   Log.DebugLog(FailName);
-  if not ScreenMetrics.Windowed then
+  if (not ScreenMetrics.Windowed) and (not ScreenMetrics.ForceD3DFullscreen) then
   begin
     try
 

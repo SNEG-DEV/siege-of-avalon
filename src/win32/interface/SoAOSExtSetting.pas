@@ -66,6 +66,7 @@ type
 
     FMonitors: TStringList;
     FCurrentDevice: string;
+    FForceD3DFullscreen: Boolean;
     FCurrentDeviceIdx: Integer;
 
     FResolutions: TStringList;
@@ -142,6 +143,7 @@ begin
       end;
       INI.WriteInteger('Settings', 'ScreenResolution', r);
       INI.WriteBool('Settings', 'Windowed', windowed);
+      INI.WriteBool('Settings', 'ForceD3DFullscreen', FForceD3DFullscreen);
       INI.WriteString('Settings', 'DeviceName', FCurrentDevice);
       INI.UpdateFile;
     except
@@ -231,6 +233,7 @@ begin
       FCurrentLanguage := cNoLanguage;
     lInterfacePath := INI.ReadString('Settings', 'Interface', 'Interface');
     imgCheck.Visible := not INI.ReadBool('Settings', 'Windowed', False);
+    FForceD3DFullscreen := INI.ReadBool('Settings', 'ForceD3DFullscreen', False);
     FCurrentDevice := INI.ReadString('Settings', 'DeviceName', '');
     FCurrentResolution := INI.ReadString('Settings', 'ScreenResolution', '600');
   finally
