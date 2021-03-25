@@ -57,7 +57,8 @@ uses
   SoAOS.AI.Types,
   SoAOS.AI,
   DFX,
-  Resource;
+  Resource,
+  GameLibIntegration;
 
 const
   MaxCompanions = 5;
@@ -3885,8 +3886,10 @@ procedure TCharacter.TriggerAchievements(Title: string);
 var
   AchievementString: string;
 begin
-  if frmMain.Achievements.getIdByTitle(Title, self, AchievementString) then
+  if frmMain.Achievements.getIdByTitle(Title, self, AchievementString) then begin
     Log.Log('Achievement unlocked: '+AchievementString);
+    FGameLibIntegration.SetAchievement(pAnsiChar(ansistring(AchievementString)));
+  end;
 end;
 
 procedure TCharacter.Filter(Source: TAniFigure; ID, PrevID: SmallInt);

@@ -121,7 +121,14 @@ uses
   D3DRenderer in 'graphics\D3DRenderer.pas',
   D3DShader in 'graphics\D3DShader.pas',
   D3DMesh in 'graphics\D3DMesh.pas',
-  Achievements in 'engine\Achievements.pas';
+  Achievements in 'engine\Achievements.pas',
+  GameLibIntegration.Gog in 'platforms\GameLibIntegration.Gog.pas',
+  GameLibIntegration in 'platforms\GameLibIntegration.pas',
+  GameLibIntegration.Steam in 'platforms\GameLibIntegration.Steam.pas',
+  GalaxyWrapper in 'platforms\gogIntegration\GalaxyWrapper.pas',
+  Steamworks in 'platforms\streamIntegration\Steamworks.pas',
+  SteamworksClasses in 'platforms\streamIntegration\SteamworksClasses.pas',
+  SteamworksTypes in 'platforms\streamIntegration\SteamworksTypes.pas';
 
 {$R *.RES}
 
