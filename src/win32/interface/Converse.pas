@@ -46,9 +46,10 @@ uses
   DirectX,
   System.Types,
   System.Classes,
+  System.Generics.Collections,
   Vcl.Controls,
   Character,
-  Display,
+  SoAOS.Intrface.Dialogs,
   SoAOS.Animation,
   System.IniFiles,
   SoAOS.StrUtils;
@@ -60,9 +61,9 @@ type
     Text : string;
   end;
 
-  TConverseBox = class( TDisplay )
+  TConverseBox = class( TDialog )
   private
-    Responses : TList;
+    Responses : TList<TTextRect>;
     HLText : Integer;
     ReEntry : Boolean;
     bTraining : boolean;
@@ -141,7 +142,7 @@ begin
   Log.DebugLog( FailName );
   try
     inherited;
-    Responses := TList.Create;
+    Responses := TList<TTextRect>.Create;
     slResponse := TStringList.Create;
   except
     on E : Exception do
@@ -178,12 +179,13 @@ begin
   try
     inherited;
 
-    Image := SoAOS_DX_LoadBMP( InterfacePath + 'DialogueBox.bmp', cTransparent, width, height );
+    Image := SoAOS_DX_LoadBMP( InterfacePath + 'DialogueBox.bmp', cTransparent, DlgWidth, DlgHeight );
     ReEntry := True;
+
     X1 := 65;
     Y1 := 40;
-    X2 := X1 + width;
-    Y2 := Y1 + height;
+    X2 := X1 + DlgWidth;
+    Y2 := Y1 + DlgHeight;
 
     HLText := -1;
     pText.LoadFontGraphic( 'Inventory' );
@@ -203,7 +205,7 @@ begin
   //DrawShadow
     Shadow := SoAOS_DX_LoadBMP( InterfacePath + 'DialogueBoxshadowmap.bmp', cTransparent, width, height );
     try
-      DrawSub( lpDDSBack, Rect( X1, Y1, X2, Y2 ), Rect( 0, 0, width, height ), Shadow, true, 170 );
+      DrawSub( lpDDSBack, ApplyOffset( Rect( X1, Y1, X2, Y2 ) ), Rect( 0, 0, width, height ), Shadow, true, 170 );
     finally
       Shadow := nil;
     end;
@@ -226,8 +228,9 @@ const
   FailName : string = 'TConverseBox.MouseDown';
 begin
   try
-    inherited;
-    if InBound then
+//    inherited;
+//    if InBound then
+    if ptInRect( ApplyOffset( Rect( X1, Y1, X2, X2 ) ), point( x, y ) ) then
     begin
       if Responses.count = 0 then
       begin
@@ -277,22 +280,21 @@ const
   FailName : string = 'TConverseBox.MouseMove';
 begin
   try
-    inherited;
-    if InBound then
+//    inherited;
+//    if InBound then
+    if ptInRect( ApplyOffset( Rect( X1, Y1, X2, X2 ) ), point( x, y ) ) then
     begin
       for i := 0 to Responses.Count - 1 do
       begin
-        with TTextRect( Responses.Items[ i ] ) do
+//          if ( X >= Rect.Left ) and ( X < Rect.Right ) and ( Y >= Rect.Top ) and ( Y < Rect.Bottom ) then
+        if PtInRect( ApplyOffset( Responses[i].Rect ), point( x, y ) ) then
         begin
-          if ( X >= Rect.Left ) and ( X < Rect.Right ) and ( Y >= Rect.Top ) and ( Y < Rect.Bottom ) then
+          if i <> HLText then
           begin
-            if i <> HLText then
-            begin
-              HLText := i;
-              Paint;
-            end;
-            Exit;
+            HLText := i;
+            Paint;
           end;
+          Exit;
         end;
       end;
     end;
@@ -490,9 +492,7 @@ begin
 
 
     for iLoop := 0 to Responses.count - 1 do
-    begin
-      TTextRect( Responses.items[ iLoop ] ).free;
-    end;
+      Responses[ iLoop ].Free;
     Responses.clear;
 
     slResponse.Clear;
@@ -622,7 +622,7 @@ begin
     begin
       GetSurfaceDims( W, H, Image );
       pr := Rect( 0, 0, W, H );
-      lpDDSback.BltFast( X1, Y1, Image, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      lpDDSback.BltFast( X1 + Offset.X, Y1 + Offset.Y, Image, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     end
     else
     begin
@@ -635,9 +635,9 @@ begin
       R.Top := j;
       R.Right := X1 + W - 30;
       if UseSmallFont then
-        j := j + 18 * pText.PlotTinyTextBlock( Caption, R.Left, R.Right, R.Top, 240 ) + 10
+        j := j + 18 * pText.PlotTinyTextBlock( Caption, R.Left + Offset.X, R.Right + Offset.X, R.Top + Offset.Y, 240 ) + 10
       else
-        j := j + 22 * pText.PlotTextBlock( Caption, R.Left, R.Right, R.Top, 240 ) + 10;
+        j := j + 22 * pText.PlotTextBlock( Caption, R.Left + Offset.X, R.Right + Offset.X, R.Top + Offset.Y, 240 ) + 10;
       R.Bottom := j;
 
       if bTraining then
@@ -647,26 +647,27 @@ begin
     end;
     for i := 0 to Responses.count - 1 do
     begin
-      S := TTextRect( Responses.items[ i ] ).Text;
+      S := Responses[i].Text;
       R.Left := X1 + 40;
       R.Top := j;
       R.Right := X1 + W - 30;
+      { TODO : Wrap pText plot into existing DIalogs PlotTexts }
       if i = HLText then
       begin
         if UseSmallFont then
-          j := j + 18 * pText.PlotTinyTextBlock( S, R.Left, R.Right, R.Top, 240 )
+          j := j + 18 * pText.PlotTinyTextBlock( S, R.Left + Offset.X, R.Right + Offset.X, R.Top + Offset.Y, 240 )
         else
-          j := j + 22 * pText.PlotTextBlock( S, R.Left, R.Right, R.Top, 240 );
+          j := j + 22 * pText.PlotTextBlock( S, R.Left + Offset.X, R.Right + Offset.X, R.Top + Offset.Y, 240 );
       end
       else
       begin
         if UseSmallFont then
-          j := j + 18 * pText.PlotTinyTextBlock( S, R.Left, R.Right, R.Top, 120 )
+          j := j + 18 * pText.PlotTinyTextBlock( S, R.Left + Offset.X, R.Right + Offset.X, R.Top + Offset.Y, 120 )
         else
-          j := j + 22 * pText.PlotTextBlock( S, R.Left, R.Right, R.Top, 120 );
+          j := j + 22 * pText.PlotTextBlock( S, R.Left + Offset.X, R.Right + Offset.X, R.Top + Offset.Y, 120 );
       end;
       R.Bottom := j;
-      TTextRect( Responses.items[ i ] ).Rect := R;
+      Responses[ i ].Rect := R;
       Inc( j, 10 );
     end;
     SoAOS_DX_BltFront;
@@ -690,9 +691,7 @@ begin
     Image := nil;
     Image := nil;
     for i := 0 to Responses.Count - 1 do
-    begin
-      TTextRect( Responses.Items[ i ] ).Free;
-    end;
+      Responses[ i ].Free;
     Responses.Clear;
     slResponse.Clear;
     pText.UnloadTinyFontGraphic;
