@@ -96,6 +96,9 @@
         <VerInfo_Build>409</VerInfo_Build>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=Digital Tome, Texas USA;FileDescription=Siege Of Avalon;FileVersion=1.1.2001.409;InternalName=DTMain1;LegalCopyright=Copyright (c) 1999-2001 Digital Tome;LegalTrademarks=Siege of Avalon(tm), Episodic Computer Game Novel(tm), Digital Tome(tm);OriginalFilename=Siege;ProductName=Siege of Avalon(tm);ProductVersion=1.1.2001.409;Comments=Siege of Avalon, an Episodic Computer Game Novel from Digital Tome</VerInfo_Keys>
+        <DCC_ExeOutput>..\..\..\soa-resources</DCC_ExeOutput>
+        <DCC_DcuOutput>dcu</DCC_DcuOutput>
+        <DCC_UnitSearchPath>ai;engine;graphics;interface;sound;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
@@ -109,7 +112,6 @@
         <VerInfo_MinorVer>0</VerInfo_MinorVer>
         <VerInfo_Release>0</VerInfo_Release>
         <VerInfo_Build>0</VerInfo_Build>
-        <DCC_ExeOutput>../../game</DCC_ExeOutput>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
         <Version>7.0</Version>
@@ -121,11 +123,8 @@
         <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
         <DCC_StackSize>16384,8388608</DCC_StackSize>
         <DCC_ImageBase>800000</DCC_ImageBase>
-        <DCC_ExeOutput>../../assets</DCC_ExeOutput>
-        <DCC_DcuOutput>dcu</DCC_DcuOutput>
         <DCC_ObjOutput>dcu</DCC_ObjOutput>
         <DCC_HppOutput>dcu</DCC_HppOutput>
-        <DCC_UnitSearchPath>ai;engine;graphics;interface;sound;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_ResourcePath>ai;engine;graphics;interface;sound;$(DCC_ResourcePath)</DCC_ResourcePath>
         <DCC_ObjPath>ai;engine;graphics;interface;sound;$(DCC_ObjPath)</DCC_ObjPath>
         <DCC_IncludePath>ai;engine;graphics;interface;sound;$(DCC_IncludePath)</DCC_IncludePath>
@@ -146,7 +145,6 @@
         <DCC_MapFile>3</DCC_MapFile>
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
-        <DCC_ExeOutput>..\..\soa-resources</DCC_ExeOutput>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <Version>7.0</Version>
@@ -158,11 +156,9 @@
         <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
         <DCC_StackSize>16384,8388608</DCC_StackSize>
         <DCC_ImageBase>800000</DCC_ImageBase>
-        <DCC_ExeOutput>../../assets</DCC_ExeOutput>
         <DCC_DcuOutput>dcu</DCC_DcuOutput>
         <DCC_ObjOutput>dcu</DCC_ObjOutput>
         <DCC_HppOutput>dcu</DCC_HppOutput>
-        <DCC_UnitSearchPath>ai;engine;graphics;interface;sound;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_ResourcePath>ai;engine;graphics;interface;sound;$(DCC_ResourcePath)</DCC_ResourcePath>
         <DCC_ObjPath>ai;engine;graphics;interface;sound;$(DCC_ObjPath)</DCC_ObjPath>
         <DCC_IncludePath>ai;engine;graphics;interface;sound;$(DCC_IncludePath)</DCC_IncludePath>
@@ -177,7 +173,6 @@
         <VerInfo_Release>0</VerInfo_Release>
         <VerInfo_Build>0</VerInfo_Build>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
-        <DCC_ExeOutput>..\..\soa-resources</DCC_ExeOutput>
         <DCC_DebugInformation>2</DCC_DebugInformation>
         <DCC_LocalDebugSymbols>true</DCC_LocalDebugSymbols>
         <DCC_DebugDCUs>true</DCC_DebugDCUs>
@@ -282,7 +277,7 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="..\..\game\Siege.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="..\..\game\Siege.exe" Configuration="Release" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>Siege.exe</RemoteName>
                         <Overwrite>true</Overwrite>
