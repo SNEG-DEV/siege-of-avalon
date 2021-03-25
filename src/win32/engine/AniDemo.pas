@@ -91,6 +91,7 @@ uses
   LogScreen,
   SoAOS.Intrface.Transit,
   SoAOS.Animation,
+  GameLibIntegration,
   AddKickNPC;
 
 const
@@ -1834,6 +1835,8 @@ var
 begin
   AppPath := ExtractFilePath( Application.ExeName );
   SiegeINIFile := AppPath + 'siege.ini';
+
+  FGameLibIntegration := TGameLibIntegration.Create;
 
   Scaled := False;
   BorderStyle := bsNone;
