@@ -178,7 +178,11 @@ var
   MsgImage: IDirectDrawSurface;
   MsgWidth: Integer;
   MsgHeight: Integer;
+  dpiForm, dpiSystem: cardinal;
 begin
+  dpiForm := GetDpiForWindow(frmMain.Handle);
+  dpiSystem := GetDpiForSystem;
+  FontSize := Trunc(FontSize * (dpiForm/dpiSystem));
   BM := TBitmap.Create;
   try
     BM.Canvas.Font.Name:='BlackChancery';
