@@ -2152,7 +2152,7 @@ begin
   try
 
     DlgShow.frmMain := Self;
-    DlgShow.BMPFileName := 'HelpScreen(telekeneticDuck).bmp';
+    DlgShow.BMPFileName := TPath.Combine(Language, 'HelpScreen(telekeneticDuck).bmp');
     DlgShow.MusicFileName := '';
     OpenDialog( DlgShow, CloseAllDialogs );
 
@@ -2471,10 +2471,11 @@ begin
                 else if Active then
                   ChangeFocus( NPCList.Items[ i ] );
               end;
-            end
-            else if Button = mbRight then
-            begin
-              BeginNPC( NPCList.Items[ i ] );
+              { TODO : Might enable in future - when party priotiry works }
+//            end
+//            else if Button = mbRight then
+//            begin
+//              BeginNPC( NPCList.Items[ i ] );
             end;
           end;
           Exit;
@@ -2545,10 +2546,11 @@ begin
                   else if Active then
                     ChangeFocus( NPCList.Items[ i ] );
                 end;
-              end
-              else if Button = mbRight then
-              begin
-                BeginNPC( NPCList.Items[ i ] );
+                { TODO : Might enable in future - when party priotiry works }
+//              end
+//              else if Button = mbRight then
+//              begin
+//                BeginNPC( NPCList.Items[ i ] );
               end;
             end;
             Exit;
@@ -5407,7 +5409,9 @@ begin
     DlgShow.pText := DlgText;
     DlgShow.OnClose := CloseShow;
     DlgShow.frmMain := Self;
-    DlgShow.BMPFileName := 'CreditsScreen.bmp';
+    DlgShow.BMPFileName := 'CreditsScreen_001.bmp';
+    DlgShow.BMPFileName := 'CreditsScreen_002.bmp';
+    DlgShow.BMPFileName := 'CreditsScreen_003.bmp';
     DlgShow.MusicFileName := 'exCarlibur.mp3';
     MouseCursor.SetFrame( 37 );
     PrevTriggerID := -1;
@@ -5528,9 +5532,9 @@ begin
     DlgShow.OnClose := CloseShow;
     DlgShow.frmMain := Self;
     if DeathScreen = '' then
-      DlgShow.BMPFileName := 'Death.bmp'
+      DlgShow.BMPFileName := TPath.Combine(Language, 'Death.bmp')
     else
-      DlgShow.BMPFileName := DeathScreen + '.bmp';
+      DlgShow.BMPFileName := TPath.Combine(Language, DeathScreen + '.bmp');
     DlgShow.MusicFileName := 'Level1Final.mp3';
     MouseCursor.SetFrame( 37 );
     PrevTriggerID := -1;

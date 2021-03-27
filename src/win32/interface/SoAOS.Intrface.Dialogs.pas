@@ -73,7 +73,10 @@ end;
 
 function TDialog.GetOffset: TPoint;
 begin
-  Result := TPoint.Create((ScreenMetrics.ScreenWidth - DlgWidth) div 2, (ScreenMetrics.ScreenHeight - DlgHeight) div 2);
+  if ScreenMetrics.ScreenWidth>800 then
+    Result := TPoint.Create((ScreenMetrics.ScreenWidth - DlgWidth) div 2, (ScreenMetrics.ScreenHeight - DlgHeight) div 2)
+  else
+    Result := TPoint.Create(0, 0);
 end;
 
 //procedure TDialog.PlotDarkText2(const DX: IDirectDrawSurface;

@@ -60,7 +60,8 @@ type
     DXBack : IDirectDrawSurface;
     pMusic : TMusic;
     FMusicFileName : string; // was AnsiString;
-    FBMPFileName : string;
+    FBMPFileNames : TStringList;
+    currentBMPidx : Integer;
     procedure FormMouseDown( Sender : TObject; Button : TMouseButton; Shift : TShiftState; X, Y : Integer );
     procedure SetMusicFileName(const Value: string);
     procedure SetBMPFileName(const Value: string);
@@ -70,6 +71,8 @@ type
     procedure KeyDown( Sender : TObject; var key : Word; Shift : TShiftState ); override;
   public
     frmMain : TForm;
+    constructor Create;
+    destructor Destroy; override;
     procedure Init; override;
     procedure Release; override;
     property BMPFileName : string write SetBMPFileName;
@@ -105,7 +108,8 @@ begin
   if ScreenMetrics.borderFile<>'' then
     lpDDSBack.BltFast( 0, 0, TfrmMain(frmMain).FillBorder, nil, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
-  DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + FBMPFileName, cInvisColor, DlgWidth, DlgHeight );
+  currentBMPidx := 0;
+  DXBack := SoAOS_DX_LoadBMP( InterfacePath + FBMPFileNames[currentBMPidx], cInvisColor, DlgWidth, DlgHeight );
   pr := Rect( 0, 0, DlgWidth, DlgHeight );
   lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
 
@@ -123,37 +127,88 @@ begin
 end; //Init
 
 procedure TShowGraphic.KeyDown( Sender : TObject; var key : Word; Shift : TShiftState );
+var
+  pr : TRect;
 begin
-  if Assigned( pMusic ) then
-    pMusic.PauseThisSong;
-  Close;
+  if currentBMPidx < FBMPFileNames.Count-1 then
+  begin
+    inc(currentBMPidx);
+    DXBack := SoAOS_DX_LoadBMP( InterfacePath + FBMPFileNames[currentBMPidx], cInvisColor, DlgWidth, DlgHeight );
+    pr := Rect( 0, 0, DlgWidth, DlgHeight );
+    lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
+    SoAOS_DX_BltFront;
+  end
+  else
+  begin
+    if Assigned( pMusic ) then
+      pMusic.PauseThisSong;
+    Close;
+  end;
 end; //keyDown
 
 procedure TShowGraphic.MouseDown( Sender : TObject; Button : TMouseButton;
       Shift : TShiftState; X, Y, GridX, GridY : Integer );
 const
   FailName : string = 'TShowGraphic.mousedown';
+var
+  pr : TRect;
 begin
   Log.DebugLog(FailName);
   try
-    if assigned( pMusic ) then
-      pMusic.PauseThisSong;
-    Close;
+    if currentBMPidx < FBMPFileNames.Count-1 then
+    begin
+      inc(currentBMPidx);
+      DXBack := SoAOS_DX_LoadBMP( InterfacePath + FBMPFileNames[currentBMPidx], cInvisColor, DlgWidth, DlgHeight );
+      pr := Rect( 0, 0, DlgWidth, DlgHeight );
+      lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
+      SoAOS_DX_BltFront;
+    end
+    else
+    begin
+      if Assigned( pMusic ) then
+        pMusic.PauseThisSong;
+      Close;
+    end;
   except
     on E : Exception do
       Log.log( FailName + E.Message );
   end;
 end; //MouseDown
 
+constructor TShowGraphic.Create;
+begin
+  inherited;
+  FBMPFileNames := TStringList.Create;
+end;
+
+destructor TShowGraphic.Destroy;
+begin
+  FBMPFileNames.Free;
+  inherited;
+end;
+
 procedure TShowGraphic.FormMouseDown( Sender : TObject; Button : TMouseButton; Shift : TShiftState; X, Y : Integer );
 const
   FailName : string = 'TShowGraphic.formmousedown';
+var
+  pr : TRect;
 begin
   Log.DebugLog(FailName);
   try
-    if assigned( pMusic ) then
-      pMusic.PauseThisSong;
-    Close;
+    if currentBMPidx < FBMPFileNames.Count-1 then
+    begin
+      inc(currentBMPidx);
+      DXBack := SoAOS_DX_LoadBMP( InterfacePath + FBMPFileNames[currentBMPidx], cInvisColor, DlgWidth, DlgHeight );
+      pr := Rect( 0, 0, DlgWidth, DlgHeight );
+      lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
+      SoAOS_DX_BltFront;
+    end
+    else
+    begin
+      if Assigned( pMusic ) then
+        pMusic.PauseThisSong;
+      Close;
+    end;
   except
     on E : Exception do
       Log.log( FailName + E.Message );
@@ -163,12 +218,13 @@ end; //FormMouseDown
 procedure TShowGraphic.Release;
 begin
   DXBack := nil;
+  FBMPFileNames.Clear;
   inherited;
 end;
 
 procedure TShowGraphic.SetBMPFileName(const Value: string);
 begin
-  FBMPFileName := Value;
+  FBMPFileNames.Add( Value );
 end;
 
 procedure TShowGraphic.SetMusicFileName(const Value: string);
