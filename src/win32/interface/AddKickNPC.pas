@@ -48,7 +48,7 @@ uses
   System.Classes,
   Vcl.Controls,
   Character,
-  Display,
+  SoAOS.Intrface.Dialogs,
   SoAOS.Animation,
   MiscAI;
 
@@ -66,15 +66,16 @@ type
     AI : TCompanion;
     Image, Check : IDirectDrawSurface;
     CheckW, CheckH : integer;
+    Offset : TPoint;
   public
     Region : TRect;
     CheckBox : array[ 0..7 ] of TRect;
-    constructor Create( Character : TCharacter; AImage, DXCheck : IDirectDrawSurface; X, Y : integer );
+    constructor Create( Character : TCharacter; AImage, DXCheck : IDirectDrawSurface; X, Y : integer; AOffset : TPoint );
     procedure Click( X, Y : integer );
     procedure Draw;
   end;
 
-  TAddKickNPC = class( TDisplay )
+  TAddKickNPC = class( TDialog )
   strict private
     procedure CreateNPCRects(const NPCidx, CharX: Integer);
     procedure UpdateNPCRects(const NPCidx, CharX: Integer);
@@ -165,12 +166,12 @@ begin
   else
     vOffset := 214 - TResource( TCharacter( NPCList.items[ 0 ] ).resource ).FrameHeight div 2;
 
-  Selectrect[ NPCidx ].rect := rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 + 20 );
+  Selectrect[ NPCidx ].rect := ApplyOffset( rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 + 20 ) );
   SelectRect[ NPCidx ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ NPCidx ] ).name + txtMessage[ 15 ];
   SelectRect[ NPCidx ].Enabled := true;
   if not assigned( Character ) then
   begin
-    NewAIBox := TAIOptions.create( TCharacter( NPCList.items[ NPCidx ] ), AIImage, DXBox2, CharX + cWidth, vOffset + vOffAdj );
+    NewAIBox := TAIOptions.Create( TCharacter( NPCList.items[ NPCidx ] ), AIImage, DXBox2, CharX + cWidth + Offset.X, vOffset + vOffAdj + Offset.Y, Offset );
     AIBoxList.Add( NewAIBox );
   end;
 end;
@@ -226,21 +227,21 @@ begin
     DXBackToGame := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'obInvBackToGame.bmp', cInvisColor );
     DXLeftGeeble := SoAOS_DX_LoadBMP( InterfacePath + 'LogLeftGeeble.bmp', cTransparent );
     DXRightGeeble := SoAOS_DX_LoadBMP( InterfacePath + 'LogRightGeeble.bmp', cTransparent );
-    DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'LogScreen.bmp', cTransparent, width, height );
+    DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'LogScreen.bmp', cTransparent, DlgWidth, DlgHeight );
 
     DrawAlpha( DXBack, Rect( 0, 380, 213, 380 + 81 ), Rect( 0, 0, 213, 81 ), DXLeftGeeble, True, 60 );
     DrawAlpha( DXBack, Rect( 452, 0, 452 + 213, 81 ), Rect( 0, 0, 213, 81 ), DXRightGeeble, True, 60 );
 
-    pr := Rect( 0, 0, width, height );
-    lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, DlgWidth, DlgHeight );
+    lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
   //Now for the Alpha'ed edges
     DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'obInvRightShadow.bmp', cInvisColor, width, height );
-    DrawSub( lpDDSBack, Rect( 659, 0, 659 + width, height ), Rect( 0, 0, width, height ), DXBorder, True, 150 );
+    DrawSub( lpDDSBack, ApplyOffset( Rect( 659, 0, 659 + width, height ) ), Rect( 0, 0, width, height ), DXBorder, True, 150 );
     DXBorder := nil;
 
     DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'obInvBottomShadow.bmp', cInvisColor, width, height );
-    DrawSub( lpDDSBack, Rect( 0, 456, width, 456 + height ), Rect( 0, 0, width, height ), DXBorder, True, 150 );
+    DrawSub( lpDDSBack, ApplyOffset( Rect( 0, 456, width, 456 + height ) ), Rect( 0, 0, width, height ), DXBorder, True, 150 );
     DXBorder := nil; //release DXBorder
 
     AIImage := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'CommandTree.bmp', cTransparent );
@@ -248,20 +249,20 @@ begin
     DXLeftGeeble := nil;
     DXRightGeeble := nil;
 
-    pText.PlotText( txtMessage[ 0 ], 5, 5, 240 );
+    PlotText( txtMessage[ 0 ], 5, 5, 240 );
     if assigned( Character ) then
     begin
-      pText.PlotText( txtMessage[ 1 ], 30, 296, 240 );
-      pText.PlotText( txtMessage[ 2 ], 30, 316, 240 );
+      PlotText( txtMessage[ 1 ], 30, 296, 240 );
+      PlotText( txtMessage[ 2 ], 30, 316, 240 );
 
-      pText.PlotText( txtMessage[ 3 ], 400, 90, 240 );
-      pText.PlotText( txtMessage[ 4 ], 400, 110, 240 );
-      pText.PlotText( txtMessage[ 5 ], 400, 130, 240 );
+      PlotText( txtMessage[ 3 ], 400, 90, 240 );
+      PlotText( txtMessage[ 4 ], 400, 110, 240 );
+      PlotText( txtMessage[ 5 ], 400, 130, 240 );
     end
     else
     begin
-      pText.PlotText( txtMessage[ 1 ], 30, 196, 240 );
-      pText.PlotText( txtMessage[ 2 ], 30, 216, 240 );
+      PlotText( txtMessage[ 1 ], 30, 196, 240 );
+      PlotText( txtMessage[ 2 ], 30, 216, 240 );
     end;
 
     AIBoxList := TList.create;
@@ -293,7 +294,7 @@ begin
           //check to see if we already have a full party and are trying to add a new player
         if (NPCList.count=5) and (CheckBox[0]=false) and (CheckBox[1]=false) and (CheckBox[2]=false) and (CheckBox[3]=false) and (CheckBox[4]=false) then
         begin
-          pText.PlotTextBlock( txtMessage[ 6 ] + character.name + '.', 87, 590, 188, 240 );
+          PlotTextBlock( txtMessage[ 6 ] + character.name + '.', 87, 590, 188, 240 );
         end
         else
         begin
@@ -302,7 +303,7 @@ begin
           if assigned( Character ) then
           begin
             pr := rect( 40, 174, 590, 245 );
-            lpDDSBack.BltFast( 40, 174, DXBack, @pr, DDBLTFAST_WAIT );
+            lpDDSBack.BltFast( 40 + Offset.X, 174 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
           end;
           ShowChars;
           SoAOS_DX_BltFront;
@@ -317,7 +318,7 @@ begin
       begin
         if (NPCList.count=5) and (CheckBox[0]=true) and (CheckBox[1]=true) and (CheckBox[2]=false) and (CheckBox[3]=false) and (CheckBox[4]=false) then
         begin
-          pText.PlotTextBlock( txtMessage[ 7 ] + Character.name + txtMessage[ 8 ] + TCharacter( NPCList.items[ 1 ] ).name + txtMessage[ 9 ], 87, 590, 174, 240 );
+          PlotTextBlock( txtMessage[ 7 ] + Character.name + txtMessage[ 8 ] + TCharacter( NPCList.items[ 1 ] ).name + txtMessage[ 9 ], 87, 590, 174, 240 );
         end
         else
         begin
@@ -326,7 +327,7 @@ begin
           if assigned( Character ) then
           begin
             pr := rect( 40, 174, 590, 245 );
-            lpDDSBack.BltFast( 40, 174, DXBack, @pr, DDBLTFAST_WAIT );
+            lpDDSBack.BltFast( 40 + Offset.X, 174 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
           end;
           ShowChars;
           SoAOS_DX_BltFront;
@@ -339,7 +340,7 @@ begin
       begin
         if assigned(Character) and (NPCList.count=5) and (CheckBox[0]=true) and (CheckBox[2]=true) and (CheckBox[1]=false) and (CheckBox[3]=false) and (CheckBox[4]=false) then
         begin
-          pText.PlotTextBlock( txtMessage[ 7 ] + Character.name + txtMessage[ 8 ] + TCharacter( NPCList.items[ 2 ] ).name + txtMessage[ 9 ], 87, 590, 174, 240 );
+          PlotTextBlock( txtMessage[ 7 ] + Character.name + txtMessage[ 8 ] + TCharacter( NPCList.items[ 2 ] ).name + txtMessage[ 9 ], 87, 590, 174, 240 );
         end
         else
         begin
@@ -348,7 +349,7 @@ begin
           if assigned( Character ) then
           begin
             pr := Rect( 40, 174, 590, 245 );
-            lpDDSBack.BltFast( 40, 174, DXBack, @pr, DDBLTFAST_WAIT );
+            lpDDSBack.BltFast( 40 + Offset.X, 174 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
           end;
           ShowChars;
           SoAOS_DX_BltFront;
@@ -361,7 +362,7 @@ begin
       begin
         if assigned(Character) and (NPCList.count=5) and (CheckBox[0]=true) and (CheckBox[3]=true) and (CheckBox[2]=false) and (CheckBox[1]=false) and (CheckBox[4]=false) then
         begin
-          pText.PlotTextBlock( txtMessage[ 7 ] + Character.name + txtMessage[ 8 ] + TCharacter( NPCList.items[ 3 ] ).name + txtMessage[ 9 ], 87, 590, 174, 240 );
+          PlotTextBlock( txtMessage[ 7 ] + Character.name + txtMessage[ 8 ] + TCharacter( NPCList.items[ 3 ] ).name + txtMessage[ 9 ], 87, 590, 174, 240 );
         end
         else
         begin
@@ -370,7 +371,7 @@ begin
           if assigned( Character ) then
           begin
             pr := Rect( 40, 174, 590, 245 );
-            lpDDSBack.BltFast( 40, 174, DXBack, @pr, DDBLTFAST_WAIT );
+            lpDDSBack.BltFast( 40 + Offset.X, 174 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
           end;
           ShowChars;
           SoAOS_DX_BltFront;
@@ -383,7 +384,7 @@ begin
       begin
         if assigned(Character) and (NPCList.count=5) and (CheckBox[0]=true) and (CheckBox[4]=true) and (CheckBox[2]=false) and (CheckBox[3]=false) and (CheckBox[1]=false) then
         begin
-          pText.PlotTextBlock( txtMessage[ 7 ] + Character.name + txtMessage[ 8 ] + TCharacter( NPCList.items[ 4 ] ).name + txtMessage[ 9 ], 87, 590, 174, 240 );
+          PlotTextBlock( txtMessage[ 7 ] + Character.name + txtMessage[ 8 ] + TCharacter( NPCList.items[ 4 ] ).name + txtMessage[ 9 ], 87, 590, 174, 240 );
         end
         else
         begin
@@ -392,7 +393,7 @@ begin
           if assigned( Character ) then
           begin
             pr := Rect( 40, 174, 590, 245 );
-            lpDDSBack.BltFast( 40, 174, DXBack, @pr, DDBLTFAST_WAIT );
+            lpDDSBack.BltFast( 40 + Offset.X, 174 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
           end;
           ShowChars;
           SoAOS_DX_BltFront;
@@ -400,10 +401,9 @@ begin
       end; //end if
     end; //end if
 
-
     for i := 0 to AIBoxList.count - 1 do
     begin
-      if PtInRect( TAIOptions( AIBoxList.items[ i ] ).Region, point( X, Y ) ) then
+      if PtInRect( ApplyOffset( TAIOptions( AIBoxList.items[ i ] ).Region ), point( X, Y ) ) then
       begin
         TAIOptions( AIBoxList.items[ i ] ).Click( X, Y );
         ShowChars;
@@ -412,7 +412,7 @@ begin
       end;
     end;
 
-    if PtinRect( rect( 588, 407, 588 + 77, 412 + 54 ), point( X, Y ) ) then //over back button
+    if PtinRect( ApplyOffset( rect( 588, 407, 588 + 77, 412 + 54 ) ), point( X, Y ) ) then //over back button
       Close;
 
   except
@@ -432,21 +432,21 @@ begin
   Log.DebugLog(FailName);
   try
     pr := Rect( 588, 407, 588 + 77, 407 + 54 );
-    lpDDSBack.BltFast( 588, 407, DXBack, @pr, DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 588 + Offset.X, 407 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
     pr := Rect( 42, 388, 590, 460 );
-    lpDDSBack.BltFast( 42, 388, DXBack, @pr, DDBLTFAST_WAIT );
-    if PtinRect( rect( 588, 407, 588 + 77, 412 + 54 ), point( X, Y ) ) then
+    lpDDSBack.BltFast( 42 + Offset.X, 388 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
+    if PtinRect( ApplyOffset( rect( 588, 407, 588 + 77, 412 + 54 ) ), point( X, Y ) ) then
     begin //over back button
       //plot highlighted back to game
       pr := Rect( 0, 0, 77, 54 );
-      lpDDSBack.BltFast( 588, 407, DXBackToGame, @pr, DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 588 + Offset.X, 407 + Offset.Y, DXBackToGame, @pr, DDBLTFAST_WAIT );
     end;
 
     if assigned( Character ) then
     begin
       if PtInRect( SelectRect[ 0 ].rect, point( X, Y ) ) then
       begin
-        pText.PlotTextBlock( SelectRect[ 0 ].info, 122, 580, 410, 240 );
+        PlotTextBlock( SelectRect[ 0 ].info, 122, 580, 410, 240 );
       end;
     end;
 
@@ -454,7 +454,7 @@ begin
     begin
       if SelectRect[ i ].Enabled and PtInRect( SelectRect[ i ].rect, point( X, Y ) ) then
       begin
-        pText.PlotTextBlock( SelectRect[ i ].info, 122, 580, 410, 240 );
+        PlotTextBlock( SelectRect[ i ].info, 122, 580, 410, 240 );
       end;
     end;
 
@@ -518,28 +518,28 @@ begin
   if NPCList.count >3 then
   begin
     pr := Rect( 40, vOffset + VAdj1 - 120, 550, vOffset + VAdj1 - 100 );
-    lpDDSBack.BltFast( 40, vOffset + VAdj1 - 120, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT)
+    lpDDSBack.BltFast( 40 + Offset.X, vOffset + VAdj1 - 120 + Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT)
   end
   else
   begin
     pr := Rect( 40, vOffset + VAdj1, 550, vOffset + VAdj1 + 24 );
-    lpDDSBack.BltFast( 40, vOffset + VAdj1, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 40 + Offset.X, vOffset + VAdj1 + Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   end;
 
   if assigned( character ) and assigned( OnDraw ) then
   begin
     CharX := cOffset + ( 463 div 2 ) - cWidth div 2;
-    OnDraw( Character, CharX, vOffset - 200 ); //guy to add
+    OnDraw( Character, CharX + Offset.X, vOffset - 200 + Offset.Y ); //guy to add
     i := pText.TinyTextLength( Character.name );
-    pText.PlotTinyText( Character.name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset + 4 - 200, 240 );
-    pText.PlotTinyText( txtMessage[ 10 ], CharX + 65, vOffset - 200 + VAdj2, 240 );
+    PlotTinyText( Character.name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset + 4 - 200, 240 );
+    PlotTinyText( txtMessage[ 10 ], CharX + 65, vOffset - 200 + VAdj2, 240 );
     pr := Rect( CharX + 45, vOffset - 200 + VAdj1, CharX + 45 + 15, vOffset - 200 + VAdj1 + 15 );
-    lpDDSBack.BltFast( CharX + 45, vOffset - 200 + VAdj1, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( CharX + 45 + Offset.X, vOffset - 200 + VAdj1 + Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     pr := Rect( 0, 0, 15, 15 );
     if CheckBox[ 0 ] then
-      lpDDSBack.BltFast( CharX + 45, vOffset - 200 + VAdj1, DXBox2, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
+      lpDDSBack.BltFast( CharX + 45 + Offset.X, vOffset - 200 + VAdj1 + Offset.Y, DXBox2, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
     else
-      lpDDSBack.BltFast( CharX + 45, vOffset - 200 + VAdj1, DXBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( CharX + 45 + Offset.X, vOffset - 200 + VAdj1 + Offset.Y, DXBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   end; //endif assigned
 
   if Assigned( OnDraw ) then
@@ -582,7 +582,7 @@ begin
     begin
       with TAIOptions( AIBoxList.items[ i ] ) do
       begin
-        lpddsback.BltFast( Region.Left, Region.Top, DXBack,
+        lpddsback.BltFast( Region.Left + Offset.X, Region.Top + Offset.Y, DXBack,
           @Region, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         Draw;
       end;
@@ -618,14 +618,14 @@ begin
   cWidth := TResource( TCharacter( NPCList.items[ 0 ] ).resource ).FrameWidth;
 
   i := pText.TinyTextLength( TCharacter( NPCList.items[ NPCidx ] ).name );
-  pText.PlotTinyText( TCharacter( NPCList.items[ NPCidx ] ).name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset - vOffAdj + 4, 240 );
-  OnDraw( TCharacter( NPCList.items[ NPCidx ] ), CharX, vOffset - vOffAdj );
-  pText.PlotTinyText( txtMessage[ 11 ], CharX + 65, vOffset + VAdj2, 240 );
+  PlotTinyText( TCharacter( NPCList.items[ NPCidx ] ).name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset - vOffAdj + 4, 240 );
+  OnDraw( TCharacter( NPCList.items[ NPCidx ] ), CharX + Offset.X, vOffset - vOffAdj + Offset.Y );
+  PlotTinyText( txtMessage[ 11 ], CharX + 65, vOffset + VAdj2, 240 );
   pr := Rect( 0, 0, 15, 15 );
   if CheckBox[ NPCidx ] then
-    lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1, DXBox2, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
+    lpDDSBack.BltFast( CharX + 45 + Offset.X, vOffset + VAdj1 + Offset.Y, DXBox2, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
   else
-    lpDDSBack.BltFast( CharX + 45, vOffset + VAdj1, DXBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( CharX + 45 + Offset.X, vOffset + VAdj1 + Offset.Y, DXBox, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 end;
 
 procedure TAddKickNPC.SetUpCollRects;
@@ -639,7 +639,7 @@ begin
   if assigned( character ) then
   begin
     CharX := cOffset + ( 463 div 2 ) - cWidth div 2;
-    Selectrect[ 0 ].rect := rect( CharX + 45, 142, CharX + 125, 142 + 20 );
+    Selectrect[ 0 ].rect := ApplyOffset( rect( CharX + 45, 142, CharX + 125, 142 + 20 ) );
     SelectRect[ 0 ].info := txtMessage[ 12 ] + Character.name + txtMessage[ 13 ];
     SelectRect[ 0 ].Enabled := true;
   end;
@@ -730,8 +730,7 @@ begin
   end;
 end;
 
-constructor TAIOptions.Create( Character : TCharacter;
-  AImage, DXCheck : IDirectDrawSurface; X, Y : integer );
+constructor TAIOptions.Create( Character : TCharacter; AImage, DXCheck : IDirectDrawSurface; X, Y : integer; AOffset : TPoint );
 var
   W, H : integer;
   i : integer;
@@ -739,13 +738,14 @@ begin
   inherited Create;
   if assigned( Character.AI ) and ( Character.AI is TCompanion ) then
     AI := TCompanion( Character.AI );
-  Image := AImage;
+  Image := AImage; // CommandTree
   Check := DXCheck;
+  Offset := AOffset;
   GetSurfaceDims( W, H, Image );
-  Region.Left := X;
-  Region.Top := Y;
-  Region.Right := X + W;
-  Region.Bottom := Y + H;
+  Region.Left := X - Offset.X;
+  Region.Top := Y - Offset.Y;
+  Region.Right := X + W - Offset.X;
+  Region.Bottom := Y + H - Offset.Y;
 
   CheckBox[ 0 ].TopLeft := Point( X + 1, Y + 21 );
   CheckBox[ 1 ].TopLeft := Point( X + 1, Y + 39 );
@@ -767,8 +767,9 @@ procedure TAIOptions.Draw;
 var
   pr : TRect;
 begin
+  // Clear checkbox
   pr := Rect( 0, 0, Region.Right - Region.Left, Region.Bottom - Region.Top );
-  lpddsback.BltFast( Region.Left, Region.Top, Image, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+  lpddsback.BltFast( Region.Left + Offset.X, Region.Top + Offset.Y, Image, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
   if assigned( AI ) then
   begin
