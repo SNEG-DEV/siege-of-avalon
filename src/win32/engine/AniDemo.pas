@@ -4396,7 +4396,7 @@ begin
     begin
       pr := Rect( 0, 0, ResWidth, ResHeight );
       lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
-      FillRectSub( lpDDSBack, Rect( 0, 0, 703, 511 ), $202020 );
+      FillRectSub( lpDDSBack, Rect( 0, 0, ScreenMetrics.GameWidth, ScreenMetrics.GameHeight ), $202020 );
       if FSpellBarActive then
       begin
         pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, 114 );
@@ -6628,7 +6628,7 @@ begin
       begin
         pr := Rect( 0, 0, ResWidth, ResHeight );
         lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
-        FillRectSub( lpDDSBack, Rect( 0, 0, 703, 511 ), $202020 );
+        FillRectSub( lpDDSBack, Rect( 0, 0, ScreenMetrics.GameWidth, ScreenMetrics.GameHeight ), $202020 );
         if FSpellBarActive then
         begin
           pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, 114 );
