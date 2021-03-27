@@ -182,10 +182,20 @@ begin
     Image := SoAOS_DX_LoadBMP( InterfacePath + 'DialogueBox.bmp', cTransparent, DlgWidth, DlgHeight );
     ReEntry := True;
 
-    X1 := 65;
-    Y1 := 40;
-    X2 := X1 + DlgWidth;
-    Y2 := Y1 + DlgHeight;
+    if ScreenMetrics.ScreenWidth>800 then
+    begin
+      X1 := 0;
+      Y1 := 0;
+      X2 := DlgWidth;
+      Y2 := DlgHeight;
+    end
+    else
+    begin
+      X1 := 65;
+      Y1 := 40;
+      X2 := X1 + DlgWidth;
+      Y2 := Y1 + DlgHeight;
+    end;
 
     HLText := -1;
     pText.LoadFontGraphic( 'Inventory' );
