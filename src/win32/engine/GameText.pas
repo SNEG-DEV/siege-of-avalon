@@ -180,9 +180,18 @@ var
   MsgHeight: Integer;
   dpiForm, dpiSystem: cardinal;
 begin
-  dpiForm := GetDpiForWindow(frmMain.Handle);
-  dpiSystem := GetDpiForSystem;
-  FontSize := Trunc(FontSize * (dpiForm/dpiSystem));
+  try
+    if TOSVersion.Major=10 then
+    begin
+      dpiForm := GetDpiForWindow(frmMain.Handle);
+      dpiSystem := GetDpiForSystem;
+      FontSize := Trunc(FontSize * (dpiForm/dpiSystem));
+    end
+    else
+      FontSize := Trunc(FontSize/frmMain.ScaleFactor);
+    Log.Log('FontSize now: '+FontSize.ToString);
+  except
+  end;
   BM := TBitmap.Create;
   try
     BM.Canvas.Font.Name:='BlackChancery';

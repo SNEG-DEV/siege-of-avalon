@@ -279,8 +279,24 @@ end; //Init
 
 
 procedure TIntro.KeyDown( Sender : TObject; var key : Word; Shift : TShiftState );
+var
+  pr : TRect;
 begin
-    //pFloater.init;
+  if AreYouSureBoxVisible then
+  begin
+    if Key=13 then
+    begin
+      MenuChoice := 7;
+      Close;
+    end;
+    if key=27 then
+    begin
+      AreYouSureBoxVisible := false;
+      pr := Rect( 0, 0, DlgWidth, DlgHeight );
+      lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_WAIT ); //clear screen
+      SoAOS_DX_BltFront;
+    end;
+  end;
 end;
 
 procedure TIntro.MouseDown( Sender : TObject; Button : TMouseButton;
