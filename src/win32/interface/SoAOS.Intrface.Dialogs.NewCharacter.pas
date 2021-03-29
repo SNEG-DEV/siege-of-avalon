@@ -110,7 +110,7 @@ type
     CaratTimer : TTimer;
     BoxOpen : TBoxEnum;
     LoopCounter, Spinner : integer;
-    txtMessage : array[ 0..104 ] of string;
+    txtMessage : array[ 0..105 ] of string;
     rLeftArrow, rRightArrow: TRect;
 
     Players: TStringList; // TArray<string>;
@@ -215,7 +215,7 @@ begin
     FOnDraw := CharCreationDraw;
 
     ExText.Open( 'CharCreation' );
-    for i := 0 to 104 do
+    for i := 0 to 105 do
       txtMessage[ i ] := ExText.GetText( 'Message' + inttostr( i ) );
 
     ChosenTraining := -1; //initialize training to nothing
@@ -681,9 +681,9 @@ begin
     if rLeftArrow.Contains( Point( X, Y) ) then
     begin
       if PlayerResourceIdx = 0 then
-        PlayerInfo := 'Change Player to: ' + ChangeFileExt(ExtractFileName(Players[Players.Count-1]), '')
+        PlayerInfo := txtMessage[ 105 ] + ChangeFileExt(ExtractFileName(Players[Players.Count-1]), '')
       else
-        PlayerInfo := 'Change Player to: ' + ChangeFileExt(ExtractFileName(Players[PlayerResourceIdx-1]), '');
+        PlayerInfo := txtMessage[ 105 ] + ChangeFileExt(ExtractFileName(Players[PlayerResourceIdx-1]), '');
 
       if BoxOpen <> bxTraining then
         PlotTextBlock( PlayerInfo, 500, 680, 165, 240, UseSmallFont )
@@ -694,9 +694,9 @@ begin
     if rRightArrow.Contains( Point( X, Y) ) then
     begin
       if PlayerResourceIdx = ( Players.Count-1 ) then
-        PlayerInfo := 'Change Player to: ' + ChangeFileExt(ExtractFileName(Players[0]), '')
+        PlayerInfo := txtMessage[ 105 ] + ChangeFileExt(ExtractFileName(Players[0]), '')
       else
-        PlayerInfo := 'Change Player to: ' + ChangeFileExt(ExtractFileName(Players[PlayerResourceIdx+1]), '');
+        PlayerInfo := txtMessage[ 105 ] + ChangeFileExt(ExtractFileName(Players[PlayerResourceIdx+1]), '');
 
       if BoxOpen <> bxTraining then
         PlotTextBlock( PlayerInfo, 500, 680, 165, 240, UseSmallFont )
