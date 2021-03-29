@@ -54,11 +54,11 @@ uses
   Character,
   Resource,
   GameText,
-  Display,
   Parts,
   Scroll,
   Logfile,
   SoAOS.Animation,
+  SoAOS.Intrface.Dialogs,
   Engine;
 
 type
@@ -75,9 +75,11 @@ type
     DXSurface : IDirectDrawSurface; //barbie graphic surface
     DXSurfaceIcon : IDirectDrawSurface; //icon graphic surface
     DXShadow : IDirectDrawSurface; //The shadow
+    function Rect0 : TRect;
+    function InvRect : TRect;
   end;
 
-  TObjInventory = class( TDisplay )
+  TObjInventory = class( TDialog )
   private
     CheckForGroundDrop : boolean;
     PlotArray : array[ 0..11, 0..13 ] of integer;
@@ -120,6 +122,7 @@ type
       Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
     procedure MouseUp( Sender : TObject; Button : TMouseButton;
       Shift : TShiftState; X, Y, GridX, GridY : Integer ); override;
+    procedure MouseWheel( Sender: TObject; Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean );
   public
     Character : TCharacter; //the charachter we draw inventory from to fill left box
     OtherOb : TSpriteObject; //Tcharacter; //Either use this or
@@ -195,6 +198,9 @@ begin
     if Loaded then
       Exit;
     inherited;
+
+    frmMain.OnMouseWheel := MouseWheel;
+
     MouseCursor.Cleanup;
     pr := Rect( 0, 0, ResWidth, ResHeight );
     lpDDSBack.BltFast( 0, 0, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
@@ -222,29 +228,29 @@ begin
     DXBackToGame := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'obInvBackToGame.bmp', cInvisColor );
     DXRightAll := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'obInvRightAll.bmp', cInvisColor );
     DXLeftAll := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'obInvLeftAll.bmp', cInvisColor );
-    DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'obInvCharacterToObjectInventory.bmp', cInvisColor, width, height );
+    DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'obInvCharacterToObjectInventory.bmp', cInvisColor, DlgWidth, DlgHeight );
   //DxDirty := DDGetImage(lpDD, BMBack, InvisColor, False); //for now this is how we will do it
   //build the left side inventory space
     BuildGrid;
   //now we blit the screen to the backbuffer
-    pr := Rect( 0, 0, width, height );
-    lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    pr := Rect( 0, 0, DlgWidth, DlgHeight );
+    lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   //Now for the Alpha'ed edges
     DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'obInvRightShadow.bmp', cInvisColor, width, height );
-    DrawSub( lpDDSBack, Rect( 659, 0, 659 + width, height ), Rect( 0, 0, width, height ), DXBorder, True, Alpha );
+    DrawSub( lpDDSBack, ApplyOffset( Rect( 659, 0, 659 + width, height ) ), Rect( 0, 0, width, height ), DXBorder, True, Alpha );
 
     DXBorder := nil;
 
     DXBorder := SoAOS_DX_LoadBMP( InterfacePath + 'obInvBottomShadow.bmp', cInvisColor, width, height );
-    DrawSub( lpDDSBack, Rect( 0, 456, width, 456 + height ), Rect( 0, 0, width, height ), DXBorder, True, Alpha );
+    DrawSub( lpDDSBack, ApplyOffset( Rect( 0, 456, width, 456 + height ) ), Rect( 0, 0, width, height ), DXBorder, True, Alpha );
     DXBorder := nil; //release DXBorder
 
   //Now put the names up
-    pText.PlotTextCentered( Character.name, 27, 243, 10, Alpha );
+    PlotTextCentered( Character.name, 27, 243, 10, Alpha );
     if OtherOb is TCharacter then
-      pText.PlotTextCentered( TCharacter( OtherOb ).name, 417, 633, 10, Alpha )
+      PlotTextCentered( TCharacter( OtherOb ).name, 417, 633, 10, Alpha )
     else
-      pText.PlotTextCentered( TContainer( OtherOb ).name, 417, 633, 10, Alpha );
+      PlotTextCentered( TContainer( OtherOb ).name, 417, 633, 10, Alpha );
 
 
   //Create list
@@ -333,14 +339,14 @@ begin
       //lpDDSBack.BltFast(pTempItems(ItemList.Items[i]).InvX, pTempItems(ItemList.Items[i]).InvY, pTempItems(ItemList.Items[i]).DXSurface, Rect(0, 0, pTempItems(ItemList.Items[i]).W, pTempItems(ItemList.Items[i]).H), DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT)
       if pTempItems( ItemList.Items[ i ] ).WhoHasThis <> 3 then
       begin //if not in the ground slot
-        DrawSub( lpDDSBack, rect( pTempItems( ItemList.Items[ i ] ).InvX, pTempItems( ItemList.Items[ i ] ).InvY, pTempItems( ItemList.Items[ i ] ).InvX + pTempItems( ItemList.Items[ i ] ).W, pTempItems( ItemList.Items[ i ] ).InvY + pTempItems( ItemList.Items[ i ] ).H ), Rect( 0, 0, pTempItems( ItemList.Items[ i ] ).W, pTempItems( ItemList.Items[ i ] ).H ), pTempItems( ItemList.Items[ i ] ).DXShadow, True, ShadowAlpha );
+        DrawSub( lpDDSBack, ApplyOffset( rect( pTempItems( ItemList.Items[ i ] ).InvX, pTempItems( ItemList.Items[ i ] ).InvY, pTempItems( ItemList.Items[ i ] ).InvX + pTempItems( ItemList.Items[ i ] ).W, pTempItems( ItemList.Items[ i ] ).InvY + pTempItems( ItemList.Items[ i ] ).H ) ), Rect( 0, 0, pTempItems( ItemList.Items[ i ] ).W, pTempItems( ItemList.Items[ i ] ).H ), pTempItems( ItemList.Items[ i ] ).DXShadow, True, ShadowAlpha );
         pr := Rect( 0, 0, pTempItems( ItemList.Items[ i ] ).W, pTempItems( ItemList.Items[ i ] ).H );
-        lpDDSBack.BltFast( pTempItems( ItemList.Items[ i ] ).InvX, pTempItems( ItemList.Items[ i ] ).InvY, pTempItems( ItemList.Items[ i ] ).DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
+        lpDDSBack.BltFast( pTempItems( ItemList.Items[ i ] ).InvX + Offset.X, pTempItems( ItemList.Items[ i ] ).InvY + Offset.Y, pTempItems( ItemList.Items[ i ] ).DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
       end
       else //In the ground slot so plot iconic image
       begin
         pr := Rect( 0, 0, cGroundListWidth, cGroundListHeight );
-        lpDDSBack.BltFast( pTempItems( ItemList.Items[ i ] ).InvX, pTempItems( ItemList.Items[ i ] ).InvY, pTempItems( ItemList.Items[ i ] ).DXSurfaceIcon, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        lpDDSBack.BltFast( pTempItems( ItemList.Items[ i ] ).InvX + Offset.X, pTempItems( ItemList.Items[ i ] ).InvY + Offset.Y, pTempItems( ItemList.Items[ i ] ).DXSurfaceIcon, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       end;
     end;
   //Whew! Now we flip it all to the screen
@@ -370,7 +376,8 @@ begin
     begin //if no piece is being dragged pick one up
       if DlgScroll.ScrollIsShowing then
       begin
-        if PtInRect( rect( 119, 30, 119 + 443, 30 + 90 ), point( X, Y ) ) or PtInRect( rect( 119, 373, 119 + 443, 373 + 70 ), point( X, Y ) ) then //or PtInRect(rect(171,50,171+338,380),point(X,Y)) then
+        if PtInRect( ApplyOffset( rect( 119, 30, 119 + 443, 30 + 90 )), point( X, Y ) ) or
+          PtInRect( ApplyOffset( rect( 119, 373, 119 + 443, 373 + 70 )), point( X, Y ) ) then
         begin
           if Y < 248 then
           begin
@@ -392,20 +399,20 @@ begin
           Paint;
         end;
       end
-      else if ( X > 595 ) and ( X < 668 ) and ( Y > 418 ) and ( Y < 463 ) then
+      else if PtInRect( ApplyOffset( Rect( 595, 418, 668, 463) ), Point( x, y) ) then
       begin //they hit the back to button
       //WriteTheInventoryData;            //write the data back
         Close; //lose the screen
       end
-      else if ( X > 300 ) and ( X < 344 ) and ( Y > 197 ) and ( Y < 214 ) then
+      else if PtInRect( ApplyOffset( Rect( 300, 197, 344, 214) ), Point( x, y ) ) then
       begin //Move all from left to right
         MoveAll( 1, 2 ); //move all items from player to object/player2
       end
-      else if ( X > 304 ) and ( X < 343 ) and ( Y > 224 ) and ( Y < 243 ) then
+      else if PtInRect( ApplyOffset( Rect( 304, 224, 343, 243) ), Point( x, y ) ) then
       begin //Move all from right to left
         MoveAll( 2, 1 ); //move all items from object/player2 to Player
       end
-      else if ( X > 271 ) and ( X < 287 ) and ( Y > 375 ) and ( Y < 407 ) then
+      else if PtInRect( ApplyOffset( Rect( 271, 375, 287, 407) ), Point( x, y ) ) then
       begin //left arrow for ground
         if GroundOrderList.Count > 1 then
         begin //get the prev item on the ground and show it
@@ -415,7 +422,7 @@ begin
           //replace the back from the DXBack buffer.
           //lpDDSBack.BltFast(pTempItems(GroundOrderList.Items[j]).InvX, pTempItems(GroundOrderList.Items[j]).InvY, DXBack, Rect(pTempItems(GroundOrderList.Items[j]).InvX, pTempItems(GroundOrderList.Items[j]).InvY, pTempItems(GroundOrderList.Items[j]).InvX + pTempItems(GroundOrderList.Items[j]).W, pTempItems(GroundOrderList.Items[j]).InvY + pTempItems(GroundOrderList.Items[j]).H), DDBLTFAST_WAIT);
             pr := Rect( 287, 376, 363, 406 );
-            lpDDSBack.BltFast( 287, 376, DXBack, @pr, DDBLTFAST_WAIT );
+            lpDDSBack.BltFast( 287 + Offset.X, 376 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
             pTempItems( GroundOrderList.Items[ j ] ).InvX := 999;
             pTempItems( GroundOrderList.Items[ j ] ).InvY := 999;
             j := j - 1;
@@ -423,7 +430,7 @@ begin
             pTempItems( GroundOrderList.Items[ j ] ).InvX := 288; //325-pTempItems(GroundOrderList.Items[j]).IW div 2;
             pTempItems( GroundOrderList.Items[ j ] ).InvY := 377; //391-pTempItems(GroundOrderList.Items[j]).IH div 2;
             pr := Rect( 0, 0, cGroundListWidth, cGroundListHeight );
-            lpDDSBack.BltFast( pTempItems( GroundOrderList.Items[ j ] ).InvX, pTempItems( GroundOrderList.Items[ j ] ).InvY, pTempItems( GroundOrderList.Items[ j ] ).DXSurfaceIcon, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+            lpDDSBack.BltFast( pTempItems( GroundOrderList.Items[ j ] ).InvX + Offset.X, pTempItems( GroundOrderList.Items[ j ] ).InvY + Offset.Y, pTempItems( GroundOrderList.Items[ j ] ).DXSurfaceIcon, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
             TopGroundIndex := j;
           //DebugPlot(TopGroundIndex);
           end
@@ -433,7 +440,7 @@ begin
           end;
         end;
       end
-      else if ( X > 364 ) and ( X < 376 ) and ( Y > 375 ) and ( Y < 407 ) then
+      else if PtInRect( ApplyOffset( Rect( 364, 375, 376, 407) ), Point( x, y) ) then
       begin //right arrow for ground
         if GroundOrderList.Count > 1 then
         begin //get the Next item on the ground and show it
@@ -443,7 +450,7 @@ begin
           //replace the back from the DXBack buffer.
           //lpDDSBack.BltFast(pTempItems(GroundOrderList.Items[j]).InvX, pTempItems(GroundOrderList.Items[j]).InvY, DXBack, Rect(pTempItems(GroundOrderList.Items[j]).InvX, pTempItems(GroundOrderList.Items[j]).InvY, pTempItems(GroundOrderList.Items[j]).InvX + pTempItems(GroundOrderList.Items[j]).W, pTempItems(GroundOrderList.Items[j]).InvY + pTempItems(GroundOrderList.Items[j]).H), DDBLTFAST_WAIT);
             pr := Rect( 287, 376, 363, 406 );
-            lpDDSBack.BltFast( 287, 376, DXBack, @pr, DDBLTFAST_WAIT );
+            lpDDSBack.BltFast( 287 + Offset.X, 376 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
             pTempItems( GroundOrderList.Items[ j ] ).InvX := 999;
             pTempItems( GroundOrderList.Items[ j ] ).InvY := 999;
             j := j + 1;
@@ -451,7 +458,7 @@ begin
             pTempItems( GroundOrderList.Items[ j ] ).InvX := 288; //325-pTempItems(GroundOrderList.Items[j]).IW div 2;
             pTempItems( GroundOrderList.Items[ j ] ).InvY := 377; //391-pTempItems(GroundOrderList.Items[j]).IH div 2;
             pr := Rect( 0, 0, cGroundListWidth, cGroundListHeight );
-            lpDDSBack.BltFast( pTempItems( GroundOrderList.Items[ j ] ).InvX, pTempItems( GroundOrderList.Items[ j ] ).InvY, pTempItems( GroundOrderList.Items[ j ] ).DXSurfaceIcon, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+            lpDDSBack.BltFast( pTempItems( GroundOrderList.Items[ j ] ).InvX + Offset.X, pTempItems( GroundOrderList.Items[ j ] ).InvY + Offset.Y, pTempItems( GroundOrderList.Items[ j ] ).DXSurfaceIcon, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
             TopGroundIndex := j;
           //DebugPlot(TopGroundIndex);
           end
@@ -461,7 +468,7 @@ begin
           end;
         end;
       end
-      else if ( x > 287 ) and ( x < 376 ) and ( y > 363 ) and ( y < 406 ) and ( CurrentSelectedItem = -1 ) then
+      else if PtInRect( ApplyOffset( Rect( 287, 363, 376, 406) ), Point( x, y) ) and ( CurrentSelectedItem = -1 ) then
       begin //over the ground slot
         //If we are pulling this from the ground slot, pick a new top item
         if GroundOrderList.Count > 0 then
@@ -469,13 +476,13 @@ begin
           CurrentSelectedItem := ItemList.IndexOf( GroundOrderList.items[ TopGroundIndex ] );
           if Button = mbRight then
           begin
-            DlgScroll.OpenStatsScroll( pTempItems( ItemList.Items[ CurrentSelectedItem ] ).pItem );
+            DlgScroll.OpenStatsScroll( pTempItems( ItemList.Items[ CurrentSelectedItem ] ).pItem, Offset.X, Offset.Y );
             CurrentSelectedItem := -1;
           end
           else
           begin
             pr := Rect( 287, 376, 363, 406 );
-            lpDDSBack.BltFast( 287, 376, DXBack, @pr, DDBLTFAST_WAIT ); //clean the box
+            lpDDSBack.BltFast( 287 + Offset.X, 376 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT ); //clean the box
             if GroundOrderList.Count > 1 then
             begin //get the next item on the ground and show it
               j := GroundOrderList.IndexOf( ItemList.Items[ CurrentSelectedItem ] );
@@ -486,7 +493,7 @@ begin
               pTempItems( GroundOrderList.Items[ j ] ).InvX := 288; //325-pTempItems(GroundOrderList.Items[j]).IW div 2;
               pTempItems( GroundOrderList.Items[ j ] ).InvY := 377; //391-pTempItems(GroundOrderList.Items[j]).IH div 2;
               pr := Rect( 0, 0, cGroundListWidth, cGroundListHeight );
-              lpDDSBack.BltFast( pTempItems( GroundOrderList.Items[ j ] ).InvX, pTempItems( GroundOrderList.Items[ j ] ).InvY, pTempItems( GroundOrderList.Items[ j ] ).DXSurfaceIcon, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+              lpDDSBack.BltFast( pTempItems( GroundOrderList.Items[ j ] ).InvX + Offset.X, pTempItems( GroundOrderList.Items[ j ] ).InvY + Offset.Y, pTempItems( GroundOrderList.Items[ j ] ).DXSurfaceIcon, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
               pTemp := GroundOrderList.Items[ j ]; //save the pointer to the new topmost item so we can do the delete and still track it
               GroundOrderList.Delete( GroundOrderList.IndexOf( ItemList.Items[ CurrentSelectedItem ] ) ); //remove this item from the GroundList pointer list
               TopGroundIndex := GroundOrderList.IndexOf( pTempItems( pTemp ) );
@@ -498,22 +505,22 @@ begin
               TopGroundIndex := 0;
             end;
             //Compute the coords for the floating item
-            Tx := ( X ) - pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W div 2;
-            Ty := ( Y ) - pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H div 2;
+            Tx := ( X - Offset.X ) - pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W div 2;
+            Ty := ( Y - Offset.Y ) - pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H div 2;
             //Plot relevant text
             pr := Rect( ClearLeft, ClearTop, ClearRight, ClearBottom );
-            lpDDSBack.BltFast( ClearLeft, ClearTop, DXBack, @pr, DDBLTFAST_WAIT ); //clean up before we plot test
+            lpDDSBack.BltFast( ClearLeft + Offset.X, ClearTop + Offset.X, DXBack, @pr, DDBLTFAST_WAIT ); //clean up before we plot test
             if UseSmallFont then
-              pText.PlotTinyTextBlock( GetSlotText, ClearLeft, ClearRight, SmlMsg, Alpha )
+              pText.PlotTinyTextBlock( GetSlotText, ClearLeft + Offset.X, ClearRight + Offset.X, SmlMsg + Offset.Y, Alpha )
             else
-              pText.PlotText( GetSlotText, ClearLeft, LrgMsg, Alpha );
+              PlotText( GetSlotText, ClearLeft, LrgMsg, Alpha );
             //save the background to the dirty DD surface based on the floating item
-            pr := Rect( Tx, Ty, Tx + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, Ty + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H );
+            pr := ApplyOffset( Rect( Tx, Ty, Tx + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, Ty + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ) );
             DXDirty.BltFast( 0, 0, lpDDSBack, @pr, DDBLTFAST_WAIT );
             //plot the item centered under the mouse pointer
-            DrawSub( lpDDSBack, rect( Tx, Ty, Tx + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, Ty + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ), Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ), pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXShadow, True, ShadowAlpha );
+            DrawSub( lpDDSBack, ApplyOffset( rect( Tx, Ty, Tx + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, Ty + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ) ), Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ), pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXShadow, True, ShadowAlpha );
             pr := Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H );
-            lpDDSBack.BltFast( Tx, Ty, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+            lpDDSBack.BltFast( Tx + Offset.X, Ty + Offset.Y, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
             ShowOpenInventorySlots;
             ContainCursor( 1 );
           end; //if Button = mbRight
@@ -524,20 +531,21 @@ begin
         i := 0;
         while ( ( i < ItemList.Count ) and ( CurrentSelectedItem = -1 ) and Assigned( DXBack ) ) do
         begin
-        //find the item the mouse is down over                                                                                                                                                                                                                                                        //not the ground
-          if ( ( ( x ) >= pTempItems( ItemList.Items[ i ] ).InvX ) and ( ( x ) <= ( pTempItems( ItemList.Items[ i ] ).InvX + pTempItems( ItemList.Items[ i ] ).W ) ) and ( ( Y ) >= pTempItems( ItemList.Items[ i ] ).InvY ) and ( ( Y ) <= pTempItems( ItemList.Items[ i ] ).InvY + pTempItems( ItemList.Items[ i ] ).H ) and ( pTempItems( ItemList.Items[ i ] ).WhoHasThis < 3 ) ) then
+        //find the item the mouse is down over
+          if PtInRect( ApplyOffset( pTempItems( ItemList.Items[ i ] ).InvRect ), Point( x, y ) ) and
+            ( pTempItems( ItemList.Items[ i ] ).WhoHasThis < 3 ) then                                                                                                                                                                                                                                                        //not the ground
           begin
             if Button = mbRight then
-              DlgScroll.OpenStatsScroll( pTempItems( ItemList.Items[ i ] ).pItem )
+              DlgScroll.OpenStatsScroll( pTempItems( ItemList.Items[ i ] ).pItem, Offset.X, Offset.Y )
             else
             begin
               CurrentSelectedItem := i; //Get the index of the selected item
             //replace the back from the DXBack buffer.
               pr := Rect( pTempItems( ItemList.Items[ i ] ).InvX, pTempItems( ItemList.Items[ i ] ).InvY, pTempItems( ItemList.Items[ i ] ).InvX + pTempItems( ItemList.Items[ i ] ).W, pTempItems( ItemList.Items[ i ] ).InvY + pTempItems( ItemList.Items[ i ] ).H );
-              lpDDSBack.BltFast( pTempItems( ItemList.Items[ i ] ).InvX, pTempItems( ItemList.Items[ i ] ).InvY, DXBack, @pr, DDBLTFAST_WAIT );
+              lpDDSBack.BltFast( pTempItems( ItemList.Items[ i ] ).InvX + Offset.X, pTempItems( ItemList.Items[ i ] ).InvY + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
             //Compute the coords for the floating item
-              Tx := ( X ) - pTempItems( ItemList.Items[ i ] ).W div 2;
-              Ty := ( Y ) - pTempItems( ItemList.Items[ i ] ).H div 2;
+              Tx := ( X - Offset.X ) - pTempItems( ItemList.Items[ i ] ).W div 2;
+              Ty := ( Y - Offset.Y ) - pTempItems( ItemList.Items[ i ] ).H div 2;
               if Tx < 0 then
                 Tx := 0;
               if Ty < 0 then
@@ -548,20 +556,20 @@ begin
                 Ty := 463 - pTempItems( ItemList.Items[ i ] ).H;
               ShowOpenInventorySlots;
             //save the background to the dirty DD surface based on the floating item
-              pr := Rect( Tx, Ty, Tx + pTempItems( ItemList.Items[ i ] ).W, Ty + pTempItems( ItemList.Items[ i ] ).H );
+              pr := ApplyOffset( Rect( Tx, Ty, Tx + pTempItems( ItemList.Items[ i ] ).W, Ty + pTempItems( ItemList.Items[ i ] ).H ) );
               DXDirty.BltFast( 0, 0, lpDDSBack, @pr, DDBLTFAST_WAIT );
             //plot the item centered under the mouse pointer
-              DrawSub( lpDDSBack, rect( Tx, Ty, Tx + pTempItems( ItemList.Items[ i ] ).W, Ty + pTempItems( ItemList.Items[ i ] ).H ), Rect( 0, 0, pTempItems( ItemList.Items[ i ] ).W, pTempItems( ItemList.Items[ i ] ).H ), pTempItems( ItemList.Items[ i ] ).DXShadow, True, ShadowAlpha );
+              DrawSub( lpDDSBack, ApplyOffset( rect( Tx, Ty, Tx + pTempItems( ItemList.Items[ i ] ).W, Ty + pTempItems( ItemList.Items[ i ] ).H ) ), Rect( 0, 0, pTempItems( ItemList.Items[ i ] ).W, pTempItems( ItemList.Items[ i ] ).H ), pTempItems( ItemList.Items[ i ] ).DXShadow, True, ShadowAlpha );
               pr := Rect( 0, 0, pTempItems( ItemList.Items[ i ] ).W, pTempItems( ItemList.Items[ i ] ).H );
-              lpDDSBack.BltFast( Tx, Ty, pTempItems( ItemList.Items[ i ] ).DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+              lpDDSBack.BltFast( Tx + Offset.X, Ty + Offset.Y, pTempItems( ItemList.Items[ i ] ).DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
               ContainCursor( 1 );
             //Plot relevant text
               pr := Rect( ClearLeft, ClearTop, ClearRight, ClearBottom );
-              lpDDSBack.BltFast( ClearLeft, ClearTop, DXBack, @pr, DDBLTFAST_WAIT ); //clean up before we plot test
+              lpDDSBack.BltFast( ClearLeft + Offset.X, ClearTop + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT ); //clean up before we plot test
               if UseSmallFont then
-                pText.PlotTinyTextBlock( GetSlotText, ClearLeft, ClearRight, SmlMsg, Alpha )
+                pText.PlotTinyTextBlock( GetSlotText, ClearLeft + Offset.X, ClearRight + Offset.X, SmlMsg + Offset.Y, Alpha )
               else
-                pText.PlotText( GetSlotText, ClearLeft, LrgMsg, Alpha );
+                PlotText( GetSlotText, ClearLeft, LrgMsg, Alpha );
             end; //endif button
           end;
           i := i + 1;
@@ -572,7 +580,7 @@ begin
     begin //drop the piece if we can
     //cleanup
       pr := Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H );
-      lpDDSBack.BltFast( Tx, Ty, DXDirty, @pr, DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( Tx + Offset.X, Ty + Offset.Y, DXDirty, @pr, DDBLTFAST_WAIT );
     //try to drop on ground
       DontAllowDrop := false;
       if pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXSurfaceIcon = nil then
@@ -594,19 +602,19 @@ begin
         end;
 
         pr := Rect( 287, 376, 363, 406 );
-        lpDDSBack.BltFast( 287, 376, DXBack, @pr, DDBLTFAST_WAIT ); //clean out the Ground box
+        lpDDSBack.BltFast( 287 + Offset.X, 376 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT ); //clean out the Ground box
         pTempItems( ItemList.Items[ CurrentSelectedItem ] ).InvX := 288; //325-pTempItems(ItemList.Items[CurrentSelectedItem]).IW div 2;
         pTempItems( ItemList.Items[ CurrentSelectedItem ] ).InvY := 377; //391-pTempItems(ItemList.Items[CurrentSelectedItem]).IH div 2;
         pTempItems( ItemList.Items[ CurrentSelectedItem ] ).WhoHasThis := 3; //ground
         pr := Rect( 0, 0, cGroundListWidth, cGroundListHeight );
-        lpDDSBack.BltFast( pTempItems( ItemList.Items[ CurrentSelectedItem ] ).InvX, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).InvY,
+        lpDDSBack.BltFast( pTempItems( ItemList.Items[ CurrentSelectedItem ] ).InvX + Offset.X, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).InvY + Offset.Y,
           pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXSurfaceIcon, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
         pr := Rect( ClearLeft, ClearTop, ClearRight, ClearBottom );
-        lpDDSBack.BltFast( ClearLeft, ClearTop, DXBack, @pr, DDBLTFAST_WAIT ); //clear text
+        lpDDSBack.BltFast( ClearLeft + Offset.X, ClearTop + Offset.X, DXBack, @pr, DDBLTFAST_WAIT ); //clear text
         CurrentSelectedItem := -1;
         ContainCursor( 0 );
       end
-      else if X < 290 then
+      else if X < 290 + Offset.X then
       begin
       //check left inventory side
         B1 := true; //((X - (pTempItems(ItemList.Items[CurrentSelectedItem]).W div 2) > 2) and (Y - (pTempItems(ItemList.Items[CurrentSelectedItem]).H div 2) > 20)); //is it on the grid?
@@ -628,9 +636,9 @@ begin
         begin //plot the item on the grid if it fits
           //Tx := Integer((X - 18 - (pTempItems(ItemList.Items[CurrentSelectedItem]).W div 2)) div 18) * 18 + 27;
           //Ty := Integer((Y - 32 - (pTempItems(ItemList.Items[CurrentSelectedItem]).H div 2)) div 26) * 26 + 42;
-          DrawSub( lpDDSBack, rect( Tx, Ty, Tx + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, Ty + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ), Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ), pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXShadow, True, ShadowAlpha );
+          DrawSub( lpDDSBack, ApplyOffset( rect( Tx, Ty, Tx + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, Ty + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ) ), Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ), pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXShadow, True, ShadowAlpha );
           pr := Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H );
-          lpDDSBack.BltFast( Tx, Ty, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          lpDDSBack.BltFast( Tx + Offset.X, Ty + Offset.Y, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
           pTempItems( ItemList.Items[ CurrentSelectedItem ] ).InvX := Tx;
           pTempItems( ItemList.Items[ CurrentSelectedItem ] ).InvY := Ty;
           pTempItems( ItemList.Items[ CurrentSelectedItem ] ).WhoHasThis := 1; //left character
@@ -638,21 +646,21 @@ begin
           CurrentSelectedItem := -1;
           ContainCursor( 0 );
           pr := Rect( ClearLeft, ClearTop, ClearRight, ClearBottom );
-          lpDDSBack.BltFast( ClearLeft, ClearTop, DXBack, @pr, DDBLTFAST_WAIT ); //erase any message on the screen
+          lpDDSBack.BltFast( ClearLeft + Offset.X, ClearTop + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT ); //erase any message on the screen
         end
         else
         begin //plot failure message
            //clean up - this plots the objects dirty, then the new text, then saves the dirty - prevents Dirty errors
           pr := Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H );
-          lpDDSBack.BltFast( Tx, Ty, DXDirty, @pr, DDBLTFAST_WAIT );
+          lpDDSBack.BltFast( Tx + Offset.X, Ty + Offset.Y, DXDirty, @pr, DDBLTFAST_WAIT );
           pr := Rect( ClearLeft, ClearTop, ClearRight, ClearBottom );
-          lpDDSBack.BltFast( ClearLeft, ClearTop, DXBack, @pr, DDBLTFAST_WAIT ); //clean up before we plot text
+          lpDDSBack.BltFast( ClearLeft + Offset.X, ClearTop + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT ); //clean up before we plot text
           if UseSmallFont then
             pText.PlotTinyTextBlock( txtMessage[ 0 ], ClearLeft, ClearRight, SmlMsg, Alpha )
           else
             pText.PlotText( txtMessage[ 0 ], ClearLeft, LrgMsg, Alpha );
           //save the background to the dirty DD surface based on the floating item
-          pr := Rect( Tx, Ty, Tx + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, Ty + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H );
+          pr := ApplyOffset( Rect( Tx, Ty, Tx + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, Ty + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ) );
           DXDirty.BltFast( 0, 0, lpDDSBack, @pr, DDBLTFAST_WAIT );
         end;
       end
@@ -680,24 +688,24 @@ begin
         begin //plot the item on the grid if it fits
           //Tx := Integer((X - (GridRightMinX-9) - (pTempItems(ItemList.Items[CurrentSelectedItem]).W div 2)) div 18) * 18 + GridRightMinX;
           //Ty := Integer((Y - (GridRightMinY-9) - (pTempItems(ItemList.Items[CurrentSelectedItem]).H div 2)) div 26) * 26 + GridRightMinY;
-          DrawSub( lpDDSBack, rect( Tx, Ty, Tx + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, Ty + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ), Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ), pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXShadow, True, ShadowAlpha );
+          DrawSub( lpDDSBack, ApplyOffset( rect( Tx, Ty, Tx + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, Ty + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ) ), Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ), pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXShadow, True, ShadowAlpha );
           pr := Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H );
-          lpDDSBack.BltFast( Tx, Ty, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+          lpDDSBack.BltFast( Tx + Offset.X, Ty + Offset.Y, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
           pTempItems( ItemList.Items[ CurrentSelectedItem ] ).InvX := Tx;
           pTempItems( ItemList.Items[ CurrentSelectedItem ] ).InvY := Ty;
           pTempItems( ItemList.Items[ CurrentSelectedItem ] ).WhoHasThis := 2; //right character or box
           CurrentSelectedItem := -1;
           ContainCursor( 0 );
           pr := Rect( ClearLeft, ClearTop, ClearRight, ClearBottom );
-          lpDDSBack.BltFast( ClearLeft, ClearTop, DXBack, @pr, DDBLTFAST_WAIT ); //erase any message on the screen
+          lpDDSBack.BltFast( ClearLeft + Offset.X, ClearTop + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT ); //erase any message on the screen
         end
         else
         begin //plot failure message
            //clean up - this plots the objects dirty, then the new text, then saves the dirty - prevents Dirty errors
            pr := Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H );
-          lpDDSBack.BltFast( Tx, Ty, DXDirty, @pr, DDBLTFAST_WAIT );
+          lpDDSBack.BltFast( Tx + Offset.X, Ty + Offset.Y, DXDirty, @pr, DDBLTFAST_WAIT );
           pr := Rect( ClearLeft, ClearTop, ClearRight, ClearBottom );
-          lpDDSBack.BltFast( ClearLeft, ClearTop, DXBack, @pr, DDBLTFAST_WAIT ); //clean up before we plot text
+          lpDDSBack.BltFast( ClearLeft + Offset.X, ClearTop + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT ); //clean up before we plot text
           if UseSmallFont then
           begin
             if B5 = false then
@@ -710,14 +718,14 @@ begin
           else
           begin
             if B5 = false then
-              pText.PlotText( txtMessage[ 1 ], ClearLeft, LrgMsg, Alpha )
+              PlotText( txtMessage[ 1 ], ClearLeft, LrgMsg, Alpha )
             else if B6 = false then //cant drop quest item on other
-              pText.PlotText( txtMessage[ 2 ], ClearLeft, LrgMsg, Alpha )
+              PlotText( txtMessage[ 2 ], ClearLeft, LrgMsg, Alpha )
             else
-              pText.PlotText( txtMessage[ 0 ], ClearLeft, LrgMsg, Alpha );
+              PlotText( txtMessage[ 0 ], ClearLeft, LrgMsg, Alpha );
           end;
           //save the background to the dirty DD surface based on the floating item
-          pr := Rect( Tx, Ty, Tx + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, Ty + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H );
+          pr := ApplyOffset( Rect( Tx, Ty, Tx + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, Ty + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ) );
           DXDirty.BltFast( 0, 0, lpDDSBack, @pr, DDBLTFAST_WAIT );
         end;
       end;
@@ -744,11 +752,11 @@ begin
     if ( CurrentSelectedItem > -1 ) and Assigned( DXBack ) then
     begin //are we dragging an item?
     //clean up
-      pr := Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H );
-      lpDDSBack.BltFast( Tx, Ty, DXDirty, @pr, DDBLTFAST_WAIT );
+      pr := pTempItems( ItemList.Items[ CurrentSelectedItem ] ).Rect0;
+      lpDDSBack.BltFast( Tx + Offset.X, Ty + Offset.Y, DXDirty, @pr, DDBLTFAST_WAIT );
     //Compute the coords for the floating item
-      Tx := ( X ) - pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W div 2;
-      Ty := ( Y ) - pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H div 2;
+      Tx := ( X- Offset.X ) - pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W div 2;
+      Ty := ( Y- Offset.Y ) - pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H div 2;
       if Tx < 0 then
         Tx := 0;
       if Ty < 0 then
@@ -762,26 +770,26 @@ begin
         Ty := 463 - Th;
 
     //save the background to the dirty DD surface based on the floating item
-      pr := Rect( Tx, Ty, Tx + Tw, Ty + Th );
+      pr := ApplyOffset( Rect( Tx, Ty, Tx + Tw, Ty + Th ) );
       DXDirty.BltFast( 0, 0, lpDDSBack, @pr, DDBLTFAST_WAIT );
     //plot the item centered under the mouse pointer
-      DrawSub( lpDDSBack, rect( Tx, Ty, Tx + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, Ty + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ), Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ), pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXShadow, True, ShadowAlpha );
-      pr := Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H );
-      lpDDSBack.BltFast( Tx, Ty, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      DrawSub( lpDDSBack, ApplyOffset( rect( Tx, Ty, Tx + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, Ty + pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ) ), Rect( 0, 0, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H ), pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXShadow, True, ShadowAlpha );
+      pr := pTempItems( ItemList.Items[ CurrentSelectedItem ] ).Rect0;
+      lpDDSBack.BltFast( Tx + Offset.X, Ty + Offset.Y, pTempItems( ItemList.Items[ CurrentSelectedItem ] ).DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       SoAOS_DX_BltFront;
     end
     else if Assigned( DXBack ) and ( DlgScroll.ScrollIsShowing = False ) then
     begin //do the rollover
       i := 0; //find the item the mouse is down over
       pr := Rect( ClearLeft, ClearTop, ClearRight, ClearBottom );
-      lpDDSBack.BltFast( ClearLeft, ClearTop, DXBack, @pr, DDBLTFAST_WAIT ); //clean up before we plot text
+      lpDDSBack.BltFast( ClearLeft + Offset.X, ClearTop + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT ); //clean up before we plot text
       while ( i < ItemList.Count ) and ( CurrentSelectedItem = -1 ) do
       begin
         if ( ( x ) >= pTempItems( ItemList.Items[ i ] ).InvX ) and ( ( x ) <= ( pTempItems( ItemList.Items[ i ] ).InvX + pTempItems( ItemList.Items[ i ] ).W ) ) and ( ( Y ) >= pTempItems( ItemList.Items[ i ] ).InvY ) and ( ( Y ) <= pTempItems( ItemList.Items[ i ] ).InvY + pTempItems( ItemList.Items[ i ] ).H ) then
         begin
           CurrentSelectedItem := i; //assign it for the sake of PlotText
 //        if UseSmallFont then
-          pText.PlotTinyTextBlock( ( GetSlotText + txtMessage[ 3 ] ), ClearLeft, ClearRight, SmlMsg, Alpha );
+          pText.PlotTinyTextBlock( ( GetSlotText + txtMessage[ 3 ] ), ClearLeft + Offset.X, ClearRight + Offset.X, SmlMsg + Offset.Y, Alpha );
 //        else
 //          pText.PlotText((GetSlotText + txtMessage[3]), ClearLeft, LrgMsg,Alpha);
         //i:=999;
@@ -802,94 +810,94 @@ begin
       end; //endif
     //Clean up arrows and back to game
       pr := Rect( 300, 194, 348, 250 );
-      lpDDSBack.BltFast( 300, 194, DXBack, @pr, DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 300 + Offset.X, 194 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
       pr := Rect( 271, 385, 271 + 15, 385 + 20 );
-      lpDDSBack.BltFast( 271, 385, DXBack, @pr, DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 271 + Offset.X, 385 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
       pr := Rect( 364, 385, 364 + 12, 385 + 20 );
-      lpDDSBack.BltFast( 364, 385, DXBack, @pr, DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 364 + Offset.X, 385 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
       pr := Rect( 588, 407, 588 + 77, 407 + 54 );
-      lpDDSBack.BltFast( 588, 407, DXBack, @pr, DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( 588 + Offset.X, 407 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
       if CurrentSelectedItem = -1 then
       begin //If we arent over an item then check arrows and back button
-        if PtinRect( rect( 271, 375, 287, 407 ), point( X, Y ) ) then
+        if PtinRect( ApplyOffset( rect( 271, 375, 287, 407 ) ), point( X, Y ) ) then
         begin //over left arrow
           //plot highlighted arrow
           pr := Rect( 0, 0, 14, 15 );
-          lpDDSBack.BltFast( 272, 385, DXLeftArrow, @pr, DDBLTFAST_WAIT );
+          lpDDSBack.BltFast( 272 + Offset.X, 385 + Offset.Y, DXLeftArrow, @pr, DDBLTFAST_WAIT );
           //plot a bit of informative text
           pr := Rect( ClearLeft, ClearTop, ClearRight, ClearBottom );
-          lpDDSBack.BltFast( ClearLeft, ClearTop, DXBack, @pr, DDBLTFAST_WAIT ); //clean up before we plot text
+          lpDDSBack.BltFast( ClearLeft + Offset.X, ClearTop + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT ); //clean up before we plot text
           if UseSmallFont then
-            pText.PlotTinyTextBlock( ( txtMessage[ 4 ] ), ClearLeft, ClearRight, SmlMsg, Alpha )
+            pText.PlotTinyTextBlock( ( txtMessage[ 4 ] ), ClearLeft + Offset.X, ClearRight + Offset.X, SmlMsg + Offset.Y, Alpha )
           else
-            pText.PlotText( ( txtMessage[ 4 ] ), ClearLeft, LrgMsg, Alpha );
+            PlotText( ( txtMessage[ 4 ] ), ClearLeft, LrgMsg, Alpha );
         end
-        else if PtinRect( rect( 364, 375, 376, 407 ), point( X, Y ) ) then
+        else if PtinRect( ApplyOffset( rect( 364, 375, 376, 407 ) ), point( X, Y ) ) then
         begin //over right arrow
           //plot highlighted arrow
           pr := Rect( 0, 0, 11, 11 );
-          lpDDSBack.BltFast( 365, 387, DXRightArrow, @pr, DDBLTFAST_WAIT );
+          lpDDSBack.BltFast( 365 + Offset.X, 387 + Offset.Y, DXRightArrow, @pr, DDBLTFAST_WAIT );
           //plot a bit of informative text
           pr := Rect( ClearLeft, ClearTop, ClearRight, ClearBottom );
-          lpDDSBack.BltFast( ClearLeft, ClearTop, DXBack, @pr, DDBLTFAST_WAIT ); //clean up before we plot text
+          lpDDSBack.BltFast( ClearLeft + Offset.X, ClearTop + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT ); //clean up before we plot text
           if UseSmallFont then
-            pText.PlotTinyTextBlock( ( txtMessage[ 5 ] ), ClearLeft, ClearRight, SmlMsg, Alpha )
+            pText.PlotTinyTextBlock( ( txtMessage[ 5 ] ), ClearLeft + Offset.X, ClearRight + Offset.X, SmlMsg + Offset.Y, Alpha )
           else
-            pText.PlotText( ( txtMessage[ 5 ] ), ClearLeft, LrgMsg, Alpha );
+            PlotText( ( txtMessage[ 5 ] ), ClearLeft, LrgMsg, Alpha );
         end
-        else if PtinRect( rect( 588, 407, 588 + 77, 412 + 54 ), point( X, Y ) ) then
+        else if PtinRect( ApplyOffset( rect( 588, 407, 588 + 77, 412 + 54 ) ), point( X, Y ) ) then
         begin //over back button
           //plot highlighted back to game
           pr := Rect( 0, 0, 77, 54 );
-          lpDDSBack.BltFast( 588, 407, DXBackToGame, @pr, DDBLTFAST_WAIT );
+          lpDDSBack.BltFast( 588 + Offset.X, 407 + Offset.Y, DXBackToGame, @pr, DDBLTFAST_WAIT );
           //don't plot a bit of informative text, just clean up
           pr := Rect( ClearLeft, ClearTop, ClearRight, ClearBottom );
-          lpDDSBack.BltFast( ClearLeft, ClearTop, DXBack, @pr, DDBLTFAST_WAIT ); //clean up before we plot text
+          lpDDSBack.BltFast( ClearLeft + Offset.X, ClearTop + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT ); //clean up before we plot text
         end
-        else if PtinRect( rect( 300, 194, 347, 218 ), point( X, Y ) ) then
+        else if PtinRect( ApplyOffset( rect( 300, 194, 347, 218 ) ), point( X, Y ) ) then
         begin //over right ALL arrow
           //plot highlighted arrow
           pr := Rect( 0, 0, 47, 22 );
-          lpDDSBack.BltFast( 300, 194, DXRightAll, @pr, DDBLTFAST_WAIT );
+          lpDDSBack.BltFast( 300 + Offset.X, 194 + Offset.Y, DXRightAll, @pr, DDBLTFAST_WAIT );
           //plot a bit of informative text
           pr := Rect( ClearLeft, ClearTop, ClearRight, ClearBottom );
-          lpDDSBack.BltFast( ClearLeft, ClearTop, DXBack, @pr, DDBLTFAST_WAIT ); //clean up before we plot text
+          lpDDSBack.BltFast( ClearLeft + Offset.X, ClearTop + Offset.X, DXBack, @pr, DDBLTFAST_WAIT ); //clean up before we plot text
           if UseSmallFont then
           begin
             if OtherOb is TCharacter then
-              pText.PlotTinyTextBlock( ( txtMessage[ 6 ] + Character.name + txtMessage[ 7 ] + TCharacter( OtherOb ).name + '.' ), ClearLeft, ClearRight, SmlMsg, Alpha )
+              pText.PlotTinyTextBlock( ( txtMessage[ 6 ] + Character.name + txtMessage[ 7 ] + TCharacter( OtherOb ).name + '.' ), ClearLeft + Offset.X, ClearRight + Offset.X, SmlMsg + Offset.Y, Alpha )
             else
-              pText.PlotTinyTextBlock( ( txtMessage[ 6 ] + Character.name + txtMessage[ 7 ] + TContainer( OtherOb ).name + '.' ), ClearLeft, ClearRight, SmlMsg, Alpha );
+              pText.PlotTinyTextBlock( ( txtMessage[ 6 ] + Character.name + txtMessage[ 7 ] + TContainer( OtherOb ).name + '.' ), ClearLeft + Offset.X, ClearRight + Offset.X, SmlMsg + Offset.Y, Alpha );
           end
           else
           begin
             if OtherOb is TCharacter then
-              pText.PlotText( ( txtMessage[ 6 ] + Character.name + txtMessage[ 7 ] + TCharacter( OtherOb ).name + '.' ), ClearLeft, LrgMsg, Alpha )
+              PlotText( ( txtMessage[ 6 ] + Character.name + txtMessage[ 7 ] + TCharacter( OtherOb ).name + '.' ), ClearLeft, LrgMsg, Alpha )
             else
-              pText.PlotText( ( txtMessage[ 6 ] + Character.name + txtMessage[ 7 ] + TContainer( OtherOb ).name + '.' ), ClearLeft, LrgMsg, Alpha );
+              PlotText( ( txtMessage[ 6 ] + Character.name + txtMessage[ 7 ] + TContainer( OtherOb ).name + '.' ), ClearLeft, LrgMsg, Alpha );
           end;
         end
-        else if PtinRect( rect( 300, 225, 347, 247 ), point( X, Y ) ) then
+        else if PtinRect( ApplyOffset( rect( 300, 225, 347, 247 ) ), point( X, Y ) ) then
         begin //over left ALL arrow
           //plot highlighted arrow
           pr := Rect( 0, 0, 47, 22 );
-          lpDDSBack.BltFast( 300, 225, DXLeftAll, @pr, DDBLTFAST_WAIT );
+          lpDDSBack.BltFast( 300 + Offset.X, 225 + Offset.Y, DXLeftAll, @pr, DDBLTFAST_WAIT );
           //plot a bit of informative text
           pr := Rect( ClearLeft, ClearTop, ClearRight, ClearBottom );
-          lpDDSBack.BltFast( ClearLeft, ClearTop, DXBack, @pr, DDBLTFAST_WAIT ); //clean up before we plot text
+          lpDDSBack.BltFast( ClearLeft + Offset.X, ClearTop + Offset.X, DXBack, @pr, DDBLTFAST_WAIT ); //clean up before we plot text
           if UseSmallFont then
           begin
             if OtherOb is TCharacter then
-              pText.PlotTinyTextBlock( ( txtMessage[ 6 ] + Character.name + txtMessage[ 7 ] + TCharacter( OtherOb ).name + '.' ), ClearLeft, ClearRight, SmlMsg, Alpha )
+              pText.PlotTinyTextBlock( ( txtMessage[ 6 ] + Character.name + txtMessage[ 7 ] + TCharacter( OtherOb ).name + '.' ), ClearLeft + Offset.X, ClearRight + Offset.X, SmlMsg + Offset.Y, Alpha )
             else
-              pText.PlotTinyTextBlock( ( txtMessage[ 6 ] + Character.name + txtMessage[ 7 ] + TContainer( OtherOb ).name + '.' ), ClearLeft, ClearRight, SmlMsg, Alpha );
+              pText.PlotTinyTextBlock( ( txtMessage[ 6 ] + Character.name + txtMessage[ 7 ] + TContainer( OtherOb ).name + '.' ), ClearLeft + Offset.X, ClearRight + Offset.X, SmlMsg + Offset.Y, Alpha );
           end
           else
           begin
             if OtherOb is TCharacter then
-              pText.PlotText( ( txtMessage[ 6 ] + TCharacter( OtherOb ).name + txtMessage[ 7 ] + Character.name + '.' ), ClearLeft, LrgMsg, Alpha )
+              PlotText( ( txtMessage[ 6 ] + TCharacter( OtherOb ).name + txtMessage[ 7 ] + Character.name + '.' ), ClearLeft, LrgMsg, Alpha )
             else
-              pText.PlotText( ( txtMessage[ 6 ] + TContainer( OtherOb ).name + txtMessage[ 7 ] + Character.name + '.' ), ClearLeft, LrgMsg, Alpha )
+              PlotText( ( txtMessage[ 6 ] + TContainer( OtherOb ).name + txtMessage[ 7 ] + Character.name + '.' ), ClearLeft, LrgMsg, Alpha )
           end;
         end
       end; //endif CurrentSelectedItem
@@ -919,6 +927,24 @@ begin
   end;
 end;
 
+procedure TObjInventory.MouseWheel(Sender: TObject; Shift: TShiftState;
+  WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+begin
+  Handled := True;
+
+  if DlgScroll.ScrollIsShowing then
+  begin
+    if WheelDelta<0 then
+      DlgScroll.ScrollAmount := 1
+    else if WheelDelta>0 then
+      DlgScroll.ScrollAmount := -1
+    else
+      DlgScroll.ScrollAmount := 0;
+    DlgScroll.KeepOnScrolling := True;
+    DlgScroll.ScrollStatsScroll;
+  end;
+end;
+
 procedure TObjInventory.Paint;
 var
   i : Integer;
@@ -930,29 +956,29 @@ begin
   try
 
     pr := Rect( 0, 0, 679, 476 );
-    lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
   //Now plot all of the items on the grid(s), and ground slots
     for i := 0 to ItemList.Count - 1 do
     begin
       if pTempItems( ItemList.Items[ i ] ).WhoHasThis = 3 then //if in ground slot plot icon
       begin
         pr := Rect( 0, 0, cGroundListWidth, cGroundListHeight );
-        lpDDSBack.BltFast( pTempItems( ItemList.Items[ i ] ).InvX, pTempItems( ItemList.Items[ i ] ).InvY, pTempItems( ItemList.Items[ i ] ).DXSurfaceIcon, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+        lpDDSBack.BltFast( pTempItems( ItemList.Items[ i ] ).InvX + Offset.X, pTempItems( ItemList.Items[ i ] ).InvY + Offset.Y, pTempItems( ItemList.Items[ i ] ).DXSurfaceIcon, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
       end
       else
       begin
-        DrawSub( lpDDSBack, rect( pTempItems( ItemList.Items[ i ] ).InvX, pTempItems( ItemList.Items[ i ] ).InvY, pTempItems( ItemList.Items[ i ] ).InvX + pTempItems( ItemList.Items[ i ] ).W, pTempItems( ItemList.Items[ i ] ).InvY + pTempItems( ItemList.Items[ i ] ).H ), Rect( 0, 0, pTempItems( ItemList.Items[ i ] ).W, pTempItems( ItemList.Items[ i ] ).H ), pTempItems( ItemList.Items[ i ] ).DXShadow, True, ShadowAlpha );
+        DrawSub( lpDDSBack, ApplyOffset( rect( pTempItems( ItemList.Items[ i ] ).InvX, pTempItems( ItemList.Items[ i ] ).InvY, pTempItems( ItemList.Items[ i ] ).InvX + pTempItems( ItemList.Items[ i ] ).W, pTempItems( ItemList.Items[ i ] ).InvY + pTempItems( ItemList.Items[ i ] ).H ) ), Rect( 0, 0, pTempItems( ItemList.Items[ i ] ).W, pTempItems( ItemList.Items[ i ] ).H ), pTempItems( ItemList.Items[ i ] ).DXShadow, True, ShadowAlpha );
         pr := Rect( 0, 0, pTempItems( ItemList.Items[ i ] ).W, pTempItems( ItemList.Items[ i ] ).H );
-        lpDDSBack.BltFast( pTempItems( ItemList.Items[ i ] ).InvX, pTempItems( ItemList.Items[ i ] ).InvY, pTempItems( ItemList.Items[ i ] ).DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
+        lpDDSBack.BltFast( pTempItems( ItemList.Items[ i ] ).InvX + Offset.X, pTempItems( ItemList.Items[ i ] ).InvY + Offset.Y, pTempItems( ItemList.Items[ i ] ).DXSurface, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT )
       end;
     end;
 
   //Now put the names up
-    pText.PlotTextCentered( Character.name, 27, 243, 10, Alpha );
+    PlotTextCentered( Character.name, 27, 243, 10, Alpha );
     if OtherOb is TCharacter then
-      pText.PlotTextCentered( TCharacter( OtherOb ).name, 417, 633, 10, Alpha )
+      PlotTextCentered( TCharacter( OtherOb ).name, 417, 633, 10, Alpha )
     else
-      pText.PlotTextCentered( TContainer( OtherOb ).name, 417, 633, 10, Alpha );
+      PlotTextCentered( TContainer( OtherOb ).name, 417, 633, 10, Alpha );
 
     SoAOS_DX_BltFront;
   except
@@ -1171,8 +1197,8 @@ const
 begin
   Log.DebugLog( FailName );
   try
-    prRect.Left := 0;
-    prRect.Top := 0;
+    prRect.Left := Offset.X;
+    prRect.Top := Offset.Y;
     ClientToScreen(frmMain.Handle, prRect.TopLeft);
     if Action = 1 then
     begin //restore to fullscreen
@@ -1297,7 +1323,7 @@ begin
       for j := 0 to 13 do
       begin
         if PlotArray[ i, j ] = 0 then
-          DrawAlpha( lpDDSBack, rect( i * 18 + 27, j * 26 + 42, i * 18 + 27 + 18, j * 26 + 42 + 26 ), rect( 0, 0, 25, 25 ), DXBrown, False, 90 );
+          DrawAlpha( lpDDSBack, ApplyOffset( rect( i * 18 + 27, j * 26 + 42, i * 18 + 27 + 18, j * 26 + 42 + 26 ) ), rect( 0, 0, 25, 25 ), DXBrown, False, 90 );
       end;
     end;
 // Now for the right area
@@ -1351,7 +1377,7 @@ begin
       for j := 0 to gHeight - 1 do
       begin
         if PlotArray2[ i, j ] = 0 then
-          DrawAlpha( lpDDSBack, rect( i * 18 + GridRightMinX, j * 26 + GridRightMinY, i * 18 + GridRightMinX + 18, j * 26 + GridRightMinY + 26 ), rect( 0, 0, 25, 25 ), DXBrown, False, 90 );
+          DrawAlpha( lpDDSBack, ApplyOffset( rect( i * 18 + GridRightMinX, j * 26 + GridRightMinY, i * 18 + GridRightMinX + 18, j * 26 + GridRightMinY + 26 ) ), rect( 0, 0, 25, 25 ), DXBrown, False, 90 );
       end;
     end;
   except
@@ -1377,8 +1403,8 @@ begin
     LastLowTotal := 9999; //initialize to insanely high number
     FoundASafePlaceToDrop := false;
    //upper left corner of floating item
-    XX := X - pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W div 2;
-    YY := Y - pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H div 2;
+    XX := X - Offset.X - pTempItems( ItemList.Items[ CurrentSelectedItem ] ).W div 2;
+    YY := Y - Offset.Y - pTempItems( ItemList.Items[ CurrentSelectedItem ] ).H div 2;
 
     if XX < 290 then
     begin //if left grid (player)
@@ -1457,6 +1483,7 @@ const
 begin
   Log.DebugLog( FailName );
   try
+    frmMain.OnMouseWheel := nil;
     ExText.close;
     ContainCursor( 0 );
     CheckForGroundDrop := true;
@@ -1505,5 +1532,17 @@ begin
       Log.log( FailName + E.Message );
   end;
 end; //TObjInventory.Release
+
+{ TemItems }
+
+function TemItems.InvRect: TRect;
+begin
+  Result := Rect(InvX, InvY, InvX + W, InvY + H);
+end;
+
+function TemItems.Rect0: TRect;
+begin
+  Result := Rect(0, 0, W, H);
+end;
 
 end.

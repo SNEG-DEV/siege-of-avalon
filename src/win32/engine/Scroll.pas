@@ -62,6 +62,7 @@ type
     StatsScrollItem : TItem; //Index for scroll item
     MaxScroll : integer; //max Scroll YCoord
     txtMessage : array[ 0..34 ] of string;
+    Offset : TPoint;
     procedure ShowStatsScroll;
     procedure PlotScrollText(Mx: Integer; My: Integer; ScrollStartValue: Integer; ScrollEndValue: Integer; var i: Integer; k: Integer; txtMsg: string);
     procedure PlotScrollText2(Mx: Integer; My: Integer; ScrollStartValue: Integer; ScrollEndValue: Integer; var i: Integer; k: Integer; txtMsg: string);
@@ -75,7 +76,7 @@ type
     KeepOnScrolling : boolean;
     ScrollAmount : integer; //-1 or 1, to scroll up or down
     procedure ScrollStatsScroll;
-    procedure OpenStatsScroll( TheItem : TItem ); //the stats scroll
+    procedure OpenStatsScroll( TheItem : TItem; const offsetX, offsetY: Integer ); //the stats scroll
     constructor Create;
     destructor Destroy; override;
   end;
@@ -141,8 +142,8 @@ begin
     Str(k, a);
     if ((My + 40 + i * 22) > ScrollStartValue) and ((My + 40 + i * 22) < ScrollEndValue - 24) then
     begin
-      pText.PlotText(txtMsg, Mx + 50, My + 40 + i * 22, 0);
-      pText.PlotText(a, Mx + 249, My + 40 + i * 22, 0);
+      pText.PlotText(txtMsg, Mx + 50 + Offset.X, My + 40 + i * 22 + Offset.Y, 0);
+      pText.PlotText(a, Mx + 249 + Offset.X, My + 40 + i * 22 + Offset.Y, 0);
     end;
     i := i + 1;
   end;
@@ -158,11 +159,11 @@ begin
     Str( k, a );
     if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
     begin
-      pText.PlotText( txtMsg, Mx + 50, My + 40 + i * 22, 0 );
+      pText.PlotText( txtMsg, Mx + 50 + Offset.X, My + 40 + i * 22 + Offset.Y, 0 );
       if k > 0 then
-        pText.PlotText( a, Mx + 249, My + 40 + i * 22, 0 )
+        pText.PlotText( a, Mx + 249 + Offset.X, My + 40 + i * 22 + Offset.Y, 0 )
       else
-        pText.PlotText( a, Mx + 240, My + 40 + i * 22, 0 )
+        pText.PlotText( a, Mx + 240 + Offset.X, My + 40 + i * 22 + Offset.Y, 0 )
     end;
     i := i + 1;
   end;
@@ -180,8 +181,8 @@ begin
     begin
       Str( k, b );
       Str( Round( range.Min ), a );
-      pText.PlotText( txtMsg, Mx + 50, My + 40 + YAdj + i * 22, 0 );
-      pText.PlotText( a + '-' + b, Mx + 240, My + 40 + YAdj + i * 22, 0 );
+      pText.PlotText( txtMsg, Mx + 50 + Offset.X, My + 40 + YAdj + i * 22 + Offset.Y, 0 );
+      pText.PlotText( a + '-' + b, Mx + 240 + Offset.X, My + 40 + YAdj + i * 22 + Offset.Y, 0 );
     end;
     i := i + 1;
   end;
@@ -201,8 +202,8 @@ begin
     begin
       Str( k, a );
       Str( j, b );
-      pText.PlotText( txtMsg, Mx + 50, My + 40 + YAdj + i * 22, 0 );
-      pText.PlotText( a + '-' + b + '%', Mx + 240, My + 40 + YAdj + i * 22, 0 );
+      pText.PlotText( txtMsg, Mx + 50 + Offset.X, My + 40 + YAdj + i * 22 + Offset.Y, 0 );
+      pText.PlotText( a + '-' + b + '%', Mx + 240 + Offset.X, My + 40 + YAdj + i * 22 + Offset.Y, 0 );
     end;
     i := i + 1;
   end;
@@ -221,8 +222,8 @@ begin
       b := '';
     if ( ( My + 40 + i * 22 ) > ScrollStartValue ) and ( ( My + 40 + i * 22 ) < ScrollEndValue - 24 ) then
     begin
-      pText.PlotText( txtMsg, Mx + 50, My + 40 + i * 22, 0 );
-      pText.PlotText( b + a, Mx + 240, My + 40 + i * 22, 0 );
+      pText.PlotText( txtMsg, Mx + 50 + Offset.X, My + 40 + i * 22 + Offset.Y, 0 );
+      pText.PlotText( b + a, Mx + 240 + Offset.X, My + 40 + i * 22 + Offset.Y, 0 );
     end;
     i := i + 1;
   end;
@@ -253,12 +254,12 @@ begin
     for i := 0 to 3 do
     begin //plot 4 segements of the sheet
       pr := Rect( 0, 0, 338, 90 );
-      lpDDSBack.BltFast( Mx, 13 + 45 + i * 90, DXSheet, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+      lpDDSBack.BltFast( Mx + Offset.X, 13 + 45 + i * 90 + Offset.Y, DXSheet, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     end;
     MaxScroll := 0;
     if ( My + 40 > ScrollStartValue ) and ( My + 40 < ScrollEndValue ) then
     begin
-      if pText.PlotTextCentered( StatsScrollItem.Name, Mx, Mx + 330, My + 40, 0 ) then
+      if pText.PlotTextCentered( StatsScrollItem.Name, Mx + Offset.X, Mx + 330 + Offset.X, My + 40 + Offset.Y, 0 ) then
       begin
       //DebugPrint('Error- not enough room to center name of item ' + StatsScrollItem.Name);
       end;
@@ -278,7 +279,7 @@ begin
       begin
         if ( ( My + 50 + i * 22 ) > ScrollStartValue ) and ( ( My + 50 + i * 22 ) < ScrollEndValue - 24 ) then
         begin
-          pText.PlotText( DescList.strings[ j ], Mx + 20, My + 50 + i * 22, 0 );
+          pText.PlotText( DescList.strings[ j ], Mx + 20 + Offset.X, My + 50 + i * 22 + Offset.Y, 0 );
         end;
         i := i + 1;
       end;
@@ -300,7 +301,7 @@ begin
         MaxScroll := -( ScrollFactor - ( ( My + 40 + YAdj + TitleY * 22 ) - 88 ) );
         if ( ( My + 40 + TitleY * 22 ) > ScrollStartValue ) and ( ( My + 40 + TitleY * 22 ) < ScrollEndValue - 24 ) then
         begin
-          pText.PlotTextCentered( txtMessage[ 3 ], Mx, Mx + 330, My + 40 + TitleY * 22, 0 );
+          pText.PlotTextCentered( txtMessage[ 3 ], Mx + Offset.X, Mx + 330 + Offset.X, My + 40 + TitleY * 22 + Offset.Y, 0 );
         end;
         i := i + 2;
         TitleY := i - 1;
@@ -334,7 +335,7 @@ begin
       MaxScroll := -( ScrollFactor - ( ( My + 40 + YAdj + TitleY * 22 ) - 88 ) );
       if ( ( My + 40 + TitleY * 22 ) > ScrollStartValue ) and ( ( My + 40 + TitleY * 22 ) < ScrollEndValue - 24 ) then
       begin
-        pText.PlotTextCentered( txtMessage[ 21 ], Mx, Mx + 330, My + 40 + TitleY * 22, 0 );
+        pText.PlotTextCentered( txtMessage[ 21 ], Mx + Offset.X, Mx + 330 + Offset.X, My + 40 + TitleY * 22 + Offset.Y, 0 );
       end;
       i := i + 1;
       TitleY := i - 1;
@@ -358,7 +359,7 @@ begin
       MaxScroll := -( ScrollFactor - ( ( My + 40 + YAdj + TitleY * 22 ) - 88 ) );
       if ( ( My + 40 + YAdj + TitleY * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + TitleY * 22 ) < ScrollEndValue - 24 ) then
       begin
-        pText.PlotTextCentered( txtMessage[ 32 ], Mx, Mx + 330, My + 40 + Yadj + TitleY * 22, 0 );
+        pText.PlotTextCentered( txtMessage[ 32 ], Mx + Offset.X, Mx + 330 + Offset.X, My + 40 + Yadj + TitleY * 22 + Offset.Y, 0 );
       end;
       i := i + 1;
       TitleY := i - 1;
@@ -383,7 +384,7 @@ begin
       MaxScroll := -( ScrollFactor - ( ( My + 40 + YAdj + TitleY * 22 ) - 88 ) );
       if ( ( My + 40 + YAdj + TitleY * 22 ) > ScrollStartValue ) and ( ( My + 40 + Yadj + TitleY * 22 ) < ScrollEndValue - 24 ) then
       begin
-        pText.PlotTextCentered( txtMessage[ 34 ], Mx, Mx + 330, My + 40 + Yadj + TitleY * 22, 0 );
+        pText.PlotTextCentered( txtMessage[ 34 ], Mx + Offset.X, Mx + 330 + Offset.X, My + 40 + Yadj + TitleY * 22 + Offset.Y, 0 );
       end;
     end;
 
@@ -392,17 +393,17 @@ begin
     lpDDSBack.BltFast( 171, 0, DXDirty, @pr, DDBLTFAST_WAIT );
 //Now plot the rollers, top and bottom
     pr := Rect( 0, 0, 443, 90 );
-    lpDDSBack.BltFast( 119, 13, DXFrame, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 119 + Offset.X, 13 + Offset.Y, DXFrame, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     pr := Rect( 0, 0, 443, 90 );
-    lpDDSBack.BltFast( 119, 373, DXFrame, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( 119 + Offset.X, 373 + Offset.Y, DXFrame, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
 
   //GetCursorPos(myPoint);
   //myPoint:=Game.ScreenToClient(myPoint);
   //if not PtInRect(Rect(119, 0, 600, 550),myPoint) then
     MouseCursor.Cleanup;
     lpDDSFront_Flip( nil, DDFLIP_WAIT );
-    pr := Rect( 119, 0, 600, 550 );
-    lpDDSBack.BltFast( 119, 0, lpDDSFront, @pr, DDBLTFAST_WAIT );
+    pr := Rect( 119 + Offset.X, 0 + Offset.Y, 600 + Offset.X, 550 + Offset.Y );
+    lpDDSBack.BltFast( 119 + Offset.X, 0 + Offset.Y, lpDDSFront, @pr, DDBLTFAST_WAIT );
   //if PtInRect(Rect(119, 0, 600, 550),myPoint) then
     MouseCursor.PlotDirty := false;
   except
@@ -412,7 +413,7 @@ begin
 end; //TScroll.ShowStatsScroll
 
 
-procedure TScroll.OpenStatsScroll( TheItem : TItem );
+procedure TScroll.OpenStatsScroll( TheItem : TItem; const offsetX, offsetY: Integer );
 var
   tempString : string;
   pr : TRect;
@@ -421,6 +422,7 @@ const
 begin
   Log.DebugLog(FailName);
   try
+    Offset := Point(offsetX, offsetY);
     ScrollFactor := 0;
     KeepOnScrolling := false;
     StatsScrollItem := TheItem;
