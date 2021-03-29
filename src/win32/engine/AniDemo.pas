@@ -1118,7 +1118,7 @@ begin
       ClientHeight := ScreenMetrics.ScreenHeight;
     end;
 
-    Game.InitDX( Handle, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight, ScreenMetrics.BPP, ScreenMetrics.Windowed );  // 800, 600, 16
+    Game.InitDX( Handle, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight, ScreenMetrics.BPP, ScreenMetrics.Windowed, ScreenMetrics.VSync );  // 800, 600, 16
 
     Game.PreCreateMap( ScreenMetrics.PreMapWidth, ScreenMetrics.PreMapHeight );  // 768, 544
     Log.Log( 'DX initialization complete' );

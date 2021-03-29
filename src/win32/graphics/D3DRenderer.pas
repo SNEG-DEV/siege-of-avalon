@@ -29,11 +29,11 @@ type
       FTexture: ID3D11Texture2D;
       FTextureSRV: ID3D11ShaderResourceView;
 
-      Function Initialize(aHWND: HWND; aWidth, aHeight: Integer; bWindowed: Boolean): HRESULT;
+      Function Initialize(aHWND: HWND; aWidth, aHeight: Integer; bWindowed, bVSync: Boolean): HRESULT;
       Function Uninitialize: HRESULT;
       Function InitializeTexture(aWidth, aHeight: Integer): HRESULT;
     public
-      Constructor Create(aHWND: HWND; aWidth, aHeight: Integer; bWindowed: Boolean);
+      Constructor Create(aHWND: HWND; aWidth, aHeight: Integer; bWindowed, bVSync: Boolean);
       Destructor Destroy; override;
 
       Procedure UpdateTexture(Data: Pointer; Stride: Cardinal); overload;
@@ -101,7 +101,7 @@ var
     '	return float4(r / 32.0f, g / 64.0f, b / 32.0f, 1.0f);'#13#10 +
     '}'#13#10;
 
-function TDXRenderer.Initialize(aHWND: HWND; aWidth, aHeight: Integer; bWindowed: Boolean): HRESULT;
+function TDXRenderer.Initialize(aHWND: HWND; aWidth, aHeight: Integer; bWindowed, bVSync: Boolean): HRESULT;
 var
   feature_level: Array[0..0] of TD3D_FEATURE_LEVEL;
   pBackbuffer: ID3D11Texture2D;
@@ -319,14 +319,14 @@ begin
   FDeviceContext.UpdateSubresource(FTexture, 0, nil, data, stride, 0);
 end;
 
-constructor TDXRenderer.Create(aHWND: HWND; aWidth, aHeight: Integer; bWindowed: Boolean);
+constructor TDXRenderer.Create(aHWND: HWND; aWidth, aHeight: Integer; bWindowed, bVSync: Boolean);
 begin
   Inherited Create;
 
   FReady := False;
-  FEnableVSync := False;
+  FEnableVSync := bVSync;
 
-  If Failed(Initialize(aHWND, aWidth, aHeight, bWindowed)) then
+  If Failed(Initialize(aHWND, aWidth, aHeight, bWindowed, bVSync)) then
      Raise Exception.Create('Direct3D 11 initialization failed');
 end;
 

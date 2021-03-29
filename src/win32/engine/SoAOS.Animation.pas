@@ -436,7 +436,7 @@ type
     ForceRefresh: Boolean;
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    procedure InitDX(Handle: HWND; ResW, ResH, BPP: Integer; Windowed: Boolean);
+    procedure InitDX(Handle: HWND; ResW, ResH, BPP: Integer; Windowed, VSync: Boolean);
     procedure CloseDX;
     property Active: Boolean read FActive write SetActive;
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState;
@@ -785,7 +785,7 @@ begin
   inherited Destroy;
 end;
 
-procedure TAniView.InitDX(Handle: HWND; ResW, ResH, BPP: Integer; Windowed: Boolean);
+procedure TAniView.InitDX(Handle: HWND; ResW, ResH, BPP: Integer; Windowed, VSync: Boolean);
 var
   ddsd: TDDSurfaceDesc;
   Caps: TDDSCaps;
@@ -799,7 +799,7 @@ var
   res: HRESULT;
   guidStr : String;
 begin
-  if (IsWindows7 and (not Windowed)) or ScreenMetrics.ForceD3DFullscreen then
+  if (IsWindows7 and (not Windowed)) or (ScreenMetrics.ForceD3DFullscreen and (not Windowed)) then
   begin
     D3DFullscreen := True;
     Windowed := True;
@@ -883,7 +883,7 @@ begin
   ZeroMemory(@ddsd, SizeOf(ddsd));
   if Windowed then
   begin
-    D3DREnderer := TDXRenderer.Create(Handle, ResW, ResH, not D3DFullscreen);
+    D3DREnderer := TDXRenderer.Create(Handle, ResW, ResH, not D3DFullscreen, VSync);
 
     BltWindowed := True;
     ddsd.dwSize := SizeOf(ddsd);
