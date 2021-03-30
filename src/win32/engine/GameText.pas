@@ -189,7 +189,6 @@ begin
     end
     else
       FontSize := Trunc(FontSize/frmMain.ScaleFactor);
-    Log.Log('FontSize now: '+FontSize.ToString);
   except
   end;
   BM := TBitmap.Create;

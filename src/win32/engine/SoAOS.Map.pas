@@ -970,7 +970,10 @@ begin
     // TODO: Check if below condition ever ends up true - otherwise remove.
     if ((FTileMaxIndex mod FTileMaxColumnIndex) < 0) and (FTileMaxIndex > 0)
     then // fix by rucksacksepp
+    begin
       Inc(X, FMap.FTileWidth);
+      Log.Log('If this ever happen I would be surprised!!');
+    end;
     Tile[Index] := NewTile;
     if (NewBitWidth > FTileBitWidth) or (NewBitHeight > FTileBitHeight) then
     begin

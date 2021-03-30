@@ -3333,7 +3333,6 @@ begin
       INILanguage := TMemIniFile.Create( SiegeINILanguageFile, TEncoding.ANSI );
       try
         MapName := INILanguage.ReadString( 'MapNames', Level, Level );
-        Log.Log(Level+' ### '+MapName);
       finally
         INILanguage.Free;
       end;

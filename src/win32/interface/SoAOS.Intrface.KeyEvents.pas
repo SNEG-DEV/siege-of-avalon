@@ -57,13 +57,8 @@ type
     class procedure ScreenShot;
     class procedure ShowMenu;
     class procedure SpellHotKey(key: Word);
-    class procedure TravelFast; // Revise
-    class procedure TwinWeaponToggle; // Revise
-
-    class procedure MarkSpotInLog; // Temp.
-
-    class procedure DemoOrDeath; // Testcode addparty sample
-//    class procedure LforWhat; // Testcode mess sample
+    class procedure TravelFast;
+//    class procedure DemoOrDeath; // Testcode needs to go
   public
     class procedure TogglePause;
     class procedure FormKeyDown(Sender: TObject; var Key: Word;
@@ -92,6 +87,7 @@ var
   newGlobalBrightness: Integer;
   INI: TINIFile;
 begin
+{ TODO : Brightness changes needs reload/render of map to show. }
   newGlobalBrightness := GlobalBrightness + step;
   if newGlobalBrightness>255 then newGlobalBrightness := 255;
   if newGlobalBrightness<0 then newGlobalBrightness := 0;
@@ -110,33 +106,37 @@ begin
   end;
 end;
 
-class procedure TKeyEvent.DemoOrDeath;
-//var
-//  i, n: Integer;
-begin
-//  n := 0;
-//  for i:=0 to FigureInstances.count-1 do
-//  begin
-//    if (FigureInstances.Objects[i] is TCharacter) and (FigureInstances.Objects[i]<>Player) and
-//      Player.isAlly( TCharacter( FigureInstances.Objects[i] ) ) and not TCharacter( FigureInstances.Objects[i] ).Dead then
-//    begin
-//      frmMain.AddToParty(TAniFigure(FigureInstances.Objects[i]));
-//      inc(n);
-//      if n >= MaxPartyMembers then
-//        break;
-//    end;
-//  end;
-
-  player.hitpoints := -1;
-  player.trainingpoints := 10000;
-  player.money := 10000;
-  player.mana := 100;
-
-//     AddAdventure('a');
-//     AddQuest('a');
-//     AddLogEntry('a');
-//     end
-end;
+//class procedure TKeyEvent.DemoOrDeath;
+////var
+////  i, n: Integer;
+//begin
+////  n := 0;
+////  for i:=0 to FigureInstances.count-1 do
+////  begin
+////    if (FigureInstances.Objects[i] is TCharacter) and (FigureInstances.Objects[i]<>Player) and
+////      Player.isAlly( TCharacter( FigureInstances.Objects[i] ) ) and not TCharacter( FigureInstances.Objects[i] ).Dead then
+////    begin
+////      frmMain.AddToParty(TAniFigure(FigureInstances.Objects[i]));
+////      inc(n);
+////      if n >= MaxPartyMembers then
+////        break;
+////    end;
+////  end;
+//
+////  player.hitpoints := -1;
+////  player.trainingpoints := 10000;
+////  player.money := 10000;
+////  player.mana := 100;
+////
+////  Adventures.Add('ch4-531');
+////  RunScript(Player, 'player.additem(MagicalMask)');
+////  RunScript(Player, 'addtitle(04maskgiven)');
+//                                                                    ;
+////     AddAdventure('a');
+////     AddQuest('a');
+////     AddLogEntry('a');
+////     end
+//end;
 
 class procedure TKeyEvent.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
@@ -155,9 +155,7 @@ begin
       65: if ToggleShow(DlgTitles) then frmMain.BeginTitles(Current); // A
       66: Current.DoBattleCry; // B
       67: if ToggleShow(DlgStatistics) then frmMain.BeginStatistics(Current); // C
-      68: DemoOrDeath; //D test code
-      70: MarkSpotInLog; // F
-
+//      68: DemoOrDeath; //D test code
       71: ScreenShot; // G
       73: if ToggleShow(DlgInventory) then frmMain.BeginInventory(Current); // I
       74: if ToggleShow(DlgJournal) then frmMain.BeginJournal; // J
@@ -169,17 +167,14 @@ begin
       82: if ToggleShow(DlgRoster) then frmMain.BeginRoster(nil); // R
       83: ToggleSpell; // S
       84: TravelFast; // T
-//      87: if ToggleShow(DlgAdvLog) then frmMain.BeginAdvLog; // W
+//      87: WeaponSwitch; ; // W - Reserved for short/long distance weapons?
       88: ToggleXRay; // X
-//      90: TwinWeaponToggle; // Z - FIX - German only :(
+//      90: HDZoom; // Z - Reserved for future? HD Zoom function
       VK_F1: if ToggleShow(DlgShow) then frmMain.BeginHelp; // F1
       VK_F2: QuickSave; // F2
       VK_OEM_PLUS, VK_ADD: AdjustGlobalBrightness(10);
       VK_OEM_MINUS, VK_SUBTRACT: AdjustGlobalBrightness(-10);
     end;
-
-//    else if ( key = 76 ) then LforWhat  // L test code
-//    else if (Key = 68) then DemoOrDeath //D test code
 
     // TODO: Remove DEBUG keys...unless they work
     { else if (Key=114) or (Key=115) then begin     // F3 - F4 Debugmode
@@ -244,11 +239,6 @@ end;
 //
 //  RunScript(Current,'journalentry(A);adventure(B);AddQuest(quest1)');
 //end;
-
-class procedure TKeyEvent.MarkSpotInLog;
-begin
-  Log.Log('Mark spot: GameName: ' + GameName + ', LVLFile: ' + LVLFile + ', CurrentScene: ' + CurrentScene + ', CurrentStartingPoint: ' + CurrentStartingPoint);
-end;
 
 class procedure TKeyEvent.QuickSave;
 var
@@ -469,238 +459,12 @@ begin
 // LoadNewMap( const NewFile(lvl), SceneName, StartingPoint, Transition(bmp) : string );
   if not NoTransit then
   begin
-//    if player.titleexists('04Chapter4') then
-//      RunScript(player, 'Loadmap(03Wald1,default,forst,Wald|#Schnellreise.Fall3#)');
     if player.titleexists('03Chapter3') and not player.titleexists('04Chapter4') then
       RunScript(player, 'Loadmap(forest05,default,Start,ForestChpt3|#FastTransit.Default#)');
-//    if player.titleexists('02Chapter2') then
-//    begin
-//      if not player.titleexists('03Chapter3') then
-//      begin
-//        if player.titleexists('ImForst') then
-//          RunScript(player, 'Loadmap(Wald1,default,forst,Wald|#Schnellreise.Fall1#)')
-//        else
-//          RunScript(player, 'Loadmap(southgate1b,default,Levelpoint4|#Schnellreise.Fall1#)');
-//      end;
-//    end;
-//    if not player.titleexists('02Chapter2') then
     if player.titleexists('02Chapter2') then
       RunScript(player, 'Loadmap(southgate1b,default,Levelpoint4,VillagetoSouthGate|#FastTransit.Default#)')
     else
       RunScript(player, 'Loadmap(okeepl2,default,Start|#FastTransit.Default#)')
-  end;
-end;
-
-class procedure TKeyEvent.TwinWeaponToggle;
-begin // Z Zweischwerterstilfunktion
-  if player.titleexists('geschicklichkeit1') then
-  begin
-    if player.titleexists('Dagger') then
-    begin
-      RunScript(player, 'player.additem(DaggerShield)');
-      RunScript(player, 'player.removeitem(Dagger)');
-    end;
-    if player.titleexists('Daggershield') then
-    begin
-      RunScript(player, 'player.additem(Dagger)');
-      RunScript(player, 'player.removeitem(DaggerShield)');
-    end;
-    if player.titleexists('Daggerworn') then
-    begin
-      RunScript(player, 'player.additem(DaggerwornShield)');
-      RunScript(player, 'player.removeitem(Daggerworn)');
-    end;
-    if player.titleexists('Daggershieldworn') then
-    begin
-      RunScript(player, 'player.additem(Daggerworn)');
-      RunScript(player, 'player.removeitem(DaggerwornShield)');
-    end;
-    if player.titleexists('DaggerFine') then
-    begin
-      RunScript(player, 'player.additem(DaggerFineShield)');
-      RunScript(player, 'player.removeitem(DaggerFine)');
-    end;
-    if player.titleexists('DaggershieldFine') then
-    begin
-      RunScript(player, 'player.additem(DaggerFine)');
-      RunScript(player, 'player.removeitem(DaggerFineShield)');
-    end;
-    if player.titleexists('Axe') then
-    begin
-      RunScript(player, 'player.additem(Axeshield)');
-      RunScript(player, 'player.removeitem(Axe)');
-    end;
-    if player.titleexists('Axeshield') then
-    begin
-      RunScript(player, 'player.additem(Axe)');
-      RunScript(player, 'player.removeitem(Axeshield)');
-    end;
-    if player.titleexists('AxeFine') then
-    begin
-      RunScript(player, 'player.additem(AxeFineshield)');
-      RunScript(player, 'player.removeitem(AxeFine)');
-    end;
-    if player.titleexists('AxeshieldFine') then
-    begin
-      RunScript(player, 'player.additem(AxeFine)');
-      RunScript(player, 'player.removeitem(AxeFineshield)');
-    end;
-    if player.titleexists('AxeWorn') then
-    begin
-      RunScript(player, 'player.additem(AxeWornshield)');
-      RunScript(player, 'player.removeitem(AxeWorn)');
-    end;
-    if player.titleexists('AxeshieldWorn') then
-    begin
-      RunScript(player, 'player.additem(AxeWorn)');
-      RunScript(player, 'player.removeitem(AxeWornshield)');
-    end;
-    if player.titleexists('Shortsword') then
-    begin
-      if (player.strength > 6) and (player.coordination > 11) then
-      begin
-        RunScript(player, 'player.additem(ShortswordShield)');
-        RunScript(player, 'player.removeitem(Shortsword)');
-      end;
-    end;
-    if player.titleexists('ShortswordShield') then
-    begin
-      RunScript(player, 'player.additem(Shortsword)');
-      RunScript(player, 'player.removeitem(ShortswordShield)');
-    end;
-    if player.titleexists('Shortswordworn') then
-    begin
-      if (player.strength > 6) and (player.coordination > 11) then
-      begin
-        RunScript(player, 'player.additem(ShortswordwornShield)');
-        RunScript(player, 'player.removeitem(Shortswordworn)');
-      end;
-    end;
-    if player.titleexists('ShortswordShieldworn') then
-    begin
-      RunScript(player, 'player.additem(Shortswordworn)');
-      RunScript(player, 'player.removeitem(ShortswordwornShield)');
-    end;
-  end;
-
-  if player.titleexists('geschicklichkeit2') then
-  begin
-    if (player.strength > 11) and (player.coordination > 15) then
-    begin
-      if player.titleexists('Gladius') then
-      begin
-        RunScript(player, 'player.additem(GladiusswordShield)');
-        RunScript(player, 'player.removeitem(Gladiussword)');
-      end;
-      if player.titleexists('gladiusworn') then
-      begin
-        RunScript(player, 'player.additem(GladiusswordwornShield)');
-        RunScript(player, 'player.removeitem(Gladiusswordworn)');
-      end;
-      if player.titleexists('GladiusFine') then
-      begin
-        RunScript(player, 'player.additem(gladiusswordFineShield)');
-        RunScript(player, 'player.removeitem(gladiusswordFine)');
-      end;
-    end;
-    if player.titleexists('gladiusshield') then
-    begin
-      RunScript(player, 'player.additem(gladiussword)');
-      RunScript(player, 'player.removeitem(gladiusswordShield)');
-    end;
-    if player.titleexists('gladiusshieldworn') then
-    begin
-      RunScript(player, 'player.additem(gladiusswordworn)');
-      RunScript(player, 'player.removeitem(gladiusswordwornShield)');
-    end;
-    if player.titleexists('gladiusshieldFine') then
-    begin
-      RunScript(player, 'player.additem(gladiusswordFine)');
-      RunScript(player, 'player.removeitem(gladiusswordFineShield)');
-    end;
-    if (player.strength > 12) and (player.coordination > 15) then
-    begin
-      if player.titleexists('Scimitar') then
-      begin
-        RunScript(player, 'player.additem(scimitarShield)');
-        RunScript(player, 'player.removeitem(scimitar)');
-      end;
-      if player.titleexists('scimitarworn') then
-      begin
-        RunScript(player, 'player.additem(scimitarwornShield)');
-        RunScript(player, 'player.removeitem(scimitarworn)');
-      end;
-      if player.titleexists('scimitarFine') then
-      begin
-        RunScript(player, 'player.additem(scimitarFineShield)');
-        RunScript(player, 'player.removeitem(scimitarFine)');
-      end;
-    end;
-    if player.titleexists('scimitarshield') then
-    begin
-      RunScript(player, 'player.additem(scimitar)');
-      RunScript(player, 'player.removeitem(scimitarShield)');
-    end;
-    if player.titleexists('scimitarshieldworn') then
-    begin
-      RunScript(player, 'player.additem(scimitarworn)');
-      RunScript(player, 'player.removeitem(scimitarwornShield)');
-    end;
-    if player.titleexists('scimitarshieldFine') then
-    begin
-      RunScript(player, 'player.additem(scimitarFine)');
-      RunScript(player, 'player.removeitem(scimitarFineShield)');
-    end;
-  end;
-
-  if player.titleexists('geschicklichkeit3') then
-  begin
-    if (player.strength > 14) and (player.coordination > 17) then
-    begin
-      if player.titleexists('Bastardsword') then
-      begin
-        RunScript(player, 'player.additem(BastardswordShield)');
-        RunScript(player, 'player.removeitem(Bastardsword)');
-      end;
-      if player.titleexists('Bastardswordworn') then
-      begin
-        RunScript(player, 'player.additem(BastardswordwornShield)');
-        RunScript(player, 'player.removeitem(Bastardswordworn)');
-      end;
-      if player.titleexists('BastardswordFine') then
-      begin
-        RunScript(player, 'player.additem(BastardswordFineShield)');
-        RunScript(player, 'player.removeitem(BastardswordFine)');
-      end;
-    end;
-    if player.titleexists('Bastardswordshield') then
-    begin
-      RunScript(player, 'player.additem(Bastardsword)');
-      RunScript(player, 'player.removeitem(BastardswordShield)');
-    end;
-    if player.titleexists('Bastardswordshieldworn') then
-    begin
-      RunScript(player, 'player.additem(Bastardswordworn)');
-      RunScript(player, 'player.removeitem(BastardswordwornShield)');
-    end;
-    if player.titleexists('BastardswordshieldFine') then
-    begin
-      RunScript(player, 'player.additem(BastardswordFine)');
-      RunScript(player, 'player.removeitem(BastardswordFineShield)');
-    end;
-    if (player.strength > 15) and (player.coordination > 19) then
-    begin
-      if player.titleexists('Officersword') then
-      begin
-        RunScript(player, 'player.additem(OfficerswordShield)');
-        RunScript(player, 'player.removeitem(Officersword)');
-      end;
-    end;
-    if player.titleexists('Officerswordshield') then
-    begin
-      RunScript(player, 'player.additem(OfficerswordFine)');
-      RunScript(player, 'player.removeitem(OfficerswordFineShield)');
-    end;
   end;
 end;
 
