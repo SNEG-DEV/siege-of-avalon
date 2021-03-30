@@ -3096,7 +3096,8 @@ begin
     end;
   end;
 {$ENDIF}
-{$IFDEF DEBUG}
+//{$IFDEF DEBUG}
+{$IF FALSE}
   if Dest = MapBuffer.Canvas.Handle then
   begin
     MapBuffer.Canvas.Brush.Style := bsClear;
@@ -3475,7 +3476,8 @@ begin
     begin
       pBase := GlobalLock(Figure.PathHandle);
       p := pBase;
-{$IFDEF DEBUG}
+//{$IFDEF DEBUG}
+{$IF FALSE}
       RefreshMap;
       MapBuffer.Canvas.Brush.Color := $FF00;
       MapBuffer.Canvas.Ellipse(Figure.FX - OffsetX + MapOffsetX - Figure.Radius,
@@ -3488,7 +3490,8 @@ begin
       begin
         p^.X := p^.X * CellWidth + FStartX;
         p^.Y := p^.Y * CellHeight + FStartY;
-{$IFDEF DEBUG}
+//{$IFDEF DEBUG}
+{$IF FALSE}
         MapBuffer.Canvas.Ellipse(p^.X - OffsetX + MapOffsetX - Figure.Radius,
           p^.Y - OffsetY + MapOffsetY - Figure.Radius div 2,
           p^.X - OffsetX + MapOffsetX + Figure.Radius,
