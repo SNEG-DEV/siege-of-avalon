@@ -2157,7 +2157,7 @@ begin
   try
 
     DlgShow.frmMain := Self;
-    DlgShow.BMPFileName := TPath.Combine(Language, 'HelpScreen(telekeneticDuck).bmp');
+    DlgShow.BMPFileName := TPath.Combine(Language, 'HelpScreen.bmp');
     DlgShow.MusicFileName := '';
     OpenDialog( DlgShow, CloseAllDialogs );
 
