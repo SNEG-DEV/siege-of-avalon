@@ -126,9 +126,9 @@ uses
   GameLibIntegration in 'platforms\GameLibIntegration.pas',
   GameLibIntegration.Steam in 'platforms\GameLibIntegration.Steam.pas',
   GalaxyWrapper in 'platforms\gogIntegration\GalaxyWrapper.pas',
-  Steamworks in 'platforms\streamIntegration\Steamworks.pas',
-  SteamworksClasses in 'platforms\streamIntegration\SteamworksClasses.pas',
-  SteamworksTypes in 'platforms\streamIntegration\SteamworksTypes.pas';
+  Steamworks in 'platforms\steamIntegration\Steamworks.pas',
+  SteamworksClasses in 'platforms\steamIntegration\SteamworksClasses.pas',
+  SteamworksTypes in 'platforms\steamIntegration\SteamworksTypes.pas';
 
 {$R *.RES}
 

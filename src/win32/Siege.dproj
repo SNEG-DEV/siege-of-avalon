@@ -1499,9 +1499,9 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <DCCReference Include="platforms\GameLibIntegration.pas"/>
         <DCCReference Include="platforms\GameLibIntegration.Steam.pas"/>
         <DCCReference Include="platforms\gogIntegration\GalaxyWrapper.pas"/>
-        <DCCReference Include="platforms\streamIntegration\Steamworks.pas"/>
-        <DCCReference Include="platforms\streamIntegration\SteamworksClasses.pas"/>
-        <DCCReference Include="platforms\streamIntegration\SteamworksTypes.pas"/>
+        <DCCReference Include="platforms\steamIntegration\Steamworks.pas"/>
+        <DCCReference Include="platforms\steamIntegration\SteamworksClasses.pas"/>
+        <DCCReference Include="platforms\steamIntegration\SteamworksTypes.pas"/>
         <RcItem Include="..\..\assets\Interface\blkchcry.ttf">
             <ResourceType>FONT</ResourceType>
             <ResourceId>1</ResourceId>
