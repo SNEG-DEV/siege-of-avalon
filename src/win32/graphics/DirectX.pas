@@ -46,6 +46,8 @@ uses
   Winapi.Windows,
   Winapi.MMSystem;
 
+procedure LoadDDraw(path: string);
+
 {Delphi version marks}
 
 {$I DelphiXcfg.inc}
@@ -22899,19 +22901,16 @@ begin
               (Pos('DELPHI32.EXE', AppName) = Length(AppName) - Length('DELPHI32.EXE') + 1) );
 end;
 
-initialization
+procedure LoadDDraw(path: string);
+var
+  ddrawpath: string;
 begin
   {DirectDraw}
 
   if not IsNTandDelphiRunning then
   begin
-    DDrawDLL := 0;
-    if (TOSVersion.Major <> 6) or (TOSVersion.Minor <> 1) then // serge: Windows 7 does not require DDrawCompat
-      DDrawDLL := LoadLibrary('SoADDraw.dll'); // serge: windows antivirus complains on custom builds DDrawCompat, so I renamed it
-    if DDrawDLL = 0 then
-    begin
-      DDrawDll := LoadLibrary('DDraw.dll');
-    end;
+    DDrawDLL := LoadLibrary(PWideChar(path));
+
     DirectDrawEnumerateA := GetProcAddress(DDrawDLL,'DirectDrawEnumerateA');
     DirectDrawEnumerateW := GetProcAddress(DDrawDLL,'DirectDrawEnumerateW');
 {$IFDEF UNICODE}
@@ -23056,6 +23055,11 @@ begin
   {$ENDIF}
   end;
   {DirectSound}
+end;
+
+initialization
+begin
+
 end;
 
 finalization

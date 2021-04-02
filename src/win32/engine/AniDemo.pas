@@ -1829,10 +1829,30 @@ begin
 //  end;
 end;
 
+function GetSystem32: string;
+var
+  path: array[0..MAX_PATH] of WCHAR;
+begin
+  GetSystemDirectory(path, MAX_PATH);
+  Result := path;
+end;
+
 procedure TfrmMain.FormCreate( Sender : TObject );
 var
   ExStyle: Integer;
+  ddrawpath: String;
 begin
+  if (TOSVersion.Major = 6) and (TOSVersion.Minor = 1) then
+  begin
+    ddrawpath := GetSystem32 + '\ddraw.dll';
+  end
+  else
+  begin
+    ddrawpath := 'soaddraw.dll';
+  end;
+
+  DirectX.LoadDDraw(ddrawpath);
+
   AppPath := ExtractFilePath( Application.ExeName );
   SiegeINIFile := AppPath + 'siege.ini';
 
