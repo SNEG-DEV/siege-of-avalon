@@ -133,6 +133,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <DCC_SYMBOL_PLATFORM>False</DCC_SYMBOL_PLATFORM>
         <DCC_UNIT_PLATFORM>False</DCC_UNIT_PLATFORM>
         <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+        <DCC_DcuOutput>dcu_Release</DCC_DcuOutput>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
@@ -185,6 +186,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <DCC_Optimize>false</DCC_Optimize>
         <Debugger_CWD>..\..\soa-resources</Debugger_CWD>
         <DCC_ExeOutput>..\..\soa-resources</DCC_ExeOutput>
+        <DCC_DcuOutput>dcu_Debug</DCC_DcuOutput>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_3)'!=''">
         <DCC_Define>RELEASE;STEAM;$(DCC_Define)</DCC_Define>
@@ -196,6 +198,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=</VerInfo_Keys>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <DCC_ExeOutput>..\..\soa-resources</DCC_ExeOutput>
+        <DCC_DcuOutput>dcu_ReleaseSteam</DCC_DcuOutput>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_4)'!=''">
         <DCC_Define>RELEASE;GOG;$(DCC_Define)</DCC_Define>
@@ -207,6 +210,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=</VerInfo_Keys>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <DCC_ExeOutput>..\..\soa-resources</DCC_ExeOutput>
+        <DCC_DcuOutput>dcu_ReleaseGog</DCC_DcuOutput>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_5)'!=''">
         <DCC_Define>DEBUG;STEAM;$(DCC_Define)</DCC_Define>
@@ -218,6 +222,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=</VerInfo_Keys>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <DCC_ExeOutput>..\..\soa-resources</DCC_ExeOutput>
+        <DCC_DcuOutput>dcu_DebugSteam</DCC_DcuOutput>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_6)'!=''">
         <DCC_Define>DEBUG;GOG;$(DCC_Define)</DCC_Define>
@@ -229,6 +234,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=</VerInfo_Keys>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <DCC_ExeOutput>..\..\soa-resources</DCC_ExeOutput>
+        <DCC_DcuOutput>dcu_DebugGog</DCC_DcuOutput>
     </PropertyGroup>
     <ProjectExtensions>
         <Borland.Personality>Delphi.Personality.12</Borland.Personality>
@@ -1566,7 +1572,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>copy /Y $(OUTPUTPATH) $(OUTPUTDIR)$(OUTPUTNAME)-$(CONFIG)$(OUTPUTEXT)</PostBuildEvent>
+        <PostBuildEvent>copy /Y $(OUTPUTPATH) $(OUTPUTDIR)$(OUTPUTNAME)-$(CONFIG)$(OUTPUTEXT)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='Win32'">
@@ -1574,7 +1580,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>copy /Y $(OUTPUTPATH) $(OUTPUTDIR)$(OUTPUTNAME)-$(CONFIG)$(OUTPUTEXT)</PostBuildEvent>
+        <PostBuildEvent>copy /Y $(OUTPUTPATH) $(OUTPUTDIR)$(OUTPUTNAME)-$(CONFIG)$(OUTPUTEXT)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='ReleaseSteam' And '$(Platform)'=='Win32'">
@@ -1582,7 +1588,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>copy /Y $(OUTPUTPATH) $(OUTPUTDIR)$(OUTPUTNAME)-$(CONFIG)$(OUTPUTEXT)</PostBuildEvent>
+        <PostBuildEvent>copy /Y $(OUTPUTPATH) $(OUTPUTDIR)$(OUTPUTNAME)-$(CONFIG)$(OUTPUTEXT)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='ReleaseGog' And '$(Platform)'=='Win32'">
@@ -1590,7 +1596,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>copy /Y $(OUTPUTPATH) $(OUTPUTDIR)$(OUTPUTNAME)-$(CONFIG)$(OUTPUTEXT)</PostBuildEvent>
+        <PostBuildEvent>copy /Y $(OUTPUTPATH) $(OUTPUTDIR)$(OUTPUTNAME)-$(CONFIG)$(OUTPUTEXT)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='DebugSteam' And '$(Platform)'=='Win32'">
@@ -1598,7 +1604,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>copy /Y $(OUTPUTPATH) $(OUTPUTDIR)$(OUTPUTNAME)-$(CONFIG)$(OUTPUTEXT)</PostBuildEvent>
+        <PostBuildEvent>copy /Y $(OUTPUTPATH) $(OUTPUTDIR)$(OUTPUTNAME)-$(CONFIG)$(OUTPUTEXT)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='DebugGog' And '$(Platform)'=='Win32'">
@@ -1606,7 +1612,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>copy /Y $(OUTPUTPATH) $(OUTPUTDIR)$(OUTPUTNAME)-$(CONFIG)$(OUTPUTEXT)</PostBuildEvent>
+        <PostBuildEvent>copy /Y $(OUTPUTPATH) $(OUTPUTDIR)$(OUTPUTNAME)-$(CONFIG)$(OUTPUTEXT)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
 </Project>
