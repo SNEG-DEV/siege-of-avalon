@@ -130,7 +130,7 @@ procedure TfrmLaunchSetting.Done(r: integer; windowed: Boolean);
 var
   INI: TIniFile;
 begin
-  INI := TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini'));
+  INI := TIniFile.Create(ExtractFilePath( Application.ExeName ) + 'siege.ini');
   try
     try
       if (FCurrentLanguage <> cNoLanguage) then
@@ -230,7 +230,7 @@ begin
   SendMessageTimeout(HWND_BROADCAST, WM_FONTCHANGE, 0, 0, SMTO_NORMAL, 100, nil);
   Application.ProcessMessages;
 
-  INI := TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini'));
+  INI := TIniFile.Create(ExtractFilePath( Application.ExeName ) + 'siege.ini');
   try
     FCurrentLanguage := INI.ReadString('Settings', 'LanguagePath', cNoLanguage);
     if FCurrentLanguage='' then
