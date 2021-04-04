@@ -852,11 +852,13 @@ begin
   if res<>DD_OK then
   begin
     Log.Log( 'DX: Failed to create directdraw.' );
+    MessageDlg('Could not initialize video subsystem. Please make sure that you have the latest video driver update installed.', mtError, [mbOk], 0);
     Application.Terminate;
   end;
   if tmpDD = nil then
   begin
     Log.Log( 'DX: DirectDrawCreateEx returned nil' );
+    MessageDlg('Could not initialize video subsystem. Please make sure that you have the latest video driver update installed.', mtError, [mbOk], 0);
     Application.Terminate;
   end;
 
@@ -869,6 +871,7 @@ begin
   if lpDD = nil then
   begin
     Log.Log('DX: Failed to query IID_DirectDraw');
+    MessageDlg('Could not initialize video subsystem. Please make sure that you have the latest video driver update installed.', mtError, [mbOk], 0);
     Application.Terminate;
   end;
 
@@ -878,12 +881,23 @@ begin
     res := lpDD.SetCooperativeLevel(Handle, DDSCL_EXCLUSIVE or DDSCL_FULLSCREEN);
 
   if res<>DD_OK then
+  begin
+    MessageDlg('Could not initialize video subsystem. Please make sure that you have the latest video driver update installed.', mtError, [mbOk], 0);
     Log.Log( 'DX: Failed to set cooperative level.' );
+  end;
 
   ZeroMemory(@ddsd, SizeOf(ddsd));
   if Windowed then
   begin
     D3DREnderer := TDXRenderer.Create(Handle, ResW, ResH, not D3DFullscreen, VSync);
+
+    if D3DRenderer = nil then
+    begin
+      Log.Log('Failed to initialize D3D11 renderer');
+      MessageDlg('Could not initialize video subsystem. Please make sure that you have the latest video driver update installed.', mtError, [mbOk], 0);
+      Application.Terminate;
+    end;
+
 
     BltWindowed := True;
     ddsd.dwSize := SizeOf(ddsd);
@@ -924,6 +938,9 @@ begin
       if res = DDERR_UNSUPPORTED then Log.Log( 'DX: DDERR_UNSUPPORTED' );
       if res = DDERR_UNSUPPORTEDMODE then Log.Log( 'DX: DDERR_UNSUPPORTEDMODE' );
       if res = DDERR_WASSTILLDRAWING then Log.Log( 'DX: DDERR_WASSTILLDRAWING' );
+
+      MessageDlg('Could not initialize video subsystem. Please make sure that you have the latest video driver update installed.', mtError, [mbOk], 0);
+      Application.Terminate;
     end;
 
     ddsd.dwSize := SizeOf(ddsd);

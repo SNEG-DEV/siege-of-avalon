@@ -331,7 +331,10 @@ var
 begin
   CurrDbgLvl := RealCurrDbgLvl;
   CurrDbgGroup := RealCurrDbgGroup;
-  S := AnsiString( TimeToStr( Time ) + ' ' + Format( '%8.8d', [ Game.FrameCount ] ) + ': ' + Msg + #13#10 );
+  if Game <> nil then
+    S := AnsiString( TimeToStr( Time ) + ' ' + Format( '%8.8d', [ Game.FrameCount ] ) + ': ' + Msg + #13#10 )
+  else
+    S := AnsiString( TimeToStr( Time ) + ' ' + Format( '%8.8d', [ -1 ] ) + ': ' + Msg + #13#10 );
 //  b := TEncoding.UTF8.GetBytes(s);
   Write( S[1], Length( S ) );
   if ( RealCurrDbgGroup and DbgFlushLog ) <> 0 then

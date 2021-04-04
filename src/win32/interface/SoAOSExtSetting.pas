@@ -98,7 +98,8 @@ implementation
 uses
   System.IOUtils,
   System.IniFiles,
-  Winapi.ShellAPI;
+  Winapi.ShellAPI,
+  LogFile;
 
 {$R *.dfm}
 
@@ -191,6 +192,7 @@ var
   devName: string;
   DisplayDevice: TDisplayDevice;
   iDevNum: DWORD;
+  p: Integer;
   langStr: string;
 
   Png: TPngImage;
@@ -262,6 +264,7 @@ begin
   prim := 0;
 // DeviceDrivers
   DisplayDevice.cb := SizeOf(DisplayDevice);
+  p := 0;
   for iDevNum := 0 to monitorCnt-1 do
     if EnumDisplayDevices(NIL, iDevNum, DisplayDevice, 0) then
     begin
@@ -270,12 +273,26 @@ begin
       FMonitors.Add('Display '+(iDevNum+1).ToString+' - '+string(DisplayDevice.DeviceString) + '=' + devName);
       if devName=FCurrentDevice then
         prim := iDevNum;
+      Inc(p);
     end;
   FCurrentDeviceIdx := prim;
   FCurrentDevice := FMonitors.ValueFromIndex[FCurrentDeviceIdx];
 
   FResolutions := TStringList.Create(dupIgnore, True, False);
   SetResolutionSupport(PWideChar(FCurrentDevice));
+
+  // serge: if there are any errors with getting display device names then
+  // we assume that something is wrong with video drivers.
+  // This definitely happens on some systems with Intel IGPU
+  // when there are no vendor drivers installed.
+
+  if p <> monitorCnt then
+  begin
+    Log.Log('Failed to enumerate display devices');
+    MessageDlg('Could not initialize video subsystem. Please make sure that you have the latest video driver update installed.', mtError, [mbOk], 0);
+    Application.Terminate;
+  end;
+
 end;
 
 procedure TfrmLaunchSetting.FormDestroy(Sender: TObject);
