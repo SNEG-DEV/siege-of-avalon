@@ -111,7 +111,7 @@ var
   DlgProgress : TLoaderBox;
   InterfacePath : string;
   InterfaceLanguagePath : string;
-  MapPath : AnsiString;
+  MapPath : string;
   Language : string;
   DeviceDriverName : string;
   INICodepage : Integer;
@@ -839,15 +839,15 @@ begin
     // Setting all paths and file references - move into record or class - SoAOSPath struct
     // Start with defaults and missing - OS agnostic
 
-    MapPath := AnsiString(IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'maps')));
+    MapPath := IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'Maps'));
     GamesPath := IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'games'));
-    ResourcePath := IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'ArtLib/Resources'));
-    TilePath := IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'ArtLib/Tiles'));
+    ResourcePath := IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'ArtLib\Resources'));
+    TilePath := IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'ArtLib\Tiles'));
     SoundPath := IncludeTrailingPathDelimiter(TPath.Combine(ResourcePath, 'Audio'));
     InterfacePath := IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'Interface'));
-    ItemDB := IncludeTrailingPathDelimiter(TPath.Combine(ResourcePath, 'Database/items.db'));
-    XRefDB := IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'Database/xref.db'));
-    TitlesDB := IncludeTrailingPathDelimiter(TPath.Combine(AppPath, 'Database/titles.db'));
+    ItemDB := ExcludeTrailingPathDelimiter(TPath.Combine(ResourcePath, 'Database\items.db'));
+    XRefDB := ExcludeTrailingPathDelimiter(TPath.Combine(ResourcePath, 'Database\xref.db'));
+    TitlesDB := ExcludeTrailingPathDelimiter(TPath.Combine(AppPath, 'Database\titles.db'));
 
 //    StartFile := MapPath+'OKeepL2.lvl';
 
@@ -951,7 +951,7 @@ begin
       Log.Log( 'MapPath=' + MapPath );
       Log.flush;
     
-      DefaultTransition := INI.ReadString( 'Settings', 'Transition', '' );
+      DefaultTransition := INI.ReadString( 'Settings', 'Transition', 'GeneralTransition1' );
       if DefaultTransition <> '' then
         DefaultTransition := InterfacePath + DefaultTransition + '.bmp';
       Log.Log( 'DefaultTransition=' + DefaultTransition );
@@ -4882,7 +4882,7 @@ begin
     Adventures.Clear;
     INI := TIniFile.Create( SiegeINIFile );
     try
-      LVLFile := INI.ReadString( 'Settings', 'StartFile', '' );
+      LVLFile := INI.ReadString( 'Settings', 'StartFile', 'Maps\OKeepL2.lvl' );
       if LVLFile = '' then
         LVLFile := INI.ReadString( 'Settings', 'TestFile', '' );
       // *** jrs Add commandline override for StartFile setting. Mostly for testing, but might have other uses
