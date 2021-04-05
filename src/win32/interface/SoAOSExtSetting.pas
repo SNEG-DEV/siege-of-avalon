@@ -88,6 +88,7 @@ type
     function ScrollText(const goLeft: boolean; var idx: integer; const list: TStringList; const control: TStaticText): string;
   public
     class function Execute: TModalResult;
+    function GetChosenDisplayIndex: Integer;
   end;
 
 var
@@ -102,6 +103,11 @@ uses
   LogFile;
 
 {$R *.dfm}
+
+function TfrmLaunchSetting.GetChosenDisplayIndex: Integer;
+begin
+  Result := FCurrentDeviceIdx;
+end;
 
 function LoadResourceFontByID( ResourceID : Integer; ResType: PChar ) : Boolean;
 var
@@ -237,7 +243,7 @@ begin
       FCurrentLanguage := cNoLanguage;
     lInterfacePath := INI.ReadString('Settings', 'Interface', 'Interface');
     imgCheck.Visible := not INI.ReadBool('Settings', 'Windowed', False);
-    FForceD3DFullscreen := INI.ReadBool('Settings', 'ForceD3DFullscreen', False);
+    FForceD3DFullscreen := INI.ReadBool('Settings', 'ForceD3DFullscreen', True); // D3D fullscreen seems to be safer than DDraw
     FVSync := INI.ReadBool('Settings', 'D3DVSync', True);
     FCurrentDevice := INI.ReadString('Settings', 'DeviceName', '');
     FCurrentResolution := INI.ReadString('Settings', 'ScreenResolution', '600');

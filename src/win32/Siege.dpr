@@ -207,6 +207,11 @@ begin
   Screen.Cursor := crDefault;
 end;
 
+var
+  LaunchSettingResult: TModalResult;
+  ChosenDisplayIndex: Integer;
+  frmLaunchSetting: TfrmLaunchSetting;
+
 begin
 //  ReportMemoryLeaksOnShutdown := TRUE;
 
@@ -223,7 +228,17 @@ begin
 //  bPlayClosingMovie := False; // Game must force to true to show closing movie
 
   // Launch dialog until game UI is redone - SDL2 - ran out of room on the ingame graphic.
-  if (TfrmLaunchSetting.Execute = mrOK) then
+
+  frmLaunchSetting := TfrmLaunchSetting.Create(nil);
+  ChosenDisplayIndex := -1;
+  try
+    LaunchSettingResult := frmLaunchSetting.ShowModal;
+    ChosenDisplayIndex := frmLaunchSetting.GetChosenDisplayIndex;
+  finally
+    frmLaunchSetting.Free;
+  end;
+
+  if (LaunchSettingResult = mrOK) then
   begin
     Application.Initialize;
     Application.MainFormOnTaskbar := True;
@@ -232,7 +247,14 @@ begin
 
     Application.ProcessMessages;
     Application.CreateForm(TfrmMain, frmMain);
-  Application.Run;
+
+    if (ChosenDisplayIndex >= 0) and (ChosenDisplayIndex < Screen.MonitorCount) then
+    begin
+      frmMain.Left := Screen.Monitors[ChosenDisplayIndex].Left;
+      frmMain.Top := Screen.Monitors[ChosenDisplayIndex].Top;
+    end;
+
+    Application.Run;
   end;
 
   ReleaseMutex( hMutex );
