@@ -65,8 +65,11 @@ type
     DXBack : IDirectDrawSurface;
     DXSiege : IDirectDrawSurface;
     DXLogo : IDirectDrawSurface;
+    DXLetterbox: IDirectDrawSurface;
     XAdj, YAdj : integer;
     FCancel : boolean;
+    FOffset: TPoint;
+
     procedure PlayAnim;
   protected
     procedure MouseDown( Sender : TObject; Button : TMouseButton;
@@ -101,8 +104,17 @@ begin
     on E : Exception do
       Log.log( FailName + E.Message );
   end;
-
+  FOffset.X := (ScreenMetrics.ScreenWidth - 800) div 2;
+  FOffset.Y := (ScreenMetrics.ScreenHeight - 600) div 2;
 end; //Create
+
+function OffsetRect(Rect: TRect; Offs: TPoint): TRect;
+begin
+  Result.Left := Rect.Left + Offs.X;
+  Result.Top := Rect.Top + Offs.Y;
+  Result.Width := Rect.Width;
+  Result.Height := Rect.Height;
+end;
 
 destructor TOpenAnim.Destroy;
 const
@@ -146,8 +158,21 @@ begin
     DXSiege := SoAOS_DX_LoadBMP( InterfacePath + 'aniSiege.bmp', cInvisColor );
     DXLogo := SoAOS_DX_LoadBMP( InterfacePath + 'aniDTIPresents.bmp', cInvisColor );
     DXBack := SoAOS_DX_LoadBMP( InterfacePath + 'aniBack.bmp', cInvisColor );
+    if ScreenMetrics.ScreenHeight = 720 then
+      DXLetterbox := SoAOS_DX_LoadBMP( InterfacePath + 'gMainMenuOverlay720.bmp', cInvisColor )
+    else if ScreenMetrics.ScreenHeight = 1080 then
+      DXLetterbox := SoAOS_DX_LoadBMP( InterfacePath + 'gMainMenuOverlay1080.bmp', cInvisColor )
+    else
+      DXLetterBox := nil;
+
+    if DXLetterBox <> nil then
+    begin
+      pr := Rect( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight);
+      lpDDSBack.BltFast(0, 0, DXLetterbox, @pr, DDBLTFAST_WAIT);
+    end;
+
     pr := Rect( 0, 0, 800, 600 ); //NOHD
-    lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( FOffset.X, FOffset.Y, DXBack, @pr, DDBLTFAST_WAIT );
 
   //DrawAlpha(lpDDSBack,rect(0,0,800,600),rect(0,0,25,25),DXSiege,false,255);
   //DrawSub(lpDDSBack,rect(0,0,800,600),rect(0,0,25,25),DXSiege,false,255);
@@ -224,7 +249,7 @@ begin
   try
     StartFinalCount := 0;
     pr := Rect( 0, 0, 800, 600 );  //NOHD
-    lpDDSBack.BltFast( 0, 0, DXBack, @pr, DDBLTFAST_WAIT );
+    lpDDSBack.BltFast( FOffset.X, FOffset.Y, DXBack, @pr, DDBLTFAST_WAIT );
     MusicStillPlaying := true;
     MusicStartTime := TThread.GetTickCount;
     OldTime := TThread.GetTickCount;
@@ -271,7 +296,7 @@ begin
           application.ProcessMessages;
           for i := 0 to 11 do
           begin
-            DrawAlpha( lpDDSBack, Rect( 0, 250 + i * 19, 800, 250 + i * 19 + 19 ), rect( 0, i * 19, 800, i * 19 + 19 ), DXLogo, true, Alpha );  //NOHD
+            DrawAlpha( lpDDSBack, OffsetRect(Rect( 0, 250 + i * 19, 800, 250 + i * 19 + 19 ), FOffset), rect( 0, i * 19, 800, i * 19 + 19 ), DXLogo, true, Alpha );  //NOHD
             application.processmessages;
           end;
           application.ProcessMessages;
@@ -306,14 +331,14 @@ begin
             Alpha := 0;
           application.ProcessMessages;
           pr := Rect( 0, 250, 800, 250 + 228 );  //NOHD
-          lpDDSBack.BltFast( 0, 250, DXBack, @pr, DDBLTFAST_WAIT );
+          lpDDSBack.BltFast( FOffset.X, FOffset.Y + 250, DXBack, @pr, DDBLTFAST_WAIT );
           application.ProcessMessages;
           if Alpha > 0 then
           begin
 //                    DrawAlpha(lpDDSBack,Rect(0, 250, 800, 250+228),rect(0,0,800,228),DXLogo,true,Alpha);
             for i := 0 to 11 do
             begin
-              DrawAlpha( lpDDSBack, Rect( 0, 250 + i * 19, 800, 250 + i * 19 + 19 ), rect( 0, i * 19, 800, i * 19 + 19 ), DXLogo, true, Alpha ); //NOHD
+              DrawAlpha( lpDDSBack, OffsetRect(Rect( 0, 250 + i * 19, 800, 250 + i * 19 + 19 ), FOffset), rect( 0, i * 19, 800, i * 19 + 19 ), DXLogo, true, Alpha ); //NOHD
               application.processmessages;
             end;
           end;
@@ -364,7 +389,7 @@ begin
 //                 DrawAlpha(lpDDSBack,Rect(0, 0, 500, 510),rect(0,0,500,510),DXSiege,true,Alpha);
           for i := 0 to 9 do
           begin
-            DrawAlpha( lpDDSBack, Rect( 0, i * 51, 500, i * 51 + 51 ), rect( 0, i * 51, 500, i * 51 + 51 ), DXSiege, true, Alpha );
+            DrawAlpha( lpDDSBack, OffsetRect(Rect( 0, i * 51, 500, i * 51 + 51 ), FOffset), rect( 0, i * 51, 500, i * 51 + 51 ), DXSiege, true, Alpha );
             application.processmessages;
           end;
           application.ProcessMessages;
@@ -404,6 +429,7 @@ begin
     DXBack := nil;
     DXSiege := nil;
     DXLogo := nil;
+    DXLetterbox := nil;
     inherited;
   except
     on E : Exception do
