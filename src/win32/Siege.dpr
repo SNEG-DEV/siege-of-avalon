@@ -128,7 +128,8 @@ uses
   GalaxyWrapper in 'platforms\gogIntegration\GalaxyWrapper.pas',
   Steamworks in 'platforms\steamIntegration\Steamworks.pas',
   SteamworksClasses in 'platforms\steamIntegration\SteamworksClasses.pas',
-  SteamworksTypes in 'platforms\steamIntegration\SteamworksTypes.pas';
+  SteamworksTypes in 'platforms\steamIntegration\SteamworksTypes.pas',
+  MfPlayer in 'MfPlayer\MfPlayer.pas' {frmMfPlayer};
 
 {$R *.RES}
 
@@ -140,71 +141,37 @@ var
   zAppName : array[ 0..512 ] of Char;
   zCurDir : array[ 0..255 ] of Char;
   WorkDir : string;
-  MovieSwitches : string;
   STARTUPINFO : TStartupInfo;
   ProcessInfo : TProcessInformation;
   SiegeIni : TIniFile;
 
 procedure PlayOpeningMovie;
+var
+  bShowIntro : Boolean;
 begin
   SiegeIni := nil;
   SiegeIni := TIniFile.Create( ExtractFilePath( Application.ExeName ) + 'siege.ini' );
   try
-
-    OpeningMovie := SiegeIni.ReadString( 'Settings', 'MoviePath', ExtractFilePath( Application.ExeName ) + 'Movies' ) + '\' + SiegeIni.ReadString( 'Settings', 'OpeningMovie', 'siegeopening.bik' );
-    ClosingMovie := SiegeIni.ReadString( 'Settings', 'MoviePath', ExtractFilePath( Application.ExeName ) + 'Movies' ) + '\' + SiegeIni.ReadString( 'Settings', 'ClosingMovie', 'siegeclosing.bik' );
-    MovieSwitches := UpperCase( SiegeIni.ReadString( 'Settings', 'MovieSwitches', '/R/C/U1/I102/D9/B0' ) );
-
-    Screen.Cursor := crNone;
-    Application.ProcessMessages;
-
-    if TFile.Exists( OpeningMovie ) and ( LowerCase( SiegeIni.ReadString( 'Settings', 'ShowIntro', 'true' ) ) = 'true' ) then
+    OpeningMovie := SiegeIni.ReadString( 'Settings', 'MoviePath', ExtractFilePath( Application.ExeName ) + 'Movies' ) + '\' + SiegeIni.ReadString( 'Settings', 'OpeningMovie', 'SiegeOpening.wmv' );
+    ClosingMovie := SiegeIni.ReadString( 'Settings', 'MoviePath', ExtractFilePath( Application.ExeName ) + 'Movies' ) + '\' + SiegeIni.ReadString( 'Settings', 'ClosingMovie', 'SiegeClosing.wmv' );
+    bShowIntro := LowerCase( SiegeIni.ReadString( 'Settings', 'ShowIntro', 'true' ) ) = 'true';
+    if TFile.Exists( OpeningMovie ) and bShowIntro then
     begin
-      //Begin the opening Movie
-      StrPCopy( zAppName, ExtractFilePath( Application.ExeName ) + 'BinkPlay.exe' + ' ' + OpeningMovie + ' ' + MovieSwitches + '/P' );
-      GetDir( 0, WorkDir );
-      StrPCopy( zCurDir, WorkDir );
-      FillChar( STARTUPINFO, SizeOf( STARTUPINFO ), #0 );
-      STARTUPINFO.cb := SizeOf( STARTUPINFO );
-
-      STARTUPINFO.dwFlags := STARTF_USESHOWWINDOW;
-      STARTUPINFO.wShowWindow := 1;
-      if CreateProcess( nil, zAppName, nil, nil, False, CREATE_NEW_CONSOLE or NORMAL_PRIORITY_CLASS
-        , nil, nil, STARTUPINFO, ProcessInfo ) then
-        WaitForSingleObject( ProcessInfo.hProcess, INFINITE );
+      TfrmMfPlayer.PlayMovie(OpeningMovie);
     end;
   finally
     if Assigned( SiegeIni ) then
       SiegeIni.Free;
     SiegeIni := nil;
   end;
-
-  zAppName := '';
-  WorkDir := '';
-  zCurDir := '';
-  Screen.Cursor := crDefault;
 end;
 
 procedure PlayClosingMovie;
 begin
-  //Begin the closing Movie
-  Screen.Cursor := crNone;
-  Application.ProcessMessages;
   if TFile.Exists( ClosingMovie ) and bPlayClosingMovie then
   begin
-    StrPCopy( zAppName, ExtractFilePath( Application.ExeName ) + 'BinkPlay.exe' + ' ' + ClosingMovie + ' ' + MovieSwitches );
-    GetDir( 0, WorkDir );
-    StrPCopy( zCurDir, WorkDir );
-    FillChar( STARTUPINFO, SizeOf( STARTUPINFO ), #0 );
-    STARTUPINFO.cb := SizeOf( STARTUPINFO );
-
-    STARTUPINFO.dwFlags := STARTF_USESHOWWINDOW;
-    STARTUPINFO.wShowWindow := 1;
-    if CreateProcess( nil, zAppName, nil, nil, False, CREATE_NEW_CONSOLE or NORMAL_PRIORITY_CLASS
-      , nil, nil, STARTUPINFO, ProcessInfo ) then
-      WaitForSingleObject( ProcessInfo.hProcess, INFINITE );
+    TfrmMfPlayer.PlayMovie(ClosingMovie);
   end;
-  Screen.Cursor := crDefault;
 end;
 
 var
@@ -240,6 +207,8 @@ begin
 
   if (LaunchSettingResult = mrOK) then
   begin
+    PlayOpeningMovie;
+
     Application.Initialize;
     Application.MainFormOnTaskbar := True;
 //    Application.HelpFile := 'help.htm';
@@ -249,10 +218,10 @@ begin
     Application.CreateForm(TfrmMain, frmMain);
 
     if (ChosenDisplayIndex >= 0) and (ChosenDisplayIndex < Screen.MonitorCount) then
-    begin
-      frmMain.Left := Screen.Monitors[ChosenDisplayIndex].Left;
-      frmMain.Top := Screen.Monitors[ChosenDisplayIndex].Top;
-    end;
+      begin
+        frmMain.Left := Screen.Monitors[ChosenDisplayIndex].Left;
+        frmMain.Top := Screen.Monitors[ChosenDisplayIndex].Top;
+      end;
 
     Application.Run;
   end;

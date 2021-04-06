@@ -98,7 +98,7 @@
         <VerInfo_Keys>CompanyName=Digital Tome, Texas USA;FileDescription=Siege Of Avalon;FileVersion=1.1.2001.409;InternalName=DTMain1;LegalCopyright=Copyright (c) 1999-2001 Digital Tome;LegalTrademarks=Siege of Avalon(tm), Episodic Computer Game Novel(tm), Digital Tome(tm);OriginalFilename=Siege;ProductName=Siege of Avalon(tm);ProductVersion=1.1.2001.409;Comments=Siege of Avalon, an Episodic Computer Game Novel from Digital Tome</VerInfo_Keys>
         <DCC_ExeOutput>..\..\..\soa-resources</DCC_ExeOutput>
         <DCC_DcuOutput>dcu</DCC_DcuOutput>
-        <DCC_UnitSearchPath>ai;engine;graphics;interface;sound;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>ai;engine;graphics;interface;sound;MfPack\src;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <PostBuildEvent><![CDATA[copy /Y $(OUTPUTPATH) $(OUTPUTDIR)$(OUTPUTNAME)-$(CONFIG)$(OUTPUTEXT)
 $(PostBuildEvent)]]></PostBuildEvent>
     </PropertyGroup>
@@ -1508,6 +1508,10 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <DCCReference Include="platforms\steamIntegration\Steamworks.pas"/>
         <DCCReference Include="platforms\steamIntegration\SteamworksClasses.pas"/>
         <DCCReference Include="platforms\steamIntegration\SteamworksTypes.pas"/>
+        <DCCReference Include="MfPlayer\MfPlayer.pas">
+            <Form>frmMfPlayer</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="..\..\assets\Interface\blkchcry.ttf">
             <ResourceType>FONT</ResourceType>
             <ResourceId>1</ResourceId>

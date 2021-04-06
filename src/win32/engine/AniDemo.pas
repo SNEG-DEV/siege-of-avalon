@@ -358,7 +358,8 @@ uses
   Engine,
   MousePtr,
   SaveFile,
-  D3DRenderer
+  D3DRenderer,
+  MfPlayer
   ;
 
 {$R *.DFM}
@@ -1827,6 +1828,11 @@ begin
 //    ExitCode := 0;
 //    PostMessage( Handle, WM_Done, 0, 0 );
 //  end;
+  if TFile.Exists( ClosingMovie ) (*and bPlayClosingMovie*) then
+  begin
+    Hide;
+    TfrmMfPlayer.PlayMovie(ClosingMovie);
+  end;
 end;
 
 function GetSystem32: string;
@@ -1850,6 +1856,8 @@ begin
   begin
     ddrawpath := 'soaddraw.dll';
   end;
+
+  ddrawpath := GetSystem32 + '\ddraw.dll';
 
   DirectX.LoadDDraw(ddrawpath);
 
