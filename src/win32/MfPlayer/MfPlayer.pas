@@ -48,6 +48,9 @@ type
 
   end;
 
+const
+  WM_MFP_PLAYBACK_ENDED = WM_APP + 1;
+
 var
   frmMfPlayer: TfrmMfPlayer;
 
@@ -254,6 +257,14 @@ begin
       begin
         OnMediaItemSet(MFP_GET_MEDIAITEM_SET_EVENT(@pEventHeader));
       end;
+
+    MFP_EVENT_TYPE_PLAYBACK_ENDED:
+    begin
+      if g_AppHandle <> 0 then
+      begin
+        PostMessage(GetParent(g_AppHandle), WM_MFP_PLAYBACK_ENDED, 0, 0);
+      end;
+    end;
   end;
 end;
 

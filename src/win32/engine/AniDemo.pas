@@ -1,4 +1,4 @@
-unit AniDemo;
+  unit AniDemo;
 (*
   Siege Of Avalon : Open Source Edition
 
@@ -92,7 +92,9 @@ uses
   SoAOS.Intrface.Transit,
   SoAOS.Animation,
   GameLibIntegration,
-  AddKickNPC;
+  AddKickNPC,
+  MfPlayer
+  ;
 
 const
   WM_StartMainMenu = WM_USER + 1;
@@ -107,9 +109,9 @@ const
   WM_EndTimer = WM_USER + 10;
   WM_StartTransit = WM_USER + 11;
 
-  WM_InitDDraw = WM_USER + 20;
-  WM_InitGame = WM_USER + 21;
-  WM_PlayClosingMovie = WM_USER + 22;
+  WM_InitDDraw = WM_APP + 20;
+  WM_InitGame = WM_APP + 21;
+  WM_PlayClosingMovie = WM_APP + 22;
 
 var
   DlgProgress : TLoaderBox;
@@ -156,8 +158,10 @@ type
     procedure WMInitDDraw( var Message: TWMNoParams ); message WM_InitDDraw;
     procedure WMInitGame( var Message: TWMNoParams ); message WM_InitGame;
     procedure WMPlayClosingMovie( var Message: TWMNoParams ); message WM_PlayClosingMovie;
+    procedure WMPlaybackEnded( var Message: TWMNoParams); message WM_MFP_PLAYBACK_ENDED;
     procedure WMSize(var Msg: TMessage); message WM_SIZE;
     procedure MovieKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure StopPlayback;
 
     procedure FormMouseMove( Sender : TObject; Shift : TShiftState; X,
       Y : Integer );
@@ -383,8 +387,7 @@ uses
   Engine,
   MousePtr,
   SaveFile,
-  D3DRenderer,
-  MfPlayer
+  D3DRenderer
   ;
 
 {$R *.DFM}
@@ -900,7 +903,7 @@ begin
       ClientHeight := ScreenMetrics.ScreenHeight;
     end;
 
-    if FShowIntro then
+    if FShowIntro and FileExists(FOpeningMovie) then
     begin
       if not ScreenMetrics.Windowed then
       begin
@@ -1910,22 +1913,27 @@ begin
   end;
 end;
 
+procedure TfrmMain.StopPlayback;
+begin
+  MfPlayer_Detach;
+  FVideoPlaying := False;
+  if FClosingMoviePlaying then
+  begin
+    Close;
+  end
+  else
+  begin
+    OpeningVideoPanel.Hide;
+    PostMessage(Handle, WM_InitDDraw, 0, 0);
+  end;
+end;
+
 procedure TfrmMain.MovieKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   if FVideoPlaying and (Key = VK_ESCAPE) then
   begin
-    MfPlayer_Detach;
-    FVideoPlaying := False;
-    if FClosingMoviePlaying then
-    begin
-      Close;
-    end
-    else
-    begin
-      OpeningVideoPanel.Hide;
-      PostMessage(Handle, WM_InitDDraw, 0, 0);
-    end;
+    StopPlayback;
   end;
 end;
 
@@ -1956,6 +1964,8 @@ procedure TfrmMain.FormCreate(Sender: TObject);
 var
   SiegeIni: TIniFile;
 begin
+  OpeningVideoPanel.Cursor := crNone;
+  ClosingVideoPanel.Cursor := crNone;
   FFirstShow := True;
   SiegeIni := nil;
   AppPath := ExtractFilePath( Application.ExeName );
@@ -5351,6 +5361,7 @@ begin
   Log.DebugLog(FailName);
   try
     LocalShowHistory := True;
+    (*
     if not ( TFile.Exists( OpeningMovie ) ) then
     begin
       DlgOpenAnim := TOpenAnim.Create;
@@ -5366,6 +5377,7 @@ begin
         end;
       end;
     end;
+    *)
 
     if LocalShowHistory then
     begin
@@ -5742,8 +5754,24 @@ begin
   end;
 end;
 
+procedure TfrmMain.WMPlaybackEnded( var Message: TWMNoParams);
+begin
+  StopPlayback;
+end;
+
 procedure TfrmMain.WMPlayClosingMovie(var Message : TWMNoParams);
 begin
+  if not FileExists(FClosingMovie) then
+  begin
+    Close;
+  end;
+
+  if Assigned(MusicLib) then
+  begin
+    MusicLib.Free;
+    MusicLib := nil;
+  end;
+
   if not ScreenMetrics.Windowed then
   begin
     BorderStyle := bsNone;
@@ -5751,7 +5779,6 @@ begin
     ClientWidth := Screen.Monitors[ChosenDisplayindex].Width;
     ClientHeight := Screen.Monitors[ChosenDisplayindex].Height;
   end;
-
   ClosingVideoPanel.Show;
   MfPlayer_AttachToWindow(ClosingVideoPanel.Handle);
   MfPlayer_Play(FClosingMovie);
