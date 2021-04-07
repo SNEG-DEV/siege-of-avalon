@@ -340,9 +340,9 @@ begin
 
   // Resolution
   if Rect(195,274,210,289).Contains(imgBack.ScreenToClient(Mouse.cursorpos)) then
-    FCurrentResolution := ScrollText(True, FCurrentResolutionIdx, FResolutions, lblResolution);
-  if Rect(395,274,410,289).Contains(imgBack.ScreenToClient(Mouse.cursorpos)) then
     FCurrentResolution := ScrollText(False, FCurrentResolutionIdx, FResolutions, lblResolution);
+  if Rect(395,274,410,289).Contains(imgBack.ScreenToClient(Mouse.cursorpos)) then
+    FCurrentResolution := ScrollText(True, FCurrentResolutionIdx, FResolutions, lblResolution);
 
   // Monitor
   if Rect(195,240,210,255).Contains(imgBack.ScreenToClient(Mouse.cursorpos)) then
