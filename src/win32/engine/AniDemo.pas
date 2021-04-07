@@ -5767,11 +5767,11 @@ begin
     Exit;
   end;
 
-  if not bPlayClosingMovie then
-  begin
-    Close;
-    Exit;
-  end;
+//  if not bPlayClosingMovie then
+//  begin
+//    Close;
+//    Exit;
+//  end;
 
   if Assigned(MusicLib) then
   begin
