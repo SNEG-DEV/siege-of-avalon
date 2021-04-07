@@ -25,13 +25,11 @@ type
   TfrmMfPlayer = class(TForm)
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure FormPaint(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormPaint(Sender: TObject);
   private
     { Private declarations }
-    AppHandle: HWND;
-    function PlayMediaFile(const hApp: HWND; const sURL: LPCWSTR): HResult;
     procedure WMSize(var Msg: TMessage); message WM_SIZE;
   public
     MoviePath: String;
@@ -52,41 +50,131 @@ type
 
 var
   frmMfPlayer: TfrmMfPlayer;
+
+  g_AppHandle: HWND;
   g_pPlayer: IMFPMediaPlayer;
   g_pPlayerCB: TMediaPlayerCallback;
   g_bHasVideo: BOOL;
+  g_MoviePath: String;
 
 procedure OnMediaItemCreated(pEvent: PMFP_MEDIAITEM_CREATED_EVENT);
 procedure OnMediaItemSet(pEvent: PMFP_MEDIAITEM_SET_EVENT);
 procedure ShowErrorMessage(fmt: string; hrErr: HResult);
 
+procedure MfPlayer_AttachToWindow(Handle: HWND);
+procedure MfPlayer_Paint;
+procedure MfPlayer_Detach;
+function MfPlayer_Play(Path: String): HRESULT;
+procedure MfPlayer_Resize;
+
 implementation
 
-procedure TfrmMfPlayer.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+procedure MfPlayer_AttachToWindow(Handle: HWND);
 begin
-  CanClose := False;
+  if g_AppHandle = 0 then
+  begin
+    SetWindowLong(Handle, GWL_USERDATA, $BEEF);
+    g_AppHandle := Handle;
+    g_bHasVideo := False;
+  end;
+end;
 
+procedure MfPlayer_Paint;
+var
+  ps: PAINTSTRUCT;
+  whdc: HDC;
+begin
+  if g_AppHandle <> 0 then
+  begin
+    whdc := BeginPaint(g_AppHandle, ps);
+    if (Assigned(g_pPlayer) and g_bHasVideo) then
+      begin
+        g_pPlayer.UpdateVideo();
+      end
+    else
+      begin
+        FillRect(whdc, ps.rcPaint, HBRUSH(COLOR_WINDOW + 1));
+      end;
+    EndPaint(whdc, ps);
+  end;
+end;
+
+procedure MfPlayer_Detach;
+begin
   if Assigned(g_pPlayer) then
+  begin
     begin
       g_pPlayer.Stop();
       g_pPlayer.Shutdown();
       g_pPlayer := Nil;
     end;
-
    if Assigned(g_pPlayerCB) then
     begin
       FreeAndNil(g_pPlayerCB);
     end;
+  end;
+  g_AppHandle := 0;
+end;
 
+function MfPlayer_Play(Path: String): HRESULT;
+var
+  hr: HResult;
+label
+  done;
+begin
+  if g_AppHandle <> 0 then
+  begin
+    if not Assigned(g_pPlayer) then
+      begin
+        g_pPlayerCB := TMediaPlayerCallback.Create();
+        if not Assigned(g_pPlayerCB) then
+          begin
+            hr := E_OUTOFMEMORY;
+            goto done;
+          end;
+        hr := MFPCreateMediaPlayer(Nil,            // Mediafile path
+                                   False,          // Start playback automatically?
+                                   0,              // Flags
+                                   g_pPlayerCB,    // Callback pointer
+                                   g_AppHandle,    // Video window
+                                   g_pPlayer       // The player
+                                   );
+        if Failed(hr) then
+          goto done;
+      end;
+    hr := g_pPlayer.CreateMediaItemFromURL(PWideChar(Path),
+                                          False,
+                                          0,
+                                          Nil);
+  done:
+    Result := hr;
+  end;
+end;
+
+procedure MfPlayer_Resize;
+var
+  whdc: HDC;
+  ps: PAINTSTRUCT;
+begin
+  if Assigned(g_pPlayer) then
+  begin
+    whdc := BeginPaint(g_AppHandle, ps);
+    // Resize the video.
+    g_pPlayer.UpdateVideo();
+    {void} EndPaint(whdc, ps);
+  end;
+end;
+
+procedure TfrmMfPlayer.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+  CanClose := False;
+  MfPlayer_Detach;
   CanClose := True;
 end;
 
 procedure TfrmMfPlayer.FormCreate(Sender: TObject);
 begin
-  SetWindowLong(Handle, GWL_USERDATA, $BEEF);
-  AppHandle := Handle;
-  g_bHasVideo := False;
-  Cursor := crNone;
+  MfPlayer_AttachToWindow(Handle);
 end;
 
 procedure TfrmMfPlayer.FormKeyDown(Sender: TObject; var Key: Word;
@@ -99,23 +187,8 @@ begin
 end;
 
 procedure TfrmMfPlayer.FormPaint(Sender: TObject);
-var
-  ps: PAINTSTRUCT;
-  whdc: HDC;
 begin
-  whdc := BeginPaint(AppHandle, ps);
-  if (Assigned(g_pPlayer) and g_bHasVideo) then
-    begin
-      g_pPlayer.UpdateVideo();
-    end
-  else
-    begin
-      FillRect(whdc,
-               ps.rcPaint,
-               HBRUSH(COLOR_WINDOW + 1));
-    end;
-
-    EndPaint(whdc, ps);
+  MfPlayer_Paint;
 end;
 
 procedure TfrmMfPlayer.FormShow(Sender: TObject);
@@ -123,40 +196,8 @@ begin
   if (MoviePath <> '') and not g_bHasVideo then
   begin
     g_bHasVideo := True;
-    PlayMediaFile(AppHandle, PWideChar(MoviePath));
+    MfPlayer_Play(MoviePath);
   end;
-end;
-
-function TfrmMfPlayer.PlayMediaFile(const hApp: HWND;  const sURL: LPCWSTR): HResult;
-var
-  hr: HResult;
-label
-  done;
-begin
-  if not Assigned(g_pPlayer) then
-    begin
-      g_pPlayerCB := TMediaPlayerCallback.Create();
-      if not Assigned(g_pPlayerCB) then
-        begin
-          hr := E_OUTOFMEMORY;
-          goto done;
-        end;
-      hr := MFPCreateMediaPlayer(Nil,            // Mediafile path
-                                 False,          // Start playback automatically?
-                                 0,              // Flags
-                                 g_pPlayerCB,    // Callback pointer
-                                 hApp,           // Video window
-                                 g_pPlayer       // The player
-                                 );
-      if Failed(hr) then
-        goto done;
-    end;
- hr := g_pPlayer.CreateMediaItemFromURL(sURL,
-                                        False,
-                                        0,
-                                        Nil);
-done:
-  Result := hr;
 end;
 
 class function TfrmMfPlayer.PlayMovie(Path: String): Integer;
@@ -180,13 +221,9 @@ var
 begin
   Inherited;  // OnResize method will be handled first
   if (Msg.wParam = SIZE_RESTORED) then
-    if Assigned(g_pPlayer) then
-      begin
-        whdc := BeginPaint(AppHandle, ps);
-        // Resize the video.
-        g_pPlayer.UpdateVideo();
-        {void} EndPaint(whdc, ps);
-      end;
+  begin
+    MfPlayer_Resize;
+  end;
 end;
 
 constructor TMediaPlayerCallback.Create();

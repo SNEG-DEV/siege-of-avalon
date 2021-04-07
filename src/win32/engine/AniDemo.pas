@@ -107,6 +107,10 @@ const
   WM_EndTimer = WM_USER + 10;
   WM_StartTransit = WM_USER + 11;
 
+  WM_InitDDraw = WM_USER + 20;
+  WM_InitGame = WM_USER + 21;
+  WM_PlayClosingMovie = WM_USER + 22;
+
 var
   DlgProgress : TLoaderBox;
   InterfacePath : string;
@@ -124,6 +128,9 @@ type
   TfrmMain = class( TForm )
     Timer2 : TTimer;
     Timer3 : TTimer;
+    OpeningVideoPanel: TPanel;
+    ClosingVideoPanel: TPanel;
+
     procedure FormShow( Sender : TObject );
     procedure Timer1Timer( Sender : TObject );
     procedure AniView1MouseDown( Sender : TObject; Button : TMouseButton;
@@ -131,7 +138,6 @@ type
     procedure AniView1AfterDisplay( Sender : TObject );
     procedure AniView1BeforeDisplay( Sender : TObject );
     procedure FormDestroy( Sender : TObject );
-    procedure FormCreate( Sender : TObject );
     procedure FormMouseDown( Sender : TObject; Button : TMouseButton; Shift : TShiftState; X, Y : Integer );
     procedure Timer2Timer( Sender : TObject );
     procedure WMStartMainMenu( var Message : TWMNoParams ); message WM_StartMainMenu;
@@ -146,6 +152,13 @@ type
     procedure WMKillFocus( var Message : TMessage ); message WM_KILLFOCUS;
     procedure WMStartTimer( var Message : TWMNoParams ); message WM_StartTimer;
     procedure WMStartTransit( var Message : TWMNoParams ); message WM_StartTransit;
+
+    procedure WMInitDDraw( var Message: TWMNoParams ); message WM_InitDDraw;
+    procedure WMInitGame( var Message: TWMNoParams ); message WM_InitGame;
+    procedure WMPlayClosingMovie( var Message: TWMNoParams ); message WM_PlayClosingMovie;
+    procedure WMSize(var Msg: TMessage); message WM_SIZE;
+    procedure MovieKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+
     procedure FormMouseMove( Sender : TObject; Shift : TShiftState; X,
       Y : Integer );
     procedure Timer3Timer( Sender : TObject );
@@ -154,6 +167,8 @@ type
     procedure CloseEnding( Sender : TObject );
     procedure CloseHistory( Sender : TObject );
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure FormCreate(Sender: TObject);
+    procedure FormPaint(Sender: TObject);
   private
     AdventureLog1 : TAdventureLog;
     HistoryLog : TAdventureLog;
@@ -218,6 +233,14 @@ type
     NewPartyMember : TCharacter;
     SongDuration : Integer;
 
+    FShowIntro: Boolean;
+    FOpeningMovie: string;
+    FClosingMovie: string;
+
+    FFirstShow: Boolean;
+    FVideoPlaying: Boolean;
+    FClosingMoviePlaying: Boolean;
+
     MapName : string;
     trNewFile, trSceneName, trStartingPoint, trTransition, trTargetList : string;
     Popup : TPopup;
@@ -261,6 +284,8 @@ type
     DoNotRestartTimer : Boolean;
     ScreenShot : TBitmap;
     Achievements : TAchievements;
+    ChosenDisplayindex: Integer;
+
     procedure CloseAllDialogs( Sender : TObject );
     procedure DrawSpellGlyphs;
     procedure DrawCurrentSpell;
@@ -822,7 +847,83 @@ begin
   end;
 end;
 
-procedure TfrmMain.FormShow( Sender : TObject );
+procedure TfrmMain.WMSize(var Msg: TMessage);
+begin
+  Inherited;  // OnResize method will be handled first
+  if (Msg.wParam = SIZE_RESTORED) then
+  begin
+    MfPlayer_Resize;
+  end;
+end;
+
+procedure TfrmMain.FormShow(Sender: TObject);
+var
+  INI: TIniFile;
+  PlotScreenRes : Integer;
+  Windowed: Boolean;
+
+begin
+  if FFirstShow then
+  begin
+    FFirstShow := False;
+
+    INI := TIniFile.Create( SiegeINIFile );
+    try
+      PlotScreenRes := INI.ReadInteger( 'Settings', 'ScreenResolution', 600 );
+      Windowed := INI.ReadBool('Settings', 'Windowed', False);
+
+      case PlotScreenRes of
+         600 : ScreenMetrics := cOriginal;
+         720 : ScreenMetrics := cHD;
+        1080 : ScreenMetrics := cFullHD;
+        else
+        begin
+          PlotScreenRes := 600;
+          INI.WriteInteger( 'Settings', 'ScreenResolution', 600 );
+          ScreenMetrics := cOriginal;
+        end;
+      end;
+      ScreenMetrics.Windowed := Windowed;
+      ScreenMetrics.ForceD3DFullscreen := INI.ReadBool('Settings', 'ForceD3DFullscreen', False);
+    finally
+      INI.Free;
+    end;
+
+
+    if ScreenMetrics.Windowed then
+    begin
+      { Adjust the window for windowed mode }
+      BorderStyle := bsSingle;
+//      BorderIcons := [biSystemMenu];
+      FormStyle := fsNormal;
+      ClientWidth := ScreenMetrics.ScreenWidth;
+      ClientHeight := ScreenMetrics.ScreenHeight;
+    end;
+
+    if FShowIntro then
+    begin
+      if not ScreenMetrics.Windowed then
+      begin
+        BorderStyle := bsNone;
+        FormStyle := fsStayOnTop;
+        ClientWidth := Screen.Monitors[ChosenDisplayindex].Width;
+        ClientHeight := Screen.Monitors[ChosenDisplayindex].Height;
+      end;
+
+      OpeningVideoPanel.Show;
+      MfPlayer_AttachToWindow(OpeningVideoPanel.Handle);
+      MfPlayer_Play(FOpeningMovie);
+      OnKeyDown := MovieKeyDown;
+      FVideoPlaying := True;
+    end
+    else
+    begin
+      PostMessage(Handle, WM_InitDDraw, 0, 0);
+    end;
+  end;
+end;
+
+procedure TfrmMain.WMInitGame( var Message: TWMNoParams );
 var
   INI : TIniFile;
   INILanguage : TIniFile;
@@ -1109,16 +1210,6 @@ begin
 
     Log.Log( 'Initializing DX...' );
     Log.flush;
-
-    if ScreenMetrics.Windowed then
-    begin
-      { Adjust the window for windowed mode }
-      BorderStyle := bsSingle;
-//      BorderIcons := [biSystemMenu];
-      FormStyle := fsNormal;
-      ClientWidth := ScreenMetrics.ScreenWidth;
-      ClientHeight := ScreenMetrics.ScreenHeight;
-    end;
 
     Game.InitDX( Handle, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight, ScreenMetrics.BPP, ScreenMetrics.Windowed, ScreenMetrics.VSync );  // 800, 600, 16
 
@@ -1819,8 +1910,31 @@ begin
   end;
 end;
 
+procedure TfrmMain.MovieKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if FVideoPlaying and (Key = VK_ESCAPE) then
+  begin
+    MfPlayer_Detach;
+    FVideoPlaying := False;
+    if FClosingMoviePlaying then
+    begin
+      Close;
+    end
+    else
+    begin
+      OpeningVideoPanel.Hide;
+      PostMessage(Handle, WM_InitDDraw, 0, 0);
+    end;
+  end;
+end;
+
 procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
+  if FVideoPlaying then
+  begin
+    MfPlayer_Detach;
+  end;
 // TODO: figure out if DX need deinit before.
 //  if ScreenMetrics.Windowed then
 //  begin
@@ -1828,11 +1942,6 @@ begin
 //    ExitCode := 0;
 //    PostMessage( Handle, WM_Done, 0, 0 );
 //  end;
-  if TFile.Exists( ClosingMovie ) (*and bPlayClosingMovie*) then
-  begin
-    Hide;
-    TfrmMfPlayer.PlayMovie(ClosingMovie);
-  end;
 end;
 
 function GetSystem32: string;
@@ -1843,7 +1952,27 @@ begin
   Result := path;
 end;
 
-procedure TfrmMain.FormCreate( Sender : TObject );
+procedure TfrmMain.FormCreate(Sender: TObject);
+var
+  SiegeIni: TIniFile;
+begin
+  FFirstShow := True;
+  SiegeIni := nil;
+  AppPath := ExtractFilePath( Application.ExeName );
+  SiegeINIFile := AppPath + 'siege.ini';
+  SiegeIni := TIniFile.Create( ExtractFilePath( Application.ExeName ) + 'siege.ini' );
+  try
+    FOpeningMovie := SiegeIni.ReadString( 'Settings', 'MoviePath', ExtractFilePath( Application.ExeName ) + 'Movies' ) + '\' + SiegeIni.ReadString( 'Settings', 'OpeningMovie', 'SiegeOpening.wmv' );
+    FClosingMovie := SiegeIni.ReadString( 'Settings', 'MoviePath', ExtractFilePath( Application.ExeName ) + 'Movies' ) + '\' + SiegeIni.ReadString( 'Settings', 'ClosingMovie', 'SiegeClosing.wmv' );
+    FShowIntro := LowerCase( SiegeIni.ReadString( 'Settings', 'ShowIntro', 'true' ) ) = 'true';
+  finally
+    if Assigned( SiegeIni ) then
+      SiegeIni.Free;
+    SiegeIni := nil;
+  end;
+end;
+
+procedure TfrmMain.WMInitDDraw( var Message: TWMNoParams );
 var
   ExStyle: Integer;
   ddrawpath: String;
@@ -1857,19 +1986,16 @@ begin
     ddrawpath := 'soaddraw.dll';
   end;
 
-  ddrawpath := GetSystem32 + '\ddraw.dll';
+//  ddrawpath := GetSystem32 + '\ddraw.dll';
 
   DirectX.LoadDDraw(ddrawpath);
-
-  AppPath := ExtractFilePath( Application.ExeName );
-  SiegeINIFile := AppPath + 'siege.ini';
 
   FGameLibIntegration := TGameLibIntegration.Create;
 
   Scaled := False;
-  BorderStyle := bsNone;
-  BorderIcons := [];
-  FormStyle := fsStayOnTop;
+//  BorderStyle := bsNone;
+  BorderIcons := [biSystemMenu];
+//  FormStyle := fsStayOnTop;
 
   imgHelp := TBitmap.Create;
   imgCombat := TBitmap.Create;
@@ -1915,6 +2041,8 @@ begin
   GameMap.UseAmbientOnly := False;
   GameMap.UseLighting := True;
   GameMap.Width := 200;
+
+  PostMessage(Handle, WM_InitGame, 0, 0);
 end;
 
 procedure TfrmMain.AppException( Sender : TObject; E : Exception );
@@ -2412,6 +2540,11 @@ var
 const
   FailName : string = 'Main.FormMouseDown';
 begin
+  if not Assigned(Game) then
+  begin
+    Exit;
+  end;
+
   try
 
     if DisableConsole then
@@ -2757,6 +2890,18 @@ begin
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
+procedure TfrmMain.FormPaint(Sender: TObject);
+begin
+  if FVideoPlaying then
+  begin
+    MfPlayer_Paint;
+  end
+  else
+  begin
+    inherited;
   end;
 end;
 
@@ -5597,12 +5742,39 @@ begin
   end;
 end;
 
+procedure TfrmMain.WMPlayClosingMovie(var Message : TWMNoParams);
+begin
+  if not ScreenMetrics.Windowed then
+  begin
+    BorderStyle := bsNone;
+    FormStyle := fsStayOnTop;
+    ClientWidth := Screen.Monitors[ChosenDisplayindex].Width;
+    ClientHeight := Screen.Monitors[ChosenDisplayindex].Height;
+  end;
+
+  ClosingVideoPanel.Show;
+  MfPlayer_AttachToWindow(ClosingVideoPanel.Handle);
+  MfPlayer_Play(FClosingMovie);
+  FVideoPlaying := True;
+  FClosingMoviePlaying := True;
+  OnKeyDown := MovieKeyDown;
+end;
+
 procedure TfrmMain.WMDone( var Message : TWMNoParams );
 begin
   //     bPlayClosingMovie := true;
   MouseCursor.Enabled := False;
   FreeAll;
-  Close;
+  UnloadDDraw;
+  D3D11Renderer.Free;
+//  if TFile.Exists( ClosingMovie ) (*and bPlayClosingMovie*) then
+//  begin
+//    TfrmMfPlayer.PlayMovie(ClosingMovie);
+//  end;
+  if FileExists(FClosingMovie) (*and bPlayClosingMovie*) then
+    PostMessage(Handle, WM_PlayClosingMovie, 0, 0)
+  else
+    Close;
 end;
 
 function TfrmMain.ShouldRun( X, Y : Longint ) : Boolean;

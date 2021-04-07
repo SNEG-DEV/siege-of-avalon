@@ -1,10 +1,11 @@
 object frmMain: TfrmMain
   Left = 0
   Top = 128
+  BorderIcons = [biSystemMenu]
   BorderStyle = bsNone
   Caption = 'Siege of Avalon'
-  ClientHeight = 585
-  ClientWidth = 792
+  ClientHeight = 566
+  ClientWidth = 810
   Color = clBlack
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -124,9 +125,41 @@ object frmMain: TfrmMain
   OnDestroy = FormDestroy
   OnMouseDown = FormMouseDown
   OnMouseMove = FormMouseMove
+  OnPaint = FormPaint
   OnShow = FormShow
+  DesignSize = (
+    810
+    566)
   PixelsPerInch = 96
   TextHeight = 13
+  object OpeningVideoPanel: TPanel
+    Left = 0
+    Top = 0
+    Width = 810
+    Height = 566
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    BevelOuter = bvNone
+    Color = clBlack
+    ParentBackground = False
+    TabOrder = 0
+    Visible = False
+    ExplicitWidth = 792
+    ExplicitHeight = 585
+  end
+  object ClosingVideoPanel: TPanel
+    Left = 0
+    Top = 0
+    Width = 810
+    Height = 566
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    BevelOuter = bvNone
+    Color = clBlack
+    ParentBackground = False
+    TabOrder = 1
+    Visible = False
+    ExplicitWidth = 792
+    ExplicitHeight = 585
+  end
   object Timer2: TTimer
     Enabled = False
     Interval = 100

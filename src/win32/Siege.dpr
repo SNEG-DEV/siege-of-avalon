@@ -149,6 +149,7 @@ procedure PlayOpeningMovie;
 var
   bShowIntro : Boolean;
 begin
+  Exit;
   SiegeIni := nil;
   SiegeIni := TIniFile.Create( ExtractFilePath( Application.ExeName ) + 'siege.ini' );
   try
@@ -168,6 +169,7 @@ end;
 
 procedure PlayClosingMovie;
 begin
+  Exit;
   if TFile.Exists( ClosingMovie ) and bPlayClosingMovie then
   begin
     TfrmMfPlayer.PlayMovie(ClosingMovie);
@@ -219,6 +221,7 @@ begin
 
     if (ChosenDisplayIndex >= 0) and (ChosenDisplayIndex < Screen.MonitorCount) then
       begin
+        frmMain.ChosenDisplayIndex := ChosenDisplayIndex;
         frmMain.Left := Screen.Monitors[ChosenDisplayIndex].Left;
         frmMain.Top := Screen.Monitors[ChosenDisplayIndex].Top;
       end;

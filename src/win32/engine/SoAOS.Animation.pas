@@ -51,6 +51,7 @@ uses
   AStar,
   // Winapi.DirectDraw,
   DirectX,
+  D3DRenderer,
   MMTimer,
 
   SoAOS.Types,
@@ -527,6 +528,7 @@ var
   DXMode: Boolean;
   PixelFormat: TPixelFormat;
   Debug: Longint;
+  D3D11Renderer: TDXRenderer;
 
 procedure D3DPresent;
 
@@ -546,7 +548,6 @@ uses
   Character,
   LogFile,
   Math,
-  D3DRenderer,
   Winapi.D3D11
   ;
 
@@ -554,15 +555,14 @@ var
   BltWindowed : Boolean;
   D3DFullscreen: Boolean;
   WindowHandle: HWND;
-  D3DRenderer: TDXRenderer;
   IsWindows7: Boolean;
 
 procedure D3DPresent;
 begin
-  if D3DRenderer <> nil then
+  if D3D11Renderer <> nil then
   begin
-    D3DRenderer.Render;
-    D3DRenderer.Present;
+    D3D11Renderer.Render;
+    D3D11Renderer.Present;
   end;
 end;
 
@@ -579,7 +579,7 @@ begin
   if BltWindowed then
   begin
     lpDDSFront.BltFast(dwX, dwY, lpDDSrcSurface, lpSrcRect, dwTrans);
-    if D3DRenderer = nil then
+    if D3D11Renderer = nil then
     begin
       res := lpDDSFront.GetDC(srcDC);
       if res = DD_OK then
@@ -602,7 +602,7 @@ begin
         rc.Top := dwY;
         rc.Width := lpSrcRect.Width;
         rc.Height := lpSrcRect.Height;
-        D3DRenderer.UpdateTexture(srcdesc.lpSurface, srcdesc.lPitch, rc);
+        D3D11Renderer.UpdateTexture(srcdesc.lpSurface, srcdesc.lPitch, rc);
         lpDDSFront.Unlock(nil);
         D3DPresent;
       end;
@@ -624,14 +624,14 @@ var
 begin
   if BltWindowed then
   begin
-    if D3DRenderer <> nil then
+    if D3D11Renderer <> nil then
     begin
       ZeroMemory(@srcdesc, sizeof(srcdesc));
       srcdesc.dwSize := sizeof(srcdesc);
       res := lpDDSBack.Lock(nil, srcdesc,  DDLOCK_WAIT, 0);
       if res = DD_OK then
       begin
-        D3DRenderer.UpdateTexture(srcdesc.lpSurface, srcdesc.lPitch);
+        D3D11Renderer.UpdateTexture(srcdesc.lpSurface, srcdesc.lPitch);
         lpDDSBack.Unlock(nil);
       end;
       D3DPresent;
@@ -889,9 +889,9 @@ begin
   ZeroMemory(@ddsd, SizeOf(ddsd));
   if Windowed then
   begin
-    D3DREnderer := TDXRenderer.Create(Handle, ResW, ResH, not D3DFullscreen, VSync);
+    D3D11REnderer := TDXRenderer.Create(Handle, ResW, ResH, not D3DFullscreen, VSync);
 
-    if D3DRenderer = nil then
+    if D3D11Renderer = nil then
     begin
       Log.Log('Failed to initialize D3D11 renderer');
       MessageDlg('Could not initialize video subsystem. Please make sure that you have the latest video driver update installed.', mtError, [mbOk], 0);

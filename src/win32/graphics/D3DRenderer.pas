@@ -252,6 +252,8 @@ begin
   If not FReady then
      Exit(E_FAIL);
 
+  FSwapchain.SetFullscreenState(FALSE, nil);
+
   FQuad.Free;
   FShader.Free;
 

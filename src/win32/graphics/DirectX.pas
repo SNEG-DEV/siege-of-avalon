@@ -47,6 +47,7 @@ uses
   Winapi.MMSystem;
 
 procedure LoadDDraw(path: string);
+procedure UnloadDDraw;
 
 {Delphi version marks}
 
@@ -21792,6 +21793,10 @@ uses SysUtils;
 #define GET_WHQL_DAY( dwWHQLLevel ) \
     ( (dwWHQLLevel) & 0xff )
 }
+
+var
+  DDrawCompat_Detach: procedure; cdecl;
+
 function GET_WHQL_YEAR(dwWHQLLevel: DWORD) : DWORD;
 begin
   Result := (dwWHQLLevel) div $10000;
@@ -22911,6 +22916,8 @@ begin
   begin
     DDrawDLL := LoadLibrary(PWideChar(path));
 
+    DDrawCompat_Detach := GetProcAddress(DDrawDLL, 'DDrawCompat_Detach');
+
     DirectDrawEnumerateA := GetProcAddress(DDrawDLL,'DirectDrawEnumerateA');
     DirectDrawEnumerateW := GetProcAddress(DDrawDLL,'DirectDrawEnumerateW');
 {$IFDEF UNICODE}
@@ -23057,15 +23064,17 @@ begin
   {DirectSound}
 end;
 
-initialization
-begin
 
-end;
-
-finalization
+procedure UnloadDDraw;
 begin
   {DirectDraw}
-  if DDrawDLL <> 0 then FreeLibrary(DDrawDLL);
+  if DDrawDLL <> 0 then
+  begin
+//    if Assigned(DDrawCompat_Detach) then
+//      DDrawCompat_Detach;
+    FreeLibrary(DDrawDLL);
+    DDrawDLL := 0;
+  end;
   {DirectDraw}
   {Direct3D}
   FreeLibrary(DXFileDLL);
