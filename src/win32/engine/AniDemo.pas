@@ -5775,8 +5775,12 @@ begin
 
   if Assigned(MusicLib) then
   begin
-    MusicLib.Free;
-    MusicLib := nil;
+    MusicLib.PauseThisSong;
+  end;
+
+  if Assigned(Music.MusicLib) then
+  begin
+    Music.MusicLib.PauseThisSong;
   end;
 
   if not ScreenMetrics.Windowed then
