@@ -1,17 +1,205 @@
-# Changelog
+m# Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
-- Refactor all save/load rutines - honor file-formats
-- Reduce the file I/O overhead
-- Add documentation on the assets file-formats used.
-- Getting rid of need for custom ddraw.dll
-- Replacing DirectDraw with cross-platform library
-- Mod selection - more DLC style - extendable instead of destructive copy/paste exercises.
-- Better multi-language support - right now it is crippled, like other parts of the UI code.
-- REFACTOR: Remove casting and add helpers to improve readability/mainability
-- REFACTOR: Too much copy/paste code - (re)Moved method up to base class or extract
-- REFACTOR: Reorg classes
+
+## 2021-04-08
+### Fixed
+- Improved Alt-Tab handling in FullScreen mode
+
+## 2021-04-06 - 2021-04-07
+### Added
+- LetterBox and Video playback improvements/changes
+
+## 2021-04-02 - 2021-04-05
+### Fixed
+- Optimized graphics initialization on various platforms
+
+## 2021-03-31
+### Changed
+- HelpScreen updated
+
+## 2021-03-30
+### Added
+- VSync option
+- Dlls
+
+## 2021-03-29
+### Changed
+- Inventory, Loot, Merchant and ObjInvent dialogs centered
+
+## 2021-03-27
+### Fixed
+- HD FadeToBlack
+
+### Changed
+- Map, NPC and Converse dialogs centered
+- Credits updated
+
+## 2021-03-25
+### Added
+- AchievementsEngine
+
+### Fixed
+- Load/Save HighDPI text fix 
+
+## 2021-03-24
+### Changed
+- Stats and Awards dialogs centered
+
+## 2021-03-23
+### Fixed
+- GuardDog AI Mask fix
+
+## 2021-03-22
+### Fixed
+- Magical Mask bug
+
+## 2021-03-21
+### Changed
+- Achievements now driven by "Titles"
+
+## 2021-03-20
+### Fixed
+- Popup position
+
+### Added
+- Pause game in Windowed MOde when inactive
+
+## 2021-03-19
+### Fixed
+- Text clearing artifacts in dialogs 
+
+## 2021-03-18
+### Fixed
+- Windows 7 support fixes
+- Main menu flicker
+
+## 2021-03-17
+### Fixed
+- NPC Remove HD/FullHD Fix
+
+## 2021-03-16
+### Fixed
+- Load/Save filename fix - now using TTF
+
+## 2021-03-15
+### Fixed
+- Save game bmp
+### Changed
+- Quest and Adventure log dialogs centered
+
+## 2021-03-13
+### Added
+- New Launcher
+
+## 2021-03-12
+### Added
+- HD Border overlays
+
+### Changed
+- Load and Transit dialogs centered
+
+## 2021-03-11
+### Added
+- D3D11 render speedup for Windowed Mode
+- 4 party member slots for all resolutions
+
+### Fixed
+- ClipCursor fixes needed for Windowed Mode
+
+## 2021-03-10
+### Added
+- Initial Achievement triggers
+
+## 2021-03-07
+### Added
+- Windowed Mode
+
+## 2021-03-03
+### Fixed
+- Scrolls and Statistics
+
+## 2021-02-26
+### Fixed
+- Two monitor issues
+
+## 2021-02-23
+### Fixed
+- Class name and boots
+
+## 2021-02-21
+### Fixed
+- HD/FullHD Pause fix
+
+## 2021-02-20
+### Fixed
+- Russian game exit adjusted
+- Removed unused and troublesome cache
+
+### Added
+- Revised FastTravel - T-key
+
+### Changed
+- Hearing and Vision range adjust based on game area (HD/FullHD)
+- Fn-keys removed - now only 0-9 spell hotkeys
+
+## 2021-02-20
+### Fixed
+- Russian game exit adjusted
+
+### Changed
+- Hearing and Vision range adjust based on game area (HD/FullHD)
+- Fn-keys removed - now only 0-9 spell hotkeys
+
+## 2021-02-19
+### Fixed
+- Transititon now working again
+
+### Changed
+- Interface assets now arranged by language and generic
+
+## 2021-02-18
+### Fixed
+- Russian and Polish in-game "Say" now works on any locale of Windows
+
+## 2021-02-17
+### Fixed
+- Russian and Polish bitmap image font fixes - ANSI codepoints
+
+## 2021-02-16
+### Fixed
+- Russian game exit adjusted
+- Old bug: Handle non-enabled map triggers Cursors
+
+## 2021-02-15
+### Fixed
+- Taskbars Jump Lists Close Window fixed
+
+## 2021-02-14
+### Fixed
+- Games music volume, now also used in Credits and Intro
+
+### Added
+- Close button in Launcher dialog
+- Mouse wheel support in Inventory scrolls
+
+## 2021-02-13
+### Fixed
+- SmallFonts (bitmap image fonts) support changed
+
+## 2021-02-09
+### Added
+- Start of supporting multiple displays/monitors
+
+## 2021-02-08
+### Fixed
+- Split localized settings from generic settings
+
+## 2021-02-04
+### Fixed
+- Russian main menu fixed and aligned with other languages
+- Taskbar Icon fix
+- Ingame text and popup text - support different encodings
 
 ## 2021-01-25
 ### Fixed
