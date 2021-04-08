@@ -41,6 +41,8 @@ type
       Function Clear(aColor: TFourSingleArray): HRESULT;
       Function Render: HRESULT;
       Function Present: HRESULT;
+
+      procedure EnableFullscreen(Enabled: Boolean);
   end;
 
 implementation
@@ -108,6 +110,10 @@ var
 
   swapchain_desc: DXGI_SWAP_CHAIN_DESC;
   rast_state_desc: TD3D11_RASTERIZER_DESC;
+
+  dxgidev: IDXGIDevice;
+  dxgiadapter: IDXGIAdapter;
+  dxgifactory: IDXGIFactory;
 begin
   If FReady then Begin
     Result := Uninitialize;
@@ -244,6 +250,22 @@ begin
     Log.Log('D3D', 'Failed to activate shader (%.8X)', [Result]);
   end;
 
+  FDevice.QueryInterface(IDXGIDevice, dxgidev);
+  if Assigned(dxgidev) then
+  begin
+    dxgidev.GetParent(IDXGIAdapter, dxgiadapter);
+    if Assigned(dxgiadapter) then
+    begin
+      dxgiadapter.GetParent(IDXGIFactory, dxgifactory);
+      if Assigned(dxgifactory) then
+      begin
+        dxgifactory.MakeWindowAssociation(aHWND, DXGI_MWA_NO_ALT_ENTER or DXGI_MWA_NO_WINDOW_CHANGES);
+        dxgifactory := nil;
+      end;
+      dxgiadapter := nil;
+    end;
+    dxgidev := nil;
+  end;
   FReady := True;
 end;
 
@@ -336,6 +358,22 @@ destructor TDXRenderer.Destroy;
 begin
   Uninitialize;
   Inherited;
+end;
+
+procedure TDXRenderer.EnableFullscreen(Enabled: Boolean);
+var
+  dxgioutput: IDXGIOutput;
+begin
+  if Assigned(FSwapchain) then
+  begin
+    FSwapchain.GetContainingOutput(dxgioutput);
+    if Assigned(dxgioutput) then
+    begin
+      FSwapchain.SetFullscreenState(Enabled, dxgioutput);
+      dxgioutput := nil;
+    end;
+  end;
+//  FSwapchain.SetFullscreenState(Enabled, )
 end;
 
 function TDXRenderer.Clear(aColor: TFourSingleArray): HRESULT;

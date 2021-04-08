@@ -5637,26 +5637,35 @@ const
   FailName : string = 'Main.AppActivate';
 begin
   Log.DebugLog(FailName);
-  if (not ScreenMetrics.Windowed) and (not ScreenMetrics.ForceD3DFullscreen) then
+  if (not ScreenMetrics.Windowed) then
   begin
-    try
+    if ScreenMetrics.ForceD3DFullscreen then
+    begin
+      Application.Restore;
+      D3D11Renderer.EnableFullscreen(True);
+      Game.Enabled := True;
+    end
+    else
+    begin
+      try
 
-      Log.Log( 'App Activate' );
-      if Initialized then
-      begin
-        WindowState := wsNormal;
-        SetBounds( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
-        Game.Enabled := True;
-        FormShow( Self );
-      end
-      else
-      begin
-        Initialized := True;
+        Log.Log( 'App Activate' );
+        if Initialized then
+        begin
+          WindowState := wsNormal;
+          SetBounds( 0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight );
+          Game.Enabled := True;
+          FormShow( Self );
+        end
+        else
+        begin
+          Initialized := True;
+        end;
+
+      except
+        on E : Exception do
+          Log.log( FailName, E.Message, [ ] );
       end;
-
-    except
-      on E : Exception do
-        Log.log( FailName, E.Message, [ ] );
     end;
   end
   else
@@ -5669,35 +5678,45 @@ const
   FailName : string = 'Main.AppDeactivate';
 begin
   Log.DebugLog(FailName);
-  if (not ScreenMetrics.Windowed) and (not ScreenMetrics.ForceD3DFullscreen) then
+  if (not ScreenMetrics.Windowed) then
   begin
-    try
+    if ScreenMetrics.ForceD3DFullscreen then
+    begin
+      //Game.Active := False;
+      Application.Minimize;
+      D3D11Renderer.EnableFullscreen(False);
+      Game.Enabled := False;
+    end
+    else
+    begin
+      try
 
-      Log.Log( 'App Deactivate' );
-      if Active then
-      begin
-        Active := False;
-        GameName := '~AutoSave';
-        SaveGame;
-        NeedToReload := True;
-        KeepTravelList := TravelList.Text;
-      end
-      else
-      begin
-        NeedToReload := False;
+        Log.Log( 'App Deactivate' );
+        if Active then
+        begin
+          Active := False;
+          GameName := '~AutoSave';
+          SaveGame;
+          NeedToReload := True;
+          KeepTravelList := TravelList.Text;
+        end
+        else
+        begin
+          NeedToReload := False;
+        end;
+
+        Game.OnMouseDown := AniView1MouseDown;
+        Game.OnMouseMove := nil;
+        Game.OnMouseUp := nil;
+        OnKeyDown := TKeyEvent.FormKeyDown;
+        OnMouseDown := FormMouseDown;
+        OnMouseMove := FormMouseMove;
+        FreeAll;
+
+      except
+        on E : Exception do
+          Log.log( FailName, E.Message, [ ] );
       end;
-
-      Game.OnMouseDown := AniView1MouseDown;
-      Game.OnMouseMove := nil;
-      Game.OnMouseUp := nil;
-      OnKeyDown := TKeyEvent.FormKeyDown;
-      OnMouseDown := FormMouseDown;
-      OnMouseMove := FormMouseMove;
-      FreeAll;
-
-    except
-      on E : Exception do
-        Log.log( FailName, E.Message, [ ] );
     end;
   end
   else
@@ -5789,6 +5808,8 @@ begin
     FormStyle := fsStayOnTop;
     ClientWidth := Screen.Monitors[ChosenDisplayindex].Width;
     ClientHeight := Screen.Monitors[ChosenDisplayindex].Height;
+    Left := 0;
+    Top := 0;
   end;
   ClosingVideoPanel.Show;
   MfPlayer_AttachToWindow(ClosingVideoPanel.Handle);
