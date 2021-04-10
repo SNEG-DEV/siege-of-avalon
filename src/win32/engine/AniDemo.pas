@@ -1036,7 +1036,7 @@ begin
       try
         ItemDB := TPath.GetFullPath(INILanguage.ReadString( 'Settings', 'ItemDB', ItemDB ));
         TitlesDB := TPath.GetFullPath(INILanguage.ReadString( 'Settings', 'TitlesDB', TitlesDB ));
-        UseSmallFont := ( LowerCase( INI.ReadString( 'Settings', 'UseSmallFont', '' ) ) = 'true' );
+        UseSmallFont := ( LowerCase( INILanguage.ReadString( 'Settings', 'UseSmallFont', 'true' ) ) = 'true' );
       finally
         INILanguage.Free;
       end;
@@ -1967,7 +1967,6 @@ begin
   OpeningVideoPanel.Cursor := crNone;
   ClosingVideoPanel.Cursor := crNone;
   FFirstShow := True;
-  SiegeIni := nil;
   AppPath := ExtractFilePath( Application.ExeName );
   SiegeINIFile := AppPath + 'siege.ini';
   SiegeIni := TIniFile.Create( ExtractFilePath( Application.ExeName ) + 'siege.ini' );
@@ -1976,9 +1975,7 @@ begin
     FClosingMovie := SiegeIni.ReadString( 'Settings', 'MoviePath', ExtractFilePath( Application.ExeName ) + 'Movies' ) + '\' + SiegeIni.ReadString( 'Settings', 'ClosingMovie', 'SiegeClosing.wmv' );
     FShowIntro := LowerCase( SiegeIni.ReadString( 'Settings', 'ShowIntro', 'true' ) ) = 'true';
   finally
-    if Assigned( SiegeIni ) then
-      SiegeIni.Free;
-    SiegeIni := nil;
+    SiegeIni.Free;
   end;
 end;
 
