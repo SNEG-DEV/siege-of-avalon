@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2021-04-10
+### Fixed
+- Disable Fast-Travel when Frozen during cut-screens
 
 ## 2021-04-08
 ### Fixed

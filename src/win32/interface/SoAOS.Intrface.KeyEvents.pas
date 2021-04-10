@@ -457,7 +457,7 @@ class procedure TKeyEvent.TravelFast;
 begin
 // NoTransit
 // LoadNewMap( const NewFile(lvl), SceneName, StartingPoint, Transition(bmp) : string );
-  if not NoTransit then
+  if (not NoTransit) and (not Current.Frozen) then
   begin
     if player.titleexists('03Chapter3') and not player.titleexists('04Chapter4') then
       RunScript(player, 'Loadmap(forest05,default,Start,ForestChpt3|#FastTransit.Default#)');
