@@ -461,10 +461,10 @@ begin
   begin
     if player.titleexists('03Chapter3') and not player.titleexists('04Chapter4') then
       RunScript(player, 'Loadmap(forest05,default,Start,ForestChpt3|#FastTransit.Default#)');
-    if player.titleexists('02Chapter2') then
-      RunScript(player, 'Loadmap(southgate1b,default,Levelpoint4,VillagetoSouthGate|#FastTransit.Default#)')
-    else
-      RunScript(player, 'Loadmap(okeepl2,default,Start|#FastTransit.Default#)')
+//    if player.titleexists('02Chapter2') then
+//      RunScript(player, 'Loadmap(southgate1b,default,Levelpoint4,VillagetoSouthGate|#FastTransit.Default#)')
+//    else
+//      RunScript(player, 'Loadmap(okeepl2,default,Start|#FastTransit.Default#)')
   end;
 end;
 
