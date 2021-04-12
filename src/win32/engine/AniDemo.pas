@@ -5634,15 +5634,7 @@ const
   FailName : string = 'Main.AppActivate';
 begin
   Log.DebugLog(FailName);
-  if (not ScreenMetrics.Windowed) then
-  begin
-    if ScreenMetrics.ForceD3DFullscreen then
-    begin
-      Application.Restore;
-      D3D11Renderer.EnableFullscreen(True);
-      Game.Enabled := True;
-    end
-    else
+  if (not ScreenMetrics.Windowed) and (not ScreenMetrics.ForceD3DFullscreen) then
     begin
       try
 
@@ -5663,7 +5655,6 @@ begin
         on E : Exception do
           Log.log( FailName, E.Message, [ ] );
       end;
-    end;
   end
   else
     if Paused then
@@ -5675,16 +5666,7 @@ const
   FailName : string = 'Main.AppDeactivate';
 begin
   Log.DebugLog(FailName);
-  if (not ScreenMetrics.Windowed) then
-  begin
-    if ScreenMetrics.ForceD3DFullscreen then
-    begin
-      //Game.Active := False;
-      Application.Minimize;
-      D3D11Renderer.EnableFullscreen(False);
-      Game.Enabled := False;
-    end
-    else
+  if (not ScreenMetrics.Windowed) and (not ScreenMetrics.ForceD3DFullscreen) then
     begin
       try
 
@@ -5714,7 +5696,6 @@ begin
         on E : Exception do
           Log.log( FailName, E.Message, [ ] );
       end;
-    end;
   end
   else
     if not Paused then
