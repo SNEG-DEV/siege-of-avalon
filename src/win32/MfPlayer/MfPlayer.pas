@@ -241,6 +241,8 @@ begin
 end;
 
 procedure TMediaPlayerCallback.OnMediaPlayerEvent(var pEventHeader: MFP_EVENT_HEADER);
+var
+  szVideo, szArVideo: SIZE;
 begin
   if Failed(pEventHeader.hrEvent) then
     begin
@@ -248,6 +250,23 @@ begin
       PostMessage(GetParent(g_AppHandle), WM_MFP_PLAYBACK_FAILED, 0, pEventHeader.hrEvent);
       Exit;
     end;
+
+  if pEventHeader.eState = MFP_MEDIAPLAYER_STATE_PLAYING then
+  begin
+    if Assigned(pEventHeader.pMediaPlayer) then
+    begin
+      if Failed(pEventHeader.pMediaPlayer.GetNativeVideoSize(szVideo, szARVideo)) then
+      begin
+        PostMessage(GetParent(g_AppHandle), WM_MFP_PLAYBACK_FAILED, 3, 0);
+        Exit;
+      end;
+    end
+    else
+    begin
+      PostMessage(GetParent(g_AppHandle), WM_MFP_PLAYBACK_FAILED, 2, 0);
+      Exit;
+    end;
+  end;
 
   case (pEventHeader.eEventType) of
     MFP_EVENT_TYPE_MEDIAITEM_CREATED:

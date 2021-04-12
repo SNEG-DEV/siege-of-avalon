@@ -289,7 +289,10 @@ var
 begin
   CurrDbgLvl := RealCurrDbgLvl;
   CurrDbgGroup := RealCurrDbgGroup;
-  S := AnsiString( TimeToStr( Time ) + ' ' + Format( '%8.8d', [ Game.FrameCount ] ) + ': ' + FailName + ' ' + Format( Msg, Args ) + #13#10 );
+  if Assigned(Game) then
+    S := AnsiString( TimeToStr( Time ) + ' ' + Format( '%8.8d', [ Game.FrameCount ] ) + ': ' + FailName + ' ' + Format( Msg, Args ) + #13#10 )
+  else
+    S := AnsiString( TimeToStr( Time ) + ' ' + 'Before Init' + ': ' + FailName + ' ' + Format( Msg, Args ) + #13#10 );
 //  b := TEncoding.UTF8.GetBytes(s);
   Write( S[1], Length( S ) );
   if ( RealCurrDbgGroup and DbgFlushLog ) <> 0 then
