@@ -159,6 +159,7 @@ type
     procedure WMInitGame( var Message: TWMNoParams ); message WM_InitGame;
     procedure WMPlayClosingMovie( var Message: TWMNoParams ); message WM_PlayClosingMovie;
     procedure WMPlaybackEnded( var Message: TWMNoParams); message WM_MFP_PLAYBACK_ENDED;
+    procedure WMPlaybackFailed( var Message: TMessage); message WM_MFP_PLAYBACK_FAILED;
     procedure WMSize(var Msg: TMessage); message WM_SIZE;
     procedure MovieKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure StopPlayback;
@@ -238,6 +239,7 @@ type
     SongDuration : Integer;
 
     FShowIntro: Boolean;
+    FShowOutro : Boolean;
     FOpeningMovie: string;
     FClosingMovie: string;
 
@@ -930,7 +932,6 @@ procedure TfrmMain.WMInitGame( var Message: TWMNoParams );
 var
   INI : TIniFile;
   INILanguage : TIniFile;
-  ShowIntro : Boolean;
   rtString : string;
   PopupEnabled : Boolean;
   Windowed: Boolean;
@@ -1203,8 +1204,6 @@ begin
       SoundTimer.OnTimer := Timer1Timer;
       SoundTimer.Enabled := True; //Start sound timer
 
-      ShowIntro := ( LowerCase( INI.ReadString( 'Settings', 'ShowIntro', 'true' ) ) = 'true' );
-
       PopupEnabled := ( LowerCase( INI.ReadString( 'Settings', 'Popup', 'true' ) ) = 'true' );
 
     finally
@@ -1287,7 +1286,7 @@ begin
     end
     else
     begin
-      if ShowIntro and not Initialized then
+      if FShowIntro and not Initialized then
         PostMessage( Handle, WM_StartIntro, 0, 0 )
       else
         PostMessage( Handle, WM_StartMainMenu, 0, 0 );
@@ -1974,6 +1973,7 @@ begin
     FOpeningMovie := SiegeIni.ReadString( 'Settings', 'MoviePath', ExtractFilePath( Application.ExeName ) + 'Movies' ) + '\' + SiegeIni.ReadString( 'Settings', 'OpeningMovie', 'SiegeOpening.wmv' );
     FClosingMovie := SiegeIni.ReadString( 'Settings', 'MoviePath', ExtractFilePath( Application.ExeName ) + 'Movies' ) + '\' + SiegeIni.ReadString( 'Settings', 'ClosingMovie', 'SiegeClosing.wmv' );
     FShowIntro := LowerCase( SiegeIni.ReadString( 'Settings', 'ShowIntro', 'true' ) ) = 'true';
+    FShowOutro := LowerCase( SiegeIni.ReadString( 'Settings', 'ShowOutro', 'true' ) ) = 'true';
   finally
     SiegeIni.Free;
   end;
@@ -5756,9 +5756,18 @@ begin
   StopPlayback;
 end;
 
+procedure TfrmMain.WMPlaybackFailed(var Message: TMessage);
+var
+  hr: Cardinal;
+begin
+  Move(Message.LParam, hr, SizeOf(hr));
+  Log.Log('VidePlayback', 'Video playback error: #' + IntToStr(Message.wParam) + ' 0x' + IntToHex(hr), []);
+  StopPlayback;
+end;
+
 procedure TfrmMain.WMPlayClosingMovie(var Message : TWMNoParams);
 begin
-  if not FileExists(FClosingMovie) then
+  if not (FileExists(FClosingMovie) and FShowOutro) then
   begin
     Close;
     Exit;

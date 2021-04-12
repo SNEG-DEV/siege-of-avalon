@@ -50,6 +50,7 @@ type
 
 const
   WM_MFP_PLAYBACK_ENDED = WM_APP + 1;
+  WM_MFP_PLAYBACK_FAILED = WM_APP + 2;
 
 var
   frmMfPlayer: TfrmMfPlayer;
@@ -243,7 +244,8 @@ procedure TMediaPlayerCallback.OnMediaPlayerEvent(var pEventHeader: MFP_EVENT_HE
 begin
   if Failed(pEventHeader.hrEvent) then
     begin
-      ShowErrorMessage('Playback error', pEventHeader.hrEvent);
+      {ShowErrorMessage('Playback error', pEventHeader.hrEvent);}
+      PostMessage(GetParent(g_AppHandle), WM_MFP_PLAYBACK_FAILED, 0, pEventHeader.hrEvent);
       Exit;
     end;
 
@@ -291,7 +293,10 @@ begin
 
 done:
   if Failed(hr) then
-    ShowErrorMessage('Error playing this file.', hr);
+  begin
+    {ShowErrorMessage('Error playing this file.', hr);}
+    PostMessage(GetParent(g_AppHandle), WM_MFP_PLAYBACK_FAILED, 1, hr);
+  end;
 
 end;
 
