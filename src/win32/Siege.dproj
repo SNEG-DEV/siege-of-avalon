@@ -1508,10 +1508,8 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <DCCReference Include="platforms\steamIntegration\Steamworks.pas"/>
         <DCCReference Include="platforms\steamIntegration\SteamworksClasses.pas"/>
         <DCCReference Include="platforms\steamIntegration\SteamworksTypes.pas"/>
-        <DCCReference Include="MfPlayer\MfPlayer.pas">
-            <Form>frmMfPlayer</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
+        <DCCReference Include="MfPlayer\MfPlayerClass.pas"/>
+        <DCCReference Include="MfPlayer\UniThreadTimer.pas"/>
         <RcItem Include="..\..\assets\Interface\blkchcry.ttf">
             <ResourceType>FONT</ResourceType>
             <ResourceId>1</ResourceId>

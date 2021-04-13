@@ -129,7 +129,8 @@ uses
   Steamworks in 'platforms\steamIntegration\Steamworks.pas',
   SteamworksClasses in 'platforms\steamIntegration\SteamworksClasses.pas',
   SteamworksTypes in 'platforms\steamIntegration\SteamworksTypes.pas',
-  MfPlayer in 'MfPlayer\MfPlayer.pas' {frmMfPlayer};
+  MfPlayerClass in 'MfPlayer\MfPlayerClass.pas',
+  UniThreadTimer in 'MfPlayer\UniThreadTimer.pas';
 
 {$R *.RES}
 
@@ -158,7 +159,7 @@ begin
     bShowIntro := LowerCase( SiegeIni.ReadString( 'Settings', 'ShowIntro', 'true' ) ) = 'true';
     if TFile.Exists( OpeningMovie ) and bShowIntro then
     begin
-      TfrmMfPlayer.PlayMovie(OpeningMovie);
+      //TfrmMfPlayer.PlayMovie(OpeningMovie);
     end;
   finally
     if Assigned( SiegeIni ) then
@@ -172,7 +173,7 @@ begin
   Exit;
   if TFile.Exists( ClosingMovie ) and bPlayClosingMovie then
   begin
-    TfrmMfPlayer.PlayMovie(ClosingMovie);
+    //TfrmMfPlayer.PlayMovie(ClosingMovie);
   end;
 end;
 
@@ -218,8 +219,7 @@ begin
 
     Application.ProcessMessages;
     Application.CreateForm(TfrmMain, frmMain);
-
-    if (ChosenDisplayIndex >= 0) and (ChosenDisplayIndex < Screen.MonitorCount) then
+  if (ChosenDisplayIndex >= 0) and (ChosenDisplayIndex < Screen.MonitorCount) then
       begin
         frmMain.ChosenDisplayIndex := ChosenDisplayIndex;
         frmMain.Left := Screen.Monitors[ChosenDisplayIndex].Left;

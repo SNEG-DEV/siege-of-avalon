@@ -93,7 +93,7 @@ uses
   SoAOS.Animation,
   GameLibIntegration,
   AddKickNPC,
-  MfPlayer
+  MfPlayerClass
   ;
 
 const
@@ -158,8 +158,7 @@ type
     procedure WMInitDDraw( var Message: TWMNoParams ); message WM_InitDDraw;
     procedure WMInitGame( var Message: TWMNoParams ); message WM_InitGame;
     procedure WMPlayClosingMovie( var Message: TWMNoParams ); message WM_PlayClosingMovie;
-    procedure WMPlaybackEnded( var Message: TWMNoParams); message WM_MFP_PLAYBACK_ENDED;
-    procedure WMPlaybackFailed( var Message: TMessage); message WM_MFP_PLAYBACK_FAILED;
+    procedure WMPlayerEvent( var Message: TMessage); message WM_APP_PLAYER_EVENT;
     procedure WMSize(var Msg: TMessage); message WM_SIZE;
     procedure MovieKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure StopPlayback;
@@ -853,11 +852,18 @@ begin
 end;
 
 procedure TfrmMain.WMSize(var Msg: TMessage);
+var
+  rc: TRect;
 begin
   Inherited;  // OnResize method will be handled first
-  if (Msg.wParam = SIZE_RESTORED) then
+  if (Msg.wParam = SIZE_RESTORED) and Assigned(MfPlayer) then
   begin
-    MfPlayer_Resize;
+    //MfPlayer_Resize;
+    rc.Left := 0;
+    rc.Top := 0;
+    rc.Width := ClientWidth;
+    rc.Height := ClientHeight;
+    MfPlayer.ResizeVideo(@rc);
   end;
 end;
 
@@ -866,6 +872,7 @@ var
   INI: TIniFile;
   PlotScreenRes : Integer;
   Windowed: Boolean;
+  hr: HRESULT;
 
 begin
   if FFirstShow then
@@ -907,19 +914,32 @@ begin
 
     if FShowIntro and FileExists(FOpeningMovie) then
     begin
-      if not ScreenMetrics.Windowed then
+      MfPlayer := TMfPlayer.Create(OpeningVideoPanel.Handle, 0, Handle, Handle);
+      hr := MfPlayer.OpenURL(PWideChar(FOpeningMovie));
+      if SUCCEEDED(hr) then
       begin
-        BorderStyle := bsNone;
-        FormStyle := fsStayOnTop;
-        ClientWidth := Screen.Monitors[ChosenDisplayindex].Width;
-        ClientHeight := Screen.Monitors[ChosenDisplayindex].Height;
-      end;
+        if not ScreenMetrics.Windowed then
+        begin
+          BorderStyle := bsNone;
+          FormStyle := fsStayOnTop;
+          ClientWidth := Screen.Monitors[ChosenDisplayindex].Width;
+          ClientHeight := Screen.Monitors[ChosenDisplayindex].Height;
+        end;
 
-      OpeningVideoPanel.Show;
-      MfPlayer_AttachToWindow(OpeningVideoPanel.Handle);
-      MfPlayer_Play(FOpeningMovie);
-      OnKeyDown := MovieKeyDown;
-      FVideoPlaying := True;
+        OpeningVideoPanel.Show;
+
+        MfPlayer.SendPlayerRequest(reqStart);
+
+        OnKeyDown := MovieKeyDown;
+        FVideoPlaying := True;
+      end
+      else
+      begin
+        //Log.Log('MF', 'OpenURL() on opening movie failed: 0x' + IntToHex(hr), []);
+        MfPlayer.Free;
+        MfPlayer := nil;
+        PostMessage(Handle, WM_InitDDraw, 0, 0);
+      end;
     end
     else
     begin
@@ -1914,7 +1934,12 @@ end;
 
 procedure TfrmMain.StopPlayback;
 begin
-  MfPlayer_Detach;
+  if Assigned(MfPlayer) then
+  begin
+    MfPlayer.Free;
+    MfPlayer := nil;
+  end;
+
   FVideoPlaying := False;
   if FClosingMoviePlaying then
   begin
@@ -1940,7 +1965,8 @@ procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   if FVideoPlaying then
   begin
-    MfPlayer_Detach;
+    MfPlayer.Free;
+    MfPlayer := nil;
   end;
 // TODO: figure out if DX need deinit before.
 //  if ScreenMetrics.Windowed then
@@ -2902,9 +2928,9 @@ end;
 
 procedure TfrmMain.FormPaint(Sender: TObject);
 begin
-  if FVideoPlaying then
+  if FVideoPlaying and Assigned(MfPlayer) then
   begin
-    MfPlayer_Paint;
+    MfPlayer.Repaint;
   end
   else
   begin
@@ -5751,21 +5777,39 @@ begin
   end;
 end;
 
-procedure TfrmMain.WMPlaybackEnded( var Message: TWMNoParams);
+procedure TfrmMain.WMPlayerEvent( var Message: TMessage);
 begin
-  StopPlayback;
+  if Assigned(MfPlayer) then
+  begin
+    if Message.WParam = MFP_PLAYBACK_ENDED then
+    begin
+      StopPlayback;
+    end
+    else if Message.WParam = MFP_PLAYBACK_ERROR then
+    begin
+      StopPlayback;
+      Log.Log('MF', 'Playback error 0x'+IntToHex(Message.LParam), []);
+    end
+    else if Message.WParam = MFP_PLAYBACK_ERROR then
+    begin
+      StopPlayback;
+      Log.Log('MF', 'Cannot decode video stream', []);
+    end;
+  end;
 end;
-
-procedure TfrmMain.WMPlaybackFailed(var Message: TMessage);
-var
-  hr: Cardinal;
-begin
-  Move(Message.LParam, hr, SizeOf(hr));
-  Log.Log('VidePlayback', 'Video playback error: #' + IntToStr(Message.wParam) + ' 0x' + IntToHex(hr), []);
-  StopPlayback;
-end;
+//
+//procedure TfrmMain.WMPlaybackFailed(var Message: TMessage);
+//var
+//  hr: Cardinal;
+//begin
+//  Move(Message.LParam, hr, SizeOf(hr));
+//  Log.Log('VidePlayback', 'Video playback error: #' + IntToStr(Message.wParam) + ' 0x' + IntToHex(hr), []);
+//  StopPlayback;
+//end;
 
 procedure TfrmMain.WMPlayClosingMovie(var Message : TWMNoParams);
+var
+  hr: HRESULT;
 begin
   if not (FileExists(FClosingMovie) and FShowOutro) then
   begin
@@ -5795,15 +5839,27 @@ begin
     FormStyle := fsStayOnTop;
     ClientWidth := Screen.Monitors[ChosenDisplayindex].Width;
     ClientHeight := Screen.Monitors[ChosenDisplayindex].Height;
-    Left := 0;
-    Top := 0;
+    Left := Screen.Monitors[ChosenDisplayindex].Left;
+    Top := Screen.Monitors[ChosenDisplayindex].Top;
   end;
-  ClosingVideoPanel.Show;
-  MfPlayer_AttachToWindow(ClosingVideoPanel.Handle);
-  MfPlayer_Play(FClosingMovie);
-  FVideoPlaying := True;
-  FClosingMoviePlaying := True;
-  OnKeyDown := MovieKeyDown;
+  //MfPlayer_AttachToWindow(ClosingVideoPanel.Handle);
+  //MfPlayer_Play(FClosingMovie);
+  MfPlayer := TMfPlayer.Create(ClosingVideoPanel.Handle, 0, Handle, Handle);
+  if SUCCEEDED(MfPlayer.OpenURL(PWideChar(FClosingMovie))) then
+  begin
+    ClosingVideoPanel.Show;
+    MfPlayer.SendPlayerRequest(reqStart);
+    FVideoPlaying := True;
+    FClosingMoviePlaying := True;
+    OnKeyDown := MovieKeyDown;
+  end
+  else
+  begin
+    Log.Log('MF', 'OpenURL() on closing movie failed', []);
+    MfPlayer.Free;
+    MfPlayer := nil;
+    Close;
+  end;
 end;
 
 procedure TfrmMain.WMDone( var Message : TWMNoParams );
