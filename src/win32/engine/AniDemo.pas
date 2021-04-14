@@ -910,6 +910,18 @@ begin
       FormStyle := fsNormal;
       ClientWidth := ScreenMetrics.ScreenWidth;
       ClientHeight := ScreenMetrics.ScreenHeight;
+    end
+    else
+    begin
+      BorderStyle := bsNone;
+      FormStyle := fsStayOnTop;
+      if ChosenDisplayindex < Screen.MonitorCount then
+      begin
+        ClientWidth := Screen.Monitors[ChosenDisplayindex].Width;
+        ClientHeight := Screen.Monitors[ChosenDisplayindex].Height;
+        Left := Screen.Monitors[ChosenDisplayindex].Left;
+        Top := Screen.Monitors[ChosenDisplayindex].Top;
+      end;
     end;
 
     if FShowIntro and FileExists(FOpeningMovie) then
@@ -5660,10 +5672,16 @@ const
   FailName : string = 'Main.AppActivate';
 begin
   Log.DebugLog(FailName);
-  if (not ScreenMetrics.Windowed) and (not ScreenMetrics.ForceD3DFullscreen) then
+  if not ScreenMetrics.Windowed then
+  begin
+    FormStyle := fsStayOnTop;
+  end;
+
+  if not ScreenMetrics.Windowed then
+  begin
+    if not ScreenMetrics.ForceD3DFullscreen then
     begin
       try
-
         Log.Log( 'App Activate' );
         if Initialized then
         begin
@@ -5676,11 +5694,17 @@ begin
         begin
           Initialized := True;
         end;
-
       except
         on E : Exception do
           Log.log( FailName, E.Message, [ ] );
       end;
+    end
+    else
+    begin
+      Game.Enabled := True;
+      Application.Restore;
+      D3D11Renderer.EnableFullscreen(True);
+    end;
   end
   else
     if Paused then
@@ -5691,11 +5715,14 @@ procedure TfrmMain.AppDeactivate( Sender : TObject );
 const
   FailName : string = 'Main.AppDeactivate';
 begin
+  FormStyle := fsNormal;
+
   Log.DebugLog(FailName);
-  if (not ScreenMetrics.Windowed) and (not ScreenMetrics.ForceD3DFullscreen) then
+  if not ScreenMetrics.Windowed then
+  begin
+    if not ScreenMetrics.ForceD3DFullscreen then
     begin
       try
-
         Log.Log( 'App Deactivate' );
         if Active then
         begin
@@ -5717,11 +5744,17 @@ begin
         OnMouseDown := FormMouseDown;
         OnMouseMove := FormMouseMove;
         FreeAll;
-
       except
         on E : Exception do
           Log.log( FailName, E.Message, [ ] );
       end;
+    end
+    else
+    begin
+      Game.Enabled := False;
+      Application.Minimize;
+      D3D11Renderer.EnableFullscreen(True);
+    end;
   end
   else
     if not Paused then
