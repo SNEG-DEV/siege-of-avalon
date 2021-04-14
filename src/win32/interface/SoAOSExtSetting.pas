@@ -100,6 +100,7 @@ uses
   System.IOUtils,
   System.IniFiles,
   Winapi.ShellAPI,
+  Winapi.Multimon,
   LogFile;
 
 {$R *.dfm}
@@ -197,6 +198,7 @@ var
 
   devName: string;
   DisplayDevice: TDisplayDevice;
+  MonitorInfo: TMonitorInfoEx;
   iDevNum: DWORD;
   p: Integer;
   langStr: string;
@@ -272,15 +274,17 @@ begin
   DisplayDevice.cb := SizeOf(DisplayDevice);
   p := 0;
   for iDevNum := 0 to monitorCnt-1 do
-    if EnumDisplayDevices(NIL, iDevNum, DisplayDevice, 0) then
-    begin
-      devName := displayDevice.DeviceName;
-      EnumDisplayDevices(PChar(devName), 0, displayDevice, 0);
-      FMonitors.Add('Display '+(iDevNum+1).ToString+' - '+string(DisplayDevice.DeviceString) + '=' + devName);
-      if devName=FCurrentDevice then
-        prim := iDevNum;
-      Inc(p);
-    end;
+  begin
+    ZeroMemory(@MonitorInfo, SizeOf(MonitorInfo));
+    MonitorInfo.cbSize := SizeOf(MonitorInfo);
+    GetMonitorInfo(Screen.Monitors[iDevNum].Handle, @MonitorInfo);
+    devName := MonitorInfo.szDevice;
+    EnumDisplayDevices(PChar(devName), 0, displayDevice, 0);
+    FMonitors.Add('Display '+(iDevNum+1).ToString+' - '+string(DisplayDevice.DeviceString) + '=' + devName);
+    if devName = FCurrentDevice then
+      prim := iDevNum;
+    Inc(p);
+  end;
   FCurrentDeviceIdx := prim;
   FCurrentDevice := FMonitors.ValueFromIndex[FCurrentDeviceIdx];
 
