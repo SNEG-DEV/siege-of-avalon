@@ -934,8 +934,13 @@ begin
         begin
           BorderStyle := bsNone;
           FormStyle := fsStayOnTop;
-          ClientWidth := Screen.Monitors[ChosenDisplayindex].Width;
-          ClientHeight := Screen.Monitors[ChosenDisplayindex].Height;
+          if ChosenDisplayindex < Screen.MonitorCount then
+          begin
+            ClientWidth := Screen.Monitors[ChosenDisplayindex].Width;
+            ClientHeight := Screen.Monitors[ChosenDisplayindex].Height;
+            Left := Screen.Monitors[ChosenDisplayindex].Left;
+            Top := Screen.Monitors[ChosenDisplayindex].Top;
+          end;
         end;
 
         OpeningVideoPanel.Show;
