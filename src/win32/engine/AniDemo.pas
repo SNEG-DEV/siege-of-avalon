@@ -1090,7 +1090,7 @@ begin
 
       UseDirectSound := False;
 
-      MapPath := AnsiString( TPath.GetFullPath(IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'MapPath', MapPath ) ) ) );
+      MapPath := TPath.GetFullPath(IncludeTrailingPathDelimiter( INI.ReadString( 'Settings', 'MapPath', MapPath ) ) );
       Log.Log( 'MapPath=' + MapPath );
       Log.flush;
     
