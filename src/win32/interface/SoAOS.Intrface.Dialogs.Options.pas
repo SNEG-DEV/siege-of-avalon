@@ -564,16 +564,16 @@ begin
       SpllRect := ApplyOffset( Rect( 101, 229, 694, 448 ) );
 
       if FXRect.Contains( Point( X, Y ) ) then //over SoundFX
-        PlotTextBlock( txtMessage[ 0 ], 359, 670, 121, 240, UseSmallFont )
+        PlotTextBlock( txtMessage[ 0 ], 359, 670, 121, 240, UseSmallFont, True )
       else if MusRect.Contains( Point( X, Y ) ) then //over music
-        PlotTextBlock( txtMessage[ 1 ], 359, 670, 121, 240, UseSmallFont )
+        PlotTextBlock( txtMessage[ 1 ], 359, 670, 121, 240, UseSmallFont, True )
       else if ShdwRect.Contains( Point( X, Y ) ) then //over Shadows
-        PlotTextBlock( txtMessage[ 2 ], 359, 670, 121, 240, UseSmallFont )
+        PlotTextBlock( txtMessage[ 2 ], 359, 670, 121, 240, UseSmallFont, True )
       else if SpllRect.Contains( Point( X, Y ) ) then //over Spells list
         if Character = nil then
-          PlotTextBlock( txtMessage[ 3 ], 359, 670, 121, 240, UseSmallFont )
+          PlotTextBlock( txtMessage[ 3 ], 359, 670, 121, 240, UseSmallFont, True )
         else
-          PlotTextBlock( txtMessage[ 4 ], 359, 670, 121, 240, UseSmallFont );
+          PlotTextBlock( txtMessage[ 4 ], 359, 670, 121, 240, UseSmallFont, True );
     end;
 
     SoAOS_DX_BltFront;

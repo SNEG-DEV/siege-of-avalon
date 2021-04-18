@@ -1130,11 +1130,11 @@ begin
     pr := Rect( 111, 65, 344, 231 );
     lpDDSBack.BltFast( pr.Left + Offset.X, pr.Top + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
 
-    pText.PlotTextBlock( MapName, 123 + Offset.X, 340 + Offset.X, 70 + Offset.Y, 240 );
+    PlotTextBlock( MapName, 123, 340, 70, 240, False, False );
 
     for i := 1 to CharacterCount do
     begin
-      pText.PlotText( CharacterName[ i ], 133 + Offset.X, 70 + i * 25 + Offset.Y, 240 );
+      PlotText( CharacterName[ i ], 133, 70 + i * 25, 240 );
     end;
   except
     on E : Exception do

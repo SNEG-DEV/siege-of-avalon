@@ -49,11 +49,11 @@ type
     // PlotText(msg, x, x2, y, relativepoint=nil, centered=false) bla. bla. - will happen on gametext cleanup
     function ApplyOffset(const r: TRect): TRect;
     procedure PlotText(const Sentence: string; const X, Y, Alpha: Integer);
-    procedure PlotTextCentered( const DX : IDirectDrawSurface; const Sentence : string; const X1, X2, Y, Alpha : Integer; Const UseSmallFnt: Boolean = False ); overload;
+    procedure PlotTextCentered( const DX : IDirectDrawSurface; const Sentence : string; const X1, X2, Y, Alpha : Integer; Const UseSmallFnt: Boolean = False); overload;
     procedure PlotTextCentered(const Sentence: string; const X1, X2, Y, Alpha: Integer); overload;
     procedure PlotDarkTextCentered(const Sentence: string; X, X2, Y, Alpha: integer);
     procedure PlotTinyText( const Sentence : string; X, Y, Alpha : integer );
-    procedure PlotTextBlock( const Sentence : string; X1, X2, Y, Alpha : integer; Const UseSmallFnt: Boolean = False );
+    procedure PlotTextBlock( const Sentence : string; X1, X2, Y, Alpha : integer; Const UseSmallFnt: Boolean = False; Const UseGold: Boolean = False);
 //    procedure PlotDarkText2( const DX : IDirectDrawSurface; const Sentence : string; const X, Y, Alpha : integer );
     property Offset: TPoint read GetOffset;
   end;
@@ -96,11 +96,15 @@ begin
   pText.PlotText( Sentence, X + Offset.X, Y + Offset.Y, Alpha );
 end;
 
-procedure TDialog.PlotTextBlock(const Sentence: string; X1, X2, Y,
-  Alpha: integer; const UseSmallFnt: Boolean);
+procedure TDialog.PlotTextBlock( const Sentence : string; X1, X2, Y, Alpha : integer; Const UseSmallFnt: Boolean = False; Const UseGold: Boolean = False);
 begin
   if UseSmallFnt then
-    pText.PlotGoldTextBlock( Sentence, X1 + Offset.X, X2 + Offset.X, Y + Offset.Y, Alpha )
+  begin
+    if UseGold then  // NewChar, Options and Load/Save needs this
+      pText.PlotGoldTextBlock( Sentence, X1 + Offset.X, X2 + Offset.X, Y + Offset.Y, Alpha )
+    else
+      pText.PlotTinyTextBlock( Sentence, X1 + Offset.X, X2 + Offset.X, Y + Offset.Y, Alpha );
+  end
   else
     pText.PlotTextBlock( Sentence, X1 + Offset.X, X2 + Offset.X, Y + Offset.Y, Alpha );
 end;

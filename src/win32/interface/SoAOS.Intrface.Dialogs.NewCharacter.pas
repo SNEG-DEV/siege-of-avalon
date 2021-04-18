@@ -610,18 +610,18 @@ begin
             pr := Rect( 490, 239, 720, 500 );   // 682, 430
             lpDDSBack.BltFast( pr.Left + Offset.X, pr.Top + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
             if ( ChosenTraining > -1 ) then
-              PlotTextBlock( txtMessage[ 8 ], 500, 682, 239, 240, UseSmallFont )
+              PlotTextBlock( txtMessage[ 8 ], 500, 682, 239, 240, UseSmallFont, True )
             else
-              PlotTextBlock( txtMessage[ 9 ], 500, 682, 239, 240, UseSmallFont );
+              PlotTextBlock( txtMessage[ 9 ], 500, 682, 239, 240, UseSmallFont, True );
           end
           else
           begin
             pr := Rect( 490, 160, 720, 500 );
             lpDDSBack.BltFast( pr.Left + Offset.X, pr.Top + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
             if ( ChosenTraining > -1 ) then
-              PlotTextBlock( txtMessage[ 10 ], 500, 682, 165, 240, UseSmallFont )
+              PlotTextBlock( txtMessage[ 10 ], 500, 682, 165, 240, UseSmallFont, True )
             else
-              PlotTextBlock( txtMessage[ 11 ], 500, 682, 165, 240, UseSmallFont );
+              PlotTextBlock( txtMessage[ 11 ], 500, 682, 165, 240, UseSmallFont, True );
           end;
         end;
       end
@@ -686,9 +686,9 @@ begin
         PlayerInfo := txtMessage[ 105 ] + ChangeFileExt(ExtractFileName(Players[PlayerResourceIdx-1]), '');
 
       if BoxOpen <> bxTraining then
-        PlotTextBlock( PlayerInfo, 500, 680, 165, 240, UseSmallFont )
+        PlotTextBlock( PlayerInfo, 500, 680, 165, 240, UseSmallFont, True )
       else // Training box in the way - so print below
-        PlotTextBlock( PlayerInfo, 500, 680, 239, 240, UseSmallFont );
+        PlotTextBlock( PlayerInfo, 500, 680, 239, 240, UseSmallFont, True );
     end;
 
     if rRightArrow.Contains( Point( X, Y) ) then
@@ -699,9 +699,9 @@ begin
         PlayerInfo := txtMessage[ 105 ] + ChangeFileExt(ExtractFileName(Players[PlayerResourceIdx+1]), '');
 
       if BoxOpen <> bxTraining then
-        PlotTextBlock( PlayerInfo, 500, 680, 165, 240, UseSmallFont )
+        PlotTextBlock( PlayerInfo, 500, 680, 165, 240, UseSmallFont, True )
       else // Training box in the way - so print below
-        PlotTextBlock( PlayerInfo, 500, 680, 239, 240, UseSmallFont );
+        PlotTextBlock( PlayerInfo, 500, 680, 239, 240, UseSmallFont, True );
     end;
 
     i := 0;
@@ -713,9 +713,9 @@ begin
         if SelectRect[ i ].Contains( Point( X, Y ) ) then
         begin //if over an item
           if BoxOpen <> bxTraining then //little kludge here
-            PlotTextBlock( SelectRect[ i ].Info, 500, 682, 165, 240, UseSmallFont ) //Plot the info
+            PlotTextBlock( SelectRect[ i ].Info, 500, 682, 165, 240, UseSmallFont, True ) //Plot the info
           else
-            PlotTextBlock( SelectRect[ i ].Info, 500, 682, 239, 240, UseSmallFont ); //Plot the info
+            PlotTextBlock( SelectRect[ i ].Info, 500, 682, 239, 240, UseSmallFont, True ); //Plot the info
           i := 900; //drop out of the loop
         end;
         i := i + 1;
@@ -732,9 +732,9 @@ begin
         if ArrowRect[ i ].Contains( Point( X, Y ) ) then
         begin //if over an Arrow
           if BoxOpen <> bxTraining then //little kludge here
-            PlotTextBlock( ArrowRect[ i ].Info, 500, 682, 165, 240, UseSmallFont ) //Plot the info
+            PlotTextBlock( ArrowRect[ i ].Info, 500, 682, 165, 240, UseSmallFont, True ) //Plot the info
           else
-            PlotTextBlock( ArrowRect[ i ].Info, 500, 682, 239, 240, UseSmallFont ); //Plot the info
+            PlotTextBlock( ArrowRect[ i ].Info, 500, 682, 239, 240, UseSmallFont, True ); //Plot the info
 
           i := 900; //drop out of the loop
         end;
@@ -750,9 +750,9 @@ begin
         if InfoRect[ i ].Contains( point( X, Y ) ) then
         begin //if over an item
           if BoxOpen <> bxTraining then //little kludge here
-            PlotTextBlock( InfoRect[ i ].Info, 500, 682, 165, 240, UseSmallFont ) //Plot the info
+            PlotTextBlock( InfoRect[ i ].Info, 500, 682, 165, 240, UseSmallFont, True ) //Plot the info
           else
-            PlotTextBlock( InfoRect[ i ].Info, 500, 682, 239, 240, UseSmallFont ); //Plot the info
+            PlotTextBlock( InfoRect[ i ].Info, 500, 682, 239, 240, UseSmallFont, True ); //Plot the info
 
           i := 900; //drop out of the loop
         end;
