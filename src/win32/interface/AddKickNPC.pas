@@ -747,14 +747,14 @@ begin
   Region.Right := X + W - Offset.X;
   Region.Bottom := Y + H - Offset.Y;
 
-  CheckBox[ 0 ].TopLeft := Point( X + 1, Y + 21 );
-  CheckBox[ 1 ].TopLeft := Point( X + 1, Y + 39 );
-  CheckBox[ 2 ].TopLeft := Point( X + 1, Y + 57 );
-  CheckBox[ 3 ].TopLeft := Point( X + 1, Y + 112 );
-  CheckBox[ 4 ].TopLeft := Point( X + 1, Y + 129 );
-  CheckBox[ 5 ].TopLeft := Point( X + 1, Y + 184 );
-  CheckBox[ 6 ].TopLeft := Point( X + 1, Y + 202 );
-  CheckBox[ 7 ].TopLeft := Point( X + 1, Y + 220 );
+  CheckBox[ 0 ].TopLeft := Point( X + 3, Y + 22 );
+  CheckBox[ 1 ].TopLeft := Point( X + 3, Y + 40 );
+  CheckBox[ 2 ].TopLeft := Point( X + 3, Y + 58 );
+  CheckBox[ 3 ].TopLeft := Point( X + 3, Y + 113 );
+  CheckBox[ 4 ].TopLeft := Point( X + 3, Y + 130 );
+  CheckBox[ 5 ].TopLeft := Point( X + 3, Y + 185 );
+  CheckBox[ 6 ].TopLeft := Point( X + 3, Y + 203 );
+  CheckBox[ 7 ].TopLeft := Point( X + 3, Y + 221 );
   GetSurfaceDims( CheckW, CheckH, Check );
   for i := 0 to 7 do
   begin
