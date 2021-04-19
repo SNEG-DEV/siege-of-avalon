@@ -222,10 +222,10 @@ begin
     BufferDesc.Width := aWidth;
     BufferDesc.Height := aHeight;
     BufferDesc.Format := DXGI_FORMAT_R8G8B8A8_UNORM;
-    BufferDesc.RefreshRate.Numerator := 144;
+    BufferDesc.RefreshRate.Numerator := 60;
     BufferDesc.RefreshRate.Denominator := 1;
     BufferDesc.ScanlineOrdering := DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-    BufferDesc.Scaling := DXGI_MODE_SCALING_UNSPECIFIED;
+    BufferDesc.Scaling := DXGI_MODE_SCALING_CENTERED;
     BufferUsage := DXGI_USAGE_RENDER_TARGET_OUTPUT;
     OutputWindow := aHWND;
     SampleDesc.Count := 1;
