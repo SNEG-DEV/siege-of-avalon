@@ -225,7 +225,7 @@ begin
     BufferDesc.RefreshRate.Numerator := 60;
     BufferDesc.RefreshRate.Denominator := 1;
     BufferDesc.ScanlineOrdering := DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-    BufferDesc.Scaling := DXGI_MODE_SCALING_CENTERED;
+    BufferDesc.Scaling := DXGI_MODE_SCALING_STRETCHED;
     BufferUsage := DXGI_USAGE_RENDER_TARGET_OUTPUT;
     OutputWindow := aHWND;
     SampleDesc.Count := 1;
