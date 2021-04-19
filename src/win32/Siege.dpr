@@ -130,7 +130,8 @@ uses
   SteamworksClasses in 'platforms\steamIntegration\SteamworksClasses.pas',
   SteamworksTypes in 'platforms\steamIntegration\SteamworksTypes.pas',
   MfPlayerClass in 'MfPlayer\MfPlayerClass.pas',
-  UniThreadTimer in 'MfPlayer\UniThreadTimer.pas';
+  UniThreadTimer in 'MfPlayer\UniThreadTimer.pas',
+  D3DMousePtr in 'engine\D3DMousePtr.pas';
 
 {$R *.RES}
 

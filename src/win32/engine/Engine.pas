@@ -56,7 +56,8 @@ uses
   LogFile,
   Resource,
   DFX,
-  MousePtr;
+  AbstractMousePtr
+  ;
 
 procedure CreateGlobals;
 procedure FreeGlobals;
@@ -101,7 +102,7 @@ var
   AllSpells : boolean;
   Quests : TStringList;
   Adventures : TStringList;
-  MouseCursor : TMousePtr;
+  MouseCursor : TAbstractMousePtr;
   GlobalBrightness : longint;
   UseDirectSound : boolean;
   LoadingFromSaveFile : boolean;

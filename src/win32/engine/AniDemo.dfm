@@ -174,4 +174,10 @@ object frmMain: TfrmMain
     Left = 8
     Top = 42
   end
+  object Timer1: TTimer
+    Interval = 1
+    OnTimer = Timer1Timer
+    Left = 16
+    Top = 112
+  end
 end

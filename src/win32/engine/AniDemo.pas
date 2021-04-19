@@ -93,7 +93,9 @@ uses
   SoAOS.Animation,
   GameLibIntegration,
   AddKickNPC,
-  MfPlayerClass
+  MfPlayerClass,
+  MousePtr,
+  D3DMousePtr
   ;
 
 const
@@ -132,6 +134,7 @@ type
     Timer3 : TTimer;
     OpeningVideoPanel: TPanel;
     ClosingVideoPanel: TPanel;
+    Timer1: TTimer;
 
     procedure FormShow( Sender : TObject );
     procedure Timer1Timer( Sender : TObject );
@@ -386,7 +389,6 @@ uses
   Music,
   MP3,
   Engine,
-  MousePtr,
   SaveFile,
   D3DRenderer
   ;
@@ -1269,7 +1271,7 @@ begin
 
     Log.Log( 'Loading cursor' );
     Log.flush;
-    MouseCursor := TMousePtr.Create;
+    MouseCursor := TD3DMousePtr.Create(D3D11Renderer);
 
     Log.Log( 'Initializing DFX...' );
     Log.flush;

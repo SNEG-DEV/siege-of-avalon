@@ -67,7 +67,6 @@ uses
   Vcl.Graphics,
   Engine,
   Display,
-  MousePtr,
   SoAOS.Animation,
   AniDemo;
 

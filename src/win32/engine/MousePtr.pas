@@ -50,10 +50,12 @@ uses
   System.Classes,
   Vcl.Controls,
   Vcl.ExtCtrls,
-  LogFile;
+  LogFile,
+  AbstractMousePtr
+  ;
 
 type
-  TMousePtr = class( TObject )
+  TMousePtr = class( TAbstractMousePtr )
   private
     DXMousePtr : IDirectDrawSurface;
     DXDirty : IDirectDrawSurface;
@@ -72,19 +74,22 @@ type
     WAdj, HAdj, OldWAdj, OldHAdj : integer;
     FEnabled : boolean;
     procedure MouseTimerEvent( Sender : TObject );
-    procedure SetPlotDirty( const Value : boolean );
-    procedure SetEnabled( const Value : boolean );
+    procedure SetPlotDirty( const Value : boolean ); override;
+    function GetPlotDirty: Boolean; override;
+    procedure SetEnabled( const Value : boolean ); override;
+    function GetEnabled: Boolean; override;
+
   protected
   public
     //DxSurface : XDirectDrawSurface; //surface to draw pointer to
     constructor Create;
     destructor Destroy; override;
 //    procedure SetAnim( Frame, Frames, Speed : integer );
-    procedure Cleanup;
+    procedure Cleanup; override;
 //    procedure SetLoopAnim( Frame, Frames, Speed : integer );
-    procedure SetFrame( Frame : integer );
-    property PlotDirty : boolean read FPlotDirty write SetPlotDirty; //plot cleanup or no?
-    property Enabled : boolean read FEnabled write SetEnabled;
+    procedure SetFrame( Frame : integer ); override;
+//    property PlotDirty : boolean read FPlotDirty write SetPlotDirty; //plot cleanup or no?
+//    property Enabled : boolean read FEnabled write SetEnabled;
   end;
 
 implementation
@@ -150,7 +155,19 @@ begin
       Log.log( FailName + E.Message );
   end;
 
-end; //Destroy
+end;
+
+function TMousePtr.GetEnabled: Boolean;
+begin
+  Result := FEnabled;
+end;
+
+function TMousePtr.GetPlotDirty: Boolean;
+begin
+  Result := FPlotDirty;
+end;
+
+//Destroy
 
 
 procedure TMousePtr.MouseTimerEvent( Sender : TObject );
