@@ -1058,7 +1058,7 @@ begin
       Log.Log( 'Read Settings' );
       Log.flush;
 
-      GetChapters( INI );
+      GetChapters;
 
       DeviceDriverName := INI.ReadString('Settings', 'DeviceName', '');
 

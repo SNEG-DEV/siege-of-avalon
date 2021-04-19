@@ -66,7 +66,7 @@ procedure RunScript( Me : TObject; Script : string );
 procedure Converse( ObjectRef : TObject; Conversation : string );
 function FormatFP( D : double ) : string;
 function UnFormatFP( S : string ) : double;
-procedure GetChapters( INI : TINIFile );
+procedure GetChapters;
 function SymbolReplacement( const Script : string ) : string;
 
 var
@@ -258,34 +258,13 @@ begin
   end;
 end;
 
-procedure GetChapters( INI : TINIFile );
+procedure GetChapters;
 var
-  List : TStringList;
   i : integer;
-  S, Key, Value : string;
-  KeyIndex : int64;
 begin
   Chapters := 1;
-  List := TStringList.create;
-  try
-    INI.ReadSectionValues( 'Chapters', List );
-    for i := 0 to List.count - 1 do
-    begin
-      try
-        S := List.Strings[ i ];
-        Key := Parse( S, 0, '=' );
-        Value := Parse( S, 1, '=' );
-        if ( lowercase( copy( Key, 1, 8 ) ) = 'chapter ' ) and ( lowercase( Value ) = 'available' ) then
-        begin
-          KeyIndex := StrToInt( copy( Key, 9, length( Key ) - 8 ) ) - 1;
-          Chapters := Chapters or ( 1 shl KeyIndex );
-        end;
-      except
-      end;
-    end;
-  finally
-    List.free;
-  end;
+  for i := 0 to 5 do
+    Chapters := Chapters or ( 1 shl i );
 end;
 
 function FormatFP( D : double ) : string;
