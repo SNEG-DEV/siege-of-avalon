@@ -1,4 +1,4 @@
-  unit D3DRenderer;
+unit D3DRenderer;
 
 interface
 
@@ -150,7 +150,7 @@ var
     '	return color.rgba; '#13#10 +
     '}'#13#10;
 
-  fragment_shader_R16: string = 'Texture2D DiffuseMap;'#13#10 +
+  fragment_shader_R16_bitwise: string = 'Texture2D DiffuseMap;'#13#10 +
     'SamplerState SampleType;'#13#10 +
     ''#13#10 +
     'struct PSInput'#13#10 +
@@ -166,6 +166,33 @@ var
     '    int r = (c565 & 0xF800) >> 11;'#13#10 +
     '    int g = (c565 & 0x7E0) >> 5;'#13#10 +
     '    int b = c565 & 0x1F;'#13#10 +
+    '	return float4(r / 32.0f, g / 64.0f, b / 32.0f, 1.0f);'#13#10 +
+    '}'#13#10;
+
+  fragment_shader_R16_int: string = 'Texture2D DiffuseMap;'#13#10 +
+    'SamplerState SampleType;'#13#10 +
+    ''#13#10 +
+    'struct PSInput'#13#10 +
+    '{'#13#10 +
+    '    float4 position : SV_POSITION;'#13#10 +
+    '    float2 texcoords : TEXCOORD0;'#13#10 +
+    '};'#13#10 +
+    ''#13#10 +
+    'float4 PSEntry(PSInput vs_out) : SV_TARGET'#13#10 +
+    '{'#13#10 +
+    '    float4 c = DiffuseMap.Sample(SampleType, vs_out.texcoords);'#13#10 +
+    '    int c565 = c.r * 65535;'#13#10 +
+    '    int t = c565 / 32;'#13#10 +
+    '    t = t * 32;'#13#10 +
+    '    int b = c565 - t;'#13#10 +
+    '    c565 = (c565 - b) / 32;'#13#10 +
+    '    t = c565 / 64;'#13#10 +
+    '    t = t * 64;'#13#10 +
+    '    int g = c565 - t;'#13#10 +
+    '    c565 = (c565 - g) / 64;'#13#10 +
+    '    t = c565 / 32;'#13#10 +
+    '    t = t * 32;'#13#10 +
+    '    int r = c565 - t;'#13#10 +
     '	return float4(r / 32.0f, g / 64.0f, b / 32.0f, 1.0f);'#13#10 +
     '}'#13#10;
 
@@ -205,7 +232,7 @@ begin
     SampleDesc.Quality := 0;
     Windowed := bWindowed;
     SwapEffect := DXGI_SWAP_EFFECT_SEQUENTIAL;
-    Flags := Cardinal(DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
+    Flags := 0;
   End;
 
   feature_level[0] := D3D_FEATURE_LEVEL_10_0;
@@ -521,7 +548,7 @@ begin
   else if aFormat = dxfmt_r16 then
   begin
     PixelFormat := DXGI_FORMAT_R16_UNORM;
-    FragShader := fragment_shader_R16;
+    FragShader := fragment_shader_R16_int;
   end
   else if aFormat = dxfmt_8888 then
   begin
