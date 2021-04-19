@@ -679,6 +679,7 @@ begin
 //    begin
       lpDDSurfaceDesc.dwFlags := lpDDSurfaceDesc.dwFlags or DDSD_CAPS;
 //    end;
+    lpDDSurfaceDesc.ddsCaps.dwCaps := lpDDsurfaceDesc.ddsCaps.dwCaps and not DDSCAPS_VIDEOMEMORY;
     lpDDSurfaceDesc.ddsCaps.dwCaps := lpDDsurfaceDesc.ddsCaps.dwCaps (*or DDSCAPS_OFFSCREENPLAIN *) or DDSCAPS_SYSTEMMEMORY;
 
   end;
