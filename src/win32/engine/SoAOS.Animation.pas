@@ -559,11 +559,15 @@ var
 
 procedure D3DPresent;
 begin
-  if D3D11Renderer <> nil then
-  begin
-    D3D11Renderer.Render;
-    D3D11Renderer.Present;
-  end;
+//  if Assigned(MouseCursor) then
+//  begin
+//    MouseCursor.Update;
+//  end;
+//  if D3D11Renderer <> nil then
+//  begin
+//    D3D11Renderer.Render;
+//    D3D11Renderer.Present;
+//  end;
 end;
 
 function lpDDSFront_BltFast(dwX: DWORD; dwY: DWORD;
@@ -677,7 +681,7 @@ begin
 
 //    if (lpDDSurfaceDesc.dwFlags and DDSD_CAPS) = 0 then
 //    begin
-      lpDDSurfaceDesc.dwFlags := lpDDSurfaceDesc.dwFlags or DDSD_CAPS;
+    lpDDSurfaceDesc.dwFlags := lpDDSurfaceDesc.dwFlags or DDSD_CAPS;
 //    end;
     lpDDSurfaceDesc.ddsCaps.dwCaps := lpDDsurfaceDesc.ddsCaps.dwCaps and not DDSCAPS_VIDEOMEMORY;
     lpDDSurfaceDesc.ddsCaps.dwCaps := lpDDsurfaceDesc.ddsCaps.dwCaps (*or DDSCAPS_OFFSCREENPLAIN *) or DDSCAPS_SYSTEMMEMORY;
@@ -897,8 +901,10 @@ begin
       Log.Log('Failed to initialize D3D11 renderer');
       MessageDlg('Could not initialize video subsystem. Please make sure that you have the latest video driver update installed.', mtError, [mbOk], 0);
       Application.Terminate;
+      Exit;
     end;
 
+    D3D11Renderer.StartPresenterThread;
 
     BltWindowed := True;
     ddsd.dwSize := SizeOf(ddsd);

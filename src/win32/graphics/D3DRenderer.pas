@@ -3,12 +3,51 @@
 interface
 
 uses
-  SysUtils,
+  SysUtils, Classes, SyncObjs, System.Generics.Collections,
   Winapi.Windows, Winapi.Messages,
   Winapi.D3D11, Winapi.DXGI, Winapi.D3DCommon, Winapi.DXTypes, Winapi.DXGIFormat, Winapi.DXGIType,
   D3DShader, D3DMesh;
 
+const
+  dxfmt_565: Integer = 0;
+  dxfmt_r16: Integer = 1;
+  dxfmt_8888: Integer = 2;
+  blend_none: Integer = 0;
+  blend_transparent: Integer = 1;
+
 type
+  TDXRenderLayer = class
+  private
+    FDevice: ID3D11Device;
+    FDeviceContext : ID3D11DeviceContext;
+    FShader: TDXTextureShader;
+    FBlendState: ID3D11BlendState;
+    FTexture: ID3D11Texture2D;
+    FTextureSRV: ID3D11ShaderResourceView;
+    FEnabled: Boolean;
+    FSize, FViewportSize: TSize;
+
+    FSourceRect, FDestRect: TRect;
+
+    FLock: TCriticalSection;
+  public
+    Constructor Create(DeviceContext: ID3D11DeviceContext; aWidth, aHeight: Integer; aFormat, aBlend: Integer);
+    Destructor Destroy; override;
+
+    Procedure UpdateTexture(Data: Pointer; Stride: Cardinal); overload;
+    Procedure UpdateTexture(Data: Pointer; Stride: Cardinal; Rect: TRect); overload;
+    procedure Activate;
+    procedure SetSourceRect(aRect: TRect);
+    procedure SetDestRect(aRect: TRect);
+
+    property Enabled: Boolean read FEnabled write FEnabled;
+
+    procedure Lock;
+    procedure Unlock;
+  end;
+
+  TDXPresenterThread = class;
+
   TDXRenderer = class
     private
       FDevice: ID3D11Device;
@@ -23,11 +62,12 @@ type
 
       FReady, FEnableVSync: Boolean;
 
-      FShader: TDXTextureShader;
       FQuad: TDXModel;
+      FLayers: TList<TDXRenderLayer>;
+      FMainLayer: TDXRenderLayer;
 
-      FTexture: ID3D11Texture2D;
-      FTextureSRV: ID3D11ShaderResourceView;
+      FThread: TDXPresenterThread;
+      FQuitThread: Boolean;
 
       Function Initialize(aHWND: HWND; aWidth, aHeight: Integer; bWindowed, bVSync: Boolean): HRESULT;
       Function Uninitialize: HRESULT;
@@ -36,6 +76,8 @@ type
       Constructor Create(aHWND: HWND; aWidth, aHeight: Integer; bWindowed, bVSync: Boolean);
       Destructor Destroy; override;
 
+      function CreateLayer(aWidth, aHeight: Integer; Format, Blend: Integer): TDXRenderLayer;
+
       Procedure UpdateTexture(Data: Pointer; Stride: Cardinal); overload;
       Procedure UpdateTexture(Data: Pointer; Stride: Cardinal; Rect: TRect); overload;
       Function Clear(aColor: TFourSingleArray): HRESULT;
@@ -43,14 +85,33 @@ type
       Function Present: HRESULT;
 
       procedure EnableFullscreen(Enabled: Boolean);
+
+      procedure StartPresenterThread;
+      procedure StopPresenterThread;
+  end;
+
+  TDXPresenterThread = class(TThread)
+    private
+      FRenderer: TDXRenderer;
+      FQuit: Boolean;
+    public
+      constructor Create(aRenderer: TDXRenderer);
+      destructor Destroy; override;
+      procedure Execute; override;
+      procedure Stop;
   end;
 
 implementation
 
-uses IOUtils, LogFile;
+uses IOUtils, LogFile, Winapi.D3DX10;
 
 var
-  vertex_shader: string = 'struct VSInput'#13#10 +
+  vertex_shader: string = 'cbuffer MatrixBuffer'#13#10 +
+    '{'#13#10 +
+    '    matrix OutputPosition;'#13#10 +
+    '    matrix InputPosition;'#13#10 +
+    '}'#13#10 +
+    'struct VSInput'#13#10 +
     '{'#13#10 +
     '    float4 position : POSITION;'#13#10 +
     '    float2 texcoords : TEXCOORD0;'#13#10 +
@@ -64,9 +125,12 @@ var
     ''#13#10 +
     'PSInput VSEntry(VSInput input)'#13#10 +
     '{'#13#10 +
-    '    PSInput output;    '#13#10 +
-    '    output.position = input.position;'#13#10 +
-    '    output.texcoords = float2(input.texcoords.x, 1.0f - input.texcoords.y);'#13#10 +
+    '    PSInput output;'#13#10 +
+    '    input.position.w = 1.0f;'#13#10 +
+    '    output.position = mul(input.position, OutputPosition);'#13#10 +
+    '    float4 tex = float4(input.texcoords.x, input.texcoords.y, 0.0f, 1.0f);'#13#10 +
+    '    tex = mul(tex, InputPosition);'#13#10 +
+    '    output.texcoords = float2(tex.x, 1.0f - tex.y);'#13#10 +
     '    return output;'#13#10 +
     '}'#13#10;
 
@@ -81,10 +145,12 @@ var
     ''#13#10 +
     'float4 PSEntry(PSInput vs_out) : SV_TARGET'#13#10 +
     '{'#13#10 +
-    '	return DiffuseMap.Sample(SampleType, vs_out.texcoords); '#13#10 +
+    '	float4 color = DiffuseMap.Sample(SampleType, vs_out.texcoords); '#13#10 +
+//    ' if (color.a < 0.1f) discard;'#13#10 +
+    '	return color.rgba; '#13#10 +
     '}'#13#10;
 
-  fragment_shader2: string = 'Texture2D DiffuseMap;'#13#10 +
+  fragment_shader_R16: string = 'Texture2D DiffuseMap;'#13#10 +
     'SamplerState SampleType;'#13#10 +
     ''#13#10 +
     'struct PSInput'#13#10 +
@@ -120,6 +186,8 @@ begin
     If Failed(Result) then Exit;
   end;
 
+  FLayers := TList<TDXRenderLayer>.Create;
+
   ZeroMemory(@swapchain_desc, sizeof(swapchain_desc));
   With swapchain_desc do Begin
     BufferCount := 2;
@@ -127,7 +195,7 @@ begin
     BufferDesc.Width := aWidth;
     BufferDesc.Height := aHeight;
     BufferDesc.Format := DXGI_FORMAT_R8G8B8A8_UNORM;
-    BufferDesc.RefreshRate.Numerator := 60;
+    BufferDesc.RefreshRate.Numerator := 144;
     BufferDesc.RefreshRate.Denominator := 1;
     BufferDesc.ScanlineOrdering := DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
     BufferDesc.Scaling := DXGI_MODE_SCALING_UNSPECIFIED;
@@ -136,9 +204,8 @@ begin
     SampleDesc.Count := 1;
     SampleDesc.Quality := 0;
     Windowed := bWindowed;
-
     SwapEffect := DXGI_SWAP_EFFECT_SEQUENTIAL;
-    Flags := 0;
+    Flags := Cardinal(DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
   End;
 
   feature_level[0] := D3D_FEATURE_LEVEL_10_0;
@@ -226,29 +293,7 @@ begin
   end;
   *)
 
-  FShader := TDXTextureShader.Create(
-      FDevice,
-      vertex_shader,
-      fragment_shader2
-  );
-
-  Result := InitializeTexture(aWidth, aHeight);
-  If Failed(Result) then
-  begin
-    Log.Log('D3D', 'Failed to initialize texture (%.8X)', [Result]);
-  end;
-
-  Result := FShader.SetTexture(FDeviceContext, FTextureSRV);
-  If Failed(Result) then
-  begin
-    Log.Log('D3D', 'Failed to set texture to shader (%.8X)', [Result]);
-  end;
-
-  Result := FShader.Activate(FDeviceContext);
-  If Failed(Result) then
-  begin
-    Log.Log('D3D', 'Failed to activate shader (%.8X)', [Result]);
-  end;
+  InitializeTexture(aWidth, aHeight);
 
   FDevice.QueryInterface(IDXGIDevice, dxgidev);
   if Assigned(dxgidev) then
@@ -270,14 +315,22 @@ begin
 end;
 
 function TDXRenderer.Uninitialize: HRESULT;
+var
+  Layer: TDXRenderLayer;
 begin
   If not FReady then
      Exit(E_FAIL);
 
+  for Layer in FLayers do
+  begin
+    Layer.Free;
+  end;
+
+  FLayers.Clear;
+
   FSwapchain.SetFullscreenState(FALSE, nil);
 
   FQuad.Free;
-  FShader.Free;
 
   FRasterizerState := nil;
   FRenderTargetView := nil;
@@ -286,61 +339,24 @@ begin
 
   FSwapchain := nil;
 
-  FTexture := nil;
-  FTextureSRV := nil;
-
   FReady := False;
 
   Result := S_OK;
 end;
 
 function TDXRenderer.InitializeTexture(aWidth, aHeight: Integer): HRESULT;
-var
-  desc: TD3D11_TEXTURE2D_DESC;
-  srv_desc: TD3D11_SHADER_RESOURCE_VIEW_DESC;
 begin
-  With desc do Begin
-    Width := aWidth;
-    Height := aHeight;
-    MipLevels := 0;
-    ArraySize := 1;
-    Format :=  DXGI_FORMAT_R16_UNORM;// // DXGI_FORMAT_B5G6R5_UNORM;
-    SampleDesc.Count := 1;
-    SampleDesc.Quality := 0;
-    Usage := D3D11_USAGE_DEFAULT;
-    BindFlags := Ord(D3D11_BIND_SHADER_RESOURCE) or Ord(D3D11_BIND_RENDER_TARGET);
-    CPUAccessFlags := 0;
-    MiscFlags := Ord(D3D11_RESOURCE_MISC_GENERATE_MIPS);
-  End;
-
-  FDevice.CreateTexture2D(desc, nil, FTexture);
-
-  With srv_desc do Begin
-    Format := desc.Format;
-    ViewDimension := D3D11_SRV_DIMENSION_TEXTURE2D;
-    Texture2D.MostDetailedMip := 0;
-    Texture2D.MipLevels := 1;
-  End;
-
-  Result := FDevice.CreateShaderResourceView(FTexture, @srv_desc, FTextureSRV);
+  FMainLayer := CreateLayer(aWidth, aHeight, dxfmt_r16, blend_none);
 end;
 
 procedure TDXRenderer.UpdateTexture(Data: Pointer; Stride: Cardinal);
 begin
-  FDeviceContext.UpdateSubresource(FTexture, 0, nil, data, stride, 0);
+  FMainLayer.UpdateTexture(Data, Stride);
 end;
 
 procedure TDXRenderer.UpdateTexture(Data: Pointer; Stride: Cardinal; Rect: TRect);
-var
-  Box: D3D11_BOX;
 begin
-  Box.left := Rect.Left;
-  Box.top := Rect.Top;
-  Box.right := Rect.Right;
-  Box.bottom := Rect.Bottom;
-  Box.front := 0;
-  Box.back := 1;
-  FDeviceContext.UpdateSubresource(FTexture, 0, nil, data, stride, 0);
+  FMainLayer.UpdateTexture(Data, Stride, Rect);
 end;
 
 constructor TDXRenderer.Create(aHWND: HWND; aWidth, aHeight: Integer; bWindowed, bVSync: Boolean);
@@ -354,8 +370,16 @@ begin
      Raise Exception.Create('Direct3D 11 initialization failed');
 end;
 
+function TDXRenderer.CreateLayer(aWidth, aHeight,
+  Format, Blend: Integer): TDXRenderLayer;
+begin
+  Result := TDXRenderLayer.Create(FDeviceContext, aWidth, aHeight, Format, Blend);
+  FLayers.Add(Result);
+end;
+
 destructor TDXRenderer.Destroy;
 begin
+  StopPresenterThread;
   Uninitialize;
   Inherited;
 end;
@@ -387,13 +411,47 @@ begin
 end;
 
 function TDXRenderer.Render: HRESULT;
+var
+  Layer: TDXRenderLayer;
 begin
   If not FReady then Begin
     Result := E_FAIL;
     Exit;
   End;
+  for Layer in FLayers do
+  begin
+    if Layer.Enabled then
+    begin
+      Layer.Lock;
+      try
+        Layer.Activate;
+        FQuad.Render(FDeviceContext);
+      finally
+        Layer.Unlock;
+      end;
+    end;
+  end;
+  Result := 0;//
+end;
 
-  Result := FQuad.Render(FDeviceContext);
+//TThreadProc
+
+procedure TDXRenderer.StartPresenterThread;
+begin
+  if not Assigned(FThread) then
+  begin
+    FThread := TDXPresenterThread.Create(Self);
+    FThread.Start;
+  end;
+end;
+
+procedure TDXRenderer.StopPresenterThread;
+begin
+  if Assigned(FThread) then
+  begin
+    FThread.Stop;
+    FThread.Destroy;
+  end;
 end;
 
 function TDXRenderer.Present: HRESULT;
@@ -410,6 +468,236 @@ begin
   end;
 
   Result := S_OK;
+end;
+
+{ TDXRenderLayer }
+
+constructor TDXRenderLayer.Create(DeviceContext: ID3D11DeviceContext; aWidth,
+  aHeight, aFormat, aBlend: Integer);
+var
+  desc: TD3D11_TEXTURE2D_DESC;
+  srv_desc: TD3D11_SHADER_RESOURCE_VIEW_DESC;
+  blend_desc: TD3D11_BLEND_DESC;
+  Res: HRESULT;
+  NumVP: Cardinal;
+  VP: TD3D11_VIEWPORT;
+
+  FragShader: String;
+  PixelFormat: DXGI_FORMAT;
+begin
+  FLock := TCriticalSection.Create;
+
+  FSize.Width := aWidth;
+  FSize.Height := aHeight;
+
+  FEnabled := True;
+  FDeviceContext := DeviceContext;
+  FDeviceContext.GetDevice(FDevice);
+  NumVP := 1;
+  FDeviceContext.RSGetViewports(NumVP, @VP);
+  FViewportSize.Width := Trunc(VP.Width);
+  FViewportSize.Height := Trunc(VP.Height);
+
+  FBlendState := nil;
+  blend_desc := TD3D11_BLEND_DESC.Create(True);
+  if aBlend = blend_transparent then
+  begin
+    blend_desc.RenderTarget[0].BlendEnable := True;
+    blend_desc.RenderTarget[0].SrcBlend := D3D11_BLEND_SRC_ALPHA;
+    blend_desc.RenderTarget[0].DestBlend := D3D11_BLEND_INV_SRC_ALPHA;
+    blend_desc.RenderTarget[0].BlendOp := D3D11_BLEND_OP_ADD;
+    blend_desc.RenderTarget[0].SrcBlendAlpha := D3D11_BLEND_ZERO;
+    blend_desc.RenderTarget[0].DestBlendAlpha := D3D11_BLEND_ZERO;
+    blend_desc.RenderTarget[0].BlendOpAlpha := D3D11_BLEND_OP_ADD;
+    blend_desc.RenderTarget[0].RenderTargetWriteMask := Byte(D3D11_COLOR_WRITE_ENABLE_ALL);
+    Res := FDevice.CreateBlendState(blend_desc, FBlendState);
+  end;
+
+  if aFormat = dxfmt_565 then
+  begin
+    PixelFormat := DXGI_FORMAT_B5G6R5_UNORM;
+    FragShader := fragment_shader;
+  end
+  else if aFormat = dxfmt_r16 then
+  begin
+    PixelFormat := DXGI_FORMAT_R16_UNORM;
+    FragShader := fragment_shader_R16;
+  end
+  else if aFormat = dxfmt_8888 then
+  begin
+    PixelFormat := DXGI_FORMAT_R8G8B8A8_UNORM;
+    FragShader := fragment_shader;
+  end;
+
+  With desc do Begin
+    Width := aWidth;
+    Height := aHeight;
+    MipLevels := 0;
+    ArraySize := 1;
+    Format := PixelFormat;
+    SampleDesc.Count := 1;
+    SampleDesc.Quality := 0;
+    Usage := D3D11_USAGE_DEFAULT;
+    BindFlags := Ord(D3D11_BIND_SHADER_RESOURCE) or Ord(D3D11_BIND_RENDER_TARGET);
+    CPUAccessFlags := 0;
+    MiscFlags := Ord(D3D11_RESOURCE_MISC_GENERATE_MIPS);
+  End;
+
+  FDevice.CreateTexture2D(desc, nil, FTexture);
+
+  With srv_desc do Begin
+    Format := desc.Format;
+    ViewDimension := D3D11_SRV_DIMENSION_TEXTURE2D;
+    Texture2D.MostDetailedMip := 0;
+    Texture2D.MipLevels := 1;
+  End;
+
+  FDevice.CreateShaderResourceView(FTexture, @srv_desc, FTextureSRV);
+
+  FShader := TDXTextureShader.Create(FDevice, vertex_shader, FragShader);
+
+  Res := FShader.SetTexture(FDeviceContext, FTextureSRV);
+
+  If Failed(Res) then
+  begin
+    Log.Log('D3D', 'Failed to set texture to shader (%.8X)', [Res]);
+  end;
+
+//  Res := FShader.Activate(FDeviceContext);
+//  If Failed(Res) then
+//  begin
+//    Log.Log('D3D', 'Failed to activate shader (%.8X)', [Res]);
+//  end;
+
+end;
+
+destructor TDXRenderLayer.Destroy;
+begin
+  FShader.Free;
+  FTexture := nil;
+  FTextureSRV := nil;
+  FBlendState := nil;
+  FLock.Free;
+  inherited;
+end;
+
+procedure TDXRenderLayer.Lock;
+begin
+  FLock.Enter;
+end;
+
+procedure TDXRenderLayer.SetDestRect(aRect: TRect);
+var
+  l, t, r, b: Single;
+  T1, S, T2, Temp, RR: TD3DMatrix;
+  H: Integer;
+begin
+  H := aRect.Top;
+  aRect.Top := FViewportSize.Height - aRect.Bottom;
+  aRect.Bottom := FViewportSize.Height - H;
+  l := aRect.Left/FViewportSize.Width*2 - 1.0;
+  t := aRect.Top/FViewportSize.Height*2 - 1.0;
+  r := aRect.Right/FViewportSize.Width*2 - 1.0;
+  b := aRect.Bottom/FViewportSize.Height*2 - 1.0;
+
+  D3DXMatrixTranslation(T1, l, t, 0);
+  D3DXMatrixScaling(S, (r - l)/2, (b - t)/2, 1.0);
+  D3DXMatrixTranslation(T2, 1, 1, 0);
+  D3DXMatrixMultiply(Temp, T2, S);
+  D3DXMatrixMultiplyTranspose(RR, Temp, T1);
+  Lock;
+  FShader.OutputTransform := RR;
+  Unlock;
+end;
+
+procedure TDXRenderLayer.SetSourceRect(aRect: TRect);
+var
+  T1, S, T2, Temp, R: TD3DMatrix;
+begin
+  D3DXMatrixTranslation(T1, aRect.Left/FSize.Width, aRect.Top/FSize.Height, 0);
+  D3DXMatrixScaling(S, aRect.Width/FSize.Width, aRect.Height/FSize.Height, 1.0);
+  D3DXMatrixMultiplyTranspose(Temp, S, T1);
+  Lock;
+  FShader.InputTransform := Temp;
+  Unlock;
+end;
+
+procedure TDXRenderLayer.Activate;
+var
+  f: TFourSingleArray;
+begin
+  f[0] := 0;
+  f[1] := 0;
+  f[2] := 0;
+  f[3] := 0;
+  FDeviceContext.OMSetBlendState(FBlendState, f, $FFFFFFFF);
+  FShader.SetTexture(FDeviceContext, FTextureSRV);
+  FShader.Activate(FDeviceContext);
+end;
+
+procedure TDXRenderLayer.UpdateTexture(Data: Pointer; Stride: Cardinal);
+begin
+  Lock;
+  try
+    FDeviceContext.UpdateSubresource(FTexture, 0, nil, data, stride, 0);
+  finally
+    Unlock;
+  end;
+end;
+
+procedure TDXRenderLayer.Unlock;
+begin
+  FLock.Leave;
+end;
+
+procedure TDXRenderLayer.UpdateTexture(Data: Pointer; Stride: Cardinal;
+  Rect: TRect);
+var
+  Box: D3D11_BOX;
+begin
+  Lock;
+  try
+    Box.left := Rect.Left;
+    Box.top := Rect.Top;
+    Box.right := Rect.Right;
+    Box.bottom := Rect.Bottom;
+    Box.front := 0;
+    Box.back := 1;
+    FDeviceContext.UpdateSubresource(FTexture, 0, @Box, data, stride, 0);
+  finally
+    Unlock;
+  end;
+end;
+
+{ TDXPresenterThread }
+
+constructor TDXPresenterThread.Create(aRenderer: TDXRenderer);
+begin
+  inherited Create(True);
+  FreeOnTerminate := False;
+  FRenderer := aRenderer;
+  FQuit := False;
+end;
+
+destructor TDXPresenterThread.Destroy;
+begin
+  Stop;
+end;
+
+procedure TDXPresenterThread.Execute;
+begin
+  while not FQuit do
+  begin
+    FRenderer.Render;
+    FRenderer.Present;
+    Sleep(1);
+  end;
+end;
+
+procedure TDXPresenterThread.Stop;
+begin
+  FQuit := True;
+  WaitFor;
 end;
 
 end.

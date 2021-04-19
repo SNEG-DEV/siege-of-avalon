@@ -44,6 +44,7 @@ type
   { TDXTextureShader }
   TDXTextureShader = class(TDXAbstractShader)
     protected
+      FConstantBuffer: ID3D11Buffer;
       FSamplerState: ID3D11SamplerState;
 
       //Sets number/names/types of the generic attributes
@@ -52,6 +53,7 @@ type
       Function OnUninitialize: HRESULT; override;
       Function OnActivate(pDeviceContext: ID3D11DeviceContext): HRESULT; override;
     public
+      OutputTransform, InputTransform: TD3DMatrix;
       Function SetTexture(pDC: ID3D11DeviceContext; pTexture: ID3D11ShaderResourceView): HRESULT;
   end;
 
@@ -89,14 +91,34 @@ var
   buffer_desc: TD3D11_BUFFER_DESC;
   sampler_desc: TD3D11_SAMPLER_DESC;
 begin
+  ZeroMemory(@OutputTransform, SizeOf(OutputTransform));
+  OutputTransform._11 := 1.0;
+  OutputTransform._22 := 1.0;
+  OutputTransform._33 := 1.0;
+  OutputTransform._44 := 1.0;
+
+  ZeroMemory(@InputTransform, SizeOf(InputTransform));
+  InputTransform._11 := 1.0;
+  InputTransform._22 := 1.0;
+  InputTransform._33 := 1.0;
+  InputTransform._44 := 1.0;
+
   With buffer_desc do Begin
     Usage := D3D11_USAGE_DYNAMIC;
-    ByteWidth := SizeOf(TD3DMATRIX) * 3;
+    ByteWidth := 16;
     BindFlags := Ord(D3D11_BIND_CONSTANT_BUFFER);
     CPUAccessFlags := Ord(D3D11_CPU_ACCESS_WRITE);
     MiscFlags := 0;
     StructureByteStride := 0;
   End;
+
+  Result := FDevice.CreateBuffer(buffer_desc, nil, FConstantBuffer);
+
+  if Failed(Result) then
+  begin
+    Exit;
+  end;
+
 
   //Set up sampler state desc
   With sampler_desc do Begin
@@ -120,14 +142,33 @@ end;
 
 function TDXTextureShader.OnUninitialize: HRESULT;
 begin
+  FConstantBuffer := nil;
   FSamplerState := nil;
   Result := S_OK;
 end;
 
 function TDXTextureShader.OnActivate(
   pDeviceContext: ID3D11DeviceContext): HRESULT;
+type
+  BufType = Array[0..1] of TD3DMatrix;
+var
+  mapped_res: TD3D11_MAPPED_SUBRESOURCE;
+  buf: ^BufType;
 begin
+  Result := pDeviceContext.Map(FConstantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, mapped_res);
+  If Failed(Result) then
+  begin
+    Exit;
+  end;
+
+  buf := mapped_res.pData;
+  buf^[0] := OutputTransform;
+  buf^[1] := InputTransform;
+  pDeviceContext.Unmap(FConstantBuffer, 0);
+
+  pDeviceContext.VSSetConstantBuffers(0, 1, FConstantBuffer);
   pDeviceContext.PSSetSamplers(0, 1, FSamplerState);
+
   Result := S_OK;
 end;
 
