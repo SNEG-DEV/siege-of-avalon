@@ -1047,7 +1047,7 @@ begin
       else
         DlgRect := cClassicDialogs;
 
-      AdjustedPartyHitPoints := ( LowerCase( INI.ReadString( 'Settings', 'AdjustedPartyHitPoints', 'false' ) ) = 'true' );
+      AdjustedPartyHitPoints := ( LowerCase( INI.ReadString( 'Settings', 'AdjustedPartyHitPoints', 'true' ) ) = 'true' );
       AdjustedCompanionAI := ( INI.ReadString( 'Settings', 'AdjustedPartyHitPoints', 'true' ).ToLower = 'true' );
 
       Log.Log( 'Set Bounds' );
