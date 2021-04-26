@@ -105,7 +105,7 @@ begin
 
   With buffer_desc do Begin
     Usage := D3D11_USAGE_DYNAMIC;
-    ByteWidth := 16;
+    ByteWidth := 128;
     BindFlags := Ord(D3D11_BIND_CONSTANT_BUFFER);
     CPUAccessFlags := Ord(D3D11_CPU_ACCESS_WRITE);
     MiscFlags := 0;

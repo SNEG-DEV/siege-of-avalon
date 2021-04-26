@@ -16,8 +16,12 @@ const
   blend_transparent: Integer = 1;
 
 type
+  TDXRenderer = class;
+  TDXPresenterThread = class;
+
   TDXRenderLayer = class
   private
+    FRenderer: TDXRenderer;
     FDevice: ID3D11Device;
     FDeviceContext : ID3D11DeviceContext;
     FShader: TDXTextureShader;
@@ -28,10 +32,8 @@ type
     FSize, FViewportSize: TSize;
 
     FSourceRect, FDestRect: TRect;
-
-    FLock: TCriticalSection;
   public
-    Constructor Create(DeviceContext: ID3D11DeviceContext; aWidth, aHeight: Integer; aFormat, aBlend: Integer);
+    Constructor Create(Renderer: TDXRenderer; aWidth, aHeight: Integer; aFormat, aBlend: Integer);
     Destructor Destroy; override;
 
     Procedure UpdateTexture(Data: Pointer; Stride: Cardinal); overload;
@@ -45,8 +47,6 @@ type
     procedure Lock;
     procedure Unlock;
   end;
-
-  TDXPresenterThread = class;
 
   TDXRenderer = class
     private
@@ -69,6 +69,8 @@ type
       FThread: TDXPresenterThread;
       FQuitThread: Boolean;
 
+      FDeviceLock: TCriticalSection;
+
       Function Initialize(aHWND: HWND; aWidth, aHeight: Integer; bWindowed, bVSync: Boolean): HRESULT;
       Function Uninitialize: HRESULT;
       Function InitializeTexture(aWidth, aHeight: Integer): HRESULT;
@@ -88,6 +90,12 @@ type
 
       procedure StartPresenterThread;
       procedure StopPresenterThread;
+
+      property Device: ID3D11Device read FDevice;
+      property DeviceContext: ID3D11DeviceContext read FDeviceContext;
+
+      procedure Lock;
+      procedure Unlock;
   end;
 
   TDXPresenterThread = class(TThread)
@@ -213,6 +221,7 @@ begin
     If Failed(Result) then Exit;
   end;
 
+  FDeviceLock := TCriticalSection.Create;
   FLayers := TList<TDXRenderLayer>.Create;
 
   ZeroMemory(@swapchain_desc, sizeof(swapchain_desc));
@@ -231,7 +240,7 @@ begin
     SampleDesc.Count := 1;
     SampleDesc.Quality := 0;
     Windowed := bWindowed;
-    SwapEffect := DXGI_SWAP_EFFECT_SEQUENTIAL;
+    SwapEffect := DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
     Flags := 0;
   End;
 
@@ -241,7 +250,11 @@ begin
       nil,
       D3D_DRIVER_TYPE_HARDWARE,
       0,
+{$IFDEF DEBUG}
+      D3D11_CREATE_DEVICE_DEBUG,
+{$ELSE}
       0,
+{$ENDIF}
       @feature_level[0],
       1,
       D3D11_SDK_VERSION,
@@ -355,6 +368,8 @@ begin
 
   FLayers.Clear;
 
+  FDeviceLock.Free;
+
   FSwapchain.SetFullscreenState(FALSE, nil);
 
   FQuad.Free;
@@ -375,6 +390,16 @@ function TDXRenderer.InitializeTexture(aWidth, aHeight: Integer): HRESULT;
 begin
   FMainLayer := CreateLayer(aWidth, aHeight, dxfmt_r16, blend_none);
   Result := S_OK;
+end;
+
+procedure TDXRenderer.Lock;
+begin
+  FDeviceLock.Enter;
+end;
+
+procedure TDXRenderer.Unlock;
+begin
+  FDeviceLock.Leave;
 end;
 
 procedure TDXRenderer.UpdateTexture(Data: Pointer; Stride: Cardinal);
@@ -401,7 +426,7 @@ end;
 function TDXRenderer.CreateLayer(aWidth, aHeight,
   Format, Blend: Integer): TDXRenderLayer;
 begin
-  Result := TDXRenderLayer.Create(FDeviceContext, aWidth, aHeight, Format, Blend);
+  Result := TDXRenderLayer.Create(Self, aWidth, aHeight, Format, Blend);
   FLayers.Add(Result);
 end;
 
@@ -442,22 +467,23 @@ function TDXRenderer.Render: HRESULT;
 var
   Layer: TDXRenderLayer;
 begin
-  If not FReady then Begin
-    Result := E_FAIL;
-    Exit;
-  End;
-  for Layer in FLayers do
-  begin
-    if Layer.Enabled then
+  Lock;
+  try
+    FDeviceContext.OMSetRenderTargets(1, FRenderTargetView, nil);
+    If not FReady then Begin
+      Result := E_FAIL;
+      Exit;
+    End;
+    for Layer in FLayers do
     begin
-      Layer.Lock;
-      try
+      if Layer.Enabled then
+      begin
         Layer.Activate;
         FQuad.Render(FDeviceContext);
-      finally
-        Layer.Unlock;
       end;
     end;
+  finally
+    Unlock;
   end;
   Result := 0;//
 end;
@@ -489,10 +515,18 @@ begin
     Exit;
   End;
 
-  If FEnableVSync then Begin
-    FSwapchain.Present(1, 0);
-  end else Begin
-    FSwapchain.Present(0, 0);
+  Lock;
+  try
+    If FEnableVSync then
+    Begin
+      FSwapchain.Present(1, 0);
+    end
+    else
+    Begin
+      FSwapchain.Present(0, 0);
+    end;
+  finally
+    Unlock;
   end;
 
   Result := S_OK;
@@ -500,8 +534,7 @@ end;
 
 { TDXRenderLayer }
 
-constructor TDXRenderLayer.Create(DeviceContext: ID3D11DeviceContext; aWidth,
-  aHeight, aFormat, aBlend: Integer);
+constructor TDXRenderLayer.Create(Renderer: TDXRenderer; aWidth, aHeight, aFormat, aBlend: Integer);
 var
   desc: TD3D11_TEXTURE2D_DESC;
   srv_desc: TD3D11_SHADER_RESOURCE_VIEW_DESC;
@@ -513,82 +546,94 @@ var
   FragShader: String;
   PixelFormat: DXGI_FORMAT;
 begin
-  FLock := TCriticalSection.Create;
+  FRenderer := Renderer;
+  FDeviceContext := FRenderer.DeviceContext;
+  FDevice := FRenderer.Device;
 
   FSize.Width := aWidth;
   FSize.Height := aHeight;
 
   FEnabled := True;
-  FDeviceContext := DeviceContext;
-  FDeviceContext.GetDevice(FDevice);
-  NumVP := 1;
-  FDeviceContext.RSGetViewports(NumVP, @VP);
-  FViewportSize.Width := Trunc(VP.Width);
-  FViewportSize.Height := Trunc(VP.Height);
 
-  FBlendState := nil;
-  blend_desc := TD3D11_BLEND_DESC.Create(True);
-  if aBlend = blend_transparent then
-  begin
-    blend_desc.RenderTarget[0].BlendEnable := True;
-    blend_desc.RenderTarget[0].SrcBlend := D3D11_BLEND_SRC_ALPHA;
-    blend_desc.RenderTarget[0].DestBlend := D3D11_BLEND_INV_SRC_ALPHA;
-    blend_desc.RenderTarget[0].BlendOp := D3D11_BLEND_OP_ADD;
-    blend_desc.RenderTarget[0].SrcBlendAlpha := D3D11_BLEND_ZERO;
-    blend_desc.RenderTarget[0].DestBlendAlpha := D3D11_BLEND_ZERO;
-    blend_desc.RenderTarget[0].BlendOpAlpha := D3D11_BLEND_OP_ADD;
-    blend_desc.RenderTarget[0].RenderTargetWriteMask := Byte(D3D11_COLOR_WRITE_ENABLE_ALL);
-    Res := FDevice.CreateBlendState(blend_desc, FBlendState);
-  end;
+  FRenderer.Lock;
+  try
 
-  if aFormat = dxfmt_565 then
-  begin
-    PixelFormat := DXGI_FORMAT_B5G6R5_UNORM;
-    FragShader := fragment_shader;
-  end
-  else if aFormat = dxfmt_r16 then
-  begin
-    PixelFormat := DXGI_FORMAT_R16_UNORM;
-    FragShader := fragment_shader_R16_int;
-  end
-  else if aFormat = dxfmt_8888 then
-  begin
-    PixelFormat := DXGI_FORMAT_R8G8B8A8_UNORM;
-    FragShader := fragment_shader;
-  end;
+    NumVP := 1;
+    FDeviceContext.RSGetViewports(NumVP, @VP);
+    FViewportSize.Width := Trunc(VP.Width);
+    FViewportSize.Height := Trunc(VP.Height);
 
-  With desc do Begin
-    Width := aWidth;
-    Height := aHeight;
-    MipLevels := 0;
-    ArraySize := 1;
-    Format := PixelFormat;
-    SampleDesc.Count := 1;
-    SampleDesc.Quality := 0;
-    Usage := D3D11_USAGE_DEFAULT;
-    BindFlags := Ord(D3D11_BIND_SHADER_RESOURCE) or Ord(D3D11_BIND_RENDER_TARGET);
-    CPUAccessFlags := 0;
-    MiscFlags := Ord(D3D11_RESOURCE_MISC_GENERATE_MIPS);
-  End;
+    FBlendState := nil;
+    blend_desc := TD3D11_BLEND_DESC.Create(True);
+    if aBlend = blend_transparent then
+    begin
+      blend_desc.RenderTarget[0].BlendEnable := True;
+      blend_desc.RenderTarget[0].SrcBlend := D3D11_BLEND_SRC_ALPHA;
+      blend_desc.RenderTarget[0].DestBlend := D3D11_BLEND_INV_SRC_ALPHA;
+      blend_desc.RenderTarget[0].BlendOp := D3D11_BLEND_OP_ADD;
+      blend_desc.RenderTarget[0].SrcBlendAlpha := D3D11_BLEND_ZERO;
+      blend_desc.RenderTarget[0].DestBlendAlpha := D3D11_BLEND_ZERO;
+      blend_desc.RenderTarget[0].BlendOpAlpha := D3D11_BLEND_OP_ADD;
+      blend_desc.RenderTarget[0].RenderTargetWriteMask :=
+        Byte(D3D11_COLOR_WRITE_ENABLE_ALL);
+      Res := FDevice.CreateBlendState(blend_desc, FBlendState);
+    end;
 
-  FDevice.CreateTexture2D(desc, nil, FTexture);
+    if aFormat = dxfmt_565 then
+    begin
+      PixelFormat := DXGI_FORMAT_B5G6R5_UNORM;
+      FragShader := fragment_shader;
+    end
+    else if aFormat = dxfmt_r16 then
+    begin
+      PixelFormat := DXGI_FORMAT_R16_UNORM;
+      FragShader := fragment_shader_R16_int;
+    end
+    else if aFormat = dxfmt_8888 then
+    begin
+      PixelFormat := DXGI_FORMAT_R8G8B8A8_UNORM;
+      FragShader := fragment_shader;
+    end;
 
-  With srv_desc do Begin
-    Format := desc.Format;
-    ViewDimension := D3D11_SRV_DIMENSION_TEXTURE2D;
-    Texture2D.MostDetailedMip := 0;
-    Texture2D.MipLevels := 1;
-  End;
+    With desc do
+    Begin
+      Width := aWidth;
+      Height := aHeight;
+      MipLevels := 0;
+      ArraySize := 1;
+      Format := PixelFormat;
+      SampleDesc.Count := 1;
+      SampleDesc.Quality := 0;
+      Usage := D3D11_USAGE_DEFAULT;
+      BindFlags := Ord(D3D11_BIND_SHADER_RESOURCE) or
+        Ord(D3D11_BIND_RENDER_TARGET);
+      CPUAccessFlags := 0;
+      MiscFlags := Ord(D3D11_RESOURCE_MISC_GENERATE_MIPS);
+    End;
 
-  FDevice.CreateShaderResourceView(FTexture, @srv_desc, FTextureSRV);
+    FDevice.CreateTexture2D(desc, nil, FTexture);
 
-  FShader := TDXTextureShader.Create(FDevice, vertex_shader, FragShader);
+    With srv_desc do
+    Begin
+      Format := desc.Format;
+      ViewDimension := D3D11_SRV_DIMENSION_TEXTURE2D;
+      Texture2D.MostDetailedMip := 0;
+      Texture2D.MipLevels := 1;
+    End;
 
-  Res := FShader.SetTexture(FDeviceContext, FTextureSRV);
+    FDevice.CreateShaderResourceView(FTexture, @srv_desc, FTextureSRV);
 
-  If Failed(Res) then
-  begin
-    Log.Log('D3D', 'Failed to set texture to shader (%.8X)', [Res]);
+    FShader := TDXTextureShader.Create(FDevice, vertex_shader, FragShader);
+
+    Res := FShader.SetTexture(FDeviceContext, FTextureSRV);
+
+    If Failed(Res) then
+    begin
+      Log.Log('D3D', 'Failed to set texture to shader (%.8X)', [Res]);
+    end;
+
+  finally
+    FRenderer.Unlock;
   end;
 
 //  Res := FShader.Activate(FDeviceContext);
@@ -605,13 +650,12 @@ begin
   FTexture := nil;
   FTextureSRV := nil;
   FBlendState := nil;
-  FLock.Free;
   inherited;
 end;
 
 procedure TDXRenderLayer.Lock;
 begin
-  FLock.Enter;
+  FRenderer.Lock;
 end;
 
 procedure TDXRenderLayer.SetDestRect(aRect: TRect);
@@ -675,7 +719,7 @@ end;
 
 procedure TDXRenderLayer.Unlock;
 begin
-  FLock.Leave;
+  FRenderer.Unlock;
 end;
 
 procedure TDXRenderLayer.UpdateTexture(Data: Pointer; Stride: Cardinal;
@@ -683,14 +727,14 @@ procedure TDXRenderLayer.UpdateTexture(Data: Pointer; Stride: Cardinal;
 var
   Box: D3D11_BOX;
 begin
+  Box.left := Rect.Left;
+  Box.top := Rect.Top;
+  Box.right := Rect.Right;
+  Box.bottom := Rect.Bottom;
+  Box.front := 0;
+  Box.back := 1;
   Lock;
   try
-    Box.left := Rect.Left;
-    Box.top := Rect.Top;
-    Box.right := Rect.Right;
-    Box.bottom := Rect.Bottom;
-    Box.front := 0;
-    Box.back := 1;
     FDeviceContext.UpdateSubresource(FTexture, 0, @Box, data, stride, 0);
   finally
     Unlock;
@@ -729,4 +773,3 @@ begin
 end;
 
 end.
-
