@@ -151,7 +151,7 @@ type
   public
     ItemFrame : integer;
     LinkedResource : TResource;
-    BackLayer : array[ 0..383 ] of boolean;
+    BackLayer : array[ 0..1023 ] of boolean; // { TODO : Should be redone and dynamic }
     procedure RenderLocked( Figure : TAniFigure; Bits : PBITPLANE ); override;
     procedure LoadData( INI : TStringINIFile ); override;
   end;
