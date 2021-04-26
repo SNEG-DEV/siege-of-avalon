@@ -460,7 +460,8 @@ begin
   if (not NoTransit) and (not Current.Frozen) then
   begin
     if player.titleexists('03Chapter3') and not player.titleexists('04Chapter4') then
-      RunScript(player, 'Loadmap(forest05,default,Start,ForestChpt3|#FastTransit.Default#)');
+//      RunScript(player, 'Loadmap(forest05,default,Start,ForestChpt3|#FastTransit.Default#)');
+      RunScript(player, 'Loadmap(forest05,default,f05b02,ForestChpt3|#FastTransit.Default#)');  // Better spot when having party members
 //    if player.titleexists('02Chapter2') then
 //      RunScript(player, 'Loadmap(southgate1b,default,Levelpoint4,VillagetoSouthGate|#FastTransit.Default#)')
 //    else
