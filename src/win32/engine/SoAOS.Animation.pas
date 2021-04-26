@@ -437,7 +437,7 @@ type
     ForceRefresh: Boolean;
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    procedure InitDX(Handle: HWND; ResW, ResH, BPP: Integer; Windowed, VSync: Boolean);
+    procedure InitDX(Handle: HWND; ResW, ResH, BPP, RefreshRate: Integer; Windowed, VSync: Boolean; MaxFPS: Integer);
     procedure CloseDX;
     property Active: Boolean read FActive write SetActive;
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState;
@@ -790,7 +790,7 @@ begin
   inherited Destroy;
 end;
 
-procedure TAniView.InitDX(Handle: HWND; ResW, ResH, BPP: Integer; Windowed, VSync: Boolean);
+procedure TAniView.InitDX(Handle: HWND; ResW, ResH, BPP, RefreshRate: Integer; Windowed, VSync: Boolean; MaxFPS: Integer);
 var
   ddsd: TDDSurfaceDesc;
   Caps: TDDSCaps;
@@ -894,7 +894,7 @@ begin
   ZeroMemory(@ddsd, SizeOf(ddsd));
   if Windowed then
   begin
-    D3D11REnderer := TDXRenderer.Create(Handle, ResW, ResH, not D3DFullscreen, VSync);
+    D3D11REnderer := TDXRenderer.Create(Handle, ResW, ResH, RefreshRate, not D3DFullscreen, VSync, MaxFPS);
 
     if D3D11Renderer = nil then
     begin

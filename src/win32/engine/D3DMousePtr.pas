@@ -184,6 +184,7 @@ begin
     rc.Width := FSize.Width;
     rc.Height := FSize.Height;
     FLayer.SetDestRect(rc);
+    PostMessage(frmMain.Handle, 0, 0, 0);
     Sleep(10);
   end;
 end;

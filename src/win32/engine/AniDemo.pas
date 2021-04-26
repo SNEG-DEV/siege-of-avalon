@@ -134,7 +134,6 @@ type
     Timer3 : TTimer;
     OpeningVideoPanel: TPanel;
     ClosingVideoPanel: TPanel;
-    Timer1: TTimer;
 
     procedure FormShow( Sender : TObject );
     procedure Timer1Timer( Sender : TObject );
@@ -1039,6 +1038,9 @@ begin
       ScreenMetrics.Windowed := Windowed;
 
       ScreenMetrics.ForceD3DFullscreen := INI.ReadBool('Settings', 'ForceD3DFullscreen', False);
+      ScreenMetrics.VSync := INI.ReadBool('Settings', 'D3DVSync', True);
+      ScreenMetrics.RefreshRate := INI.ReadInteger('Settings', 'DisplayRefreshRate', 60);
+      ScreenMetrics.MaxFPS := INI.ReadInteger('Settings', 'MaxFPS', 0);
 
       if FileExists( InterfaceLanguagePath + 'gMainMenuBlank.bmp' ) then
         DlgRect := cMultilingualDialogs
@@ -1252,7 +1254,14 @@ begin
     Log.Log( 'Initializing DX...' );
     Log.flush;
 
-    Game.InitDX( Handle, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight, ScreenMetrics.BPP, ScreenMetrics.Windowed, ScreenMetrics.VSync );  // 800, 600, 16
+    Game.InitDX( Handle,
+        ScreenMetrics.ScreenWidth,
+        ScreenMetrics.ScreenHeight,
+        ScreenMetrics.BPP,
+        ScreenMetrics.RefreshRate,
+        ScreenMetrics.Windowed,
+        ScreenMetrics.VSync,
+        ScreenMetrics.MaxFPS );  // 800, 600, 16
 
     Game.PreCreateMap( ScreenMetrics.PreMapWidth, ScreenMetrics.PreMapHeight );  // 768, 544
     Log.Log( 'DX initialization complete' );

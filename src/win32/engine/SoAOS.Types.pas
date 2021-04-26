@@ -71,6 +71,8 @@ type
     Windowed: Boolean;
     VSync: Boolean;
     ForceD3DFullscreen: Boolean;
+    RefreshRate: Integer;
+    MaxFPS: Integer;
     PreMapWidth: integer;
     PreMapHeight: integer;
     GameWidth: integer;

@@ -61,6 +61,7 @@ type
       FViewport: TD3D11_VIEWPORT;
 
       FReady, FEnableVSync: Boolean;
+      FMaxFPS: Integer;
 
       FQuad: TDXModel;
       FLayers: TList<TDXRenderLayer>;
@@ -71,11 +72,11 @@ type
 
       FDeviceLock: TCriticalSection;
 
-      Function Initialize(aHWND: HWND; aWidth, aHeight: Integer; bWindowed, bVSync: Boolean): HRESULT;
+      Function Initialize(aHWND: HWND; aWidth, aHeight, aRefreshRate: Integer; bWindowed: Boolean): HRESULT;
       Function Uninitialize: HRESULT;
       Function InitializeTexture(aWidth, aHeight: Integer): HRESULT;
     public
-      Constructor Create(aHWND: HWND; aWidth, aHeight: Integer; bWindowed, bVSync: Boolean);
+      Constructor Create(aHWND: HWND; aWidth, aHeight, aRefreshRate: Integer; bWindowed, bVSync: Boolean; aMaxFPS: Integer);
       Destructor Destroy; override;
 
       function CreateLayer(aWidth, aHeight: Integer; Format, Blend: Integer): TDXRenderLayer;
@@ -102,8 +103,16 @@ type
     private
       FRenderer: TDXRenderer;
       FQuit: Boolean;
+
+      FMaxFPS: Integer;
+      FTimerFreq: Double;
+      FCounterStart: Int64;
+      FEndOfPrevFrame: Double;
+
+      function GetQPC: Double;
+    procedure ThrottleFPS;
     public
-      constructor Create(aRenderer: TDXRenderer);
+      constructor Create(aRenderer: TDXRenderer; aMaxFPS: Integer);
       destructor Destroy; override;
       procedure Execute; override;
       procedure Stop;
@@ -204,7 +213,7 @@ var
     '	return float4(r / 32.0f, g / 64.0f, b / 32.0f, 1.0f);'#13#10 +
     '}'#13#10;
 
-function TDXRenderer.Initialize(aHWND: HWND; aWidth, aHeight: Integer; bWindowed, bVSync: Boolean): HRESULT;
+function TDXRenderer.Initialize(aHWND: HWND; aWidth, aHeight, aRefreshRate: Integer; bWindowed: Boolean): HRESULT;
 var
   feature_level: Array[0..0] of TD3D_FEATURE_LEVEL;
   pBackbuffer: ID3D11Texture2D;
@@ -224,6 +233,9 @@ begin
   FDeviceLock := TCriticalSection.Create;
   FLayers := TList<TDXRenderLayer>.Create;
 
+  if aRefreshRate = 0 then
+    aRefreshRate := 60;
+
   ZeroMemory(@swapchain_desc, sizeof(swapchain_desc));
   With swapchain_desc do Begin
     BufferCount := 2;
@@ -231,7 +243,7 @@ begin
     BufferDesc.Width := aWidth;
     BufferDesc.Height := aHeight;
     BufferDesc.Format := DXGI_FORMAT_R8G8B8A8_UNORM;
-    BufferDesc.RefreshRate.Numerator := 60;
+    BufferDesc.RefreshRate.Numerator := aRefreshRate;
     BufferDesc.RefreshRate.Denominator := 1;
     BufferDesc.ScanlineOrdering := DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
     BufferDesc.Scaling := DXGI_MODE_SCALING_STRETCHED;
@@ -412,14 +424,15 @@ begin
   FMainLayer.UpdateTexture(Data, Stride, Rect);
 end;
 
-constructor TDXRenderer.Create(aHWND: HWND; aWidth, aHeight: Integer; bWindowed, bVSync: Boolean);
+constructor TDXRenderer.Create(aHWND: HWND; aWidth, aHeight, aRefreshRate: Integer; bWindowed, bVSync: Boolean; aMaxFPS: Integer);
 begin
   Inherited Create;
 
   FReady := False;
   FEnableVSync := bVSync;
+  FMaxFPS := aMaxFPS;
 
-  If Failed(Initialize(aHWND, aWidth, aHeight, bWindowed, bVSync)) then
+  If Failed(Initialize(aHWND, aWidth, aHeight, aRefreshRate, bWindowed)) then
      Raise Exception.Create('Direct3D 11 initialization failed');
 end;
 
@@ -494,7 +507,7 @@ procedure TDXRenderer.StartPresenterThread;
 begin
   if not Assigned(FThread) then
   begin
-    FThread := TDXPresenterThread.Create(Self);
+    FThread := TDXPresenterThread.Create(Self, FMaxFPS);
     FThread.Start;
   end;
 end;
@@ -743,17 +756,32 @@ end;
 
 { TDXPresenterThread }
 
-constructor TDXPresenterThread.Create(aRenderer: TDXRenderer);
+constructor TDXPresenterThread.Create(aRenderer: TDXRenderer; aMaxFPS: Integer);
+var
+  freq: Int64;
 begin
   inherited Create(True);
   FreeOnTerminate := False;
   FRenderer := aRenderer;
   FQuit := False;
+  FMaxFPS := aMaxFPS;
+  QueryPerformanceFrequency(freq);
+  FTimerFreq := freq/1000.0;
+  FEndOfPrevFrame := 0;
+  QueryPerformanceCounter(FCounterStart);
 end;
 
 destructor TDXPresenterThread.Destroy;
 begin
   Stop;
+end;
+
+function TDXPresenterThread.GetQPC: Double;
+var
+  a: Int64;
+begin
+  QueryPerformanceCounter(a);
+  Result := a/FTimerFreq;
 end;
 
 procedure TDXPresenterThread.Execute;
@@ -762,7 +790,14 @@ begin
   begin
     FRenderer.Render;
     FRenderer.Present;
-    Sleep(1);
+    if FMaxFPS > 0 then
+    begin
+      ThrottleFPS;
+    end
+    else
+    begin
+      Sleep(1);
+    end;
   end;
 end;
 
@@ -770,6 +805,42 @@ procedure TDXPresenterThread.Stop;
 begin
   FQuit := True;
   WaitFor;
+end;
+
+procedure TDXPresenterThread.ThrottleFPS;
+var
+  FrameTime: Double;
+  CurrentTime: Double;
+  TimeToWait: Double;
+  I: Integer;
+begin
+  if FEndOfPrevFrame <> 0 then
+  begin
+    FrameTime := 1000.0 / FMaxFPS;
+    while True do
+    begin
+      CurrentTime := GetQPC;
+      TimeToWait := FrameTime - (CurrentTime - FEndOfPrevFrame);
+      if TimeToWait < 0.00001 then
+        break;
+      if TimeToWait > 2 then
+      begin
+        Sleep(1)
+      end
+      else
+      begin
+        for I := 0 to 9 do
+        begin
+          Sleep(0);
+        end;
+      end;
+    end;
+    FEndOfPrevFrame := CurrentTime;
+  end
+  else
+  begin
+    FEndOfPrevFrame := GetQPC;
+  end;
 end;
 
 end.
