@@ -374,6 +374,7 @@ end;
 function TDXRenderer.InitializeTexture(aWidth, aHeight: Integer): HRESULT;
 begin
   FMainLayer := CreateLayer(aWidth, aHeight, dxfmt_r16, blend_none);
+  Result := S_OK;
 end;
 
 procedure TDXRenderer.UpdateTexture(Data: Pointer; Stride: Cardinal);
