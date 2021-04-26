@@ -366,6 +366,7 @@ var
 
   AdjustedPartyHitPoints : Boolean;
   AdjustedCompanionAI : Boolean;  // Rucksacksepp's improved Companion AI - default to true
+  ShowEnemyHealthBar : Boolean;
   frmMain : TfrmMain;
 
 const
@@ -1049,6 +1050,7 @@ begin
 
       AdjustedPartyHitPoints := ( LowerCase( INI.ReadString( 'Settings', 'AdjustedPartyHitPoints', 'true' ) ) = 'true' );
       AdjustedCompanionAI := ( INI.ReadString( 'Settings', 'AdjustedPartyHitPoints', 'true' ).ToLower = 'true' );
+      ShowEnemyHealthBar := ( INI.ReadString( 'Settings', 'ShowEnemyHealthBar', 'true' ).ToLower = 'true' );
 
       Log.Log( 'Set Bounds' );
       Log.flush;

@@ -5343,7 +5343,8 @@ var
   pr, pr0: TRect;
 begin
   inherited;
-  if Highlighted and not FDead and assigned(AI) and Current.IsEnemy(Self) then
+  // Combat health bar.
+  if ShowEnemyHealthBar and Highlighted and not FDead and assigned(AI) and Current.IsEnemy(Self) then
   begin
     X := View.Left + PosX + (Self.Width - Width) div 2;
     Y := View.Top + PosY - Height;
