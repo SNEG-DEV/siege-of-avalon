@@ -1599,8 +1599,8 @@ end;
 
 procedure TGameText.UnLoadGoldFontGraphic;
 begin
-//  if assigned( DXGoldSurface ) then
-//    DXGoldSurface := nil;
+  if assigned( DXGoldSurface ) then
+    DXGoldSurface := nil;
 end;
 
 function TGameText.PlotTinyTextBlock( Sentence : string; X, X2, Y,

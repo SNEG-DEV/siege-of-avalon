@@ -515,7 +515,7 @@ begin
           //replace the back from the DXBack buffer.
           //lpDDSBack.BltFast(pTempItems(GroundOrderList.Items[j]).InvX, pTempItems(GroundOrderList.Items[j]).InvY, DXBack, Rect(pTempItems(GroundOrderList.Items[j]).InvX, pTempItems(GroundOrderList.Items[j]).InvY, pTempItems(GroundOrderList.Items[j]).InvX + pTempItems(GroundOrderList.Items[j]).W, pTempItems(GroundOrderList.Items[j]).InvY + pTempItems(GroundOrderList.Items[j]).H), DDBLTFAST_WAIT);
             pr := Rect( 287, 376, 363, 406 );
-            lpDDSBack.BltFast( 287 + Offset.X , 376 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
+            lpDDSBack.BltFast( 287 + Offset.X, 376 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
             GroundOrderList[ j ].InvX := 999;
             GroundOrderList[ j ].InvY := 999;
             j := j + 1;
@@ -523,7 +523,7 @@ begin
             GroundOrderList[ j ].InvX := 288; //325-pTempItems(GroundOrderList.Items[j]).IW div 2;
             GroundOrderList[ j ].InvY := 377; //391-pTempItems(GroundOrderList.Items[j]).IH div 2;
             pr := Rect( 0, 0, cGroundListWidth, cGroundListHeight );
-            lpDDSBack.BltFast( GroundOrderList[ j ].InvX + Offset.X, GroundOrderList[ j ].InvY + Offset.Y , GroundOrderList[ j ].DXSurfaceIcon, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
+            lpDDSBack.BltFast( GroundOrderList[ j ].InvX + Offset.X, GroundOrderList[ j ].InvY + Offset.Y, GroundOrderList[ j ].DXSurfaceIcon, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
             TopGroundIndex := j;
           //DebugPlot(TopGroundIndex);
           end
@@ -894,7 +894,7 @@ begin
           if UseSmallFont then
             pText.PlotTinyTextBlock( txtMessage[ 4 ], ClearLeft + Offset.X, ClearRight + Offset.X, SmlMsg + Offset.Y, Alpha )
           else
-            pText.PlotText( ( txtMessage[ 4 ] ), ClearLeft + Offset.X, LrgMsg + Offset.Y, Alpha );
+            pText.PlotText( txtMessage[ 4 ], ClearLeft + Offset.X, LrgMsg + Offset.Y, Alpha );
         end
         else if PtinRect( ApplyOffset( rect( 588, 407, 588 + 77, 412 + 54 ) ), point( X, Y ) ) then
         begin //over back button
@@ -917,7 +917,7 @@ begin
             if UseSmallFont then
               pText.PlotTinyTextBlock( txtMessage[ 5 ], ClearLeft + Offset.X, ClearRight + Offset.X, SmlMsg + Offset.Y, Alpha )
             else
-              pText.PlotText( ( txtMessage[ 5 ] ), ClearLeft + Offset.X, LrgMsg + Offset.Y, Alpha );
+              pText.PlotText( txtMessage[ 5 ], ClearLeft + Offset.X, LrgMsg + Offset.Y, Alpha );
           end
           else
           begin
