@@ -1041,7 +1041,7 @@ begin
       ScreenMetrics.ForceD3DFullscreen := INI.ReadBool('Settings', 'ForceD3DFullscreen', False);
       ScreenMetrics.VSync := INI.ReadBool('Settings', 'D3DVSync', True);
       ScreenMetrics.RefreshRate := INI.ReadInteger('Settings', 'DisplayRefreshRate', 60);
-      ScreenMetrics.MaxFPS := INI.ReadInteger('Settings', 'MaxFPS', 200);
+      ScreenMetrics.MaxFPS := INI.ReadInteger('Settings', 'MaxFPS', 90);
 
       if FileExists( InterfaceLanguagePath + 'gMainMenuBlank.bmp' ) then
         DlgRect := cMultilingualDialogs
