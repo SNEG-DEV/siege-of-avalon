@@ -138,6 +138,7 @@ begin
   begin
     FLayer.Enabled := Value;
   end;
+  FEnabled := Value;
 end;
 
 procedure TD3DMousePtr.SetFrame(Frame: Integer);
