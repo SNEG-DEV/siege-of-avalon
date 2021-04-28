@@ -4,20 +4,22 @@ unit D3DMousePtr;
 
 interface
 
-uses WinTypes, D3DRenderer, Vcl.ExtCtrls, Classes, AbstractMousePtr;
+uses WinTypes, D3DRenderer, Vcl.ExtCtrls, Classes, AbstractMousePtr, PreciseTimer;
 
 const
   CursorWidth = 32;
   CursorHeight = 32;
 
 type
+  TD3DMousePTr = class;
+
   TMouseUpdaterThread = class(TThread)
   private
-    FLayer: TDXRenderLayer;
-    FSize: TSize;
+    FD3DMousePtr: TD3DMousePtr;
     FQuit: Boolean;
+    FTimer: TPreciseTimer;
   public
-    constructor Create(aLayer: TDXRenderLayer; aSize: TSize);
+    constructor Create(D3DMousePtr: TD3DMousePtr);
     destructor Destroy; override;
     procedure Execute; override;
     procedure Stop;
@@ -43,6 +45,7 @@ type
     destructor Destroy; override;
     procedure Cleanup; override;
     procedure SetFrame(Frame: Integer ); override;
+    procedure SetPosition(Position: TPoint);
   end;
 
 implementation
@@ -113,7 +116,7 @@ begin
   FLayer.Enabled := False;
   FLayer.SetSourceRect(TRect.Create(0, 0, CursorWidth, CursorHeight));
   FLayer.SetDestRect(TRect.Create(0, 0, CursorWidth, CursorHeight));
-  FMouseThread := TMouseUpdaterThread.Create(FLayer, TSize.Create(CursorWidth, CursorHeight));
+  FMouseThread := TMouseUpdaterThread.Create(Self);
   FMouseThread.Start;
 end;
 
@@ -145,11 +148,27 @@ procedure TD3DMousePtr.SetFrame(Frame: Integer);
 var
   Rect: TRect;
 begin
+  if Frame < 0 then
+    Frame := 0;
+  if Frame > FNumFrames.Width * FNumFrames.Height - 1 then
+    Frame := FNumFrames.Width * FNumFrames.Height - 1;
+
   Rect.Left := (Frame Mod FNumFrames.Width) * CursorWidth;
-  Rect.Top := (FNumFrames.Height - Frame Div FNumFrames.Height + 1) * CursorHeight;
+  Rect.Top := (FNumFrames.Height - Frame Div FNumFrames.Width - 1) * CursorHeight;
   Rect.Width := CursorWidth;
   Rect.Height := CursorHeight;
   FLayer.SetSourceRect(Rect);
+end;
+
+procedure TD3DMousePtr.SetPosition(Position: TPoint);
+var
+  rc: TRect;
+begin
+  ScreenToClient(frmMain.Handle, Position);
+  rc.TopLeft := Position;
+  rc.Width := CursorWidth;
+  rc.Height := CursorHeight;
+  FLayer.SetDestRect(rc);
 end;
 
 procedure TD3DMousePtr.SetPlotDirty(const Value: Boolean);
@@ -158,35 +177,31 @@ end;
 
 { TMouseUpdaterThread }
 
-constructor TMouseUpdaterThread.Create(aLayer: TDXRenderLayer; aSize: TSize);
+constructor TMouseUpdaterThread.Create(D3DMousePtr: TD3DMousePtr);
 begin
   inherited Create(True);
   FreeOnTerminate := False;
-  FLayer := aLayer;
-  FSize := aSize;
+  FD3DMousePtr := D3DMousePtr;
+  FTimer := TPreciseTimer.Create;
 end;
 
 destructor TMouseUpdaterThread.Destroy;
 begin
   Stop;
+  FTimer.Destroy;
   inherited;
 end;
 
 procedure TMouseUpdaterThread.Execute;
 var
-  rc: TRect;
   CursorPos: TPoint;
 begin
   while not FQuit do
   begin
     GetCursorPos(CursorPos);
-    ScreenToClient(frmMain.Handle, CursorPos);
-    rc.TopLeft := CursorPos;
-    rc.Width := FSize.Width;
-    rc.Height := FSize.Height;
-    FLayer.SetDestRect(rc);
+    FD3DMousePtr.SetPosition(CursorPos);
     PostMessage(frmMain.Handle, 0, 0, 0);
-    Sleep(10);
+    FTimer.Wait(10);
   end;
 end;
 

@@ -246,13 +246,13 @@ begin
     BufferDesc.RefreshRate.Numerator := aRefreshRate;
     BufferDesc.RefreshRate.Denominator := 1;
     BufferDesc.ScanlineOrdering := DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-    BufferDesc.Scaling := DXGI_MODE_SCALING_STRETCHED;
+    BufferDesc.Scaling := DXGI_MODE_SCALING_UNSPECIFIED;
     BufferUsage := DXGI_USAGE_RENDER_TARGET_OUTPUT;
     OutputWindow := aHWND;
     SampleDesc.Count := 1;
     SampleDesc.Quality := 0;
     Windowed := bWindowed;
-    SwapEffect := DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
+    SwapEffect := DXGI_SWAP_EFFECT_SEQUENTIAL;
     Flags := 0;
   End;
 
@@ -793,6 +793,7 @@ begin
     if FMaxFPS > 0 then
     begin
       ThrottleFPS;
+      Sleep(0);
     end
     else
     begin
@@ -821,7 +822,7 @@ begin
     begin
       CurrentTime := GetQPC;
       TimeToWait := FrameTime - (CurrentTime - FEndOfPrevFrame);
-      if TimeToWait < 0.00001 then
+      if TimeToWait < 0.1 then
         break;
       if TimeToWait > 2 then
       begin
