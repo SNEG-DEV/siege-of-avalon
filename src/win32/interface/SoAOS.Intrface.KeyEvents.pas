@@ -384,8 +384,10 @@ begin
         53 + 23 { imgPaused.Height } ), Rect(0, 0, 73 { imgPaused.width } ,
         23 { imgPaused.Height } ), frmMain.PauseImage, True, 170);
       pr := Rect(0, 0, ScreenMetrics.ScreenWidth, 114);
-      lpDDSFront_BltFast(0, ScreenMetrics.SpellBarY, frmMain.OverlayB, @pr,
-        DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
+
+// serge: the following Blt spoils the bottom of the game screen when window unfocuses
+//      lpDDSFront_BltFast(0, ScreenMetrics.SpellBarY, frmMain.OverlayB, @pr,
+//        DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
 
       for i := 1 to NPCList.Count - 1 do
       begin
