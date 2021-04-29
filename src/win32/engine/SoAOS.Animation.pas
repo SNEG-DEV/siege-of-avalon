@@ -904,6 +904,14 @@ begin
       Exit;
     end;
 
+    if D3DFullscreen then
+    begin
+      pr := TRect.Create(0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight);
+      pr.TopLeft := ClientToScreen(pr.TopLeft);
+      pr.BottomRight := ClientToScreen(pr.BottomRight);
+      ClipCursor(@pr);
+    end;
+
     D3D11Renderer.StartPresenterThread;
 
     BltWindowed := True;
