@@ -388,6 +388,11 @@ begin
 // serge: the following Blt spoils the bottom of the game screen when window unfocuses
 //      lpDDSFront_BltFast(0, ScreenMetrics.SpellBarY, frmMain.OverlayB, @pr,
 //        DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
+      if Assigned(frmMain.PauseLayer) then
+      begin
+        frmMain.PauseLayer.Enabled := True;
+        frmMain.PauseLayer.SetPosition(Point(ScreenMetrics.PauseX, 53 + ScreenMetrics.SpellBarY));
+      end;
 
       for i := 1 to NPCList.Count - 1 do
       begin
@@ -425,6 +430,10 @@ begin
     else
     begin
       frmMain.Active := True;
+      if Assigned(frmMain.PauseLayer) then
+      begin
+        frmMain.PauseLayer.Enabled := False;
+      end;
     end;
   end;
 end;

@@ -95,7 +95,8 @@ uses
   AddKickNPC,
   MfPlayerClass,
   MousePtr,
-  D3DMousePtr
+  D3DMousePtr,
+  D3DRenderer
   ;
 
 const
@@ -284,6 +285,7 @@ type
     OverlayB : IDirectDrawSurface;
     FillBorder : IDirectDrawSurface;
     PauseImage : IDirectDrawSurface;
+    PauseLayer: TDXRenderLayer;
     imgBottomBar : TBitmap;
     NPCHealthBltFx : TDDBLTFX;
     NPCManaBltFx : TDDBLTFX;
@@ -389,8 +391,7 @@ uses
   Music,
   MP3,
   Engine,
-  SaveFile,
-  D3DRenderer
+  SaveFile
   ;
 
 {$R *.DFM}
@@ -3333,6 +3334,7 @@ end;
 function TfrmMain.LoadResources : Boolean;
 var
   pr : TRect;
+  desc: TDDSurfaceDesc;
 const
   FailName : string = 'Main.LoadResources';
 begin
@@ -3374,6 +3376,11 @@ begin
       imgHelp.LoadFromFile( InterfacePath + 'spellinfo.bmp' );
       HelpBox := SoAOS_DX_LoadBMP( InterfacePath + 'spellinfo.bmp', cTransparent );
       PauseImage := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'paused.bmp', cTransparent );
+      if Assigned(D3D11Renderer) then
+      begin
+        PauseLayer := D3D11Renderer.CreateLayerFromFile(InterfaceLanguagePath + 'paused.bmp', cTransparent);
+        PauseLayer.Enabled := False;
+      end;
 
       imgGlow := TBitmap.Create;
       try
@@ -5688,6 +5695,8 @@ end;
 procedure TfrmMain.AppActivate( Sender : TObject );
 const
   FailName : string = 'Main.AppActivate';
+var
+  pr: TRect;
 begin
   Log.DebugLog(FailName);
   if not ScreenMetrics.Windowed then
@@ -5722,6 +5731,10 @@ begin
       Game.Enabled := True;
       Application.Restore;
       D3D11Renderer.EnableFullscreen(True);
+      pr := TRect.Create(0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight);
+      pr.TopLeft := ClientToScreen(pr.TopLeft);
+      pr.BottomRight := ClientToScreen(pr.BottomRight);
+      ClipCursor(@pr);
     end;
   end
   else
@@ -5772,6 +5785,7 @@ begin
       Game.Enabled := False;
       Application.Minimize;
       D3D11Renderer.EnableFullscreen(True);
+      ClipCursor(nil);
     end;
   end
   else

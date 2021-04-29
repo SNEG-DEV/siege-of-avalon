@@ -1,7 +1,5 @@
 unit D3DMousePtr;
 
-{$POINTERMATH ON}
-
 interface
 
 uses WinTypes, D3DRenderer, Vcl.ExtCtrls, Classes, AbstractMousePtr, PreciseTimer;
@@ -65,54 +63,16 @@ procedure TD3DMousePtr.Cleanup;
 begin
 end;
 
-procedure UnpackBitmap(Source: TBitmap; Destination: PDWORD; TransparentColor: TColor);
-var
-  Bmp24: TBitmap;
-  Row: PByte;
-  I, J: Integer;
-  Color: TColor;
-begin
-  Bmp24 := TBitmap.Create;
-  try
-    Bmp24.SetSize(Source.Width, Source.Height);
-    Bmp24.PixelFormat := pf24bit;
-    Bmp24.Canvas.Draw(0, 0, Source);
-
-    for I := 0 to Source.Height - 1 do
-    begin
-      Row := Bmp24.ScanLine[I];
-      for J := 0 to Source.Width do
-      begin
-        Color := Row[J * 3 + 2] + (Row[J * 3 + 1] shl 8) + (Row[J * 3] shl 16);
-        if Color = TransparentColor then
-          (Destination + Source.Width * I + J)^ := Color
-        else
-          (Destination + Source.Width * I + J)^ := Color or $FF000000;
-      end;
-    end;
-  finally
-    Bmp24.Free;
-  end;
-end;
-
 constructor TD3DMousePtr.Create(Renderer: TDXRenderer);
 var
   Sheet: TBitmap;
-  Data: PDWORD;
 begin
   FRenderer := Renderer;
 
   Sheet := TBitmap.Create;
   Sheet.LoadFromFile(InterfacePath + 'siegecursorsheet.bmp');
   FNumFrames := TSize.Create(Sheet.Width div CursorWidth, Sheet.Height div CursorHeight);
-  GetMem(Data, Sheet.Width * Sheet.Height * 4);
-  try
-    UnpackBitmap(Sheet, Data, $FF00FF);
-    FLayer := FRenderer.CreateLayer(sheet.Width, sheet.Height, dxfmt_8888, blend_transparent);
-    FLayer.UpdateTexture(data, sheet.Width * 4);
-  finally
-    FreeMem(Data);
-  end;
+  FLayer := FRenderer.CreateLayerFromBitmap(Sheet, $FF00FF);
   FLayer.Enabled := False;
   FLayer.SetSourceRect(TRect.Create(0, 0, CursorWidth, CursorHeight));
   FLayer.SetDestRect(TRect.Create(0, 0, CursorWidth, CursorHeight));
@@ -158,6 +118,7 @@ begin
   Rect.Width := CursorWidth;
   Rect.Height := CursorHeight;
   FLayer.SetSourceRect(Rect);
+  FRenderer.BringLayerToTheTop(FLayer);
 end;
 
 procedure TD3DMousePtr.SetPosition(Position: TPoint);
@@ -165,6 +126,7 @@ var
   rc: TRect;
 begin
   ScreenToClient(frmMain.Handle, Position);
+  FLayer.SetPosition(Position);
   rc.TopLeft := Position;
   rc.Width := CursorWidth;
   rc.Height := CursorHeight;

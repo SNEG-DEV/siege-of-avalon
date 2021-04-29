@@ -4,7 +4,7 @@ interface
 
 uses
   SysUtils, Classes, SyncObjs, System.Generics.Collections,
-  Winapi.Windows, Winapi.Messages,
+  Winapi.Windows, Winapi.Messages, Vcl.Graphics,
   Winapi.D3D11, Winapi.DXGI, Winapi.D3DCommon, Winapi.DXTypes, Winapi.DXGIFormat, Winapi.DXGIType,
   D3DShader, D3DMesh, PreciseTimer;
 
@@ -41,8 +41,10 @@ type
     procedure Activate;
     procedure SetSourceRect(aRect: TRect);
     procedure SetDestRect(aRect: TRect);
+    procedure SetPosition(aPos: TPoint);
 
     property Enabled: Boolean read FEnabled write FEnabled;
+    property Size: TSize read FSize;
 
     procedure Lock;
     procedure Unlock;
@@ -80,6 +82,9 @@ type
       Destructor Destroy; override;
 
       function CreateLayer(aWidth, aHeight: Integer; Format, Blend: Integer): TDXRenderLayer;
+      function CreateLayerFromFile(FilePath: string; Transparent: TColor): TDXRenderLayer;
+      function CreateLayerFromBitmap(Bitmap: TBitmap; Transparent: TColor): TDXRenderLayer;
+      procedure BringLayerToTheTop(aLayer: TDXRenderLayer);
 
       Procedure UpdateTexture(Data: Pointer; Stride: Cardinal); overload;
       Procedure UpdateTexture(Data: Pointer; Stride: Cardinal; Rect: TRect); overload;
@@ -444,6 +449,65 @@ begin
   FLayers.Add(Result);
 end;
 
+{$POINTERMATH ON}
+procedure UnpackBitmap(Source: TBitmap; Destination: PDWORD; TransparentColor: TColor);
+var
+  Bmp24: TBitmap;
+  Row: PByte;
+  I, J: Integer;
+  Color: TColor;
+begin
+  Bmp24 := TBitmap.Create;
+  try
+    Bmp24.SetSize(Source.Width, Source.Height);
+    Bmp24.PixelFormat := pf24bit;
+    Bmp24.Canvas.Draw(0, 0, Source);
+
+    for I := 0 to Source.Height - 1 do
+    begin
+      Row := Bmp24.ScanLine[I];
+      for J := 0 to Source.Width do
+      begin
+        Color := Row[J * 3 + 2] + (Row[J * 3 + 1] shl 8) + (Row[J * 3] shl 16);
+        if Color = TransparentColor then
+          (Destination + Source.Width * I + J)^ := Color
+        else
+          (Destination + Source.Width * I + J)^ := Color or $FF000000;
+      end;
+    end;
+  finally
+    Bmp24.Free;
+  end;
+end;
+{$POINTERMATH OFF}
+
+function TDXRenderer.CreateLayerFromBitmap(Bitmap: TBitmap; Transparent: TColor): TDXRenderLayer;
+var
+  Data: PDWORD;
+begin
+  GetMem(Data, Bitmap.Width * Bitmap.Height * 4);
+  try
+    UnpackBitmap(Bitmap, Data, $FF00FF);
+    Result := CreateLayer(Bitmap.Width, Bitmap.Height, dxfmt_8888, blend_transparent);
+    Result.UpdateTexture(data, Bitmap.Width * 4);
+  finally
+    FreeMem(Data);
+  end;
+end;
+
+function TDXRenderer.CreateLayerFromFile(FilePath: string; Transparent: TColor): TDXRenderLayer;
+var
+  Bitmap: TBitmap;
+begin
+  Bitmap := TBitmap.Create;
+  try
+    Bitmap.LoadFromFile(FilePath);
+    Result := CreateLayerFromBitmap(Bitmap, Transparent);
+  finally
+    Bitmap.Free;
+  end;
+end;
+
 destructor TDXRenderer.Destroy;
 begin
   StopPresenterThread;
@@ -465,6 +529,15 @@ begin
     end;
   end;
 //  FSwapchain.SetFullscreenState(Enabled, )
+end;
+
+procedure TDXRenderer.BringLayerToTheTop(aLayer: TDXRenderLayer);
+begin
+  if FLayers.IndexOf(aLayer) <> -1 then
+  begin
+    FLayers.Remove(aLayer);
+    FLayers.Add(aLayer);
+  end;
 end;
 
 function TDXRenderer.Clear(aColor: TFourSingleArray): HRESULT;
@@ -694,6 +767,15 @@ begin
   Lock;
   FShader.OutputTransform := RR;
   Unlock;
+end;
+
+procedure TDXRenderLayer.SetPosition(aPos: TPoint);
+var
+  rc: TRect;
+begin
+  rc.TopLeft := aPos;
+  rc.Size := FSize;
+  SetDestRect(rc);
 end;
 
 procedure TDXRenderLayer.SetSourceRect(aRect: TRect);
