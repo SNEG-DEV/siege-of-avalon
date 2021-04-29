@@ -6,7 +6,7 @@ uses
   SysUtils, Classes, SyncObjs, System.Generics.Collections,
   Winapi.Windows, Winapi.Messages,
   Winapi.D3D11, Winapi.DXGI, Winapi.D3DCommon, Winapi.DXTypes, Winapi.DXGIFormat, Winapi.DXGIType,
-  D3DShader, D3DMesh;
+  D3DShader, D3DMesh, PreciseTimer;
 
 const
   dxfmt_565: Integer = 0;
@@ -108,6 +108,7 @@ type
       FTimerFreq: Double;
       FCounterStart: Int64;
       FEndOfPrevFrame: Double;
+      FTimer: TPreciseTimer;
 
       function GetQPC: Double;
     procedure ThrottleFPS;
@@ -761,6 +762,7 @@ var
   freq: Int64;
 begin
   inherited Create(True);
+  FTimer := TPreciseTimer.Create;
   FreeOnTerminate := False;
   FRenderer := aRenderer;
   FQuit := False;
@@ -773,6 +775,7 @@ end;
 
 destructor TDXPresenterThread.Destroy;
 begin
+  FTimer.Destroy;
   Stop;
 end;
 
@@ -793,7 +796,6 @@ begin
     if FMaxFPS > 0 then
     begin
       ThrottleFPS;
-      Sleep(0);
     end
     else
     begin
@@ -818,24 +820,10 @@ begin
   if FEndOfPrevFrame <> 0 then
   begin
     FrameTime := 1000.0 / FMaxFPS;
-    while True do
-    begin
-      CurrentTime := GetQPC;
-      TimeToWait := FrameTime - (CurrentTime - FEndOfPrevFrame);
-      if TimeToWait < 0.1 then
-        break;
-      if TimeToWait > 2 then
-      begin
-        Sleep(1)
-      end
-      else
-      begin
-        for I := 0 to 9 do
-        begin
-          Sleep(0);
-        end;
-      end;
-    end;
+    CurrentTime := GetQPC;
+    TimeToWait := FrameTime - (CurrentTime - FEndOfPrevFrame);
+    FTimer.Wait(Trunc(TimeToWait) - 1);
+    Sleep(1);
     FEndOfPrevFrame := CurrentTime;
   end
   else

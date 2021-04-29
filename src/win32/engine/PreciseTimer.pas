@@ -1,3 +1,5 @@
+{$DEFINE USE_WAITABLE_TIMER}
+
 unit PreciseTimer;
 
 interface
@@ -7,7 +9,7 @@ uses Winapi.Windows, Winapi.MMSystem, System.SyncObjs;
 type
   TPreciseTimer = class
   private
-    FEvent: THandle;
+    FHandle: THandle;
   public
     constructor Create;
     destructor Destroy; override;
@@ -22,20 +24,34 @@ uses SysUtils;
 
 constructor TPreciseTimer.Create;
 begin
-  FEvent := CreateEvent(nil, True, False, nil);
+{$IFDEF USE_WAITABLE_TIMER}
+  FHandle := CreateWaitableTimer(nil, True, nil);
+{$ELSE}
+  FHandle := CreateEvent(nil, True, False, nil);
+{$ENDIF}
 end;
 
 destructor TPreciseTimer.Destroy;
 begin
-  CloseHandle(FEvent);
+  CloseHandle(FHandle);
   inherited;
 end;
 
 procedure TPreciseTimer.Wait(msec: Integer);
+{$IFDEF USE_WAITABLE_TIMER}
+var
+  ns: Int64;
+{$ENDIF}
 begin
   if msec > 0 then
   begin
-    WaitForSingleObject(FEvent, msec);
+{$IFDEF USE_WAITABLE_TIMER}
+    ns := msec * 10;
+    SetWaitableTimer(FHandle, ns, 0, nil, nil, False);
+    WaitForSingleObject(FHandle, INFINITE);
+{$ELSE}
+    WaitForSingleObject(FHandle, msec);
+{$ENDIF}
   end;
 end;
 
