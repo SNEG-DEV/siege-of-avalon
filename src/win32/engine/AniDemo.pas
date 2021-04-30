@@ -1043,6 +1043,10 @@ begin
       ScreenMetrics.VSync := INI.ReadBool('Settings', 'D3DVSync', True);
       ScreenMetrics.RefreshRate := INI.ReadInteger('Settings', 'DisplayRefreshRate', 60);
       ScreenMetrics.MaxFPS := INI.ReadInteger('Settings', 'MaxFPS', 0); // serge: turned off by default as its implementation is not polished yet
+      if ScreenMetrics.VSync then
+      begin
+        ScreenMetrics.MaxFPS := 0; // serge: no need in FPS capper with vsync
+      end;
 
       if FileExists( InterfaceLanguagePath + 'gMainMenuBlank.bmp' ) then
         DlgRect := cMultilingualDialogs

@@ -1,4 +1,5 @@
-{$DEFINE USE_WAITABLE_TIMER}
+//{$DEFINE USE_WAITABLE_TIMER}
+// serge: for some reason waitable timers can mess up the whole OS
 
 unit PreciseTimer;
 
