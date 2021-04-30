@@ -5733,7 +5733,7 @@ begin
     begin
       Game.Enabled := True;
       Application.Restore;
-      D3D11Renderer.EnableFullscreen(True);
+//      D3D11Renderer.EnableFullscreen(True);
       pr := TRect.Create(0, 0, ScreenMetrics.ScreenWidth, ScreenMetrics.ScreenHeight);
       pr.TopLeft := ClientToScreen(pr.TopLeft);
       pr.BottomRight := ClientToScreen(pr.BottomRight);
@@ -5787,7 +5787,7 @@ begin
     begin
       Game.Enabled := False;
       Application.Minimize;
-      D3D11Renderer.EnableFullscreen(True);
+//      D3D11Renderer.EnableFullscreen(True);
       ClipCursor(nil);
     end;
   end
