@@ -126,7 +126,6 @@ var
   rc: TRect;
 begin
   ScreenToClient(frmMain.Handle, Position);
-  FLayer.SetPosition(Position);
   rc.TopLeft := Position;
   rc.Width := CursorWidth;
   rc.Height := CursorHeight;
