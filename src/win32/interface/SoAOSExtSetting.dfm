@@ -111,6 +111,21 @@ object frmLaunchSetting: TfrmLaunchSetting
     Visible = False
     OnClick = imgCheckClick
   end
+  object VersionLabel: TLabel
+    Left = 24
+    Top = 24
+    Width = 44
+    Height = 22
+    Caption = '1.03'
+    Color = clFuchsia
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = 1398879
+    Font.Height = -19
+    Font.Name = 'BlackChancery'
+    Font.Style = []
+    ParentColor = False
+    ParentFont = False
+  end
   object lblLanguage: TStaticText
     Left = 210
     Top = 337

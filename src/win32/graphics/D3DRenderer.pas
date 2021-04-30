@@ -407,6 +407,7 @@ end;
 function TDXRenderer.InitializeTexture(aWidth, aHeight: Integer): HRESULT;
 begin
   FMainLayer := CreateLayer(aWidth, aHeight, dxfmt_r16, blend_none);
+  FMainLayer.Enabled := True;
   Result := S_OK;
 end;
 
@@ -640,7 +641,7 @@ begin
   FSize.Width := aWidth;
   FSize.Height := aHeight;
 
-  FEnabled := True;
+  FEnabled := False;
 
   FRenderer.Lock;
   try

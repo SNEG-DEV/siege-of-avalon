@@ -49,6 +49,7 @@ type
     lblMonitor: TStaticText;
     lblResolution: TStaticText;
     imgCheck: TImage;
+    VersionLabel: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure tmrScrollTimer(Sender: TObject);
     procedure imgBackClick(Sender: TObject);

@@ -3383,7 +3383,6 @@ begin
       if Assigned(D3D11Renderer) then
       begin
         PauseLayer := D3D11Renderer.CreateLayerFromFile(InterfaceLanguagePath + 'paused.bmp', cTransparent);
-        PauseLayer.Enabled := False;
       end;
 
       imgGlow := TBitmap.Create;
