@@ -1208,12 +1208,7 @@ begin
     end
     else
     begin //constrict to main inventory area
-      prRect.bottom := prRect.Top + ScreenMetrics.ScreenHeight;
-      prRect.Right := prRect.Left + ScreenMetrics.ScreenWidth;
-      if ScreenMetrics.Windowed then
-        ClipCursor(nil)
-      else
-        ClipCursor(@prRect);
+      ClipCursor(nil);
       paint;
     end;
   except

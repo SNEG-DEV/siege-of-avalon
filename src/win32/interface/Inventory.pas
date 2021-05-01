@@ -1520,12 +1520,9 @@ begin
     end
     else
     begin //restore to fullscreen
-      prRect.bottom := prRect.Top + ScreenMetrics.ScreenHeight;
-      prRect.Right := prRect.Left + ScreenMetrics.ScreenWidth;
-      if ScreenMetrics.Windowed then
-        ClipCursor(nil)
-      else
-        ClipCursor(@prRect);
+//      prRect.bottom := ScreenMetrics.ScreenHeight;
+//      prRect.Right := ScreenMetrics.ScreenWidth;
+      ClipCursor(nil);
     end;
   except
     on E : Exception do
