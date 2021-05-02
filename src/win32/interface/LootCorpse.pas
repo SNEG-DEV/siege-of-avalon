@@ -159,7 +159,7 @@ const
   ClearTop = SmlMsg;
   ClearBottom = 462;
   ClearLeft = 20;
-  ClearRight = 570;
+  ClearRight = 588;
 
 { TLootCorpse }
 
