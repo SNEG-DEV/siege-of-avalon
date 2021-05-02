@@ -65,6 +65,7 @@ type
     FOnClose : TNotifyEvent;
     DXBack : IDirectDrawSurface;
     DXDirty : IDirectDrawSurface;
+    DXMapMaskLayer : IDirectDrawSurface;
     MouseOverBack : boolean;
     ShowAll : boolean;
   protected
@@ -78,7 +79,8 @@ type
     CharacterList : TList;
     MapName : string;
     procedure Init; override;
-    procedure DrawMapOverlay( image : IDirectDrawSurface; const W, H : integer );
+    procedure UpdateLiveMap;
+    procedure DrawMapOverlay( image : IDirectDrawSurface; const W, H : integer; UseOffset: Boolean; DrawEdge: Boolean );
     property OnClose : TNotifyEvent read FOnClose write FOnClose;
   end;
 
@@ -90,7 +92,7 @@ uses
 
 { TMap }
 
-procedure TMap.DrawMapOverlay( image : IDirectDrawSurface; const W, H : integer );
+procedure TMap.DrawMapOverlay( image : IDirectDrawSurface; const W, H : integer; UseOffset: Boolean; DrawEdge: Boolean );
 var
   i, j, k : longint;
   OffsetX, OffsetY : integer;
@@ -109,8 +111,11 @@ var
   Seen : boolean;
   OffRect : TRect;
 begin
-  OffRect := Rect( Offset.X, Offset.Y, Offset.X + W, Offset.Y + H);
   ddsd.dwSize := SizeOf( ddsd );
+  if UseOffset then
+    OffRect := Rect( Offset.X, Offset.Y, Offset.X + W, Offset.Y + H)
+  else
+    OffRect := Rect( 0, 0, W, H);
   if lpDDSBack.Lock( @OffRect, ddsd, DDLOCK_WAIT, 0 ) = DD_OK then
   begin
     try
@@ -162,16 +167,16 @@ begin
                 if x >= 0 then
                 begin
                   Tile := Map.GetTile( i, j );
-                  if ( Tile.CollisionMask > 0 ) or Edge then
+                  if ( Tile.CollisionMask > 0 ) or (DrawEdge and Edge) then
                   begin
                     Seen := ShowAll or ( ( Tile.BitField and $40 ) > 0 );
-                    if Seen or Edge then
+                    if Seen or (DrawEdge and Edge) then
                     begin
                       CollisionMask := Tile.CollisionMask;
                       LineOfSightMask := Tile.LineOfSightMask;
                       for k := 0 to 15 do
                       begin
-                        if Edge or ( ( CollisionMask and 1 ) <> 0 ) then
+                        if (DrawEdge and Edge) or ( ( CollisionMask and 1 ) <> 0 ) then
                         begin
                           y := j * 4 + ( ( 15 - k ) div 4 ) + OffsetY;
                           if ( y >= 0 ) and ( y < H ) then
@@ -385,14 +390,14 @@ begin
 
     ShowAll := MapKnown or Character.TitleExists( 'MapAllKnown' );
 
-    Image := SoAOS_DX_LoadBMP( InterfacePath + 'MapMaskLayer.bmp', cBlackBackground, W, H );
+    DXMapMaskLayer := SoAOS_DX_LoadBMP( InterfacePath + 'MapMaskLayer.bmp', cBlackBackground, W, H );
     try
-      if assigned( Image ) then
+      if assigned( DXMapMaskLayer ) then
       begin
-        DrawMapOverlay( Image, W, H );
+        DrawMapOverlay( DXMapMaskLayer, W, H, True, True );
       end;
     finally
-      Image := nil;
+      DXMapMaskLayer := nil;
     end;
 
     pText.LoadFontGraphic( 'statistics' );
@@ -402,6 +407,34 @@ begin
     pr := Rect( 0, 0, ResWidth, ResHeight );
     lpDDSBack.BltFast( Offset.X, Offset.Y, lpDDSFront, @pr, DDBLTFAST_NOCOLORKEY or DDBLTFAST_WAIT );
     MouseCursor.PlotDirty := false;
+  except
+    on E : Exception do
+      Log.log( FailName + E.Message );
+  end;
+
+end;
+
+procedure TMap.UpdateLiveMap;
+var
+  ddsd : TDDSurfaceDesc;
+  W, H : integer;
+const
+  FailName : string = 'TMap.Init2';
+begin
+  FillChar(ddsd, sizeof(ddsd), 0);
+  Log.DebugLog(FailName);
+  try
+    ShowAll := MapKnown or Character.TitleExists( 'MapAllKnown' );
+
+{ TODO -oSN : Load once. }
+    DXMapMaskLayer := SoAOS_DX_LoadBMP( InterfacePath + 'MapMaskLayer.bmp', cBlackBackground, W, H );
+    try
+      if assigned( DXMapMaskLayer ) then
+        DrawMapOverlay( DXMapMaskLayer, W, H, False, False );
+    finally
+      DXMapMaskLayer := nil;
+    end;
+
   except
     on E : Exception do
       Log.log( FailName + E.Message );

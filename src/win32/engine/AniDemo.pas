@@ -125,6 +125,7 @@ var
   DeviceDriverName : string;
   INICodepage : Integer;
   MaxPartyMembers : Integer;
+  ShowPersistentMap : Boolean;
   bPlayClosingMovie : Boolean;
   OpeningMovie : string;
   ClosingMovie : string;
@@ -164,6 +165,7 @@ type
     procedure WMPlayerEvent( var Message: TMessage); message WM_APP_PLAYER_EVENT;
     procedure WMSize(var Msg: TMessage); message WM_SIZE;
     procedure MovieKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure CMDialogKey( Var msg: TCMDialogKey ); message CM_DIALOGKEY;
     procedure StopPlayback;
 
     procedure FormMouseMove( Sender : TObject; Shift : TShiftState; X,
@@ -305,6 +307,7 @@ type
     procedure BeginLoot( Character : TCharacter; OtherObj : TSpriteObject );
     procedure BeginObjInventory( Character : TCharacter; OtherObj : TSpriteObject );
     procedure BeginStatistics( Character : TCharacter );
+    procedure ShowMap( Character : TCharacter );
     procedure BeginMap( Character : TCharacter );
     procedure BeginTitles( Character : TCharacter );
     procedure BeginNPC( Character : TCharacter );
@@ -998,6 +1001,8 @@ begin
 //    StartFile := MapPath+'OKeepL2.lvl';
 
     DisableConsole := True;
+
+    ShowPersistentMap := False;
 
     NewGame := True;
 
@@ -1907,6 +1912,9 @@ begin
     if Assigned( Popup ) then
       Popup.Draw;
 
+    if ShowPersistentMap then
+      ShowMap(Current);
+
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -2357,7 +2365,11 @@ const
 begin
   Log.DebugLog(FailName);
   try
-
+    if ShowPersistentMap then
+    begin
+      ShowPersistentMap := False;
+      Game.DrawFrame;
+    end;
     if Assigned( Character ) then
     begin
       DlgMap.Character := Character;
@@ -5493,6 +5505,28 @@ begin
   end;
 end;
 
+procedure TfrmMain.ShowMap(Character: TCharacter);
+const
+  FailName : string = 'Main.BeginMap';
+begin
+  Log.DebugLog(FailName);
+  try
+
+    if Assigned( Character ) then
+    begin
+      DlgMap.Character := Character;
+      DlgMap.CharacterList := NPCList;
+      DlgMap.Map := GameMap;
+      DlgMap.MapName := MapName;
+      DlgMap.UpdateLiveMap;
+    end;
+
+  except
+    on E : Exception do
+      Log.log( FailName, E.Message, [ ] );
+  end;
+end;
+
 procedure TfrmMain.ShowMouseMessage( const Msg : string );
 const
   tY1 = 33;
@@ -6478,6 +6512,12 @@ begin
       Timer2.Enabled := True;
     end;
   end;
+end;
+
+procedure TfrmMain.CMDialogKey(var msg: TCMDialogKey);
+begin
+  if msg.CharCode <> VK_TAB then
+    inherited;
 end;
 
 procedure TfrmMain.WMStartTransit( var Message : TWMNoParams );
