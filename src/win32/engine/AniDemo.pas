@@ -1054,7 +1054,7 @@ begin
         DlgRect := cClassicDialogs;
 
       AdjustedPartyHitPoints := ( LowerCase( INI.ReadString( 'Settings', 'AdjustedPartyHitPoints', 'true' ) ) = 'true' );
-      AdjustedCompanionAI := ( INI.ReadString( 'Settings', 'AdjustedPartyHitPoints', 'true' ).ToLower = 'true' );
+      AdjustedCompanionAI := ( INI.ReadString( 'Settings', 'AdjustedCompanionAI', 'true' ).ToLower = 'true' );
       ShowEnemyHealthBar := ( INI.ReadString( 'Settings', 'ShowEnemyHealthBar', 'true' ).ToLower = 'true' );
 
       Log.Log( 'Set Bounds' );
@@ -5096,11 +5096,7 @@ begin
     NewGame := True;
 
     Player := TCharacter.Create( 400, 400, 0, 1, True );
-
-    if AdjustedPartyHitPoints then
-      Player.TrainingPoints := 10
-    else
-      Player.TrainingPoints := 20; //Original
+    Player.TrainingPoints := 20; //In SoA you get 20, since you can spend them
 
     AdventureLog1.Clear;
     DlgJournal.StartLogIndex := -1;
