@@ -308,6 +308,9 @@ end;
 
 class procedure TKeyEvent.ShowMenu;
 begin
+  if frmMain.Paused then
+    TogglePause;
+  frmMain.CloseAllDialogs(nil);
   frmMain.Active := False;
   frmMain.SaveGameScreenShot;
 
