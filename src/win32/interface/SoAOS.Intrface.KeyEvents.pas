@@ -149,6 +149,7 @@ begin
       Exit;
 
     case Key of
+      VK_TAB: ShowPersistentMap := not ShowPersistentMap;
       VK_ESCAPE: ShowMenu; // ESC
       VK_SPACE: ToggleCombat; // Space
       48..57: SpellHotKey(Key); // 0-9 alternative to F-keys
