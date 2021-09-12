@@ -979,7 +979,7 @@ begin
     if not assigned(Sounds) then
       exit;
     HearingRange := ScreenMetrics.HearingRange;
-    if HearingRange <= 0 then
+    if (HearingRange <= 0) or (Current=nil) then
       exit;
     PanD := X - Current.X;
     D := sqrt(sqr(PanD) + 2 * sqr(Y - Current.Y));
@@ -1016,7 +1016,7 @@ begin
   log.DebugLog(FailName);
   try
     HearingRange := ScreenMetrics.HearingRange;
-    if HearingRange <= 0 then
+    if (HearingRange <= 0) or (Current=nil) then
       exit;
     PanD := X - Current.X;
     D := sqrt(sqr(PanD) + 2 * sqr(Y - Current.Y));
