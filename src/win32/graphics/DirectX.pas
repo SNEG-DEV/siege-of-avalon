@@ -22907,8 +22907,6 @@ begin
 end;
 
 procedure LoadDDraw(path: string);
-var
-  ddrawpath: string;
 begin
   {DirectDraw}
 

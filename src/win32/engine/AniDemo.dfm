@@ -143,8 +143,6 @@ object frmMain: TfrmMain
     ParentBackground = False
     TabOrder = 0
     Visible = False
-    ExplicitWidth = 792
-    ExplicitHeight = 585
   end
   object ClosingVideoPanel: TPanel
     Left = 0
@@ -157,8 +155,6 @@ object frmMain: TfrmMain
     ParentBackground = False
     TabOrder = 1
     Visible = False
-    ExplicitWidth = 792
-    ExplicitHeight = 585
   end
   object Timer2: TTimer
     Enabled = False

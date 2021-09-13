@@ -71,6 +71,7 @@ uses
   Winapi.Windows,
   System.IOUtils,
   System.IniFiles,
+  System.Types,
   Vcl.Graphics,
   AniDemo,
   SoAOS.AI.Helper,

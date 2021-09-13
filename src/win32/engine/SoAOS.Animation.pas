@@ -536,6 +536,7 @@ implementation
 
 uses
   System.SysUtils,
+  System.UITypes,
   System.IniFiles,
   Vcl.Forms,
   Vcl.Dialogs,

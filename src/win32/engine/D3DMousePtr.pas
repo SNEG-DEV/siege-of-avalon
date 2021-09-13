@@ -26,7 +26,6 @@ type
   TD3DMousePtr = class(TAbstractMousePtr)
   private
     FNumFrames: TSize;
-    FMouseFrame: Integer;
     FPlotDirty: Boolean;
     FEnabled: Boolean;
     FLayer: TDXRenderLayer;

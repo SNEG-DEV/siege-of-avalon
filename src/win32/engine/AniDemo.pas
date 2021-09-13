@@ -372,6 +372,7 @@ var
   AdjustedPartyHitPoints : Boolean;
   AdjustedCompanionAI : Boolean;  // Rucksacksepp's improved Companion AI - default to true
   ShowEnemyHealthBar : Boolean;
+  CustomDDrawDLL : Boolean; // Rule is to use SoADDraw.dll or win32/ddraw.dll on win7 - this option will load ddraw.dll within appdir.
   frmMain : TfrmMain;
 
 const
@@ -2039,6 +2040,7 @@ begin
   SiegeINIFile := AppPath + 'siege.ini';
   SiegeIni := TIniFile.Create( ExtractFilePath( Application.ExeName ) + 'siege.ini' );
   try
+    CustomDDrawDLL := SiegeIni.ReadString( 'Settings', 'CustomDDrawDLL', 'false' ).ToLower = 'true';
     FOpeningMovie := SiegeIni.ReadString( 'Settings', 'MoviePath', ExtractFilePath( Application.ExeName ) + 'Movies' ) + '\' + SiegeIni.ReadString( 'Settings', 'OpeningMovie', 'SiegeOpening.wmv' );
     FClosingMovie := SiegeIni.ReadString( 'Settings', 'MoviePath', ExtractFilePath( Application.ExeName ) + 'Movies' ) + '\' + SiegeIni.ReadString( 'Settings', 'ClosingMovie', 'SiegeClosing.wmv' );
     FShowIntro := LowerCase( SiegeIni.ReadString( 'Settings', 'ShowIntro', 'true' ) ) = 'true';
@@ -2053,16 +2055,12 @@ var
   ExStyle: Integer;
   ddrawpath: String;
 begin
-  if (TOSVersion.Major = 6) and (TOSVersion.Minor = 1) then
-  begin
-    ddrawpath := GetSystem32 + '\ddraw.dll';
-  end
+  if CustomDDrawDLL then
+    ddrawpath := 'ddraw.dll'
+  else if (TOSVersion.Major = 6) and (TOSVersion.Minor = 1) then // Win7 sp1
+    ddrawpath := GetSystem32 + '\ddraw.dll'
   else
-  begin
     ddrawpath := 'soaddraw.dll';
-  end;
-
-//  ddrawpath := GetSystem32 + '\ddraw.dll';
 
   DirectX.LoadDDraw(ddrawpath);
 
@@ -3350,7 +3348,6 @@ end;
 function TfrmMain.LoadResources : Boolean;
 var
   pr : TRect;
-  desc: TDDSurfaceDesc;
 const
   FailName : string = 'Main.LoadResources';
 begin
@@ -5419,7 +5416,6 @@ end;
 
 procedure TfrmMain.WMStartIntro( var Message : TWMNoParams );
 var
-  DlgOpenAnim : TOpenAnim;
   INI : TIniFile;
   INILanguage : TIniFile;
   S : string;
@@ -5906,20 +5902,12 @@ end;
 //end;
 
 procedure TfrmMain.WMPlayClosingMovie(var Message : TWMNoParams);
-var
-  hr: HRESULT;
 begin
   if not (FileExists(FClosingMovie) and FShowOutro) then
   begin
     Close;
     Exit;
   end;
-
-//  if not bPlayClosingMovie then
-//  begin
-//    Close;
-//    Exit;
-//  end;
 
   if Assigned(MusicLib) then
   begin
@@ -5940,8 +5928,7 @@ begin
     Left := Screen.Monitors[ChosenDisplayindex].Left;
     Top := Screen.Monitors[ChosenDisplayindex].Top;
   end;
-  //MfPlayer_AttachToWindow(ClosingVideoPanel.Handle);
-  //MfPlayer_Play(FClosingMovie);
+
   MfPlayer := TMfPlayer.Create(ClosingVideoPanel.Handle, 0, Handle, Handle);
   if SUCCEEDED(MfPlayer.OpenURL(PWideChar(FClosingMovie))) then
   begin
@@ -5962,16 +5949,11 @@ end;
 
 procedure TfrmMain.WMDone( var Message : TWMNoParams );
 begin
-  //     bPlayClosingMovie := true;
   MouseCursor.Enabled := False;
   FreeAll;
   UnloadDDraw;
   D3D11Renderer.Free;
-//  if TFile.Exists( ClosingMovie ) (*and bPlayClosingMovie*) then
-//  begin
-//    TfrmMfPlayer.PlayMovie(ClosingMovie);
-//  end;
-  if FileExists(FClosingMovie) (*and bPlayClosingMovie*) then
+  if FileExists(FClosingMovie) then
     PostMessage(Handle, WM_PlayClosingMovie, 0, 0)
   else
     Close;
