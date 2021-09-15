@@ -438,7 +438,7 @@ begin
     SoAOS_DX_BltFront;
   except
     on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+      Log.log( FailName, E.Message, E.StackTrace, [ ] );
   end;
 end; //AreYouSure
 

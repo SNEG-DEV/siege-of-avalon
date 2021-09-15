@@ -42,6 +42,7 @@
 interface
 
 uses
+  SoAOS.StackTrace,
   Winapi.Windows,
   Winapi.Messages,
   System.SysUtils,
@@ -2123,7 +2124,7 @@ procedure TfrmMain.AppException( Sender : TObject; E : Exception );
 begin
   if Assigned( Log ) then
   begin
-    Log.log( '*** Error Application: ' + E.Message );
+    Log.log( '*** Error Application: ' + E.Message + sLineBreak + E.StackTrace );
     Log.Flush;
   end;
   if Assigned( lpDD ) then

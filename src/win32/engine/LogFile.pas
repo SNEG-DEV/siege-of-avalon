@@ -60,6 +60,7 @@ type
     CurrDbgGroup : Word; // obsolete, forcibly overwritten herein
     constructor Create( FileName : string );
     procedure Log( const FailName : string; const Msg : string; const Args : array of const ); overload;
+    procedure Log( const FailName : string; const Msg : string; const StackTrace : string; const Args : array of const ); overload;
     procedure Log( const Msg : string ); overload;
     procedure LogEntry( const FailName : string );
     procedure DebugLog( const FailName : string );
@@ -338,6 +339,22 @@ begin
     S := AnsiString( TimeToStr( Time ) + ' ' + Format( '%8.8d', [ Game.FrameCount ] ) + ': ' + Msg + #13#10 )
   else
     S := AnsiString( TimeToStr( Time ) + ' ' + Format( '%8.8d', [ -1 ] ) + ': ' + Msg + #13#10 );
+//  b := TEncoding.UTF8.GetBytes(s);
+  Write( S[1], Length( S ) );
+  if ( RealCurrDbgGroup and DbgFlushLog ) <> 0 then
+    FlushFileBuffers( Handle );
+end;
+
+procedure TLog.Log(const FailName, Msg, StackTrace: string; const Args: array of const);
+var
+  S : AnsiString;
+begin
+  CurrDbgLvl := RealCurrDbgLvl;
+  CurrDbgGroup := RealCurrDbgGroup;
+  if Game <> nil then
+    S := AnsiString( TimeToStr( Time ) + ' ' + Format( '%8.8d', [ Game.FrameCount ] ) + ': ' + Msg + sLineBreak + StackTrace )
+  else
+    S := AnsiString( TimeToStr( Time ) + ' ' + Format( '%8.8d', [ -1 ] ) + ': ' + Msg + sLineBreak + StackTrace );
 //  b := TEncoding.UTF8.GetBytes(s);
   Write( S[1], Length( S ) );
   if ( RealCurrDbgGroup and DbgFlushLog ) <> 0 then

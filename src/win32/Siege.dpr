@@ -131,7 +131,8 @@ uses
   SteamworksTypes in 'platforms\steamIntegration\SteamworksTypes.pas',
   MfPlayerClass in 'MfPlayer\MfPlayerClass.pas',
   UniThreadTimer in 'MfPlayer\UniThreadTimer.pas',
-  D3DMousePtr in 'engine\D3DMousePtr.pas';
+  D3DMousePtr in 'engine\D3DMousePtr.pas',
+  SoAOS.StackTrace in 'engine\SoAOS.StackTrace.pas';
 
 {$R *.RES}
 
@@ -176,7 +177,7 @@ begin
 
     Application.ProcessMessages;
     Application.CreateForm(TfrmMain, frmMain);
-    if (ChosenDisplayIndex >= 0) and (ChosenDisplayIndex < Screen.MonitorCount) then
+  if (ChosenDisplayIndex >= 0) and (ChosenDisplayIndex < Screen.MonitorCount) then
     begin
       frmMain.ChosenDisplayIndex := ChosenDisplayIndex;
       frmMain.Left := Screen.Monitors[ChosenDisplayIndex].Left;
