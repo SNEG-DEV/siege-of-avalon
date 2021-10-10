@@ -189,8 +189,8 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <VerInfo_MinorVer>20</VerInfo_MinorVer>
         <VerInfo_Release>2</VerInfo_Release>
-        <VerInfo_Build>1437</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.20.2.1437;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=</VerInfo_Keys>
+        <VerInfo_Build>1442</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.20.2.1442;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=</VerInfo_Keys>
         <DCC_Optimize>false</DCC_Optimize>
         <DCC_DebugInformation>2</DCC_DebugInformation>
         <DCC_LocalDebugSymbols>true</DCC_LocalDebugSymbols>
@@ -199,6 +199,8 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
         <DCC_ExeOutput>..\..\soa-resources</DCC_ExeOutput>
+        <Icon_MainIcon>Siege_Icon.ico</Icon_MainIcon>
+        <DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
@@ -351,8 +353,8 @@ $(PostBuildEvent)]]></PostBuildEvent>
                     <Source Name="MainSource">Siege.dpr</Source>
                 </Source>
                 <Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k260.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp260.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k270.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp270.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
                 </Excluded_Packages>
             </Delphi.Personality>
             <Platforms>
@@ -360,13 +362,13 @@ $(PostBuildEvent)]]></PostBuildEvent>
                 <Platform value="Win64">False</Platform>
             </Platforms>
             <Deployment Version="3">
-                <DeployFile LocalName="..\..\assets\Interface\spellbarFullHD.bmp" Configuration="Debug" Class="ProjectFile">
+                <DeployFile LocalName="..\..\assets\Interface\XRay.bmp" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="..\..\assets\Interface\chaLeftArrow.bmp" Configuration="Release" Class="ProjectFile">
+                <DeployFile LocalName="..\..\assets\Interface\spellbarFullHD.bmp" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
@@ -444,12 +446,6 @@ $(PostBuildEvent)]]></PostBuildEvent>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="..\..\assets\Interface\glow.bmp" Configuration="Release" Class="ProjectFile">
-                    <Platform Name="Win32">
-                        <RemoteDir>.\</RemoteDir>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
                 <DeployFile LocalName="..\..\assets\Interface\blkchcry.ttf" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
@@ -486,13 +482,13 @@ $(PostBuildEvent)]]></PostBuildEvent>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="..\..\soa-resources\Siege.exe" Configuration="Release" Class="ProjectOutput">
+                <DeployFile LocalName="..\..\assets\Interface\chaLeftArrow.bmp" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
-                        <RemoteName>Siege.exe</RemoteName>
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="..\..\assets\Interface\XRay.bmp" Configuration="Debug" Class="ProjectFile">
+                <DeployFile LocalName="..\..\assets\Interface\glow.bmp" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
@@ -1597,6 +1593,35 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <DCCReference Include="MfPlayer\UniThreadTimer.pas"/>
         <DCCReference Include="engine\D3DMousePtr.pas"/>
         <DCCReference Include="engine\SoAOS.StackTrace.pas"/>
+        <DCCReference Include="jcl\JclDebug.pas"/>
+        <DCCReference Include="jcl\JclBase.pas"/>
+        <DCCReference Include="jcl\JclResources.pas"/>
+        <DCCReference Include="jcl\JclFileUtils.pas"/>
+        <DCCReference Include="jcl\JclWin32.pas"/>
+        <DCCReference Include="jcl\JclSysUtils.pas"/>
+        <DCCReference Include="jcl\JclSynch.pas"/>
+        <DCCReference Include="jcl\JclLogic.pas"/>
+        <DCCReference Include="jcl\JclRegistry.pas"/>
+        <DCCReference Include="jcl\JclStrings.pas"/>
+        <DCCReference Include="jcl\JclSysInfo.pas"/>
+        <DCCReference Include="jcl\JclAnsiStrings.pas"/>
+        <DCCReference Include="jcl\JclWideStrings.pas"/>
+        <DCCReference Include="jcl\JclStreams.pas"/>
+        <DCCReference Include="jcl\JclStringConversions.pas"/>
+        <DCCReference Include="jcl\JclCharsets.pas"/>
+        <DCCReference Include="jcl\JclMath.pas"/>
+        <DCCReference Include="jcl\Jcl8087.pas"/>
+        <DCCReference Include="jcl\JclConsole.pas"/>
+        <DCCReference Include="jcl\JclSecurity.pas"/>
+        <DCCReference Include="jcl\JclShell.pas"/>
+        <DCCReference Include="jcl\JclUnicode.pas"/>
+        <DCCReference Include="jcl\Snmp.pas"/>
+        <DCCReference Include="jcl\JclIniFiles.pas"/>
+        <DCCReference Include="jcl\JclDateTime.pas"/>
+        <DCCReference Include="jcl\JclPeImage.pas"/>
+        <DCCReference Include="jcl\JclTD32.pas"/>
+        <DCCReference Include="jcl\JclHookExcept.pas"/>
+        <DCCReference Include="engine\SoAOS.SysUtils.pas"/>
         <RcItem Include="..\..\assets\Interface\blkchcry.ttf">
             <ResourceType>FONT</ResourceType>
             <ResourceId>1</ResourceId>

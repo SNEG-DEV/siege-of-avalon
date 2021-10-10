@@ -99,7 +99,8 @@ implementation
 uses
   System.StrUtils,
   Engine,
-  System.IniFiles;
+  System.IniFiles,
+  SoAOS.SysUtils;
 
 { TLog }
 
@@ -148,6 +149,7 @@ end;
 procedure TLog.OutputLogHeader;
 var
   S : AnsiString;
+  WineVer: string;
 //  B : TBytes;
 begin
 
@@ -205,6 +207,14 @@ begin
 
     // The amount of avalable bytes that is left to your program to use.
     S := S + AnsiString( IntToStr( dwAvailVirtual ) + ' Available User bytes of address space' + #13#10 );
+
+    S := S + #13#10 + TOSVersion.ToString + #13#10;
+
+    if IsRunningUnderWINE(WineVer) then
+      S := S + AnsiString( 'Running under WINE ('+WineVer+')' + #13#10 );
+
+    if IsMFAvailable then
+      S := S + AnsiString( 'Media Foundation available' + #13#10 );
 
     // Nice little block seperator
     S := S + AnsiString( #13#10 + ' ===== End Of Header =====' + #13#10 + #13#10 );

@@ -389,6 +389,7 @@ uses
   SoAOS.AI,
   SoAOS.AI.Helper,
   SoAOS.Intrface.KeyEvents,
+  SoAOS.SysUtils,
   System.Types,
   DFX,
   Parts,
@@ -396,8 +397,7 @@ uses
   Music,
   MP3,
   Engine,
-  SaveFile
-  ;
+  SaveFile;
 
 {$R *.DFM}
 
@@ -2033,6 +2033,7 @@ end;
 procedure TfrmMain.FormCreate(Sender: TObject);
 var
   SiegeIni: TIniFile;
+  WINEVer: string;
 begin
   OpeningVideoPanel.Cursor := crNone;
   ClosingVideoPanel.Cursor := crNone;
@@ -2046,9 +2047,18 @@ begin
     FClosingMovie := SiegeIni.ReadString( 'Settings', 'MoviePath', ExtractFilePath( Application.ExeName ) + 'Movies' ) + '\' + SiegeIni.ReadString( 'Settings', 'ClosingMovie', 'SiegeClosing.wmv' );
     FShowIntro := LowerCase( SiegeIni.ReadString( 'Settings', 'ShowIntro', 'true' ) ) = 'true';
     FShowOutro := LowerCase( SiegeIni.ReadString( 'Settings', 'ShowOutro', 'true' ) ) = 'true';
+    // Experimental WINE/Proton/SteamPlay AS-IS support
+    // We currently disable Intro/Outtro playback under Wine/Proton - since MF issue
+    if IsRunningUnderWINE(WINEVer) then
+    begin
+      CustomDDrawDLL := True;
+      FShowIntro := False;
+      FShowOutro := False;
+    end;
   finally
     SiegeIni.Free;
   end;
+  Application.OnException := AppException;
 end;
 
 procedure TfrmMain.WMInitDDraw( var Message: TWMNoParams );
@@ -2083,7 +2093,6 @@ begin
   ScreenMetrics := cOriginal; // cOriginal or  cHD or cFullHD - TBA
   AdjustedPartyHitPoints := False; // True = Rucksacksepp's HP adjusted by number of PartyMembers
 
-  Application.OnException := AppException;
   Application.OnActivate := AppActivate;
   Application.OnDeactivate := AppDeactivate;
 
@@ -5954,7 +5963,7 @@ begin
   FreeAll;
   UnloadDDraw;
   D3D11Renderer.Free;
-  if FileExists(FClosingMovie) then
+  if FShowOutro and FileExists(FClosingMovie) then
     PostMessage(Handle, WM_PlayClosingMovie, 0, 0)
   else
     Close;

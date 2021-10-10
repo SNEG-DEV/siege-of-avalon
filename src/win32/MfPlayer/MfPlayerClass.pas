@@ -1449,6 +1449,8 @@ begin
   Seeking        // Session seeks
   }
 
+  // Wine/Proton/SteamPlay issue?
+  { TODO -osn -cWINE : Figure out why this fails under WINE/Proton. plain SteamPlay - even if mfplat.dll is avail }
   UpdatePendingCommands(req);
 end;
 
