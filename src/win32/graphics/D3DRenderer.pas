@@ -30,8 +30,6 @@ type
     FTextureSRV: ID3D11ShaderResourceView;
     FEnabled: Boolean;
     FSize, FViewportSize: TSize;
-
-    FSourceRect, FDestRect: TRect;
   public
     Constructor Create(Renderer: TDXRenderer; aWidth, aHeight: Integer; aFormat, aBlend: Integer);
     Destructor Destroy; override;
@@ -70,7 +68,6 @@ type
       FMainLayer: TDXRenderLayer;
 
       FThread: TDXPresenterThread;
-      FQuitThread: Boolean;
 
       FDeviceLock: TCriticalSection;
 
@@ -473,7 +470,7 @@ begin
         if Color = TransparentColor then
           (Destination + Source.Width * I + J)^ := Color
         else
-          (Destination + Source.Width * I + J)^ := Color or $FF000000;
+          (Destination + Source.Width * I + J)^ := Color or Integer($FF000000);
       end;
     end;
   finally
@@ -665,6 +662,9 @@ begin
       blend_desc.RenderTarget[0].RenderTargetWriteMask :=
         Byte(D3D11_COLOR_WRITE_ENABLE_ALL);
       Res := FDevice.CreateBlendState(blend_desc, FBlendState);
+
+      If Failed(Res) then
+        Log.Log('D3D', 'Failed to set blend state of device (%.8X)', [Res]);
     end;
 
     if aFormat = dxfmt_565 then
@@ -680,6 +680,11 @@ begin
     else if aFormat = dxfmt_8888 then
     begin
       PixelFormat := DXGI_FORMAT_R8G8B8A8_UNORM;
+      FragShader := fragment_shader;
+    end
+    else
+    begin
+      PixelFormat := DXGI_FORMAT_B5G6R5_UNORM;
       FragShader := fragment_shader;
     end;
 
@@ -716,20 +721,11 @@ begin
     Res := FShader.SetTexture(FDeviceContext, FTextureSRV);
 
     If Failed(Res) then
-    begin
       Log.Log('D3D', 'Failed to set texture to shader (%.8X)', [Res]);
-    end;
 
   finally
     FRenderer.Unlock;
   end;
-
-//  Res := FShader.Activate(FDeviceContext);
-//  If Failed(Res) then
-//  begin
-//    Log.Log('D3D', 'Failed to activate shader (%.8X)', [Res]);
-//  end;
-
 end;
 
 destructor TDXRenderLayer.Destroy;
@@ -781,7 +777,7 @@ end;
 
 procedure TDXRenderLayer.SetSourceRect(aRect: TRect);
 var
-  T1, S, T2, Temp, R: TD3DMatrix;
+  T1, S, Temp: TD3DMatrix;
 begin
   D3DXMatrixTranslation(T1, aRect.Left/FSize.Width, aRect.Top/FSize.Height, 0);
   D3DXMatrixScaling(S, aRect.Width/FSize.Width, aRect.Height/FSize.Height, 1.0);
@@ -898,7 +894,6 @@ var
   FrameTime: Double;
   CurrentTime: Double;
   TimeToWait: Double;
-  I: Integer;
 begin
   if FEndOfPrevFrame <> 0 then
   begin

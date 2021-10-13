@@ -62,6 +62,8 @@ begin
   FAchievements.Add('04learnedcamo|04learnedfocus|04learnedsw', 'ACH_SCOUTMASTERS_TRAINING_TASKS');
   FAchievements.Add('04ramdestroyed', 'ACH_DESTROY_THE_RAM');
   FAchievements.Add('04odead', 'ACH_KILL_OVORON');
+  //My idea: Mithras ONDie: player.iftitle(Hardmode);player.addtitle(06Hart);endif;
+  //FAchievements.Add('06Hart', 'ACH_HARDMODE');
   // Extra SNEG
   FAchievements.Add('01EndChapter', 'ACH_ACT1');
   FAchievements.Add('02endofch2', 'ACH_ACT2');

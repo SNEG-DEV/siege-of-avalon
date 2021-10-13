@@ -208,7 +208,7 @@ begin
     // The amount of avalable bytes that is left to your program to use.
     S := S + AnsiString( IntToStr( dwAvailVirtual ) + ' Available User bytes of address space' + #13#10 );
 
-    S := S + #13#10 + TOSVersion.ToString + #13#10;
+    S := S + #13#10 + AnsiString( TOSVersion.ToString ) + #13#10;
 
     if IsRunningUnderWINE(WineVer) then
       S := S + AnsiString( 'Running under WINE ('+WineVer+')' + #13#10 );

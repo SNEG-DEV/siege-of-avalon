@@ -187,6 +187,7 @@ var
 begin
   error := PAnsiChar(pErrorBuffer.GetBufferPointer());
   Log.Log('D3DShader', '%s', [error]);
+  Result := S_OK;
 end;
 
 function TDXAbstractShader.Initialize(pDevice: ID3D11Device; aPSName,

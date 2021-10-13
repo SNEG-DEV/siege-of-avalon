@@ -123,7 +123,7 @@ end;
 
 procedure TLoaderBox.Init;
 var
-  BltFx : TDDBLTFX;
+  BltFx1 : TDDBLTFX;
   i : integer;
   pr : TRect;
 const
@@ -137,8 +137,8 @@ begin
     OldValue := 0;
 
     DXBox := SoAOS_DX_LoadBMP( FileName, cInvisColor, DlgWidth, DlgHeight );
-    BltFx.dwSize := SizeOf( BltFx );
-    BltFx.dwFillColor := SoAOS_DX_ColorMatch( DXBox, cLoadColor ); // RGB( 205, 205, 205 )
+    BltFx1.dwSize := SizeOf( BltFx1 );
+    BltFx1.dwFillColor := SoAOS_DX_ColorMatch( DXBox, cLoadColor ); // RGB( 205, 205, 205 )
 
     if ScreenMetrics.borderFile<>'' then
       lpDDSBack.BltFast( 0, 0, frmMain.FillBorder, nil, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );

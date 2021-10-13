@@ -103,7 +103,7 @@ type
     DXBackToGame : IDirectDrawSurface; //Back To Game highlight
     DXBrown : IDirectDrawSurface; //Show where we can drop item in inventory
     SlotName : TStringList; //names of each slot we plot on screen
-    SlotCoord : array[ 0..16 ] of BodySlotCoord; //coordinates used to generate rects
+    SlotCoord : array[ 0..20 ] of BodySlotCoord; //coordinates used to generate rects
     GroundOrderList : TList<pTempItems>; //used to keep track of the order of items on the ground
     TopGroundIndex : Integer; //Index of the current top ground item
     Alpha : integer;
@@ -248,22 +248,42 @@ begin
     SlotCoord[ 13 ].cy := 125;
     SlotCoord[ 13 ].cr := 40;
 
-    SlotName.Add( 'Misc1' );
-    SlotCoord[ 14 ].cx := 343;
-    SlotCoord[ 14 ].cy := 103;
-    SlotCoord[ 14 ].cr := 21;
+    SlotName.Add( 'Coif' );
+    SlotCoord[ 14 ].cx := 395;
+    SlotCoord[ 14 ].cy := 85;
+    SlotCoord[ 14 ].cr := 25;
 
-    SlotName.Add( 'Misc2' );
-    SlotCoord[ 15 ].cx := 321;
-    SlotCoord[ 15 ].cy := 138;
+    SlotName.Add( 'Healthpois' );
+    SlotCoord[ 15 ].cx := 570;
+    SlotCoord[ 15 ].cy := 40;
     SlotCoord[ 15 ].cr := 21;
 
-    SlotName.Add( 'Misc3' );
-    SlotCoord[ 16 ].cx := 363;
-    SlotCoord[ 16 ].cy := 138;
+    SlotName.Add( 'ManaPois' );
+    SlotCoord[ 16 ].cx := 620;
+    SlotCoord[ 16 ].cy := 40;
     SlotCoord[ 16 ].cr := 21;
 
-    for i := 0 to 16 do
+    SlotName.Add( 'Misc1' );
+    SlotCoord[ 17 ].cx := 343;
+    SlotCoord[ 17 ].cy := 103;
+    SlotCoord[ 17 ].cr := 21;
+
+    SlotName.Add( 'Misc2' );
+    SlotCoord[ 18 ].cx := 321;
+    SlotCoord[ 18 ].cy := 138;
+    SlotCoord[ 18 ].cr := 21;
+    //Tatt to Slot 19 because in the old code Slot 19 was buggy and always open
+    SlotName.Add( 'Tatt' );
+    SlotCoord[ 19 ].cx := 0;
+    SlotCoord[ 19 ].cy := 0;
+    SlotCoord[ 19 ].cr := 0;
+
+    SlotName.Add( 'Misc3' );
+    SlotCoord[ 20 ].cx := 363;
+    SlotCoord[ 20 ].cy := 138;
+    SlotCoord[ 20 ].cr := 21;
+
+    for i := 0 to 20 do
     begin //set up the collision rects
       SlotCoord[ i ].Rect.Left := SlotCoord[ i ].cx - SlotCoord[ i ].cr;
       SlotCoord[ i ].Rect.Right := SlotCoord[ i ].cx + SlotCoord[ i ].cr;
@@ -421,7 +441,7 @@ begin
       else
       begin
         pInventoryItem.InvX := 999; //set it offscreen so we dont see it
-        pInventoryItem.InvY := 999;
+        pInventoryItem.InvY := 1099; //war 999, bei FullHD sonst nicht außerhalb
       end;
       pInventoryItem.ItemType := 'Ground';
       pInventoryItem.CharacterHadThisOnHim := False;
@@ -575,7 +595,7 @@ begin
             pr := Rect( 275, 384, 353, 416 );
             lpDDSBack.BltFast( 275 + Offset.X, 384 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
             GroundOrderList[ j ].InvX := 999;
-            GroundOrderList[ j ].InvY := 999;
+            GroundOrderList[ j ].InvY := 1099;
             j := j - 1;
           //Set the coordinates of the new item and Plot it
             GroundOrderList[ j ].InvX := 277; //315-pTempItems(GroundOrderList.Items[j]).IW div 2;
@@ -601,7 +621,7 @@ begin
             pr := Rect( 275, 384, 353, 416 );
             lpDDSBack.BltFast( 275 + Offset.X, 384 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
             GroundOrderList[ j ].InvX := 999;
-            GroundOrderList[ j ].InvY := 999;
+            GroundOrderList[ j ].InvY := 1099;
             j := j + 1;
           //Set the coordinates of the new item and Plot it
             GroundOrderList[ j ].InvX := 277; //315-pTempItems(GroundOrderList.Items[j]).IW div 2;
@@ -775,7 +795,7 @@ begin
         if GroundOrderList.Count > 0 then
         begin //If we have any ground items
           GroundOrderList[ TopGroundIndex ].InvX := 999; //put old item offscreen- no longer on top
-          GroundOrderList[ TopGroundIndex ].InvY := 999;
+          GroundOrderList[ TopGroundIndex ].InvY := 1099;
         //GroundOrderList.Insert(TopGroundIndex, pTempItems(ItemList.Items[CurrentSelectedItem]));
           j := GroundOrderList.Add( ItemList[ CurrentSelectedItem ] );
           GroundOrderList.Move( j, TopGroundIndex );
@@ -1290,7 +1310,7 @@ begin
     R1.Right := R1.Left + ItemList[ CurrentSelectedItem ].W;
     R1.Top := Integer( Y  - Offset.Y - ( ItemList[ CurrentSelectedItem ].H div 2 ) );
     R1.Bottom := R1.Top + ItemList[ CurrentSelectedItem ].H;
-    for i := 0 to 16 do
+    for i := 0 to 20 do
     begin //check where we will land vs all other inv items for collision
       k := IntersectRect( R3, SlotCoord[ i ].Rect, R1 );
       if k then

@@ -1262,7 +1262,7 @@ var
   LastSpace : integer;
   LineBreak : array[ 0..50 ] of integer;
   daString : RawByteString;
-  bytes: RawByteString;
+  bytes: TBytes;
 const
   FailName : string = 'TGameText.BreakTextIntoAStringList';
 begin
@@ -1273,7 +1273,7 @@ begin
     TheLength := 0;
     LastSpace := 0;
     LineBreak[ 0 ] := 9999; //in case there are no line breaks, we initalize to an absurdly high number
-    bytes := Sentence;
+    bytes := TEncoding.ANSI.GetBytes(Sentence);
     while i <= Length( bytes ) do
     begin
       j := ord( bytes[ i ] );

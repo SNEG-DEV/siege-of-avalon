@@ -224,7 +224,6 @@ uses
   System.SysUtils,
   SoAOS.AI.Types,
   SoAOS.AI.Helper,
-  AniDemo,
   Engine,
   LogFile;
 
@@ -507,7 +506,7 @@ end;
 
 procedure TUndeadIdle.FindTarget;
 var
-  iStealth : integer;
+  iStealth : single;
 
 const
   FailName : string = 'TUndeadIdle.FindTarget';
@@ -517,9 +516,9 @@ begin
     if ( FrameCount mod 40 ) = 0 then
     begin
       if Current.Stealth < 1 then
-        istealth := ( 1 div 100 )
+        istealth := 0
       else
-        iStealth := ( current.stealth div 100 );
+        iStealth := ( current.stealth / game.IStealthFactor ); //war div, ergibt aber nur Ganzahlen, also =0 oder =1
       if character.RangeTo( Current.x, Current.y ) < ( ( character.Vision - ( character.Vision * iStealth ) ) * GetFacing( character.x, character.y, current.x, current.y ) ) then
         if game.LineOfSight( character.x, character.y, current.x, current.y ) then
         begin

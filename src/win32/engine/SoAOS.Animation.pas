@@ -435,6 +435,7 @@ type
     MouseOverTile: PGridInfo;
     MousePosition: TPoint;
     ForceRefresh: Boolean;
+    IStealthFactor: Integer; // für BasicHumanoid-, Undead- und MiscAI
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure InitDX(Handle: HWND; ResW, ResH, BPP, RefreshRate: Integer; Windowed, VSync: Boolean; MaxFPS: Integer);

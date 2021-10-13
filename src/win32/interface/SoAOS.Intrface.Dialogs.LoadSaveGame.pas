@@ -214,7 +214,8 @@ begin
     DXBackHighlight := SoAOS_DX_LoadBMP( InterfacePath + 'opYellow.bmp', cInvisColor );
 
     DXBack := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'ldLoadSave.bmp', cInvisColor, DlgWidth, DlgHeight );
-
+    if ScreenMetrics.borderFile<>'' then //Neu hinpinseln, da z.B. DoA ein grünes Menü hat
+        lpDDSBack.BltFast( 0, 0, TfrmMain(frmMain).FillBorder, nil, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
     if LoadFile then
       DXTemp := SoAOS_DX_LoadBMP( InterfaceLanguagePath + 'ldLoadDark.bmp', cInvisColor )
     else
@@ -355,10 +356,19 @@ begin
       begin //only show 9 files
         r := ApplyOffset( Rect( 379, 66 + j * 35, 669, 66 + j * 35 + 35 ) );
         pItem( SelectRect.items[ i ] ).rect := r;
+        if Loadfile then
+        begin
+        //When saving, errorcode in Siege.log, so "if Loadfile" added
         pText.WriteText(pItem( SelectRect.items[ i ] ).text, pItem( SelectRect.items[ i ] ).rect.left, pItem( SelectRect.items[ i ] ).rect.top, 14);
-//        ptext.PlotText( pItem( SelectRect.items[ i ] ).text, pItem( SelectRect.items[ i ] ).rect.left, pItem( SelectRect.items[ i ] ).rect.top, 240 );
+        //ptext.PlotText( pItem( SelectRect.items[ i ] ).text, pItem( SelectRect.items[ i ] ).rect.left, pItem( SelectRect.items[ i ] ).rect.top, 240 );
         pText.WriteText(pItem( SelectRect.items[ i ] ).date, 590 + Offset.X, pItem( SelectRect.items[ i ] ).rect.top, 10);
-//        ptext.PlotText( pItem( SelectRect.items[ i ] ).date, 590 + Offset.X, pItem( SelectRect.items[ i ] ).rect.top, 240 );
+        //ptext.PlotText( pItem( SelectRect.items[ i ] ).date, 590 + Offset.X, pItem( SelectRect.items[ i ] ).rect.top, 240 );
+        end
+        else
+        begin
+        ptext.PlotText( pItem( SelectRect.items[ i ] ).text, pItem( SelectRect.items[ i ] ).rect.left, pItem( SelectRect.items[ i ] ).rect.top, 240 );
+        ptext.PlotText( pItem( SelectRect.items[ i ] ).date, 590 + Offset.X, pItem( SelectRect.items[ i ] ).rect.top, 240 );
+        end;
         j := j + 1;
       end
       else
@@ -1000,7 +1010,7 @@ var
   nRect : TRect;
   pr : TRect;
 const
-  FailName : string = 'TCharacter.Attack ';
+  FailName : string = 'TLoadGame.OverwriteSavedFile ';
 begin
 
   Log.DebugLog( FailName );
@@ -1082,13 +1092,22 @@ begin
             pr := Rect( nRect.left - 10, nRect.top - 5, nRect.right, nRect.bottom - 5 );
             DrawAlpha( lpDDSBack, pr, rect( 0, 0, 12, 12 ), DXBackHighlight, False, 40 );
           end;
+          if loadfile then
+          begin
+          //Bei Speichern fehler, sobald eine Datei angeklickt wird, siehe Siege.log
+          //Mein Gedanke: Überschreiben des Bildes von Writetext mit dem alten Plottext verursacht Fehler
           pText.WriteText(pItem( SelectRect.items[ i ] ).text, pItem( SelectRect.items[ i ] ).rect.left, pItem( SelectRect.items[ i ] ).rect.top, 14);
-//          pText.PlotText( pItem( SelectRect.items[ i ] ).text, pItem( SelectRect.items[ i ] ).rect.left, pItem( SelectRect.items[ i ] ).rect.top, 240 );
+          //pText.PlotText( pItem( SelectRect.items[ i ] ).text, pItem( SelectRect.items[ i ] ).rect.left, pItem( SelectRect.items[ i ] ).rect.top, 240 );
           pText.WriteText(pItem( SelectRect.items[ i ] ).date, 590 + Offset.X, pItem( SelectRect.items[ i ] ).rect.top, 10);
-//          pText.PlotText( pItem( SelectRect.items[ i ] ).date, 590 + Offset.X, pItem( SelectRect.items[ i ] ).rect.top, 240 );
+          //pText.PlotText( pItem( SelectRect.items[ i ] ).date, 590 + Offset.X, pItem( SelectRect.items[ i ] ).rect.top, 240 );
+          end
+          else
+          begin
+          pText.PlotText( pItem( SelectRect.items[ i ] ).text, pItem( SelectRect.items[ i ] ).rect.left, pItem( SelectRect.items[ i ] ).rect.top, 240 );
+          pText.PlotText( pItem( SelectRect.items[ i ] ).date, 590 + Offset.X, pItem( SelectRect.items[ i ] ).rect.top, 240 );
+          end;
         end;
       end; //end for
-
     end; //endif
 
     if CurrentSelectedListItem > -1 then
@@ -1259,7 +1278,7 @@ var
   Filename : string;
   FoundCharacters : boolean;
 const
-  FailName : string = 'TCharacter.Attack ';
+  FailName : string = 'TLoadGame.LoadGame ';
 begin
   Log.DebugLog( FailName );
   result := false;

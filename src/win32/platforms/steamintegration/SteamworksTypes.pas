@@ -322,6 +322,8 @@ Type
   // -----------------------------------------------------------------------------
   // Purpose: designed as flags to allow filters masks
   // -----------------------------------------------------------------------------
+{$WARN BOUNDS_ERROR OFF}
+  // Should be implemented as record consts
   TAppType = (k_EAppType_Invalid = $000, // unknown / invalid
     k_EAppType_Game = $001, // playable game, default type
     k_EAppType_Application = $002, // software application
@@ -341,6 +343,7 @@ Type
     k_EAppType_Shortcut = $40000000, // just a shortcut, client side only
     k_EAppType_DepotOnly = $80000000 // placeholder since depots and apps share the same namespace
     );
+{$WARN BOUNDS_ERROR ON}
 
   // -----------------------------------------------------------------------------
   // types of user game stats fields
@@ -432,9 +435,12 @@ Type
    k_EMarketingMessageFlagsHighPriority = 1 Shl 0,
    k_EMarketingMessageFlagsPlatformWindows = 1 Shl 1,
    k_EMarketingMessageFlagsPlatformMac = 1 Shl 2,
-   k_EMarketingMessageFlagsPlatformLinux = 1 Shl 3,
+   k_EMarketingMessageFlagsPlatformLinux = 1 Shl 3
+   );
+   const k_EMarketingMessageFlagsPlatformRestrictions = byte(k_EMarketingMessageFlagsPlatformWindows) OR byte(k_EMarketingMessageFlagsPlatformMac) Or byte(k_EMarketingMessageFlagsPlatformLinux);
+   Type
    // aggregate flags
-   k_EMarketingMessageFlagsPlatformRestrictions = k_EMarketingMessageFlagsPlatformWindows OR k_EMarketingMessageFlagsPlatformMac Or k_EMarketingMessageFlagsPlatformLinux);
+   //k_EMarketingMessageFlagsPlatformRestrictions = byte(k_EMarketingMessageFlagsPlatformWindows) OR byte(k_EMarketingMessageFlagsPlatformMac) Or byte(k_EMarketingMessageFlagsPlatformLinux));
   {$endif}
 
 

@@ -381,7 +381,7 @@ begin
       begin
         pr := Rect( 0, 0, DlgWidth, DlgHeight );
         lpDDSBack.BltFast( Offset.X, Offset.Y, Image, @pr, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT );
-        pr := Rect( Offset.X + 560, Offset.Y + 378, Offset.X + 560 + 61, Offset.Y + 378 + 45 );
+        pr := ApplyOffset( Rect( 560, 378, 560 + 61, 378 + 45 ) );
         DXDirty.BltFast( 0, 0, lpDDSBack, @pr, DDBLTFAST_WAIT );
       end;
     finally

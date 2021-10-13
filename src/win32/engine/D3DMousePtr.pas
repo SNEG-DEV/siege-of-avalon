@@ -31,12 +31,11 @@ type
     FLayer: TDXRenderLayer;
     FRenderer: TDXRenderer;
     FMouseThread: TMouseUpdaterThread;
-
+  protected
     procedure SetPlotDirty(const Value: Boolean); override;
     function GetPlotDirty: Boolean; override;
     procedure SetEnabled(const Value: Boolean); override;
     function GetEnabled: Boolean; override;
-  protected
   public
     constructor Create(Renderer: TDXRenderer);
     destructor Destroy; override;

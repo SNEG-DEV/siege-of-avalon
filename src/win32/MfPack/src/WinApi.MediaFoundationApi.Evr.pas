@@ -419,12 +419,12 @@ type
 
     // This API is not supported anymore.
     // Note: No longer available since SDK version RedStone 5
-    function SetFullscreen(fFullscreen: BOOL): HRESULT; stdcall; deprecated 'This API is not longer available since SDK version RedStone 5';
+//    function SetFullscreen(fFullscreen: BOOL): HRESULT; stdcall; deprecated 'This API is not longer available since SDK version RedStone 5';
 
     // Queries whether the enhanced video renderer (EVR) is currently in full-screen mode.
     // This API is not supported anymore.
     // Note: No longer available since SDK version RedStone 5
-    function GetFullscreen(out pfFullscreen: BOOL): HRESULT; stdcall; deprecated 'This API is not longer available since SDK version RedStone 5';
+//    function GetFullscreen(out pfFullscreen: BOOL): HRESULT; stdcall; deprecated 'This API is not longer available since SDK version RedStone 5';
 
   end;
   IID_IMFVideoDisplayControl = IMFVideoDisplayControl;

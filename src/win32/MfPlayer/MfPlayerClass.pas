@@ -195,8 +195,8 @@ type
     procedure SetVideoScreen(val: HWND);
     function GetVideoScreen(): HWND;
 
-    procedure SetFullScreen(val: LongBool); deprecated 'This API is not supported and is unavailable since Redstone 5. ';
-    function IsFullScreen(): LongBool;
+//    procedure SetFullScreen(val: LongBool); deprecated 'This API is not supported and is unavailable since Redstone 5. ';
+//    function IsFullScreen(): LongBool;
 
     function UpdatePendingCommands(req: TRequest): HRESULT;
 
@@ -321,7 +321,7 @@ type
     property SetNewPosition: MFTIME write GotoNewPosition;
     property Position: MFTIME read mfpControl.CurrentPosition;
     property SetVideoSurface: HWND read GetVideoScreen write SetVideoScreen;
-    property FullScreen: LongBool read IsFullScreen write SetFullScreen;
+//    property FullScreen: LongBool read IsFullScreen write SetFullScreen;
     property State: TPlayerState read GetState;
   end;
 
@@ -1548,18 +1548,18 @@ begin
 end;
 
 
-procedure TMfPlayer.SetFullScreen(val: LongBool);
-begin
-  if Assigned(m_pVideoDisplay) then
-    m_pVideoDisplay.SetFullscreen(val);
-end;
+//procedure TMfPlayer.SetFullScreen(val: LongBool);
+//begin
+//  if Assigned(m_pVideoDisplay) then
+//    m_pVideoDisplay.SetFullscreen(val);
+//end;
 
 
-function TMfPlayer.IsFullScreen(): LongBool;
-begin
-  if Assigned(m_pVideoDisplay) then
-    {void} m_pVideoDisplay.GetFullscreen(Result);
-end;
+//function TMfPlayer.IsFullScreen(): LongBool;
+//begin
+//  if Assigned(m_pVideoDisplay) then
+//    {void} m_pVideoDisplay.GetFullscreen(Result);
+//end;
 
 
 function TMfPlayer.GetPosition(out hnsPosition: MFTIME): HRESULT;

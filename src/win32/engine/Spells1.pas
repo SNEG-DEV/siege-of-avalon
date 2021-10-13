@@ -444,35 +444,94 @@ begin
       Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
       Effect.Power := Source.Mysticism;
       Effect.DisableWhenDone := true;
-      Effect.Duration := Source.Mysticism * 10;
+      Effect.Duration := ( Source.Mysticism * 7 ) + ( Source.Constitution * 5 ); //Dauer für Krieger und Kundschafter länger
       Effect.DoAction( 'Default', NewCharacter.Facing );
 
       case i of
-        0 : NewCharacter.SetPos( Source.X, Source.Y + 50, Source.z );
-        1 : NewCharacter.SetPos( Source.X + 50, Source.Y, Source.z );
-        2 : NewCharacter.SetPos( Source.X - 50, Source.Y, Source.z );
+        0 :
+        begin
+             NewCharacter.SetPos( Source.X, Source.Y + 50, Source.z );
+             if Source.titleExists( 'MirrorImp' ) then //verbesserter Spiegelzauber, eigentlich nur als Krieger und Kundschafter brauchbar
+             begin
+                  if Source.titleExists ( 'hunter' ) then
+                  begin //Kundschafter
+                         NewCharacter.addtitle( 'scout' );
+                         NewCharacter.addtitle( 'MeleeRanged' );
+                  end
+                  else if Source.titleExists ( 'apprentice' ) then
+                  begin  //Magier
+                         NewCharacter.addtitle( 'mage' );
+                         NewCharacter.addtitle( 'MagicDefensive' );
+                         NewCharacter.addtitle( 'caster' );
+                  end
+                  else if Source.titleExists ( 'squire' ) then
+                  begin  //Krieger
+                         NewCharacter.addtitle( 'fighter' );
+                         NewCharacter.addtitle( 'MeleeAgressive' );
+                  end;
+             end;
+        end;
+        1 :
+        begin
+             NewCharacter.SetPos( Source.X + 50, Source.Y, Source.z );
+             if Source.titleExists( 'MirrorImp' ) then
+             begin  //immer ein Magier = Verbesserung
+                  NewCharacter.addtitle( 'mage' );
+                  NewCharacter.addtitle( 'MagicDefensive' );
+                  NewCharacter.addtitle( 'caster' );
+             end;
+        end;
+        2 :
+        begin
+             NewCharacter.SetPos( Source.X - 50, Source.Y, Source.z );
+             if Source.titleExists( 'MirrorImp' ) then
+             begin
+                  if Source.titleExists ( 'hunter' ) then
+                  begin //Kundschafter
+                        NewCharacter.addtitle( 'scout' );
+                        NewCharacter.addtitle( 'MeleeRanged' );
+                  end
+                  else if Source.titleExists ( 'apprentice' ) then
+                  begin //Magier
+                        NewCharacter.addtitle( 'mage' );
+                        NewCharacter.addtitle( 'MagicDefensive' );
+                        NewCharacter.addtitle( 'caster' );
+                  end
+                  else if Source.titleExists ( 'squire' ) then
+                  begin  //Krieger
+                        NewCharacter.addtitle( 'fighter' );
+                        NewCharacter.addtitle( 'MeleeAgressive' );
+                  end;
+             end;
       end;
+      end; //end Case
+      if not Source.titleexists ('MirrorImp') then
+         begin
       if Source.titleExists( 'Apprentice' ) then
       begin
         NewCharacter.addtitle( 'mage' );
         NewCharacter.addtitle( 'MagicDefensive' );
+              NewCharacter.addtitle( 'caster' );
       end;
 
       if Source.titleExists( 'Hunter' ) then
       begin
         NewCharacter.addtitle( 'scout' );
         NewCharacter.addtitle( 'MeleeRanged' );
+              NewCharacter.addtitle( 'caster' );
       end;
 
       if Source.titleExists( 'Squire' ) then
       begin
         NewCharacter.addtitle( 'fighter' );
         NewCharacter.addtitle( 'MeleeAgressive' );
+              NewCharacter.addtitle( 'caster' );
       end;
+      end; //End MirrorImp
 
       NewCharacter.addtitle( 'combative' );
       NewCharacter.addtitle( 'stayclose' );
-      NewCharacter.addtitle( 'caster' );
+      //NewCharacter.addtitle( 'caster' ); //nach oben verschoben
 
 
       NewCharacter.addtitle( 'charge' );
@@ -481,9 +540,9 @@ begin
       NewCharacter.addtitle( 'frost' );
       NewCharacter.addtitle( 'flame' );
       NewCharacter.addtitle( 'heal' );
-      NewCharacter.addtitle( 'greater healing' );
-      NewCharacter.addtitle( 'fireball' );
-      NewCharacter.addtitle( 'Aura of Iron' );
+      NewCharacter.addtitle( 'minor healing' );  //war 'greater healing', man muss ja nicht gleich übertreiben
+      //NewCharacter.addtitle( 'fireball' );
+      //NewCharacter.addtitle( 'Aura of Iron' );
       NewCharacter.addtitle( 'aura of steel' );
 
       NewCharacter.onDie := 'Doeffect(fadeaway)';
@@ -629,6 +688,8 @@ begin
 
   Log.DebugLog( FailName );
   try
+    result := 30 - ( Source.mysticism div 6 );
+    if result < 20 then
     result := 20;
 
   except
@@ -735,7 +796,7 @@ begin
   Log.DebugLog( FailName );
   try
 
-    result := ( 10 * NPCList.Count ) + round( Source.Restriction / 10 );
+    result := ( 9 * NPCList.Count ) + round( Source.Restriction / 10 );
 
   except
     on E : Exception do
@@ -750,7 +811,7 @@ begin
   Log.DebugLog( FailName );
   try
 
-    result.X := 16 * 32;
+    result.X := 14 * 32; //war 16 * 32;
     result.Y := 32;
 
   except
@@ -841,8 +902,14 @@ begin
     result := inherited Cast( Source, Target );
     if not result then
       Exit;
+    //More variability
+    if Source.Mysticism > 75 then
+    List := GetNearbyCharacter( TCharacter( Source ), 75 )
+    else if Source.Mysticism < 35 then
+    List := GetNearbyCharacter( TCharacter( Source ), 35 )
+    else
 
-    List := GetNearbyCharacter( TCharacter( Source ), 50 );
+    List := GetNearbyCharacter( TCharacter( Source ), Source.Mysticism ); //war 50
     if assigned( List ) then
     begin
       for iLoop := List.count - 1 downto 0 do
@@ -856,7 +923,7 @@ begin
       if List.count > 0 then
       begin
         for iLoop := 0 to List.Count - 1 do
-          TCharacter( List.Objects[ iLoop ] ).TakeDamage( TCharacter( Source ), ( 10 + TCharacter( Source ).mysticism / 10 ), 0, False );
+           TCharacter( List.Objects[ iLoop ] ).TakeDamage( TCharacter( Source ), ( 10 + TCharacter( Source ).mysticism / 7 ), 0, False ); // war / 10
       end;
     end;
 
@@ -933,8 +1000,8 @@ const
 begin
   Log.DebugLog( FailName );
   try
-    result.X := 13 * 32;
-    result.Y := 32;
+    result.X := 3 * 32;
+    result.Y := 0;
 
   except
     on E : Exception do
@@ -995,7 +1062,7 @@ begin
   Log.DebugLog( FailName );
   try
 
-    result := 0;
+    result := 4; //war 0
 
   except
     on E : Exception do

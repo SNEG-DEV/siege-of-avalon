@@ -51,6 +51,7 @@ uses
   DirectX,
   SoAOS.Intrface.Dialogs,
   SoAOS.Animation,
+  character, //for VillagePoA, title ifquery
   MMTimer;
 
 type
@@ -98,7 +99,18 @@ type
     procedure CreateOuterKeep( const AOwner : TTransit );
     procedure CreateInnerKeep( const AOwner : TTransit );
     procedure CreatePeasantsBailey( const AOwner : TTransit );
+    procedure CreateMerchantsBailey( const AOwner : TTransit );
+    procedure CreateWharfsBailey( const AOwner : TTransit );
     procedure CreateSouthgate( const AOwner : TTransit );
+    procedure CreateInnerBaileyPoA( const AOwner : TTransit );
+    procedure CreateOuterBaileyPoA( const AOwner : TTransit );
+    procedure CreateSouthGatePoA( const AOwner : TTransit );
+    procedure CreateEastWingPoA( const AOwner : TTransit );
+    procedure CreateNorthWingPoA( const AOwner : TTransit );
+    procedure CreateWestWingPoA( const AOwner : TTransit );
+    procedure CreatePrisonWingPoA( const AOwner : TTransit );
+    procedure CreatePeasantsBaileyPoA( const AOwner : TTransit );
+    procedure CreateVillagePoA( const AOwner : TTransit );
     destructor Destroy; override;
     property Enabled: Boolean read FEnabled;
     property Region: TRect read FRegion;
@@ -207,7 +219,8 @@ begin
     Timer.OnTimer := TimerEvent;
 
     HotspotList := TObjectList<THotspot>.Create;
-
+   if modselection <> TModSelection.PoA then //Not PoA
+   begin
     NewHotspot := THotspot.Create( Self, 261, 301, 'InnerBaileyAvailable.bmp', 'InnerBaileyUnavailable.bmp', Offset );
     NewHotspot.CreateInnerBailey( Self );
     HotspotList.Add( NewHotspot );
@@ -243,13 +256,67 @@ begin
 
     NewHotspot := THotspot.Create( Self, 159, 299, '', 'Soldier''sBaileyOffLimits.bmp', Offset );
     HotspotList.Add( NewHotspot );
-
+    if modselection = TModSelection.AoA then //AoA
+    begin
+     NewHotspot := THotspot.Create( Self, 154, 464, 'Merchant''sBaileyAvailable.bmp', 'Merchant''sBaileyUnavailable.bmp', Offset );
+     NewHotspot.CreateMerchantsBailey( Self );
+     HotspotList.Add( NewHotspot );
+    end
+    else
+    begin
     NewHotspot := THotspot.Create( Self, 154, 464, '', 'Merchant''sBaileyOffLimits.bmp', Offset );
     HotspotList.Add( NewHotspot );
+    end;
+    if modselection = TModSelection.AoA then //AoA
+    begin
+      NewHotspot := THotspot.Create( Self, 46, 439, 'Wharf''sBaileyAvailable.bmp', 'Wharf''sBaileyUnavailable.bmp', Offset );
+      NewHotspot.CreateWharfsBailey( Self );
+      HotspotList.Add( NewHotspot );
+    end
+    else
+    begin
+      NewHotspot := THotspot.Create( Self, 46, 438, '', 'Wharf''sBaileyOffLimits.bmp', Offset );
+      HotspotList.Add( NewHotspot );
+    end;
+   end //End not PoA
+   else
+   begin
+    NewHotspot := THotspot.Create( Self, 234, 416, 'InnerBaileyAvailable.bmp', 'InnerBaileyUnavailable.bmp', Offset );
+    NewHotspot.CreateInnerBaileyPoA( self );
+    HotspotList.add( NewHotspot );
 
-    NewHotspot := THotspot.Create( Self, 46, 438, '', 'Wharf''sBaileyOffLimits.bmp', Offset );
-    HotspotList.Add( NewHotspot );
+    NewHotspot := THotspot.Create( Self, 318, 274, 'OuterBaileyAvailable.bmp', 'OuterBaileyUnavailable.bmp', Offset );
+    NewHotspot.CreateOuterBaileyPoA( self );
+    HotspotList.add( NewHotspot );
 
+    NewHotspot := THotspot.Create( Self, 234, 483, 'SouthGateAvailable.bmp', 'SouthGateUnavailable.bmp', Offset );
+    NewHotspot.CreateSouthGatePoA( self );
+    HotspotList.add( NewHotspot );
+
+    NewHotspot := THotspot.Create( Self, 335, 479, 'EastWingAvailable.bmp', 'EastWingUnavailable.bmp', Offset );
+    NewHotspot.CreateEastWingPoA( self );
+    HotspotList.add( NewHotspot );
+
+    NewHotspot := THotspot.Create( Self, 130, 336, 'NorthWingAvailable.bmp', 'NorthWingUnavailable.bmp', Offset );
+    NewHotspot.CreateNorthWingPoA( self );
+    HotspotList.add( NewHotspot );
+
+    NewHotspot := THotspot.Create( Self, 129, 481, 'WestWingAvailable.bmp', 'WestWingUnavailable.bmp', Offset );
+    NewHotspot.CreateWestWingPoA( self );
+    HotspotList.add( NewHotspot );
+
+    NewHotspot := THotspot.Create( Self, 241, 229, 'PrisonWingAvailable.bmp', 'PrisonWingUnavailable.bmp', Offset );
+    NewHotspot.CreatePrisonWingPoA( self );
+    HotspotList.add( NewHotspot );
+
+    NewHotspot := THotspot.Create( Self, 427, 429, 'PeasantsBaileyAvailable.bmp', 'PeasantsBaileyUnavailable.bmp', Offset );
+    NewHotspot.CreatePeasantsBaileyPoA( self );
+    HotspotList.add( NewHotspot );
+
+    NewHotspot := THotspot.Create( Self, 399, 120, 'VillageAvailable.bmp', 'VillageUnavailable.bmp', Offset );
+    NewHotspot.CreateVillagePoA( self );
+    HotspotList.add( NewHotspot );
+   end;
     DefaultTransit := TTransitPoint.CreateDefault( Self, 606, 528, 174, 50, Offset );
 
     MapsAvailable := nil;
@@ -683,7 +750,26 @@ begin
   Dest.Add( NewTransitPoint );
   FEnabled := FEnabled or NewTransitPoint.Enabled;
 end;
-
+//AoA
+procedure THotspot.CreateMerchantsBailey( const AOwner : TTransit );
+var
+  NewTransitPoint : TTransitPoint;
+begin
+  FDest := TObjectList<TTransitPoint>.Create;
+  NewTransitPoint := TTransitPoint.Create( AOwner, 640, 200, 'CutMerchantsBailey.bmp', 'merchantsbailey', FOffset );
+  Dest.Add( NewTransitPoint );
+  FEnabled := FEnabled or NewTransitPoint.Enabled;
+end;
+//AoA
+procedure THotspot.CreateWharfsBailey( const AOwner : TTransit );
+var
+  NewTransitPoint : TTransitPoint;
+begin
+  FDest := TObjectList<TTransitPoint>.Create;
+  NewTransitPoint := TTransitPoint.Create( AOwner, 635, 200, 'CutWharfsBailey.bmp', 'Wharfsbailey', FOffset );
+  Dest.Add( NewTransitPoint );
+  FEnabled := FEnabled or NewTransitPoint.Enabled;
+end;
 procedure THotspot.CreateSouthgate( const AOwner : TTransit );
 var
   NewTransitPoint : TTransitPoint;
@@ -705,7 +791,114 @@ begin
   FDest.Add( NewTransitPoint );
   FEnabled := FEnabled or NewTransitPoint.Enabled;
 end;
-
+//---PoA Transit
+procedure THotspot.CreateOuterBaileyPoA( const AOwner : TTransit );
+var
+  NewTransitPoint : TTransitPoint;
+begin
+  FDest := TObjectList<TTransitPoint>.Create;
+  NewTransitPoint := TTransitPoint.Create( AOwner, 615, 200, 'CutOutBai.bmp', '03outerbailey', FOffset );
+  Dest.Add( NewTransitPoint );
+  FEnabled := FEnabled or NewTransitPoint.Enabled;
+end;
+procedure THotspot.CreateInnerBaileyPoA( const AOwner : TTransit );
+var
+  NewTransitPoint : TTransitPoint;
+begin
+  FDest := TObjectList<TTransitPoint>.Create;
+  NewTransitPoint := TTransitPoint.Create( AOwner, 650, 250, 'CutInnBai.bmp', '04Innerbailey', FOffset );
+  Dest.Add( NewTransitPoint );
+  FEnabled := FEnabled or NewTransitPoint.Enabled;
+end;
+procedure THotspot.CreateSouthGatePoA( const AOwner : TTransit );
+var
+  NewTransitPoint : TTransitPoint;
+begin
+  FDest := TObjectList<TTransitPoint>.Create;
+  NewTransitPoint := TTransitPoint.Create( AOwner, 650, 70, 'CutSouGatOG.bmp', '03SouthgateOG', FOffset );
+  FDest.Add( NewTransitPoint );
+  FEnabled := FEnabled or NewTransitPoint.Enabled;
+  NewTransitPoint := TTransitPoint.Create( AOwner, 650, 215, 'CutSouGatEG.bmp', '03SouthgateEG', FOffset );
+  FDest.Add( NewTransitPoint );
+  FEnabled := FEnabled or NewTransitPoint.Enabled;
+  NewTransitPoint := TTransitPoint.Create( AOwner, 650, 360, 'CutSouGatKG.bmp', '03SouthgateKG', FOffset );
+  FDest.Add( NewTransitPoint );
+  FEnabled := FEnabled or NewTransitPoint.Enabled;
+end;
+procedure THotspot.CreateEastWingPoA( const AOwner : TTransit );
+var
+  NewTransitPoint : TTransitPoint;
+begin
+  FDest := TObjectList<TTransitPoint>.Create;
+  NewTransitPoint := TTransitPoint.Create( AOwner, 650, 70, 'CutEasWinOG.bmp', '03EastWingOG', FOffset );
+  FDest.Add( NewTransitPoint );
+  FEnabled := FEnabled or NewTransitPoint.Enabled;
+  NewTransitPoint := TTransitPoint.Create( AOwner, 650, 300, 'CutEasWinEG.bmp', '03EastWingEG', FOffset );
+  FDest.Add( NewTransitPoint );
+  FEnabled := FEnabled or NewTransitPoint.Enabled;
+end;
+procedure THotspot.CreateNorthWingPoA( const AOwner : TTransit );
+var
+  NewTransitPoint : TTransitPoint;
+begin
+  FDest := TObjectList<TTransitPoint>.Create;
+  NewTransitPoint := TTransitPoint.Create( AOwner, 620, 150, 'CutNorWinEG.bmp', '03northwingEG', FOffset );
+  FDest.Add( NewTransitPoint );
+  FEnabled := FEnabled or NewTransitPoint.Enabled;
+  NewTransitPoint := TTransitPoint.Create( AOwner, 620, 290, 'CutNorWinKG.bmp', '03northwingKG', FOffset );
+  FDest.Add( NewTransitPoint );
+  FEnabled := FEnabled or NewTransitPoint.Enabled;
+  NewTransitPoint := TTransitPoint.Create( AOwner, 675, 450, 'CutDwaHol.bmp', '03dwarfhole1', FOffset );
+  FDest.Add( NewTransitPoint );
+  FEnabled := FEnabled or NewTransitPoint.Enabled;
+end;
+procedure THotspot.CreateWestWingPoA( const AOwner : TTransit );
+var
+  NewTransitPoint : TTransitPoint;
+begin
+  FDest := TObjectList<TTransitPoint>.Create;
+  NewTransitPoint := TTransitPoint.Create( AOwner, 640, 70, 'CutWesWinOG.bmp', '04westwingOG', FOffset );
+  FDest.Add( NewTransitPoint );
+  FEnabled := FEnabled or NewTransitPoint.Enabled;
+  NewTransitPoint := TTransitPoint.Create( AOwner, 640, 300, 'CutWesWinEG.bmp', '04westwingEG', FOffset );
+  FDest.Add( NewTransitPoint );
+  FEnabled := FEnabled or NewTransitPoint.Enabled;
+end;
+procedure THotspot.CreatePrisonWingPoA( const AOwner : TTransit );
+var
+  NewTransitPoint : TTransitPoint;
+begin
+  FDest := TObjectList<TTransitPoint>.Create;
+  NewTransitPoint := TTransitPoint.Create( AOwner, 650, 170, 'CutPriWinEG.bmp', '04prisonwing', FOffset );
+  FDest.Add( NewTransitPoint );
+  FEnabled := FEnabled or NewTransitPoint.Enabled;
+  NewTransitPoint := TTransitPoint.Create( AOwner, 650, 300, 'CutPriWinKG.bmp', '04prisonwingKG', FOffset );
+  FDest.Add( NewTransitPoint );
+  FEnabled := FEnabled or NewTransitPoint.Enabled;
+end;
+procedure THotspot.CreatePeasantsBaileyPoA( const AOwner : TTransit );
+var
+  NewTransitPoint : TTransitPoint;
+begin
+  FDest := TObjectList<TTransitPoint>.Create;
+  NewTransitPoint := TTransitPoint.Create( AOwner, 650, 230, 'CutPeaBai.bmp', '04Peasantsbailey', FOffset );
+  FDest.Add( NewTransitPoint );
+  FEnabled := FEnabled or NewTransitPoint.Enabled;
+end;
+procedure THotspot.CreateVillagePoA( const AOwner : TTransit );
+var
+  NewTransitPoint : TTransitPoint;
+begin
+  FDest := TObjectList<TTransitPoint>.Create;
+  if player.titleexists( 'Chapter05' ) then
+  NewTransitPoint := TTransitPoint.Create( AOwner, 650, 230, 'CutVil.bmp', '05village1', FOffset )
+  else if player.titleexists( 'Chapter04' ) then
+  NewTransitPoint := TTransitPoint.Create( AOwner, 650, 230, 'CutVil.bmp', '04village1', FOffset )
+  else
+  NewTransitPoint := TTransitPoint.Create( AOwner, 650, 230, 'CutVil.bmp', '03village1', FOffset );
+  FDest.Add( NewTransitPoint );
+  FEnabled := FEnabled or NewTransitPoint.Enabled;
+end;
 destructor THotspot.Destroy;
 begin
   FGrayImage := nil;

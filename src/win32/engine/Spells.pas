@@ -56,568 +56,610 @@ uses
   SoAOS.Projectile;
 
 var
-  AllSpellList : TStringList;
-  AllCastResourceList : TList;
-  Fireball, Frostball, Lightning, Shrapnel, Push, Healing, Charge,
-    SummonRat, SummonWolf, SummonGolem, ProtectionFire, ProtectionCold,
-    ProtectionElectricity, ProtectionPoison, ProtectionMagic,
-    ProtectionAll, AuraOfIron, AuraOfSteel, Shadow, Bloodlust, Hold, DeathSpell,
-    Forget, ManaThief, GreatHand, GreatWolf, IceBlock, FlameStrike, Blizzard,
-    Reflect, Firefly : TSpell;
+  AllSpellList: TStringList;
+  AllCastResourceList: TList;
+  Fireball, Frostball, Lightning, Shrapnel, Push, Healing, Charge, SummonRat,
+    SummonWolf, SummonGolem, ProtectionFire, ProtectionCold,
+    ProtectionElectricity, ProtectionPoison, ProtectionMagic, ProtectionAll,
+    AuraOfIron, AuraOfSteel, Shadow, Bloodlust, Hold, DeathSpell, Forget,
+    ManaThief, GreatHand, GreatWolf, IceBlock, PoisonAura, Illusion,
+    FlameStrike, Blizzard, Reflect, Firefly: TSpell;
 
-  FireEffect : TResource;
-  PushEffect : TResource;
-  FrostEffect : TResource;
-  LightningEffect : TResource;
-  HealEffect : TResource;
-  ProtectionEffect : TResource;
-  Bloodlusteffect : TResource;
-  ShrapnelEffect : TResource;
-  ChargeEffect : TResource;
-  SummonEffect : TResource;
-  HoldEffect : TResource;
-  LichEffect : TResource;
-  AuraEffect : TResource;
-  ManaThiefEffect : TResource;
-  GreatHandEffect : TResource;
-  GreatWolfEffect : TResource;
-  BigFire : TResource;
-  BigIce : TResource;
-  ReflectEffect : TResource;
+  FireEffect: TResource;
+  PushEffect: TResource;
+  FrostEffect: TResource;
+  FrostEffect2: TResource;
+  LightningEffect: TResource;
+  HealEffect: TResource;
+  ProtectionEffect: TResource;
+  Bloodlusteffect: TResource;
+  ShrapnelEffect: TResource;
+  ChargeEffect: TResource;
+  SummonEffect: TResource;
+  HoldEffect: TResource;
+  LichEffect: TResource;
+  AuraEffect: TResource;
+  ManaThiefEffect: TResource;
+  GreatHandEffect: TResource;
+  GreatWolfEffect: TResource;
+  PoisonAuraEffect: TResource;
+  IllusionEffect: TResource;
+  BigFire: TResource;
+  BigIce: TResource;
+  ReflectEffect: TResource;
 
 type
-  TFireball = class( TSpell )
+  TFireball = class(TSpell)
   private
-    Resource : TResource;
-    Resource2 : TResource;
-    Resource3 : TResource;
-    Resource4 : TResource;
-    Resource5 : TResource;
-    Resource6 : TResource;
-    Resource7 : TResource;
+    Resource: TResource;
+    Resource2: TResource;
+    Resource3: TResource;
+    Resource4: TResource;
+    Resource5: TResource;
+    Resource6: TResource;
+    Resource7: TResource;
   protected
-    function GetLoaded : Boolean; override;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    class function GetName : string; override;
-    procedure Casting( Source : TCharacter ); override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    class function GetName: string; override;
+    procedure Casting(Source: TCharacter); override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
     procedure Clear; override;
   end;
 
-  TFrostBall = class( TSpell )
+  TFrostBall = class(TSpell)
   private
-    Resource : TResource;
-    SmallResource : TResource;
+    Resource: TResource;
+    SmallResource: TResource;
   protected
-    function GetLoaded : Boolean; override;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    class function GetName : string; override;
-    procedure Casting( Source : TCharacter ); override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    class function GetName: string; override;
+    procedure Casting(Source: TCharacter); override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
     procedure Clear; override;
   end;
 
-  TPush = class( TSpell )
+  TPush = class(TSpell)
   protected
-    function GetLoaded : Boolean; override;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    class function GetName : string; override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    class function GetName: string; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
   end;
 
-  THeal = class( TSpell )
+  THeal = class(TSpell)
   private
-    Resource : TResource;
+    Resource: TResource;
   protected
-    function GetLoaded : Boolean; override;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    class function GetName : string; override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    class function GetName: string; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
     procedure Clear; override;
   end;
 
-  TProtection = class( TSpell )
+  TProtection = class(TSpell)
   private
-    Resource : TResource;
-    MinorResistance : TDamageResistanceProfile;
-    MajorResistance : TDamageResistanceProfile;
-    IconXY : TPoint;
-    R, G, B : integer;
-    ResourceOwner : boolean;
-    tag : integer;
+    Resource: TResource;
+    MinorResistance: TDamageResistanceProfile;
+    MajorResistance: TDamageResistanceProfile;
+    IconXY: TPoint;
+    R, G, B: Integer;
+    ResourceOwner: Boolean;
+    tag: Integer;
   protected
-    function GetLoaded : Boolean; override;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
     procedure Clear; override;
   end;
 
-  TProtectionFire = class( TProtection )
+  TProtectionFire = class(TProtection)
   public
     constructor Create; override;
-    class function GetName : string; override;
+    class function GetName: string; override;
   end;
 
-  TProtectionCold = class( TProtection )
+  TProtectionCold = class(TProtection)
   public
     constructor Create; override;
-    class function GetName : string; override;
+    class function GetName: string; override;
   end;
 
-  TProtectionElectricity = class( TProtection )
+  TProtectionElectricity = class(TProtection)
   public
     constructor Create; override;
-    class function GetName : string; override;
+    class function GetName: string; override;
   end;
 
-  TProtectionPoison = class( TProtection )
+  TProtectionPoison = class(TProtection)
   public
     constructor Create; override;
-    class function GetName : string; override;
+    class function GetName: string; override;
   end;
 
-  TProtectionMagic = class( TProtection )
+  TProtectionMagic = class(TProtection)
   public
     constructor Create; override;
-    class function GetName : string; override;
+    class function GetName: string; override;
   end;
 
-  TProtectionAll = class( TProtection )
+  TProtectionAll = class(TProtection)
   public
     constructor Create; override;
-    class function GetName : string; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    class function GetName: string; override;
+    function GetInfo(Source: TCharacter): string; override;
   end;
 
-  TAura = class( TSpell )
+  TAura = class(TSpell)
   private
-    Resource : TResource;
-    HitResource : TResource;
-    Resistance : TDamageResistanceProfile;
-    IconXY : TPoint;
-    FDrain : single;
-    ColorR, ColorG, ColorB : integer;
+    Resource: TResource;
+    HitResource: TResource;
+    Resistance: TDamageResistanceProfile;
+    IconXY: TPoint;
+    FDrain: Single;
+    ColorR, ColorG, ColorB: Integer;
   protected
-    function GetLoaded : Boolean; override;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
   end;
 
-  TAuraOfIron = class( TAura )
+  TAuraOfIron = class(TAura)
   public
-    class function GetName : string; override;
+    class function GetName: string; override;
     constructor Create; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    function GetInfo(Source: TCharacter): string; override;
     procedure Clear; override;
   end;
 
-  TAuraOfSteel = class( TAura )
+  TAuraOfSteel = class(TAura)
   public
-    class function GetName : string; override;
+    class function GetName: string; override;
     constructor Create; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    function GetInfo(Source: TCharacter): string; override;
     procedure Clear; override;
   end;
 
-  TShadow = class( TSpell )
-    Resource : TResource;
-    ResourceOwner : boolean;
-    function GetLoaded : Boolean; override;
+  TShadow = class(TSpell)
+    Resource: TResource;
+    ResourceOwner: Boolean;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    class function GetName : string; override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    class function GetName: string; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
   end;
 
-  TBloodlust= class( TSpell )
-    Resource : TResource;
-    ResourceOwner : boolean;
-    function GetLoaded : Boolean; override;
+  TBloodlust = class(TSpell)
+    Resource: TResource;
+    ResourceOwner: Boolean;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    class function GetName : string; override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    class function GetName: string; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
   end;
 
-  THold = class( TSpell )
-    Resource : TResource;
-    function GetLoaded : Boolean; override;
+  THold = class(TSpell)
+    Resource: TResource;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    class function GetName : string; override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    class function GetName: string; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
     procedure Clear; override;
   end;
 
-  TLightning = class( TSpell )
+  TLightning = class(TSpell)
   private
-    Resource1 : TResource;
-    Resource2 : TResource;
-    Resource3 : TResource;
-    ReceiveResource : TResource;
+    Resource1: TResource;
+    Resource2: TResource;
+    Resource3: TResource;
+    ReceiveResource: TResource;
   protected
-    function GetLoaded : Boolean; override;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    class function GetName : string; override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
-    property SmallResource : TResource read Resource1;
-    property MediumResource : TResource read Resource2;
-    property LargeResource : TResource read Resource3;
+    class function GetName: string; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
+    property SmallResource: TResource read Resource1;
+    property MediumResource: TResource read Resource2;
+    property LargeResource: TResource read Resource3;
     procedure Clear; override;
   end;
 
-  TShrapnel = class( TSpell )
+  TShrapnel = class(TSpell)
   private
-    Resource : TResource;
+    Resource: TResource;
   protected
-    function GetLoaded : Boolean; override;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    class function GetName : string; override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    class function GetName: string; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
     procedure Clear; override;
   end;
 
-  TWither = class( TSpell )
+  TWither = class(TSpell)
   private
-    Resource : TResource;
+    Resource: TResource;
   protected
-    function GetLoaded : Boolean; override;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    class function GetName : string; override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    class function GetName: string; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
     procedure Clear; override;
   end;
 
-  TCharge = class( TSpell )
+  TCharge = class(TSpell)
   private
-    Resource1 : TResource;
-    Resource2 : TResource;
-    Resource3 : TResource;
+    Resource1: TResource;
+    Resource2: TResource;
+    Resource3: TResource;
   protected
-    function GetLoaded : Boolean; override;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    class function GetName : string; override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    class function GetName: string; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
   end;
 
-  TSummonRat = class( TSpell )
+  TSummonRat = class(TSpell)
   private
-    Resource : TResource;
+    Resource: TResource;
   protected
-    function GetLoaded : Boolean; override;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    class function GetName : string; override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    class function GetName: string; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
   end;
 
-  TSummonWolf = class( TSpell )
+  TSummonWolf = class(TSpell)
   private
-    Resource : TResource;
+    Resource: TResource;
   protected
-    function GetLoaded : Boolean; override;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    class function GetName : string; override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    class function GetName: string; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
   end;
 
-  TSummonGolem = class( TSpell )
+  TSummonGolem = class(TSpell)
   private
-    Resource : TResource;
+    Resource: TResource;
   protected
-    function GetLoaded : Boolean; override;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    class function GetName : string; override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    class function GetName: string; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
   end;
 
-  TDeathSpell = class( TSpell )
+  TDeathSpell = class(TSpell)
   private
-    Resource : TResource;
+    Resource: TResource;
   protected
-    function GetLoaded : Boolean; override;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    class function GetName : string; override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    class function GetName: string; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
     procedure Clear; override;
   end;
 
-  TForget = class( TSpell )
-    Resource : TResource;
-    function GetLoaded : Boolean; override;
+  TForget = class(TSpell)
+    Resource: TResource;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    class function GetName : string; override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    class function GetName: string; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
   end;
 
-  TManaThief = class( TSpell )
-    Resource : TResource;
-    function GetLoaded : Boolean; override;
+  TManaThief = class(TSpell)
+    Resource: TResource;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    class function GetName : string; override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    class function GetName: string; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
     procedure Clear; override;
   end;
 
-  TGreatHand = class( TSpell )
+  TGreatHand = class(TSpell)
   private
-    Resource : TResource;
+    Resource: TResource;
   protected
-    function GetLoaded : Boolean; override;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    class function GetName : string; override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    class function GetName: string; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
     procedure Clear; override;
   end;
 
-  TGreatWolf = class( TSpell )
+  TGreatWolf = class(TSpell)
   private
-    Resource : TResource;
+    Resource: TResource;
   protected
-    function GetLoaded : Boolean; override;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    class function GetName : string; override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    class function GetName: string; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
     procedure Clear; override;
   end;
 
-  TIceBlock = class( TSpell )
+  TIceBlock = class(TSpell)
   private
-    Resource : TResource;
+    Resource1: TResource;
+    Resource2: TResource;
   protected
-    function GetLoaded : Boolean; override;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    class function GetName : string; override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    class function GetName: string; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
     procedure Clear; override;
   end;
 
-  TFlameStrike = class( TSpell )
+  TPoisonAura = class(TSpell)
   private
-    Resource : TResource;
+    Resource: TResource;
   protected
-    function GetLoaded : Boolean; override;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    class function GetName : string; override;
-    procedure Casting( Source : TCharacter ); override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    class function GetName: string; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
+    procedure Clear; override;
   end;
 
-  TBlizzard = class( TSpell )
+  TIllusion = class(TSpell)
   private
-    Resource : TResource;
+    Resource1: TResource;
+    Resource2: TResource;
   protected
-    function GetLoaded : Boolean; override;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    class function GetName : string; override;
-    procedure Casting( Source : TCharacter ); override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    class function GetName: string; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
+    procedure Clear; override;
   end;
 
-  TFirefly = class( TSpell )
+  TFlameStrike = class(TSpell)
   private
-    Resource1 : TResource;
-    Resource2 : TResource;
-    Resource3 : TResource;
+    Resource: TResource;
   protected
-    function GetLoaded : Boolean; override;
-  public
-    constructor Create; override;
-    class function GetName : string; override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
-  end;
-
-  TReflect = class( TSpell )
-  private
-    Resource : TResource;
-    HitResource : TResource;
-  protected
-    function GetLoaded : Boolean; override;
+    function GetLoaded: Boolean; override;
   public
     constructor Create; override;
     destructor Destroy; override;
-    class function GetName : string; override;
-    function Range( Source : TCharacter ) : Integer; override;
-    function Recovery( Source : TCharacter ) : Integer; override;
-    function Drain( Source : TCharacter ) : Single; override;
-    function Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean; override;
-    function GetIconXY( Source : TCharacter ) : TPoint; override;
-    function GetInfo( Source : TCharacter ) : string; override;
+    class function GetName: string; override;
+    procedure Casting(Source: TCharacter); override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
   end;
 
-function LoadSpells : boolean;
-function FreeSpells : boolean;
+  TBlizzard = class(TSpell)
+  private
+    Resource: TResource;
+  protected
+    function GetLoaded: Boolean; override;
+  public
+    constructor Create; override;
+    destructor Destroy; override;
+    class function GetName: string; override;
+    procedure Casting(Source: TCharacter); override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
+  end;
+
+  TFirefly = class(TSpell)
+  private
+    Resource1: TResource;
+    Resource2: TResource;
+    Resource3: TResource;
+  protected
+    function GetLoaded: Boolean; override;
+  public
+    constructor Create; override;
+    class function GetName: string; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
+  end;
+
+  TReflect = class(TSpell)
+  private
+    Resource: TResource;
+    HitResource: TResource;
+  protected
+    function GetLoaded: Boolean; override;
+  public
+    constructor Create; override;
+    destructor Destroy; override;
+    class function GetName: string; override;
+    function Range(Source: TCharacter): Integer; override;
+    function Recovery(Source: TCharacter): Integer; override;
+    function Drain(Source: TCharacter): Single; override;
+    function Cast(Source: TCharacter; Target: TSpriteObject): Boolean; override;
+    function GetIconXY(Source: TCharacter): TPoint; override;
+    function GetInfo(Source: TCharacter): string; override;
+  end;
+
+function LoadSpells: Boolean;
+function FreeSpells: Boolean;
 procedure ClearSpellResources;
-function MakeCastEffect( var CastEffect : TResource; const ResName : string ) : boolean;
-function MakeSpell( var Spell : TSpell; SpellClass : TSpellClass ) : boolean;
+function MakeCastEffect(var CastEffect: TResource;
+  const ResName: string): Boolean;
+function MakeSpell(var Spell: TSpell; SpellClass: TSpellClass): Boolean;
 
 implementation
 
@@ -637,145 +679,161 @@ uses
   LogFile;
 
 var
-  ProtectionResource : TResource;
-  Bloodlustresource : TResource;
+  ProtectionResource: TResource;
+  Bloodlustresource: TResource;
 
-function MakeCastEffect( var CastEffect : TResource; const ResName : string ) : boolean;
+function MakeCastEffect(var CastEffect: TResource;
+  const ResName: string): Boolean;
 begin
   result := false;
-  Log.Log( 'Loading ' + ResName + ' cast effect...' );
-  CastEffect := LoadArtResource( 'engine\spells\' + ResName + '.gif', true );
-  if not assigned( CastEffect ) or not CastEffect.Loaded then
+  Log.Log('Loading ' + ResName + ' cast effect...');
+  CastEffect := LoadArtResource('engine\spells\' + ResName + '.gif', true);
+  if not assigned(CastEffect) or not CastEffect.Loaded then
   begin
-    Log.Log( ResName + ' cast effect could not be loaded' );
+    Log.Log(ResName + ' cast effect could not be loaded');
     Exit;
   end;
-  AllCastResourceList.add( CastEffect );
+  AllCastResourceList.add(CastEffect);
   result := true;
 end;
 
-function MakeSpell( var Spell : TSpell; SpellClass : TSpellClass ) : boolean;
+function MakeSpell(var Spell: TSpell; SpellClass: TSpellClass): Boolean;
 var
-  i : integer;
-  S : string;
+  i: Integer;
+  S: string;
 begin
   result := false;
   S := SpellClass.GetName;
-  Log.Log( 'Loading ' + S + ' resource...' );
+  Log.Log('Loading ' + S + ' resource...');
   Spell := SpellClass.Create;
   if not Spell.Loaded then
   begin
-    Log.Log( S + ' could not be loaded' );
+    Log.Log(S + ' could not be loaded');
     Exit;
   end;
-  i := AllSpellList.add( S );
-  AllSpellList.Objects[ i ] := Spell;
-  Spell.DisplayName := ExText.GetText( S );
-  Spell.InfoText := ExText.GetText( S + ' Info' );
+  i := AllSpellList.add(S);
+  AllSpellList.Objects[i] := Spell;
+  Spell.DisplayName := ExText.GetText(S);
+  Spell.InfoText := ExText.GetText(S + ' Info');
   if Spell.DisplayName = '' then
     Spell.DisplayName := S;
   result := true;
 end;
 
-function LoadSpells : boolean;
+function LoadSpells: Boolean;
 begin
   result := false;
 
-  AllCastResourceList := TList.create;
-  if not MakeCastEffect( FireEffect, 'FireSpell' ) then
-    exit;
-  if not MakeCastEffect( FrostEffect, 'Frost' ) then
-    exit;
-  if not MakeCastEffect( LightningEffect, 'shockblu' ) then
-    exit;
-  if not MakeCastEffect( ShrapnelEffect, 'shrapnelcast' ) then
-    exit;
-  if not MakeCastEffect( ChargeEffect, 'chargespell4' ) then
-    exit;
-  if not MakeCastEffect( PushEffect, 'push' ) then
-    exit;
-  if not MakeCastEffect( HealEffect, 'healcast' ) then
-    exit;
-  if not MakeCastEffect( ProtectionEffect, 'charge2' ) then
-    exit;
-  if not MakeCastEffect( SummonEffect, 'summoncast' ) then
-    exit;
-  if not MakeCastEffect( HoldEffect, 'holdcast' ) then
-    exit;
-  MakeCastEffect( LichEffect, 'lichcast' );
-  if not MakeCastEffect( AuraEffect, 'AuraSteelCast' ) then
-    exit;
-  MakeCastEffect( ManaThiefEffect, 'ManaThiefCast' );
-  MakeCastEffect( GreatHandEffect, 'GreatHandCast' );
-  MakeCastEffect( GreatWolfEffect, 'GreatWolfCast' );
-  if not MakeCastEffect( BigFire, 'FireCast(LVL3)' ) then
-    exit;
+  AllCastResourceList := TList.Create;
+  if not MakeCastEffect(FireEffect, 'FireSpell') then
+    Exit;
+  if not MakeCastEffect(FrostEffect, 'Frost') then
+    Exit;
+  if (Modselection <> TModSelection.SoA) and
+    (not MakeCastEffect(FrostEffect2, 'FrostCast')) then
+    Exit; // BlizzardLvl1 (but not in SoA) und Iceblock
+  if not MakeCastEffect(LightningEffect, 'shockblu') then
+    Exit;
+  if not MakeCastEffect(ShrapnelEffect, 'shrapnelcast') then
+    Exit;
+  if not MakeCastEffect(ChargeEffect, 'chargespell4') then
+    Exit;
+  if not MakeCastEffect(PushEffect, 'push') then
+    Exit;
+  if not MakeCastEffect(HealEffect, 'healcast') then
+    Exit;
+  if not MakeCastEffect(ProtectionEffect, 'charge2') then
+    Exit;
+  if not MakeCastEffect(SummonEffect, 'summoncast') then
+    Exit;
+  if not MakeCastEffect(HoldEffect, 'holdcast') then
+    Exit;
+  MakeCastEffect(LichEffect, 'lichcast');
+  if not MakeCastEffect(AuraEffect, 'AuraSteelCast') then
+    Exit;
+  MakeCastEffect(ManaThiefEffect, 'ManaThiefCast');
+  MakeCastEffect(GreatHandEffect, 'GreatHandCast');
+  MakeCastEffect(GreatWolfEffect, 'GreatWolfCast');
+  if (Modselection <> TModSelection.SoA) and
+    (not MakeCastEffect(PoisonAuraEffect, 'ChargeSpell4')) then
+    Exit;
+  if (Modselection <> TModSelection.SoA) and
+    (not MakeCastEffect(IllusionEffect, 'WindShearCast')) then
+    Exit;
+  if not MakeCastEffect(BigFire, 'FireCast(LVL3)') then
+    Exit;
   BigFire.SpecialEffect := seAdd;
-  if not MakeCastEffect( BigIce, 'Frost(LVL3)' ) then
-    exit;
+  if not MakeCastEffect(BigIce, 'Frost(LVL3)') then
+    Exit;
   BigIce.SpecialEffect := seAdd;
-  MakeCastEffect( ReflectEffect, 'ReflectCast' );
+  MakeCastEffect(ReflectEffect, 'ReflectCast');
 
-  AllSpellList := TStringList.create;
-  ExText.Open( 'Spells' );
-  if not MakeSpell( Fireball, TFireball ) then
-    exit;
-  if not MakeSpell( Frostball, TFrostball ) then
-    exit;
-  if not MakeSpell( Lightning, TLightning ) then
-    exit;
-  if not MakeSpell( Shrapnel, TShrapnel ) then
-    exit;
-  if not MakeSpell( Charge, TCharge ) then
-    exit;
-  if not MakeSpell( Push, TPush ) then
-    exit;
-  if not MakeSpell( Healing, THeal ) then
-    exit;
-  if not MakeSpell( ProtectionFire, TProtectionFire ) then
-    exit;
-  if not MakeSpell( ProtectionCold, TProtectionCold ) then
-    exit;
-  if not MakeSpell( ProtectionElectricity, TProtectionElectricity ) then
-    exit;
-  if not MakeSpell( ProtectionPoison, TProtectionPoison ) then
-    exit;
-  if not MakeSpell( ProtectionMagic, TProtectionMagic ) then
-    exit;
-  if not MakeSpell( ProtectionAll, TProtectionAll ) then
-    exit;
-  if not MakeSpell( AuraOfIron, TAuraOfIron ) then
-    exit;
-  if not MakeSpell( AuraOfSteel, TAuraOfSteel ) then
-    exit;
-  if not MakeSpell( SummonRat, TSummonRat ) then
-    exit;
-  if not MakeSpell( SummonWolf, TSummonWolf ) then
-    exit;
-  if not MakeSpell( SummonGolem, TSummonGolem ) then
-    exit;
-  if not MakeSpell( Shadow, TShadow ) then
-    exit;
-  if not MakeSpell( Hold, THold ) then
-    exit;
-  if not MakeSpell( Firefly, TFirefly ) then
-    exit;
-  MakeSpell( DeathSpell, TDeathSpell );
-  if not MakeSpell( Forget, TForget ) then
-    exit;
-  MakeSpell( ManaThief, TManaThief );
-  MakeSpell( GreatHand, TGreatHand );
-  MakeSpell( GreatWolf, TGreatWolf );
-//  MakeSpell( Bloodlust, TBloodlust ); // Should be checked upon?
-//  MakeSpell( IceBlock, TIceBlock );
-  if not MakeSpell( FlameStrike, TFlameStrike ) then
-    exit;
-  if not MakeSpell( Blizzard, TBlizzard ) then
-    exit;
-  MakeSpell( Reflect, TReflect );
+  AllSpellList := TStringList.Create;
+  ExText.Open('Spells');
+  if not MakeSpell(Fireball, TFireball) then
+    Exit;
+  if not MakeSpell(Frostball, TFrostBall) then
+    Exit;
+  if not MakeSpell(Lightning, TLightning) then
+    Exit;
+  if not MakeSpell(Shrapnel, TShrapnel) then
+    Exit;
+  if not MakeSpell(Charge, TCharge) then
+    Exit;
+  if not MakeSpell(Push, TPush) then
+    Exit;
+  if not MakeSpell(Healing, THeal) then
+    Exit;
+  if not MakeSpell(ProtectionFire, TProtectionFire) then
+    Exit;
+  if not MakeSpell(ProtectionCold, TProtectionCold) then
+    Exit;
+  if not MakeSpell(ProtectionElectricity, TProtectionElectricity) then
+    Exit;
+  if not MakeSpell(ProtectionPoison, TProtectionPoison) then
+    Exit;
+  if not MakeSpell(ProtectionMagic, TProtectionMagic) then
+    Exit;
+  if not MakeSpell(ProtectionAll, TProtectionAll) then
+    Exit;
+  if not MakeSpell(AuraOfIron, TAuraOfIron) then
+    Exit;
+  if not MakeSpell(AuraOfSteel, TAuraOfSteel) then
+    Exit;
+  if not MakeSpell(SummonRat, TSummonRat) then
+    Exit;
+  if not MakeSpell(SummonWolf, TSummonWolf) then
+    Exit;
+  if not MakeSpell(SummonGolem, TSummonGolem) then
+    Exit;
+  if not MakeSpell(Shadow, TShadow) then
+    Exit;
+  if not MakeSpell(Hold, THold) then
+    Exit;
+  if not MakeSpell(Firefly, TFirefly) then
+    Exit;
+  MakeSpell(DeathSpell, TDeathSpell);
+  if not MakeSpell(Forget, TForget) then
+    Exit;
+  MakeSpell(ManaThief, TManaThief);
+  MakeSpell(GreatHand, TGreatHand);
+  MakeSpell(GreatWolf, TGreatWolf);
+  if (Modselection <> TModSelection.SoA) and (not MakeSpell(Bloodlust, TBloodlust)) then
+    Exit;
+  if (Modselection <> TModSelection.SoA) and (not MakeSpell(IceBlock, TIceBlock)) then
+    Exit;
+  if (Modselection<>TModSelection.SoA) and (not MakeSpell(PoisonAura, TPoisonAura)) then
+    Exit;
+  if (Modselection<>TModSelection.SoA) and (not MakeSpell(Illusion, TIllusion)) then
+    Exit;
+  if not MakeSpell(FlameStrike, TFlameStrike) then
+    Exit;
+  if not MakeSpell(Blizzard, TBlizzard) then
+    Exit;
+  MakeSpell(Reflect, TReflect);
 
   if not LoadSpells1 then
-    exit;
+    Exit;
 
   ExText.Close;
 
@@ -783,99 +841,100 @@ begin
 
 end;
 
-function FreeSpells : boolean;
+function FreeSpells: Boolean;
 var
-  i : integer;
+  i: Integer;
 begin
   result := true;
 
   try
-    Log.Log( 'Freeing spell resources' );
+    Log.Log('Freeing spell resources');
     for i := 0 to AllSpellList.count - 1 do
     begin
-//        Log.Log('b'+inttostr(i));
-      TSpell( AllSpellList.Objects[ i ] ).free;
+      // Log.Log('b'+inttostr(i));
+      TSpell(AllSpellList.Objects[i]).free;
     end;
     AllSpellList.free;
 
-    Log.Log( 'Freeing spell effect resources' );
+    Log.Log('Freeing spell effect resources');
     for i := 0 to AllCastResourceList.count - 1 do
     begin
-//        Log.Log('c'+inttostr(i));
-      TResource( AllCastResourceList.items[ i ] ).free;
+      // Log.Log('c'+inttostr(i));
+      TResource(AllCastResourceList.items[i]).free;
     end;
     AllCastResourceList.free;
   except
-    on E : Exception do
-      Log.log( 'Error Spells FreeSpells: ' + E.Message );
+    on E: Exception do
+      Log.Log('Error Spells FreeSpells: ' + E.Message);
   end;
 end;
 
 procedure ClearSpellResources;
 var
-  i : integer;
+  i: Integer;
 begin
   try
-    Log.Log( 'Clearing spell resources' );
+    Log.Log('Clearing spell resources');
     for i := 0 to AllSpellList.count - 1 do
     begin
-      TSpell( AllSpellList.Objects[ i ] ).Clear;
+      TSpell(AllSpellList.Objects[i]).Clear;
     end;
 
-    Log.Log( 'Clearing spell effect resources' );
+    Log.Log('Clearing spell effect resources');
     for i := 0 to AllCastResourceList.count - 1 do
     begin
-      if TResource( AllCastResourceList.items[ i ] ).OnDemand then
+      if TResource(AllCastResourceList.items[i]).OnDemand then
       begin
-        TResource( AllCastResourceList.items[ i ] ).RLE.free;
-        TResource( AllCastResourceList.items[ i ] ).RLE := nil;
+        TResource(AllCastResourceList.items[i]).RLE.free;
+        TResource(AllCastResourceList.items[i]).RLE := nil;
       end;
     end;
   except
-    on E : Exception do
-      Log.log( 'Error Spells ClearSpells: ' + E.Message );
+    on E: Exception do
+      Log.Log('Error Spells ClearSpells: ' + E.Message);
   end;
 
 end;
 
 { TFireball }
 
-function TFireball.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
+function TFireball.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 const
   SpinRate = 14;
   SpinRadius = 16;
 var
-  NewProjectile : TProjectile;
-  NewCore : TProjectile;
-  Tail1, Tail2 : TProjectile;
-  Z1, Z2, Z3 : Integer;
-  Bonus, Angle : single;
-  TargetX, TargetY : longint;
+  NewProjectile: TProjectile;
+  NewCore: TProjectile;
+  Tail1, Tail2: TProjectile;
+  Z1, Z2, Z3: Integer;
+  Bonus, Angle: Single;
+  TargetX, TargetY: longint;
 const
-  FailName : string = 'TFireball.Cast';
+  FailName: string = 'TFireball.Cast';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := inherited Cast( Source, Target );
+    result := inherited Cast(Source, Target);
     if not result then
       Exit;
     Z1 := Source.Height div 2 - 16;
-    if Assigned( Target ) then
+    if assigned(Target) then
       Z2 := 0
     else
       Z2 := Z1;
 
-    z3 := Source.Height div 2;
+    Z3 := Source.Height div 2;
 
-    if Source.TitleExists( 'Inferno' ) then
+    if Source.TitleExists('Inferno') then
     begin
-      NewProjectile := TProjectile( Sprites.NewSprite( TInfernoCoreProjectile, Resource, Source.X, Source.Y, Z3, 0 ) );
-      if assigned( NewProjectile ) then
+      NewProjectile := TProjectile(Sprites.NewSprite(TInfernoCoreProjectile,
+        Resource, Source.X, Source.Y, Z3, 0));
+      if assigned(NewProjectile) then
       begin
-        ZeroMemory( @NewProjectile.Damage, sizeof( NewProjectile.Damage ) );
+        ZeroMemory(@NewProjectile.Damage, sizeof(NewProjectile.Damage));
         NewProjectile.Radius := 0;
         NewProjectile.Duration := Source.Constitution * 10;
         NewProjectile.TrackingDegree := Source.Coordination / 20;
@@ -883,19 +942,21 @@ begin
         NewCore := NewProjectile;
         TargetX := Source.TargetX;
         TargetY := Source.TargetY;
-        Bonus := Source.Coordination + Source.Perception / 2 + Source.Combat / 4 - Source.Restriction / 5;
+        Bonus := Source.Coordination + Source.Perception / 2 + Source.Combat / 4
+          - Source.Restriction / 5;
         if Bonus < 10 then
           Angle := 17.5
         else
           Angle := 175 / Bonus;
-        ComputeTrajectory( Source, TargetX, TargetY, Angle );
-        NewProjectile.Launch( Source, Target, TargetX, TargetY + z2 );
+        ComputeTrajectory(Source, TargetX, TargetY, Angle);
+        NewProjectile.Launch(Source, Target, TargetX, TargetY + Z2);
 
-        NewProjectile := TProjectile( Sprites.NewSprite( TInfernoProjectile, Resource, Source.X, Source.Y, Z3 + SpinRadius, 1 ) );
-        if assigned( NewProjectile ) then
+        NewProjectile := TProjectile(Sprites.NewSprite(TInfernoProjectile,
+          Resource, Source.X, Source.Y, Z3 + SpinRadius, 1));
+        if assigned(NewProjectile) then
         begin
           NewProjectile.Magic := Source.Mysticism * 2;
-          ZeroMemory( @NewProjectile.Damage, sizeof( NewProjectile.Damage ) );
+          ZeroMemory(@NewProjectile.Damage, sizeof(NewProjectile.Damage));
           NewProjectile.Damage.Heat.Min := Source.Mysticism / 2;
           NewProjectile.Damage.Heat.Max := Source.Mysticism;
           NewProjectile.Damage.Crushing.Min := 2 * Source.Mysticism / 20;
@@ -905,33 +966,39 @@ begin
           NewProjectile.Duration := Source.Constitution * 10;
           NewProjectile.TrackingDegree := 0;
           NewProjectile.Speed := NewCore.Speed * 2;
-          TInfernoProjectile( NewProjectile ).Core := TInfernoCoreProjectile( NewCore );
-          TInfernoProjectile( NewProjectile ).Angle := 0;
-          TInfernoProjectile( NewProjectile ).SpinRate := SpinRate;
-          TInfernoProjectile( NewProjectile ).SpinRadius := SpinRadius;
-          TInfernoCoreProjectile( NewCore ).Proj1 := TInfernoProjectile( NewProjectile );
+          TInfernoProjectile(NewProjectile).Core :=
+            TInfernoCoreProjectile(NewCore);
+          TInfernoProjectile(NewProjectile).Angle := 0;
+          TInfernoProjectile(NewProjectile).SpinRate := SpinRate;
+          TInfernoProjectile(NewProjectile).SpinRadius := SpinRadius;
+          TInfernoCoreProjectile(NewCore).Proj1 :=
+            TInfernoProjectile(NewProjectile);
 
           if Source.Coordination <= 10 then
             NewProjectile.HitIncidental := 1
           else
             NewProjectile.HitIncidental := 10 / Source.Coordination;
           NewProjectile.HitTarget := 1;
-          NewProjectile.UseLineOfSight := True;
-          NewProjectile.GlowEffect := TGlow( Sprites.NewSprite( TGlow, nil, Source.X, Source.Y - 1, 0, 0 ) );
+          NewProjectile.UseLineOfSight := true;
+          NewProjectile.GlowEffect :=
+            TGlow(Sprites.NewSprite(TGlow, nil, Source.X, Source.Y - 1, 0, 0));
           NewProjectile.GlowEffect.RFactor := 100;
           NewProjectile.GlowEffect.GFactor := 50;
           NewProjectile.GlowEffect.BFactor := 25;
           NewProjectile.GlowEffect.Alpha := 100;
 
           Tail1 := NewProjectile;
-          Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource2, Source.X, Source.Y, z3 + SpinRadius, 1 ) );
+          Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource2,
+            Source.X, Source.Y, Z3 + SpinRadius, 1));
           Tail2.Passive := true;
           Tail1.TrailedBy := Tail2;
           Tail1 := Tail2;
-          Tail1.DoAction( 'Default' );
-          Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource3, Source.X, Source.Y, z3 + SpinRadius, 1 ) );
+          Tail1.DoAction('Default');
+          Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource3,
+            Source.X, Source.Y, Z3 + SpinRadius, 1));
           Tail2.Passive := true;
-          Tail2.GlowEffect := TGlow( Sprites.NewSprite( TGlow, nil, Source.X, Source.Y - 1, 0, 0 ) );
+          Tail2.GlowEffect := TGlow(Sprites.NewSprite(TGlow, nil, Source.X,
+            Source.Y - 1, 0, 0));
           Tail2.GlowEffect.RFactor := 50;
           Tail2.GlowEffect.GFactor := 25;
           Tail2.GlowEffect.BFactor := 12;
@@ -939,38 +1006,43 @@ begin
           Tail2.OnMove := Tail2.MoveEvent;
           Tail1.TrailedBy := Tail2;
           Tail1 := Tail2;
-          Tail1.DoAction( 'Default' );
-          Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource4, Source.X, Source.Y, z3 + SpinRadius, 1 ) );
+          Tail1.DoAction('Default');
+          Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource4,
+            Source.X, Source.Y, Z3 + SpinRadius, 1));
           Tail2.Passive := true;
           Tail1.TrailedBy := Tail2;
           Tail1 := Tail2;
-          Tail1.DoAction( 'Default' );
-          Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource5, Source.X, Source.Y, z3 + SpinRadius, 1 ) );
+          Tail1.DoAction('Default');
+          Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource5,
+            Source.X, Source.Y, Z3 + SpinRadius, 1));
           Tail2.Passive := true;
           Tail1.TrailedBy := Tail2;
           Tail1 := Tail2;
-          Tail1.DoAction( 'Default' );
-          Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource6, Source.X, Source.Y, z3 + SpinRadius, 1 ) );
+          Tail1.DoAction('Default');
+          Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource6,
+            Source.X, Source.Y, Z3 + SpinRadius, 1));
           Tail2.Passive := true;
           Tail1.TrailedBy := Tail2;
           Tail1 := Tail2;
-          Tail1.DoAction( 'Default' );
-          Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource7, Source.X, Source.Y, z3 + SpinRadius, 1 ) );
+          Tail1.DoAction('Default');
+          Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource7,
+            Source.X, Source.Y, Z3 + SpinRadius, 1));
           Tail2.Passive := true;
           Tail1.TrailedBy := Tail2;
           Tail1 := Tail2;
-          Tail1.DoAction( 'Default' );
+          Tail1.DoAction('Default');
           Tail2.TrailedBy := nil;
 
-          NewProjectile.Launch( Source, Target, TargetX, TargetY + z2 );
+          NewProjectile.Launch(Source, Target, TargetX, TargetY + Z2);
         end;
-  {************************************************************************************}
-        //Second Fireball
-        NewProjectile := TProjectile( Sprites.NewSprite( TInfernoProjectile, Resource, Source.X, Source.Y, z3 - SpinRadius, 1 ) );
-        if assigned( NewProjectile ) then
+        { ************************************************************************************ }
+        // Second Fireball
+        NewProjectile := TProjectile(Sprites.NewSprite(TInfernoProjectile,
+          Resource, Source.X, Source.Y, Z3 - SpinRadius, 1));
+        if assigned(NewProjectile) then
         begin
           NewProjectile.Magic := Source.Mysticism * 2;
-          ZeroMemory( @NewProjectile.Damage, sizeof( NewProjectile.Damage ) );
+          ZeroMemory(@NewProjectile.Damage, sizeof(NewProjectile.Damage));
           NewProjectile.Damage.Heat.Min := Source.Mysticism / 2;
           NewProjectile.Damage.Heat.Max := Source.Mysticism;
           NewProjectile.Damage.Crushing.Min := 2 * Source.Mysticism / 20;
@@ -980,11 +1052,13 @@ begin
           NewProjectile.Duration := Source.Constitution * 10;
           NewProjectile.TrackingDegree := 0;
           NewProjectile.Speed := NewCore.Speed * 2;
-          TInfernoProjectile( NewProjectile ).Core := TInfernoCoreProjectile( NewCore );
-          TInfernoProjectile( NewProjectile ).Angle := 180;
-          TInfernoProjectile( NewProjectile ).SpinRate := SpinRate;
-          TInfernoProjectile( NewProjectile ).SpinRadius := SpinRadius;
-          TInfernoCoreProjectile( NewCore ).Proj2 := TInfernoProjectile( NewProjectile );
+          TInfernoProjectile(NewProjectile).Core :=
+            TInfernoCoreProjectile(NewCore);
+          TInfernoProjectile(NewProjectile).Angle := 180;
+          TInfernoProjectile(NewProjectile).SpinRate := SpinRate;
+          TInfernoProjectile(NewProjectile).SpinRadius := SpinRadius;
+          TInfernoCoreProjectile(NewCore).Proj2 :=
+            TInfernoProjectile(NewProjectile);
 
           if Source.Coordination <= 10 then
             NewProjectile.HitIncidental := 1
@@ -992,22 +1066,26 @@ begin
             NewProjectile.HitIncidental := 10 / Source.Coordination;
 
           NewProjectile.HitTarget := 1;
-          NewProjectile.UseLineOfSight := True;
-          NewProjectile.GlowEffect := TGlow( Sprites.NewSprite( TGlow, nil, Source.X, Source.Y - 1, 0, 0 ) );
+          NewProjectile.UseLineOfSight := true;
+          NewProjectile.GlowEffect :=
+            TGlow(Sprites.NewSprite(TGlow, nil, Source.X, Source.Y - 1, 0, 0));
           NewProjectile.GlowEffect.RFactor := 100;
           NewProjectile.GlowEffect.GFactor := 50;
           NewProjectile.GlowEffect.BFactor := 25;
           NewProjectile.GlowEffect.Alpha := 100;
 
           Tail1 := NewProjectile;
-          Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource2, Source.X, Source.Y, z3 - SpinRadius, 1 ) );
+          Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource2,
+            Source.X, Source.Y, Z3 - SpinRadius, 1));
           Tail2.Passive := true;
           Tail1.TrailedBy := Tail2;
           Tail1 := Tail2;
-          Tail1.DoAction( 'Default' );
-          Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource3, Source.X, Source.Y, z3 - SpinRadius, 1 ) );
+          Tail1.DoAction('Default');
+          Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource3,
+            Source.X, Source.Y, Z3 - SpinRadius, 1));
           Tail2.Passive := true;
-          Tail2.GlowEffect := TGlow( Sprites.NewSprite( TGlow, nil, Source.X, Source.Y - 1, 0, 0 ) );
+          Tail2.GlowEffect := TGlow(Sprites.NewSprite(TGlow, nil, Source.X,
+            Source.Y - 1, 0, 0));
           Tail2.GlowEffect.RFactor := 50;
           Tail2.GlowEffect.GFactor := 25;
           Tail2.GlowEffect.BFactor := 12;
@@ -1015,41 +1093,46 @@ begin
           Tail2.OnMove := Tail2.MoveEvent;
           Tail1.TrailedBy := Tail2;
           Tail1 := Tail2;
-          Tail1.DoAction( 'Default' );
-          Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource4, Source.X, Source.Y, z3 - SpinRadius, 1 ) );
+          Tail1.DoAction('Default');
+          Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource4,
+            Source.X, Source.Y, Z3 - SpinRadius, 1));
           Tail2.Passive := true;
           Tail1.TrailedBy := Tail2;
           Tail1 := Tail2;
-          Tail1.DoAction( 'Default' );
-          Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource5, Source.X, Source.Y, z3 - SpinRadius, 1 ) );
+          Tail1.DoAction('Default');
+          Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource5,
+            Source.X, Source.Y, Z3 - SpinRadius, 1));
           Tail2.Passive := true;
           Tail1.TrailedBy := Tail2;
           Tail1 := Tail2;
-          Tail1.DoAction( 'Default' );
-          Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource6, Source.X, Source.Y, z3 - SpinRadius, 1 ) );
+          Tail1.DoAction('Default');
+          Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource6,
+            Source.X, Source.Y, Z3 - SpinRadius, 1));
           Tail2.Passive := true;
           Tail1.TrailedBy := Tail2;
           Tail1 := Tail2;
-          Tail1.DoAction( 'Default' );
-          Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource7, Source.X, Source.Y, z3 - SpinRadius, 1 ) );
+          Tail1.DoAction('Default');
+          Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource7,
+            Source.X, Source.Y, Z3 - SpinRadius, 1));
           Tail2.Passive := true;
           Tail1.TrailedBy := Tail2;
           Tail1 := Tail2;
-          Tail1.DoAction( 'Default' );
+          Tail1.DoAction('Default');
           Tail2.TrailedBy := nil;
 
-          NewProjectile.Launch( Source, Target, TargetX, TargetY + z2 );
+          NewProjectile.Launch(Source, Target, TargetX, TargetY + Z2);
         end;
       end;
-{**************************************************************************************}
+      { ************************************************************************************** }
     end
-    else if Source.TitleExists( 'Fireball' ) then
+    else if Source.TitleExists('Fireball') then
     begin
-      NewProjectile := TProjectile( Sprites.NewSprite( TProjectile, Resource2, Source.X, Source.Y, Z1, 1 ) );
-      if assigned( NewProjectile ) then
+      NewProjectile := TProjectile(Sprites.NewSprite(TProjectile, Resource2,
+        Source.X, Source.Y, Z1, 1));
+      if assigned(NewProjectile) then
       begin
         NewProjectile.Magic := 3 * Source.Mysticism div 22;
-        ZeroMemory( @NewProjectile.Damage, sizeof( NewProjectile.Damage ) );
+        ZeroMemory(@NewProjectile.Damage, sizeof(NewProjectile.Damage));
         NewProjectile.Damage.Heat.Min := Source.Mysticism / 1.5;
         NewProjectile.Damage.Heat.Max := Source.Mysticism * 1.5;
         NewProjectile.Damage.Crushing.Min := 2 * Source.Mysticism / 15;
@@ -1064,22 +1147,26 @@ begin
         else
           NewProjectile.HitIncidental := 10 / Source.Coordination;
         NewProjectile.HitTarget := 1;
-        NewProjectile.UseLineOfSight := True;
-        NewProjectile.GlowEffect := TGlow( Sprites.NewSprite( TGlow, nil, Source.X, Source.Y - 1, 0, 0 ) );
+        NewProjectile.UseLineOfSight := true;
+        NewProjectile.GlowEffect :=
+          TGlow(Sprites.NewSprite(TGlow, nil, Source.X, Source.Y - 1, 0, 0));
         NewProjectile.GlowEffect.RFactor := 100;
         NewProjectile.GlowEffect.GFactor := 50;
         NewProjectile.GlowEffect.BFactor := 25;
         NewProjectile.GlowEffect.Alpha := 100;
 
         Tail1 := NewProjectile;
-        Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource3, Source.X, Source.Y, Z1, 1 ) );
+        Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource3, Source.X,
+          Source.Y, Z1, 1));
         Tail2.Passive := true;
         Tail1.TrailedBy := Tail2;
         Tail1 := Tail2;
-        Tail1.DoAction( 'Default' );
-        Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource4, Source.X, Source.Y, Z1, 1 ) );
+        Tail1.DoAction('Default');
+        Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource4, Source.X,
+          Source.Y, Z1, 1));
         Tail2.Passive := true;
-        Tail2.GlowEffect := TGlow( Sprites.NewSprite( TGlow, nil, Source.X, Source.Y - 1, 0, 0 ) );
+        Tail2.GlowEffect := TGlow(Sprites.NewSprite(TGlow, nil, Source.X,
+          Source.Y - 1, 0, 0));
         Tail2.GlowEffect.RFactor := 50;
         Tail2.GlowEffect.GFactor := 25;
         Tail2.GlowEffect.BFactor := 12;
@@ -1087,43 +1174,48 @@ begin
         Tail2.OnMove := Tail2.MoveEvent;
         Tail1.TrailedBy := Tail2;
         Tail1 := Tail2;
-        Tail1.DoAction( 'Default' );
-        Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource5, Source.X, Source.Y, Z1, 1 ) );
+        Tail1.DoAction('Default');
+        Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource5, Source.X,
+          Source.Y, Z1, 1));
         Tail2.Passive := true;
         Tail1.TrailedBy := Tail2;
         Tail1 := Tail2;
-        Tail1.DoAction( 'Default' );
-        Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource6, Source.X, Source.Y, Z1, 1 ) );
+        Tail1.DoAction('Default');
+        Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource6, Source.X,
+          Source.Y, Z1, 1));
         Tail2.Passive := true;
         Tail1.TrailedBy := Tail2;
         Tail1 := Tail2;
-        Tail1.DoAction( 'Default' );
-        Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource7, Source.X, Source.Y, Z1, 1 ) );
+        Tail1.DoAction('Default');
+        Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource7, Source.X,
+          Source.Y, Z1, 1));
         Tail2.Passive := true;
         Tail1.TrailedBy := Tail2;
         Tail1 := Tail2;
-        Tail1.DoAction( 'Default' );
+        Tail1.DoAction('Default');
         Tail2.TrailedBy := nil;
 
         TargetX := Source.TargetX;
         TargetY := Source.TargetY;
-        Bonus := Source.Coordination + Source.Perception / 2 + Source.Combat / 4 - Source.Restriction / 5;
+        Bonus := Source.Coordination + Source.Perception / 2 + Source.Combat / 4
+          - Source.Restriction / 5;
         if Bonus < 10 then
           Angle := 17.5
         else
           Angle := 175 / Bonus;
-        ComputeTrajectory( Source, TargetX, TargetY, Angle );
+        ComputeTrajectory(Source, TargetX, TargetY, Angle);
 
-        NewProjectile.Launch( Source, Target, TargetX, TargetY + Z2 );
+        NewProjectile.Launch(Source, Target, TargetX, TargetY + Z2);
       end;
     end
     else
     begin
-      NewProjectile := TProjectile( Sprites.NewSprite( TProjectile, Resource3, Source.X, Source.Y, Z1, 1 ) );
-      if assigned( NewProjectile ) then
+      NewProjectile := TProjectile(Sprites.NewSprite(TProjectile, Resource3,
+        Source.X, Source.Y, Z1, 1));
+      if assigned(NewProjectile) then
       begin
         NewProjectile.Magic := Source.Mysticism;
-        ZeroMemory( @NewProjectile.Damage, sizeof( NewProjectile.Damage ) );
+        ZeroMemory(@NewProjectile.Damage, sizeof(NewProjectile.Damage));
         NewProjectile.Damage.Heat.Min := Source.Mysticism / 2;
         NewProjectile.Damage.Heat.Max := Source.Mysticism;
         NewProjectile.Damage.Crushing.Min := 2 * Source.Mysticism / 20;
@@ -1138,22 +1230,26 @@ begin
         else
           NewProjectile.HitIncidental := 10 / Source.Coordination;
         NewProjectile.HitTarget := 1;
-        NewProjectile.UseLineOfSight := True;
-        NewProjectile.GlowEffect := TGlow( Sprites.NewSprite( TGlow, nil, Source.X, Source.Y - 1, 0, 0 ) );
+        NewProjectile.UseLineOfSight := true;
+        NewProjectile.GlowEffect :=
+          TGlow(Sprites.NewSprite(TGlow, nil, Source.X, Source.Y - 1, 0, 0));
         NewProjectile.GlowEffect.RFactor := 100;
         NewProjectile.GlowEffect.GFactor := 50;
         NewProjectile.GlowEffect.BFactor := 25;
         NewProjectile.GlowEffect.Alpha := 100;
 
         Tail1 := NewProjectile;
-        Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource4, Source.X, Source.Y, Z1, 1 ) );
+        Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource4, Source.X,
+          Source.Y, Z1, 1));
         Tail2.Passive := true;
         Tail1.TrailedBy := Tail2;
         Tail1 := Tail2;
-        Tail1.DoAction( 'Default' );
-        Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource5, Source.X, Source.Y, Z1, 1 ) );
+        Tail1.DoAction('Default');
+        Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource5, Source.X,
+          Source.Y, Z1, 1));
         Tail2.Passive := true;
-        Tail2.GlowEffect := TGlow( Sprites.NewSprite( TGlow, nil, Source.X, Source.Y - 1, 0, 0 ) );
+        Tail2.GlowEffect := TGlow(Sprites.NewSprite(TGlow, nil, Source.X,
+          Source.Y - 1, 0, 0));
         Tail2.GlowEffect.RFactor := 50;
         Tail2.GlowEffect.GFactor := 25;
         Tail2.GlowEffect.BFactor := 12;
@@ -1161,82 +1257,100 @@ begin
         Tail2.OnMove := Tail2.MoveEvent;
         Tail1.TrailedBy := Tail2;
         Tail1 := Tail2;
-        Tail1.DoAction( 'Default' );
-        Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource6, Source.X, Source.Y, Z1, 1 ) );
+        Tail1.DoAction('Default');
+        Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource6, Source.X,
+          Source.Y, Z1, 1));
         Tail2.Passive := true;
         Tail1.TrailedBy := Tail2;
         Tail1 := Tail2;
-        Tail1.DoAction( 'Default' );
-        Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource7, Source.X, Source.Y, Z1, 1 ) );
+        Tail1.DoAction('Default');
+        Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource7, Source.X,
+          Source.Y, Z1, 1));
         Tail2.Passive := true;
         Tail1.TrailedBy := Tail2;
         Tail1 := Tail2;
-        Tail1.DoAction( 'Default' );
+        Tail1.DoAction('Default');
         Tail2.TrailedBy := nil;
 
         TargetX := Source.TargetX;
         TargetY := Source.TargetY;
-        Bonus := Source.Coordination + Source.Perception / 2 + Source.Combat / 4 - Source.Restriction / 5;
+        Bonus := Source.Coordination + Source.Perception / 2 + Source.Combat / 4
+          - Source.Restriction / 5;
         if Bonus < 10 then
           Angle := 17.5
         else
           Angle := 175 / Bonus;
-        ComputeTrajectory( Source, TargetX, TargetY, Angle );
+        ComputeTrajectory(Source, TargetX, TargetY, Angle);
 
-        NewProjectile.Launch( Source, Target, TargetX, TargetY + Z2 );
+        NewProjectile.Launch(Source, Target, TargetX, TargetY + Z2);
       end;
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-procedure TFireball.Casting( Source : TCharacter );
+procedure TFireball.Casting(Source: TCharacter);
 var
-  Effect : TEffect;
+  Effect: TEffect;
 begin
-  if Source.TitleExists( 'Inferno' ) and TCharacterResource( Source.Resource ).UseCastAnimation then
+  if Source.TitleExists('Inferno') and TCharacterResource(Source.Resource).UseCastAnimation
+  then
   begin
     Effect := TEffect.Create;
     Effect.Resource := BigFire;
     Effect.AnimationDuration := 10 * Effect.Resource.FrameMultiplier;
     Effect.Power := Source.Mysticism;
-    Effect.DoAction( 'Default', Source.Facing );
-    Source.AddEffect( Effect );
+    Effect.DoAction('Default', Source.Facing);
+    Source.AddEffect(Effect);
   end;
 end;
 
 procedure TFireball.Clear;
 begin
-  Resource.RLE.free; Resource.RLE := nil;
-  Resource2.RLE.free; Resource2.RLE := nil;
-  Resource3.RLE.free; Resource3.RLE := nil;
-  Resource4.RLE.free; Resource4.RLE := nil;
-  Resource5.RLE.free; Resource5.RLE := nil;
-  Resource6.RLE.free; Resource6.RLE := nil;
-  Resource7.RLE.free; Resource7.RLE := nil;
+  Resource.RLE.free;
+  Resource.RLE := nil;
+  Resource2.RLE.free;
+  Resource2.RLE := nil;
+  Resource3.RLE.free;
+  Resource3.RLE := nil;
+  Resource4.RLE.free;
+  Resource4.RLE := nil;
+  Resource5.RLE.free;
+  Resource5.RLE := nil;
+  Resource6.RLE.free;
+  Resource6.RLE := nil;
+  Resource7.RLE.free;
+  Resource7.RLE := nil;
 end;
 
 constructor TFireball.Create;
 const
-  FailName : string = 'TFireball.Create';
+  FailName: string = 'TFireball.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
     CastingType := ctCombat;
     TargetType := ttEnemy;
     CastEffect := FireEffect;
-    Resource := LoadArtResource( 'engine\weaponprojectiles\FireBallExplode.gif', true );
-    Resource2 := LoadArtResource( 'engine\weaponprojectiles\FireBall2(LVL3).gif', true );
-    Resource3 := LoadArtResource( 'engine\weaponprojectiles\FireBall3(LVL3).gif', true );
-    Resource4 := LoadArtResource( 'engine\weaponprojectiles\FireBall4(LVL3).gif', true );
-    Resource5 := LoadArtResource( 'engine\weaponprojectiles\FireBall5(LVL3).gif', true );
-    Resource6 := LoadArtResource( 'engine\weaponprojectiles\FireBall4(LVL2).gif', true );
-    Resource7 := LoadArtResource( 'engine\weaponprojectiles\FireBall5(LVL2).gif', true );
+    Resource := LoadArtResource
+      ('engine\weaponprojectiles\FireBallExplode.gif', true);
+    Resource2 := LoadArtResource
+      ('engine\weaponprojectiles\FireBall2(LVL3).gif', true);
+    Resource3 := LoadArtResource
+      ('engine\weaponprojectiles\FireBall3(LVL3).gif', true);
+    Resource4 := LoadArtResource
+      ('engine\weaponprojectiles\FireBall4(LVL3).gif', true);
+    Resource5 := LoadArtResource
+      ('engine\weaponprojectiles\FireBall5(LVL3).gif', true);
+    Resource6 := LoadArtResource
+      ('engine\weaponprojectiles\FireBall4(LVL2).gif', true);
+    Resource7 := LoadArtResource
+      ('engine\weaponprojectiles\FireBall5(LVL2).gif', true);
     Resource2.SpecialEffect := seAdd;
     Resource3.SpecialEffect := seAdd;
     Resource4.SpecialEffect := seAdd;
@@ -1245,22 +1359,22 @@ begin
     Resource7.SpecialEffect := seAdd;
     Resource.DrawShadow := false;
     SoundInCast := false;
-    LoadCastSounds( 'FireCast' );
+    LoadCastSounds('FireCast');
     Interupted := false;
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor TFireball.Destroy;
 const
-  FailName : string = 'TFireball.Destroy';
+  FailName: string = 'TFireball.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    Resource.Free;
+    Resource.free;
     Resource2.free;
     Resource3.free;
     Resource4.free;
@@ -1270,44 +1384,44 @@ begin
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TFireball.Drain( Source : TCharacter ) : Single;
+function TFireball.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TFireball.Drain';
+  FailName: string = 'TFireball.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 5 + round( Source.Restriction / 10 );
+    result := 5 + round(Source.Restriction / 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TFireball.GetIconXY( Source : TCharacter ) : TPoint;
+function TFireball.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TFireball.GetIconXY';
+  FailName: string = 'TFireball.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if Source.TitleExists( 'Inferno' ) then
+    if Source.TitleExists('Inferno') then
     begin
       result.X := 8 * 32;
       result.Y := 32;
     end
-    else if Source.TitleExists( 'Fireball' ) then
+    else if Source.TitleExists('Fireball') then
     begin
       result.X := 8 * 32;
-      result.Y := 0;
+      result.Y := 32; // war 0
     end
     else
     begin
@@ -1316,40 +1430,46 @@ begin
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TFireball.GetInfo( Source : TCharacter ) : string;
+function TFireball.GetInfo(Source: TCharacter): string;
 begin
-  if Source.TitleExists( 'Inferno' ) then
+  if Source.TitleExists('Inferno') then
   begin
     result := InfoText;
-    Replace( result, 'a', inttostr( round( Source.Mysticism / 1.5 ) ) + '-' + inttostr( round( Source.Mysticism * 1.5 ) ) );
-    Replace( result, 'b', inttostr( round( 2 * Source.Mysticism / 15 ) ) + '-' + inttostr( round( 8 * Source.Mysticism / 15 ) ) );
+    Replace(result, 'a', inttostr(round(Source.Mysticism / 1.5)) + '-' +
+      inttostr(round(Source.Mysticism * 1.5)));
+    Replace(result, 'b', inttostr(round(2 * Source.Mysticism / 15)) + '-' +
+      inttostr(round(8 * Source.Mysticism / 15)));
   end
-  else if Source.TitleExists( 'Fireball' ) then
+  else if Source.TitleExists('Fireball') then
   begin
     result := InfoText;
-    Replace( result, 'a', inttostr( round( Source.Mysticism / 1.5 ) ) + '-' + inttostr( round( Source.Mysticism * 1.5 ) ) );
-    Replace( result, 'b', inttostr( round( 2 * Source.Mysticism / 15 ) ) + '-' + inttostr( round( 8 * Source.Mysticism / 15 ) ) );
+    Replace(result, 'a', inttostr(round(Source.Mysticism / 1.5)) + '-' +
+      inttostr(round(Source.Mysticism * 1.5)));
+    Replace(result, 'b', inttostr(round(2 * Source.Mysticism / 15)) + '-' +
+      inttostr(round(8 * Source.Mysticism / 15)));
   end
   else
   begin
     result := InfoText;
-    Replace( result, 'a', inttostr( round( Source.Mysticism / 2 ) ) + '-' + inttostr( Source.Mysticism ) );
-    Replace( result, 'b', inttostr( round( 2 * Source.Mysticism / 20 ) ) + '-' + inttostr( round( 8 * Source.Mysticism / 20 ) ) );
+    Replace(result, 'a', inttostr(round(Source.Mysticism / 2)) + '-' +
+      inttostr(Source.Mysticism));
+    Replace(result, 'b', inttostr(round(2 * Source.Mysticism / 20)) + '-' +
+      inttostr(round(8 * Source.Mysticism / 20)));
   end;
 end;
 
-function TFireball.GetLoaded : Boolean;
+function TFireball.GetLoaded: Boolean;
 const
-  FailName : string = 'TFireball.GetLoaded';
+  FailName: string = 'TFireball.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result := Resource.Loaded and Resource2.Loaded and Resource3.Loaded and
@@ -1357,84 +1477,85 @@ begin
       Resource7.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TFireball.GetName : string;
+class function TFireball.GetName: string;
 begin
   result := 'Flame';
 end;
 
-function TFireball.Range( Source : TCharacter ) : Integer;
+function TFireball.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TFireball.Range';
+  FailName: string = 'TFireball.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := Round( Source.Constitution * 10 * ( 12 + Source.Coordination / 10 ) );
+    result := round(Source.Constitution * 10 * (12 + Source.Coordination / 10));
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TFireball.Recovery( Source : TCharacter ) : Integer;
+function TFireball.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TFireball.Recovery';
+  FailName: string = 'TFireball.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 40 - ( ( Source.Constitution + Source.Mysticism ) div 2 );
+    result := 40 - ((Source.Constitution + Source.Mysticism) div 2);
     if result < 0 then
       result := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 { TFrostball }
 
-function TFrostball.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
+function TFrostBall.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  NewProjectile : TProjectile;
-  Z1, Z2 : Integer;
-  Bonus, Angle : single;
-  TargetX, TargetY : longint;
-  Tail1, Tail2 : TProjectile;
+  NewProjectile: TProjectile;
+  Z1, Z2: Integer;
+  Bonus, Angle: Single;
+  TargetX, TargetY: longint;
+  Tail1, Tail2: TProjectile;
 const
-  FailName : string = 'TFrostball.Cast';
+  FailName: string = 'TFrostball.Cast';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := inherited Cast( Source, Target );
+    result := inherited Cast(Source, Target);
     if not result then
       Exit;
     Z1 := Source.Height div 2 - 16;
-    if Assigned( Target ) then
+    if assigned(Target) then
       Z2 := 0
     else
       Z2 := Z1;
-    if Source.TitleExists( 'Deepfreeze' ) then
+    if Source.TitleExists('Deepfreeze') then
     begin
-      NewProjectile := TProjectile( Sprites.NewSprite( TProjectile, Resource, Source.X, Source.Y, Z1, 1 ) );
-      if assigned( NewProjectile ) then
+      NewProjectile := TProjectile(Sprites.NewSprite(TProjectile, Resource,
+        Source.X, Source.Y, Z1, 1));
+      if assigned(NewProjectile) then
       begin
         NewProjectile.Magic := Source.Mysticism * 2;
-        ZeroMemory( @NewProjectile.Damage, sizeof( NewProjectile.Damage ) );
+        ZeroMemory(@NewProjectile.Damage, sizeof(NewProjectile.Damage));
         NewProjectile.Damage.Cold.Min := Source.Mysticism;
         NewProjectile.Damage.Cold.Max := Source.Mysticism * 2;
         NewProjectile.DamageRadius := 8;
@@ -1445,26 +1566,31 @@ begin
         if Source.Mysticism + Source.Coordination <= 10 then
           NewProjectile.HitIncidental := 1
         else
-          NewProjectile.HitIncidental := 10 / ( Source.Mysticism + Source.Coordination );
+          NewProjectile.HitIncidental :=
+            10 / (Source.Mysticism + Source.Coordination);
         NewProjectile.HitTarget := 1;
-        NewProjectile.UseLineOfSight := True;
+        NewProjectile.UseLineOfSight := true;
         NewProjectile.Alpha := 75;
-        NewProjectile.GlowEffect := TGlow( Sprites.NewSprite( TGlow, nil, Source.X, Source.Y - 1, 0, 0 ) );
+        NewProjectile.GlowEffect :=
+          TGlow(Sprites.NewSprite(TGlow, nil, Source.X, Source.Y - 1, 0, 0));
         NewProjectile.GlowEffect.RFactor := 0;
         NewProjectile.GlowEffect.GFactor := 25;
         NewProjectile.GlowEffect.BFactor := 100;
         NewProjectile.GlowEffect.Alpha := 50;
 
         Tail1 := NewProjectile;
-        Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource, Source.X, Source.Y, Z1, 1 ) );
+        Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource, Source.X,
+          Source.Y, Z1, 1));
         Tail2.Passive := true;
         Tail1.TrailedBy := Tail2;
         Tail2.Alpha := 55;
         Tail1 := Tail2;
-        Tail1.DoAction( 'Default' );
-        Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource, Source.X, Source.Y, Z1, 1 ) );
+        Tail1.DoAction('Default');
+        Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource, Source.X,
+          Source.Y, Z1, 1));
         Tail2.Passive := true;
-        Tail2.GlowEffect := TGlow( Sprites.NewSprite( TGlow, nil, Source.X, Source.Y - 1, 0, 0 ) );
+        Tail2.GlowEffect := TGlow(Sprites.NewSprite(TGlow, nil, Source.X,
+          Source.Y - 1, 0, 0));
         Tail2.GlowEffect.RFactor := 0;
         Tail2.GlowEffect.GFactor := 25;
         Tail2.GlowEffect.BFactor := 100;
@@ -1473,25 +1599,28 @@ begin
         Tail1.TrailedBy := Tail2;
         Tail2.Alpha := 35;
         Tail1 := Tail2;
-        Tail1.DoAction( 'Default' );
-        Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource, Source.X, Source.Y, Z1, 1 ) );
+        Tail1.DoAction('Default');
+        Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource, Source.X,
+          Source.Y, Z1, 1));
         Tail2.Passive := true;
         Tail1.TrailedBy := Tail2;
         Tail2.Alpha := 15;
         Tail1 := Tail2;
-        Tail1.DoAction( 'Default' );
+        Tail1.DoAction('Default');
         Tail1.TrailedBy := nil;
 
-        NewProjectile.Launch( Source, Target, Source.TargetX, Source.TargetY + Z2 );
+        NewProjectile.Launch(Source, Target, Source.TargetX,
+          Source.TargetY + Z2);
       end;
     end
-    else if Source.TitleExists( 'Freeze' ) then
+    else if Source.TitleExists('Freeze') then
     begin
-      NewProjectile := TProjectile( Sprites.NewSprite( TProjectile, Resource, Source.X, Source.Y, Z1, 1 ) );
-      if assigned( NewProjectile ) then
+      NewProjectile := TProjectile(Sprites.NewSprite(TProjectile, Resource,
+        Source.X, Source.Y, Z1, 1));
+      if assigned(NewProjectile) then
       begin
         NewProjectile.Magic := 3 * Source.Mysticism div 2;
-        ZeroMemory( @NewProjectile.Damage, sizeof( NewProjectile.Damage ) );
+        ZeroMemory(@NewProjectile.Damage, sizeof(NewProjectile.Damage));
         NewProjectile.Damage.Cold.Min := Source.Mysticism / 2;
         NewProjectile.Damage.Cold.Max := Source.Mysticism * 2;
         NewProjectile.DamageRadius := 8;
@@ -1502,25 +1631,29 @@ begin
         if Source.Mysticism + Source.Coordination <= 10 then
           NewProjectile.HitIncidental := 1
         else
-          NewProjectile.HitIncidental := 10 / ( Source.Mysticism + Source.Coordination );
+          NewProjectile.HitIncidental :=
+            10 / (Source.Mysticism + Source.Coordination);
         NewProjectile.HitTarget := 1;
-        NewProjectile.UseLineOfSight := True;
+        NewProjectile.UseLineOfSight := true;
         NewProjectile.Alpha := 75;
-        NewProjectile.GlowEffect := TGlow( Sprites.NewSprite( TGlow, nil, Source.X, Source.Y - 1, 0, 0 ) );
+        NewProjectile.GlowEffect :=
+          TGlow(Sprites.NewSprite(TGlow, nil, Source.X, Source.Y - 1, 0, 0));
         NewProjectile.GlowEffect.RFactor := 0;
         NewProjectile.GlowEffect.GFactor := 25;
         NewProjectile.GlowEffect.BFactor := 100;
         NewProjectile.GlowEffect.Alpha := 50;
-        NewProjectile.Launch( Source, Target, Source.TargetX, Source.TargetY + Z2 );
+        NewProjectile.Launch(Source, Target, Source.TargetX,
+          Source.TargetY + Z2);
       end;
     end
     else
     begin
-      NewProjectile := TProjectile( Sprites.NewSprite( TProjectile, SmallResource, Source.X, Source.Y, Z1, 1 ) );
-      if assigned( NewProjectile ) then
+      NewProjectile := TProjectile(Sprites.NewSprite(TProjectile, SmallResource,
+        Source.X, Source.Y, Z1, 1));
+      if assigned(NewProjectile) then
       begin
         NewProjectile.Magic := Source.Mysticism;
-        ZeroMemory( @NewProjectile.Damage, sizeof( NewProjectile.Damage ) );
+        ZeroMemory(@NewProjectile.Damage, sizeof(NewProjectile.Damage));
         NewProjectile.Damage.Cold.Min := 4 * Source.Mysticism / 5;
         NewProjectile.Damage.Cold.Max := Source.Mysticism;
         NewProjectile.DamageRadius := 6;
@@ -1533,9 +1666,10 @@ begin
         else
           NewProjectile.HitIncidental := 10 / Source.Coordination;
         NewProjectile.HitTarget := 1;
-        NewProjectile.UseLineOfSight := True;
+        NewProjectile.UseLineOfSight := true;
         NewProjectile.Alpha := 150;
-        NewProjectile.GlowEffect := TGlow( Sprites.NewSprite( TGlow, nil, Source.X, Source.Y - 1, 0, 0 ) );
+        NewProjectile.GlowEffect :=
+          TGlow(Sprites.NewSprite(TGlow, nil, Source.X, Source.Y - 1, 0, 0));
         NewProjectile.GlowEffect.RFactor := 0;
         NewProjectile.GlowEffect.GFactor := 25;
         NewProjectile.GlowEffect.BFactor := 100;
@@ -1543,221 +1677,240 @@ begin
 
         TargetX := Source.TargetX;
         TargetY := Source.TargetY;
-        Bonus := Source.Coordination + Source.Perception / 2 + Source.Combat / 4 - Source.Restriction / 5;
+        Bonus := Source.Coordination + Source.Perception / 2 + Source.Combat / 4
+          - Source.Restriction / 5;
         if Bonus < 10 then
           Angle := 17.5
         else
           Angle := 175 / Bonus;
-        ComputeTrajectory( Source, TargetX, TargetY, Angle );
+        ComputeTrajectory(Source, TargetX, TargetY, Angle);
 
-        NewProjectile.Launch( Source, Target, TargetX, TargetY + Z2 );
+        NewProjectile.Launch(Source, Target, TargetX, TargetY + Z2);
       end;
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-procedure TFrostBall.Casting( Source : TCharacter );
+procedure TFrostBall.Casting(Source: TCharacter);
 var
-  Effect : TEffect;
+  Effect: TEffect;
 begin
-  if Source.TitleExists( 'Deepfreeze' ) and TCharacterResource( Source.Resource ).UseCastAnimation then
+  if Source.TitleExists('Deepfreeze') and TCharacterResource(Source.Resource).UseCastAnimation
+  then
   begin
     Effect := TEffect.Create;
     Effect.Resource := BigIce;
     Effect.AnimationDuration := 10 * Effect.Resource.FrameMultiplier;
     Effect.Power := Source.Mysticism;
-    Effect.DoAction( 'Default', Source.Facing );
-    Source.AddEffect( Effect );
+    Effect.DoAction('Default', Source.Facing);
+    Source.AddEffect(Effect);
   end;
 end;
 
 procedure TFrostBall.Clear;
 begin
-  Resource.RLE.free; Resource.RLE := nil;
-  SmallResource.RLE.free; SmallResource.RLE := nil;
+  Resource.RLE.free;
+  Resource.RLE := nil;
+  SmallResource.RLE.free;
+  SmallResource.RLE := nil;
 end;
 
-constructor TFrostball.Create;
+constructor TFrostBall.Create;
 const
-  FailName : string = 'TFrostball.Create';
+  FailName: string = 'TFrostball.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
     CastingType := ctCombat;
     TargetType := ttEnemy;
     CastEffect := FrostEffect;
-    Resource := LoadArtResource( 'engine\weaponprojectiles\FrostBall.gif', true );
-    SmallResource := LoadArtResource( 'engine\weaponprojectiles\SmallFrostBall.gif', true );
+    Resource := LoadArtResource('engine\weaponprojectiles\FrostBall.gif', true);
+    SmallResource := LoadArtResource
+      ('engine\weaponprojectiles\SmallFrostBall.gif', true);
     Resource.DrawShadow := false;
     SmallResource.DrawShadow := false;
     SoundInCast := true;
-    LoadCastSounds( 'freezespell1,freezespell2' );
+    LoadCastSounds('freezespell1,freezespell2');
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-destructor TFrostball.Destroy;
+destructor TFrostBall.Destroy;
 const
-  FailName : string = 'TFrostball.Destroy';
+  FailName: string = 'TFrostball.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    Resource.Free;
-    SmallResource.Free;
+    Resource.free;
+    SmallResource.free;
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TFrostball.Drain( Source : TCharacter ) : Single;
+function TFrostBall.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TFrostball.Drain';
+  FailName: string = 'TFrostball.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 5 + round( Source.Restriction / 10 );
+    result := 5 + round(Source.Restriction / 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TFrostball.GetIconXY( Source : TCharacter ) : TPoint;
+function TFrostBall.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TFrostball.GetIconXY';
+  FailName: string = 'TFrostball.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
-
-    result.X := 9 * 32;
-    result.Y := 0;
-
+    if Source.TitleExists('DeepFreeze') then
+    begin
+      result.X := 3 * 32;
+      result.Y := 32;
+    end
+    else if Source.TitleExists('Freeze') then
+    begin
+      result.X := 3 * 32;
+      result.Y := 32;
+    end
+    else
+    begin
+      result.X := 9 * 32;
+      result.Y := 0;
+    end;
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TFrostBall.GetInfo( Source : TCharacter ) : string;
+function TFrostBall.GetInfo(Source: TCharacter): string;
 begin
   result := InfoText;
-  if Source.TitleExists( 'Deepfreeze' ) then
+  if Source.TitleExists('Deepfreeze') then
   begin
-    Replace( result, 'a', inttostr( Source.Mysticism ) + '-' + inttostr( Source.Mysticism * 2 ) );
+    Replace(result, 'a', inttostr(Source.Mysticism) + '-' +
+      inttostr(Source.Mysticism * 2));
   end
-  else if Source.TitleExists( 'Freeze' ) then
+  else if Source.TitleExists('Freeze') then
   begin
-    Replace( result, 'a', inttostr( round( Source.Mysticism / 2 ) ) + '-' + inttostr( Source.Mysticism * 2 ) );
+    Replace(result, 'a', inttostr(round(Source.Mysticism / 2)) + '-' +
+      inttostr(Source.Mysticism * 2));
   end
   else
   begin
-    Replace( result, 'a', inttostr( round( 4 * Source.Mysticism / 5 ) ) + '-' + inttostr( Source.Mysticism ) );
+    Replace(result, 'a', inttostr(round(4 * Source.Mysticism / 5)) + '-' +
+      inttostr(Source.Mysticism));
   end;
 end;
 
-function TFrostball.GetLoaded : Boolean;
+function TFrostBall.GetLoaded: Boolean;
 const
-  FailName : string = 'TFrostball.GetLoaded';
+  FailName: string = 'TFrostball.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result := Resource.Loaded and SmallResource.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TFrostBall.GetName : string;
+class function TFrostBall.GetName: string;
 begin
   result := 'Frost';
 end;
 
-function TFrostball.Range( Source : TCharacter ) : Integer;
+function TFrostBall.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TFrostball.Range';
+  FailName: string = 'TFrostball.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := Round( Source.Constitution * 50 * ( 6 + Source.Coordination / 30 ) );
+    result := round(Source.Constitution * 50 * (6 + Source.Coordination / 30));
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TFrostball.Recovery( Source : TCharacter ) : Integer;
+function TFrostBall.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TFrostball.Recovery';
+  FailName: string = 'TFrostball.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 40 - ( ( Source.Constitution + Source.Mysticism ) div 2 );
+    result := 40 - ((Source.Constitution + Source.Mysticism) div 2);
     if result < 0 then
       result := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 { TProtection }
 
-function TProtection.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
+function TProtection.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  Effect : TEffect;
-  NewTarget : TCharacter;
-  s : string;
+  Effect: TEffect;
+  NewTarget: TCharacter;
+  S: string;
 const
-  FailName : string = 'TProtection.Cast';
+  FailName: string = 'TProtection.Cast';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := False;
-    if assigned( Target ) then
+    result := false;
+    if assigned(Target) then
     begin
-      if not ( Target is TCharacter ) then
-        exit;
-      if TCharacter( Target ).Dead then
-        exit;
-      NewTarget := TCharacter( Target );
+      if not(Target is TCharacter) then
+        Exit;
+      if TCharacter(Target).Dead then
+        Exit;
+      NewTarget := TCharacter(Target);
     end
     else
       NewTarget := Source;
 
-    result := inherited Cast( Source, NewTarget );
+    result := inherited Cast(Source, NewTarget);
     if not result then
       Exit;
 
@@ -1765,11 +1918,11 @@ begin
     Effect.Resource := Resource;
     Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
     S := 'Major ' + GetName;
-    if Source.TitleExists( S ) then
+    if Source.TitleExists(S) then
       Effect.Resistance := MajorResistance
     else
       Effect.Resistance := MinorResistance;
-    Effect.Duration := Source.Mysticism * 50;
+    Effect.Duration := (8 + Source.Mysticism) * 50; // + 8 for fighter and scout
     Effect.Power := Source.Mysticism;
     Effect.EffectR := R;
     Effect.EffectG := G;
@@ -1778,16 +1931,16 @@ begin
     Effect.UseCustom := true;
     Effect.Alpha := 100;
     Effect.tag := tag;
-    Effect.DoAction( 'Default', NewTarget.Facing );
+    Effect.DoAction('Default', NewTarget.Facing);
 
     with NewTarget do
     begin
-      AddEffect( Effect );
+      AddEffect(Effect);
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
@@ -1795,43 +1948,45 @@ procedure TProtection.Clear;
 begin
   if ResourceOwner then
   begin
-    Resource.RLE.Free; Resource.RLE := nil;
+    Resource.RLE.free;
+    Resource.RLE := nil;
   end;
 end;
 
 constructor TProtection.Create;
 const
-  FailName : string = 'TProtection.Create';
+  FailName: string = 'TProtection.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
     CastingType := ctProtection;
     TargetType := ttFriend;
     CastEffect := ProtectionEffect;
-    if not assigned( ProtectionResource ) then
+    if not assigned(ProtectionResource) then
     begin
-      ProtectionResource := LoadArtResource( 'engine\spells\protectionreceive.gif', true );
+      ProtectionResource :=
+        LoadArtResource('engine\spells\protectionreceive.gif', true);
       ProtectionResource.DrawShadow := false;
       ResourceOwner := true;
     end;
     Resource := ProtectionResource;
 
     SoundInCast := false;
-    LoadCastSounds( 'protection' );
+    LoadCastSounds('protection');
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor TProtection.Destroy;
 const
-  FailName : string = 'TProtection.Destroy';
+  FailName: string = 'TProtection.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     if ResourceOwner then
@@ -1843,144 +1998,145 @@ begin
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TProtection.Drain( Source : TCharacter ) : Single;
+function TProtection.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TProtection.Drain';
+  FailName: string = 'TProtection.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 5 + round( Source.Restriction / 10 );
+    result := 5 + round(Source.Restriction / 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TProtection.GetIconXY( Source : TCharacter ) : TPoint;
+function TProtection.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TProtection.GetIconXY';
+  FailName: string = 'TProtection.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result := IconXY;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TProtection.GetInfo( Source : TCharacter ) : string;
+function TProtection.GetInfo(Source: TCharacter): string;
 var
-  S : string;
+  S: string;
 begin
   result := InfoText;
   S := 'Major ' + GetName;
-  if Source.TitleExists( S ) then
+  if Source.TitleExists(S) then
   begin
-    Replace( result, 'a', '75' );
+    Replace(result, 'a', '75');
   end
   else
   begin
-    Replace( result, 'a', '50' );
+    Replace(result, 'a', '50');
   end;
 end;
 
-function TProtection.GetLoaded : Boolean;
+function TProtection.GetLoaded: Boolean;
 const
-  FailName : string = 'TProtection.GetLoaded';
+  FailName: string = 'TProtection.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if assigned( Resource ) then
+    if assigned(Resource) then
       result := Resource.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TProtection.Range( Source : TCharacter ) : Integer;
+function TProtection.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TProtection.Range';
+  FailName: string = 'TProtection.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := Round( Source.Mysticism * 10 );
+    result := round(Source.Mysticism * 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TProtection.Recovery( Source : TCharacter ) : Integer;
+function TProtection.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TProtection.Recovery';
+  FailName: string = 'TProtection.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 40 - ( ( Source.Coordination + Source.Mysticism ) div 4 );
+    result := 35 - ((Source.Coordination + Source.Mysticism) div 4); // war 40
     if result < 0 then
       result := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 { TLightning }
 
-function TLightning.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
+function TLightning.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  Effect : TEffect;
-  Damage : TDamageProfile;
-  Total, Stun : single;
-  Path : HGLOBAL;
-  i, j, k, PathCount : integer;
-  p : ^TPoint;
-  C : TPoint;
-  ForkPoint : integer;
-  Z1 : integer;
-  NewProjectile : TProjectile;
-  UseLineOfSight : boolean;
-  dX, dY : integer;
-  TargetX, TargetY : longint;
-  ValidTarget : boolean;
-  DoDamage, NewDoDamage : boolean;
-  Res : TResource;
-  List : TStringList;
-  NewTarget : TCharacter;
+  Effect: TEffect;
+  Damage: TDamageProfile;
+  Total, Stun: Single;
+  Path: HGLOBAL;
+  i, j, k, PathCount: Integer;
+  p: ^TPoint;
+  C: TPoint;
+  ForkPoint: Integer;
+  Z1: Integer;
+  NewProjectile: TProjectile;
+  UseLineOfSight: Boolean;
+  dX, dY: Integer;
+  TargetX, TargetY: longint;
+  ValidTarget: Boolean;
+  DoDamage, NewDoDamage: Boolean;
+  Res: TResource;
+  List: TStringList;
+  NewTarget: TCharacter;
 const
-  FailName : string = 'TLightning.Cast';
+  FailName: string = 'TLightning.Cast';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
-    result := False;
-    ValidTarget := assigned( Target ) and ( Target is TCharacter ) and not TCharacter( Target ).Dead;
+    result := false;
+    ValidTarget := assigned(Target) and (Target is TCharacter) and
+      not TCharacter(Target).Dead;
     if ValidTarget then
     begin
       TargetX := Target.X;
@@ -1992,15 +2148,16 @@ begin
       TargetY := Source.TargetY;
     end;
 
-    if Source.TitleExists( 'Forked Lightning' ) then
+    if Source.TitleExists('Forked Lightning') then
     begin
       UseLineOfSight := Source.UseLineOfSight;
       Source.UseLineOfSight := true;
-      PathCount := Game.FindPath( Source, TargetX, TargetY, Source.Coordination div 2, Path );
+      PathCount := Game.FindPath(Source, TargetX, TargetY,
+        Source.Coordination div 2, Path);
       Source.UseLineOfSight := UseLineOfSight;
       if PathCount > 0 then
       begin
-        ZeroMemory( @Damage, sizeof( Damage ) );
+        ZeroMemory(@Damage, sizeof(Damage));
         Damage.Heat.Min := 0;
         Damage.Heat.Max := Source.Mysticism / 4;
         Damage.Electric.Min := Source.Mysticism / 4;
@@ -2009,18 +2166,23 @@ begin
         Damage.Stun.Max := Source.Mysticism / 4;
 
         NewDoDamage := false;
-        if PathCount > 40 then
+
+        DoDamage := true;
+        // added from beneath, compare Code without title Lightning
+        if PathCount > 50 then // war 40
         begin
-          PathCount := 40;
+          PathCount := 50; // war 40
           DoDamage := false;
-        end
-        else if PathCount > 10 + Source.Mysticism then
+        end;
+        if PathCount > 10 + (Source.Mysticism div 3) + (Source.Mysticism div 3)
+          + 3 then // ( Source.Mysticism div 3 ) + ( Source.Mysticism div 3 ) + 3 ergänzt, else entfernt
         begin
-          PathCount := 10 + Source.Mysticism;
+          PathCount := 10 + (Source.Mysticism div 3) + (Source.Mysticism div 3)
+            + 3; // ( Source.Mysticism div 3 ) + ( Source.Mysticism div 3 ) + 3 ergänzt
           DoDamage := false;
-        end
-        else
-          DoDamage := true;
+        end;
+        // else
+        // DoDamage := true;
 
         if DoDamage and ValidTarget then
         begin
@@ -2028,20 +2190,20 @@ begin
           Effect.Resource := ReceiveResource;
           Effect.AnimationDuration := 8 * ReceiveResource.FrameMultiplier;
           Effect.Power := Source.Mysticism;
-          Effect.DoAction( 'Default', Target.Facing );
-          TCharacter( Target ).AddEffect( Effect );
+          Effect.DoAction('Default', Target.Facing);
+          TCharacter(Target).AddEffect(Effect);
         end;
 
-        result := inherited Cast( Source, Target );
+        result := inherited Cast(Source, Target);
         if not result then
         begin
-          GlobalFree( Path );
+          GlobalFree(Path);
           Exit;
         end;
 
         Z1 := Source.Height div 2 - 16;
         Resource2.DrawShadow := false;
-        p := GlobalLock( Path );
+        p := GlobalLock(Path);
         ForkPoint := 2 * PathCount div 3;
         Res := Resource3;
         for i := 1 to PathCount do
@@ -2053,10 +2215,10 @@ begin
           end;
           if i < PathCount then
           begin
-            inc( p );
+            inc(p);
             dX := p^.X;
-            dY := p^.y;
-            dec( p );
+            dY := p^.Y;
+            dec(p);
             dX := dX - p^.X;
             dY := dY - p^.Y;
             k := 3;
@@ -2069,12 +2231,14 @@ begin
           end;
           for j := 0 to k do
           begin
-            NewProjectile := TProjectile( Sprites.NewSprite( TLightningProjectile, Res, p^.X + random( 4 ) - 2 + j * dX div 4, p^.Y + random( 4 ) - 2 + j * dY div 4, Z1 + random( 4 ) - 2, 1 ) );
-            if assigned( NewProjectile ) then
+            NewProjectile := TProjectile(Sprites.NewSprite(TLightningProjectile,
+              Res, p^.X + random(4) - 2 + j * dX div 4, p^.Y + random(4) - 2 + j
+              * dY div 4, Z1 + random(4) - 2, 1));
+            if assigned(NewProjectile) then
             begin
-              ZeroMemory( @NewProjectile.Damage, sizeof( NewProjectile.Damage ) );
+              ZeroMemory(@NewProjectile.Damage, sizeof(NewProjectile.Damage));
               NewProjectile.SpecialEffect := seAdd;
-              NewProjectile.Frame := random( 6 ) + 1;
+              NewProjectile.Frame := random(6) + 1;
               NewProjectile.Duration := 4;
               NewProjectile.TrackingDegree := 0;
               NewProjectile.Speed := 0.75;
@@ -2082,169 +2246,199 @@ begin
               NewProjectile.HitTarget := 1;
               NewProjectile.UseLineOfSight := true;
               NewProjectile.Alpha := 20;
-              if ( j = 0 ) and ( ( i mod 4 ) = 0 ) then
+              if (j = 0) and ((i mod 4) = 0) then
               begin
-                NewProjectile.GlowEffect := TGlow( Sprites.NewSprite( TGlow, nil, Source.X, Source.Y - 1, 0, 0 ) );
+                NewProjectile.GlowEffect :=
+                  TGlow(Sprites.NewSprite(TGlow, nil, Source.X,
+                  Source.Y - 1, 0, 0));
                 NewProjectile.GlowEffect.RFactor := 10;
                 NewProjectile.GlowEffect.GFactor := 20;
                 NewProjectile.GlowEffect.BFactor := 30;
                 NewProjectile.GlowEffect.Alpha := 100;
               end;
-              NewProjectile.Launch( Source, nil, p^.X + Random( 20 ) - 10, p^.Y + Random( 20 ) - 10 );
+              NewProjectile.Launch(Source, nil, p^.X + random(20) - 10,
+                p^.Y + random(20) - 10);
             end;
           end;
 
-          inc( p );
+          inc(p);
         end;
-        GlobalUnlock( Path );
-        GlobalFree( Path );
+        GlobalUnlock(Path);
+        GlobalFree(Path);
 
-      //Second fork------------------
-        List := GetNearbyCharacter( TCharacter( Target ), 100 );
-        if assigned( List ) then
-        try
-          for i := List.count - 1 downto 0 do
-          begin
-            if List.Objects[ i ] = Source then
-              List.Delete( i )
-            else if not Source.IsEnemy( TCharacter( List.Objects[ i ] ) ) then
-              List.Delete( i );
-          end;
-          if List.count > 0 then
-          begin
-            NewTarget := TCharacter( List.objects[ random( List.count ) ] );
-            UseLineOfSight := NewTarget.UseLineOfSight;
-            NewTarget.UseLineOfSight := true;
-            PathCount := Game.FindPath( NewTarget, C.X, C.Y, Source.Coordination div 2, Path );
-            NewTarget.UseLineOfSight := UseLineOfSight;
-            if PathCount > 0 then
+        // Second fork------------------
+        List := GetNearbyCharacter(TCharacter(Target), 100);
+        if assigned(List) then
+          try
+            for i := List.count - 1 downto 0 do
             begin
-              if PathCount > 40 then
+              if List.Objects[i] = Source then
+                List.Delete(i)
+              else if not Source.IsEnemy(TCharacter(List.Objects[i])) then
+                List.Delete(i);
+            end;
+            if List.count > 0 then
+            begin
+              NewTarget := TCharacter(List.Objects[random(List.count)]);
+              UseLineOfSight := NewTarget.UseLineOfSight;
+              NewTarget.UseLineOfSight := true;
+              PathCount := Game.FindPath(NewTarget, C.X, C.Y,
+                Source.Coordination div 2, Path);
+              NewTarget.UseLineOfSight := UseLineOfSight;
+              if PathCount > 0 then
               begin
-                PathCount := 40;
-              end
-              else if PathCount > 10 + Source.Mysticism then
-              begin
-                PathCount := 10 + Source.Mysticism;
-              end
-              else
                 NewDoDamage := true;
+                // added from beneath, compare Code without title Lightning
+                if PathCount > 50 then // war 40
+                begin
+                  PathCount := 50; // war 40
+                end;
+                if PathCount > 10 + (Source.Mysticism div 3) +
+                  (Source.Mysticism div 3) + 3 then
+                // div 3 ) + ( Source.Mysticism div 3 ) + 3 ergänzt, else entfernt
+                begin
+                  PathCount := 10 + (Source.Mysticism div 3) +
+                    (Source.Mysticism div 3) + 3;
+                  // div 3 ) + ( Source.Mysticism div 3 ) + 3 ergänzt
+                end;
+                // else
+                // NewDoDamage := true;
+
+                if NewDoDamage then
+                begin
+                  Effect := TEffect.Create;
+                  Effect.Resource := ReceiveResource;
+                  Effect.AnimationDuration :=
+                    8 * ReceiveResource.FrameMultiplier;
+                  Effect.Power := Source.Mysticism;
+                  Effect.DoAction('Default', Target.Facing);
+                  NewTarget.AddEffect(Effect);
+                end;
+
+                p := GlobalLock(Path);
+                for i := 1 to PathCount do
+                begin
+                  if i < PathCount then
+                  begin
+                    inc(p);
+                    dX := p^.X;
+                    dY := p^.Y;
+                    dec(p);
+                    dX := dX - p^.X;
+                    dY := dY - p^.Y;
+                    k := 3;
+                  end
+                  else
+                  begin
+                    dX := 0;
+                    dY := 0;
+                    k := 0;
+                  end;
+                  for j := 0 to k do
+                  begin
+                    NewProjectile :=
+                      TProjectile(Sprites.NewSprite(TLightningProjectile, Res,
+                      p^.X + random(4) - 2 + j * dX div 4,
+                      p^.Y + random(4) - 2 + j * dY div 4,
+                      Z1 + random(4) - 2, 1));
+                    if assigned(NewProjectile) then
+                    begin
+                      ZeroMemory(@NewProjectile.Damage,
+                        sizeof(NewProjectile.Damage));
+                      NewProjectile.SpecialEffect := seAdd;
+                      NewProjectile.Frame := random(6) + 1;
+                      NewProjectile.Duration := 4;
+                      NewProjectile.TrackingDegree := 0;
+                      NewProjectile.Speed := 0.75;
+                      NewProjectile.HitIncidental := 1;
+                      NewProjectile.HitTarget := 1;
+                      NewProjectile.UseLineOfSight := true;
+                      NewProjectile.Alpha := 20;
+                      if (j = 0) and ((i mod 4) = 0) then
+                      begin
+                        NewProjectile.GlowEffect :=
+                          TGlow(Sprites.NewSprite(TGlow, nil, Source.X,
+                          Source.Y - 1, 0, 0));
+                        NewProjectile.GlowEffect.RFactor := 10;
+                        NewProjectile.GlowEffect.GFactor := 20;
+                        NewProjectile.GlowEffect.BFactor := 30;
+                        NewProjectile.GlowEffect.Alpha := 100;
+                      end;
+                      NewProjectile.Launch(Source, nil, p^.X + random(20) - 10,
+                        p^.Y + random(20) - 10);
+                    end;
+                  end;
+
+                  inc(p);
+                end;
+                GlobalUnlock(Path);
+                GlobalFree(Path);
+              end;
 
               if NewDoDamage then
               begin
-                Effect := TEffect.Create;
-                Effect.Resource := ReceiveResource;
-                Effect.AnimationDuration := 8 * ReceiveResource.FrameMultiplier;
-                Effect.Power := Source.Mysticism;
-                Effect.DoAction( 'Default', Target.Facing );
-                NewTarget.AddEffect( Effect );
+                NewTarget.AffectDamage(Source, @Damage);
+                Total := CalcTotalDamage(Damage, NewTarget.Resistance,
+                  1, false);
+                Stun := CalcDamage(Damage.Stun) -
+                  NewTarget.Resistance.Stun.Invulnerability;
+                if Stun > 0 then
+                  Stun := Stun * (1 - NewTarget.Resistance.Stun.Resistance);
+                NewTarget.TakeDamage(Source, Total, Stun, false);
               end;
-
-              p := GlobalLock( Path );
-              for i := 1 to PathCount do
-              begin
-                if i < PathCount then
-                begin
-                  inc( p );
-                  dX := p^.X;
-                  dY := p^.y;
-                  dec( p );
-                  dX := dX - p^.X;
-                  dY := dY - p^.Y;
-                  k := 3;
-                end
-                else
-                begin
-                  dX := 0;
-                  dY := 0;
-                  k := 0;
-                end;
-                for j := 0 to k do
-                begin
-                  NewProjectile := TProjectile( Sprites.NewSprite( TLightningProjectile, Res, p^.X + random( 4 ) - 2 + j * dX div 4, p^.Y + random( 4 ) - 2 + j * dY div 4, Z1 + random( 4 ) - 2, 1 ) );
-                  if assigned( NewProjectile ) then
-                  begin
-                    ZeroMemory( @NewProjectile.Damage, sizeof( NewProjectile.Damage ) );
-                    NewProjectile.SpecialEffect := seAdd;
-                    NewProjectile.Frame := random( 6 ) + 1;
-                    NewProjectile.Duration := 4;
-                    NewProjectile.TrackingDegree := 0;
-                    NewProjectile.Speed := 0.75;
-                    NewProjectile.HitIncidental := 1;
-                    NewProjectile.HitTarget := 1;
-                    NewProjectile.UseLineOfSight := true;
-                    NewProjectile.Alpha := 20;
-                    if ( j = 0 ) and ( ( i mod 4 ) = 0 ) then
-                    begin
-                      NewProjectile.GlowEffect := TGlow( Sprites.NewSprite( TGlow, nil, Source.X, Source.Y - 1, 0, 0 ) );
-                      NewProjectile.GlowEffect.RFactor := 10;
-                      NewProjectile.GlowEffect.GFactor := 20;
-                      NewProjectile.GlowEffect.BFactor := 30;
-                      NewProjectile.GlowEffect.Alpha := 100;
-                    end;
-                    NewProjectile.Launch( Source, nil, p^.X + Random( 20 ) - 10, p^.Y + Random( 20 ) - 10 );
-                  end;
-                end;
-
-                inc( p );
-              end;
-              GlobalUnlock( Path );
-              GlobalFree( Path );
             end;
 
-            if NewDoDamage then
-            begin
-              NewTarget.AffectDamage( Source, @Damage );
-              Total := CalcTotalDamage( Damage, NewTarget.Resistance, 1, false );
-              Stun := CalcDamage( Damage.Stun ) - NewTarget.Resistance.Stun.Invulnerability;
-              if Stun > 0 then
-                Stun := Stun * ( 1 - NewTarget.Resistance.Stun.Resistance );
-              NewTarget.TakeDamage( Source, Total, Stun, false );
-            end;
+          finally
+            List.free;
           end;
-
-        finally
-          List.free;
-        end;
-      //------------------
+        // ------------------
 
         if DoDamage then
         begin
           if ValidTarget then
           begin
-            TCharacter( Target ).AffectDamage( Source, @Damage );
-            Total := CalcTotalDamage( Damage, TCharacter( Target ).Resistance, 1, false );
-            Stun := CalcDamage( Damage.Stun ) - TCharacter( Target ).Resistance.Stun.Invulnerability;
+            TCharacter(Target).AffectDamage(Source, @Damage);
+            Total := CalcTotalDamage(Damage, TCharacter(Target).Resistance,
+              1, false);
+            Stun := CalcDamage(Damage.Stun) - TCharacter(Target)
+              .Resistance.Stun.Invulnerability;
             if Stun > 0 then
-              Stun := Stun * ( 1 - TCharacter( Target ).Resistance.Stun.Resistance );
+              Stun := Stun *
+                (1 - TCharacter(Target).Resistance.Stun.Resistance);
             with Target as TCharacter do
             begin
-              TakeDamage( Source, Total, Stun, false );
+              TakeDamage(Source, Total, Stun, false);
             end;
           end;
         end;
       end;
     end
-    else if Source.TitleExists( 'Lightning' ) then
+    else if Source.TitleExists('Lightning') then
     begin
       UseLineOfSight := Source.UseLineOfSight;
       Source.UseLineOfSight := true;
-      PathCount := Game.FindPath( Source, TargetX, TargetY, Source.Coordination div 2, Path );
+      PathCount := Game.FindPath(Source, TargetX, TargetY,
+        Source.Coordination div 2, Path);
       Source.UseLineOfSight := UseLineOfSight;
       if PathCount > 0 then
       begin
+        DoDamage := true;
+        // added from beneath, compare Code without title Lightning
         if PathCount > 40 then
         begin
           PathCount := 40;
           DoDamage := false;
-        end
-        else if PathCount > 10 + Source.Mysticism then
+        end;
+        if PathCount > 10 + (Source.Mysticism div 3) + (Source.Perception div 3)
+        then // div 3 ) + ( Source.Perception div 3 ) ergänzt, else entfernt
         begin
-          PathCount := 10 + Source.Mysticism;
+          PathCount := 10 + (Source.Mysticism div 3) +
+            (Source.Perception div 3);
+          // div 3 ) + ( Source.Perception div 3 ) ergänzt
           DoDamage := false;
-        end
-        else
-          DoDamage := true;
+        end;
+        // else
+        // DoDamage := true;
 
         if DoDamage and ValidTarget then
         begin
@@ -2252,28 +2446,28 @@ begin
           Effect.Resource := ReceiveResource;
           Effect.AnimationDuration := 8 * ReceiveResource.FrameMultiplier;
           Effect.Power := Source.Mysticism;
-          Effect.DoAction( 'Default', Target.Facing );
-          TCharacter( Target ).AddEffect( Effect );
+          Effect.DoAction('Default', Target.Facing);
+          TCharacter(Target).AddEffect(Effect);
         end;
 
-        result := inherited Cast( Source, Target );
+        result := inherited Cast(Source, Target);
         if not result then
         begin
-          GlobalFree( Path );
+          GlobalFree(Path);
           Exit;
         end;
 
         Z1 := Source.Height div 2 - 16;
         Resource2.DrawShadow := false;
-        p := GlobalLock( Path );
+        p := GlobalLock(Path);
         for i := 1 to PathCount do
         begin
           if i < PathCount then
           begin
-            inc( p );
+            inc(p);
             dX := p^.X;
-            dY := p^.y;
-            dec( p );
+            dY := p^.Y;
+            dec(p);
             dX := dX - p^.X;
             dY := dY - p^.Y;
             k := 3;
@@ -2286,12 +2480,14 @@ begin
           end;
           for j := 0 to k do
           begin
-            NewProjectile := TProjectile( Sprites.NewSprite( TLightningProjectile, Resource2, p^.X + random( 4 ) - 2 + j * dX div 4, p^.Y + random( 4 ) - 2 + j * dY div 4, Z1 + random( 4 ) - 2, 1 ) );
-            if assigned( NewProjectile ) then
+            NewProjectile := TProjectile(Sprites.NewSprite(TLightningProjectile,
+              Resource2, p^.X + random(4) - 2 + j * dX div 4,
+              p^.Y + random(4) - 2 + j * dY div 4, Z1 + random(4) - 2, 1));
+            if assigned(NewProjectile) then
             begin
-              ZeroMemory( @NewProjectile.Damage, sizeof( NewProjectile.Damage ) );
+              ZeroMemory(@NewProjectile.Damage, sizeof(NewProjectile.Damage));
               NewProjectile.SpecialEffect := seAdd;
-              NewProjectile.Frame := random( 6 ) + 1;
+              NewProjectile.Frame := random(6) + 1;
               NewProjectile.Duration := 4;
               NewProjectile.TrackingDegree := 0;
               NewProjectile.Speed := 0.75;
@@ -2299,26 +2495,29 @@ begin
               NewProjectile.HitTarget := 1;
               NewProjectile.UseLineOfSight := true;
               NewProjectile.Alpha := 20;
-              if ( j = 0 ) and ( ( i mod 4 ) = 0 ) then
+              if (j = 0) and ((i mod 4) = 0) then
               begin
-                NewProjectile.GlowEffect := TGlow( Sprites.NewSprite( TGlow, nil, Source.X, Source.Y - 1, 0, 0 ) );
+                NewProjectile.GlowEffect :=
+                  TGlow(Sprites.NewSprite(TGlow, nil, Source.X,
+                  Source.Y - 1, 0, 0));
                 NewProjectile.GlowEffect.RFactor := 10;
                 NewProjectile.GlowEffect.GFactor := 20;
                 NewProjectile.GlowEffect.BFactor := 30;
                 NewProjectile.GlowEffect.Alpha := 100;
               end;
-              NewProjectile.Launch( Source, nil, p^.X + Random( 20 ) - 10, p^.Y + Random( 20 ) - 10 );
+              NewProjectile.Launch(Source, nil, p^.X + random(20) - 10,
+                p^.Y + random(20) - 10);
             end;
           end;
 
-          inc( p );
+          inc(p);
         end;
-        GlobalUnlock( Path );
-        GlobalFree( Path );
+        GlobalUnlock(Path);
+        GlobalFree(Path);
 
         if DoDamage then
         begin
-          ZeroMemory( @Damage, sizeof( Damage ) );
+          ZeroMemory(@Damage, sizeof(Damage));
           Damage.Heat.Min := 0;
           Damage.Heat.Max := Source.Mysticism / 4;
           Damage.Electric.Min := Source.Mysticism / 4;
@@ -2328,14 +2527,17 @@ begin
 
           if ValidTarget then
           begin
-            TCharacter( Target ).AffectDamage( Source, @Damage );
-            Total := CalcTotalDamage( Damage, TCharacter( Target ).Resistance, 1, false );
-            Stun := CalcDamage( Damage.Stun ) - TCharacter( Target ).Resistance.Stun.Invulnerability;
+            TCharacter(Target).AffectDamage(Source, @Damage);
+            Total := CalcTotalDamage(Damage, TCharacter(Target).Resistance,
+              1, false);
+            Stun := CalcDamage(Damage.Stun) - TCharacter(Target)
+              .Resistance.Stun.Invulnerability;
             if Stun > 0 then
-              Stun := Stun * ( 1 - TCharacter( Target ).Resistance.Stun.Resistance );
+              Stun := Stun *
+                (1 - TCharacter(Target).Resistance.Stun.Resistance);
             with Target as TCharacter do
             begin
-              TakeDamage( Source, Total, Stun, false );
+              TakeDamage(Source, Total, Stun, false);
             end;
           end;
         end;
@@ -2345,7 +2547,8 @@ begin
     begin
       UseLineOfSight := Source.UseLineOfSight;
       Source.UseLineOfSight := true;
-      PathCount := Game.FindPath( Source, TargetX, TargetY, Source.Coordination div 4, Path );
+      PathCount := Game.FindPath(Source, TargetX, TargetY,
+        Source.Coordination div 4, Path);
       Source.UseLineOfSight := UseLineOfSight;
       if PathCount > 0 then
       begin
@@ -2355,9 +2558,9 @@ begin
           PathCount := 20;
           DoDamage := false;
         end;
-        if PathCount > 5 + Source.Mysticism div 2 then
+        if PathCount > 5 + (Source.Mysticism div 4) then // war div 2
         begin
-          PathCount := 5 + Source.Mysticism div 2;
+          PathCount := 5 + (Source.Mysticism div 4); // war div 2
           DoDamage := false;
         end;
 
@@ -2367,28 +2570,28 @@ begin
           Effect.Resource := ReceiveResource;
           Effect.AnimationDuration := 8 * ReceiveResource.FrameMultiplier;
           Effect.Power := Source.Mysticism;
-          Effect.DoAction( 'Default', Target.Facing );
-          TCharacter( Target ).AddEffect( Effect );
+          Effect.DoAction('Default', Target.Facing);
+          TCharacter(Target).AddEffect(Effect);
         end;
 
-        result := inherited Cast( Source, Target );
+        result := inherited Cast(Source, Target);
         if not result then
         begin
-          GlobalFree( Path );
+          GlobalFree(Path);
           Exit;
         end;
 
         Z1 := Source.Height div 2 - 16;
         Resource1.DrawShadow := false;
-        p := GlobalLock( Path );
+        p := GlobalLock(Path);
         for i := 1 to PathCount do
         begin
           if i < PathCount then
           begin
-            inc( p );
+            inc(p);
             dX := p^.X;
-            dY := p^.y;
-            dec( p );
+            dY := p^.Y;
+            dec(p);
             dX := dX - p^.X;
             dY := dY - p^.Y;
             k := 7;
@@ -2401,10 +2604,12 @@ begin
           end;
           for j := 0 to k do
           begin
-            NewProjectile := TProjectile( Sprites.NewSprite( TLightningProjectile, Resource1, p^.X + random( 4 ) - 2 + j * dX div 8, p^.Y + random( 4 ) - 2 + j * dY div 8, Z1 + random( 4 ) - 2, 1 ) );
-            if assigned( NewProjectile ) then
+            NewProjectile := TProjectile(Sprites.NewSprite(TLightningProjectile,
+              Resource1, p^.X + random(4) - 2 + j * dX div 8,
+              p^.Y + random(4) - 2 + j * dY div 8, Z1 + random(4) - 2, 1));
+            if assigned(NewProjectile) then
             begin
-              ZeroMemory( @NewProjectile.Damage, sizeof( NewProjectile.Damage ) );
+              ZeroMemory(@NewProjectile.Damage, sizeof(NewProjectile.Damage));
               NewProjectile.SpecialEffect := seAdd;
               NewProjectile.Duration := 4;
               NewProjectile.TrackingDegree := 0;
@@ -2413,26 +2618,29 @@ begin
               NewProjectile.HitTarget := 1;
               NewProjectile.UseLineOfSight := true;
               NewProjectile.Alpha := 20;
-              if ( j = 0 ) and ( ( i mod 4 ) = 0 ) then
+              if (j = 0) and ((i mod 4) = 0) then
               begin
-                NewProjectile.GlowEffect := TGlow( Sprites.NewSprite( TGlow, nil, Source.X, Source.Y - 1, 0, 0 ) );
+                NewProjectile.GlowEffect :=
+                  TGlow(Sprites.NewSprite(TGlow, nil, Source.X,
+                  Source.Y - 1, 0, 0));
                 NewProjectile.GlowEffect.RFactor := 10;
                 NewProjectile.GlowEffect.GFactor := 20;
                 NewProjectile.GlowEffect.BFactor := 30;
                 NewProjectile.GlowEffect.Alpha := 100;
               end;
-              NewProjectile.Launch( Source, nil, p^.X + Random( 20 ) - 10, p^.Y + Random( 20 ) - 10 );
+              NewProjectile.Launch(Source, nil, p^.X + random(20) - 10,
+                p^.Y + random(20) - 10);
             end;
           end;
 
-          inc( p );
+          inc(p);
         end;
-        GlobalUnlock( Path );
-        GlobalFree( Path );
+        GlobalUnlock(Path);
+        GlobalFree(Path);
 
         if DoDamage then
         begin
-          ZeroMemory( @Damage, sizeof( Damage ) );
+          ZeroMemory(@Damage, sizeof(Damage));
           Damage.Heat.Min := 0;
           Damage.Heat.Max := Source.Mysticism / 4;
           Damage.Electric.Min := 1;
@@ -2442,14 +2650,17 @@ begin
 
           if ValidTarget then
           begin
-            TCharacter( Target ).AffectDamage( Source, @Damage );
-            Total := CalcTotalDamage( Damage, TCharacter( Target ).Resistance, 1, false );
-            Stun := CalcDamage( Damage.Stun ) - TCharacter( Target ).Resistance.Stun.Invulnerability;
+            TCharacter(Target).AffectDamage(Source, @Damage);
+            Total := CalcTotalDamage(Damage, TCharacter(Target).Resistance,
+              1, false);
+            Stun := CalcDamage(Damage.Stun) - TCharacter(Target)
+              .Resistance.Stun.Invulnerability;
             if Stun > 0 then
-              Stun := Stun * ( 1 - TCharacter( Target ).Resistance.Stun.Resistance );
+              Stun := Stun *
+                (1 - TCharacter(Target).Resistance.Stun.Resistance);
             with Target as TCharacter do
             begin
-              TakeDamage( Source, Total, Stun, false );
+              TakeDamage(Source, Total, Stun, false);
             end;
           end;
         end;
@@ -2457,35 +2668,42 @@ begin
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 procedure TLightning.Clear;
 begin
-  Resource1.RLE.free; Resource1.RLE := nil;
-  Resource2.RLE.free; Resource2.RLE := nil;
-  Resource3.RLE.free; Resource3.RLE := nil;
-  ReceiveResource.RLE.free; ReceiveResource.RLE := nil;
+  Resource1.RLE.free;
+  Resource1.RLE := nil;
+  Resource2.RLE.free;
+  Resource2.RLE := nil;
+  Resource3.RLE.free;
+  Resource3.RLE := nil;
+  ReceiveResource.RLE.free;
+  ReceiveResource.RLE := nil;
 end;
 
 constructor TLightning.Create;
 const
-  FailName : string = 'TLightning.Create';
+  FailName: string = 'TLightning.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
     CastingType := ctCombat;
     TargetType := ttEnemy;
     CastEffect := LightningEffect;
-    Resource1 := LoadArtResource( 'engine\weaponprojectiles\smalllightning.gif', true );
-    Resource2 := LoadArtResource( 'engine\weaponprojectiles\medlightning.gif', true );
-    Resource3 := LoadArtResource( 'engine\weaponprojectiles\lrglightning.gif', true );
-    ReceiveResource := LoadArtResource( 'engine\spells\ShockReceive.gif', true );
-    LoadCastSounds( 'shock1,shock2' );
+    Resource1 := LoadArtResource
+      ('engine\weaponprojectiles\smalllightning.gif', true);
+    Resource2 := LoadArtResource
+      ('engine\weaponprojectiles\medlightning.gif', true);
+    Resource3 := LoadArtResource
+      ('engine\weaponprojectiles\lrglightning.gif', true);
+    ReceiveResource := LoadArtResource('engine\spells\ShockReceive.gif', true);
+    LoadCastSounds('shock1,shock2');
     Resource1.DrawShadow := false;
     Resource2.DrawShadow := false;
     Resource3.DrawShadow := false;
@@ -2493,404 +2711,420 @@ begin
     SoundInCast := false;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor TLightning.Destroy;
 const
-  FailName : string = 'TLightning.Destroy';
+  FailName: string = 'TLightning.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    Resource1.Free;
-    Resource2.Free;
-    Resource3.Free;
-    ReceiveResource.Free;
+    Resource1.free;
+    Resource2.free;
+    Resource3.free;
+    ReceiveResource.free;
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TLightning.Drain( Source : TCharacter ) : Single;
+function TLightning.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TLightning.Drain';
+  FailName: string = 'TLightning.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 5 + round( Source.Restriction / 10 );
+    result := 5 + round(Source.Restriction / 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TLightning.GetIconXY( Source : TCharacter ) : TPoint;
+function TLightning.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TLightning.GetIconXY';
+  FailName: string = 'TLightning.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
-   {if Source.TitleExists( 'Forked lightning' ) then
+    if Source.TitleExists('Forked lightning') then
     begin
-    result.X := 9 * 32;
-    result.Y := 32;
+      result.X := 24 * 32;
+      result.Y := 32;
+    end
+    else if Source.TitleExists('lightning') then
+    begin
+      result.X := 11 * 32;
+      result.Y := 32;
     end
     else
-    if  Source.TitleExists( 'lightning' ) then
     begin
-    result.X := 9 * 32;
-    result.Y := 32;
-    end
-    else}
-    result.X := 11 * 32;
-    result.Y := 32;
-
+      result.X := 6 * 32;
+      result.Y := 0;
+    end;
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TLightning.GetInfo( Source : TCharacter ) : string;
+function TLightning.GetInfo(Source: TCharacter): string;
 begin
   result := InfoText;
-  if Source.TitleExists( 'Forked Lightning' ) then
+  if Source.TitleExists('Forked Lightning') then
   begin
-    Replace( result, 'a', '2x(' + inttostr( round( Source.Mysticism / 4 ) ) + '-' + inttostr( round( Source.Mysticism * 2 ) ) + ')' );
-    Replace( result, 'b', '2x(0-' + inttostr( round( Source.Mysticism / 4 ) ) + ')' );
-    Replace( result, 'c', '2x(0-' + inttostr( round( Source.Mysticism / 4 ) ) + ')' );
+    Replace(result, 'a', '2x(' + inttostr(round(Source.Mysticism / 4)) + '-' +
+      inttostr(round(Source.Mysticism * 2)) + ')');
+    Replace(result, 'b', '2x(0-' + inttostr(round(Source.Mysticism / 4)) + ')');
+    Replace(result, 'c', '2x(0-' + inttostr(round(Source.Mysticism / 4)) + ')');
   end
-  else if Source.TitleExists( 'Lightning' ) then
+  else if Source.TitleExists('Lightning') then
   begin
-    Replace( result, 'a', inttostr( round( Source.Mysticism / 4 ) ) + '-' + inttostr( round( Source.Mysticism * 2 ) ) );
-    Replace( result, 'b', '0-' + inttostr( round( Source.Mysticism / 4 ) ) );
-    Replace( result, 'c', '0-' + inttostr( round( Source.Mysticism / 4 ) ) );
+    Replace(result, 'a', inttostr(round(Source.Mysticism / 4)) + '-' +
+      inttostr(round(Source.Mysticism * 2)));
+    Replace(result, 'b', '0-' + inttostr(round(Source.Mysticism / 4)));
+    Replace(result, 'c', '0-' + inttostr(round(Source.Mysticism / 4)));
   end
   else
   begin
-    Replace( result, 'a', '1-' + inttostr( round( Source.Mysticism * 1.5 ) ) );
-    Replace( result, 'b', '0-' + inttostr( round( Source.Mysticism / 4 ) ) );
-    Replace( result, 'c', '0-' + inttostr( round( Source.Mysticism / 4 ) ) );
+    Replace(result, 'a', '1-' + inttostr(round(Source.Mysticism * 1.5)));
+    Replace(result, 'b', '0-' + inttostr(round(Source.Mysticism / 4)));
+    Replace(result, 'c', '0-' + inttostr(round(Source.Mysticism / 4)));
   end;
 end;
 
-function TLightning.GetLoaded : Boolean;
+function TLightning.GetLoaded: Boolean;
 const
-  FailName : string = 'TLightning.GetLoaded';
+  FailName: string = 'TLightning.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := Resource1.Loaded and Resource2.Loaded and Resource3.Loaded and ReceiveResource.Loaded;
+    result := Resource1.Loaded and Resource2.Loaded and Resource3.Loaded and
+      ReceiveResource.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TLightning.GetName : string;
+class function TLightning.GetName: string;
 begin
   result := 'Shock';
 end;
 
-function TLightning.Range( Source : TCharacter ) : Integer;
+function TLightning.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TLightning.Range';
+  FailName: string = 'TLightning.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
-
-    if Source.TitleExists( 'Lightning' ) then
+    if Source.TitleExists('Forked Lightning') then
     begin
-      result := ( 10 + Source.Mysticism ) * 8;
-      if result > 400 then
-        result := 400;
+      result := 10 + (Source.Mysticism div 3) + (Source.Mysticism div 3) + 3;
+      if result > 50 then // war 400 siehe Pathcount > 50
+        result := 50;
+    end
+    else if Source.TitleExists('Lightning') then
+    begin
+      // result := ( 10 + Source.Mysticism ) * 8;
+      result := 10 + (Source.Mysticism div 3) + (Source.Mysticism div 3);
+      if result > 40 then // was 400 have a look at Pathcount > 40
+        result := 40;
     end
     else
     begin
-      result := ( 5 + Source.Mysticism ) * 4;
-      if result > 100 then
-        result := 100;
+      // result := ( 5 + Source.Mysticism ) * 4;
+      result := 5 + (Source.Mysticism div 4);
+      if result > 20 then // was 100 have a look at Pathcount > 20
+        result := 20;
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TLightning.Recovery( Source : TCharacter ) : Integer;
+function TLightning.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TLightning.Recovery';
+  FailName: string = 'TLightning.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 40 - ( Source.Constitution div 2 );
+    result := 40 - ((Source.Constitution div 2) + (Source.Mysticism div 6));
     if result < 0 then
       result := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 { TPush }
 
-function TPush.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
+function TPush.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  R, D, dX, dY : double;
-  sX, sY : longint;
-  Damage : TDamageProfile;
-  Total, Stun : single;
+  R, D, dX, dY: double;
+  sX, sY: longint;
+  Damage: TDamageProfile;
+  Total, Stun: Single;
 const
-  FailName : string = 'TPush.Cast';
+  FailName: string = 'TPush.Cast';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := False;
-    if not assigned( Target ) then
-      exit;
+    result := false;
+    if not assigned(Target) then
+      Exit;
     if Target.UnMoveable then
-      exit;
-    if not ( Target is TCharacter ) then
-      exit;
-    if TCharacter( Target ).Dead then
-      exit;
-    if not Game.LineOfSight( Source.X, Source.Y, Target.X, Target.Y ) then
-      exit;
+      Exit;
+    if not(Target is TCharacter) then
+      Exit;
+    if TCharacter(Target).Dead then
+      Exit;
+    if not Game.LineOfSight(Source.X, Source.Y, Target.X, Target.Y) then
+      Exit;
 
-    result := inherited Cast( Source, Target );
+    result := inherited Cast(Source, Target);
     if not result then
       Exit;
 
     if Target is TCharacter then
     begin
-      ZeroMemory( @Damage, sizeof( Damage ) );
+      ZeroMemory(@Damage, sizeof(Damage));
       Damage.Crushing.Min := Source.Mysticism / 12;
       Damage.Crushing.Max := Source.Mysticism / 10;
-      if TCharacter( Target ).Strength >= 1 then
+      if TCharacter(Target).Strength >= 1 then
       begin
-        Damage.Stun.Min := 16 + round( Source.Mysticism * Source.Constitution / TCharacter( Target ).Strength / 5 );
-        Damage.Stun.Max := 16 + round( Source.Mysticism * Source.Constitution / TCharacter( Target ).Strength / 4 );
+        Damage.Stun.Min := 16 + round(Source.Mysticism * Source.Constitution /
+          TCharacter(Target).Strength / 5);
+        Damage.Stun.Max := 16 + round(Source.Mysticism * Source.Constitution /
+          TCharacter(Target).Strength / 4);
       end
       else
       begin
-        Damage.Stun.Min := 16 + round( Source.Mysticism * Source.Constitution / 5 );
-        Damage.Stun.Max := 16 + round( Source.Mysticism * Source.Constitution / 4 );
+        Damage.Stun.Min := 16 +
+          round(Source.Mysticism * Source.Constitution / 5);
+        Damage.Stun.Max := 16 +
+          round(Source.Mysticism * Source.Constitution / 4);
       end;
-      TCharacter( Target ).AffectDamage( Source, @Damage );
-      Total := CalcTotalDamage( Damage, TCharacter( Target ).Resistance, 1, false );
-      Stun := CalcDamage( Damage.Stun ) - TCharacter( Target ).Resistance.Stun.Invulnerability;
+      TCharacter(Target).AffectDamage(Source, @Damage);
+      Total := CalcTotalDamage(Damage, TCharacter(Target).Resistance, 1, false);
+      Stun := CalcDamage(Damage.Stun) - TCharacter(Target)
+        .Resistance.Stun.Invulnerability;
       if Stun > 0 then
-        Stun := Stun * ( 1 - TCharacter( Target ).Resistance.Stun.Resistance );
+        Stun := Stun * (1 - TCharacter(Target).Resistance.Stun.Resistance);
 
       with Target as TCharacter do
       begin
         dX := X - Source.X;
         dY := Y - Source.Y;
-        D := sqrt( sqr( dX ) + sqr( dY ) );
+        D := sqrt(sqr(dX) + sqr(dY));
         if D = 0 then
-          exit;
-        R := TakeDamage( Source, Total, Stun, true ) / 2;
+          Exit;
+        R := TakeDamage(Source, Total, Stun, true) / 2;
         if R > 0 then
         begin
           Speed := Source.Mysticism / 5;
           R := R * Speed;
-          sX := round( R * dX / D );
-          sY := round( R * dY / D );
-          Facing := Character.GetFacing( sX, sY, 0, 0 );
-          MoveTo( X + sX, Y + sY, Z );
+          sX := round(R * dX / D);
+          sY := round(R * dY / D);
+          Facing := Character.GetFacing(sX, sY, 0, 0);
+          MoveTo(X + sX, Y + sY, Z);
         end;
       end;
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 constructor TPush.Create;
 const
-  FailName : string = 'TPush.Create';
+  FailName: string = 'TPush.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
     CastingType := ctCombat;
     TargetType := ttEnemy;
     CastEffect := PushEffect;
-    LoadCastSounds( 'pushspell3' );
+    LoadCastSounds('pushspell3');
     SoundInCast := false;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor TPush.Destroy;
 const
-  FailName : string = 'TPush.Destroy';
+  FailName: string = 'TPush.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TPush.Drain( Source : TCharacter ) : Single;
+function TPush.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TPush.Drain';
+  FailName: string = 'TPush.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 5 + round( Source.Restriction / 10 );
+    result := 3 + round(Source.Restriction / 10); // war 5 statt 3
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TPush.GetIconXY( Source : TCharacter ) : TPoint;
+function TPush.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TPush.GetIconXY';
+  FailName: string = 'TPush.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result.X := 10 * 32;
     result.Y := 32;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TPush.GetInfo( Source : TCharacter ) : string;
+function TPush.GetInfo(Source: TCharacter): string;
 begin
   result := InfoText;
-  Replace( result, 'a', inttostr( 16 + round( Source.Mysticism * Source.Constitution / 5 ) ) + '-' +
-    inttostr( 16 + round( Source.Mysticism * Source.Constitution / 4 ) ) );
+  Replace(result, 'a',
+    inttostr(16 + round(Source.Mysticism * Source.Constitution / 5)) + '-' +
+    inttostr(16 + round(Source.Mysticism * Source.Constitution / 4)));
 end;
 
-function TPush.GetLoaded : Boolean;
+function TPush.GetLoaded: Boolean;
 const
-  FailName : string = 'TPush.GetLoaded';
+  FailName: string = 'TPush.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := True;
+    result := true;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TPush.GetName : string;
+class function TPush.GetName: string;
 begin
   result := 'Push';
 end;
 
-function TPush.Range( Source : TCharacter ) : Integer;
+function TPush.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TPush.Range';
+  FailName: string = 'TPush.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 10 * ( Source.Constitution + Source.Mysticism );
+    result := 10 * (Source.Constitution + Source.Mysticism);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TPush.Recovery( Source : TCharacter ) : Integer;
+function TPush.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TPush.Recovery';
+  FailName: string = 'TPush.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 { THeal }
 
-function THeal.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
+function THeal.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  F, Points : single;
-  Effect : TEffect;
-  NewTarget : TCharacter;
-  D : single;
+  F, Points: Single;
+  Effect: TEffect;
+  NewTarget: TCharacter;
+  D: Single;
 const
-  FailName : string = 'THeal.Cast';
+  FailName: string = 'THeal.Cast';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := False;
-    if assigned( Target ) then
+    result := false;
+    if assigned(Target) then
     begin
-      if not ( Target is TCharacter ) then
-        exit;
-      if TCharacter( Target ).Dead then
-        exit;
-      if not Game.LineOfSight( Source.X, Source.Y, Target.X, Target.Y ) then
-        exit;
-      NewTarget := TCharacter( Target );
+      if not(Target is TCharacter) then
+        Exit;
+      if TCharacter(Target).Dead then
+        Exit;
+      if not Game.LineOfSight(Source.X, Source.Y, Target.X, Target.Y) then
+        Exit;
+      NewTarget := TCharacter(Target);
     end
     else
       NewTarget := Source;
 
-    result := inherited Cast( Source, NewTarget );
+    result := inherited Cast(Source, NewTarget);
     if not result then
       Exit;
 
@@ -2898,31 +3132,36 @@ begin
     Effect.Resource := Resource;
     Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
     Effect.Power := Source.Mysticism;
-    Effect.DoAction( 'Default', NewTarget.Facing );
+    Effect.DoAction('Default', NewTarget.Facing);
 
-    if Source.TitleExists( 'Traumatic Healing' ) then
+    if Source.TitleExists('Traumatic Healing') then
     begin
-      F := ( Source.Mysticism + NewTarget.Constitution ) / 128 + ( random / 10 ) - 0.05;
+      F := (Source.Mysticism + NewTarget.Constitution) / 128 +
+        (random / 10) - 0.05;
       D := 25;
     end
-    else if Source.TitleExists( 'Greater Healing' ) then
+    else if Source.TitleExists('Greater Healing') then
     begin
-      F := ( Source.Mysticism + NewTarget.Constitution ) / 192 + ( random / 10 ) - 0.05;
+      F := (Source.Mysticism + NewTarget.Constitution) / 192 +
+        (random / 10) - 0.05;
       D := 20;
     end
-    else if Source.TitleExists( 'Healing' ) then
+    else if Source.TitleExists('Healing') then
     begin
-      F := ( Source.Mysticism + NewTarget.Constitution ) / 256 + ( random / 10 ) - 0.05;
+      F := (Source.Mysticism + NewTarget.Constitution) / 256 +
+        (random / 10) - 0.05;
       D := 15;
     end
-    else if Source.TitleExists( 'Minor Healing' ) then
+    else if Source.TitleExists('Minor Healing') then
     begin
-      F := ( Source.Mysticism + NewTarget.Constitution ) / 320 + ( random / 10 ) - 0.05;
+      F := (Source.Mysticism + NewTarget.Constitution) / 320 +
+        (random / 10) - 0.05;
       D := 10;
     end
     else
     begin
-      F := ( Source.Mysticism + NewTarget.Constitution ) / 384 + ( random / 10 ) - 0.05;
+      F := (Source.Mysticism + NewTarget.Constitution) / 384 +
+        (random / 10) - 0.05;
       D := 5;
     end;
 
@@ -2936,99 +3175,100 @@ begin
       if Points > Wounds then
         Points := Wounds;
       Wounds := Wounds - Points;
-      AddEffect( Effect );
+      AddEffect(Effect);
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 procedure THeal.Clear;
 begin
-  Resource.RLE.Free; Resource.RLE := nil;
+  Resource.RLE.free;
+  Resource.RLE := nil;
 end;
 
 constructor THeal.Create;
 const
-  FailName : string = 'THeal.Create';
+  FailName: string = 'THeal.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
     CastingType := ctHealing;
     TargetType := ttFriend;
     CastEffect := HealEffect;
-    Resource := LoadArtResource( 'engine\spells\healreceive.gif', true );
-    LoadCastSounds( 'heal' );
+    Resource := LoadArtResource('engine\spells\healreceive.gif', true);
+    LoadCastSounds('heal');
     Resource.DrawShadow := false;
     SoundInCast := false;
     Interupted := false;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor THeal.Destroy;
 const
-  FailName : string = 'THeal.Destroy';
+  FailName: string = 'THeal.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    Resource.Free;
+    Resource.free;
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function THeal.Drain( Source : TCharacter ) : Single;
+function THeal.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'THeal.Drain';
+  FailName: string = 'THeal.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 10 + round( Source.Restriction / 10 );
+    result := 10 + round(Source.Restriction / 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function THeal.GetIconXY( Source : TCharacter ) : TPoint;
+function THeal.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'THeal.GetIconXY';
+  FailName: string = 'THeal.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if Source.TitleExists( 'Traumatic Healing' ) then
+    if Source.TitleExists('Traumatic Healing') then
     begin
       result.X := 16 * 32;
       result.Y := 32;
     end
-    else if Source.TitleExists( 'Greater Healing' ) then
+    else if Source.TitleExists('Greater Healing') then
     begin
       result.X := 16 * 32;
       result.Y := 0;
     end
-    else if Source.TitleExists( 'Major Healing' ) then
+    else if Source.TitleExists('Major Healing') then
     begin
       result.X := 15 * 32;
       result.Y := 32;
     end
-    else if Source.TitleExists( 'Minor Healing' ) then
+    else if Source.TitleExists('Minor Healing') then
     begin
       result.X := 15 * 32;
       result.Y := 0;
@@ -3040,127 +3280,127 @@ begin
     end
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function THeal.GetInfo( Source : TCharacter ) : string;
+function THeal.GetInfo(Source: TCharacter): string;
 begin
   result := InfoText;
-  if Source.TitleExists( 'Traumatic Healing' ) then
+  if Source.TitleExists('Traumatic Healing') then
   begin
-    Replace( result, 'a', '25' );
-    Replace( result, 'b', inttostr( round( 100 * ( Source.Mysticism ) / 128 ) ) );
+    Replace(result, 'a', '25');
+    Replace(result, 'b', inttostr(round(100 * (Source.Mysticism) / 128)));
   end
-  else if Source.TitleExists( 'Greater Healing' ) then
+  else if Source.TitleExists('Greater Healing') then
   begin
-    Replace( result, 'a', '20' );
-    Replace( result, 'b', inttostr( round( 100 * ( Source.Mysticism ) / 192 ) ) );
+    Replace(result, 'a', '20');
+    Replace(result, 'b', inttostr(round(100 * (Source.Mysticism) / 192)));
   end
-  else if Source.TitleExists( 'Major Healing' ) then
+  else if Source.TitleExists('Major Healing') then
   begin
-    Replace( result, 'a', '15' );
-    Replace( result, 'b', inttostr( round( 100 * ( Source.Mysticism ) / 256 ) ) );
+    Replace(result, 'a', '15');
+    Replace(result, 'b', inttostr(round(100 * (Source.Mysticism) / 256)));
   end
-  else if Source.TitleExists( 'Minor Healing' ) then
+  else if Source.TitleExists('Minor Healing') then
   begin
-    Replace( result, 'a', '10' );
-    Replace( result, 'b', inttostr( round( 100 * ( Source.Mysticism ) / 320 ) ) );
+    Replace(result, 'a', '10');
+    Replace(result, 'b', inttostr(round(100 * (Source.Mysticism) / 320)));
   end
   else
   begin
-    Replace( result, 'a', '5' );
-    Replace( result, 'b', inttostr( round( 100 * ( Source.Mysticism ) / 384 ) ) );
+    Replace(result, 'a', '5');
+    Replace(result, 'b', inttostr(round(100 * (Source.Mysticism) / 384)));
   end
 end;
 
-function THeal.GetLoaded : Boolean;
+function THeal.GetLoaded: Boolean;
 const
-  FailName : string = 'THeal.GetLoaded';
+  FailName: string = 'THeal.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if assigned( Resource ) then
+    if assigned(Resource) then
       result := Resource.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function THeal.GetName : string;
+class function THeal.GetName: string;
 begin
   result := 'Heal';
 end;
 
-function THeal.Range( Source : TCharacter ) : Integer;
+function THeal.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'THeal.Range';
+  FailName: string = 'THeal.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 10 * ( Source.Constitution + Source.Mysticism );
+    result := 10 * (Source.Constitution + Source.Mysticism);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function THeal.Recovery( Source : TCharacter ) : Integer;
+function THeal.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'THeal.Recovery';
+  FailName: string = 'THeal.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 40 - ( Source.Constitution div 2 );
+    result := 40 - (Source.Constitution div 2);
     if result < 0 then
       result := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 { TWither }
 
-function TWither.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
+function TWither.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  F, Points, Total : single;
-  Effect : TEffect;
-  Damage : TDamageProfile;
-  D : single;
+  F, Points, Total: Single;
+  Effect: TEffect;
+  Damage: TDamageProfile;
+  D: Single;
 const
-  FailName : string = 'TWither.Cast';
+  FailName: string = 'TWither.Cast';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := False;
-    if not assigned( Target ) then
-      exit;
-    if not ( Target is TCharacter ) then
-      exit;
-    if TCharacter( Target ).Dead then
-      exit;
-    if not Game.LineOfSight( Source.X, Source.Y, Target.X, Target.Y ) then
-      exit;
+    result := false;
+    if not assigned(Target) then
+      Exit;
+    if not(Target is TCharacter) then
+      Exit;
+    if TCharacter(Target).Dead then
+      Exit;
+    if not Game.LineOfSight(Source.X, Source.Y, Target.X, Target.Y) then
+      Exit;
 
-    result := inherited Cast( Source, Target );
+    result := inherited Cast(Source, Target);
     if not result then
       Exit;
 
@@ -3168,21 +3408,21 @@ begin
     Effect.Resource := Resource;
     Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
     Effect.Power := Source.Mysticism;
-    Effect.DoAction( 'Default', Target.Facing );
+    Effect.DoAction('Default', Target.Facing);
 
-    if Source.TitleExists( 'Infuse' ) then
+    if Source.TitleExists('Infuse') then
     begin
-      F := Source.Mysticism / 96 + ( random / 10 ) - 0.05;
+      F := Source.Mysticism / 96 + (random / 10) - 0.05;
       D := 10;
     end
-    else if Source.TitleExists( 'Energy' ) then
+    else if Source.TitleExists('Energy') then
     begin
-      F := Source.Mysticism / 128 + ( random / 10 ) - 0.05;
+      F := Source.Mysticism / 128 + (random / 10) - 0.05;
       D := 5;
     end
     else
     begin
-      F := Source.Mysticism / 160 + ( random / 10 ) - 0.05;
+      F := Source.Mysticism / 160 + (random / 10) - 0.05;
       D := 0;
     end;
 
@@ -3190,189 +3430,191 @@ begin
       F := 0
     else if F > 1 then
       F := 1;
-    Points := D + TCharacter( Target ).HitPoints * F;
-    ZeroMemory( @Damage, sizeof( Damage ) );
+    Points := D + TCharacter(Target).HitPoints * F;
+    ZeroMemory(@Damage, sizeof(Damage));
     Damage.Magic.Min := Points;
     Damage.Magic.Max := Points;
-    TCharacter( Target ).AffectDamage( Source, @Damage );
-    Total := CalcTotalDamage( Damage, TCharacter( Target ).Resistance, 1, false );
-    TCharacter( Target ).AddEffect( Effect );
-    TCharacter( Target ).TakeDamage( Source, Total, 0, true );
+    TCharacter(Target).AffectDamage(Source, @Damage);
+    Total := CalcTotalDamage(Damage, TCharacter(Target).Resistance, 1, false);
+    TCharacter(Target).AddEffect(Effect);
+    TCharacter(Target).TakeDamage(Source, Total, 0, true);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 procedure TWither.Clear;
 begin
-  Resource.RLE.free; Resource.RLE := nil;
+  Resource.RLE.free;
+  Resource.RLE := nil;
 end;
 
 constructor TWither.Create;
 const
-  FailName : string = 'TWither.Create';
+  FailName: string = 'TWither.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     CastingType := ctCombat;
     TargetType := ttEnemy;
     CastEffect := ChargeEffect;
-    Resource := LoadArtResource( 'engine\spells\charge4receive.gif', true );
-    LoadCastSounds( 'Charge' );
+    Resource := LoadArtResource('engine\spells\charge4receive.gif', true);
+    LoadCastSounds('Charge');
     Resource.DrawShadow := false;
     SoundInCast := true;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor TWither.Destroy;
 const
-  FailName : string = 'TWither.Destroy';
+  FailName: string = 'TWither.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    Resource.Free;
+    Resource.free;
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TWither.Drain( Source : TCharacter ) : Single;
+function TWither.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TWither.Drain';
+  FailName: string = 'TWither.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 5 + round( Source.Restriction / 10 );
+    result := 5 + round(Source.Restriction / 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TWither.GetIconXY( Source : TCharacter ) : TPoint;
+function TWither.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TWither.GetIconXY';
+  FailName: string = 'TWither.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result.X := 10 * 32;
     result.Y := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TWither.GetInfo( Source : TCharacter ) : string;
+function TWither.GetInfo(Source: TCharacter): string;
 begin
   result := InfoText;
 end;
 
-function TWither.GetLoaded : Boolean;
+function TWither.GetLoaded: Boolean;
 const
-  FailName : string = 'TWither.GetLoaded';
+  FailName: string = 'TWither.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if assigned( Resource ) then
+    if assigned(Resource) then
       result := Resource.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TWither.GetName : string;
+class function TWither.GetName: string;
 begin
   result := 'Charge';
 end;
 
-function TWither.Range( Source : TCharacter ) : Integer;
+function TWither.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TWither.Range';
+  FailName: string = 'TWither.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := Round( Source.Mysticism * 50 * ( 24 + Source.Mysticism / 10 ) );
+    result := round(Source.Mysticism * 50 * (24 + Source.Mysticism / 10));
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TWither.Recovery( Source : TCharacter ) : Integer;
+function TWither.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TWither.Recovery';
+  FailName: string = 'TWither.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 40 - ( ( Source.Coordination + Source.Mysticism ) div 4 );
+    result := 40 - ((Source.Coordination + Source.Mysticism) div 4);
     if result < 0 then
       result := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 { TCharge }
 
-function TCharge.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
+function TCharge.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  NewProjectile : TProjectile;
-  Z1, Z2 : Integer;
+  NewProjectile: TProjectile;
+  Z1, Z2: Integer;
 const
-  FailName : string = 'TCharge.Cast';
+  FailName: string = 'TCharge.Cast';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := inherited Cast( Source, Target );
+    result := inherited Cast(Source, Target);
     if not result then
       Exit;
     Z1 := Source.Height div 2 - 16;
-    if Assigned( Target ) then
+    if assigned(Target) then
       Z2 := 0
     else
       Z2 := Z1;
-    if Source.TitleExists( 'Infuse' ) then
+    if Source.TitleExists('Infuse') then
     begin
-      NewProjectile := TProjectile( Sprites.NewSprite( TChargeProjectile, Resource3, Source.X, Source.Y, Z1, 1 ) );
-      if assigned( NewProjectile ) then
+      NewProjectile := TProjectile(Sprites.NewSprite(TChargeProjectile,
+        Resource3, Source.X, Source.Y, Z1, 1));
+      if assigned(NewProjectile) then
       begin
         NewProjectile.Magic := Source.Mysticism * 2;
-        ZeroMemory( @NewProjectile.Damage, sizeof( NewProjectile.Damage ) );
+        ZeroMemory(@NewProjectile.Damage, sizeof(NewProjectile.Damage));
         NewProjectile.Damage.Heat.Min := 0;
         NewProjectile.Damage.Heat.Max := Source.Mysticism / 4;
         NewProjectile.Damage.Electric.Min := 1;
@@ -3387,22 +3629,25 @@ begin
         else
           NewProjectile.HitIncidental := 10 / Source.Coordination;
         NewProjectile.HitTarget := 1;
-        NewProjectile.UseLineOfSight := True;
-        NewProjectile.GlowEffect := TGlow( Sprites.NewSprite( TGlow, nil, Source.X, Source.Y - 1, 0, 0 ) );
+        NewProjectile.UseLineOfSight := true;
+        NewProjectile.GlowEffect :=
+          TGlow(Sprites.NewSprite(TGlow, nil, Source.X, Source.Y - 1, 0, 0));
         NewProjectile.GlowEffect.RFactor := 25;
         NewProjectile.GlowEffect.GFactor := 25;
         NewProjectile.GlowEffect.BFactor := 50;
         NewProjectile.GlowEffect.Alpha := 10;
-        NewProjectile.Launch( Source, Target, Source.TargetX, Source.TargetY + Z2 );
+        NewProjectile.Launch(Source, Target, Source.TargetX,
+          Source.TargetY + Z2);
       end;
     end
-    else if Source.TitleExists( 'Energy' ) then
+    else if Source.TitleExists('Energy') then
     begin
-      NewProjectile := TProjectile( Sprites.NewSprite( TChargeProjectile, Resource2, Source.X, Source.Y, Z1, 1 ) );
-      if assigned( NewProjectile ) then
+      NewProjectile := TProjectile(Sprites.NewSprite(TChargeProjectile,
+        Resource2, Source.X, Source.Y, Z1, 1));
+      if assigned(NewProjectile) then
       begin
         NewProjectile.Magic := 3 * Source.Mysticism div 2;
-        ZeroMemory( @NewProjectile.Damage, sizeof( NewProjectile.Damage ) );
+        ZeroMemory(@NewProjectile.Damage, sizeof(NewProjectile.Damage));
         NewProjectile.Damage.Heat.Min := 0;
         NewProjectile.Damage.Heat.Max := Source.Mysticism / 8;
         NewProjectile.Damage.Electric.Min := 1;
@@ -3417,22 +3662,25 @@ begin
         else
           NewProjectile.HitIncidental := 10 / Source.Coordination;
         NewProjectile.HitTarget := 1;
-        NewProjectile.UseLineOfSight := True;
-        NewProjectile.GlowEffect := TGlow( Sprites.NewSprite( TGlow, nil, Source.X, Source.Y - 1, 0, 0 ) );
+        NewProjectile.UseLineOfSight := true;
+        NewProjectile.GlowEffect :=
+          TGlow(Sprites.NewSprite(TGlow, nil, Source.X, Source.Y - 1, 0, 0));
         NewProjectile.GlowEffect.RFactor := 25;
         NewProjectile.GlowEffect.GFactor := 25;
         NewProjectile.GlowEffect.BFactor := 50;
         NewProjectile.GlowEffect.Alpha := 10;
-        NewProjectile.Launch( Source, Target, Source.TargetX, Source.TargetY + Z2 );
+        NewProjectile.Launch(Source, Target, Source.TargetX,
+          Source.TargetY + Z2);
       end;
     end
     else
     begin
-      NewProjectile := TProjectile( Sprites.NewSprite( TChargeProjectile, Resource1, Source.X, Source.Y, Z1, 1 ) );
-      if assigned( NewProjectile ) then
+      NewProjectile := TProjectile(Sprites.NewSprite(TChargeProjectile,
+        Resource1, Source.X, Source.Y, Z1, 1));
+      if assigned(NewProjectile) then
       begin
         NewProjectile.Magic := Source.Mysticism;
-        ZeroMemory( @NewProjectile.Damage, sizeof( NewProjectile.Damage ) );
+        ZeroMemory(@NewProjectile.Damage, sizeof(NewProjectile.Damage));
         NewProjectile.Damage.Heat.Min := 0;
         NewProjectile.Damage.Heat.Max := Source.Mysticism / 16;
         NewProjectile.Damage.Electric.Min := 1;
@@ -3447,229 +3695,243 @@ begin
         else
           NewProjectile.HitIncidental := 10 / Source.Coordination;
         NewProjectile.HitTarget := 1;
-        NewProjectile.UseLineOfSight := True;
-        NewProjectile.GlowEffect := TGlow( Sprites.NewSprite( TGlow, nil, Source.X, Source.Y - 1, 0, 0 ) );
+        NewProjectile.UseLineOfSight := true;
+        NewProjectile.GlowEffect :=
+          TGlow(Sprites.NewSprite(TGlow, nil, Source.X, Source.Y - 1, 0, 0));
         NewProjectile.GlowEffect.RFactor := 25;
         NewProjectile.GlowEffect.GFactor := 25;
         NewProjectile.GlowEffect.BFactor := 50;
         NewProjectile.GlowEffect.Alpha := 10;
-        NewProjectile.Launch( Source, Target, Source.TargetX, Source.TargetY + Z2 );
+        NewProjectile.Launch(Source, Target, Source.TargetX,
+          Source.TargetY + Z2);
       end;
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 constructor TCharge.Create;
 const
-  FailName : string = 'TCharge.Create';
+  FailName: string = 'TCharge.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     CastingType := ctCombat;
     TargetType := ttEnemy;
     CastEffect := LightningEffect;
-    Resource1 := TLightning( Lightning ).SmallResource; //LoadArtResource('engine\WeaponProjectiles\smalllightning.gif');
-    Resource2 := TLightning( Lightning ).MediumResource; //LoadArtResource('engine\WeaponProjectiles\medlightning.gif');
-    Resource3 := TLightning( Lightning ).LargeResource; //LoadArtResource('engine\WeaponProjectiles\lrglightning.gif');
-    LoadCastSounds( 'Charge' );
-//  Resource1.DrawShadow:=false;
-//  Resource2.DrawShadow:=false;
-//  Resource3.DrawShadow:=false;
+    Resource1 := TLightning(Lightning).SmallResource;
+    // LoadArtResource('engine\WeaponProjectiles\smalllightning.gif');
+    Resource2 := TLightning(Lightning).MediumResource;
+    // LoadArtResource('engine\WeaponProjectiles\medlightning.gif');
+    Resource3 := TLightning(Lightning).LargeResource;
+    // LoadArtResource('engine\WeaponProjectiles\lrglightning.gif');
+    LoadCastSounds('Charge');
+    // Resource1.DrawShadow:=false;
+    // Resource2.DrawShadow:=false;
+    // Resource3.DrawShadow:=false;
     SoundInCast := true;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor TCharge.Destroy;
 const
-  FailName : string = 'TCharge.Destroy';
+  FailName: string = 'TCharge.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-//  Resource1.Free;
-//  Resource2.Free;
-//  Resource3.Free;
+    // Resource1.Free;
+    // Resource2.Free;
+    // Resource3.Free;
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TCharge.Drain( Source : TCharacter ) : Single;
+function TCharge.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TCharge.Drain';
+  FailName: string = 'TCharge.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result := 1;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TCharge.GetIconXY( Source : TCharacter ) : TPoint;
+function TCharge.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TCharge.GetIconXY';
+  FailName: string = 'TCharge.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result.X := 10 * 32;
-    result.Y := 0;
-    if Source.TitleExists( 'Infuse' ) then
+    if Source.TitleExists('Infuse') then
     begin
-    result.X := 9 * 32;
-    result.Y := 32;
+      result.X := 9 * 32;
+      result.Y := 32;
+    end
+    else if Source.TitleExists('Energy') then
+    begin
+      result.X := 10 * 32;
+      result.Y := 0;
+    end
+    else
+    begin
+      result.X := 11 * 32;
+      result.Y := 0;
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TCharge.GetInfo( Source : TCharacter ) : string;
+function TCharge.GetInfo(Source: TCharacter): string;
 begin
   result := InfoText;
-  if Source.TitleExists( 'Infuse' ) then
+  if Source.TitleExists('Infuse') then
   begin
-    Replace( result, 'a', '1-' + inttostr( round( Source.Mysticism / 2 ) ) );
-    Replace( result, 'b', '0-' + inttostr( round( Source.Mysticism / 4 ) ) );
+    Replace(result, 'a', '1-' + inttostr(round(Source.Mysticism / 2)));
+    Replace(result, 'b', '0-' + inttostr(round(Source.Mysticism / 4)));
   end
-  else if Source.TitleExists( 'Energy' ) then
+  else if Source.TitleExists('Energy') then
   begin
-    Replace( result, 'a', '1-' + inttostr( round( Source.Mysticism / 4 ) ) );
-    Replace( result, 'b', '0-' + inttostr( round( Source.Mysticism / 8 ) ) );
+    Replace(result, 'a', '1-' + inttostr(round(Source.Mysticism / 4)));
+    Replace(result, 'b', '0-' + inttostr(round(Source.Mysticism / 8)));
   end
   else
   begin
-    Replace( result, 'a', '1-' + inttostr( round( Source.Mysticism / 8 ) ) );
-    Replace( result, 'b', '0-' + inttostr( round( Source.Mysticism / 16 ) ) );
+    Replace(result, 'a', '1-' + inttostr(round(Source.Mysticism / 8)));
+    Replace(result, 'b', '0-' + inttostr(round(Source.Mysticism / 16)));
   end;
 end;
 
-function TCharge.GetLoaded : Boolean;
+function TCharge.GetLoaded: Boolean;
 const
-  FailName : string = 'TCharge.GetLoaded';
+  FailName: string = 'TCharge.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result := Resource1.Loaded and Resource2.Loaded and Resource3.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TCharge.GetName : string;
+class function TCharge.GetName: string;
 begin
   result := 'Charge';
 end;
 
-function TCharge.Range( Source : TCharacter ) : Integer;
+function TCharge.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TCharge.Range';
+  FailName: string = 'TCharge.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := Round( Source.Constitution * 10 * ( 8 + Source.Coordination / 10 ) );
+    result := round(Source.Constitution * 10 * (8 + Source.Coordination / 10));
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TCharge.Recovery( Source : TCharacter ) : Integer;
+function TCharge.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TCharge.Recovery';
+  FailName: string = 'TCharge.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 10 - ( Source.Constitution div 2 );
+    result := 10 - (Source.Constitution div 2);
     if result < 0 then
       result := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 { TSummonRat }
 
-function TSummonRat.Cast( Source : TCharacter;
-  Target : TSpriteObject ) : Boolean;
+function TSummonRat.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  Effect : TEffect;
-  NewCharacter : TCompanionCharacter;
-  i, CompanionSlot : integer;
+  Effect: TEffect;
+  NewCharacter: TCompanionCharacter;
+  i, CompanionSlot: Integer;
 const
-  FailName : string = 'TSummonRat.Cast';
+  FailName: string = 'TSummonRat.Cast';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := False;
-    if assigned( Target ) then
-      exit;
-    if not Game.LineOfSight( Source.X, Source.Y, Source.TargetX, Source.TargetY ) then
-      exit;
+    result := false;
+    if assigned(Target) then
+      Exit;
+    if not Game.LineOfSight(Source.X, Source.Y, Source.TargetX, Source.TargetY)
+    then
+      Exit;
 
     CompanionSlot := 0;
     for i := 1 to MaxCompanions do
     begin
-      if not assigned( Source.Companion[ i ] ) then
+      if not assigned(Source.Companion[i]) then
       begin
         CompanionSlot := i;
         break;
       end;
     end;
     if CompanionSlot = 0 then
-      exit;
+      Exit;
 
-    result := inherited Cast( Source, Target );
+    result := inherited Cast(Source, Target);
     if not result then
       Exit;
 
-    NewCharacter := TCompanionCharacter( Sprites.NewSprite( TCompanionCharacter, RatResource, Source.TargetX, Source.TargetY, 0, 1 ) );
-    if assigned( NewCharacter ) then
+    NewCharacter := TCompanionCharacter(Sprites.NewSprite(TCompanionCharacter,
+      RatResource, Source.TargetX, Source.TargetY, 0, 1));
+    if assigned(NewCharacter) then
     begin
-      Source.Companion[ CompanionSlot ] := NewCharacter;
+      Source.Companion[CompanionSlot] := NewCharacter;
 
       Effect := TEffect.Create;
       Effect.Resource := Resource;
       Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
       Effect.Power := Source.Mysticism;
-      Effect.DoAction( 'Default', NewCharacter.Facing );
+      Effect.DoAction('Default', NewCharacter.Facing);
 
       with NewCharacter do
       begin
@@ -3693,619 +3955,634 @@ begin
         FAIMode := aiParty;
         NewAIMode := aiParty;
         InterfaceLocked := true;
-        AddEffect( Effect );
+        AddEffect(Effect);
       end;
-      frmMain.ChangeFocus( NewCharacter );
+      frmMain.ChangeFocus(NewCharacter);
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 constructor TSummonRat.Create;
 const
-  FailName : string = 'TSummonRat.Create';
+  FailName: string = 'TSummonRat.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     CastingType := ctSummoning;
     TargetType := ttNone;
     CastEffect := SummonEffect;
-    Resource := LoadArtResource( 'engine\spells\summonreceive.gif', true );
+    Resource := LoadArtResource('engine\spells\summonreceive.gif', true);
     Resource.DrawShadow := false;
     SoundInCast := false;
-    LoadCastSounds( 'Summon' );
+    LoadCastSounds('Summon');
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor TSummonRat.Destroy;
 const
-  FailName : string = 'TSummonRat.Destroy';
+  FailName: string = 'TSummonRat.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    Resource.Free;
+    Resource.free;
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TSummonRat.Drain( Source : TCharacter ) : Single;
+function TSummonRat.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TSummonRat.Drain';
+  FailName: string = 'TSummonRat.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 5 + round( Source.Restriction / 10 );
+    result := 5 + round(Source.Restriction / 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TSummonRat.GetIconXY( Source : TCharacter ) : TPoint;
+function TSummonRat.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TSummonRat.GetIconXY';
+  FailName: string = 'TSummonRat.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result.X := 5 * 32;
     result.Y := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TSummonRat.GetInfo( Source : TCharacter ) : string;
+function TSummonRat.GetInfo(Source: TCharacter): string;
 begin
   result := InfoText;
 end;
 
-function TSummonRat.GetLoaded : Boolean;
+function TSummonRat.GetLoaded: Boolean;
 const
-  FailName : string = 'TSummonRat.GetLoaded';
+  FailName: string = 'TSummonRat.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if assigned( Resource ) then
+    if assigned(Resource) then
       result := Resource.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TSummonRat.GetName : string;
+class function TSummonRat.GetName: string;
 begin
   result := 'Summon Rat';
 end;
 
-function TSummonRat.Range( Source : TCharacter ) : Integer;
+function TSummonRat.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TSummonRat.Range';
+  FailName: string = 'TSummonRat.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result := 200;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TSummonRat.Recovery( Source : TCharacter ) : Integer;
+function TSummonRat.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TSummonRat.Recovery';
+  FailName: string = 'TSummonRat.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result := 20;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 { TSummonWolf }
 
-function TSummonWolf.Cast( Source : TCharacter;
-  Target : TSpriteObject ) : Boolean;
+function TSummonWolf.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  Effect : TEffect;
-  NewCharacter : TCompanionCharacter;
-  i, CompanionSlot : integer;
+  Effect: TEffect;
+  NewCharacter: TCompanionCharacter;
+  i, CompanionSlot: Integer;
 const
-  FailName : string = 'TSummonWolf.Cast';
+  FailName: string = 'TSummonWolf.Cast';
 begin
-  result := False;
-  Log.DebugLog( FailName );
+  result := false;
+  Log.DebugLog(FailName);
   try
 
-    if assigned( Target ) then
-      exit;
-    if not Game.LineOfSight( Source.X, Source.Y, Source.TargetX, Source.TargetY ) then
-      exit;
+    if assigned(Target) then
+      Exit;
+    if not Game.LineOfSight(Source.X, Source.Y, Source.TargetX, Source.TargetY)
+    then
+      Exit;
 
     CompanionSlot := 0;
     for i := 1 to MaxCompanions do
     begin
-      if not assigned( Source.Companion[ i ] ) then
+      if not assigned(Source.Companion[i]) then
       begin
         CompanionSlot := i;
         break;
       end;
     end;
     if CompanionSlot = 0 then
-      exit;
+      Exit;
 
-    result := inherited Cast( Source, Target );
+    result := inherited Cast(Source, Target);
     if not result then
       Exit;
 
-    NewCharacter := TCompanionCharacter( Sprites.NewSprite( TCompanionCharacter, WolfResource, Source.TargetX, Source.TargetY, 0, 1 ) );
-    if assigned( NewCharacter ) then
+    NewCharacter := TCompanionCharacter(Sprites.NewSprite(TCompanionCharacter,
+      WolfResource, Source.TargetX, Source.TargetY, 0, 1));
+    if assigned(NewCharacter) then
     begin
-      Source.Companion[ CompanionSlot ] := NewCharacter;
+      Source.Companion[CompanionSlot] := NewCharacter;
 
       Effect := TEffect.Create;
       Effect.Resource := Resource;
       Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
       Effect.Power := Source.Mysticism;
-      Effect.DoAction( 'Default', NewCharacter.Facing );
+      Effect.DoAction('Default', NewCharacter.Facing);
 
       with NewCharacter do
       begin
         Master := Source;
         Duration := Source.Mysticism * 50;
         Name := 'Wolf';
-        BaseUnArmedDamage.Piercing.Min := 2 + Source.Mysticism / 15;
-        BaseUnArmedDamage.Piercing.Max := 8 + Source.Mysticism / 10;
+        // Improved, since Wolf was quite weak, especially in combat
+        BaseUnArmedDamage.Piercing.Min := 2 + Source.Mysticism / 12;
+        BaseUnArmedDamage.Piercing.Max := 8 + Source.Mysticism / 8;
         BaseUnArmedDamage.Cutting.Min := 0;
         BaseUnArmedDamage.Cutting.Max := 8;
         BaseResistance.Cutting.Invulnerability := 1;
-        BaseResistance.Cutting.Resistance := 0.02;
-        BaseResistance.Crushing.Invulnerability := 1;
-        BaseResistance.Crushing.Resistance := 0.02;
-        BaseResistance.Cold.Invulnerability := 3;
+        BaseResistance.Cutting.Resistance := 0.05;
+        BaseResistance.Crushing.Invulnerability := 2;
+        BaseResistance.Crushing.Resistance := 0.10;
+        BaseResistance.Cold.Invulnerability := 5;
         BaseResistance.Cold.Resistance := 0.25;
         Strength := 20;
         Coordination := 15;
         Alliance := Source.Alliance;
         HitPoints := 15 + Source.Mysticism / 5;
-        Combat := 10 + Source.Mysticism div 5;
-        addtitle( 'MeleeAgressive' );
+        Combat := 20 + Source.Mysticism div 5;
+        addtitle('MeleeAgressive');
         AI := TCompanion.Create;
-        TCompanion( AI ).Combative := true;
-        TCompanion( AI ).Leader := Source;
+        TCompanion(AI).Combative := true;
+        TCompanion(AI).Leader := Source;
         FAIMode := aiIdle;
         NewAIMode := aiIdle;
-        AddEffect( Effect );
-        painsound :='WolfPain';
-        Deathsound :='WolfDeath';
+        AddEffect(Effect);
+        painsound := 'WolfPain';
+        Deathsound := 'WolfDeath';
       end;
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 constructor TSummonWolf.Create;
 const
-  FailName : string = 'TSummonWolf.Create';
+  FailName: string = 'TSummonWolf.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
     CastingType := ctSummoning;
     TargetType := ttNone;
     CastEffect := SummonEffect;
-    Resource := LoadArtResource( 'engine\spells\summonreceive.gif', true );
+    Resource := LoadArtResource('engine\spells\summonreceive.gif', true);
     Resource.DrawShadow := false;
     SoundInCast := false;
-    LoadCastSounds( 'Summon' );
+    LoadCastSounds('Summon');
     Interupted := false;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor TSummonWolf.Destroy;
 const
-  FailName : string = 'TSummonWolf.Destroy';
+  FailName: string = 'TSummonWolf.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
-    Resource.Free;
+    Resource.free;
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TSummonWolf.Drain( Source : TCharacter ) : Single;
+function TSummonWolf.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TSummonWolf.Drain';
+  FailName: string = 'TSummonWolf.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
-    result := 15 + round( Source.Restriction / 10 );
+    result := 15 + round(Source.Restriction / 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TSummonWolf.GetIconXY( Source : TCharacter ) : TPoint;
+function TSummonWolf.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TSummonWolf.GetIconXY';
+  FailName: string = 'TSummonWolf.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
     result.X := 5 * 32;
     result.Y := 32;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TSummonWolf.GetInfo( Source : TCharacter ) : string;
+function TSummonWolf.GetInfo(Source: TCharacter): string;
 begin
   result := InfoText;
-//  Replace( result, 'a', inttostr( 10 + round( Source.Mysticism / 5 ) ) );
-Replace( result, 'a', inttostr( 15 + round( Source.Mysticism / 5 ) ) );
-//  Replace( result, 'b', '2-20' );
-Replace( result, 'b', inttostr( 2 + round( Source.Mysticism / 15 ) ) + '-' + inttostr( 8 + round( Source.Mysticism / 10 ) ) );
-//  Replace( result, 'c', '0-16' );
-Replace( result, 'c', '0-8' );
-//  result := 'Summons a ' + inttostr( 10 + round( Source.Mysticism / 5 ) ) + ' hit point wolf';
- result := 'Wolf mit ' + inttostr( 15 + round( Source.Mysticism / 5 ) ) + ' Leben';
-//  result := result + #13 + '2-20 Piercing, ' + '0-16 Cutting';
-result := result + ' ' + inttostr( 2 + round( Source.Mysticism / 15 ) ) + '-' + inttostr( 8 + round( Source.Mysticism / 10 ) ) + ' Stechen, '  + '0-8 Schneiden';
+
+  Replace(result, 'a', inttostr(15 + round(Source.Mysticism / 5)));
+
+  Replace(result, 'b', inttostr(2 + round(Source.Mysticism / 12)) + '-' +
+    inttostr(8 + round(Source.Mysticism / 8)));
+  Replace(result, 'c', '0-8');
+
+  result := 'Wolf mit ' + inttostr(15 + round(Source.Mysticism / 5)) + ' Leben';
+
+  result := result + ' ' + inttostr(2 + round(Source.Mysticism / 12)) + '-' +
+    inttostr(8 + round(Source.Mysticism / 8)) + ' Stechen, ' + '0-8 Schneiden';
 end;
 
-function TSummonWolf.GetLoaded : Boolean;
+function TSummonWolf.GetLoaded: Boolean;
 const
-  FailName : string = 'TSummonWolf.GetLoaded';
+  FailName: string = 'TSummonWolf.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if assigned( Resource ) then
+    if assigned(Resource) then
       result := Resource.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TSummonWolf.GetName : string;
+class function TSummonWolf.GetName: string;
 begin
   result := 'Summon Wolf';
 end;
 
-function TSummonWolf.Range( Source : TCharacter ) : Integer;
+function TSummonWolf.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TSummonWolf.Range';
+  FailName: string = 'TSummonWolf.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
     result := 200;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TSummonWolf.Recovery( Source : TCharacter ) : Integer;
+function TSummonWolf.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TSummonWolf.Recovery';
+  FailName: string = 'TSummonWolf.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
-    result := 20;
+    result := 30 - (Source.Mysticism div 6);
+    if result < 15 then
+      result := 15;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-{Steingolem}
+{ Steingolem }
 
-function TSummonGolem.Cast( Source : TCharacter;
-  Target : TSpriteObject ) : Boolean;
+function TSummonGolem.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  Effect : TEffect;
-  NewCharacter : TCompanionCharacter;
-  i, CompanionSlot : integer;
+  Effect: TEffect;
+  NewCharacter: TCompanionCharacter;
+  i, CompanionSlot: Integer;
 const
-  FailName : string = 'TSummonGolem.Cast';
+  FailName: string = 'TSummonGolem.Cast';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if assigned( Target ) then
-      exit;
-    if not Game.LineOfSight( Source.X, Source.Y, Source.TargetX, Source.TargetY ) then
-      exit;
+    if assigned(Target) then
+      Exit;
+    if not Game.LineOfSight(Source.X, Source.Y, Source.TargetX, Source.TargetY)
+    then
+      Exit;
 
     CompanionSlot := 0;
     for i := 3 to 5 do
+    // only 3 golems at the same time, but also + 2 wolfs possible
     begin
-      if not assigned( Source.Companion[ i ] ) then
+      if not assigned(Source.Companion[i]) then
       begin
         CompanionSlot := i;
         break;
       end;
     end;
     if CompanionSlot = 0 then
-      exit;
+      Exit;
 
-    result := inherited Cast( Source, Target );
+    result := inherited Cast(Source, Target);
     if not result then
       Exit;
 
-    NewCharacter := TCompanionCharacter( Sprites.NewSprite( TCompanionCharacter, GolemResource, Source.TargetX, Source.TargetY, 0, 1 ) );
-    if assigned( NewCharacter ) then
+    NewCharacter := TCompanionCharacter(Sprites.NewSprite(TCompanionCharacter,
+      GolemResource, Source.TargetX, Source.TargetY, 0, 1));
+    if assigned(NewCharacter) then
     begin
-      Source.Companion[ CompanionSlot ] := NewCharacter;
+      Source.Companion[CompanionSlot] := NewCharacter;
 
       Effect := TEffect.Create;
       Effect.Resource := Resource;
       Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
       Effect.Power := Source.Mysticism;
-      Effect.DoAction( 'Default', NewCharacter.Facing );
+      Effect.DoAction('Default', NewCharacter.Facing);
 
       with NewCharacter do
       begin
         Master := Source;
-        Duration :=10 + Source.Mysticism * 50;
+        Duration := (Source.Mysticism * 50) - 5;
         Name := 'Steingolem';
         BaseUnArmedDamage.Piercing.Min := 0;
-        BaseUnArmedDamage.Piercing.Max := 2;
-        BaseUnArmedDamage.Crushing.Min := 3 + Source.Mysticism / 12;
-        BaseUnArmedDamage.Crushing.Max := 10 + Source.Mysticism / 8;
+        BaseUnArmedDamage.Piercing.Max := 4;
+        BaseUnArmedDamage.Crushing.Min := 3 + Source.Mysticism / 10;
+        BaseUnArmedDamage.Crushing.Max := 10 + Source.Mysticism / 6;
         BaseUnArmedDamage.Cutting.Min := 1;
-        BaseUnArmedDamage.Cutting.Max := 4;
+        BaseUnArmedDamage.Cutting.Max := 6;
         BaseResistance.Cutting.Invulnerability := 10;
         BaseResistance.Cutting.Resistance := 0.50;
         BaseResistance.Crushing.Invulnerability := 0;
         BaseResistance.Crushing.Resistance := 0.00;
+        BaseResistance.Piercing.Invulnerability := 10;
+        BaseResistance.Piercing.Resistance := 0.50;
         BaseResistance.Cold.Invulnerability := 5;
         BaseResistance.Cold.Resistance := 0.25;
         Strength := 20;
         Coordination := 20;
         Alliance := Source.Alliance;
-        HitPoints := 15 + Source.Mysticism / 5;
-        Combat := 15 + Source.Mysticism div 5;
-        addtitle( 'MeleeAgressive' );
+        HitPoints := 20 + Source.Mysticism / 5;
+        Combat := 25 + Source.Mysticism div 5;
+        addtitle('MeleeAgressive');
         AI := TCompanion.Create;
-        TCompanion( AI ).Combative := true;
-        TCompanion( AI ).Leader := Source;
+        TCompanion(AI).Combative := true;
+        TCompanion(AI).Leader := Source;
         FAIMode := aiIdle;
         NewAIMode := aiIdle;
-        AddEffect( Effect );
-        Painsound := 'RckMonpain,RckMonpain2';
+        AddEffect(Effect);
+        painsound := 'RckMonpain,RckMonpain2';
         Deathsound := 'RckMonDeath,RckMonDeath2,RockmonsterDearth';
       end;
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 constructor TSummonGolem.Create;
 const
-  FailName : string = 'TSummonGolem.Create';
+  FailName: string = 'TSummonGolem.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
     CastingType := ctSummoning;
     TargetType := ttNone;
     CastEffect := SummonEffect;
-    Resource := LoadArtResource( 'engine\spells\summonreceive.gif', true );
+    Resource := LoadArtResource('engine\spells\summonreceive.gif', true);
     Resource.DrawShadow := false;
     SoundInCast := false;
-    LoadCastSounds( 'SummonRockgolem' );
+    LoadCastSounds('SummonRockgolem');
     Interupted := false;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor TSummonGolem.Destroy;
 const
-  FailName : string = 'TSummonGolem.Destroy';
+  FailName: string = 'TSummonGolem.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
-    Resource.Free;
+    Resource.free;
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TSummonGolem.Drain( Source : TCharacter ) : Single;
+function TSummonGolem.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TSummonGolem.Drain';
+  FailName: string = 'TSummonGolem.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
-    result := 20 + round( Source.Restriction / 10 );
+    result := 25 + round(Source.Restriction / 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TSummonGolem.GetIconXY( Source : TCharacter ) : TPoint;
+function TSummonGolem.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TSummonGolem.GetIconXY';
+  FailName: string = 'TSummonGolem.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
     result.X := 4 * 32;
     result.Y := 32;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TSummonGolem.GetInfo( Source : TCharacter ) : string;
+function TSummonGolem.GetInfo(Source: TCharacter): string;
 begin
   result := InfoText;
-  Replace( result, 'a', inttostr( 15 + round( Source.Mysticism / 5 ) ) );
-  Replace( result, 'b', '0-2' );
-  Replace( result, 'c', '1-4' );
-  Replace( result, 'd', inttostr( 3 + round( Source.Mysticism / 12) ) + '-' + inttostr( 10 + round( Source.Mysticism / 8) ) );
-  result := 'Golem mit ' + inttostr( 15 + round( Source.Mysticism / 5 ) ) + ' Leben';
-  result := result + ' ' + '0-2 Stechen, ' + '1-4 Schneiden, ' + inttostr( 3 + round( Source.Mysticism / 12) ) + '-' + inttostr( 10 + round( Source.Mysticism / 8) ) + ' Quetschen';
+  Replace(result, 'a', inttostr(15 + round(Source.Mysticism / 5)));
+  Replace(result, 'b', '0-4');
+  Replace(result, 'c', '1-6');
+  Replace(result, 'd', inttostr(3 + round(Source.Mysticism / 10)) + '-' +
+    inttostr(10 + round(Source.Mysticism / 6)));
+  result := 'Golem mit ' + inttostr(15 + round(Source.Mysticism / 5)) +
+    ' Leben';
+  result := result + ' ' + '0-4 Stechen, ' + '1-6 Schneiden, ' +
+    inttostr(3 + round(Source.Mysticism / 10)) + '-' +
+    inttostr(10 + round(Source.Mysticism / 6)) + ' Quetschen';
 end;
 
-function TSummonGolem.GetLoaded : Boolean;
+function TSummonGolem.GetLoaded: Boolean;
 const
-  FailName : string = 'TSummonGolem.GetLoaded';
+  FailName: string = 'TSummonGolem.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if assigned( Resource ) then
+    if assigned(Resource) then
       result := Resource.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TSummonGolem.GetName : string;
+class function TSummonGolem.GetName: string;
 begin
   result := 'Summon Golem';
 end;
 
-function TSummonGolem.Range( Source : TCharacter ) : Integer;
+function TSummonGolem.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TSummonGolem.Range';
+  FailName: string = 'TSummonGolem.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
     result := 200;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TSummonGolem.Recovery( Source : TCharacter ) : Integer;
+function TSummonGolem.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TSummonGolem.Recovery';
+  FailName: string = 'TSummonGolem.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
-    result := 20;
+    result := 35 - (Source.Mysticism div 6);
+    if result < 18 then
+      result := 18;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 { TAura }
 
-function TAura.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
+function TAura.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  Effect : TEffect;
-  NewTarget : TCharacter;
+  Effect: TEffect;
+  NewTarget: TCharacter;
 const
-  FailName : string = 'TAura.Cast';
+  FailName: string = 'TAura.Cast';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := False;
-    if assigned( Target ) then
+    result := false;
+    if assigned(Target) then
     begin
-      if not ( Target is TCharacter ) then
-        exit;
-      if TCharacter( Target ).Dead then
-        exit;
-      NewTarget := TCharacter( Target );
+      if not(Target is TCharacter) then
+        Exit;
+      if TCharacter(Target).Dead then
+        Exit;
+      NewTarget := TCharacter(Target);
     end
     else
       NewTarget := Source;
 
-    result := inherited Cast( Source, NewTarget );
+    result := inherited Cast(Source, NewTarget);
     if not result then
       Exit;
 
@@ -4319,26 +4596,26 @@ begin
     Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
     Effect.Duration := Source.Mysticism * 50;
     Effect.Power := Source.Mysticism;
-    TAuraEffect( Effect ).HitResource := HitResource;
+    TAuraEffect(Effect).HitResource := HitResource;
     Effect.tag := 20;
-    Effect.DoAction( 'Default', NewTarget.Facing );
+    Effect.DoAction('Default', NewTarget.Facing);
 
     with NewTarget do
     begin
-      AddEffect( Effect );
+      AddEffect(Effect);
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 constructor TAura.Create;
 const
-  FailName : string = 'TAura.Create';
+  FailName: string = 'TAura.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
@@ -4347,19 +4624,19 @@ begin
     CastEffect := AuraEffect;
 
     SoundInCast := true;
-    LoadCastSounds( 'switchplayers' );
+    LoadCastSounds('switchplayers');
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor TAura.Destroy;
 const
-  FailName : string = 'TAura.Destroy';
+  FailName: string = 'TAura.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     Resource.free;
@@ -4369,123 +4646,123 @@ begin
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TAura.Drain( Source : TCharacter ) : Single;
+function TAura.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TAura.Drain';
+  FailName: string = 'TAura.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := FDrain + round( Source.Restriction / 10 );
+    result := FDrain + round(Source.Restriction / 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TAura.GetIconXY( Source : TCharacter ) : TPoint;
+function TAura.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TAura.GetIconXY';
+  FailName: string = 'TAura.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result := IconXY;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TAura.GetLoaded : Boolean;
+function TAura.GetLoaded: Boolean;
 const
-  FailName : string = 'TAura.GetLoaded';
+  FailName: string = 'TAura.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result := Resource.Loaded and HitResource.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TAura.Range( Source : TCharacter ) : Integer;
+function TAura.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TAura.Range';
+  FailName: string = 'TAura.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := Round( Source.Mysticism * 10 );
+    result := round(Source.Mysticism * 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TAura.Recovery( Source : TCharacter ) : Integer;
+function TAura.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TAura.Recovery';
+  FailName: string = 'TAura.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 40 - ( ( Source.Coordination + Source.Mysticism ) div 4 );
+    result := 40 - ((Source.Coordination + Source.Mysticism) div 4);
     if result < 0 then
       result := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 { TShadow }
 
-function TShadow.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
+function TShadow.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  Effect : TEffect;
-  NewTarget : TCharacter;
-  i : integer;
+  Effect: TEffect;
+  NewTarget: TCharacter;
+  i: Integer;
 const
-  FailName : string = 'TShadow.Cast';
+  FailName: string = 'TShadow.Cast';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if assigned( Target ) then
+    if assigned(Target) then
     begin
-      if not ( Target is TCharacter ) then
-        exit;
-      if TCharacter( Target ).Dead then
-        exit;
-      NewTarget := TCharacter( Target );
+      if not(Target is TCharacter) then
+        Exit;
+      if TCharacter(Target).Dead then
+        Exit;
+      NewTarget := TCharacter(Target);
     end
     else
       NewTarget := Source;
 
-    result := inherited Cast( Source, NewTarget );
+    result := inherited Cast(Source, NewTarget);
     if not result then
       Exit;
 
@@ -4503,61 +4780,63 @@ begin
     Effect.SpecialEffect := seAdd;
     Effect.StatModifier.Stealth := 50;
     Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
-    Effect.Duration := Source.Mysticism * 50;
+    Effect.Duration := (8 + Source.Mysticism) * 50; // + 8 espcially for scouts
     Effect.Power := Source.Mysticism;
     Effect.tag := 30;
-    Effect.DoAction( 'Default', NewTarget.Facing );
+    Effect.DoAction('Default', NewTarget.Facing);
 
     for i := 0 to FigureInstances.count - 1 do
     begin
-      if ( FigureInstances.objects[ i ] is TCharacter ) and ( TCharacter( FigureInstances.objects[ i ] ).Track = Source ) then
-        TCharacter( FigureInstances.objects[ i ] ).Track := nil;
+      if (FigureInstances.Objects[i] is TCharacter) and
+        (TCharacter(FigureInstances.Objects[i]).Track = Source) then
+        TCharacter(FigureInstances.Objects[i]).Track := nil;
     end;
 
     with NewTarget do
     begin
-      AddEffect( Effect );
+      AddEffect(Effect);
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 constructor TShadow.Create;
 const
-  FailName : string = 'TShadow.Create';
+  FailName: string = 'TShadow.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
     CastingType := ctIllusion;
     TargetType := ttFriend;
     CastEffect := ProtectionEffect;
-    if not assigned( ProtectionResource ) then
+    if not assigned(ProtectionResource) then
     begin
-      ProtectionResource := LoadArtResource( 'engine\spells\protectionreceive.gif', true );
+      ProtectionResource :=
+        LoadArtResource('engine\spells\protectionreceive.gif', true);
       ProtectionResource.DrawShadow := false;
       ResourceOwner := true;
     end;
     Resource := ProtectionResource;
 
     SoundInCast := true;
-    LoadCastSounds( 'healspell2' );
+    LoadCastSounds('healspell2');
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor TShadow.Destroy;
 const
-  FailName : string = 'TShadow.Destroy';
+  FailName: string = 'TShadow.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     if ResourceOwner then
@@ -4569,134 +4848,134 @@ begin
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TShadow.Drain( Source : TCharacter ) : Single;
+function TShadow.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TShadow.Drain';
+  FailName: string = 'TShadow.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    Drain := 15 + round( Source.Restriction / 10 );
+    Drain := 15 + round(Source.Restriction / 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TShadow.GetIconXY( Source : TCharacter ) : TPoint;
+function TShadow.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TShadow.GetIconXY';
+  FailName: string = 'TShadow.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result.X := 6 * 32;
     result.Y := 32;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TShadow.GetInfo( Source : TCharacter ) : string;
+function TShadow.GetInfo(Source: TCharacter): string;
 begin
   result := InfoText;
-  Replace( result, 'a', '50' );
+  Replace(result, 'a', '50');
 end;
 
-function TShadow.GetLoaded : Boolean;
+function TShadow.GetLoaded: Boolean;
 const
-  FailName : string = 'TShadow.GetLoaded';
+  FailName: string = 'TShadow.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if assigned( Resource ) then
+    if assigned(Resource) then
       result := Resource.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TShadow.GetName : string;
+class function TShadow.GetName: string;
 begin
   result := 'Shadow';
 end;
 
-function TShadow.Range( Source : TCharacter ) : Integer;
+function TShadow.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TShadow.Range';
+  FailName: string = 'TShadow.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := Round( Source.Mysticism * 10 );
+    result := round(Source.Mysticism * 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TShadow.Recovery( Source : TCharacter ) : Integer;
+function TShadow.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TShadow.Recovery';
+  FailName: string = 'TShadow.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 40 - ( ( Source.Coordination + Source.Mysticism ) div 4 );
+    result := 40 - ((Source.Coordination + Source.Mysticism) div 4);
     if result < 0 then
       result := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-{Bloodlust}
-function TBloodlust.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
+{ Bloodlust }
+function TBloodlust.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  Effect : TEffect;
-  NewTarget : TCharacter;
-  i : integer;
+  Effect: TEffect;
+  NewTarget: TCharacter;
+  i: Integer;
 const
-  FailName : string = 'TBloodlust.Cast';
+  FailName: string = 'TBloodlust.Cast';
 begin
-  result := False;
-  Log.DebugLog( FailName );
+  result := false;
+  Log.DebugLog(FailName);
   try
 
-    if assigned( Target ) then
+    if assigned(Target) then
     begin
-      if not ( Target is TCharacter ) then
-        exit;
-      if TCharacter( Target ).Dead then
-        exit;
-      NewTarget := TCharacter( Target );
+      if not(Target is TCharacter) then
+        Exit;
+      if TCharacter(Target).Dead then
+        Exit;
+      NewTarget := TCharacter(Target);
     end
     else
       NewTarget := Source;
 
-    result := inherited Cast( Source, NewTarget );
+    result := inherited Cast(Source, NewTarget);
     if not result then
       Exit;
 
@@ -4712,206 +4991,214 @@ begin
     Effect.EffectB := 0;
     Effect.Alpha := Effect.Resource.Alpha;
     Effect.SpecialEffect := seAdd;
-    Effect.StatModifier.combat := 15;
-    Effect.Duration := Source.Mysticism * 40;
-    Effect.AnimationDuration := Effect.duration * Resource.FrameMultiplier;
+    Effect.StatModifier.Combat := 15;
+    Effect.Duration := (5 + Source.Mysticism) * 40;
+    Effect.AnimationDuration := Effect.Duration * Resource.FrameMultiplier;
     Effect.Power := Source.Mysticism;
     Effect.tag := 30;
-    Effect.DoAction( 'Default', NewTarget.Facing );
+    Effect.DoAction('Default', NewTarget.Facing);
 
     for i := 0 to FigureInstances.count - 1 do
     begin
-      if ( FigureInstances.objects[ i ] is TCharacter ) and ( TCharacter( FigureInstances.objects[ i ] ).Track = Source ) then
-        TCharacter( FigureInstances.objects[ i ] ).Track := nil;
+      if (FigureInstances.Objects[i] is TCharacter) and
+        (TCharacter(FigureInstances.Objects[i]).Track = Source) then
+        TCharacter(FigureInstances.Objects[i]).Track := nil;
     end;
 
     with NewTarget do
     begin
-      AddEffect( Effect );
+      AddEffect(Effect);
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 constructor TBloodlust.Create;
 const
-  FailName : string = 'TBloodlust.Create';
+  FailName: string = 'TBloodlust.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
     CastingType := ctIllusion;
     TargetType := ttFriend;
     CastEffect := ProtectionEffect;
-    if not assigned( BloodlustResource ) then
+    if not assigned(Bloodlustresource) then
     begin
-      BloodlustResource := LoadArtResource( 'engine\spells\Bloodlust.gif', true );
-      if assigned( Bloodlustresource ) then
+      Bloodlustresource := LoadArtResource('engine\spells\Bloodlust.gif', true);
+      if assigned(Bloodlustresource) then
       begin
-        BloodlustResource.DrawShadow := false;
-        Resource := BloodlustResource;
+        Bloodlustresource.DrawShadow := false;
+        Resource := Bloodlustresource;
       end;
     end;
     ResourceOwner := true;
 
-    LoadCastSounds( 'healspell' );
+    LoadCastSounds('healspell');
     SoundInCast := true;
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor TBloodlust.Destroy;
 const
-  FailName : string = 'TBloodlust.Destroy';
+  FailName: string = 'TBloodlust.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     if ResourceOwner then
     begin
-      BloodlustResource.free;
-      BloodlustResource := nil;
+      Bloodlustresource.free;
+      Bloodlustresource := nil;
     end;
     Resource := nil;
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TBloodlust.Drain( Source : TCharacter ) : Single;
+function TBloodlust.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TBloodlust.Drain';
+  FailName: string = 'TBloodlust.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    Drain := 12 + round( Source.Restriction / 5 );
+    Drain := 12 + round(Source.Restriction / 5);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TBloodlust.GetIconXY( Source : TCharacter ) : TPoint;
+function TBloodlust.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TBloodlust.GetIconXY';
+  FailName: string = 'TBloodlust.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result.X := 24 * 32;
     result.Y := 32;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TBloodlust.GetInfo( Source : TCharacter ) : string;
+function TBloodlust.GetInfo(Source: TCharacter): string;
 begin
   result := InfoText;
-  Replace( result, 'a', '15' );
+  Replace(result, 'a', '15');
 end;
 
-function TBloodlust.GetLoaded : Boolean;
+function TBloodlust.GetLoaded: Boolean;
 const
-  FailName : string = 'TBloodlust.GetLoaded';
+  FailName: string = 'TBloodlust.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if assigned( Resource ) then
+    if assigned(Resource) then
       result := Resource.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TBloodlust.GetName : string;
+class function TBloodlust.GetName: string;
 begin
   result := 'Bloodlust';
 end;
 
-function TBloodlust.Range( Source : TCharacter ) : Integer;
+function TBloodlust.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TBloodlust.Range';
+  FailName: string = 'TBloodlust.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := Round( Source.Mysticism * 10 );
+    result := round(Source.Mysticism * 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TBloodlust.Recovery( Source : TCharacter ) : Integer;
+function TBloodlust.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TBloodlust.Recovery';
+  FailName: string = 'TBloodlust.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 25 - ( ( Source.Coordination + Source.Mysticism ) div 4 );
+    result := 30 - (((Source.Constitution + Source.Coordination) div 4) +
+      (Source.Mysticism div 6));
     if result < 0 then
       result := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 { THold }
 
-function THold.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
+function THold.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  Effect : TEffect;
-  Duration : integer;
+  Effect: TEffect;
+  Duration: Integer;
 const
-  FailName : string = 'THold.Cast';
+  FailName: string = 'THold.Cast';
 begin
-  result := False;
-  Log.DebugLog( FailName );
+  result := false;
+  Log.DebugLog(FailName);
   try
 
     result := false;
-    if not assigned( Target ) then
-      exit;
-    if not ( Target is TCharacter ) then
-      exit;
-
-    result := inherited Cast( Source, Target );
-    if not result then
+    if not assigned(Target) then
+      Exit;
+    if not(Target is TCharacter) then
       Exit;
 
-    Duration := round( Source.Mysticism * 4 - TCharacter( Target ).Strength - TCharacter( Target ).Resistance.Magic.Invulnerability );
+    result := inherited Cast(Source, Target);
+    if not result then
+      Exit;
+    if Source.Mysticism > 67 then
+    // Set maximum ~8 Sekunden, spell is too strong otherwise
+      Duration := round(67 * 4 - TCharacter(Target).Strength -
+        TCharacter(Target).Resistance.Magic.Invulnerability)
+    else
+      Duration := round(Source.Mysticism * 4 - TCharacter(Target).Strength -
+        TCharacter(Target).Resistance.Magic.Invulnerability);
     if Duration > 0 then
     begin
-      Duration := round( Duration * ( 1 - TCharacter( Target ).Resistance.Magic.Resistance ) );
+      Duration :=
+        round(Duration * (1 - TCharacter(Target).Resistance.Magic.Resistance));
       if Duration > 0 then
       begin
 
@@ -4919,192 +5206,197 @@ begin
         Effect.Resource := Resource;
         Effect.Power := Source.Mysticism;
         Effect.tag := 50;
-        Effect.DoAction( 'Run', Target.Facing );
+        Effect.DoAction('Run', Target.Facing);
 
-        Effect.AnimationDuration := TCharacter( Target ).TakeDamage( Source, 0, Duration, true );
-        TCharacter( Target ).AddEffect( Effect );
+        Effect.AnimationDuration := TCharacter(Target).TakeDamage(Source, 0,
+          Duration, true);
+        TCharacter(Target).AddEffect(Effect);
       end;
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 procedure THold.Clear;
 begin
-  Resource.RLE.free; Resource.RLE := nil;
+  Resource.RLE.free;
+  Resource.RLE := nil;
 end;
 
 constructor THold.Create;
 const
-  FailName : string = 'THold.Create';
+  FailName: string = 'THold.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
     CastingType := ctTranslocation;
     TargetType := ttEnemy;
     CastEffect := HoldEffect;
-    Resource := LoadArtResource( 'engine\spells\holdreceive.gif', true );
+    Resource := LoadArtResource('engine\spells\holdreceive.gif', true);
     Resource.DrawShadow := false;
 
     SoundInCast := true;
-    LoadCastSounds( 'Hold' );
+    LoadCastSounds('Hold');
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor THold.Destroy;
 const
-  FailName : string = 'THold.Destroy';
+  FailName: string = 'THold.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    Resource.Free;
+    Resource.free;
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function THold.Drain( Source : TCharacter ) : Single;
+function THold.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'THold.Drain';
+  FailName: string = 'THold.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 5 + round( Source.Restriction / 10 );
+    result := 5 + round(Source.Restriction / 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function THold.GetIconXY( Source : TCharacter ) : TPoint;
+function THold.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'THold.GetIconXY';
+  FailName: string = 'THold.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result.X := 4 * 32;
     result.Y := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function THold.GetInfo( Source : TCharacter ) : string;
+function THold.GetInfo(Source: TCharacter): string;
 var
-  Duration : integer;
+  Duration: Integer;
 begin
-  Duration := round( 3 * Source.Mysticism * 4 / 100 );
+  if Source.Mysticism > 67 then // aus THold.Cast ergänzt
+    Duration := round(3 * 67 * 4 / 100)
+  else
+    Duration := round(3 * Source.Mysticism * 4 / 100);
   result := InfoText;
-  Replace( result, 'a', inttostr( Duration ) );
+  Replace(result, 'a', inttostr(Duration));
 end;
 
-function THold.GetLoaded : Boolean;
+function THold.GetLoaded: Boolean;
 const
-  FailName : string = 'THold.GetLoaded';
+  FailName: string = 'THold.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if assigned( Resource ) then
+    if assigned(Resource) then
       result := Resource.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function THold.GetName : string;
+class function THold.GetName: string;
 begin
   result := 'Hold';
 end;
 
-function THold.Range( Source : TCharacter ) : Integer;
+function THold.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'THold.Range';
+  FailName: string = 'THold.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result := Source.Constitution * 10;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function THold.Recovery( Source : TCharacter ) : Integer;
+function THold.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'THold.Recovery';
+  FailName: string = 'THold.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result := 10;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 { TDeathSpell }
 
-function TDeathSpell.Cast( Source : TCharacter;
-  Target : TSpriteObject ) : Boolean;
+function TDeathSpell.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  NewProjectile : TProjectile;
-  Bonus, Angle : single;
-  TargetX, TargetY : longint;
+  NewProjectile: TProjectile;
+  Bonus, Angle: Single;
+  TargetX, TargetY: longint;
 const
-  FailName : string = 'TDeathSpell.Cast';
+  FailName: string = 'TDeathSpell.Cast';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := inherited Cast( Source, Target );
+    result := inherited Cast(Source, Target);
     if not result then
       Exit;
 
-    NewProjectile := TProjectile( Sprites.NewSprite( TProjectile, Resource, Source.X, Source.Y, 0, 1 ) );
-    if assigned( NewProjectile ) then
+    NewProjectile := TProjectile(Sprites.NewSprite(TProjectile, Resource,
+      Source.X, Source.Y, 0, 1));
+    if assigned(NewProjectile) then
     begin
-      ZeroMemory( @NewProjectile.Damage, sizeof( NewProjectile.Damage ) );
+      ZeroMemory(@NewProjectile.Damage, sizeof(NewProjectile.Damage));
       NewProjectile.DamageRadius := 0;
-  //  NewProjectile.Radius:=-8;
-  //  NewProjectile.SpecialEffect:=seAdd;;
+      // NewProjectile.Radius:=-8;
+      // NewProjectile.SpecialEffect:=seAdd;;
       NewProjectile.Alpha := 100;
       NewProjectile.TrackingDegree := 45;
-      if Source.TitleExists( 'Power Death' ) then
+      if Source.TitleExists('Power Death') then
       begin
         NewProjectile.Magic := Source.Mysticism * 10000;
         NewProjectile.Damage.Special.Min := Source.Mysticism * 10;
@@ -5125,202 +5417,211 @@ begin
       else
         NewProjectile.HitIncidental := 10 / Source.Coordination;
       NewProjectile.HitTarget := 1;
-      NewProjectile.UseLineOfSight := True;
+      NewProjectile.UseLineOfSight := true;
 
       TargetX := Source.TargetX;
       TargetY := Source.TargetY;
-      Bonus := Source.Coordination + Source.Perception / 2 + Source.Combat / 4 - Source.Restriction / 5;
+      Bonus := Source.Coordination + Source.Perception / 2 + Source.Combat / 4 -
+        Source.Restriction / 5;
       if Bonus < 10 then
         Angle := 17.5
       else
         Angle := 175 / Bonus;
-      ComputeTrajectory( Source, TargetX, TargetY, Angle );
+      ComputeTrajectory(Source, TargetX, TargetY, Angle);
 
-      NewProjectile.Launch( Source, Target, TargetX, TargetY );
+      NewProjectile.Launch(Source, Target, TargetX, TargetY);
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 procedure TDeathSpell.Clear;
 begin
-  Resource.RLE.free; Resource.RLE := nil;
+  Resource.RLE.free;
+  Resource.RLE := nil;
 end;
 
 constructor TDeathSpell.Create;
 const
-  FailName : string = 'TDeathSpell.Create';
+  FailName: string = 'TDeathSpell.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
     CastingType := ctHealing;
     TargetType := ttFriend;
     CastEffect := LichEffect;
-    Resource := LoadArtResource( 'engine\WeaponProjectiles\vortex.gif', true );
-    LoadCastSounds( 'deathvortex' );
-    if assigned( Resource ) then
+    Resource := LoadArtResource('engine\WeaponProjectiles\vortex.gif', true);
+    LoadCastSounds('deathvortex');
+    if assigned(Resource) then
       Resource.DrawShadow := false;
     SoundInCast := false;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor TDeathSpell.Destroy;
 const
-  FailName : string = 'TDeathSpell.Destroy';
+  FailName: string = 'TDeathSpell.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    Resource.Free;
+    Resource.free;
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TDeathSpell.Drain( Source : TCharacter ) : Single;
+function TDeathSpell.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TDeathSpell.Drain';
+  FailName: string = 'TDeathSpell.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 5 + round( Source.Restriction / 10 );
+    result := 5 + round(Source.Restriction / 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TDeathSpell.GetIconXY( Source : TCharacter ) : TPoint;
+function TDeathSpell.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TDeathSpell.GetIconXY';
+  FailName: string = 'TDeathSpell.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result.X := 12 * 32;
     result.Y := 32;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TDeathSpell.GetInfo( Source : TCharacter ) : string;
+function TDeathSpell.GetInfo(Source: TCharacter): string;
 begin
   result := InfoText;
+  if Source.TitleExists('Power Death') then
+    result := 'Sofortiger Tod'
+  else
+    Replace(result, 'a', inttostr(round(Source.Mysticism / 2)) + '-' +
+      inttostr(Source.Mysticism));
 end;
 
-function TDeathSpell.GetLoaded : Boolean;
+function TDeathSpell.GetLoaded: Boolean;
 const
-  FailName : string = 'TDeathSpell.GetLoaded';
+  FailName: string = 'TDeathSpell.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if assigned( Resource ) then
+    if assigned(Resource) then
       result := Resource.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TDeathSpell.GetName : string;
+class function TDeathSpell.GetName: string;
 begin
   result := 'Death Spell';
 end;
 
-function TDeathSpell.Range( Source : TCharacter ) : Integer;
+function TDeathSpell.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TDeathSpell.Range';
+  FailName: string = 'TDeathSpell.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 10 * ( Source.Constitution + Source.Mysticism );
+    result := 10 * (Source.Constitution + Source.Mysticism);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TDeathSpell.Recovery( Source : TCharacter ) : Integer;
+function TDeathSpell.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TDeathSpell.Recovery';
+  FailName: string = 'TDeathSpell.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 40 - ( Source.Constitution div 2 );
+    result := 40 - ((Source.Constitution div 2) + (Source.Mysticism div 8));
     if result < 0 then
       result := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 { TShrapnel }
 
-function TShrapnel.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
+function TShrapnel.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  NewProjectile : TProjectile;
-  Z1, Z2 : Integer;
-  i, i1, j : integer;
-  List : TStringList;
+  NewProjectile: TProjectile;
+  Z1, Z2: Integer;
+  i, i1, j: Integer;
+  List: TStringList;
 const
-  FailName : string = 'TShrapnel.Cast';
+  FailName: string = 'TShrapnel.Cast';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := inherited Cast( Source, Target );
+    result := inherited Cast(Source, Target);
     if not result then
       Exit;
     Z1 := Source.Height div 2 - 16;
-    if Assigned( Target ) then
+    if assigned(Target) then
       Z2 := 0
     else
       Z2 := Z1;
-    if Source.TitleExists( 'Flying Blades' ) then
+    if Source.TitleExists('Flying Blades') then
     begin
-      List := GetNearbyEnemies( Source, Source.Coordination * 24 );
+      List := GetNearbyEnemies(Source, Source.Coordination * 24);
       try
         for i := 0 to Source.Mysticism div 2 do
         begin
-          NewProjectile := TProjectile( Sprites.NewSprite( TShrapnelProjectile, Resource, Source.X + random( 32 ) - 16, Source.Y + random( 32 ) - 16, Z1 + random( 32 ) - 16, 1 ) );
-          if assigned( NewProjectile ) then
+          NewProjectile := TProjectile(Sprites.NewSprite(TShrapnelProjectile,
+            Resource, Source.X + random(32) - 16, Source.Y + random(32) - 16,
+            Z1 + random(32) - 16, 1));
+          if assigned(NewProjectile) then
           begin
             NewProjectile.Magic := 4;
-            ZeroMemory( @NewProjectile.Damage, sizeof( NewProjectile.Damage ) );
+            ZeroMemory(@NewProjectile.Damage, sizeof(NewProjectile.Damage));
             NewProjectile.Damage.Piercing.Min := Source.Mysticism / 18;
             NewProjectile.Damage.Piercing.Max := Source.Mysticism / 6;
             NewProjectile.DamageRadius := 0;
@@ -5330,38 +5631,47 @@ begin
             if Source.Mysticism + Source.Coordination <= 10 then
               NewProjectile.HitIncidental := 1
             else
-              NewProjectile.HitIncidental := 10 / ( Source.Mysticism + Source.Coordination );
+              NewProjectile.HitIncidental :=
+                10 / (Source.Mysticism + Source.Coordination);
             NewProjectile.HitTarget := 1;
-            NewProjectile.UseLineOfSight := True;
+            NewProjectile.UseLineOfSight := true;
             i1 := 6 - Source.Coordination div 20;
             if i1 < 1 then
               i1 := 1;
-            TShrapnelProjectile( NewProjectile ).Count := i1;
-            TShrapnelProjectile( NewProjectile ).NewTrackingDegree := 0.0125 * Source.Coordination;
+            TShrapnelProjectile(NewProjectile).count := i1;
+            TShrapnelProjectile(NewProjectile).NewTrackingDegree :=
+              0.0125 * Source.Coordination;
             i1 := i mod 10;
             if i1 = 0 then
-              NewProjectile.Launch( Source, Target, Source.TargetX, Source.TargetY + Z2 )
+              NewProjectile.Launch(Source, Target, Source.TargetX,
+                Source.TargetY + Z2)
             else
             begin
-              if assigned( List ) then
+              if assigned(List) then
               begin
                 if i1 < 8 then
                 begin
-                  j := random( List.count );
-                  NewProjectile.Launch( Source, TCharacter( List.Objects[ j ] ), TCharacter( List.Objects[ j ] ).X + random( 64 ) - 32, TCharacter( List.Objects[ j ] ).Y + random( 64 ) - 32 );
+                  j := random(List.count);
+                  NewProjectile.Launch(Source, TCharacter(List.Objects[j]),
+                    TCharacter(List.Objects[j]).X + random(64) - 32,
+                    TCharacter(List.Objects[j]).Y + random(64) - 32);
                 end
                 else
                 begin
-                  j := random( List.count );
-                  NewProjectile.Launch( Source, TCharacter( List.Objects[ j ] ), Source.X + random( 64 ) - 32, Source.Y + random( 64 ) - 32 );
+                  j := random(List.count);
+                  NewProjectile.Launch(Source, TCharacter(List.Objects[j]),
+                    Source.X + random(64) - 32, Source.Y + random(64) - 32);
                 end;
               end
               else
               begin
                 if i1 < 8 then
-                  NewProjectile.Launch( Source, Target, Source.TargetX + random( 64 ) - 32, Source.TargetY + random( 64 ) - 32 )
+                  NewProjectile.Launch(Source, Target,
+                    Source.TargetX + random(64) - 32,
+                    Source.TargetY + random(64) - 32)
                 else
-                  NewProjectile.Launch( Source, Target, Source.X + random( 64 ) - 32, Source.Y + random( 64 ) - 32 )
+                  NewProjectile.Launch(Source, Target, Source.X + random(64) -
+                    32, Source.Y + random(64) - 32)
               end;
             end;
           end;
@@ -5370,17 +5680,19 @@ begin
         List.free;
       end;
     end
-    else if Source.TitleExists( 'Shards' ) then
+    else if Source.TitleExists('Shards') then
     begin
-      List := GetNearbyEnemies( Source, Source.Coordination * 20 );
+      List := GetNearbyEnemies(Source, Source.Coordination * 20);
       try
         for i := 0 to Source.Mysticism div 3 do
         begin
-          NewProjectile := TProjectile( Sprites.NewSprite( TShrapnelProjectile, Resource, Source.X + random( 32 ) - 16, Source.Y + random( 32 ) - 16, Z1 + random( 32 ) - 16, 1 ) );
-          if assigned( NewProjectile ) then
+          NewProjectile := TProjectile(Sprites.NewSprite(TShrapnelProjectile,
+            Resource, Source.X + random(32) - 16, Source.Y + random(32) - 16,
+            Z1 + random(32) - 16, 1));
+          if assigned(NewProjectile) then
           begin
             NewProjectile.Magic := 2;
-            ZeroMemory( @NewProjectile.Damage, sizeof( NewProjectile.Damage ) );
+            ZeroMemory(@NewProjectile.Damage, sizeof(NewProjectile.Damage));
             NewProjectile.Damage.Piercing.Min := Source.Mysticism / 24;
             NewProjectile.Damage.Piercing.Max := Source.Mysticism / 8;
             NewProjectile.DamageRadius := 0;
@@ -5390,38 +5702,47 @@ begin
             if Source.Mysticism + Source.Coordination <= 10 then
               NewProjectile.HitIncidental := 1
             else
-              NewProjectile.HitIncidental := 10 / ( Source.Mysticism + Source.Coordination );
+              NewProjectile.HitIncidental :=
+                10 / (Source.Mysticism + Source.Coordination);
             NewProjectile.HitTarget := 1;
-            NewProjectile.UseLineOfSight := True;
+            NewProjectile.UseLineOfSight := true;
             i1 := 6 - Source.Coordination div 20;
             if i1 < 1 then
               i1 := 1;
-            TShrapnelProjectile( NewProjectile ).Count := i1;
-            TShrapnelProjectile( NewProjectile ).NewTrackingDegree := 0.0125 * Source.Coordination;
+            TShrapnelProjectile(NewProjectile).count := i1;
+            TShrapnelProjectile(NewProjectile).NewTrackingDegree :=
+              0.0125 * Source.Coordination;
             i1 := i mod 10;
             if i1 = 0 then
-              NewProjectile.Launch( Source, Target, Source.TargetX, Source.TargetY + Z2 )
+              NewProjectile.Launch(Source, Target, Source.TargetX,
+                Source.TargetY + Z2)
             else
             begin
-              if assigned( List ) then
+              if assigned(List) then
               begin
                 if i1 < 6 then
                 begin
-                  j := random( List.count );
-                  NewProjectile.Launch( Source, TCharacter( List.Objects[ j ] ), TCharacter( List.Objects[ j ] ).X + random( 64 ) - 32, TCharacter( List.Objects[ j ] ).Y + random( 64 ) - 32 );
+                  j := random(List.count);
+                  NewProjectile.Launch(Source, TCharacter(List.Objects[j]),
+                    TCharacter(List.Objects[j]).X + random(64) - 32,
+                    TCharacter(List.Objects[j]).Y + random(64) - 32);
                 end
                 else
                 begin
-                  j := random( List.count );
-                  NewProjectile.Launch( Source, TCharacter( List.Objects[ j ] ), Source.X + random( 64 ) - 32, Source.Y + random( 64 ) - 32 );
+                  j := random(List.count);
+                  NewProjectile.Launch(Source, TCharacter(List.Objects[j]),
+                    Source.X + random(64) - 32, Source.Y + random(64) - 32);
                 end;
               end
               else
               begin
                 if i1 < 6 then
-                  NewProjectile.Launch( Source, Target, Source.TargetX + random( 64 ) - 32, Source.TargetY + random( 64 ) - 32 )
+                  NewProjectile.Launch(Source, Target,
+                    Source.TargetX + random(64) - 32,
+                    Source.TargetY + random(64) - 32)
                 else
-                  NewProjectile.Launch( Source, Target, Source.X + random( 64 ) - 32, Source.Y + random( 64 ) - 32 )
+                  NewProjectile.Launch(Source, Target, Source.X + random(64) -
+                    32, Source.Y + random(64) - 32)
               end;
             end;
           end;
@@ -5432,15 +5753,17 @@ begin
     end
     else
     begin
-      List := GetNearbyEnemies( Source, Source.Coordination * 16 );
+      List := GetNearbyEnemies(Source, Source.Coordination * 16);
       try
         for i := 0 to Source.Mysticism div 5 do
         begin
-          NewProjectile := TProjectile( Sprites.NewSprite( TShrapnelProjectile, Resource, Source.X + random( 32 ) - 16, Source.Y + random( 32 ) - 16, Z1 + random( 32 ) - 16, 1 ) );
-          if assigned( NewProjectile ) then
+          NewProjectile := TProjectile(Sprites.NewSprite(TShrapnelProjectile,
+            Resource, Source.X + random(32) - 16, Source.Y + random(32) - 16,
+            Z1 + random(32) - 16, 1));
+          if assigned(NewProjectile) then
           begin
             NewProjectile.Magic := 1;
-            ZeroMemory( @NewProjectile.Damage, sizeof( NewProjectile.Damage ) );
+            ZeroMemory(@NewProjectile.Damage, sizeof(NewProjectile.Damage));
             NewProjectile.Damage.Piercing.Min := Source.Mysticism / 30;
             NewProjectile.Damage.Piercing.Max := Source.Mysticism / 10;
             NewProjectile.DamageRadius := 0;
@@ -5450,38 +5773,46 @@ begin
             if Source.Coordination <= 10 then
               NewProjectile.HitIncidental := 1
             else
-              NewProjectile.HitIncidental := 10 / ( Source.Coordination );
+              NewProjectile.HitIncidental := 10 / (Source.Coordination);
             NewProjectile.HitTarget := 1;
-            NewProjectile.UseLineOfSight := True;
+            NewProjectile.UseLineOfSight := true;
             i1 := 6 - Source.Coordination div 20;
             if i1 < 1 then
               i1 := 1;
-            TShrapnelProjectile( NewProjectile ).Count := i1;
-            TShrapnelProjectile( NewProjectile ).NewTrackingDegree := 0.0125 * Source.Coordination;
+            TShrapnelProjectile(NewProjectile).count := i1;
+            TShrapnelProjectile(NewProjectile).NewTrackingDegree :=
+              0.0125 * Source.Coordination;
             i1 := i mod 10;
             if i1 = 0 then
-              NewProjectile.Launch( Source, Target, Source.TargetX, Source.TargetY + Z2 )
+              NewProjectile.Launch(Source, Target, Source.TargetX,
+                Source.TargetY + Z2)
             else
             begin
-              if assigned( List ) then
+              if assigned(List) then
               begin
                 if i1 < 4 then
                 begin
-                  j := random( List.count );
-                  NewProjectile.Launch( Source, TCharacter( List.Objects[ j ] ), TCharacter( List.Objects[ j ] ).X + random( 64 ) - 32, TCharacter( List.Objects[ j ] ).Y + random( 64 ) - 32 );
+                  j := random(List.count);
+                  NewProjectile.Launch(Source, TCharacter(List.Objects[j]),
+                    TCharacter(List.Objects[j]).X + random(64) - 32,
+                    TCharacter(List.Objects[j]).Y + random(64) - 32);
                 end
                 else
                 begin
-                  j := random( List.count );
-                  NewProjectile.Launch( Source, TCharacter( List.Objects[ j ] ), Source.X + random( 64 ) - 32, Source.Y + random( 64 ) - 32 );
+                  j := random(List.count);
+                  NewProjectile.Launch(Source, TCharacter(List.Objects[j]),
+                    Source.X + random(64) - 32, Source.Y + random(64) - 32);
                 end;
               end
               else
               begin
                 if i1 < 4 then
-                  NewProjectile.Launch( Source, Target, Source.TargetX + random( 64 ) - 32, Source.TargetY + random( 64 ) - 32 )
+                  NewProjectile.Launch(Source, Target,
+                    Source.TargetX + random(64) - 32,
+                    Source.TargetY + random(64) - 32)
                 else
-                  NewProjectile.Launch( Source, Target, Source.X + random( 64 ) - 32, Source.Y + random( 64 ) - 32 )
+                  NewProjectile.Launch(Source, Target, Source.X + random(64) -
+                    32, Source.Y + random(64) - 32)
               end;
             end;
           end;
@@ -5492,85 +5823,87 @@ begin
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 procedure TShrapnel.Clear;
 begin
-  Resource.RLE.free; Resource.RLE := nil;
+  Resource.RLE.free;
+  Resource.RLE := nil;
 end;
 
 constructor TShrapnel.Create;
 const
-  FailName : string = 'TShrapnel.Create';
+  FailName: string = 'TShrapnel.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
     CastingType := ctCombat;
     TargetType := ttEnemy;
     CastEffect := ShrapnelEffect;
-    Resource := LoadArtResource( 'engine\weaponprojectiles\Shrapnelball.gif', true );
-    LoadCastSounds( 'ShrapCast' );
+    Resource := LoadArtResource
+      ('engine\weaponprojectiles\Shrapnelball.gif', true);
+    LoadCastSounds('ShrapCast');
     Resource.SpecialEffect := seAdd;
     Resource.DrawShadow := false;
     SoundInCast := false;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor TShrapnel.Destroy;
 const
-  FailName : string = 'TShrapnel.Destroy';
+  FailName: string = 'TShrapnel.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    Resource.Free;
+    Resource.free;
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TShrapnel.Drain( Source : TCharacter ) : Single;
+function TShrapnel.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TShrapnel.Drain';
+  FailName: string = 'TShrapnel.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 5 + round( Source.Restriction / 10 );
+    result := 3 + round(Source.Restriction / 10); // 3 statt 5
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TShrapnel.GetIconXY( Source : TCharacter ) : TPoint;
+function TShrapnel.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TShrapnel.GetIconXY';
+  FailName: string = 'TShrapnel.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if Source.TitleExists( 'Flying Blades' ) then
+    if Source.TitleExists('Flying Blades') then
     begin
       result.X := 13 * 32;
       result.Y := 32;
     end
-    else if Source.TitleExists( 'Shards' ) then
+    else if Source.TitleExists('Shards') then
     begin
       result.X := 13 * 32;
       result.Y := 32;
@@ -5582,124 +5915,133 @@ begin
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TShrapnel.GetInfo( Source : TCharacter ) : string;
+function TShrapnel.GetInfo(Source: TCharacter): string;
 begin
   result := InfoText;
-  if Source.TitleExists( 'Flying Blades' ) then
+  if Source.TitleExists('Flying Blades') then
   begin
-    Replace( result, 'a', inttostr( 1 + Source.Mysticism div 2 ) );
-    Replace( result, 'b', inttostr( round( Source.Mysticism / 18 ) ) + '-' + inttostr( round( Source.Mysticism / 6 ) ) );
+    Replace(result, 'a', inttostr(1 + Source.Mysticism div 2));
+    Replace(result, 'b', inttostr(round(Source.Mysticism / 18)) + '-' +
+      inttostr(round(Source.Mysticism / 6)));
   end
-  else if Source.TitleExists( 'Shards' ) then
+  else if Source.TitleExists('Shards') then
   begin
-    Replace( result, 'a', inttostr( 1 + Source.Mysticism div 3 ) );
-    Replace( result, 'b', inttostr( round( Source.Mysticism / 24 ) ) + '-' + inttostr( round( Source.Mysticism / 8 ) ) );
+    Replace(result, 'a', inttostr(1 + Source.Mysticism div 3));
+    Replace(result, 'b', inttostr(round(Source.Mysticism / 24)) + '-' +
+      inttostr(round(Source.Mysticism / 8)));
   end
   else
   begin
-    Replace( result, 'a', inttostr( 1 + Source.Mysticism div 5 ) );
-    Replace( result, 'b', inttostr( round( Source.Mysticism / 30 ) ) + '-' + inttostr( round( Source.Mysticism / 10 ) ) );
+    Replace(result, 'a', inttostr(1 + Source.Mysticism div 5));
+    Replace(result, 'b', inttostr(round(Source.Mysticism / 30)) + '-' +
+      inttostr(round(Source.Mysticism / 10)));
   end;
 end;
 
-function TShrapnel.GetLoaded : Boolean;
+function TShrapnel.GetLoaded: Boolean;
 const
-  FailName : string = 'TShrapnel.GetLoaded';
+  FailName: string = 'TShrapnel.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if assigned( Resource ) then
+    if assigned(Resource) then
       result := Resource.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TShrapnel.GetName : string;
+class function TShrapnel.GetName: string;
 begin
   result := 'Shrapnel';
 end;
 
-function TShrapnel.Range( Source : TCharacter ) : Integer;
+function TShrapnel.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TShrapnel.Range';
+  FailName: string = 'TShrapnel.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := Round( Source.Constitution * 10 * ( 16 + Source.Coordination / 20 ) );
+    result := round(Source.Constitution * 10 * (16 + Source.Coordination / 20));
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TShrapnel.Recovery( Source : TCharacter ) : Integer;
+function TShrapnel.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TShrapnel.Recovery';
+  FailName: string = 'TShrapnel.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 40 - ( ( Source.Constitution ) div 2 );
+    result := 40 - ((Source.Constitution) div 2);
     if result < 0 then
       result := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 { TForget }
 
-function TForget.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
+function TForget.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  Effect : TEffect;
-  Duration : integer;
+  Effect: TEffect;
+  Duration: Integer;
 const
-  FailName : string = 'TForget.Cast';
+  FailName: string = 'TForget.Cast';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result := false;
-    if not assigned( Target ) then
-      exit;
-    if not ( Target is TCharacter ) then
-      exit;
-    if TCharacter( Target ).unmoveable = true then
-      exit;
-    if TCharacter( Target ).highlightable = false then
-      exit;
-    if not ( Source.isenemy( TCharacter( Target ) ) ) then
-      exit;
-    result := inherited Cast( Source, Target );
+    if not assigned(Target) then
+      Exit;
+    if not(Target is TCharacter) then
+      Exit;
+    if TCharacter(Target).UnMoveable = true then
+      Exit;
+    if TCharacter(Target).highlightable = false then
+      Exit;
+    if not(Source.IsEnemy(TCharacter(Target))) then
+      Exit;
+    result := inherited Cast(Source, Target);
     if not result then
       Exit;
 
-
-    Duration := round( Source.Mysticism * 4 - TCharacter( Target ).Resistance.Magic.Invulnerability );
+    if Source.Mysticism > 67 then
+    // Set maximum ~8 Sekunden and added perception, spell is too strong otherwise
+      Duration := round(67 * 4 - TCharacter(Target).Perception -
+        TCharacter(Target).Resistance.Magic.Invulnerability)
+    else
+      Duration := round(Source.Mysticism * 4 - TCharacter(Target)
+        .Resistance.Magic.Invulnerability);
     if Duration > 0 then
     begin
-      Duration := round( Duration * ( 1 - TCharacter( Target ).Resistance.Magic.Resistance ) );
+      Duration :=
+        round(Duration * (1 - TCharacter(Target).Resistance.Magic.Resistance));
       if Duration > 0 then
       begin
 
@@ -5707,22 +6049,22 @@ begin
         Effect.Power := Source.Mysticism;
         Effect.tag := -155;
         Effect.Duration := Duration;
-        TCharacter( Target ).AddEffect( Effect );
-        TCharacter( Target ).Track := nil;
+        TCharacter(Target).AddEffect(Effect);
+        TCharacter(Target).Track := nil;
       end;
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 constructor TForget.Create;
 const
-  FailName : string = 'TForget.Create';
+  FailName: string = 'TForget.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
@@ -5731,143 +6073,145 @@ begin
     CastEffect := HoldEffect;
 
     SoundInCast := true;
-    LoadCastSounds( 'Whispers1' );
+    LoadCastSounds('Whispers1');
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor TForget.Destroy;
 const
-  FailName : string = 'TForget.Destroy';
+  FailName: string = 'TForget.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-//  Resource.Free;
+    // Resource.Free;
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TForget.Drain( Source : TCharacter ) : Single;
+function TForget.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TForget.Drain';
+  FailName: string = 'TForget.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 3 + round( Source.Restriction / 10 );
+    result := 7 + round(Source.Restriction / 10); // 7 statt 3
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TForget.GetIconXY( Source : TCharacter ) : TPoint;
+function TForget.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TForget.GetIconXY';
+  FailName: string = 'TForget.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result.X := 20 * 32;
     result.Y := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TForget.GetInfo( Source : TCharacter ) : string;
+function TForget.GetInfo(Source: TCharacter): string;
 var
-  Duration : integer;
+  Duration: Integer;
 begin
   result := InfoText;
-  Duration := round( 3 * Source.Mysticism * 4 / 100 );
-  Replace( result, 'a', inttostr( Duration ) );
+  if Source.Mysticism > 67 then // aus TForget.Cast ergänzt
+    Duration := round(3 * 67 * 4 / 100)
+  else
+    Duration := round(3 * Source.Mysticism * 4 / 100);
+  Replace(result, 'a', inttostr(Duration));
 end;
 
-function TForget.GetLoaded : Boolean;
+function TForget.GetLoaded: Boolean;
 begin
-  result := True;
+  result := true;
 end;
 
-class function TForget.GetName : string;
+class function TForget.GetName: string;
 begin
   result := 'Forget';
 end;
 
-function TForget.Range( Source : TCharacter ) : Integer;
+function TForget.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TForget.Range';
+  FailName: string = 'TForget.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result := Source.Constitution * 5;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TForget.Recovery( Source : TCharacter ) : Integer;
+function TForget.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TForget.Recovery';
+  FailName: string = 'TForget.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result := 15;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 { TManaThief }
 
-function TManaThief.Cast( Source : TCharacter;
-  Target : TSpriteObject ) : Boolean;
+function TManaThief.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  Effect : TEffect;
-  NewTarget : TCharacter;
+  Effect: TEffect;
+  NewTarget: TCharacter;
 const
-  FailName : string = 'TManaThief.Cast';
+  FailName: string = 'TManaThief.Cast';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if assigned( Target ) then
+    if assigned(Target) then
     begin
-      if not ( Target is TCharacter ) then
-        exit;
-      if TCharacter( Target ).Dead then
-        exit;
-      NewTarget := TCharacter( Target );
+      if not(Target is TCharacter) then
+        Exit;
+      if TCharacter(Target).Dead then
+        Exit;
+      NewTarget := TCharacter(Target);
     end
     else
       NewTarget := Source;
 
-    result := inherited Cast( Source, NewTarget );
+    result := inherited Cast(Source, NewTarget);
     if not result then
       Exit;
 
@@ -5883,55 +6227,56 @@ begin
     Effect.AnimationDuration := Effect.Duration;
     Effect.Power := Source.Mysticism;
     Effect.tag := 172;
-    Effect.DoAction( 'Default', NewTarget.Facing );
+    Effect.DoAction('Default', NewTarget.Facing);
 
     with NewTarget do
     begin
-      AddEffect( Effect );
+      AddEffect(Effect);
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 procedure TManaThief.Clear;
 begin
-  Resource.RLE.free; Resource.RLE := nil;
+  Resource.RLE.free;
+  Resource.RLE := nil;
 end;
 
 constructor TManaThief.Create;
 const
-  FailName : string = 'TManaThief.Create';
+  FailName: string = 'TManaThief.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
     CastingType := ctDivination;
     TargetType := ttFriend;
     CastEffect := ManaThiefEffect;
-    Resource := LoadArtResource( 'engine\spells\ManaThiefReceive.gif', true );
-    if assigned( Resource ) then
+    Resource := LoadArtResource('engine\spells\ManaThiefReceive.gif', true);
+    if assigned(Resource) then
     begin
       Resource.DrawShadow := false;
     end;
 
     SoundInCast := false;
-    LoadCastSounds( 'ManaThief' );
+    LoadCastSounds('ManaThief');
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor TManaThief.Destroy;
 const
-  FailName : string = 'TManaThief.Destroy';
+  FailName: string = 'TManaThief.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     Resource.free;
@@ -5939,132 +6284,132 @@ begin
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TManaThief.Drain( Source : TCharacter ) : Single;
+function TManaThief.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TManaThief.Drain';
+  FailName: string = 'TManaThief.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    Drain := 20 + round( Source.Restriction / 10 );
+    Drain := 20 + round(Source.Restriction / 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TManaThief.GetIconXY( Source : TCharacter ) : TPoint;
+function TManaThief.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TManaThief.GetIconXY';
+  FailName: string = 'TManaThief.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result.X := 21 * 32;
     result.Y := 32;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TManaThief.GetInfo( Source : TCharacter ) : string;
+function TManaThief.GetInfo(Source: TCharacter): string;
 begin
   result := InfoText;
 end;
 
-function TManaThief.GetLoaded : Boolean;
+function TManaThief.GetLoaded: Boolean;
 const
-  FailName : string = 'TManaThief.GetLoaded';
+  FailName: string = 'TManaThief.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if assigned( Resource ) then
+    if assigned(Resource) then
       result := Resource.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TManaThief.GetName : string;
+class function TManaThief.GetName: string;
 begin
   result := 'Mana Thief';
 end;
 
-function TManaThief.Range( Source : TCharacter ) : Integer;
+function TManaThief.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TManaThief.Range';
+  FailName: string = 'TManaThief.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := Round( Source.Mysticism * 10 );
+    result := round(Source.Mysticism * 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TManaThief.Recovery( Source : TCharacter ) : Integer;
+function TManaThief.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TManaThief.Recovery';
+  FailName: string = 'TManaThief.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 40 - ( ( Source.Coordination + Source.Mysticism ) div 4 );
+    result := 40 - ((Source.Coordination + Source.Mysticism) div 4);
     if result < 0 then
       result := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 { TGreatHand }
 
-function TGreatHand.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
+function TGreatHand.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  Effect : TDamagingEffect;
+  Effect: TDamagingEffect;
 const
-  FailName : string = 'TGreatHand.Cast';
+  FailName: string = 'TGreatHand.Cast';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := False;
-    if not assigned( Target ) then
-      exit;
-    if not ( Target is TCharacter ) then
-      exit;
-    if TCharacter( Target ).Dead then
-      exit;
-    if not Game.LineOfSight( Source.X, Source.Y, Target.X, Target.Y ) then
-      exit;
+    result := false;
+    if not assigned(Target) then
+      Exit;
+    if not(Target is TCharacter) then
+      Exit;
+    if TCharacter(Target).Dead then
+      Exit;
+    if not Game.LineOfSight(Source.X, Source.Y, Target.X, Target.Y) then
+      Exit;
 
-    result := inherited Cast( Source, Target );
+    result := inherited Cast(Source, Target);
     if not result then
       Exit;
 
@@ -6072,162 +6417,165 @@ begin
     Effect.Resource := Resource;
     Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
     Effect.Power := Source.Mysticism;
-    Effect.DoAction( 'Default', Target.Facing );
+    Effect.DoAction('Default', Target.Facing);
 
     Effect.Damage.Crushing.Min := Source.Mysticism;
     Effect.Damage.Crushing.Max := 1.5 * Source.Mysticism;
     Effect.Source := Source;
     Effect.TriggerFrame := 12;
     Effect.UseStealth := true;
-    TCharacter( Target ).AddEffect( Effect );
+    TCharacter(Target).AddEffect(Effect);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 procedure TGreatHand.Clear;
 begin
-  Resource.RLE.free; Resource.RLE := nil;
+  Resource.RLE.free;
+  Resource.RLE := nil;
 end;
 
 constructor TGreatHand.Create;
 const
-  FailName : string = 'TGreatHand.Create';
+  FailName: string = 'TGreatHand.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     CastingType := ctCombat;
     TargetType := ttEnemy;
     CastEffect := GreatHandEffect;
-    Resource := LoadArtResource( 'engine\spells\GreatHandReceive.gif', true );
-    if assigned( Resource ) then
+    Resource := LoadArtResource('engine\spells\GreatHandReceive.gif', true);
+    if assigned(Resource) then
     begin
       Resource.DrawShadow := false;
     end;
 
-    LoadCastSounds( 'GreatHand' );
+    LoadCastSounds('GreatHand');
     SoundInCast := false;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor TGreatHand.Destroy;
 const
-  FailName : string = 'TGreatHand.Destroy';
+  FailName: string = 'TGreatHand.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    Resource.Free;
+    Resource.free;
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TGreatHand.Drain( Source : TCharacter ) : Single;
+function TGreatHand.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TGreatHand.Drain';
+  FailName: string = 'TGreatHand.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 25 + round( Source.Restriction / 10 );
+    result := 25 + round(Source.Restriction / 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TGreatHand.GetIconXY( Source : TCharacter ) : TPoint;
+function TGreatHand.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TGreatHand.GetIconXY';
+  FailName: string = 'TGreatHand.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result.X := 19 * 32;
     result.Y := 32;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TGreatHand.GetInfo( Source : TCharacter ) : string;
+function TGreatHand.GetInfo(Source: TCharacter): string;
 begin
   result := InfoText;
-  Replace( result, 'a', inttostr( Source.Mysticism ) + '-' + inttostr( round( 1.5 * Source.Mysticism ) ) );
+  Replace(result, 'a', inttostr(Source.Mysticism) + '-' +
+    inttostr(round(1.5 * Source.Mysticism)));
 end;
 
-function TGreatHand.GetLoaded : Boolean;
+function TGreatHand.GetLoaded: Boolean;
 const
-  FailName : string = 'TGreatHand.GetLoaded';
+  FailName: string = 'TGreatHand.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if assigned( Resource ) then
+    if assigned(Resource) then
       result := Resource.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TGreatHand.GetName : string;
+class function TGreatHand.GetName: string;
 begin
   result := 'Great Hand';
 end;
 
-function TGreatHand.Range( Source : TCharacter ) : Integer;
+function TGreatHand.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TGreatHand.Range';
+  FailName: string = 'TGreatHand.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := Round( Source.Mysticism * 50 * ( 24 + Source.Mysticism / 10 ) );
+    result := round(Source.Mysticism * 50 * (24 + Source.Mysticism / 10));
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TGreatHand.Recovery( Source : TCharacter ) : Integer;
+function TGreatHand.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TGreatHand.Recovery';
+  FailName: string = 'TGreatHand.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 40 - ( ( Source.Coordination + Source.Mysticism ) div 4 );
+    result := 45 - ((Source.Perception div 5) + (Source.Coordination div 8) +
+      (Source.Mysticism div 5));
     if result < 0 then
       result := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
@@ -6235,24 +6583,27 @@ end;
 
 procedure TAuraOfIron.Clear;
 begin
-  Resource.RLE.free; Resource.RLE := nil;
-  HitResource.RLE.free; HitResource.RLE := nil;
+  Resource.RLE.free;
+  Resource.RLE := nil;
+  HitResource.RLE.free;
+  HitResource.RLE := nil;
 end;
 
 constructor TAuraOfIron.Create;
 const
-  FailName : string = 'TAuraOfIron.Create';
+  FailName: string = 'TAuraOfIron.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
 
-    Resource := LoadArtResource( 'engine\spells\AuraIronReceive(LVL2).gif', true );
+    Resource := LoadArtResource
+      ('engine\spells\AuraIronReceive(LVL2).gif', true);
     Resource.DrawShadow := false;
     Resource.SpecialEffect := seAdd;
 
-    HitResource := LoadArtResource( 'engine\spells\AuraIronHit(LVL2).gif', true );
+    HitResource := LoadArtResource('engine\spells\AuraIronHit(LVL2).gif', true);
     HitResource.DrawShadow := false;
     HitResource.SpecialEffect := seAdd;
 
@@ -6267,18 +6618,18 @@ begin
     IconXY.Y := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TAuraOfIron.GetInfo( Source : TCharacter ) : string;
+function TAuraOfIron.GetInfo(Source: TCharacter): string;
 begin
   result := InfoText;
-  Replace( result, 'a', '50' );
+  Replace(result, 'a', '50');
 end;
 
-class function TAuraOfIron.GetName : string;
+class function TAuraOfIron.GetName: string;
 begin
   result := 'Aura of Iron';
 end;
@@ -6287,24 +6638,28 @@ end;
 
 procedure TAuraOfSteel.Clear;
 begin
-  Resource.RLE.free; Resource.RLE := nil;
-  HitResource.RLE.free; HitResource.RLE := nil;
+  Resource.RLE.free;
+  Resource.RLE := nil;
+  HitResource.RLE.free;
+  HitResource.RLE := nil;
 end;
 
 constructor TAuraOfSteel.Create;
 const
-  FailName : string = 'TAuraOfSteel.Create';
+  FailName: string = 'TAuraOfSteel.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
 
-    Resource := LoadArtResource( 'engine\spells\AuraSteelReceive(LVL2).gif', true );
+    Resource := LoadArtResource
+      ('engine\spells\AuraSteelReceive(LVL2).gif', true);
     Resource.DrawShadow := false;
     Resource.SpecialEffect := seAdd;
 
-    HitResource := LoadArtResource( 'engine\spells\AuraSteelHit(LVL2).gif', true );
+    HitResource := LoadArtResource
+      ('engine\spells\AuraSteelHit(LVL2).gif', true);
     HitResource.DrawShadow := false;
     HitResource.SpecialEffect := seAdd;
 
@@ -6319,18 +6674,18 @@ begin
     IconXY.Y := 32;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TAuraOfSteel.GetInfo( Source : TCharacter ) : string;
+function TAuraOfSteel.GetInfo(Source: TCharacter): string;
 begin
   result := InfoText;
-  Replace( result, 'a', '75' );
+  Replace(result, 'a', '75');
 end;
 
-class function TAuraOfSteel.GetName : string;
+class function TAuraOfSteel.GetName: string;
 begin
   result := 'Aura of Steel';
 end;
@@ -6339,9 +6694,9 @@ end;
 
 constructor TProtectionFire.Create;
 const
-  FailName : string = 'TProtection.CreateFire';
+  FailName: string = 'TProtection.CreateFire';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
@@ -6355,12 +6710,12 @@ begin
     B := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TProtectionFire.GetName : string;
+class function TProtectionFire.GetName: string;
 begin
   result := 'Protection from Fire';
 end;
@@ -6369,9 +6724,9 @@ end;
 
 constructor TProtectionCold.Create;
 const
-  FailName : string = 'TProtection.CreateCold';
+  FailName: string = 'TProtection.CreateCold';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
@@ -6385,12 +6740,12 @@ begin
     B := 60;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TProtectionCold.GetName : string;
+class function TProtectionCold.GetName: string;
 begin
   result := 'Protection from Cold';
 end;
@@ -6399,9 +6754,9 @@ end;
 
 constructor TProtectionElectricity.Create;
 const
-  FailName : string = 'TProtection.CreateElectricity';
+  FailName: string = 'TProtection.CreateElectricity';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
@@ -6415,12 +6770,12 @@ begin
     B := 150;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TProtectionElectricity.GetName : string;
+class function TProtectionElectricity.GetName: string;
 begin
   result := 'Protection from Lightning';
 end;
@@ -6429,9 +6784,9 @@ end;
 
 constructor TProtectionPoison.Create;
 const
-  FailName : string = 'TProtection.CreatePoison';
+  FailName: string = 'TProtection.CreatePoison';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
@@ -6445,12 +6800,12 @@ begin
     B := 25;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TProtectionPoison.GetName : string;
+class function TProtectionPoison.GetName: string;
 begin
   result := 'Protection from Poison';
 end;
@@ -6459,9 +6814,9 @@ end;
 
 constructor TProtectionMagic.Create;
 const
-  FailName : string = 'TProtection.CreateMagic';
+  FailName: string = 'TProtection.CreateMagic';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
@@ -6475,12 +6830,12 @@ begin
     B := 100;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TProtectionMagic.GetName : string;
+class function TProtectionMagic.GetName: string;
 begin
   result := 'Protection from Magic';
 end;
@@ -6489,9 +6844,9 @@ end;
 
 constructor TProtectionAll.Create;
 const
-  FailName : string = 'TProtection.CreateAll';
+  FailName: string = 'TProtection.CreateAll';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
@@ -6501,11 +6856,11 @@ begin
     MinorResistance.Electric.Resistance := 0.25;
     MinorResistance.Poison.Resistance := 0.25;
     MinorResistance.Magic.Resistance := 0.25;
-    MajorResistance.Heat.Resistance := 0.5;
-    MajorResistance.Cold.Resistance := 0.5;
-    MajorResistance.Electric.Resistance := 0.5;
-    MajorResistance.Poison.Resistance := 0.5;
-    MajorResistance.Magic.Resistance := 0.5;
+    MajorResistance.Heat.Resistance := 0.4; // war alles 0.5
+    MajorResistance.Cold.Resistance := 0.4;
+    MajorResistance.Electric.Resistance := 0.4;
+    MajorResistance.Poison.Resistance := 0.4;
+    MajorResistance.Magic.Resistance := 0.4;
     IconXY.X := 2 * 32;
     IconXY.Y := 32;
     R := 100;
@@ -6513,56 +6868,56 @@ begin
     B := 100;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TProtectionAll.GetInfo( Source : TCharacter ) : string;
+function TProtectionAll.GetInfo(Source: TCharacter): string;
 var
-  S : string;
+  S: string;
 begin
   result := InfoText;
   S := 'Major ' + GetName;
-  if Source.TitleExists( S ) then
+  if Source.TitleExists(S) then
   begin
-    Replace( result, 'a', '50' );
+    Replace(result, 'a', '40');
   end
   else
   begin
-    Replace( result, 'a', '25' );
+    Replace(result, 'a', '25');
   end;
 end;
 
-class function TProtectionAll.GetName : string;
+class function TProtectionAll.GetName: string;
 begin
   result := 'Protection from All';
 end;
 
 { TGreatWolf }
 
-function TGreatWolf.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
+function TGreatWolf.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  Effect : TDamagingEffect;
+  Effect: TDamagingEffect;
 const
-  FailName : string = 'TGreatWolf.Cast';
+  FailName: string = 'TGreatWolf.Cast';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := False;
-    if not assigned( Target ) then
-      exit;
-    if not ( Target is TCharacter ) then
-      exit;
-    if TCharacter( Target ).Dead then
-      exit;
-    if not Game.LineOfSight( Source.X, Source.Y, Target.X, Target.Y ) then
-      exit;
+    result := false;
+    if not assigned(Target) then
+      Exit;
+    if not(Target is TCharacter) then
+      Exit;
+    if TCharacter(Target).Dead then
+      Exit;
+    if not Game.LineOfSight(Source.X, Source.Y, Target.X, Target.Y) then
+      Exit;
 
-    result := inherited Cast( Source, Target );
+    result := inherited Cast(Source, Target);
     if not result then
       Exit;
 
@@ -6570,7 +6925,7 @@ begin
     Effect.Resource := Resource;
     Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
     Effect.Power := Source.Mysticism;
-    Effect.DoAction( 'Default', Target.Facing );
+    Effect.DoAction('Default', Target.Facing);
 
     Effect.Damage.Crushing.Min := Source.Mysticism / 3;
     Effect.Damage.Crushing.Max := 2 * Source.Mysticism / 3;
@@ -6581,872 +6936,1377 @@ begin
     Effect.Source := Source;
     Effect.TriggerFrame := 36;
     Effect.UseStealth := true;
-    TCharacter( Target ).AddEffect( Effect );
+    TCharacter(Target).AddEffect(Effect);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 procedure TGreatWolf.Clear;
 begin
-  Resource.RLE.free; Resource.RLE := nil;
+  Resource.RLE.free;
+  Resource.RLE := nil;
 end;
 
 constructor TGreatWolf.Create;
 const
-  FailName : string = 'TGreatWolf.Create';
+  FailName: string = 'TGreatWolf.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     CastingType := ctCombat;
     TargetType := ttEnemy;
     CastEffect := GreatWolfEffect;
-    Resource := LoadArtResource( 'engine\spells\GreatWolfReceive.gif', true );
-    if assigned( Resource ) then
+    Resource := LoadArtResource('engine\spells\GreatWolfReceive.gif', true);
+    if assigned(Resource) then
     begin
       Resource.DrawShadow := false;
     end;
 
-    LoadCastSounds( 'WolfC&R' );
+    LoadCastSounds('WolfC&R');
     SoundInCast := false;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor TGreatWolf.Destroy;
 const
-  FailName : string = 'TGreatWolf.Destroy';
+  FailName: string = 'TGreatWolf.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    Resource.Free;
+    Resource.free;
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TGreatWolf.Drain( Source : TCharacter ) : Single;
+function TGreatWolf.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TGreatWolf.Drain';
+  FailName: string = 'TGreatWolf.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 30 + round( Source.Restriction / 10 );
+    result := 30 + round(Source.Restriction / 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TGreatWolf.GetIconXY( Source : TCharacter ) : TPoint;
+function TGreatWolf.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TGreatWolf.GetIconXY';
+  FailName: string = 'TGreatWolf.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result.X := 20 * 32;
     result.Y := 32;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TGreatWolf.GetInfo( Source : TCharacter ) : string;
+function TGreatWolf.GetInfo(Source: TCharacter): string;
 begin
   result := InfoText;
-  Replace( result, 'a', inttostr( round( Source.Mysticism / 3 ) ) + '-' + inttostr( round( 2 * Source.Mysticism / 3 ) ) );
-  Replace( result, 'b', inttostr( round( Source.Mysticism / 3 ) ) + '-' + inttostr( round( 2 * Source.Mysticism / 3 ) ) );
-  Replace( result, 'c', inttostr( round( Source.Mysticism / 3 ) ) + '-' + inttostr( round( 2 * Source.Mysticism / 3 ) ) );
+  Replace(result, 'a', inttostr(round(Source.Mysticism / 3)) + '-' +
+    inttostr(round(2 * Source.Mysticism / 3)));
+  Replace(result, 'b', inttostr(round(Source.Mysticism / 3)) + '-' +
+    inttostr(round(2 * Source.Mysticism / 3)));
+  Replace(result, 'c', inttostr(round(Source.Mysticism / 3)) + '-' +
+    inttostr(round(2 * Source.Mysticism / 3)));
 end;
 
-function TGreatWolf.GetLoaded : Boolean;
+function TGreatWolf.GetLoaded: Boolean;
 const
-  FailName : string = 'TGreatWolf.GetLoaded';
+  FailName: string = 'TGreatWolf.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if assigned( Resource ) then
+    if assigned(Resource) then
       result := Resource.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TGreatWolf.GetName : string;
+class function TGreatWolf.GetName: string;
 begin
   result := 'Great Wolf';
 end;
 
-function TGreatWolf.Range( Source : TCharacter ) : Integer;
+function TGreatWolf.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TGreatWolf.Range';
+  FailName: string = 'TGreatWolf.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := Round( Source.Mysticism * 50 * ( 24 + Source.Mysticism / 10 ) );
+    result := round(Source.Mysticism * 50 * (24 + Source.Mysticism / 10));
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TGreatWolf.Recovery( Source : TCharacter ) : Integer;
+function TGreatWolf.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TGreatWolf.Recovery';
+  FailName: string = 'TGreatWolf.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 40 - ( ( Source.Coordination + Source.Mysticism ) div 4 );
+    result := 50 - ((Source.Perception div 5) + (Source.Coordination div 8) +
+      (Source.Mysticism div 5));
     if result < 0 then
       result := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
+{ TIceBlock }
 
-function TIceBlock.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
+function TIceBlock.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  Effect : TDamagingEffect;
+  Effect: TDamagingEffect;
 const
-  FailName : string = 'TIceBlock.Cast';
+  FailName: string = 'TIceBlock.Cast';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := False;
-    if not assigned( Target ) then
-      exit;
-    if not ( Target is TCharacter ) then
-      exit;
-    if TCharacter( Target ).Dead then
-      exit;
-    if not Game.LineOfSight( Source.X, Source.Y, Target.X, Target.Y ) then
-      exit;
+    result := false;
+    if not assigned(Target) then
+      Exit;
+    if not(Target is TCharacter) then
+      Exit;
+    if TCharacter(Target).Dead then
+      Exit;
+    if not Game.LineOfSight(Source.X, Source.Y, Target.X, Target.Y) then
+      Exit;
 
-    result := inherited Cast( Source, Target );
+    result := inherited Cast(Source, Target);
     if not result then
       Exit;
 
     Effect := TDamagingEffect.Create;
-    Effect.Resource := Resource;
-    Effect.AnimationDuration := 16 * Resource.FrameMultiplier;
+    if Source.TitleExists('IceLarge') then
+    begin
+      Effect.Resource := Resource1;
+      Effect.AnimationDuration := 16 * Resource1.FrameMultiplier;
+    end
+    else
+    begin
+      Effect.Resource := Resource2;
+      Effect.AnimationDuration := 16 * Resource2.FrameMultiplier;
+    end;
     Effect.Power := Source.Mysticism;
-    Effect.DoAction( 'Default', Target.Facing );
+    Effect.DoAction('Default', Target.Facing);
 
-    Effect.Damage.Cold.Min := 5 * Source.Mysticism / 6;
-    Effect.Damage.Cold.Max := 2 * Source.Mysticism / 2;
+    if Source.TitleExists('IceLarge') then
+    begin
+      Effect.Damage.Cold.Min := 2 * Source.Mysticism / 2;
+      Effect.Damage.Cold.Max := 5 * Source.Mysticism / 4;
+    end
+    else
+    begin
+      Effect.Damage.Cold.Min := 3 * Source.Mysticism / 4;
+      Effect.Damage.Cold.Max := 7 * Source.Mysticism / 8;
+    end;
     Effect.Source := Source;
     Effect.TriggerFrame := 20;
     Effect.UseStealth := true;
-    TCharacter( Target ).AddEffect( Effect );
+    TCharacter(Target).AddEffect(Effect);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 procedure TIceBlock.Clear;
 begin
-  Resource.RLE.free; Resource.RLE := nil;
+  Resource1.RLE.free;
+  Resource1.RLE := nil;
+  Resource2.RLE.free;
+  Resource2.RLE := nil;
 end;
 
 constructor TIceBlock.Create;
 const
-  FailName : string = 'TIceBlock.Create';
+  FailName: string = 'TIceBlock.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     CastingType := ctCombat;
     TargetType := ttEnemy;
-    CastEffect := GreatWolfEffect;
-    Resource := LoadArtResource( 'engine\spells\Frostblock(lrg).gif', true );
-    if assigned( Resource ) then
+    CastEffect := FrostEffect2;
+    Resource1 := LoadArtResource('engine\spells\Frostblock(lrg).gif', true);
+    Resource2 := LoadArtResource('engine\spells\Frostblock(sml).gif', true);
+    if assigned(Resource1) then
     begin
-      Resource.DrawShadow := false;
+      Resource1.DrawShadow := false;
+    end;
+    if assigned(Resource2) then
+    begin
+      Resource2.DrawShadow := false;
     end;
 
-    LoadCastSounds( 'PushReceive' );
+    LoadCastSounds('PushReceive');
     SoundInCast := false;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor TIceBlock.Destroy;
 const
-  FailName : string = 'TIceBlock.Destroy';
+  FailName: string = 'TIceBlock.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    Resource.Free;
+    Resource1.free;
+    Resource2.free;
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TIceBlock.Drain( Source : TCharacter ) : Single;
+function TIceBlock.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TIceBlock.Drain';
+  FailName: string = 'TIceBlock.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 12 + round( Source.Restriction / 10 );
+    result := 14 + round(Source.Restriction / 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TIceBlock.GetIconXY( Source : TCharacter ) : TPoint;
+function TIceBlock.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TIceBlock.GetIconXY';
+  FailName: string = 'TIceBlock.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
-
-    result.X := 12 * 32;
+    if Source.TitleExists('IceLarge') then
+      result.X := 12 * 32
+    else
+      result.X := 17 * 32;
     result.Y := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TIceBlock.GetInfo( Source : TCharacter ) : string;
+function TIceBlock.GetInfo(Source: TCharacter): string;
 begin
   result := InfoText;
-  Replace( result, 'a', inttostr( round( 5 * Source.Mysticism / 6 ) ) + '-' + inttostr( round( 2 * Source.Mysticism / 2 ) ) );
-  end;
+  if Source.TitleExists('IceLarge') then
+    Replace(result, 'a', inttostr(round(2 * Source.Mysticism / 2)) + '-' +
+      inttostr(round(5 * Source.Mysticism / 4)))
+  else
+    Replace(result, 'a', inttostr(round(3 * Source.Mysticism / 4)) + '-' +
+      inttostr(round(7 * Source.Mysticism / 8)));
+end;
 
-function TIceBlock.GetLoaded : Boolean;
+function TIceBlock.GetLoaded: Boolean;
 const
-  FailName : string = 'TIceBlock.GetLoaded';
+  FailName: string = 'TIceBlock.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if assigned( Resource ) then
-      result := Resource.Loaded;
+    if assigned(Resource1) then
+      result := Resource1.Loaded;
+    if assigned(Resource2) then
+      result := Resource2.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TIceBlock.GetName : string;
+class function TIceBlock.GetName: string;
 begin
   result := 'IceBlock';
 end;
 
-function TIceBlock.Range( Source : TCharacter ) : Integer;
+function TIceBlock.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TGreatWolf.Range';
+  FailName: string = 'TIceblock.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := Round( Source.Mysticism * 50 * ( 24 + Source.Mysticism / 10 ) );
+    result := round(Source.Mysticism * 50 * (24 + Source.Mysticism / 10));
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TIceBlock.Recovery( Source : TCharacter ) : Integer;
+function TIceBlock.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TIceBlock.Recovery';
+  FailName: string = 'TIceBlock.Recovery';
 begin
   result := 0;
-
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 30 - ( ( Source.Coordination + Source.Mysticism ) div 4 );
+    result := 40 - ((Source.Perception div 3) + (Source.Mysticism div 4));
+    if result < 0 then
+      result := 0;
+  except
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
+  end;
+end;
+
+{ TPoisonAura }
+function TPoisonAura.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
+var
+  Effect: TDamagingEffect;
+  Effect2: TEffect;
+  NewTarget: TCharacter;
+const
+  FailName: string = 'TPoisonAura.Cast';
+begin
+  result := false;
+  Log.DebugLog(FailName);
+  try
+
+    result := false;
+    if not assigned(Target) then
+      Exit;
+    if not(Target is TCharacter) then
+      Exit;
+    if TCharacter(Target).Dead then
+      Exit;
+    NewTarget := TCharacter(Target);
+    if not Game.LineOfSight(Source.X, Source.Y, Target.X, Target.Y) then
+      Exit;
+    result := inherited Cast(Source, Target);
+    if not result then
+      Exit;
+    Effect := TDamagingEffect.Create;
+    Effect.Resource := Resource;
+    Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
+    Effect.Power := Source.Mysticism;
+    Effect.DoAction('Default', Target.Facing);
+    Effect.Damage.Poison.Min := Source.Mysticism / 3;
+    Effect.Damage.Poison.Max := 8 + (Source.Mysticism / 2);
+    Effect.Source := Source;
+    Effect.TriggerFrame := 10;
+    Effect.UseStealth := true;
+    TCharacter(Target).AddEffect(Effect);
+    Effect2 := TEffect.Create;
+    Effect2.ColorR := 0;
+    Effect2.ColorG := 55;
+    Effect2.ColorB := 0;
+    Effect2.UseCustom := true;
+    Effect2.ApplyColor := true;
+    Effect2.Power := Source.Mysticism;
+    Effect2.StatModifier.Strength := -5;
+    Effect2.StatModifier.Constitution := -4;
+    Effect2.Duration := 5 + Source.Mysticism * 8;
+    Effect2.tag := 30;
+    Effect2.DoAction('Default', NewTarget.Facing);
+    with NewTarget do
+    begin
+      AddEffect(Effect2);
+    end;
+  except
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
+  end;
+end;
+
+procedure TPoisonAura.Clear;
+begin
+  Resource.RLE.free;
+  Resource.RLE := nil;
+end;
+
+constructor TPoisonAura.Create;
+const
+  FailName: string = 'TPoisonAura.Create';
+begin
+  Log.DebugLog(FailName);
+  try
+    CastingType := ctIllusion;
+    TargetType := ttEnemy;
+    CastEffect := PoisonAuraEffect;
+    Resource := LoadArtResource('engine\spells\charge4receive.gif', true);
+    LoadCastSounds('ChrgeReceive');
+    Resource.DrawShadow := false;
+    SoundInCast := true;
+  except
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
+  end;
+end;
+
+destructor TPoisonAura.Destroy;
+const
+  FailName: string = 'TPoisonAura.Destroy';
+begin
+  Log.DebugLog(FailName);
+  try
+    Resource.free;
+    inherited;
+  except
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
+  end;
+end;
+
+function TPoisonAura.Drain(Source: TCharacter): Single;
+const
+  FailName: string = 'TPoisonAura.Drain';
+begin
+  result := 0;
+  Log.DebugLog(FailName);
+  try
+    result := 13 + round(Source.Restriction / 10);
+  except
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
+  end;
+end;
+
+function TPoisonAura.GetIconXY(Source: TCharacter): TPoint;
+const
+  FailName: string = 'TPoisonAura.GetIconXY';
+begin
+  Log.DebugLog(FailName);
+  try
+    result.X := 17 * 32;
+    result.Y := 32;
+  except
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
+  end;
+end;
+
+function TPoisonAura.GetInfo(Source: TCharacter): string;
+begin
+  result := InfoText;
+  Replace(result, 'a', inttostr(round(Source.Mysticism / 3)) + '-' +
+    inttostr(round(8 + (Source.Mysticism / 2))));
+end;
+
+function TPoisonAura.GetLoaded: Boolean;
+const
+  FailName: string = 'TPoisonAura.GetLoaded';
+begin
+  result := false;
+  Log.DebugLog(FailName);
+  try
+    if assigned(Resource) then
+      result := Resource.Loaded;
+  except
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
+  end;
+end;
+
+class function TPoisonAura.GetName: string;
+begin
+  result := 'PoisonAura';
+end;
+
+function TPoisonAura.Range(Source: TCharacter): Integer;
+const
+  FailName: string = 'TPoisonAura.Range';
+begin
+  result := 0;
+  Log.DebugLog(FailName);
+  try
+    result := round(Source.Mysticism * 25 * (24 + Source.Mysticism / 10));
+  except
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
+  end;
+end;
+
+function TPoisonAura.Recovery(Source: TCharacter): Integer;
+const
+  FailName: string = 'TPoisonAura.Recovery';
+begin
+  result := 0;
+  Log.DebugLog(FailName);
+  try
+    result := 40 - (Source.Mysticism div 3);
+    if result < 0 then
+      result := 0;
+  except
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
+  end;
+end;
+
+{ TIllusion }
+function TIllusion.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
+var
+  Effect: TDamagingEffect;
+  Effect2: TEffect;
+  i: Single;
+const
+  FailName: string = 'TIllusion.Cast';
+begin
+  result := false;
+  Log.DebugLog(FailName);
+  try
+    result := false;
+    if not assigned(Target) then
+      Exit;
+    if not(Target is TCharacter) then
+      Exit;
+    if TCharacter(Target).Dead then
+      Exit;
+    if not Game.LineOfSight(Source.X, Source.Y, Target.X, Target.Y) then
+      Exit;
+    result := inherited Cast(Source, Target);
+    if not result then
+      Exit;
+    Effect := TDamagingEffect.Create;
+    Effect.Resource := Resource1;
+    i := (Source.Perception + (Source.Mysticism / 2) - TCharacter(Target)
+      .Perception - TCharacter(Target).Resistance.Mental.Invulnerability) *
+      round(1 - TCharacter(Target).Resistance.Mental.Resistance);
+    Effect.AnimationDuration := TCharacter(Target)
+      .TakeDamage(Source, 0, i, true);
+    Effect.Power := Source.Mysticism;
+    Effect.DoAction('Default', Target.Facing);
+    Effect.Damage.Mental.Min := 3 * Source.Mysticism / 4;
+    Effect.Damage.Mental.Max := 3 + 5 * Source.Mysticism / 6;
+    Effect.Source := Source;
+    Effect.TriggerFrame := 5;
+    Effect.UseStealth := true;
+    TCharacter(Target).AddEffect(Effect);
+    Effect2 := TEffect.Create;
+    Effect2.Resource := Resource2;
+    Effect2.AnimationDuration := round(i);
+    Effect2.DoAction('Default', Target.Facing);
+    TCharacter(Target).AddEffect(Effect2);
+  except
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
+  end;
+end;
+
+procedure TIllusion.Clear;
+begin
+  Resource1.RLE.free;
+  Resource1.RLE := nil;
+  Resource2.RLE.free;
+  Resource2.RLE := nil;
+end;
+
+constructor TIllusion.Create;
+const
+  FailName: string = 'TIllusion.Create';
+begin
+  Log.DebugLog(FailName);
+  try
+    CastingType := ctCombat;
+    TargetType := ttEnemy;
+    CastEffect := IllusionEffect;
+    Resource1 := LoadArtResource('engine\spells\WindshearReceive.gif', true);
+    Resource2 := LoadArtResource('engine\spells\magepurpleReceive.gif', true);
+    LoadCastSounds('Whispers1,Whispers2');
+    Resource1.DrawShadow := false;
+    Resource2.DrawShadow := true;
+    SoundInCast := true;
+  except
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
+  end;
+end;
+
+destructor TIllusion.Destroy;
+const
+  FailName: string = 'TIllusion.Destroy';
+begin
+  Log.DebugLog(FailName);
+  try
+    Resource1.free;
+    Resource2.free;
+    inherited;
+  except
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
+  end;
+end;
+
+function TIllusion.Drain(Source: TCharacter): Single;
+const
+  FailName: string = 'TWither.Drain';
+begin
+  result := 0;
+  Log.DebugLog(FailName);
+  try
+    result := 20 + round(Source.Restriction / 10);
+  except
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
+  end;
+end;
+
+function TIllusion.GetIconXY(Source: TCharacter): TPoint;
+const
+  FailName: string = 'TIllusion.GetIconXY';
+begin
+  Log.DebugLog(FailName);
+  try
+    result.X := 22 * 32;
+    result.Y := 32;
+  except
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
+  end;
+end;
+
+function TIllusion.GetInfo(Source: TCharacter): string;
+begin
+  result := InfoText;
+  Replace(result, 'a', inttostr(round(3 * Source.Mysticism / 4)) + '-' +
+    inttostr(round(3 + (5 * Source.Mysticism / 6))));
+end;
+
+function TIllusion.GetLoaded: Boolean;
+const
+  FailName: string = 'TIllusion.GetLoaded';
+begin
+  result := false;
+  Log.DebugLog(FailName);
+  try
+    if assigned(Resource1) then
+      result := Resource1.Loaded;
+    if assigned(Resource2) then
+      result := Resource2.Loaded;
+  except
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
+  end;
+end;
+
+class function TIllusion.GetName: string;
+begin
+  result := 'Illusion';
+end;
+
+function TIllusion.Range(Source: TCharacter): Integer;
+const
+  FailName: string = 'TIllusion.Range';
+begin
+  result := 0;
+  Log.DebugLog(FailName);
+  try
+    result := round(Source.Mysticism * 25 * (24 + Source.Mysticism / 10));
+  except
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
+  end;
+end;
+
+function TIllusion.Recovery(Source: TCharacter): Integer;
+const
+  FailName: string = 'TIllusion.Recovery';
+begin
+  result := 0;
+  Log.DebugLog(FailName);
+  try
+    result := 45 - ((Source.Mysticism div 5) + (Source.Perception div 3));
     if result < 0 then
       result := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 { TFlameStrike }
 
-function TFlameStrike.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
+function TFlameStrike.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  NewProjectile : TProjectile;
-  Damage : TDamageProfile;
-  Z1 : Integer;
-  Path : HGLOBAL;
-  i, PathCount : integer;
-  p : ^TPoint;
-  UseLineOfSight : boolean;
-  ValidTarget : boolean;
-  Total, Stun : single;
-  DoDamage : boolean;
+  NewProjectile: TProjectile;
+  Damage: TDamageProfile;
+  Z1: Integer;
+  Path: HGLOBAL;
+  i, PathCount: Integer;
+  p: ^TPoint;
+  UseLineOfSight: Boolean;
+  ValidTarget: Boolean;
+  Total, Stun: Single;
+  DoDamage: Boolean;
 const
-  FailName : string = 'TFlameStrike.Cast';
+  FailName: string = 'TFlameStrike.Cast';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := inherited Cast( Source, Target );
+    result := inherited Cast(Source, Target);
     if not result then
       Exit;
 
-    ValidTarget := assigned( Target ) and ( Target is TCharacter ) and not TCharacter( Target ).Dead;
+    ValidTarget := assigned(Target) and (Target is TCharacter) and
+      not TCharacter(Target).Dead;
     UseLineOfSight := Source.UseLineOfSight;
     Source.UseLineOfSight := true;
-    PathCount := Game.FindPath( Source, Source.TargetX, Source.TargetY, Source.Coordination div 4, Path );
+    PathCount := Game.FindPath(Source, Source.TargetX, Source.TargetY,
+      Source.Coordination div 4, Path);
     Source.UseLineOfSight := UseLineOfSight;
 
     if PathCount > 0 then
     begin
 
-      result := inherited Cast( Source, Target );
+      result := inherited Cast(Source, Target);
       if not result then
       begin
-        GlobalFree( Path );
+        GlobalFree(Path);
         Exit;
       end;
-
-      if PathCount > 20 then
+      DoDamage := true;
+      // added from beneath, have a look at shock without title lightning
+      if Source.TitleExists('Explosion') then
       begin
-        PathCount := 20;
-        DoDamage := false;
-      end
-      else if PathCount > Source.Mysticism then
-      begin
-        PathCount := Source.Mysticism;
-        DoDamage := false;
+        if PathCount > 40 then // war > 20
+        begin
+          PathCount := 40; // war 20
+          DoDamage := false;
+        end;
       end
       else
-        DoDamage := true;
+      begin
+        if PathCount > 30 then // war > 20
+        begin
+          PathCount := 30; // war 20
+          DoDamage := false;
+        end;
+      end;
+      if PathCount > (Source.Mysticism div 2 + Source.Perception div 2) div 2
+      then // war > Source.Mysticism, else davor entfernt
+      begin
+        PathCount := (Source.Mysticism div 2 + Source.Perception div 2) div 2;
+        DoDamage := false;
+      end;
+      // else
+      // DoDamage := true;
 
       Z1 := Source.Height div 2 - 16;
       Resource.DrawShadow := false;
-      p := GlobalLock( Path );
+      p := GlobalLock(Path);
       for i := 1 to PathCount do
       begin
-//      if (i mod 2)=0 then begin
-        NewProjectile := TProjectile( Sprites.NewSprite( TProjectile, Resource, p^.X + random( 4 ) - 2, p^.Y + random( 4 ) - 2, Z1 + random( 4 ) - 2, 1 ) );
-        if assigned( NewProjectile ) then
+        // if (i mod 2)=0 then begin
+        NewProjectile := TProjectile(Sprites.NewSprite(TProjectile, Resource,
+          p^.X + random(4) - 2, p^.Y + random(4) - 2, Z1 + random(4) - 2, 1));
+        if assigned(NewProjectile) then
         begin
-          ZeroMemory( @NewProjectile.Damage, sizeof( NewProjectile.Damage ) );
-          NewProjectile.Duration := 4 + i + random( 8 );
+          ZeroMemory(@NewProjectile.Damage, sizeof(NewProjectile.Damage));
+          NewProjectile.Duration := 4 + i + random(8);
           NewProjectile.TrackingDegree := 0;
           NewProjectile.Speed := 1;
           NewProjectile.HitIncidental := 1;
           NewProjectile.HitTarget := 1;
           NewProjectile.UseLineOfSight := true;
-          NewProjectile.Radius := 14;
-          NewProjectile.Damage.Heat.Min := Source.Mysticism / 4;
-          NewProjectile.Damage.Heat.Max := Source.Mysticism / 3;
-          if ( ( i mod 4 ) = 0 ) then
+          if Source.TitleExists('Explosion') then
           begin
-            NewProjectile.GlowEffect := TGlow( Sprites.NewSprite( TGlow, nil, Source.X, Source.Y - 1, 0, 0 ) );
+            NewProjectile.Radius := 17;
+            NewProjectile.Damage.Heat.Min := 2 * Source.Mysticism / 7;
+            NewProjectile.Damage.Heat.Max := 2 * Source.Mysticism / 5;
+          end
+          else
+          begin
+            NewProjectile.Radius := 14;
+            NewProjectile.Damage.Heat.Min := Source.Mysticism / 4;
+            NewProjectile.Damage.Heat.Max := Source.Mysticism / 3;
+          end;
+          if ((i mod 4) = 0) then
+          begin
+            NewProjectile.GlowEffect :=
+              TGlow(Sprites.NewSprite(TGlow, nil, Source.X,
+              Source.Y - 1, 0, 0));
             NewProjectile.GlowEffect.RFactor := 100;
             NewProjectile.GlowEffect.GFactor := 50;
             NewProjectile.GlowEffect.BFactor := 25;
             NewProjectile.GlowEffect.Alpha := 100;
           end;
-          NewProjectile.Launch( Source, nil, p^.X + Random( 20 ) - 10, p^.Y + Random( 20 ) - 10 ); //replace nil with target
+          NewProjectile.Launch(Source, nil, p^.X + random(20) - 10,
+            p^.Y + random(20) - 10); // replace nil with target
         end;
-//      end;
+        // end;
 
-        inc( p );
+        inc(p);
       end;
-      GlobalUnlock( Path );
-      GlobalFree( Path );
-      ZeroMemory( @Damage, sizeof( Damage ) );
-      Damage.Heat.Min := Source.Mysticism * 0.6;
-      Damage.Heat.Max := Source.Mysticism * 1.2;
-
+      GlobalUnlock(Path);
+      GlobalFree(Path);
+      ZeroMemory(@Damage, sizeof(Damage));
+      if Source.TitleExists('Explosion') then
+      begin
+        Damage.Heat.Min := Source.Mysticism * 0.8;
+        Damage.Heat.Max := Source.Mysticism * 1.5;
+      end
+      else
+      begin
+        Damage.Heat.Min := Source.Mysticism * 0.6;
+        Damage.Heat.Max := Source.Mysticism * 1.2;
+      end;
       if ValidTarget and DoDamage then
       begin
-        TCharacter( Target ).AffectDamage( Source, @Damage );
-        Total := CalcTotalDamage( Damage, TCharacter( Target ).Resistance, 1, false );
-        Stun := CalcDamage( Damage.Stun ) - TCharacter( Target ).Resistance.Stun.Invulnerability;
+        TCharacter(Target).AffectDamage(Source, @Damage);
+        Total := CalcTotalDamage(Damage, TCharacter(Target).Resistance,
+          1, false);
+        Stun := CalcDamage(Damage.Stun) - TCharacter(Target)
+          .Resistance.Stun.Invulnerability;
         if Stun > 0 then
-          Stun := Stun * ( 1 - TCharacter( Target ).Resistance.Stun.Resistance );
+          Stun := Stun * (1 - TCharacter(Target).Resistance.Stun.Resistance);
         with Target as TCharacter do
         begin
-          TakeDamage( Source, Total, Stun, false );
+          TakeDamage(Source, Total, Stun, false);
         end;
       end;
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-procedure TFlameStrike.Casting( Source : TCharacter );
+procedure TFlameStrike.Casting(Source: TCharacter);
 var
-  Effect : TEffect;
+  Effect: TEffect;
 begin
-  if TCharacterResource( Source.Resource ).UseCastAnimation then
+  if TCharacterResource(Source.Resource).UseCastAnimation then
   begin
     Effect := TEffect.Create;
-    Effect.Resource := BigFire;
+    if Source.TitleExists('Explosion') then
+      Effect.Resource := BigFire
+    else
+      Effect.Resource := FireEffect;
     Effect.AnimationDuration := 10 * Effect.Resource.FrameMultiplier;
     Effect.Power := Source.Mysticism;
-    Effect.DoAction( 'Default', Source.Facing );
-    Source.AddEffect( Effect );
+    Effect.DoAction('Default', Source.Facing);
+    Source.AddEffect(Effect);
   end;
 end;
 
 constructor TFlameStrike.Create;
 const
-  FailName : string = 'TFlameStrike.Create';
+  FailName: string = 'TFlameStrike.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
     CastingType := ctCombat;
     TargetType := ttEnemy;
     CastEffect := FireEffect;
-    Resource := TFireball( Fireball ).Resource;
+    Resource := TFireball(Fireball).Resource;
     SoundInCast := false;
-    LoadCastSounds( 'FireCast' );
+    LoadCastSounds('FireCast');
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor TFlameStrike.Destroy;
 const
-  FailName : string = 'TFlameStrike.Destroy';
+  FailName: string = 'TFlameStrike.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TFlameStrike.Drain( Source : TCharacter ) : Single;
+function TFlameStrike.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TFlameStrike.Drain';
+  FailName: string = 'TFlameStrike.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 10 + round( Source.Restriction / 10 );
+    result := 10 + round(Source.Restriction / 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TFlameStrike.GetIconXY( Source : TCharacter ) : TPoint;
+function TFlameStrike.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TFlameStrike.GetIconXY';
+  FailName: string = 'TFlameStrike.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
-
-    result.X := 8 * 32;
-    result.Y := 32;
+    if Source.TitleExists('Explosion') then
+      result.X := 19 * 32
+    else
+      result.X := 21 * 32;
+    result.Y := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TFlameStrike.GetInfo( Source : TCharacter ) : string;
+function TFlameStrike.GetInfo(Source: TCharacter): string;
 begin
   result := InfoText;
-  Replace( result, 'a', inttostr( round( Source.Mysticism * 0.6 ) ) + '-' + inttostr( round( Source.Mysticism * 1.2 ) ) );
+  if Source.TitleExists('Explosion') then
+    Replace(result, 'a', inttostr(round(Source.Mysticism * 0.8)) + '-' +
+      inttostr(round(Source.Mysticism * 1.5)))
+  else
+    Replace(result, 'a', inttostr(round(Source.Mysticism * 0.6)) + '-' +
+      inttostr(round(Source.Mysticism * 1.2)));
 end;
 
-function TFlameStrike.GetLoaded : Boolean;
+function TFlameStrike.GetLoaded: Boolean;
 const
-  FailName : string = 'TFlameStrike.GetLoaded';
+  FailName: string = 'TFlameStrike.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if assigned( Resource ) then
+    if assigned(Resource) then
       result := Resource.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TFlameStrike.GetName : string;
+class function TFlameStrike.GetName: string;
 begin
   result := 'Flame Strike';
 end;
 
-function TFlameStrike.Range( Source : TCharacter ) : Integer;
+function TFlameStrike.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TFlameStrike.Range';
+  FailName: string = 'TFlameStrike.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
-
-    result := Round( Source.Constitution * 10 * ( 12 + Source.Coordination / 10 ) );
-
+    if Source.TitleExists('Explosion') then
+    begin
+      result := (Source.Mysticism div 2 + Source.Perception div 2) div 2;
+      if result > 40 then
+        result := 40;
+    end
+    else
+    begin
+      result := (Source.Mysticism div 2 + Source.Perception div 2) div 2;
+      if result > 30 then
+        result := 30;
+    end;
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TFlameStrike.Recovery( Source : TCharacter ) : Integer;
+function TFlameStrike.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TFlameStrike.Recovery';
+  FailName: string = 'TFlameStrike.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 40 - ( ( Source.Constitution + Source.Mysticism ) div 2 );
+    result := 40 - ((Source.Constitution + Source.Mysticism) div 3);
     if result < 0 then
       result := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 { TBlizzard }
 
-function TBlizzard.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
+function TBlizzard.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  NewProjectile : TProjectile;
-  Z1, Z2 : Integer;
-  i : integer;
+  NewProjectile: TProjectile;
+  Z1, Z2: Integer;
+  i: Integer;
+  j: Integer; // Number of projectiles
 const
-  FailName : string = 'TBlizzard.Cast';
+  FailName: string = 'TBlizzard.Cast';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := inherited Cast( Source, Target );
+    result := inherited Cast(Source, Target);
     if not result then
       Exit;
     Z1 := Source.Height div 2 - 16;
-    if Assigned( Target ) then
+    if assigned(Target) then
       Z2 := 0
     else
       Z2 := Z1;
-
-    for i := 0 to Source.Mysticism div 6 do
+    if Source.TitleExists('Snowstorm') then
+      j := Source.Mysticism div 8
+    else
+      j := Source.Mysticism div 6;
+    for i := 0 to j div 6 do
     begin
-      NewProjectile := TProjectile( Sprites.NewSprite( TProjectile, Resource, Source.X + random( 32 ) - 16, Source.Y + random( 32 ) - 16, Z1 + random( 32 ) - 16, 1 ) );
+      NewProjectile := TProjectile(Sprites.NewSprite(TProjectile, Resource,
+        Source.X + random(32) - 16, Source.Y + random(32) - 16,
+        Z1 + random(32) - 16, 1));
       NewProjectile.Magic := 6;
-      ZeroMemory( @NewProjectile.Damage, sizeof( NewProjectile.Damage ) );
-      NewProjectile.Damage.Crushing.Min := 1;
-      NewProjectile.Damage.Crushing.Max := 2;
-      NewProjectile.Damage.Cold.Min := Source.Mysticism / 16;
-      NewProjectile.Damage.Cold.Max := Source.Mysticism / 8;
-      NewProjectile.DamageRadius := 0;
-      NewProjectile.Duration := Source.Mysticism * 10;
-      NewProjectile.TrackingDegree := Source.Mysticism / 30;
-      NewProjectile.Speed := 12 + Source.Mysticism / 30;
+      ZeroMemory(@NewProjectile.Damage, sizeof(NewProjectile.Damage));
+      if Source.TitleExists('Snowstorm') then
+      begin
+        NewProjectile.Damage.Cutting.Min := 5;
+        NewProjectile.Damage.Cutting.Max := 8;
+        NewProjectile.Damage.Cold.Min := Source.Mysticism / 10;
+        NewProjectile.Damage.Cold.Max := Source.Mysticism / 4;
+        NewProjectile.DamageRadius := 2;
+        NewProjectile.Duration := Source.Mysticism * 10;
+        NewProjectile.TrackingDegree := Source.Mysticism / 30;
+        NewProjectile.Speed := 13 + Source.Mysticism / 30; // war 12
+      end
+      else
+      begin
+        NewProjectile.Damage.Cutting.Min := 1;
+        NewProjectile.Damage.Cutting.Max := 2;
+        NewProjectile.Damage.Cold.Min := Source.Mysticism / 14;
+        NewProjectile.Damage.Cold.Max := Source.Mysticism / 7;
+        NewProjectile.DamageRadius := 0;
+        NewProjectile.Duration := Source.Mysticism * 10;
+        NewProjectile.TrackingDegree := Source.Mysticism / 30;
+        NewProjectile.Speed := 10 + Source.Mysticism / 30; // war 12
+      end;
       if Source.Mysticism + Source.Coordination <= 10 then
         NewProjectile.HitIncidental := 1
       else
-        NewProjectile.HitIncidental := 10 / ( Source.Mysticism + Source.Coordination );
+        NewProjectile.HitIncidental :=
+          10 / (Source.Mysticism + Source.Coordination);
       NewProjectile.HitTarget := 1;
-      NewProjectile.UseLineOfSight := True;
+      NewProjectile.UseLineOfSight := true;
       NewProjectile.Alpha := 75;
-      NewProjectile.Launch( Source, Target, Source.TargetX, Source.TargetY + Z2 );
+      NewProjectile.Launch(Source, Target, Source.TargetX, Source.TargetY + Z2);
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-procedure TBlizzard.Casting( Source : TCharacter );
+procedure TBlizzard.Casting(Source: TCharacter);
 var
-  Effect : TEffect;
+  Effect: TEffect;
 begin
-  if TCharacterResource( Source.Resource ).UseCastAnimation then
+  if TCharacterResource(Source.Resource).UseCastAnimation then
   begin
     Effect := TEffect.Create;
-    Effect.Resource := BigIce;
+    if modselection<>TModselection.SoA then
+	begin
+      if Source.TitleExists('Snowstorm') then
+        Effect.Resource := BigIce
+      else
+	    Effect.Resource := FrostEffect2;
+    end
+    else //modselection=SoA, has always BigIce since FrostEffect2 is a new/changed SpellResource and
+      //therefore isn't loaded then
+      Effect.Resource := BigIce;
     Effect.AnimationDuration := 10 * Effect.Resource.FrameMultiplier;
     Effect.Power := Source.Mysticism;
-    Effect.DoAction( 'Default', Source.Facing );
-    Source.AddEffect( Effect );
+    Effect.DoAction('Default', Source.Facing);
+    Source.AddEffect(Effect);
   end;
 end;
 
 constructor TBlizzard.Create;
 const
-  FailName : string = 'TBlizzard.Create';
+  FailName: string = 'TBlizzard.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
     CastingType := ctCombat;
     TargetType := ttEnemy;
     CastEffect := FrostEffect;
-    Resource := LoadArtResource( 'engine\weaponprojectiles\NewLightningball.gif', true );
+    Resource := LoadArtResource
+      ('engine\weaponprojectiles\NewLightningball.gif', true);
     Resource.DrawShadow := false;
     SoundInCast := true;
-    LoadCastSounds( 'freezespell1,freezespell2' );
+    LoadCastSounds('freezespell1,freezespell2');
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor TBlizzard.Destroy;
 const
-  FailName : string = 'TBlizzard.Destroy';
+  FailName: string = 'TBlizzard.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    Resource.Free;
+    Resource.free;
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TBlizzard.Drain( Source : TCharacter ) : Single;
+function TBlizzard.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TBlizzard.Drain';
+  FailName: string = 'TBlizzard.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 5 + round( Source.Restriction / 10 );
+    result := 5 + round(Source.Restriction / 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TBlizzard.GetIconXY( Source : TCharacter ) : TPoint;
+function TBlizzard.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TBlizzard.GetIconXY';
+  FailName: string = 'TBlizzard.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result.X := 7 * 32;
-    result.Y := 0;
+    if Source.TitleExists('SnowStorm') then
+      result.Y := 32
+    else
+      result.Y := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TBlizzard.GetInfo( Source : TCharacter ) : string;
+function TBlizzard.GetInfo(Source: TCharacter): string;
 begin
   result := InfoText;
-  Replace( result, 'a', inttostr( 1 + Source.Mysticism div 6 ) );
-  Replace( result, 'b', inttostr( round( Source.Mysticism / 16 ) ) + '-' + inttostr( round( Source.Mysticism / 8 ) ) );
+  if Source.TitleExists('SnowStorm') then
+  begin
+    Replace(result, 'a', inttostr(1 + Source.Mysticism div 8));
+    Replace(result, 'b', inttostr(round(Source.Mysticism / 10)) + '-' +
+      inttostr(round(Source.Mysticism / 4)));
+    Replace(result, 'c', '5 - 8');
+  end
+  else
+  begin
+    Replace(result, 'a', inttostr(1 + Source.Mysticism div 6));
+    Replace(result, 'b', inttostr(round(Source.Mysticism / 14)) + '-' +
+      inttostr(round(Source.Mysticism / 7)));
+    Replace(result, 'c', '1 - 2');
+  end;
 end;
 
-function TBlizzard.GetLoaded : Boolean;
+function TBlizzard.GetLoaded: Boolean;
 const
-  FailName : string = 'TBlizzard.GetLoaded';
+  FailName: string = 'TBlizzard.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if assigned( Resource ) then
+    if assigned(Resource) then
       result := Resource.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TBlizzard.GetName : string;
+class function TBlizzard.GetName: string;
 begin
   result := 'Blizzard';
 end;
 
-function TBlizzard.Range( Source : TCharacter ) : Integer;
+function TBlizzard.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TBlizzard.Range';
+  FailName: string = 'TBlizzard.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := Round( Source.Constitution * 50 * ( 6 + Source.Coordination / 30 ) );
+    result := round(Source.Constitution * 50 * (6 + Source.Coordination / 30));
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TBlizzard.Recovery( Source : TCharacter ) : Integer;
+function TBlizzard.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TBlizzard.Recovery';
+  FailName: string = 'TBlizzard.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 40 - ( ( Source.Constitution + Source.Mysticism ) div 2 );
+    result := 40 - ((Source.Constitution + Source.Mysticism) div 2);
     if result < 0 then
       result := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 { TReflect }
 
-function TReflect.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
+function TReflect.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  Effect : TReflectEffect;
-  NewTarget : TCharacter;
+  Effect: TReflectEffect;
+  NewTarget: TCharacter;
 const
-  FailName : string = 'TReflect.Cast';
+  FailName: string = 'TReflect.Cast';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := False;
-    if assigned( Target ) then
+    result := false;
+    if assigned(Target) then
     begin
-      if not ( Target is TCharacter ) then
-        exit;
-      if TCharacter( Target ).Dead then
-        exit;
-      NewTarget := TCharacter( Target );
+      if not(Target is TCharacter) then
+        Exit;
+      if TCharacter(Target).Dead then
+        Exit;
+      NewTarget := TCharacter(Target);
     end
     else
       NewTarget := Source;
 
-    result := inherited Cast( Source, NewTarget );
+    result := inherited Cast(Source, NewTarget);
     if not result then
       Exit;
 
     Effect := TReflectEffect.Create;
-    Effect.Reflect := Source.TitleExists( 'Reflect' );
+    Effect.Reflect := Source.TitleExists('Reflect');
     Effect.Resource := Resource;
     Effect.AnimationDuration := 8 * Resource.FrameMultiplier;
     Effect.Duration := Source.Mysticism * 20;
     Effect.Power := Source.Mysticism * 10;
-    TReflectEffect( Effect ).HitResource := HitResource;
+    TReflectEffect(Effect).HitResource := HitResource;
     Effect.tag := 183;
-    Effect.DoAction( 'Default', NewTarget.Facing );
+    Effect.DoAction('Default', NewTarget.Facing);
 
     with NewTarget do
     begin
-      AddEffect( Effect );
+      AddEffect(Effect);
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 constructor TReflect.Create;
 const
-  FailName : string = 'TReflect.Create';
+  FailName: string = 'TReflect.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     inherited;
@@ -7454,34 +8314,34 @@ begin
     TargetType := ttFriend;
     CastEffect := ReflectEffect;
 
-    Resource := LoadArtResource( 'engine\spells\ReflectReceive.gif', true );
-    if assigned( Resource ) then
+    Resource := LoadArtResource('engine\spells\ReflectReceive.gif', true);
+    if assigned(Resource) then
     begin
       Resource.DrawShadow := false;
       Resource.SpecialEffect := seAdd;
     end;
 
-    HitResource := LoadArtResource( 'engine\spells\ReflectHit.gif', true );
-    if assigned( HitResource ) then
+    HitResource := LoadArtResource('engine\spells\ReflectHit.gif', true);
+    if assigned(HitResource) then
     begin
       HitResource.DrawShadow := false;
       HitResource.SpecialEffect := seAdd;
     end;
 
     SoundInCast := false;
-    LoadCastSounds( 'reflect' );
+    LoadCastSounds('reflect');
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 destructor TReflect.Destroy;
 const
-  FailName : string = 'TReflect.Destroy';
+  FailName: string = 'TReflect.Destroy';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     Resource.free;
@@ -7491,175 +8351,180 @@ begin
     inherited;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TReflect.Drain( Source : TCharacter ) : Single;
+function TReflect.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TReflect.Drain';
+  FailName: string = 'TReflect.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 20 + round( Source.Restriction / 10 );
+    result := 20 + round(Source.Restriction / 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TReflect.GetIconXY( Source : TCharacter ) : TPoint;
+function TReflect.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TReflect.GetIconXY';
+  FailName: string = 'TReflect.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
-
-    result.X := 22 * 32;
+    if Source.TitleExists('Reflect') then
+      result.X := 23 * 32
+    else
+      result.X := 22 * 32;
     result.Y := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TReflect.GetLoaded : Boolean;
+function TReflect.GetLoaded: Boolean;
 const
-  FailName : string = 'TReflect.GetLoaded';
+  FailName: string = 'TReflect.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    if assigned( Resource ) and assigned( HitResource ) then
+    if assigned(Resource) and assigned(HitResource) then
       result := Resource.Loaded and HitResource.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TReflect.Range( Source : TCharacter ) : Integer;
+function TReflect.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TReflect.Range';
+  FailName: string = 'TReflect.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := Round( Source.Mysticism * 10 );
+    result := round(Source.Mysticism * 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TReflect.Recovery( Source : TCharacter ) : Integer;
+function TReflect.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TReflect.Recovery';
+  FailName: string = 'TReflect.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 40 - ( ( Source.Coordination + Source.Mysticism ) div 4 );
+    result := 40 - ((Source.Coordination + Source.Mysticism +
+      Source.Perception) div 5);
     if result < 0 then
       result := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TReflect.GetInfo( Source : TCharacter ) : string;
+function TReflect.GetInfo(Source: TCharacter): string;
 begin
   result := InfoText;
 end;
 
-class function TReflect.GetName : string;
+class function TReflect.GetName: string;
 begin
   result := 'Deflect';
 end;
 
 { TFirefly }
 
-function TFirefly.Cast( Source : TCharacter; Target : TSpriteObject ) : Boolean;
+function TFirefly.Cast(Source: TCharacter; Target: TSpriteObject): Boolean;
 var
-  NewProjectile : TProjectile;
-  Z1, Z2 : Integer;
-  i, j, Count : integer;
-  Angle : single;
-  D : double;
-  A : single;
-  X, Y : longint;
-  Tail1, Tail2 : TProjectile;
-  TargetY : longint;
+  NewProjectile: TProjectile;
+  Z1, Z2: Integer;
+  i, j, count: Integer;
+  Angle: Single;
+  D: double;
+  A: Single;
+  X, Y: longint;
+  Tail1, Tail2: TProjectile;
+  TargetY: longint;
 const
-  FailName : string = 'TFirefly.Cast';
+  FailName: string = 'TFirefly.Cast';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := inherited Cast( Source, Target );
+    result := inherited Cast(Source, Target);
     if not result then
       Exit;
     Z1 := Source.Height div 2 - 16;
-    if Assigned( Target ) then
+    if assigned(Target) then
       Z2 := 0
     else
       Z2 := Z1;
 
-    Count := Source.Mysticism div 4;
-    if Count < 3 then
-      Count := 3;
-    Angle := c2PI / Count;
+    count := Source.Mysticism div 4;
+    if count < 3 then
+      count := 3;
+    Angle := c2PI / count;
     TargetY := Source.TargetY + Z2;
-    D := sqrt( sqr( Source.X - Source.TargetX ) + sqr( 2 * ( Source.Y - TargetY ) ) );
-    A := ATan( Source.TargetX - Source.X, 2 * ( TargetY - Source.Y ) );
-    for i := 0 to Count - 1 do
+    D := sqrt(sqr(Source.X - Source.TargetX) + sqr(2 * (Source.Y - TargetY)));
+    A := ATan(Source.TargetX - Source.X, 2 * (TargetY - Source.Y));
+    for i := 0 to count - 1 do
     begin
-      NewProjectile := TProjectile( Sprites.NewSprite( TFireflyProjectile, Resource2, Source.X, Source.Y, Z1, 1 ) );
-      if assigned( NewProjectile ) then
+      NewProjectile := TProjectile(Sprites.NewSprite(TFireflyProjectile,
+        Resource2, Source.X, Source.Y, Z1, 1));
+      if assigned(NewProjectile) then
       begin
         NewProjectile.Magic := Source.Mysticism * 2;
-        ZeroMemory( @NewProjectile.Damage, sizeof( NewProjectile.Damage ) );
+        ZeroMemory(@NewProjectile.Damage, sizeof(NewProjectile.Damage));
         NewProjectile.Damage.Heat.Min := 0;
         NewProjectile.Damage.Heat.Max := Source.Mysticism / 8;
         NewProjectile.Damage.Magic.Min := 1;
         NewProjectile.Damage.Magic.Max := Source.Mysticism / 3;
         NewProjectile.DamageRadius := 0;
-        NewProjectile.Duration := Source.Constitution * 10 + random( 100 );
+        NewProjectile.Duration := Source.Constitution * 10 + random(100);
         NewProjectile.TrackingDegree := 0;
         NewProjectile.Speed := 3 + random + Source.Coordination / 10;
         NewProjectile.SpecialEffect := seAdd;
         NewProjectile.HitIncidental := 1;
         NewProjectile.HitTarget := 1;
-        NewProjectile.UseLineOfSight := True;
+        NewProjectile.UseLineOfSight := true;
         NewProjectile.Frame := 6;
         NewProjectile.ColorR := 400;
         NewProjectile.ColorG := 192;
         NewProjectile.ColorB := 0;
         NewProjectile.UseLighting := true;
-        TFireflyProjectile( NewProjectile ).ScanRange := Source.Mysticism * 4;
+        TFireflyProjectile(NewProjectile).ScanRange := Source.Mysticism * 4;
 
         Tail1 := NewProjectile;
         for j := 1 to 1 do
         begin
-          Tail2 := TProjectile( Sprites.NewSprite( TProjectile, Resource1, Source.X, Source.Y, Z1, 1 ) );
+          Tail2 := TProjectile(Sprites.NewSprite(TProjectile, Resource1,
+            Source.X, Source.Y, Z1, 1));
           Tail2.Passive := true;
           Tail1.TrailedBy := Tail2;
           Tail2.Alpha := 55;
@@ -7673,135 +8538,135 @@ begin
 
         Tail1.TrailedBy := nil;
 
-        X := Source.X + round( cos( A + Angle * i ) * D );
-        Y := Source.Y + round( sin( A + Angle * i ) * D / 2 );
-        NewProjectile.Launch( Source, nil, X, Y );
+        X := Source.X + round(cos(A + Angle * i) * D);
+        Y := Source.Y + round(sin(A + Angle * i) * D / 2);
+        NewProjectile.Launch(Source, nil, X, Y);
       end;
     end;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
 constructor TFirefly.Create;
 const
-  FailName : string = 'TFirefly.Create';
+  FailName: string = 'TFirefly.Create';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     CastingType := ctCombat;
     TargetType := ttEnemy;
     CastEffect := PushEffect;
-    Resource1 := TLightning( Lightning ).SmallResource;
-    Resource2 := TLightning( Lightning ).MediumResource;
-    Resource3 := TLightning( Lightning ).LargeResource;
-    LoadCastSounds( 'FireCast' );
+    Resource1 := TLightning(Lightning).SmallResource;
+    Resource2 := TLightning(Lightning).MediumResource;
+    Resource3 := TLightning(Lightning).LargeResource;
+    LoadCastSounds('FireCast');
     SoundInCast := true;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TFirefly.Drain( Source : TCharacter ) : Single;
+function TFirefly.Drain(Source: TCharacter): Single;
 const
-  FailName : string = 'TFirefly.Drain';
+  FailName: string = 'TFirefly.Drain';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 10 + round( Source.Restriction / 10 );
+    result := 10 + round(Source.Restriction / 10);
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TFirefly.GetIconXY( Source : TCharacter ) : TPoint;
+function TFirefly.GetIconXY(Source: TCharacter): TPoint;
 const
-  FailName : string = 'TFirefly.GetIconXY';
+  FailName: string = 'TFirefly.GetIconXY';
 begin
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result.X := 10 * 32;
     result.Y := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TFirefly.GetInfo( Source : TCharacter ) : string;
+function TFirefly.GetInfo(Source: TCharacter): string;
 begin
   result := InfoText;
-  Replace( result, 'a', '1-' + inttostr( round( Source.Mysticism / 2 ) ) );
-  Replace( result, 'b', '0-' + inttostr( round( Source.Mysticism / 4 ) ) );
+  Replace(result, 'a', '1-' + inttostr(round(Source.Mysticism / 2)));
+  Replace(result, 'b', '0-' + inttostr(round(Source.Mysticism / 4)));
 end;
 
-function TFirefly.GetLoaded : Boolean;
+function TFirefly.GetLoaded: Boolean;
 const
-  FailName : string = 'TFirefly.GetLoaded';
+  FailName: string = 'TFirefly.GetLoaded';
 begin
-  result := False;
+  result := false;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
     result := Resource1.Loaded and Resource2.Loaded and Resource3.Loaded;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-class function TFirefly.GetName : string;
+class function TFirefly.GetName: string;
 begin
   result := 'Firefly';
 end;
 
-function TFirefly.Range( Source : TCharacter ) : Integer;
+function TFirefly.Range(Source: TCharacter): Integer;
 const
-  FailName : string = 'TFirefly.Range';
+  FailName: string = 'TFirefly.Range';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := Round( Source.Constitution * 10 * ( 8 + Source.Coordination / 10 ) );
+    result := round(Source.Constitution * 10 * (8 + Source.Coordination / 10));
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 
-function TFirefly.Recovery( Source : TCharacter ) : Integer;
+function TFirefly.Recovery(Source: TCharacter): Integer;
 const
-  FailName : string = 'TFirefly.Recovery';
+  FailName: string = 'TFirefly.Recovery';
 begin
   result := 0;
 
-  Log.DebugLog( FailName );
+  Log.DebugLog(FailName);
   try
 
-    result := 10 - ( Source.Constitution div 2 );
+    result := 10 - (Source.Constitution div 2);
     if result < 0 then
       result := 0;
 
   except
-    on E : Exception do
-      Log.log( FailName, E.Message, [ ] );
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
   end;
 end;
 

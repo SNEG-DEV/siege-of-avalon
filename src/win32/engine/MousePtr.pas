@@ -74,12 +74,11 @@ type
     WAdj, HAdj, OldWAdj, OldHAdj : integer;
     FEnabled : boolean;
     procedure MouseTimerEvent( Sender : TObject );
+  protected
     procedure SetPlotDirty( const Value : boolean ); override;
     function GetPlotDirty: Boolean; override;
     procedure SetEnabled( const Value : boolean ); override;
     function GetEnabled: Boolean; override;
-
-  protected
   public
     //DxSurface : XDirectDrawSurface; //surface to draw pointer to
     constructor Create;

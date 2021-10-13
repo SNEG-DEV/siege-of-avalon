@@ -308,7 +308,9 @@ const
 
 type
   TFacing = ( fNW, fNN, fNE, fEE, fSE, fSS, fSW, fWW );
-
+  {$SCOPEDENUMS ON}
+  TModSelection = (SoA, DoA, PoA, AoA, Caves, RoD, TSK, Nothing); //TODO: This should be dynamicly loaded - now only for readablity
+  {$SCOPEDENUMS OFF}
   TFacingHelper = record helper for TFacing
     function ToString : string;
   end;

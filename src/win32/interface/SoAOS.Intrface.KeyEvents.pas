@@ -51,13 +51,17 @@ type
     class function ToggleShow(dialog: TDisplay): Boolean;
     class procedure ToggleSpell;
     class procedure ToggleXRay;
+    class procedure TwoWeapons; //Ashes of Avalon
+    class procedure HealPotion; //Ashes of Avalon
+    class procedure ManaPotion; //Ashes of Avalon
     class procedure AdjustGlobalBrightness(step: Integer);
     class procedure ToggleCombat;
     class procedure QuickSave;
     class procedure ScreenShot;
     class procedure ShowMenu;
     class procedure SpellHotKey(key: Word);
-    class procedure TravelFast;
+    class procedure SpellHotKeyPlus(key: Word);
+    class procedure TravelFast;  //SoA and AoA
 //    class procedure DemoOrDeath; // Testcode needs to go
   public
     class procedure TogglePause;
@@ -75,9 +79,12 @@ uses
   Vcl.Graphics,
   AniDemo,
   SoAOS.AI.Helper,
+  SoAOS.Types,
   Character,
   Engine,
   LogFile,
+  Parts, //for TwoWeapons
+  Resource, //for TwoWeapons
   SoAOS.Animation,
   SoAOS.Effects,
   DirectX,
@@ -158,6 +165,8 @@ begin
       66: Current.DoBattleCry; // B
       67: if ToggleShow(DlgStatistics) then frmMain.BeginStatistics(Current); // C
 //      68: DemoOrDeath; //D test code
+      68: ManaPotion; //D, only AoA
+      69: HealPotion; //E, only AoA
       71: ScreenShot; // G
       73: if ToggleShow(DlgInventory) then frmMain.BeginInventory(Current); // I
       74: if ToggleShow(DlgJournal) then frmMain.BeginJournal; // J
@@ -171,7 +180,9 @@ begin
       84: TravelFast; // T
 //      87: WeaponSwitch; ; // W - Reserved for short/long distance weapons?
       88: ToggleXRay; // X
-//      90: HDZoom; // Z - Reserved for future? HD Zoom function
+      90: TwoWeapons; //Z, only AoA
+      //  90: HDZoom; // Z - Reserved for future? HD Zoom function
+      114..124: SpellhotkeyPlus(key); //F3-F12,
       VK_F1: if ToggleShow(DlgShow) then frmMain.BeginHelp; // F1
       VK_F2: QuickSave; // F2
       VK_OEM_PLUS, VK_ADD: AdjustGlobalBrightness(10);
@@ -248,6 +259,8 @@ var
 begin
   if frmMain.Active then
   begin
+  if not player.titleexists('HardMode') then
+  begin
     frmMain.Active := False;
     Log.Log('QuickSave');
     TempName := GameName;
@@ -271,8 +284,8 @@ begin
       frmMain.Active := True;
     end;
   end;
+  end;
 end;
-
 class procedure TKeyEvent.ScreenShot;
 var
   BM: TBitmap;
@@ -310,15 +323,43 @@ end;
 
 class procedure TKeyEvent.ShowMenu;
 begin
-  if frmMain.Paused then
-    TogglePause;
-  frmMain.CloseAllDialogs(nil);
-  frmMain.Active := False;
-  frmMain.SaveGameScreenShot;
+  if DlgObjInventory.Loaded then
+    frmMain.CloseAllDialogs( DlgObjInventory )
+  else if DlgLoot.Loaded then
+    frmMain.CloseAllDialogs( DlgLoot )
+  else if DlgMerchant.Loaded then
+    frmMain.CloseAllDialogs( DlgMerchant )
+  else if DlgStatistics.Loaded then
+    frmMain.CloseAllDialogs( DlgStatistics )
+  else if DlgInventory.Loaded then
+    frmMain.CloseAllDialogs( DlgInventory )
+  else if DlgQuestLog.Loaded then
+    frmMain.CloseAllDialogs( DlgQuestLog )
+  else if DlgAdvLog.Loaded then
+    frmMain.CloseAllDialogs( DlgAdvLog )
+  else if DlgTitles.Loaded then
+    frmMain.CloseAllDialogs( Dlgtitles )
+  else if DlgRoster.Loaded then
+    frmMain.CloseAllDialogs( DlgRoster )
+  else if DlgMap.Loaded then
+    frmMain.CloseAllDialogs( DlgMap )
+  else //Also possible, but closing an interface-dialogue by pressing esc
+    //without going to mainmenu is a cool feature
+    //frmMain.CloseAllDialogs(nil);
+    begin
+      if frmMain.Paused then
+        TogglePause;
 
-  PostMessage(frmMain.Handle, WM_StartMainMenu, 0, 0); // Restart the intro
+      if player.titleexists('HardMode') then
+        Hardmode:= true
+      else
+        Hardmode := false;
+
+      frmMain.Active := False;
+      frmMain.SaveGameScreenShot;
+      PostMessage(frmMain.Handle, WM_StartMainMenu, 0, 0); // Restart the intro
+    end;
 end;
-
 class procedure TKeyEvent.SpellHotKey(key: Word);
 var
   offset: Word;
@@ -332,15 +373,28 @@ begin
     Current.CurrentSpell := Current.HotKey[Key - offset];
     frmMain.DrawCurrentSpell;
   end;
-
   if frmMain.SpellBarActive then
     frmMain.DrawSpellGlyphs;
+end;
+
+class procedure TKeyEvent.SpellHotKeyPlus(key : word);
+begin
+if Assigned( Current.HotKey[ key - 113 + 10 ] ) then
+      begin
+        Current.CurrentSpell := Current.HotKey[ key - 113 + 10 ];
+        frmMain.DrawCurrentSpell;
+      end;
+      if frmMain.SpellbarActive then
+        frmMain.DrawSpellGlyphs;
+      (*if key = 121 then  //F10 abfangen, Damit die Menüfunktion (Kontextmenü) nicht ausgeführt wird, (nur bei ddraw.dll mit libwine.dll und wined3d.dll)
+        key := 0;*)
 end;
 
 class procedure TKeyEvent.ToggleCombat;
 var
   i: Integer;
-begin
+  j : integer;
+(*begin
   Current.CombatMode := not Current.CombatMode;
   for i := 0 to NPCList.Count - 1 do
   begin
@@ -355,6 +409,70 @@ begin
       frmMain.HLFigure := nil;
     end;
   end;
+end;*)
+//Sheath und Unsheathaktion
+begin
+  Current.CombatMode := not Current.CombatMode;
+  for i := 0 to NPCList.Count - 1 do
+  begin
+    TCharacter( NPCList.Items[ i ] ).CombatMode := Current.CombatMode;
+    frmMain.PaintCharacterOnBorder( TSpriteObject( NPCList.Items[ i ] ), i );
+  end;
+    for j := 0 to NPCList.Count - 1 do
+    begin
+      if TCharacter( NPCList.Items[ j ] ).CombatMode then
+      begin
+        //Weapon in right hand, but not a Bow
+        if Assigned( TCharacter( NPCList.Items[ j ] ).Equipment[ slWeapon ] ) and not ( TCharacter( NPCList.Items[ j ] ).Equipment[ slWeapon ] is TBow )
+        //or at least Weapon on left hand
+        or Assigned( TCharacter( NPCList.Items[ j ] ).Equipment[ slshield ] ) and ( TCharacter( NPCList.Items[ j ] ).Equipment[ slshield ] is TWeapon ) then
+        begin
+          if TCharacter( NPCList.Items[ j ] ).Ready then
+          if TCharacter( NPCList.Items[ j ] ).doaction('sheath') then
+          begin
+            TCharacter( NPCList.Items[ j ] ).Stop;
+            TCharacter( NPCList.Items[ j ] ).SetNotReady;
+          end;
+        end
+        //With a Bow
+        else if Assigned( TCharacter( NPCList.Items[ j ] ).Equipment[ slWeapon ] ) and ( TCharacter( NPCList.Items[ j ] ).Equipment[ slWeapon ] is TBow ) then
+        begin
+          if TCharacter( NPCList.Items[ j ] ).Ready then
+          if TCharacter( NPCList.Items[ j ] ).doaction('bowequip') then
+          begin
+            TCharacter( NPCList.Items[ j ] ).stop;
+            TCharacter( NPCList.Items[ j ] ).SetNotReady;
+            end;
+        end;
+        if Assigned( frmMain.HLFigure ) then
+        begin
+          frmMain.HLFigure.Highlighted := False;
+          frmMain.HLFigure := nil;
+        end;
+      end
+      else  //if not TCharacter( NPCList.Items[ j ] ).CombatMode then
+      begin
+        if Assigned( TCharacter( NPCList.Items[ j ] ).Equipment[ slWeapon ] ) and not ( TCharacter( NPCList.Items[ j ] ).Equipment[ slWeapon ] is TBow )
+        or Assigned( TCharacter( NPCList.Items[ j ] ).Equipment[ slshield ] ) and ( TCharacter( NPCList.Items[ j ] ).Equipment[ slshield ] is TWeapon ) then
+        begin
+          if TCharacter( NPCList.Items[ j ] ).Ready then
+          if TCharacter( NPCList.Items[ j ] ).doaction('unsheath') then
+          begin
+            TCharacter( NPCList.Items[ j ] ).Stop;
+            TCharacter( NPCList.Items[ j ] ).SetNotReady;
+          end;
+        end
+        else if Assigned( TCharacter( NPCList.Items[ j ] ).Equipment[ slWeapon ] ) and ( TCharacter( NPCList.Items[ j ] ).Equipment[ slWeapon ] is TBow ) then
+        begin
+          if TCharacter( NPCList.Items[ j ] ).Ready then
+          if TCharacter( NPCList.Items[ j ] ).doaction('bowunequip')then
+          begin
+            TCharacter( NPCList.Items[ j ] ).Stop;
+            TCharacter( NPCList.Items[ j ] ).SetNotReady;
+          end;
+        end;
+      end;
+    end; //For-Schleife, j
 end;
 
 class procedure TKeyEvent.TogglePause;
@@ -473,8 +591,10 @@ class procedure TKeyEvent.TravelFast;
 begin
 // NoTransit
 // LoadNewMap( const NewFile(lvl), SceneName, StartingPoint, Transition(bmp) : string );
-  if (not NoTransit) and (not Current.Frozen) then
+  if (not NoTransit) and (not Current.Frozen) and ( current.Ready ) then //nicht FReady wenn Lähmzauber
   begin
+    if modselection = TModSelection.SoA then  //SoA
+    begin
     if player.titleexists('03Chapter3') and not player.titleexists('04Chapter4') then
 //      RunScript(player, 'Loadmap(forest05,default,Start,ForestChpt3|#FastTransit.Default#)');
       RunScript(player, 'Loadmap(forest05,default,f05b02,ForestChpt3|#FastTransit.Default#)');  // Better spot when having party members
@@ -482,6 +602,130 @@ begin
 //      RunScript(player, 'Loadmap(southgate1b,default,Levelpoint4,VillagetoSouthGate|#FastTransit.Default#)')
 //    else
 //      RunScript(player, 'Loadmap(okeepl2,default,Start|#FastTransit.Default#)')
+    end;
+    if modselection = TModSelection.AoA then //AoA
+    begin
+      if current.Ready then  //Otherwise possible to escape from the hold spell by pressing t
+      begin
+        if not player.titleexists('Schnellerwechselaus') then //Titel für spezielle Situationen im Spiel.
+        begin
+          if player.titleexists('chapter06') then
+          runscript(player,'Loadmap(southgate1b,default,Levelpoint4|#Schnellreise.Fall5#)')
+          else if player.titleexists('chapter05') then
+          runscript(player,'Loadmap(southgate1b,default,Levelpoint4|#Schnellreise.Fall4#)')
+          else if player.titleexists('chapter04') then
+          runscript(player,'Loadmap(southgate1b,default,Levelpoint4|#Schnellreise.Fall3#)')
+          else if player.titleexists('chapter03') then
+          runscript(player,'Loadmap(03Wald1,default,forst,Wald|#Schnellreise.Fall2#)')
+          else if player.titleexists('chapter02') then
+          begin
+              if player.titleexists('ImForst') then
+              runscript(player,'Loadmap(Wald1,default,forst,Wald|#Schnellreise.Fall1#)')
+              else
+              runscript(player,'Loadmap(southgate1b,default,Levelpoint4|#Schnellreise.Fall1#)');
+          end
+          else if not player.titleexists('chapter02') then
+          runscript(player,'Loadmap(southgate1b,default,Levelpoint4|#Schnellreise.Fall1#)');
+        end;
+      end;//end FReady
+    end;//end modselection -AoA
+  end;
+end;
+
+class procedure TKeyEvent.TwoWeapons;
+var
+  WeaponEquip : string;
+  ShieldEquip : string;
+begin
+  if modselection = TModSelection.AoA then
+  begin
+    if DlgInventory.Loaded then
+    begin
+      if current.Equipment [slshield] = nil then
+      begin
+        if current.titleExists('EinhandschwertRechts') and ( current.Strength + 1 > TWeapon( current.Equipment[ slWeapon ] ).MinStrength ) and ( current.Coordination + 1 > TWeapon( current.Equipment[ slWeapon ] ).MinCoordination ) then
+        begin
+          frmMain.CloseAllDialogs( DlgInventory );
+          WeaponEquip := current.Equipment[ slWeapon ].ItemName;
+          current.Equipment [ slweapon ] := nil;
+          current.Equipment [ slshield ] := PartManager.LoadItem( WeaponEquip + 'Shield', TCharacterResource( current.Resource ).NakedName );
+          current.Equipment[ slshield ].Resource := PartManager.GetLayerResource( current.Equipment[ slshield ].LayeredImage );
+          current.equipmentlocked[ slshield ] := true;
+          frmMain.DoNotRestartTimer := True;       //->Inventory
+          frmMain.CloseAllDialogs( DlgInventory ); //re-
+          frmMain.BeginInventory( Current );       //load
+        end;
+      end
+      else //not shield = nil
+      begin
+        if current.titleExists('EinhandschwertLinks') then
+        begin
+          frmMain.CloseAllDialogs( DlgInventory );
+          ShieldEquip := current.equipment[ slshield ].itemname;
+          RunScript(current,'current.removeitem(' + ShieldEquip + ')');
+          WeaponEquip := StringReplace(ShieldEquip, 'shield', '', [rfIgnoreCase]);
+          RunScript(current,'current.additem(' + WeaponEquip + ')');
+          current.equipmentlocked[ slshield ] := false;
+          //log.log(ShieldEquip);
+          //log.log(WeaponEquip);
+          frmMain.DoNotRestartTimer := True;       //->Inventory
+          frmMain.CloseAllDialogs( DlgInventory ); //re-
+          frmMain.BeginInventory( Current );       //load
+        end;
+      end;
+    end;
+  end;
+end;
+
+class procedure TKeyEvent.HealPotion;
+begin
+  if (Modselection=TModSelection.AoA) and current.Ready then //Not when e.g. Holdspell casted
+  begin
+    if not DlgInventory.Loaded then
+    begin
+      if current.wounds >0 then
+      begin
+        if not (current.Equipment [ slhealthpois ] = nil) then
+          if current.doaction( 'Trink' ) then
+          begin
+             current.stop;
+             if current.titleexists ('Lifesmall') then
+             current.wounds := current.wounds - 15
+             else if current.titleexists ('Lifemedium') then
+             current.wounds := current.wounds - 25
+             else
+             current.wounds := current.wounds - 40;
+             current.Equipment [ slhealthpois ] := nil;
+             current.SetNotReady;
+          end;
+      end;
+    end;
+  end;
+end;
+
+class procedure TKeyEvent.ManaPotion;
+begin
+  if (Modselection=TModSelection.AoA) and current.Ready then //Not when e.g. Holdspell casted
+  begin
+    if not DlgInventory.Loaded then
+    begin
+      if current.drain > 0 then
+      begin
+        if not (current.Equipment [ slmanapois ] = nil) then
+          if current.doaction( 'Trink' ) then
+          begin
+            current.stop;
+            if current.titleexists ('Manasmall') then
+              current.drain := current.drain - 15
+            else if current.titleexists ('Manamedium') then
+              current.drain := current.drain - 25
+            else
+              current.drain := current.drain - 40;
+            current.Equipment [ slmanapois ] := nil;
+            current.SetNotReady;
+          end;
+      end;
+    end;
   end;
 end;
 

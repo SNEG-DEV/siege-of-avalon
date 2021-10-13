@@ -619,7 +619,7 @@ type
     FWounds: Double;
     FDrain: Double;
     FCurrentSpell: TObject; // TSpell;
-    FHotKey: array [1 .. 10] of TObject; // TSpell;
+    FHotKey: array [1 .. 20] of TObject; // TSpell; //0-9 und F3-F12
     procedure Render; override;
     function GetProperty(const Name: string): string; override;
     procedure SetProperty(const Name: string; const Value: string); override;
@@ -751,6 +751,7 @@ type
     procedure ClearEquipment;
     function ValidateSpells: boolean;
     procedure SetVision(v: Integer);
+    procedure SetNotReady;
     // Primary Stats
     property Strength: Integer read FStrength write SetStrength;
     property Coordination: Integer read FCoordination write SetCoordination;
@@ -2152,8 +2153,18 @@ begin
           if CombatMode then
             FEquipment[i].Equip(Self);
         end
+        else if i = slShield then
+        begin
+             if (FEquipment[ i ] is TWeapon) then
+             begin
+                  if CombatMode then
+                  FEquipment[ i ].Equip( Self );
+             end
         else
           FEquipment[i].Equip(Self);
+        end
+        else //i = everything else
+          FEquipment[ i ].Equip( Self );
       end;
     end;
 
@@ -2192,6 +2203,12 @@ begin
       TWeapon(FEquipment[slWeapon]).GetDamage(Self);
       // Add unarmed damage
       FRange := TWeapon(FEquipment[slWeapon]).Range;
+    end
+    //Lefthandsword, calculate only when no weapon on right hand, Adddamagebonus later then
+    else if FCombatMode and not Assigned( FEquipment[ slWeapon ] ) and Assigned( FEquipment[ slShield ] ) and ( FEquipment[ slShield ] is TWeapon ) then
+    begin
+      TWeapon( FEquipment[ slShield] ).GetDamage( Self );
+      FRange := TWeapon( FEquipment[ slShield ] ).Range;
     end
     else
     begin // Unarmed
@@ -2250,7 +2267,7 @@ begin
     BaseHitPoints := 20;
     BaseMana := 10;
     BaseAttackRecovery := 12;
-    BaseHitRecovery := 0;
+    BaseHitRecovery := 15; //15 eig noch wenig, zuvor 0, Hinweis: Je höher umso länger "gelähmt"
     TrainingPoints := 0;
     FVision := 400;
     Hearing := 80;
@@ -3036,7 +3053,7 @@ begin
       result := false;
     end;
   end;
-  for i := 1 to 10 do
+  for i := 1 to 20 do //war 10
   begin
     if assigned(HotKey[i]) then
     begin
@@ -4178,6 +4195,47 @@ begin
       S := 'hotkey10=' + HotKey[10].Name;
       List.add(S);
     end;
+    //F3-F12 Zusatz
+    if assigned( HotKey[ 11 ] ) then
+    begin
+      S := 'hotkey11=' + HotKey[ 11 ].Name; List.add( S );
+    end;
+    if assigned( HotKey[ 12 ] ) then
+    begin
+      S := 'hotkey12=' + HotKey[ 12 ].Name; List.add( S );
+    end;
+    if assigned( HotKey[ 13 ] ) then
+    begin
+      S := 'hotkey13=' + HotKey[ 13 ].Name; List.add( S );
+    end;
+    if assigned( HotKey[ 14 ] ) then
+    begin
+      S := 'hotkey14=' + HotKey[ 14 ].Name; List.add( S );
+    end;
+    if assigned( HotKey[ 15 ] ) then
+    begin
+      S := 'hotkey15=' + HotKey[ 15 ].Name; List.add( S );
+    end;
+    if assigned( HotKey[ 16 ] ) then
+    begin
+      S := 'hotkey16=' + HotKey[ 16 ].Name; List.add( S );
+    end;
+    if assigned( HotKey[ 17 ] ) then
+    begin
+      S := 'hotkey17=' + HotKey[ 17 ].Name; List.add( S );
+    end;
+    if assigned( HotKey[ 18 ] ) then
+    begin
+      S := 'hotkey18=' + HotKey[ 18 ].Name; List.add( S );
+    end;
+    if assigned( HotKey[ 19 ] ) then
+    begin
+      S := 'hotkey19=' + HotKey[ 19 ].Name; List.add( S );
+    end;
+    if assigned( HotKey[ 20 ] ) then
+    begin
+      S := 'hotkey20=' + HotKey[ 20 ].Name; List.add( S );
+    end;
     if assigned(CurrentSpell) then
     begin
       S := 'currentspell=' + CurrentSpell.Name;
@@ -4214,6 +4272,11 @@ begin
     if assigned(Equipment[slLeg2]) then
     begin
       S := 'equipment.leg2=' + Equipment[slLeg2].ItemName;
+      List.add(S);
+    end;
+    if assigned( Equipment[ slTatt ] ) then
+    begin
+      S := 'equipment.Tatt=' + Equipment[slTatt].ItemName;
       List.add(S);
     end;
     if assigned(Equipment[slChest1]) then
@@ -4271,6 +4334,21 @@ begin
       S := 'equipment.tabar=' + Equipment[sltabar].ItemName;
       List.add(S);
     end;
+    if assigned( Equipment[ slCoif ] ) then
+    begin
+      S := 'equipment.coif=' + Equipment[slCoif].ItemName;
+      List.add( S );
+    end;
+    if assigned( Equipment[ slhealthpois ] ) then
+    begin
+      S := 'equipment.healthpois=' + Equipment[slhealthpois].ItemName;
+      List.add( S );
+    end;
+    if assigned( Equipment[ slmanapois ] ) then
+    begin
+      S := 'equipment.manapois=' + Equipment[slmanapois].ItemName;
+      List.add( S );
+    end;
     if assigned(Equipment[slMisc1]) then
     begin
       S := 'equipment.misc1=' + Equipment[slMisc1].ItemName;
@@ -4315,6 +4393,12 @@ begin
       S := S + 'shield,';
     if EquipmentLocked[sltabar] then
       S := S + 'tabar,';
+      if EquipmentLocked[slCoif] then
+      S := S + 'coif,';
+    if EquipmentLocked[slhealthpois] then
+      S := S + 'healthpois,';
+    if EquipmentLocked[slmanapois] then
+      S := S + 'manapois,';
     if EquipmentLocked[slMisc1] then
       S := S + 'misc1,';
     if EquipmentLocked[slMisc2] then
@@ -4484,6 +4568,8 @@ begin
         result := result + 'boot,';
       if EquipmentLocked[slLeg2] then
         result := result + 'leg2,';
+      if EquipmentLocked[sltatt] then
+        result := result + 'Tatt,';
       if EquipmentLocked[slChest1] then
         result := result + 'chest1,';
       if EquipmentLocked[slChest2] then
@@ -4506,6 +4592,12 @@ begin
         result := result + 'shield,';
       if EquipmentLocked[sltabar] then
         result := result + 'tabar,';
+      if EquipmentLocked[slCoif] then
+        result := result + 'coif,';
+      if EquipmentLocked[slhealthpois] then
+        result := result + 'healthpois,';
+      if EquipmentLocked[slmanapois] then
+        result := result + 'manapois,';
       if EquipmentLocked[slMisc1] then
         result := result + 'misc1,';
       if EquipmentLocked[slMisc2] then
@@ -4521,6 +4613,8 @@ begin
       result := Equipment[slBoot].ItemName
     else if S = 'equipment.leg2' then
       result := Equipment[slLeg2].ItemName
+    else if S = 'equipment.Tatt' then
+      Result := Equipment[slTatt].ItemName
     else if S = 'equipment.chest1' then
       result := Equipment[slChest1].ItemName
     else if S = 'equipment.chest2' then
@@ -4543,6 +4637,12 @@ begin
       result := Equipment[slShield].ItemName
     else if S = 'equipment.tabar' then
       result := Equipment[sltabar].ItemName
+    else if S = 'equipment.coif' then
+      Result := Equipment[slCoif].ItemName
+    else if S = 'equipment.healthpois' then
+      Result := Equipment[slhealthpois].ItemName
+    else if S = 'equipment.manapois' then
+      Result := Equipment[slmanapois].ItemName
     else if S = 'equipment.misc1' then
       result := Equipment[slMisc1].ItemName
     else if S = 'equipment.misc2' then
@@ -4752,6 +4852,86 @@ begin
             else
               HotKey[10] := TSpell(AllSpellList.objects[i]);
           end
+          else if S = 'hotkey11' then
+          begin
+            i := AllSpellList.IndexOf( Value );
+            if i < 0 then
+              HotKey[ 11 ] := nil
+            else
+              HotKey[ 11 ] := TSpell( AllSpellList.Objects[ i ] );
+          end
+          else if S = 'hotkey12' then
+          begin
+            i := AllSpellList.IndexOf( Value );
+            if i < 0 then
+              HotKey[ 12 ] := nil
+            else
+              HotKey[ 12 ] := TSpell( AllSpellList.Objects[ i ] );
+          end
+          else if S = 'hotkey13' then
+          begin
+            i := AllSpellList.IndexOf( Value );
+            if i < 0 then
+              HotKey[ 13 ] := nil
+            else
+              HotKey[ 13 ] := TSpell( AllSpellList.Objects[ i ] );
+          end
+          else if S = 'hotkey14' then
+          begin
+            i := AllSpellList.IndexOf( Value );
+            if i < 0 then
+              HotKey[ 14 ] := nil
+            else
+              HotKey[ 14 ] := TSpell( AllSpellList.Objects[ i ] );
+          end
+          else if S = 'hotkey15' then
+          begin
+            i := AllSpellList.IndexOf( Value );
+            if i < 0 then
+              HotKey[ 15 ] := nil
+            else
+              HotKey[ 15 ] := TSpell( AllSpellList.Objects[ i ] );
+          end
+          else if S = 'hotkey16' then
+          begin
+            i := AllSpellList.IndexOf( Value );
+            if i < 0 then
+              HotKey[ 16 ] := nil
+            else
+              HotKey[ 16 ] := TSpell( AllSpellList.Objects[ i ] );
+          end
+          else if S = 'hotkey17' then
+          begin
+            i := AllSpellList.IndexOf( Value );
+            if i < 0 then
+              HotKey[ 17 ] := nil
+            else
+              HotKey[ 17 ] := TSpell( AllSpellList.Objects[ i ] );
+          end
+          else if S = 'hotkey18' then
+          begin
+            i := AllSpellList.IndexOf( Value );
+            if i < 0 then
+              HotKey[ 18 ] := nil
+            else
+              HotKey[ 18 ] := TSpell( AllSpellList.Objects[ i ] );
+          end
+          else if S = 'hotkey19' then
+          begin
+            i := AllSpellList.IndexOf( Value );
+            if i < 0 then
+              HotKey[ 19 ] := nil
+            else
+              HotKey[ 19 ] := TSpell( AllSpellList.Objects[ i ] );
+          end
+          else if S = 'hotkey20' then
+          begin
+            i := AllSpellList.IndexOf( Value );
+            if i < 0 then
+              HotKey[ 20 ] := nil
+            else
+              HotKey[ 20 ] := TSpell( AllSpellList.Objects[ i ] );
+          end
           else
             NoProp := true;
         end;
@@ -4884,9 +5064,17 @@ begin
           begin
             FEquipmentNames[slLeg2] := Value
           end
+          else if S = 'equipment.tatt' then
+          begin
+            FEquipmentNames[slTatt] := Value
+          end
           else if S = 'equipment.belt' then
           begin
             FEquipmentNames[slBelt] := Value
+          end
+          else if S = 'equipment.coif' then
+          begin
+            FEquipmentNames[slCoif] := Value
           end
           else if S = 'willbedisabled' then
           begin
@@ -4925,6 +5113,7 @@ begin
             EquipmentLocked[slLeg1] := S.Contains('leg1');
             EquipmentLocked[slBoot] := S.Contains('boot');
             EquipmentLocked[slLeg2] := S.Contains('leg2');
+            EquipmentLocked[slLeg2] := S.Contains('tatt');
             EquipmentLocked[slChest1] := S.Contains('chest1');
             EquipmentLocked[slChest2] := S.Contains('chest2');
             EquipmentLocked[slArm] := S.Contains('arm');
@@ -4936,6 +5125,9 @@ begin
             EquipmentLocked[slWeapon] := S.Contains('weapon');
             EquipmentLocked[slShield] := S.Contains('shield');
             EquipmentLocked[sltabar] := S.Contains('tabar');
+            EquipmentLocked[slLeg2] := S.Contains('coif');
+            EquipmentLocked[slLeg2] := S.Contains('healthpois');
+            EquipmentLocked[slLeg2] := S.Contains('manapois');
             EquipmentLocked[slMisc1] := S.Contains('misc1');
             EquipmentLocked[slMisc2] := S.Contains('misc2');
             EquipmentLocked[slMisc3] := S.Contains('misc3');
@@ -4977,6 +5169,19 @@ begin
           if S = 'equipment.gauntlet' then
           begin
             FEquipmentNames[slGauntlet] := Value
+          end
+          else if S = 'equipment.manapois' then
+          begin
+            FEquipmentNames[ slmanapois ] := Value
+          end
+          else
+            NoProp := true;
+        end;
+      20 :
+        begin
+          if S = 'equipment.healthpois' then
+          begin
+            FEquipmentNames[ slhealthpois ] := Value
           end
           else
             NoProp := true;
@@ -5248,6 +5453,11 @@ begin
     BaseMysticism := Value;
     CalcStats;
   end;
+end;
+
+procedure TCharacter.SetNotReady;
+begin
+  FReady := False;
 end;
 
 procedure TCharacter.SetPerception(const Value: Integer);
@@ -8869,6 +9079,8 @@ begin
         result := result + '[Boot]';
       if slLeg2 in SlotsAllowed then
         result := result + '[Leg2]';
+      if slTatt in SlotsAllowed then
+        result := result + '[Tatt]';
       if slChest1 in SlotsAllowed then
         result := result + '[Chest1]';
       if slChest2 in SlotsAllowed then
@@ -8891,6 +9103,12 @@ begin
         result := result + '[Shield]';
       if sltabar in SlotsAllowed then
         result := result + '[tabar]';
+      if slCoif in SlotsAllowed then
+        result := result + '[coif]';
+      if slhealthpois in SlotsAllowed then
+        result := result + '[healthpois]';
+      if slmanapois in SlotsAllowed then
+        result := result + '[manapois]';
       if slMisc1 in SlotsAllowed then
         result := result + '[Misc1]';
       if slMisc2 in SlotsAllowed then
@@ -9044,6 +9262,8 @@ begin
       S := S + '[Boot]';
     if slLeg2 in SlotsAllowed then
       S := S + '[Leg2]';
+    if slTatt in SlotsAllowed then
+      S := S + '[Tatt]';
     if slChest1 in SlotsAllowed then
       S := S + '[Chest1]';
     if slChest2 in SlotsAllowed then
@@ -9066,6 +9286,12 @@ begin
       S := S + '[Shield]';
     if sltabar in SlotsAllowed then
       S := S + '[tabar]';
+    if slCoif in SlotsAllowed then
+      S := S + '[coif]';
+    if slhealthpois in SlotsAllowed then
+      S := S + '[healthpois]';
+    if slmanapois in SlotsAllowed then
+      S := S + '[manapois]';
     if slMisc1 in SlotsAllowed then
       S := S + '[Misc1]';
     if slMisc2 in SlotsAllowed then
@@ -9116,6 +9342,8 @@ begin
               SlotsAllowed := SlotsAllowed + [slBoot];
             if S.Contains('[leg2]') then
               SlotsAllowed := SlotsAllowed + [slLeg2];
+            if S.Contains('[tatt]') then
+              SlotsAllowed := SlotsAllowed + [sltatt];
             if S.Contains('[chest1]') then
               SlotsAllowed := SlotsAllowed + [slChest1];
             if S.Contains('[chest2]') then
@@ -9138,6 +9366,12 @@ begin
               SlotsAllowed := SlotsAllowed + [slShield];
             if S.Contains('[tabar]') then
               SlotsAllowed := SlotsAllowed + [sltabar];
+            if S.Contains('[coif]') then
+              SlotsAllowed := SlotsAllowed + [slCoif];
+            if S.Contains('[healthpois]') then
+              SlotsAllowed := SlotsAllowed + [slhealthpois];
+            if S.Contains('[manapois]') then
+              SlotsAllowed := SlotsAllowed + [slmanapois];
             if S.Contains('[misc1]') then
               SlotsAllowed := SlotsAllowed + [slMisc1];
             if S.Contains('[misc2]') then

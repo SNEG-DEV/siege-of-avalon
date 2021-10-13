@@ -91,7 +91,7 @@ var
   CurrentStartingPoint : string;
   TravelList : TStringList;
   PlotShadows : boolean;
-  PlotScreenRes : integer;
+  Hardmode : boolean; //Hardmode, no savegames on someone's own
   DefaultPants : TLayerResource;
   FemDefaultPants : TLayerResource;
   ElfDefaultPants : TLayerResource;
@@ -111,6 +111,7 @@ var
   TalkToMe : boolean;
   BodyRotResource : TResource;
   NoPageNumbers : boolean;
+  ScaleJournal: boolean; //Tagebuchskalierung
   UseSmallFont : boolean;
   NoTransit : boolean;
   SaveMsg : string;

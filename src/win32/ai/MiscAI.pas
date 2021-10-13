@@ -999,7 +999,12 @@ begin
       oSpellBook := oSpellBook + 'flame strike,';
     if character.TitleExists( 'Forget' ) then
       oSpellBook := oSpellBook + 'forget,';
-
+    if character.TitleExists( 'Iceblock' ) then
+      oSpellBook := oSpellBook + 'Iceblock,';
+    if character.TitleExists( 'Illusion' ) then
+      oSpellBook := oSpellBook + 'Illusion,';
+    if character.TitleExists( 'PoisonAura' ) then
+      oSpellBook := oSpellBook + 'PoisonAura,';
     oSpellBook.TrimRight([',']); // use Join on TArray
 
     if character.TitleExists( 'Aura of Iron' ) then
@@ -1681,6 +1686,8 @@ end;
 
 procedure TCompanion.FollowLeader;
 var
+  i : integer;
+  j : integer;
   iRange : Double;
 const
   FailName : string = 'MiscAI.BTCompanion.FollowPlayer';
@@ -1697,11 +1704,21 @@ begin
 
     if ( frameCount > NewFrame ) then
     begin //stay close to the leader
+    if Character.CombatMode then
+    begin
+      i := ScreenMetrics.CharacterReach;
+      j := ScreenMetrics.CompanionRange;
+    end
+    else //Zusatz: Nicht im Kampf, Kameraden normaler Verfolgungsabstand zum Spieler
+    begin
+      i := 160;
+      j := 300;
+    end;
       NewFrame := 0;
       iRange := ( character.Rangeto( Player.x, Player.y ) );
-      if ( iRange > ScreenMetrics.CharacterReach ) then
+      if ( iRange > i ) then
       begin
-        if ( iRange > ScreenMetrics.CompanionRange ) then
+        if ( iRange > j ) then
         begin
           case Leader.Facing of
             fNE, fEE, fSE :
@@ -3087,7 +3104,7 @@ end;
 procedure TGuardDog.WasAttacked( Source : TAniFigure; Damage : Single );
 var
   FriendList : TStringList;
-  istealth : integer;
+  istealth : single;
   J : integer;
 
 const
@@ -3104,9 +3121,9 @@ begin
         if not ( Character.IsAlly( TCharacter( Source ) ) ) then
         begin
           if Current.Stealth < 1 then
-            istealth := ( 1 div 100 )
+            istealth := 0
           else
-            iStealth := ( TCharacter( Source ).stealth div 100 );
+            iStealth := ( TCharacter( Source ).stealth div game.IStealthFactor ); //div ergibt Ganzzahl, in dem Fall aber wurscht
 
           if not ( character.RangeTo( TCharacter( Source ).x, TCharacter( Source ).y ) < ( ( round( character.Vision * 1.5 ) - ( round( character.Vision * 1.5 ) * iStealth ) ) * GetFacing( character.x, character.y, TCharacter( Source ).x, TCharacter( Source ).y ) ) ) then
           begin
@@ -3174,7 +3191,8 @@ var
   FriendList : TStringList;
   t : Single;
   NewX, NewY : Integer;
-  iStealth, j : integer;
+  iStealth : single;
+  j : integer;
 const
   FailName : string = 'MiscAI.TGuardDog.GuardFMaster';
 begin
@@ -3188,9 +3206,9 @@ begin
       begin
 
         if Current.Stealth < 1 then
-          istealth := ( 1 div 100 )
+          istealth := 0
         else
-          iStealth := ( current.stealth div 100 );
+          iStealth := ( current.stealth / game.IStealthFactor ); //war div, ergibt aber nur Ganzzahlen, also =0 oder =1
         if ( strdisguise <> '' ) and Character.IsEnemy( player ) then
           if not ( character.RangeTo( Current.x, Current.y ) < ( ( character.Vision - ( character.Vision * iStealth ) ) * GetFacing( character.x, character.y, current.x, current.y ) ) ) or
             not ( game.LineOfSight( character.x, character.y, current.x, current.y ) ) then
@@ -5705,7 +5723,7 @@ end;
 
 procedure TWorms.FindTarget;
 var
-  iStealth : integer;
+  iStealth : single;
 const
   FailName : string = 'MiscAI.TWorms.FindTarget';
 begin
@@ -5714,9 +5732,9 @@ begin
     if ( FrameCount mod 40 ) = 0 then
     begin
       if Current.Stealth < 1 then
-        istealth := ( 1 div 100 )
+        istealth := 0
       else
-        iStealth := ( current.stealth div 100 );
+        iStealth := ( current.stealth / game.IStealthFactor ); //war div, ergibt aber nur Ganzzahlen, also =0 oder =1
       if character.RangeTo( Current.x, Current.y ) < ( ( character.Vision - ( character.Vision * iStealth ) ) * GetFacing( character.x, character.y, current.x, current.y ) ) then
         if game.LineOfSight( character.x, character.y, current.x, current.y ) then
         begin
@@ -6905,7 +6923,7 @@ end;
 procedure TMeleePratice.WasAttacked( Source : TAniFigure; Damage : Single );
 var
   FriendList : TStringList;
-  istealth : integer;
+  istealth : single;
   J : integer;
   x : longint;
   y : longint;
@@ -6921,9 +6939,9 @@ begin
       if not ( Character.IsAlly( TCharacter( Source ) ) ) then
       begin
         if Current.Stealth < 1 then
-          istealth := ( 1 div 100 )
+          istealth := 0
         else
-          iStealth := ( TCharacter( Source ).stealth div 100 );
+          iStealth := ( TCharacter( Source ).Stealth div game.IStealthFactor );  //div ergibt nur Ganzzahlen, in dem Fall aber wurscht
 
         if not ( character.RangeTo( TCharacter( Source ).x, TCharacter( Source ).y ) < ( ( round( character.Vision * 1.5 ) - ( round( character.Vision * 1.5 ) * iStealth ) ) * GetFacing( character.x, character.y, TCharacter( Source ).x, TCharacter( Source ).y ) ) ) then
         begin
@@ -6991,7 +7009,7 @@ end;
 procedure TMeleePratice.WasKilled( Source : TAniFigure );
 var
   FriendList : TStringList;
-  iStealth : integer;
+  iStealth : single;
   J : integer;
 
 begin
@@ -7006,7 +7024,7 @@ begin
       if Current.Stealth < 1 then
         istealth := ( 1 div 100 )
       else
-        iStealth := ( TCharacter( Source ).stealth div 100 );
+        iStealth := ( TCharacter( Source ).stealth div game.IStealthFactor );  //div ergibt nur Ganzzahlen, in dem Fall aber wurscht
 
       if not ( character.RangeTo( TCharacter( Source ).x, TCharacter( Source ).y ) < ( ( round( character.Vision * 1.5 ) - ( round( character.Vision * 1.5 ) * iStealth ) ) * GetFacing( character.x, character.y, TCharacter( Source ).x, TCharacter( Source ).y ) ) ) then
       begin
@@ -7357,6 +7375,7 @@ begin
     NewGuard.SetPos( Character.X, Character.Y, Character.z );
     TCharacterResource( NewGuard.Resource ).CenterY := 101;
     //  NewGuard.Face(Character.Track.x, character.track.y);
+    NewGuard.Facing := fSE;   //For AoA Ende, no impact on SoA
     //  NewGuard.Facing := Character.Facing;
     //  NewGuard.SpecialEffect := seNone;
     //  NewGuard.Highlightable := true;

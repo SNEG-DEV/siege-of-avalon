@@ -358,7 +358,7 @@ begin
       else
       begin
         pInventoryItem.InvX := 999; //set it offscreen so we dont see it
-        pInventoryItem.InvY := 999;
+        pInventoryItem.InvY := 1099;
       end;
       pInventoryItem.WhoHasThis := 3; //the ground has it
       pInventoryItem.BodySlot := -1; //not equipped
@@ -515,7 +515,7 @@ begin
             pr := Rect( 287, 376, 363, 406 );
             lpDDSBack.BltFast( 287 + Offset.X, 376 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
             GroundOrderList[ j ].InvX := 999;
-            GroundOrderList[ j ].InvY := 999;
+            GroundOrderList[ j ].InvY := 1099;
             j := j - 1;
           //Set the coordinates of the new item and Plot it
             GroundOrderList[ j ].InvX := 288;
@@ -541,7 +541,7 @@ begin
             pr := Rect( 287, 376, 363, 406 );
             lpDDSBack.BltFast( 287 + Offset.X, 376 + Offset.Y, DXBack, @pr, DDBLTFAST_WAIT );
             GroundOrderList[ j ].InvX := 999;
-            GroundOrderList[ j ].InvY := 999;
+            GroundOrderList[ j ].InvY := 1099;
             j := j + 1;
           //Set the coordinates of the new item and Plot it
             GroundOrderList[ j ].InvX := 288;
@@ -1503,7 +1503,7 @@ begin
     if GroundOrderList.Count > 0 then
     begin //If we have any ground items
       GroundOrderList[ TopGroundIndex ].InvX := 999; //put old item offscreen- no longer on top
-      GroundOrderList[ TopGroundIndex ].InvY := 999;
+      GroundOrderList[ TopGroundIndex ].InvY := 1099;
       GroundOrderList.Insert( TopGroundIndex, ItemList[ ItemIndex ] );
     end
     else

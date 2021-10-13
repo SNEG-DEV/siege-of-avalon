@@ -190,7 +190,6 @@ begin
 
   // Launch dialog until game UI is redone - SDL2 - ran out of room on the ingame graphic.
   frmLaunchSetting := TfrmLaunchSetting.Create(nil);
-  ChosenDisplayIndex := -1;
   try
     LaunchSettingResult := frmLaunchSetting.ShowModal;
     ChosenDisplayIndex := frmLaunchSetting.GetChosenDisplayIndex;

@@ -131,12 +131,15 @@ begin
       begin //only show 10 files
             //Show a hotkey if associated
             //  for k := 1 to 8 do
-        for k := 1 to 10 do
+        for k := 1 to 20 do //war 10
         begin
           if TSpell( SpellList.objects[ i ] ) = Character.HotKey[ k ] then
           begin
+            if k< 11 then
             //  pText.PlotText( 'F' + intToStr( k + 4 ), 611, 264 + j * 35, 240 );
-            pText.PlotText( intToStr( k - 1 ), 611+Offset.X, 264 + j * 35+Offset.Y, 240 );
+            pText.PlotText( intToStr( k - 1 ), 611+Offset.X, 264 + j * 35+Offset.Y, 240 )
+            else
+            pText.PlotText( 'F' + intToStr( k - 8), 611 + Offset.X, 264 + j * 35 + Offset.Y, 240 );
           end;
         end;
             //Plot The Spell Icons
@@ -285,11 +288,14 @@ begin
       begin
         if ( i >= StartSpell ) and ( i < StartSpell + 5 ) then
         begin //only show 10 files
-		  for k := 1 to 10 do // Keys 0-9
+		  for k := 1 to 20 do // Keys 0-9
           begin
             if TSpell( SpellList.objects[ i ] ) = Character.HotKey[ k ] then
             begin
-              pText.PlotText( intToStr( k - 1), 611+Offset.X, 264 + j * 35+Offset.Y, 240 );
+              if k < 11 then
+              pText.PlotText( intToStr( k - 1), 611+Offset.X, 264 + j * 35+Offset.Y, 240 )
+              else
+              pText.PlotText( 'F' + intToStr( k - 8), 611 + Offset.X, 264 + j * 35 + Offset.Y, 240 );
             end;
           end;
             //Plot The Spell Icons
@@ -329,7 +335,7 @@ begin
       begin
         Character.HotKey[ key - 47 ] := TSpell( SpellList.objects[ CurrentSelectedListItem ] );
            //We dont want more than one key pointing at the same spell, so if allready assigned, change to nil.
-        for i := 1 to 10 do
+        for i := 1 to 20 do //war 10
         begin
           if i <> key - 47 then
           begin
@@ -337,6 +343,23 @@ begin
               Character.HotKey[ i ] := nil;
           end
         end;
+        PlotMenu;
+      end
+      //F3 bis F12
+      else if ( key > 113 ) and ( key < 125 ) and ( CurrentSelectedListItem <> -1 ) then
+      begin
+        Character.HotKey[ key - 113 + 10 ] := TSpell( SpellList.objects[ CurrentSelectedListItem ] );
+        //We dont want more than one key pointing at the same spell, so if allready assigned, change to nil.
+        for i := 1 to 20 do //muss 20 sein, da sonst Überschneideung von Zahlentasten und F-Tasten
+        begin
+          if i <> key - 113 + 10 then
+          begin
+            if Character.HotKey[ key - 113 + 10 ] = Character.HotKey[ i ] then
+              Character.HotKey[ i ] := nil;
+          end
+        end;
+        (*if key = 121 then  //Damit die Menüfunktion nicht ausgeführt wird, (nur bei ddraw.dll mit libwine.dll) und wined3d.dll)
+        key := 0;*)
         PlotMenu;
       end;
     end;
@@ -529,12 +552,15 @@ begin
         begin //only show 10 files
             //Show a hotkey if associated
             // for k := 1 to 8 do
-          for k := 1 to 10 do
+          for k := 1 to 20 do
           begin
             if TSpell( SpellList.objects[ i ] ) = Character.HotKey[ k ] then
             begin
+              if k < 11 then
             // pText.PlotText( 'F' + intToStr( k + 4 ), 611, 264 + j * 35, 240 );
-              pText.PlotText( intToStr( k - 1 ), 611+Offset.X, 264 + j * 35+Offset.Y, 240 );
+              pText.PlotText( intToStr( k - 1 ), 611+Offset.X, 264 + j * 35+Offset.Y, 240 )
+              else
+              pText.PlotText( 'F' + intToStr( k - 8 ), 611 + Offset.X, 264 + j * 35 + Offset.Y, 240 );
             end;
           end;
             //Plot The Spell Icons

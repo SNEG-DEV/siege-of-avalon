@@ -418,6 +418,7 @@ begin
       if SlotString.Contains( '[leg1]' ) then SlotsAllowed := SlotsAllowed + [ slLeg1 ];
       if SlotString.Contains( '[boot]' ) then SlotsAllowed := SlotsAllowed + [ slBoot ];
       if SlotString.Contains( '[leg2]' ) then SlotsAllowed := SlotsAllowed + [ slLeg2 ];
+      if SlotString.Contains( '[Tatt]' ) then SlotsAllowed := SlotsAllowed + [ slTatt ];
       if SlotString.Contains( '[chest1]' ) then SlotsAllowed := SlotsAllowed + [ slChest1 ];
       if SlotString.Contains( '[chest2]' ) then SlotsAllowed := SlotsAllowed + [ slChest2 ];
       if SlotString.Contains( '[arm]' ) then SlotsAllowed := SlotsAllowed + [ slArm ];
@@ -429,6 +430,9 @@ begin
       if SlotString.Contains( '[weapon]' ) then SlotsAllowed := SlotsAllowed + [ slWeapon ];
       if SlotString.Contains( '[shield]' ) then SlotsAllowed := SlotsAllowed + [ slShield ];
       if SlotString.Contains( '[tabar]' ) then SlotsAllowed := SlotsAllowed + [ sltabar ];
+      if SlotString.Contains( '[coif]' ) then SlotsAllowed := SlotsAllowed + [ slCoif ];
+      if SlotString.Contains( '[healthpois]' ) then SlotsAllowed := SlotsAllowed + [ slhealthpois ];
+      if SlotString.Contains( '[manapois]' ) then SlotsAllowed := SlotsAllowed + [ slmanapois ];
       if SlotString.Contains( '[misc1]' ) then SlotsAllowed := SlotsAllowed + [ slMisc1 ];
       if SlotString.Contains( '[misc2]' ) then SlotsAllowed := SlotsAllowed + [ slMisc2 ];
       if SlotString.Contains( '[misc3]' ) then SlotsAllowed := SlotsAllowed + [ slMisc3 ];

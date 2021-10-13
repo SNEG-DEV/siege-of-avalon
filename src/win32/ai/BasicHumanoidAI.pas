@@ -74,7 +74,6 @@ uses
   SoAOS.StrUtils,
   SoAOS.Graphics.Types,
   SoAOS.Animation,
-  anidemo,
   spells1;
 
 type
@@ -510,6 +509,7 @@ implementation
 uses
   SoAOS.AI.Types,
   Engine,
+  Anidemo,
   LogFile,
   SoAOS.Effects,
   Spells;
@@ -1062,7 +1062,7 @@ var
   List : TStringList;
   FriendList : TStringList;
   J : integer;
-  iStealth : integer;
+  iStealth : single; //war integer, brauchen aber reelle Zahlen
 const
   FailName : string = 'THumanoidIdle.FindTarget';
 begin
@@ -1078,11 +1078,11 @@ begin
         if ( LowerCase( character.Enemies ) = 'party' ) or ( lowerCase( tmpEnemies ) = 'party' ) then
         begin
           if character.TitleExists( 'IgnoreStealth' ) then
-            istealth := ( 1 div 100 )
+            istealth := 0
           else if Current.Stealth < 1 then
-            istealth := ( 1 div 100 )
+            istealth := 0
           else
-            iStealth := ( current.stealth div 100 );
+            iStealth := ( current.stealth / game.IStealthFactor ); //war div, ergibt aber nur Ganzzahlen
 
           if ( strdisguise <> '' ) and Character.IsEnemy( player ) then
             if not ( character.RangeTo( Current.x, Current.y ) < ( ( character.Vision - ( character.Vision * iStealth ) ) * GetFacing( character.x, character.y, current.x, current.y ) ) ) or
@@ -2009,7 +2009,7 @@ end;
 procedure THumanoidIdle.WasAttacked( Source : TAniFigure; Damage : Single );
 var
   FriendList : TStringList;
-  istealth : integer;
+  istealth : single;
   J : integer;
   x : longint;
   y : longint;
@@ -2029,9 +2029,9 @@ begin
       if not ( Character.IsAlly( TCharacter( Source ) ) ) then
       begin
         if Current.Stealth < 1 then
-          istealth := ( 1 div 100 )
+          istealth := 0
         else
-          iStealth := ( TCharacter( Source ).stealth div 100 );
+          iStealth := ( TCharacter( Source ).stealth div game.IStealthFactor ); //div ergibt nur Ganzzahlen, in dem Fall aber wurscht
 
         if not ( character.RangeTo( TCharacter( Source ).x, TCharacter( Source ).y ) < ( ( round( character.Vision * 1.5 ) - ( round( character.Vision * 1.5 ) * iStealth ) ) * GetFacing( character.x, character.y, TCharacter( Source ).x, TCharacter( Source ).y ) ) ) then
         begin
@@ -2147,7 +2147,7 @@ end;
 procedure THumanoidIdle.WasKilled( Source : TAniFigure );
 var
   FriendList : TStringList;
-  iStealth : integer;
+  iStealth : single;
   J : integer;
   Effect : TEffect;
   s : TTokenString;
@@ -2167,9 +2167,9 @@ begin
       if not ( Character.IsAlly( TCharacter( Source ) ) ) then
       begin
         if Current.Stealth < 1 then
-          istealth := ( 1 div 100 )
+          istealth := 0
         else
-          iStealth := ( TCharacter( Source ).stealth div 100 );
+          iStealth := ( TCharacter( Source ).stealth div game.IStealthFactor ); //div ergibt Ganzzahl, in dem Fall aber wurscht
 
         if not ( character.RangeTo( TCharacter( Source ).x, TCharacter( Source ).y ) < ( ( round( character.Vision * 1.5 ) - ( round( character.Vision * 1.5 ) * iStealth ) ) * GetFacing( character.x, character.y, TCharacter( Source ).x, TCharacter( Source ).y ) ) ) then
         begin
