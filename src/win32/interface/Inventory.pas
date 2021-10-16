@@ -382,9 +382,9 @@ begin
     for i := 0 to Character.Inventory.Count - 1 do
     begin
       New( pInventoryItem );
-      pInventoryItem.PItem := Character.Inventory.Items[ i ];
-      pInventoryItem.InvX := TItem( Character.Inventory.Items[ i ] ).InvX * 18 + 20;
-      pInventoryItem.InvY := TItem( Character.Inventory.Items[ i ] ).InvY * 26 + 57;
+      pInventoryItem.PItem := Character.Inventory[ i ];
+      pInventoryItem.InvX := Character.Inventory[ i ].InvX * 18 + 20;
+      pInventoryItem.InvY := Character.Inventory[ i ].InvY * 26 + 57;
       pInventoryItem.ItemType := 'Inventory';
       pInventoryItem.CharacterHadThisOnHim := true;
       pInventoryItem.BodySlot := -1; //not anywhere on body

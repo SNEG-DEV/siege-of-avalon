@@ -439,8 +439,8 @@ begin
     begin
       strCrntHeading := Section;
          //Say Text
-      if ( Tcharacter( ObjectRef ) <> current ) and ( Tcharacter( ObjectRef ).properties[ 'charactername' ] <> '' ) then
-        Caption := TCharacter( ObjectRef ).properties[ 'charactername' ] + ':  ' + Ini.ReadString( strCrntHeading, 'Say', '' )
+      if ( TCharacter( ObjectRef ) <> current ) and ( TCharacter( ObjectRef ).Property_[ 'charactername' ] <> '' ) then
+        Caption := TCharacter( ObjectRef ).Property_[ 'charactername' ] + ':  ' + Ini.ReadString( strCrntHeading, 'Say', '' )
       else
         Caption := Ini.ReadString( strCrntHeading, 'Say', '' );
 
@@ -452,7 +452,7 @@ begin
       end;
     end
     else
-      Caption := TCharacter( ObjectRef ).properties[ 'charactername' ] + ':  ' + hail;
+      Caption := TCharacter( ObjectRef ).Property_[ 'charactername' ] + ':  ' + hail;
 
 
     caption := StringReplace( caption, '%playername%', player.name, [ rfReplaceAll, rfIgnoreCase ] );
@@ -466,9 +466,9 @@ begin
       strTmp := TTokenString(Ini.ReadString( strCrntHeading, 'special', '' )).PipeToken( 0 );
       for jLoop := 0 to NPCList.count - 1 do
       begin
-        if TCharacter( NPCList.Items[ jLoop ] ).Guid = strTmp then
+        if NPCList[ jLoop ].Guid = strTmp then
         begin
-          RunScript( TCharacter( NPCList.Items[ jLoop ] ), TTokenString(Ini.ReadString( strCrntHeading, 'special', '' )).PipeToken( 1 ));
+          RunScript( NPCList[ jLoop ], TTokenString(Ini.ReadString( strCrntHeading, 'special', '' )).PipeToken( 1 ));
         end;
       end;
 
@@ -568,7 +568,7 @@ begin
       begin
         NewText := TTextRect.Create;
 
-        s := StringReplace( s, '%charactername%', Tcharacter( ObjectRef ).properties[ 'charactername' ], [ rfReplaceAll, rfIgnoreCase ] );
+        s := StringReplace( s, '%charactername%', TCharacter( ObjectRef ).Property_[ 'charactername' ], [ rfReplaceAll, rfIgnoreCase ] );
         s := StringReplace( s, '%playername%', player.name, [ rfReplaceAll, rfIgnoreCase ] );
 
         NewText.Text := S;
@@ -591,7 +591,7 @@ begin
       else
         NewText.Text := sorry;
 
-      NewText.Text := StringReplace( NewText.Text, '%charactername%', Tcharacter( ObjectRef ).properties[ 'charactername' ], [ rfReplaceAll, rfIgnoreCase ] );
+      NewText.Text := StringReplace( NewText.Text, '%charactername%', TCharacter( ObjectRef ).Property_[ 'charactername' ], [ rfReplaceAll, rfIgnoreCase ] );
       NewText.Text := StringReplace( NewText.Text, '%playername%', player.name, [ rfReplaceAll, rfIgnoreCase ] );
 
       Responses.Add( NewText );
@@ -879,7 +879,6 @@ end;
 function CheckPartyAll( sTmp : string ) : boolean;
 var
   iLoop : integer;
-  jLoop : integer;
   strTmp : string;
   b1 : boolean;
   b2 : boolean;
@@ -898,23 +897,14 @@ begin
       strTmp := TTokenString(sTmp).CommaToken( iLoop ).Trim;
       if strTmp[1] <> '!' then
       begin
-        b1 := false;
-        for jLoop := 0 to NPCList.count - 1 do
-        begin
-          if TCharacter( NPCList.Items[ jLoop ] ).Guid = strTmp then
-            b1 := true;
-        end;
+        b1 := NPCList.HasGUID(strTmp);
         if not ( b1 ) then
           break;
       end
       else
       begin
-        b2 := false;
-        for jLoop := 0 to NPCList.count - 1 do
-        begin
-          if TCharacter( NPCList.Items[ jLoop ] ).Guid = strTmp.Remove(0, 1) then //get rid of the '!'
-            b2 := true;
-        end;
+        strTmp := strTmp.Remove(0, 1);
+        b2 := NPCList.HasGUID(strTmp);
         if b2 then
           break;
       end;
@@ -1110,7 +1100,6 @@ end;
 function CheckPartyOne( sTmp : string ) : boolean;
 var
   iLoop : integer;
-  jLoop : integer;
   strTmp : string;
   b1 : boolean;
   b2 : boolean;
@@ -1131,29 +1120,14 @@ begin
       strTmp := TTokenString(sTmp).CommaToken( iLoop ).Trim;
       if strTmp[1] <> '!' then
       begin
-        b1 := false;
-        for jLoop := 0 to NPCList.count - 1 do
-        begin
-          if TCharacter( NPCList.Items[ jLoop ] ).Guid = strTmp then
-          begin
-            b1 := true;
-          end;
-        end;
+        b1 := NPCList.HasGUID(strTmp);
         if b1 then
           break
-
       end
       else
       begin
         strTmp := strTmp.Remove(0, 1); //get rid of the '!'
-        b2 := false;
-        for jLoop := 0 to NPCList.count - 1 do
-        begin
-          if TCharacter( NPCList.Items[ jLoop ] ).Guid = strTmp then
-          begin
-            b2 := true;
-          end;
-        end;
+        b2 := NPCList.HasGUID(strTmp);
         if not ( b2 ) then
           break;
       end;

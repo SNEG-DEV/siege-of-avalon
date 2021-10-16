@@ -1090,7 +1090,7 @@ begin
             begin
               if ( Player.IsWorn( strdisguise ) ) and ( NPCList.count < 2 ) then
               begin
-                Character.Properties[ 'DisguiseDetected' ] := 'false';
+                Character.Property_[ 'DisguiseDetected' ] := 'false';
                 Character.MakeNeutral( 'party' );
               end;
             end;
@@ -1109,7 +1109,7 @@ begin
                 else if Lowercase( tmpEnemies ).Contains( 'party' ) then
                 begin
                   Character.MakeEnemy( 'party' );
-                  Character.Properties[ 'DisguiseDetected' ] := 'true';
+                  Character.Property_[ 'DisguiseDetected' ] := 'true';
                 end;
               end;
 
@@ -1117,9 +1117,9 @@ begin
               StandInterval := -1;
 
               if Player.IsWorn( strdisguise ) and ( NPCList.count >= 2 ) then
-                character.track := TCharacter( NPCList[ NPCList.count - 1 ] )
+                character.Track := NPCList[ NPCList.count - 1 ]
               else
-                character.track := TCharacter( NPCList[ Random( NPCList.count ) ] );
+                character.Track := NPCList.RandomMember;
 
               if character.RangeTo( character.track.x, character.track.y ) > ( ( character.Vision - ( character.Vision * iStealth ) ) * GetFacing( character.x, character.y, character.track.x, character.track.y ) ) then
               begin
@@ -1148,7 +1148,7 @@ begin
                         TCharacter( FriendList.Objects[ j ] ).MakeEnemy( 'party' );
                         TCharacter( FriendList.Objects[ j ] ).AiMode := AiCombat;
                       end;
-                      TCharacter( FriendList.Objects[ j ] ).track := TCharacter( NPCList[ Random( NPCList.count ) ] );
+                      TCharacter( FriendList.Objects[ j ] ).Track := NPCList.RandomMember;
                     end;
                 end;
                 friendList.Free;
@@ -1297,9 +1297,9 @@ begin
           if assigned( CurrentPath ) then
           begin
             walking := True;
-            Facing := CurrentPath.Properties[ 'Facing' ];
+            Facing := CurrentPath.Property_[ 'Facing' ];
             Character.WalkTo( CurrentPath.X, CurrentPath.Y, PathDev );
-            Delay := StrToInt( CurrentPath.Properties[ 'Delay' ] );
+            Delay := StrToInt( CurrentPath.Property_[ 'Delay' ] );
           end;
         except
           on E : Exception do
@@ -1311,9 +1311,9 @@ begin
       begin //walk to Destination
         try
           walking := True;
-          Facing := CurrentPath.Properties[ 'Facing' ];
+          Facing := CurrentPath.Property_[ 'Facing' ];
           Character.WalkTo( CurrentPath.X, CurrentPath.Y, PathDev );
-          Delay := StrToInt( CurrentPath.Properties[ 'Delay' ] );
+          Delay := StrToInt( CurrentPath.Property_[ 'Delay' ] );
         except
           on E : Exception do
             Log.log( 'Error HumanoidIdle WalkPaht2: ' + E.Message );
@@ -1359,11 +1359,11 @@ begin
               0..4 :
                 begin
                   Walking := True;
-                  Facing := CurrentPath.Properties[ 'Facing' ];
+                  Facing := CurrentPath.Property_[ 'Facing' ];
                   Character.WalkTo( CurrentPath.X, CurrentPath.Y, 16 );
                 end;
             end;
-            Delay := StrToInt( CurrentPath.Properties[ 'Delay' ] );
+            Delay := StrToInt( CurrentPath.Property_[ 'Delay' ] );
           end;
         except
           on E : Exception do
@@ -1451,12 +1451,12 @@ begin
     StandInterval := -1;
     MeanderDelay := 0;
   //Say this when you see an enemy
-    strEnemySay := LowerCase( Character.Properties[ 'EnemySay' ] );
+    strEnemySay := LowerCase( Character.Property_[ 'EnemySay' ] );
 
   // say this when you see a neutral
-    strNeutralSay := LowerCase( Character.Properties[ 'NeutralSay' ] );
+    strNeutralSay := LowerCase( Character.Property_[ 'NeutralSay' ] );
 
-    S := Character.Properties[ 'iSpeed' ];
+    S := Character.Property_[ 'iSpeed' ];
     try
       if ( S <> '' ) and ( s <> '0' ) then
         TCharacterResource( character.Resource ).Speed := StrToInt( S );
@@ -1464,20 +1464,20 @@ begin
     except
     end;
 
-    S := Character.Properties[ 'MeanderDelay' ];
+    S := Character.Property_[ 'MeanderDelay' ];
     try
       if ( S <> '' ) and ( s <> '0' ) then
         MeanderDelay := StrToInt( s );
     except
     end;
      //say this when you see a friend
-    strFriendSay := LowerCase( Character.Properties[ 'FriendSay' ] );
+    strFriendSay := LowerCase( Character.Property_[ 'FriendSay' ] );
 
   //say this when you see the player
-    strPlayerSay := LowerCase( Character.Properties[ 'PlayerSay' ] );
+    strPlayerSay := LowerCase( Character.Property_[ 'PlayerSay' ] );
 
   // enemy responce to your say
-    strEnemyRsp := LowerCase( Character.Properties[ 'EnemyRsp' ] );
+    strEnemyRsp := LowerCase( Character.Property_[ 'EnemyRsp' ] );
 
     workOffScreen := Character.TitleExists( 'WorkOffScreen' );
 
@@ -1485,18 +1485,18 @@ begin
       Character.Highlightable := false;
 
   // Neutral responce to your say
-    strNeutralRsp := LowerCase( Character.Properties[ 'NeutralRsp' ] );
+    strNeutralRsp := LowerCase( Character.Property_[ 'NeutralRsp' ] );
 
   // friend responce to your say
-    strFriendRsp := LowerCase( Character.Properties[ 'FriendRsp' ] );
+    strFriendRsp := LowerCase( Character.Property_[ 'FriendRsp' ] );
 
   // player responce to your say
-    strPlayerRsp := LowerCase( Character.Properties[ 'PlayerRsp' ] );
+    strPlayerRsp := LowerCase( Character.Property_[ 'PlayerRsp' ] );
 
   //general say
-    CombatSay := Character.Properties[ 'Say' ];
+    CombatSay := Character.Property_[ 'Say' ];
 
-    S := LowerCase( Character.Properties[ 'GlowEffect' ] );
+    S := LowerCase( Character.Property_[ 'GlowEffect' ] );
     if ( s = 'true' ) then
     begin
       FGlowEffectResource := GetSpellEffect( 'glow.gif' );
@@ -1509,15 +1509,15 @@ begin
 ///      Effect := nil;
     end;
 
-    S := LowerCase( Character.Properties[ 'IdleEffect' ] );
+    S := LowerCase( Character.Property_[ 'IdleEffect' ] );
     if ( s <> '' ) then
     begin
       if s = 'pulse' then
       begin
         Effect := TPulse.Create;
-        TPulse( Effect ).BlueMaster := StrToInt( Character.Properties[ 'ColorBlue' ] );
-        TPulse( Effect ).GreenMaster := StrToInt( Character.Properties[ 'ColorGreen' ] );
-        TPulse( Effect ).RedMaster := StrToInt( Character.Properties[ 'ColorRed' ] );
+        TPulse( Effect ).BlueMaster := StrToInt( Character.Property_[ 'ColorBlue' ] );
+        TPulse( Effect ).GreenMaster := StrToInt( Character.Property_[ 'ColorGreen' ] );
+        TPulse( Effect ).RedMaster := StrToInt( Character.Property_[ 'ColorRed' ] );
         Character.AddTitle( 'cancelspelleffect' );
         Character.AddEffect( Effect );
 ///        Effect := nil;
@@ -1536,7 +1536,7 @@ begin
     end;
 
     //Just set some inital stats that will get me past a surprise attack
-    S := LowerCase( Character.Properties[ 'BalanceWithPlayer' ] );
+    S := LowerCase( Character.Property_[ 'BalanceWithPlayer' ] );
     try
       if ( S <> '' ) and ( s <> '0' ) then
       begin
@@ -1624,10 +1624,10 @@ begin
     end;
 
   // This script is activate when idle duty is set to action or converse
-    strCnvScr := LowerCase( Character.Properties[ 'Script' ] );
+    strCnvScr := LowerCase( Character.Property_[ 'Script' ] );
 
   // Used for tracking the player when he is deguised
-    S := LowerCase( Character.Properties[ 'tmpEnemies' ] );
+    S := LowerCase( Character.Property_[ 'tmpEnemies' ] );
     try
       if S <> '' then
         Character.MakeEnemy( s );
@@ -1636,66 +1636,65 @@ begin
     end;
 
   // used to make the character only create random loot once
-    if LowerCase( Character.Properties[ 'NewLoot' ] ) <> 'true' then
+    if LowerCase( Character.Property_[ 'NewLoot' ] ) <> 'true' then
     begin
-      S := LowerCase( Character.Properties[ 'RandomLoot' ] );
+      S := LowerCase( Character.Property_[ 'RandomLoot' ] );
       try
         if S <> '' then
         begin
           sLoot := s;
-          for i := 0 to StrToInt( Character.Properties[ 'RandomLootCount' ] ) - 1 do
+          for i := 0 to StrToInt( Character.Property_[ 'RandomLootCount' ] ) - 1 do
           begin
             s := sLoot.RandomToken;
             if not ( character.HasItem( s ) ) then
               RunScript( Character, 'additem(' + s + ')' );
           end;
-          Character.Properties[ 'NewLoot' ] := 'true';
+          Character.Property_[ 'NewLoot' ] := 'true';
         end;
       except
       end;
     end;
 
   // used to fool enemies. should be set to the name of an item
-    strdisguise := LowerCase( Character.Properties[ 'disguise' ] );
+    strdisguise := LowerCase( Character.Property_[ 'disguise' ] );
     if strdisguise <> '' then
     begin
       if Character.Enemies.ToLower.Contains( 'party' ) then
       begin
         tmpEnemies := Character.Enemies;
-        Character.Properties[ 'tmpEnemies' ] := Character.Enemies;
+        Character.Property_[ 'tmpEnemies' ] := Character.Enemies;
 
         if ( Player.IsWorn( strdisguise ) ) and ( NPCList.count < 2 ) then
         begin
-          if Character.Properties[ 'DisguiseDetected' ] <> 'true' then
+          if Character.Property_[ 'DisguiseDetected' ] <> 'true' then
             Character.MakeNeutral( 'party' );
 
-          for j := 0 to NPCList.count - 1 do
-            TCharacter( NPCList[ j ] ).MakeNeutral( Character.Alliance );
+          NPCList.MakeNeutral( Character.Alliance );
         end;
       end;
     end;
 
   // script to run when the character starts walking a path
-    strPathStart := Character.Properties[ 'PathStartScr' ];
+    strPathStart := Character.Property_[ 'PathStartScr' ];
 
   // script to run when the character completes a path
-    strPathEnd := Character.Properties[ 'PathEndScr' ];
+    strPathEnd := Character.Property_[ 'PathEndScr' ];
 
   // guid of the first pathcorner in a path. when this pathcorner is
   // reached PathStartScr is run
-    sStart := LowerCase( Character.Properties[ 'PathStart' ] );
+    sStart := LowerCase( Character.Property_[ 'PathStart' ] );
 
   // guid of the last pathcorner in a path. when this pathcorner is
   // reached PathEndScr is run
-    sEnd := LowerCase( Character.Properties[ 'PathEnd' ] );
+    sEnd := LowerCase( Character.Property_[ 'PathEnd' ] );
 
   //idle action like hammer or stand
-    strAction := LowerCase( Character.Properties[ 'Action' ] );
+    strAction := LowerCase( Character.Property_[ 'Action' ] );
     if strAction = '' then
       strAction := 'stand';
 
   //things to do
-    S := lowerCase( Character.Properties[ 'IdleDuty' ] );
+    S := lowerCase( Character.Property_[ 'IdleDuty' ] );
     try
       if S = '' then
         IdleDuty := idStand
@@ -1719,41 +1718,41 @@ begin
     end;
 
   // how far I can wonder from my start point
-    iLeash := StrToIntDef( Character.Properties[ 'LeashLength' ], 0 );
+    iLeash := StrToIntDef( Character.Property_[ 'LeashLength' ], 0 );
     
   // should I watch for enemies?
-    bCombative := StrToBoolDef(Character.Properties[ 'Combative' ], True);
+    bCombative := StrToBoolDef(Character.Property_[ 'Combative' ], True);
 
   // can I be stopped from doing what I am doing
-    bCanStop := StrToBoolDef(Character.Properties[ 'CanStop' ], True);
+    bCanStop := StrToBoolDef(Character.Property_[ 'CanStop' ], True);
 
   //can I make comments about what I am doing.. never used
-    bTalk := StrToBoolDef(Character.Properties[ 'AllowTalk' ], True);
+    bTalk := StrToBoolDef(Character.Property_[ 'AllowTalk' ], True);
 
   // Look for IdleSFX to play
-    PlayIdleSFX := StrToBoolDef(Character.Properties[ 'PlayIdleSFX' ], False);
+    PlayIdleSFX := StrToBoolDef(Character.Property_[ 'PlayIdleSFX' ], False);
     
   //delay between SFX
-    iSFXDelayCount := StrToIntDef(Character.Properties[ 'IdleSFXDelay' ], 0);
-    IdleSFXDelay := StrToIntDef(Character.Properties[ 'IdleSFXDelay' ], 0);
+    iSFXDelayCount := StrToIntDef(Character.Property_[ 'IdleSFXDelay' ], 0);
+    IdleSFXDelay := StrToIntDef(Character.Property_[ 'IdleSFXDelay' ], 0);
 
   //where to play the sfx from see item DTSoundRing
-    bPlaySFXMetal := StrToBoolDef(Character.Properties[ 'PlaySFXMetal' ], False);
+    bPlaySFXMetal := StrToBoolDef(Character.Property_[ 'PlaySFXMetal' ], False);
 
   //where to play the sfx from see item DTSoundRing
-    bPlaySFXAttack := StrToBoolDef(Character.Properties[ 'PlaySFXAttack' ], False);
+    bPlaySFXAttack := StrToBoolDef(Character.Property_[ 'PlaySFXAttack' ], False);
     
   //where to play the sfx from see item DTSoundRing
-    bPlaySFXOther := StrToBoolDef(Character.Properties[ 'PlaySFXOther' ], False);
+    bPlaySFXOther := StrToBoolDef(Character.Property_[ 'PlaySFXOther' ], False);
 
   // SFX interval type
-    if LowerCase( Character.Properties[ 'SFXDelayType' ] ) = 'fixed' then
+    if LowerCase( Character.Property_[ 'SFXDelayType' ] ) = 'fixed' then
       SFXDelayType := dtFixed
     else
       SFXDelayType := dtRandom;
 
   // draw this character transparent
-    S := LowerCase( Character.Properties[ 'Transparent' ] );
+    S := LowerCase( Character.Property_[ 'Transparent' ] );
     try
       if S <> '100' then
       begin
@@ -1764,14 +1763,14 @@ begin
     end;
 
   // draw this character transparent
-    S := LowerCase( Character.Properties[ 'UseColor' ] );
+    S := LowerCase( Character.Property_[ 'UseColor' ] );
     try
       if S = 'true' then
       begin
         Effect := TColorMeEffect.create;
-        Effect.ColorR := StrToInt( Character.Properties[ 'ColorRed' ] );
-        Effect.ColorG := StrToInt( Character.Properties[ 'ColorGreen' ] );
-        Effect.ColorB := StrToInt( Character.Properties[ 'ColorBlue' ] );
+        Effect.ColorR := StrToInt( Character.Property_[ 'ColorRed' ] );
+        Effect.ColorG := StrToInt( Character.Property_[ 'ColorGreen' ] );
+        Effect.ColorB := StrToInt( Character.Property_[ 'ColorBlue' ] );
         Effect.ApplyColor := true;
         Character.AddEffect( Effect );
       end;
@@ -1779,18 +1778,18 @@ begin
     end;
 
   //randomize my money
-    S := LowerCase( Character.Properties[ 'MoneyAmount' ] );
+    S := LowerCase( Character.Property_[ 'MoneyAmount' ] );
     try
       if s <> '' then
       begin
-        Character.Properties[ 'MoneyAmount' ] := '-' + Character.Properties[ 'MoneyAmount' ];
-        Character.Properties[ 'MoneyAmount' ] := IntToStr( Random( StrToInt( s ) ) );
+        Character.Property_[ 'MoneyAmount' ] := '-' + Character.Property_[ 'MoneyAmount' ];
+        Character.Property_[ 'MoneyAmount' ] := IntToStr( Random( StrToInt( s ) ) );
       end
     except
     end;
 
   // replace the default stand action. exmaple would be making the dogs sit.
-    S := LowerCase( Character.Properties[ 'NewStand' ] );
+    S := LowerCase( Character.Property_[ 'NewStand' ] );
     try
       if S <> '' then
       begin
@@ -1810,7 +1809,7 @@ begin
     end;
 
   // indicator that the player should talk to this character next
-    S := LowerCase( Character.Properties[ 'TalkToMe' ] );
+    S := LowerCase( Character.Property_[ 'TalkToMe' ] );
     try
       if ( S <> '' ) and TalkToMe and TFile.Exists( ResourcePath + 'engine\weaponprojectiles\mageblueball.pox' ) then
       begin
@@ -2073,13 +2072,12 @@ begin
                 if ( TCharacter( Source ).PartyMember ) or ( TCharacter( Source ) = current ) then
                 begin
                   TCharacter( FriendList.Objects[ j ] ).MakeEnemy( 'party' );
-                  TCharacter( FriendList.Objects[ j ] ).track := TCharacter( NPCList[ Random( NPCList.count ) ] );
+                  TCharacter( FriendList.Objects[ j ] ).Track := NPCList.RandomMember;
                 end
                 else
                 begin
-
                   TCharacter( FriendList.Objects[ j ] ).MakeEnemy( TCharacter( source ).alliance );
-                  TCharacter( FriendList.Objects[ j ] ).track := TCharacter( source );
+                  TCharacter( FriendList.Objects[ j ] ).Track := TCharacter( source );
                 end;
                 TCharacter( FriendList.Objects[ j ] ).AiMode := AiCombat;
               end;
@@ -2194,14 +2192,14 @@ begin
                   if ( TCharacter( Source ).PartyMember ) or ( TCharacter( Source ) = current ) then
                   begin
                     TCharacter( FriendList.Objects[ j ] ).MakeEnemy( 'party' );
-                    TCharacter( FriendList.Objects[ j ] ).track := TCharacter( NPCList[ Random( NPCList.count ) ] );
+                    TCharacter( FriendList.Objects[ j ] ).Track := NPCList.RandomMember;
                   end
                   else
                   begin
                     TCharacter( FriendList.Objects[ j ] ).MakeEnemy( TCharacter( source ).alliance );
-                    TCharacter( FriendList.Objects[ j ] ).track := TCharacter( source );
+                    TCharacter( FriendList.Objects[ j ] ).Track := TCharacter( source );
                   end;
-                  TCharacter( FriendList.Objects[ j ] ).AiMode := AiCombat;
+                  TCharacter( FriendList.Objects[ j ] ).AIMode := AiCombat;
                 end;
             end;
             friendList.Free;
@@ -2209,15 +2207,15 @@ begin
         end;
       end;
     end;
-    S := LowerCase( Character.Properties[ 'DeathEffect' ] );
+    S := LowerCase( Character.Property_[ 'DeathEffect' ] );
     if ( s <> '' ) then
     begin
       if s = 'pulse' then
       begin
         Effect := TPulse.Create;
-        TPulse( Effect ).BlueMaster := StrToInt( Character.Properties[ 'ColorBlue' ] );
-        TPulse( Effect ).GreenMaster := StrToInt( Character.Properties[ 'ColorGreen' ] );
-        TPulse( Effect ).RedMaster := StrToInt( Character.Properties[ 'ColorRed' ] );
+        TPulse( Effect ).BlueMaster := StrToInt( Character.Property_[ 'ColorBlue' ] );
+        TPulse( Effect ).GreenMaster := StrToInt( Character.Property_[ 'ColorGreen' ] );
+        TPulse( Effect ).RedMaster := StrToInt( Character.Property_[ 'ColorRed' ] );
         Character.AddEffect( Effect );
 ///        Effect := nil;
       end
@@ -2270,29 +2268,19 @@ begin
 end;
 
 procedure THumanoidIdle.Clicked;
-var
-  i : integer;
 const
   FailName : string = 'THumanoidIdle.Clicked';
 begin
   Log.DebugLog( FailName );
   try
-
     walking := false;
     delay := 200;
     character.stand;
-    if current.combatMode then
-      if not ( Character.IsEnemy( current ) ) then
-      begin
-        Current.CombatMode := false;
-        for i := 0 to NPCList.count - 1 do
-        begin
-          TCharacter( NPCList.items[ i ] ).CombatMode := Current.CombatMode;
-          frmMain.PaintCharacterOnBorder( TSpriteObject( NPCList.items[ i ] ), i );
-        end;
-      end;
-
-
+    if Current.CombatMode and (not ( Character.IsEnemy( Current ) ) ) then
+    begin
+      Current.CombatMode := false;
+      NPCList.SetCombatMode(False);
+    end;
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -2437,7 +2425,7 @@ begin
               TCharacter( FriendList.Objects[ j ] ).MakeEnemy( 'party' );
               TCharacter( FriendList.Objects[ j ] ).AiMode := AiCombat;
             end;
-            TCharacter( FriendList.Objects[ j ] ).track := TCharacter( NPCList[ Random( NPCList.count ) ] );
+            TCharacter( FriendList.Objects[ j ] ).Track := NPCList.RandomMember;
           end;
         end;
     end;
@@ -2669,25 +2657,25 @@ begin
 
     CollideCount := 0;
     CirclePoint := Random( 360 ) + 180;
-    iTimeToRun := StrToIntDef(Character.Properties[ 'TimeToRun' ], 75);
-    
-    CombatSay := Character.Properties[ 'Say' ];
+    iTimeToRun := StrToIntDef(Character.Property_[ 'TimeToRun' ], 75);
 
-    AllowRun := StrToBoolDef( Character.Properties[ 'AllowRun' ], True );
-    
-    S := Character.Properties[ 'iSpeed' ];
+    CombatSay := Character.Property_[ 'Say' ];
+
+    AllowRun := StrToBoolDef( Character.Property_[ 'AllowRun' ], True );
+
+    S := Character.Property_[ 'iSpeed' ];
     try
       if ( S <> '' ) and ( s <> '0' ) then
         TCharacterResource( character.Resource ).Speed := StrToInt( S );
     except
     end;
 
-    FBaseCourage := StrToIntDef( Character.Properties[ 'BaseCourage' ], 5 );
-    FBonusCourage := StrToIntDef( Character.Properties[ 'BonusCourage' ], 0 );
-    bTakeOrders := StrToBoolDef( Character.Properties[ 'TakeOrders' ], True );
-    AttackDelay := StrToIntDef( Character.Properties[ 'AttackDelay' ], 30 );
+    FBaseCourage := StrToIntDef( Character.Property_[ 'BaseCourage' ], 5 );
+    FBonusCourage := StrToIntDef( Character.Property_[ 'BonusCourage' ], 0 );
+    bTakeOrders := StrToBoolDef( Character.Property_[ 'TakeOrders' ], True );
+    AttackDelay := StrToIntDef( Character.Property_[ 'AttackDelay' ], 30 );
 
-    S := LowerCase( Character.Properties[ 'BalanceWithPlayer' ] );
+    S := LowerCase( Character.Property_[ 'BalanceWithPlayer' ] );
     try
       if ( S <> '' ) and ( s <> '0' ) then
       begin
@@ -2834,9 +2822,9 @@ begin
     except
     end;
 
-    iDamageShield := StrToIntDef( Character.Properties[ 'DamageShield' ], 0 );
+    iDamageShield := StrToIntDef( Character.Property_[ 'DamageShield' ], 0 );
 
-    S := LowerCase( Character.Properties[ 'SpellEffect' ] );
+    S := LowerCase( Character.Property_[ 'SpellEffect' ] );
     if ( s <> '' ) then
       FSpellEffectResource := GetSpellEffect( s );
 
@@ -3063,15 +3051,15 @@ begin
         Log.log( 'Error HumanoidMelee WasKilled: ' + E.Message );
     end;
 
-    S := LowerCase( Character.Properties[ 'DeathEffect' ] );
+    S := LowerCase( Character.Property_[ 'DeathEffect' ] );
     if ( s <> '' ) then
     begin
       if s = 'pulse' then
       begin
         Effect := TPulse.Create;
-        TPulse( Effect ).BlueMaster := StrToInt( Character.Properties[ 'ColorBlue' ] );
-        TPulse( Effect ).GreenMaster := StrToInt( Character.Properties[ 'ColorGreen' ] );
-        TPulse( Effect ).RedMaster := StrToInt( Character.Properties[ 'ColorRed' ] );
+        TPulse( Effect ).BlueMaster := StrToInt( Character.Property_[ 'ColorBlue' ] );
+        TPulse( Effect ).GreenMaster := StrToInt( Character.Property_[ 'ColorGreen' ] );
+        TPulse( Effect ).RedMaster := StrToInt( Character.Property_[ 'ColorRed' ] );
         Character.AddEffect( Effect );
 ///        Effect := nil;
       end
@@ -3470,16 +3458,16 @@ begin
     ShotCounter := 0;
     MaxShots := Random( 3 ) + 1;
     runaway := false;
-    S := Character.Properties[ 'iSpeed' ];
+    S := Character.Property_[ 'iSpeed' ];
     try
       if ( S <> '' ) and ( s <> '0' ) then
         TCharacterResource( character.Resource ).Speed := StrToInt( S );
     except
     end;
 
-    iTimeToRun := StrToIntDef( Character.Properties[ 'TimeToRun' ], 75 );
+    iTimeToRun := StrToIntDef( Character.Property_[ 'TimeToRun' ], 75 );
 
-    S := LowerCase( Character.Properties[ 'BalanceWithPlayer' ] );
+    S := LowerCase( Character.Property_[ 'BalanceWithPlayer' ] );
     try
       if ( S <> '' ) and ( s <> '0' ) then
       begin
@@ -3577,15 +3565,15 @@ begin
     except
     end;
 
-    AttackDelay := StrToIntDef( Character.Properties[ 'AttackDelay' ], 25 );
+    AttackDelay := StrToIntDef( Character.Property_[ 'AttackDelay' ], 25 );
     if AttackDelay=0 then
       AttackDelay := 25;
 
-    FBaseCourage := StrToIntDef( Character.Properties[ 'BaseCourage' ], 1 );
-    bTakeOrders := StrToBoolDef( Character.Properties[ 'TakeOrders' ], True );
-    bMove := StrToBoolDef( Character.Properties[ 'Moveable' ], True );
-    AllowRun := StrToBoolDef( Character.Properties[ 'AllowRun' ], True );
-    iDistance := StrToIntDef( Character.Properties[ 'Distance' ], 175 );
+    FBaseCourage := StrToIntDef( Character.Property_[ 'BaseCourage' ], 1 );
+    bTakeOrders := StrToBoolDef( Character.Property_[ 'TakeOrders' ], True );
+    bMove := StrToBoolDef( Character.Property_[ 'Moveable' ], True );
+    AllowRun := StrToBoolDef( Character.Property_[ 'AllowRun' ], True );
+    iDistance := StrToIntDef( Character.Property_[ 'Distance' ], 175 );
 
     PartyTotal := 1;
     if character.GroupName <> '' then
@@ -4105,7 +4093,7 @@ begin
     NewGuard.Track := Character.track;
     NewGuard.enabled := true;
     NewGuard.GroupName := 'SummonedGuards';
-    NewGuard.Properties[ 'equipmentlocked' ] := 'true';
+    NewGuard.Property_[ 'equipmentlocked' ] := 'true';
 
     if Assigned( character.Equipment[ slMisc1 ] ) then
       if character.Equipment[ slMisc1 ] is TWeapon then
@@ -4117,11 +4105,11 @@ begin
     Effect2.AnimationDuration := 8 * SummonResource.FrameMultiplier;
     Effect2.DoAction( 'Default', NewGuard.Facing );
 
-    if LowerCase( NewGuard.Properties[ 'UseColor' ] ) = 'true' then
+    if LowerCase( NewGuard.Property_[ 'UseColor' ] ) = 'true' then
     begin
-      Effect2.ColorR := StrToInt( NewGuard.Properties[ 'ColorRed' ] );
-      Effect2.ColorG := StrToInt( NewGuard.Properties[ 'ColorGreen' ] );
-      Effect2.ColorB := StrToInt( NewGuard.Properties[ 'ColorBlue' ] );
+      Effect2.ColorR := StrToInt( NewGuard.Property_[ 'ColorRed' ] );
+      Effect2.ColorG := StrToInt( NewGuard.Property_[ 'ColorGreen' ] );
+      Effect2.ColorB := StrToInt( NewGuard.Property_[ 'ColorBlue' ] );
     end
     else
     begin
@@ -4184,18 +4172,18 @@ begin
     begin
       addtitle( 'flame' );
       addtitle( 'flame strike' );
-      Properties[ 'oSpellBook' ] := 'flame strike,flame';
-      Properties[ 'dSpellBook' ] := 'protection from cold';
-      Properties[ 'BalanceWithPlayer' ] := '5';
-      Properties[ 'OnDie' ] := 'doeffect(fadeaway)';
-      Properties[ 'TimeToRun' ] := '99';
-      Properties[ 'Distance' ] := '90';
-      Properties[ 'BaseCourage' ] := '9';
-      Properties[ 'DeathSounds' ] := 'HHoundDeath';
-          //  Properties['DamageShield'] := '10';
-          //  Properties['SpellEffect'] := 'ProtectionReceive(Fire).gif';
-      Properties[ 'PainSounds' ] := 'HHoundHit1,HHoundHit2,HHoundHit3';
-      Properties[ 'CastEffect' ] := 'ProtectionReceive(Fire).gif';
+      Property_[ 'oSpellBook' ] := 'flame strike,flame';
+      Property_[ 'dSpellBook' ] := 'protection from cold';
+      Property_[ 'BalanceWithPlayer' ] := '5';
+      Property_[ 'OnDie' ] := 'doeffect(fadeaway)';
+      Property_[ 'TimeToRun' ] := '99';
+      Property_[ 'Distance' ] := '90';
+      Property_[ 'BaseCourage' ] := '9';
+      Property_[ 'DeathSounds' ] := 'HHoundDeath';
+          //  Property_['DamageShield'] := '10';
+          //  Property_['SpellEffect'] := 'ProtectionReceive(Fire).gif';
+      Property_[ 'PainSounds' ] := 'HHoundHit1,HHoundHit2,HHoundHit3';
+      Property_[ 'CastEffect' ] := 'ProtectionReceive(Fire).gif';
       GUID := 'HH' + IntToStr( Random( 25 ) * Random( 10 ) );
       Resistance.heat.Resistance := 100;
       Resistance.Cold.Resistance := -100;
@@ -4289,16 +4277,16 @@ begin
       NewGuard.alpha := 100;
       NewGuard.HitPoints := 1;
       NewGuard.GroupName := 'mirror';
-      NewGuard.Properties[ 'BalanceWithPlayer' ] := '0';
-      NewGuard.Properties[ 'SummonGUID' ] := '';
-      NewGuard.Properties[ 'oSpellBook' ] := 'frost,flame,buff';
-      NewGuard.Properties[ 'equipmentlocked' ] := 'true';
+      NewGuard.Property_[ 'BalanceWithPlayer' ] := '0';
+      NewGuard.Property_[ 'SummonGUID' ] := '';
+      NewGuard.Property_[ 'oSpellBook' ] := 'frost,flame,buff';
+      NewGuard.Property_[ 'equipmentlocked' ] := 'true';
       NewGuard.OnDie := 'doeffect(Fadeaway)';
       NewGuard.Track := Character.track;
       NewGuard.Alliance := 'summon';
 
       // draw this character transparent
-      S := LowerCase( Character.Properties[ 'Transparent' ] );
+      S := LowerCase( Character.Property_[ 'Transparent' ] );
       try
         if S <> '100' then
         begin
@@ -4309,14 +4297,14 @@ begin
       end;
 
     // draw this character transparent
-      S := LowerCase( Character.Properties[ 'UseColor' ] );
+      S := LowerCase( Character.Property_[ 'UseColor' ] );
       try
         if S = 'true' then
         begin
           Effect3 := TColorMeEffect.create;
-          Effect3.ColorR := StrToInt( NewGuard.Properties[ 'ColorRed' ] );
-          Effect3.ColorG := StrToInt( NewGuard.Properties[ 'ColorGreen' ] );
-          Effect3.ColorB := StrToInt( NewGuard.Properties[ 'ColorBlue' ] );
+          Effect3.ColorR := StrToInt( NewGuard.Property_[ 'ColorRed' ] );
+          Effect3.ColorG := StrToInt( NewGuard.Property_[ 'ColorGreen' ] );
+          Effect3.ColorB := StrToInt( NewGuard.Property_[ 'ColorBlue' ] );
           Effect3.ApplyColor := true;
           NewGuard.AddEffect( Effect3 );
         end;
@@ -4925,24 +4913,24 @@ begin
 
   //  character.AddTitle('Reflect');
 
-    S := Character.Properties[ 'iSpeed' ];
+    S := Character.Property_[ 'iSpeed' ];
     try
       if ( S <> '' ) and ( s <> '0' ) then
         TCharacterResource( character.Resource ).Speed := StrToInt( S );
     except
     end;
 
-    iTimeToRun := StrToIntDef( Character.Properties[ 'TimeToRun' ], 75 );
+    iTimeToRun := StrToIntDef( Character.Property_[ 'TimeToRun' ], 75 );
     
-    S := LowerCase( Character.Properties[ 'SpellEffect' ] );
+    S := LowerCase( Character.Property_[ 'SpellEffect' ] );
     if ( s <> '' ) then
     begin
       if s = 'pulse' then
       begin
         Effect := TPulse.Create;
-        TPulse( Effect ).BlueMaster := StrToInt( Character.Properties[ 'ColorBlue' ] );
-        TPulse( Effect ).GreenMaster := StrToInt( Character.Properties[ 'ColorGreen' ] );
-        TPulse( Effect ).RedMaster := StrToInt( Character.Properties[ 'ColorRed' ] );
+        TPulse( Effect ).BlueMaster := StrToInt( Character.Property_[ 'ColorBlue' ] );
+        TPulse( Effect ).GreenMaster := StrToInt( Character.Property_[ 'ColorGreen' ] );
+        TPulse( Effect ).RedMaster := StrToInt( Character.Property_[ 'ColorRed' ] );
         Character.AddTitle( 'cancelspelleffect' );
         Character.AddEffect( Effect );
 ///        Effect := nil;
@@ -4960,7 +4948,7 @@ begin
       end;
     end;
 
-    S := LowerCase( Character.Properties[ 'CastEffect' ] );
+    S := LowerCase( Character.Property_[ 'CastEffect' ] );
     if ( s <> '' ) then
     begin
       CastEffect := GetSpellEffect( s );
@@ -4976,7 +4964,7 @@ begin
 
     end;
 
-    S := LowerCase( Character.Properties[ 'BalanceWithPlayer' ] );
+    S := LowerCase( Character.Property_[ 'BalanceWithPlayer' ] );
     try
       if ( S <> '' ) and ( s <> '0' ) then
       begin
@@ -5079,18 +5067,18 @@ begin
     except
     end;
 
-    FBaseCourage := StrToIntDef( Character.Properties[ 'BaseCourage' ], 1 );
-    bTakeOrders := StrToBoolDef( Character.Properties[ 'TakeOrders' ], True );
-    AllowRun := StrToBoolDef( Character.Properties[ 'AllowRun' ], True );
+    FBaseCourage := StrToIntDef( Character.Property_[ 'BaseCourage' ], 1 );
+    bTakeOrders := StrToBoolDef( Character.Property_[ 'TakeOrders' ], True );
+    AllowRun := StrToBoolDef( Character.Property_[ 'AllowRun' ], True );
 
-    oSpellBook := LowerCase( Character.Properties[ 'oSpellBook' ] );
+    oSpellBook := LowerCase( Character.Property_[ 'oSpellBook' ] );
     if oSpellBook = '' then
       oSpellBook := 'frost,shrapnel,flame,charge,buff,hold';
 
     if not oSpellBook.Contains( 'hold' ) then
       HoldCast := true;
 
-    FSummonGuid := LowerCase( Character.Properties[ 'SummonGUId' ] );
+    FSummonGuid := LowerCase( Character.Property_[ 'SummonGUId' ] );
     if FSummonGuid <> '' then
       Character.addtitle( 'SummonGuards' );
 
@@ -5134,18 +5122,18 @@ begin
       end
     end;
 
-    dSpellBook := LowerCase( Character.Properties[ 'dSpellBook' ] );
+    dSpellBook := LowerCase( Character.Property_[ 'dSpellBook' ] );
     if dSpellBook = '' then
       dSpellBook := 'protection from all,aura of iron';
 
-    bMove := StrToBoolDef( Character.Properties[ 'Moveable' ], True );
+    bMove := StrToBoolDef( Character.Property_[ 'Moveable' ], True );
 
-    bHealFirst := StrToBoolDef( Character.Properties[ 'HealFirst' ], True );
+    bHealFirst := StrToBoolDef( Character.Property_[ 'HealFirst' ], True );
     //JAH FixME - why then not move it to a const?
     bHealFirst := False;
 
-    iDistance := StrToIntDef( Character.Properties[ 'Distance' ], 175 );
-    iDamageShield := StrToIntDef( Character.Properties[ 'DamageShield' ], 0 );
+    iDistance := StrToIntDef( Character.Property_[ 'Distance' ], 175 );
+    iDamageShield := StrToIntDef( Character.Property_[ 'DamageShield' ], 0 );
 
     PartyTotal := 1;
     if character.GroupName <> '' then
@@ -5382,7 +5370,7 @@ begin
         begin
           if Character.IsEnemy( TCharacter( Source ) ) then
           begin
-            if ( ( ( TCharacter( Source ) ).Properties[ 'DamageShield' ] = '0' ) or ( ( TCharacter( Source ) ).Properties[ 'DamageShield' ] = '' ) ) and ( iDamageShield > 0 ) and ( character.RangeTo( TCharacter( Source ).x, TCharacter( Source ).y ) < 50 ) then
+            if ( ( ( TCharacter( Source ) ).Property_[ 'DamageShield' ] = '0' ) or ( ( TCharacter( Source ) ).Property_[ 'DamageShield' ] = '' ) ) and ( iDamageShield > 0 ) and ( character.RangeTo( TCharacter( Source ).x, TCharacter( Source ).y ) < 50 ) then
             begin
               if Assigned( FSpellEffectResource ) then
               begin
@@ -5498,15 +5486,15 @@ begin
       MySummons.free;
     end;
 
-    S := LowerCase( Character.Properties[ 'DeathEffect' ] );
+    S := LowerCase( Character.Property_[ 'DeathEffect' ] );
     if ( s <> '' ) then
     begin
       if s = 'pulse' then
       begin
         Effect := TPulse.Create;
-        TPulse( Effect ).BlueMaster := StrToInt( Character.Properties[ 'ColorBlue' ] );
-        TPulse( Effect ).GreenMaster := StrToInt( Character.Properties[ 'ColorGreen' ] );
-        TPulse( Effect ).RedMaster := StrToInt( Character.Properties[ 'ColorRed' ] );
+        TPulse( Effect ).BlueMaster := StrToInt( Character.Property_[ 'ColorBlue' ] );
+        TPulse( Effect ).GreenMaster := StrToInt( Character.Property_[ 'ColorGreen' ] );
+        TPulse( Effect ).RedMaster := StrToInt( Character.Property_[ 'ColorRed' ] );
         Character.AddEffect( Effect );
 ///        Effect := nil;
       end
@@ -5841,17 +5829,17 @@ begin
     GoodCollideCount := 0;
     BadCollideCount := 0;
 
-    S := Character.Properties[ 'iSpeed' ];
+    S := Character.Property_[ 'iSpeed' ];
     try
       if ( S <> '' ) and ( s <> '0' ) then
         TCharacterResource( character.Resource ).Speed := StrToInt( S );
     except
     end;
 
-    AttackDelay := StrToIntDef( Character.Properties[ 'AttackDelay' ], 25 );
-    AllowRun := StrToBoolDef( Character.Properties[ 'AllowRun' ], True );
+    AttackDelay := StrToIntDef( Character.Property_[ 'AttackDelay' ], 25 );
+    AllowRun := StrToBoolDef( Character.Property_[ 'AllowRun' ], True );
 
-    S := LowerCase( Character.Properties[ 'BalanceWithPlayer' ] );
+    S := LowerCase( Character.Property_[ 'BalanceWithPlayer' ] );
     try
       if ( S <> '' ) and ( s <> '0' ) then
       begin
@@ -5915,12 +5903,12 @@ begin
     except
     end;
 
-    bTakeOrders := StrToBoolDef( Character.Properties[ 'TakeOrders' ], True );
-    FBaseCourage := StrToIntDef( Character.Properties[ 'BaseCourage' ], 1 );
-    FBonusCourage := StrToIntDef( Character.Properties[ 'BonusCourage' ], 0 );
-    iDistance := StrToIntDef( Character.Properties[ 'Distance' ], 100 );
+    bTakeOrders := StrToBoolDef( Character.Property_[ 'TakeOrders' ], True );
+    FBaseCourage := StrToIntDef( Character.Property_[ 'BaseCourage' ], 1 );
+    FBonusCourage := StrToIntDef( Character.Property_[ 'BonusCourage' ], 0 );
+    iDistance := StrToIntDef( Character.Property_[ 'Distance' ], 100 );
 
-    S := LowerCase( Character.Properties[ 'MainStat' ] );
+    S := LowerCase( Character.Property_[ 'MainStat' ] );
     try
       if S = '' then
         MainStat := msCombat
@@ -6376,9 +6364,9 @@ begin
           Character.Inventory.add( Character.Equipment[ slWeapon ] );
           for i := 0 to Character.Inventory.Count - 1 do
           begin
-            if TGameObject( Character.Inventory.items[ i ] ) is TWeapon then
+            if Character.Inventory[ i ] is TWeapon then
             begin
-              Character.Equipment[ slWeapon ] := TWeapon( Character.Inventory.items[ i ] );
+              Character.Equipment[ slWeapon ] := TWeapon( Character.Inventory[ i ] );
               break;
             end;
           end;
@@ -6394,12 +6382,12 @@ begin
          //RangeAttack := True;
         for i := 0 to Character.Inventory.Count - 1 do
         begin
-          if TGameObject( Character.Inventory.items[ i ] ) is TBow then
+          if Character.Inventory[ i ] is TBow then
           begin
                   {If Character.findfreeInventoryXY(TWeapon(Character.Equipment[slWeapon]) then
                   begin }
             Character.Inventory.add( Character.Equipment[ slWeapon ] );
-            Character.Equipment[ slWeapon ] := TWeapon( Character.Inventory.items[ i ] );
+            Character.Equipment[ slWeapon ] := TWeapon( Character.Inventory[ i ] );
             bHasBow := True;
             RangeAttack := True;
                   {end
@@ -6493,11 +6481,11 @@ begin
     RangeAttack := true;
     bHasBow := True;
 
-    AttackDelay := StrToIntDef( Character.Properties[ 'AttackDelay' ], 25 );
+    AttackDelay := StrToIntDef( Character.Property_[ 'AttackDelay' ], 25 );
     if AttackDelay = 0 then
       AttackDelay := 25;
 
-    S := LowerCase( Character.Properties[ 'BalanceWithPlayer' ] );
+    S := LowerCase( Character.Property_[ 'BalanceWithPlayer' ] );
     try
       if ( S <> '' ) and ( s <> '0' ) then
       begin
@@ -6572,20 +6560,20 @@ begin
     except
     end;
 
-    bTakeOrders := StrToBoolDef( Character.Properties[ 'TakeOrders' ], True );
+    bTakeOrders := StrToBoolDef( Character.Property_[ 'TakeOrders' ], True );
 
-    S := Character.Properties[ 'iSpeed' ];
+    S := Character.Property_[ 'iSpeed' ];
     try
       if ( S <> '' ) and ( s <> '0' ) then
         TCharacterResource( character.Resource ).Speed := StrToInt( S );
     except
     end;
 
-    FBaseCourage := StrToIntDef( Character.Properties[ 'BaseCourage' ], 1 );
-    FBonusCourage := StrToIntDef( Character.Properties[ 'BonusCourage' ], 0 );
-    iDistance := StrToIntDef( Character.Properties[ 'Distance' ], 100 );
+    FBaseCourage := StrToIntDef( Character.Property_[ 'BaseCourage' ], 1 );
+    FBonusCourage := StrToIntDef( Character.Property_[ 'BonusCourage' ], 0 );
+    iDistance := StrToIntDef( Character.Property_[ 'Distance' ], 100 );
 
-    S := LowerCase( Character.Properties[ 'MainStat' ] );
+    S := LowerCase( Character.Property_[ 'MainStat' ] );
     try
       if S = '' then
         MainStat := msCombat

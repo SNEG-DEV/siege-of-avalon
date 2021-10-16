@@ -263,14 +263,12 @@ type
 
   TGameObject = class(TAniFigure)
   private
+    FProperties: TStringList;
     LoadCount: Integer;
   protected
     function GetProperty(const Name: string): string; virtual;
     procedure SetProperty(const Name: string; const Value: string); virtual;
   public
-    // New - was private
-    FProperties: TStringList;
-    //
     Loading: Boolean;
     GUID: string;
     GroupName: string;
@@ -283,19 +281,20 @@ type
     procedure SaveProperties(List: TStringList); virtual;
     procedure Init; virtual;
     procedure DoLoad;
-    property Properties[const Name: string]: string read GetProperty
-      write SetProperty;
+    property Property_[const Name: string]: string read GetProperty write SetProperty;
+    property Properties: TStringList read FProperties write FProperties;
   end;
 
   TSpriteObject = class(TGameObject)
   private
+    FCollideCount: Integer;
     ActivateCount: Integer;
-
     MsgDuration: Integer;
     MsgImage: IDirectDrawSurface;
     MsgWidth: Integer;
     MsgHeight: Integer;
     procedure SetFacing(const Value: TFacing);
+    procedure SetCollideCount(const Value: Integer);
   protected
     FFacing: TFacing;
     procedure SetResource(const Value: TAniResource); override;
@@ -303,9 +302,6 @@ type
     procedure SetProperty(const Name: string; const Value: string); override;
     function GetName: string; virtual;
   public
-    // New - was private
-    CollideCount: Integer;
-    //
     SpecialEffect: TAniSpecialEffect;
     MaskHeight: Integer;
     OnActivate: string;
@@ -313,8 +309,7 @@ type
     Alpha: Integer;
     UnMoveable: Boolean;
     ColorR, ColorG, ColorB: Integer;
-    constructor Create(X, Y, Z: Longint; Frame: Word;
-      Enabled: Boolean); virtual;
+    constructor Create(X, Y, Z: Longint; Frame: Word; Enabled: Boolean); virtual;
     destructor Destroy; override;
     function ActionExists(const Action: string): Boolean;
     function DoAction(const Action: string): Boolean; virtual;
@@ -326,6 +321,7 @@ type
     function ShouldSave: Boolean; virtual;
     property Facing: TFacing read FFacing write SetFacing;
     property Name: string read GetName;
+    property CollideCount: Integer read FCollideCount write SetCollideCount;
   end;
 
   TAniView = class(TGraphicControl)
@@ -5392,7 +5388,7 @@ begin
     Inc(ActivateCount);
     event := 'OnActivate[' + IntToStr(ActivateCount) + ']';
     if PropertyExists(event) then
-      RunScript(Self, Properties[event])
+      RunScript(Self, Property_[event])
     else
       RunScript(Self, OnActivate);
 
@@ -5798,6 +5794,11 @@ begin
   end;
 end;
 
+procedure TSpriteObject.SetCollideCount(const Value: Integer);
+begin
+  FCollideCount := Value;
+end;
+
 procedure TSpriteObject.SetFacing(const Value: TFacing);
 const
   FailName: string = 'TSpriteObject.SetFacing';
@@ -5872,9 +5873,7 @@ const
 begin
   log.DebugLog(FailName);
   try
-
     result := '';
-
   except
     on E: Exception do
       log.log(FailName, E.Message, []);
@@ -5895,11 +5894,9 @@ const
 begin
   log.DebugLog(FailName);
   try
-
     inherited Create(X, Y, Z, Frame, Enabled);
     FProperties := TStringList.Create;
     FProperties.Duplicates := dupIgnore;
-
   except
     on E: Exception do
       log.log(FailName, E.Message, []);
@@ -6017,9 +6014,7 @@ begin
 
   log.DebugLog(FailName);
   try
-
     result := FProperties.IndexOfName(Name) >= 0;
-
   except
     on E: Exception do
       log.log(FailName, E.Message, []);
@@ -6136,7 +6131,7 @@ begin
     Inc(LoadCount);
     event := 'OnLoad[' + IntToStr(LoadCount) + ']';
     if PropertyExists(event) then
-      RunScript(Self, Properties[event])
+      RunScript(Self, Property_[event])
     else
       RunScript(Self, OnLoad);
 

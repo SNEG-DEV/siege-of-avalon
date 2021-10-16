@@ -43,13 +43,10 @@ interface
 
 uses
   System.SysUtils,
-  System.Classes;
+  System.Classes,
+  SoAOS.Types;
 
 type
-  TSavBlocks = ( sbMap, sbMapKnown, sbCharacter, sbItem, sbTravel, sbJournal, scAbstract, scSoundPlayer, scPathCorner, scTrigger, scSpriteObject,
-    scItem, scWeapon, scQuiver, scBow, scContainer, scDoor, scCharacter, sbStartJournalIndex, sbQuest, siItem, sbAdventure,
-    sbDeathScreen, sbStartQuestIndex, sbStartAdventureIndex, scEventTimer, sbIndex, sbMaxPartyMembers );
-
   PBlockPointer = ^TBlockPointer;
   TBlockPointer = record
     DataPos : longint;
@@ -131,14 +128,10 @@ type
     property Filename : string read FFilename;
   end;
 
-const
-  EOBMarker = $4242;
-
 implementation
 
 uses
   System.IOUtils,
-  SoAOS.Types,
   AniDemo;
 
 { TSavFile }

@@ -157,21 +157,21 @@ begin
   else  // vertical 2 member setup
   begin
    vAdj1 := 107;
-   cWidth := TResource( TCharacter( NPCList.items[ 0 ] ).resource ).FrameWidth;
+   cWidth := TResource( NPCList[ 0 ].Resource ).FrameWidth;
    vOffAdj := 0;
   end;
 
   if assigned( Character ) then //we are adding a char, so make room
     vOffset := 240
   else
-    vOffset := 214 - TResource( TCharacter( NPCList.items[ 0 ] ).resource ).FrameHeight div 2;
+    vOffset := 214 - TResource( NPCList[ 0 ].Resource ).FrameHeight div 2;
 
   Selectrect[ NPCidx ].rect := ApplyOffset( rect( CharX + 45, vOffset + VAdj1, CharX + 125, vOffset + VAdj1 + 20 ) );
-  SelectRect[ NPCidx ].info := txtMessage[ 14 ] + TCharacter( NPCList.items[ NPCidx ] ).name + txtMessage[ 15 ];
+  SelectRect[ NPCidx ].info := txtMessage[ 14 ] + NPCList[ NPCidx ].name + txtMessage[ 15 ];
   SelectRect[ NPCidx ].Enabled := true;
   if not assigned( Character ) then
   begin
-    NewAIBox := TAIOptions.Create( TCharacter( NPCList.items[ NPCidx ] ), AIImage, DXBox2, CharX + cWidth + Offset.X, vOffset + vOffAdj + Offset.Y, Offset );
+    NewAIBox := TAIOptions.Create( NPCList[ NPCidx ], AIImage, DXBox2, CharX + cWidth + Offset.X, vOffset + vOffAdj + Offset.Y, Offset );
     AIBoxList.Add( NewAIBox );
   end;
 end;
@@ -318,7 +318,7 @@ begin
       begin
         if (NPCList.count=5) and (CheckBox[0]=true) and (CheckBox[1]=true) and (CheckBox[2]=false) and (CheckBox[3]=false) and (CheckBox[4]=false) then
         begin
-          PlotTextBlock( txtMessage[ 7 ] + Character.name + txtMessage[ 8 ] + TCharacter( NPCList.items[ 1 ] ).name + txtMessage[ 9 ], 87, 590, 174, 240 );
+          PlotTextBlock( txtMessage[ 7 ] + Character.name + txtMessage[ 8 ] + NPCList[ 1 ].name + txtMessage[ 9 ], 87, 590, 174, 240 );
         end
         else
         begin
@@ -340,7 +340,7 @@ begin
       begin
         if assigned(Character) and (NPCList.count=5) and (CheckBox[0]=true) and (CheckBox[2]=true) and (CheckBox[1]=false) and (CheckBox[3]=false) and (CheckBox[4]=false) then
         begin
-          PlotTextBlock( txtMessage[ 7 ] + Character.name + txtMessage[ 8 ] + TCharacter( NPCList.items[ 2 ] ).name + txtMessage[ 9 ], 87, 590, 174, 240 );
+          PlotTextBlock( txtMessage[ 7 ] + Character.name + txtMessage[ 8 ] + NPCList[ 2 ].name + txtMessage[ 9 ], 87, 590, 174, 240 );
         end
         else
         begin
@@ -362,7 +362,7 @@ begin
       begin
         if assigned(Character) and (NPCList.count=5) and (CheckBox[0]=true) and (CheckBox[3]=true) and (CheckBox[2]=false) and (CheckBox[1]=false) and (CheckBox[4]=false) then
         begin
-          PlotTextBlock( txtMessage[ 7 ] + Character.name + txtMessage[ 8 ] + TCharacter( NPCList.items[ 3 ] ).name + txtMessage[ 9 ], 87, 590, 174, 240 );
+          PlotTextBlock( txtMessage[ 7 ] + Character.name + txtMessage[ 8 ] + NPCList[ 3 ].name + txtMessage[ 9 ], 87, 590, 174, 240 );
         end
         else
         begin
@@ -384,7 +384,7 @@ begin
       begin
         if assigned(Character) and (NPCList.count=5) and (CheckBox[0]=true) and (CheckBox[4]=true) and (CheckBox[2]=false) and (CheckBox[3]=false) and (CheckBox[1]=false) then
         begin
-          PlotTextBlock( txtMessage[ 7 ] + Character.name + txtMessage[ 8 ] + TCharacter( NPCList.items[ 4 ] ).name + txtMessage[ 9 ], 87, 590, 174, 240 );
+          PlotTextBlock( txtMessage[ 7 ] + Character.name + txtMessage[ 8 ] + NPCList[ 4 ].name + txtMessage[ 9 ], 87, 590, 174, 240 );
         end
         else
         begin
@@ -510,9 +510,9 @@ begin
   if assigned( Character ) then //we are adding a char, so make room
     vOffset := 240
   else
-    vOffset := 214 - TResource( TCharacter( NPCList.items[ 0 ] ).resource ).FrameHeight div 2;
+    vOffset := 214 - TResource( NPCList[ 0 ].resource ).FrameHeight div 2;
 
-  cWidth := TResource( TCharacter( NPCList.items[ 0 ] ).resource ).FrameWidth;
+  cWidth := TResource( NPCList[ 0 ].resource ).FrameWidth;
 
 //clear checkboxes
   if NPCList.count >3 then
@@ -613,13 +613,13 @@ begin
   if assigned( Character ) then //we are adding a char, so make room
     vOffset := 240
   else
-    vOffset := 214 - TResource( TCharacter( NPCList.items[ 0 ] ).resource ).FrameHeight div 2;
+    vOffset := 214 - TResource( NPCList[ 0 ].resource ).FrameHeight div 2;
 
-  cWidth := TResource( TCharacter( NPCList.items[ 0 ] ).resource ).FrameWidth;
+  cWidth := TResource( NPCList[ 0 ].resource ).FrameWidth;
 
-  i := pText.TinyTextLength( TCharacter( NPCList.items[ NPCidx ] ).name );
-  PlotTinyText( TCharacter( NPCList.items[ NPCidx ] ).name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset - vOffAdj + 4, 240 );
-  OnDraw( TCharacter( NPCList.items[ NPCidx ] ), CharX + Offset.X, vOffset - vOffAdj + Offset.Y );
+  i := pText.TinyTextLength( NPCList[ NPCidx ].name );
+  PlotTinyText( NPCList[ NPCidx ].name, ( CharX + cWidth div 2 ) - ( i div 2 ), vOffset - vOffAdj + 4, 240 );
+  OnDraw( NPCList[ NPCidx ], CharX + Offset.X, vOffset - vOffAdj + Offset.Y );
   PlotTinyText( txtMessage[ 11 ], CharX + 65, vOffset + VAdj2, 240 );
   pr := Rect( 0, 0, 15, 15 );
   if CheckBox[ NPCidx ] then
@@ -635,7 +635,7 @@ var
 begin
   cOffset := 104;
 
-  cWidth := TResource( TCharacter( NPCList.items[ 0 ] ).resource ).FrameWidth;
+  cWidth := TResource( NPCList[ 0 ].resource ).FrameWidth;
   if assigned( character ) then
   begin
     CharX := cOffset + ( 463 div 2 ) - cWidth div 2;
