@@ -8028,7 +8028,7 @@ begin
       j := Source.Mysticism div 8
     else
       j := Source.Mysticism div 6;
-    for i := 0 to j div 6 do
+    for i := 0 to j do
     begin
       NewProjectile := TProjectile(Sprites.NewSprite(TProjectile, Resource,
         Source.X + random(32) - 16, Source.Y + random(32) - 16,
