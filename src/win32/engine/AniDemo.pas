@@ -5207,31 +5207,11 @@ begin
       else if MenuChoice = 5 then
       begin
         ShowHistroy;
-        if NoContinue then
-        begin
-          if not NewGame then
-          begin
-            ClearOnDemandResources;
-            ClearResources(True);
-            Sprites.Realloc;
-          end;
-          NewGame := True;
-        end;
         // ExitCode:=65;
         // PostMessage(handle,WM_Done,0,0);
       end
       else if MenuChoice = 6 then
       begin
-        if NoContinue then
-        begin
-          if not NewGame then
-          begin
-            ClearOnDemandResources;
-            ClearResources(True);
-            Sprites.Realloc;
-          end;
-          NewGame := True;
-        end;
         PostMessage(Handle, WM_StartCredits, 0, 0);
       end
       else if MenuChoice = 7 then

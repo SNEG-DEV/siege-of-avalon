@@ -178,9 +178,8 @@ begin
       82: if ToggleShow(DlgRoster) then frmMain.BeginRoster(nil); // R
       83: ToggleSpell; // S
       84: TravelFast; // T
-//      87: WeaponSwitch; ; // W - Reserved for short/long distance weapons?
+      87: TwoWeapons; //W, only AoA
       88: ToggleXRay; // X
-      90: TwoWeapons; //Z, only AoA
       //  90: HDZoom; // Z - Reserved for future? HD Zoom function
       114..124: SpellhotkeyPlus(key); //F3-F12,
       VK_F1: if ToggleShow(DlgShow) then frmMain.BeginHelp; // F1
@@ -523,9 +522,9 @@ begin
   begin
     if modselection = TModSelection.SoA then  //SoA
     begin
-    if player.titleexists('03Chapter3') and not player.titleexists('04Chapter4') then
-//      RunScript(player, 'Loadmap(forest05,default,Start,ForestChpt3|#FastTransit.Default#)');
-      RunScript(player, 'Loadmap(forest05,default,f05b02,ForestChpt3|#FastTransit.Default#)');  // Better spot when having party members
+    //after speaking to Holden in forest 5, Transit available
+    if player.titleexists('03knowholden') and not player.titleexists('04Chapter4') then
+      RunScript(player, 'Loadmap(forest05,default,f05b02,ForestChpt3|#FastTransit.Default#)');
 //    if player.titleexists('02Chapter2') then
 //      RunScript(player, 'Loadmap(southgate1b,default,Levelpoint4,VillagetoSouthGate|#FastTransit.Default#)')
 //    else

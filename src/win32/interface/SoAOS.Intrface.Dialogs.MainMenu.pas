@@ -82,6 +82,8 @@ type
     procedure AreYouSure;
     procedure SelectModNew; // Choose Mod, Newgame
     procedure SelectModLoad; // Choose Mod, Loadgame
+    procedure SetMod;
+    procedure NotSetMod;
     procedure ShowHelp; // Show Helpscreen in Mainmenu
     function GetNoRect: TRect;
     function GetYesRect: TRect;
@@ -95,10 +97,7 @@ type
   public
     Captions: array [1 .. 8] of TIntroRect;
     MenuChoice: integer;
-    NoContinue: boolean;
-    // AnimDemo.pas needs access. After selecting another mod, Resume Game andsoon deactivated
-    modloadneeded: boolean;
-    //Again Anidemo.pas needs access to it. If mod get changed ->true
+    modloadneeded: boolean; // Anidemo.pas needs access to it. If mod get changed ->true
     constructor Create;
     destructor Destroy; override;
     procedure Init; override;
@@ -337,7 +336,7 @@ procedure TIntro.MouseDown(Sender: TObject; Button: TMouseButton;
 var
   i: integer;
   pr: TRect;
-  pr1, pr2, pr3: TRect;
+  pr1, pr2: TRect;
 const
   j: integer = 56; // Loadgame, Mod choose + 56 further down
   k: integer = 19; // moving constant (vertical) for Modselection rectangle
@@ -349,7 +348,6 @@ begin
     // Rectangles for mod selection
     pr1 := Rect(0, 0, 123, 220); // Modbox
     pr2 := Rect(0, 0, 100, 17); // Modselect
-    pr3 := ApplyOffset(Rect(0, 0, 800, 600)); // Mainmenu
     // Show Helpscreen/Controls
     if PtInRect(ApplyOffset(Rect(590, 470, 700, 495)), point(X, Y)) and
       (AreYouSureBoxVisible = false) and (SelectModBoxNewVisible = false) and
@@ -448,75 +446,14 @@ begin
       end;
       if PtInRect(ApplyOffset(Rect(407, 266, 462, 294)), point(X, Y)) then
       begin // Mod selected, -> OK
-        NoContinue := false;
-        //check if modselection is changed
-        if modselection <> story then
-          modloadneeded := true
-        else
-          modloadneeded := false;
-        modselection := Story;
-        Case modselection of
-          TModSelection.SoA:
-            begin
-              Modname := 'Siege';
-              Modgames := 'games';
-              Modmaps := 'maps';
-            end;
-          TModSelection.DoA:
-            begin
-              Modname := 'Days';
-              Modgames := 'daysgames';
-              Modmaps := 'daysmaps';
-            end;
-          TModSelection.PoA:
-            begin
-              Modname := 'Pillars';
-              Modgames := 'pillarsgames';
-              Modmaps := 'pillarsmaps';
-            end;
-          TModSelection.AoA:
-            begin
-              Modname := 'Ashes';
-              Modgames := 'ashesgames';
-              Modmaps := 'ashesmaps';
-            end;
-          TModSelection.Caves:
-            begin
-              Modname := 'Caves';
-              Modgames := 'cavesgames';
-              Modmaps := 'cavesmaps';
-            end;
-          TModSelection.RoD:
-            begin
-              Modname := 'Rise';
-              Modgames := 'risegames';
-              Modmaps := 'risemaps';
-            end;
-          TModSelection.TSK:
-            begin
-              Modname := 'Kingdoms';
-              Modgames := 'kingdomsgames';
-              Modmaps := 'kingdomsmaps';
-            end;
-        end;
+        SetMod;
         MenuChoice := 1;
         DXModSelect := nil;
-        // DlgIntro.Captions[ 5 ].Enabled := true;  //Ab jetzt Homepage aktiv
         Close;
       end
       else if PtInRect(ApplyOffset(Rect(343, 266, 388, 294)), point(X, Y)) then
       begin // BACK
-        SelectModBoxNewVisible := false;
-        Story := modselection; // Upside down because nothing should change
-        lpDDSBack.BltFast(0, 0, DXBack, @pr3, DDBLTFAST_WAIT); // clear screen
-        SoAOS_DX_BltFront;
-        // ----
-        NoContinue := true;
-        DlgIntro.Captions[3].Enabled := false;
-        DlgIntro.Captions[4].Enabled := false;
-        DlgIntro.Captions[8].Enabled := false;
-        // Deactivate, because mod could have been changed
-        // With Story := Modselection und upside down, have to check one day if this ist still needed
+        NotSetMod;
       end;
     end;
     if SelectModBoxLoadVisible = true then // Load game  //56 beneath = j
@@ -556,73 +493,15 @@ begin
       if PtInRect(ApplyOffset(Rect(407, 266 + j, 462, 294 + j)), point(X, Y))
       then
       begin // Mod selected, -> OK
-        NoContinue := false;
-        //check if modselection is changed
-        if modselection <> story then
-          modloadneeded := true
-        else
-          modloadneeded := false;
-        modselection := Story;
-        Case modselection of
-          TModSelection.SoA:
-            begin
-              Modname := 'Siege';
-              Modgames := 'games';
-              Modmaps := 'maps';
-            end;
-          TModSelection.DoA:
-            begin
-              Modname := 'Days';
-              Modgames := 'daysgames';
-              Modmaps := 'daysmaps';
-            end;
-          TModSelection.PoA:
-            begin
-              Modname := 'Pillars';
-              Modgames := 'pillarsgames';
-              Modmaps := 'pillarsmaps';
-            end;
-          TModSelection.AoA:
-            begin
-              Modname := 'Ashes';
-              Modgames := 'ashesgames';
-              Modmaps := 'ashesmaps';
-            end;
-          TModSelection.Caves:
-            begin
-              Modname := 'Caves';
-              Modgames := 'cavesgames';
-              Modmaps := 'cavesmaps';
-            end;
-          TModSelection.RoD:
-            begin
-              Modname := 'Rise';
-              Modgames := 'risegames';
-              Modmaps := 'risemaps';
-            end;
-          TModSelection.TSK:
-            begin
-              Modname := 'Kingdoms';
-              Modgames := 'kingdomsgames';
-              Modmaps := 'kingdomsmaps';
-            end;
-        end;
+        SetMod;
         MenuChoice := 2;
         DXModSelect := nil;
-        // DlgIntro.Captions[ 5 ].Enabled := true; //Ab jetzt Homepage aktiv
         Close;
       end
       else if PtInRect(ApplyOffset(Rect(343, 266 + j, 388, 294 + j)),
         point(X, Y)) then
       begin // BACK
-        SelectModBoxLoadVisible := false;
-        Story := modselection; // Upside down because nothing should change
-        lpDDSBack.BltFast(0, 0, DXBack, @pr3, DDBLTFAST_WAIT); // clear screen
-        SoAOS_DX_BltFront;
-        NoContinue := true;
-        DlgIntro.Captions[3].Enabled := false;
-        DlgIntro.Captions[4].Enabled := false;
-        DlgIntro.Captions[8].Enabled := false;
+        NotSetMod;
       end;
     end;
   except
@@ -815,6 +694,88 @@ begin
     SelectModBoxLoadVisible := true;
     SoAOS_DX_BltFront;
   except
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
+  end;
+end;
+
+procedure TIntro.SetMod;
+const
+  FailName: string = 'TIntro.SetMod ';
+begin
+  Log.DebugLog(FailName);
+  try
+    //check if modselection is changed
+    if modselection <> story then
+      modloadneeded := true
+    else
+      modloadneeded := false;
+    modselection := Story;
+    Case modselection of
+    TModSelection.SoA:
+    begin
+      Modname := 'Siege';
+      Modgames := 'games';
+      Modmaps := 'maps';
+    end;
+    TModSelection.DoA:
+    begin
+      Modname := 'Days';
+      Modgames := 'daysgames';
+      Modmaps := 'daysmaps';
+    end;
+    TModSelection.PoA:
+    begin
+      Modname := 'Pillars';
+      Modgames := 'pillarsgames';
+      Modmaps := 'pillarsmaps';
+    end;
+    TModSelection.AoA:
+    begin
+      Modname := 'Ashes';
+      Modgames := 'ashesgames';
+      Modmaps := 'ashesmaps';
+    end;
+    TModSelection.Caves:
+    begin
+      Modname := 'Caves';
+      Modgames := 'cavesgames';
+      Modmaps := 'cavesmaps';
+    end;
+    TModSelection.RoD:
+    begin
+      Modname := 'Rise';
+      Modgames := 'risegames';
+      Modmaps := 'risemaps';
+    end;
+    TModSelection.TSK:
+    begin
+      Modname := 'Kingdoms';
+      Modgames := 'kingdomsgames';
+      Modmaps := 'kingdomsmaps';
+    end;
+  end;
+  except
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
+  end;
+end;
+
+procedure TIntro.NotSetMod;
+var
+pr: Trect;
+const
+  FailName: string = 'TIntro.NotSetMod ';
+begin
+  Log.DebugLog(FailName);
+  try
+    pr := ApplyOffset(Rect(0, 0, 800, 600)); // Mainmenu
+    SelectModBoxNewVisible := false;
+    SelectModBoxLoadVisible := false;
+    Story := modselection; // Upside down because nothing should change
+    lpDDSBack.BltFast(0, 0, DXBack, @pr, DDBLTFAST_WAIT); // clear screen
+    SoAOS_DX_BltFront;
+    except
     on E: Exception do
       Log.Log(FailName, E.Message, []);
   end;
