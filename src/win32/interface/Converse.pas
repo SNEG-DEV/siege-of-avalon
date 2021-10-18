@@ -208,7 +208,7 @@ begin
       exit;
     end;
     Filename := ResourcePath + 'conversations\' + Language + '\' + Filename + '.cnv';
-    INI := TMemINIFile.Create( Filename );
+    INI := TMemINIFile.Create( Filename, TEncoding.ANSI ); // Due to the BitMap font mapping
 
     LoadConversation;
 

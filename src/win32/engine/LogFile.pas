@@ -209,6 +209,7 @@ begin
     S := S + AnsiString( IntToStr( dwAvailVirtual ) + ' Available User bytes of address space' + #13#10 );
 
     S := S + #13#10 + AnsiString( TOSVersion.ToString ) + #13#10;
+    S := S + AnsiString( 'ACP: '+GetACP.ToString ) + #13#10;
 
     if IsRunningUnderWINE(WineVer) then
       S := S + AnsiString( 'Running under WINE ('+WineVer+')' + #13#10 );
