@@ -45,6 +45,7 @@ uses
   // Winapi.DirectDraw,
   DirectX,
   DXUtil,
+  DXEffects, //Dim Modbox
   Winapi.Windows,
   System.SysUtils,
   System.Types,
@@ -74,14 +75,14 @@ type
     DXBack: IDirectDrawSurface;
     DXModSelect: IDirectDrawSurface; // Mod selection box
     DXModRand: IDirectDrawSurface; // Mod selection, rectangle
+    DXModDim: IDirectDrawSurface; // Dim Mod if not installed
     DXHelp: IDirectDrawSurface; // HelpScreen
     HelpscreenShow: boolean;
     Story: TModSelection; // Value for modselection after pressing OK or BACK
     PrevChoice: integer;
     txtMessage: array [0 .. 1] of string;
     procedure AreYouSure;
-    procedure SelectModNew; // Choose Mod, Newgame
-    procedure SelectModLoad; // Choose Mod, Loadgame
+    procedure SelectMod; // Choose Mod
     procedure SetMod;
     procedure NotSetMod;
     procedure ShowHelp; // Show Helpscreen in Mainmenu
@@ -306,7 +307,7 @@ var
 begin
   if HelpscreenShow then
   begin
-    if key = 27 then
+    if key = 27 then //esc
       HelpscreenShow := false;
     pr := Rect(0, 0, DlgWidth, DlgHeight);
     lpDDSBack.BltFast(Offset.X, Offset.Y, DXBack, @pr, DDBLTFAST_WAIT);
@@ -334,11 +335,10 @@ end;
 procedure TIntro.MouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y, GridX, GridY: integer);
 var
-  i: integer;
+  i, j: integer;
   pr: TRect;
   pr1, pr2: TRect;
 const
-  j: integer = 56; // Loadgame, Mod choose + 56 further down
   k: integer = 19; // moving constant (vertical) for Modselection rectangle
   FailName: string = 'TIntro.MouseDown';
 begin
@@ -370,14 +370,14 @@ begin
       end;
       if (MenuChoice = 1) and (Modallowed) then
       begin
-        SelectModNew;
+        SelectMod;
         if (Story > TModSelection.TSK) or (Story < TModSelection.SoA) then
         // Just to be sure
           Story := TModSelection.SoA;
       end
       else if (MenuChoice = 2) and (Modallowed) then
       begin
-        SelectModLoad;
+        SelectMod;
         if (Story > TModSelection.TSK) or (Story < TModSelection.SoA) then
         // Just to be sure
           Story := TModSelection.SoA;
@@ -407,92 +407,74 @@ begin
         SoAOS_DX_BltFront;
       end; // endif PtInRect
     end;
-    if SelectModBoxNewVisible = true then // New game
+    if (SelectModBoxNewVisible = true) or (SelectModBoxLoadVisible = true) then
     begin
-      if PtInRect(ApplyOffset(Rect(350, 107, 450, 238)), point(X, Y)) then
-      //Complete Box rectangle
-      begin
-        for i := 0 to 6 do
-        begin
-          if PtInRect(ApplyOffset(Rect(350, 107 + k * i, 450, 124 + k * i)),
-            point(X, Y)) then
-          begin
-            // Check if mod is installed
-            if (i = 0) and (fileexists(AppPath + 'kingdoms.ini')) then
-              Story := TModSelection.TSK;
-            if (i = 1) and (fileexists(AppPath + 'siege.ini')) then
-              Story := TModSelection.SoA;
-            if (i = 2) and (fileexists(AppPath + 'days.ini')) then
-              Story := TModSelection.DoA;
-            if (i = 3) and (fileexists(AppPath + 'pillars.ini')) then
-              Story := TModSelection.PoA;
-            if (i = 4) and (fileexists(AppPath + 'ashes.ini')) then
-              Story := TModSelection.AoA;
-            if (i = 5) and (fileexists(AppPath + 'caves.ini')) then
-              Story := TModSelection.Caves;
-            if (i = 6) and (fileexists(AppPath + 'rise.ini')) then
-              Story := TModSelection.RoD;
-            // Seven Kingdoms, on top of the list, but is also modselection 7
-            // log.log ('Schegichte=' + inttostr(i));
-            Break;
-          end;
-        end;
-        lpDDSBack.BltFast(400 - 61 + Offset.X, 81 + Offset.Y, DXModSelect, @pr1,
-          DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
-          lpDDSBack.BltFast(350 + Offset.X, 107 + i * k + Offset.Y,
-            DXModRand, @pr2, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
-        SoAOS_DX_BltFront;
-      end;
-      if PtInRect(ApplyOffset(Rect(407, 266, 462, 294)), point(X, Y)) then
-      begin // Mod selected, -> OK
-        SetMod;
-        MenuChoice := 1;
-        DXModSelect := nil;
-        Close;
-      end
-      else if PtInRect(ApplyOffset(Rect(343, 266, 388, 294)), point(X, Y)) then
-      begin // BACK
-        NotSetMod;
-      end;
-    end;
-    if SelectModBoxLoadVisible = true then // Load game  //56 beneath = j
-    begin
-      if PtInRect(ApplyOffset(Rect(350, 107 + j, 450, 238 + j)), point(X, Y))
-      then
+      if SelectModBoxNewVisible = true then // New game
+      j := 0
+      else //Load game
+      j := 56;
+      if PtInRect(ApplyOffset(Rect(350, 107 + j, 450, 238 + j)), point(X, Y)) then
+      //the whole Modbox field
       begin
         for i := 0 to 6 do
         begin
           if PtInRect(ApplyOffset(Rect(350, 107 + j + k * i, 450, 124 + j + k * i)), point(X, Y)) then
           begin
             if (i = 0) and (fileexists(AppPath + 'kingdoms.ini')) then
+            begin
               Story := TModSelection.TSK;
+              break;
+            end;
             if (i = 1) and (fileexists(AppPath + 'siege.ini')) then
+            begin
               Story := TModSelection.SoA;
+              break;
+            end;
             if (i = 2) and (fileexists(AppPath + 'days.ini')) then
+            begin
               Story := TModSelection.DoA;
+              break;
+            end;
             if (i = 3) and (fileexists(AppPath + 'pillars.ini')) then
+            begin
               Story := TModSelection.PoA;
+              break;
+            end;
             if (i = 4) and (fileexists(AppPath + 'ashes.ini')) then
+            begin
               Story := TModSelection.AoA;
+              break;
+              end;
             if (i = 5) and (fileexists(AppPath + 'caves.ini')) then
+            begin
               Story := TModSelection.Caves;
+              break;
+            end;
             if (i = 6) and (fileexists(AppPath + 'rise.ini')) then
+            begin
               Story := TModSelection.RoD;
-            // Seven Kingdoms, on top of the list, but is also modselection 7
-            // log.log ('Schegichte=' + inttostr(story));
-            Break;
+              // Seven Kingdoms, on top of the list, but is also modselection 7
+              // log.log ('Schegichte=' + inttostr(story));
+              break;
+            end;
           end;
         end;
+        if i < 7 then //if forloop doesn't get break-command, i -> 7
+        begin
         lpDDSBack.BltFast(400 - 61 + Offset.X, 81 + j + Offset.Y, DXModSelect,
           @pr1, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
-          lpDDSBack.BltFast(350 + Offset.X, 107 + j + i * k + Offset.Y,
-            DXModRand, @pr2, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
+        lpDDSBack.BltFast(350 + Offset.X, 107 + j + i * k + Offset.Y,
+          DXModRand, @pr2, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
         SoAOS_DX_BltFront;
+        end;
       end;
       if PtInRect(ApplyOffset(Rect(407, 266 + j, 462, 294 + j)), point(X, Y))
       then
       begin // Mod selected, -> OK
         SetMod;
+        if SelectModBoxNewVisible then
+        MenuChoice := 1
+        else
         MenuChoice := 2;
         DXModSelect := nil;
         Close;
@@ -612,85 +594,72 @@ begin
   end;
 end; // AreYouSure
 
-procedure TIntro.SelectModNew; // Mod selection Newgame
+procedure TIntro.SelectMod; // Mod selection
 var
   width1, height1: integer;
   width2, height2: integer;
-  nRect: TRect;
+  width3, height3: integer;
   pr1, pr2, pr3: TRect;
+  i, j: integer;
 const
-  FailName: string = 'TIntro.NewMod ';
+  FailName: string = 'TIntro.SelectMod ';
 begin
   Log.DebugLog(FailName);
   try
-    SelectModBoxLoadVisible := false;
+    if MenuChoice = 2 then //Load game
+    begin
+      SelectModBoxNewVisible := false;
+      SelectModBoxLoadVisible := true;
+      j := 56;
+    end
+    else //MenuChoice = 1, New game
+    begin
+      SelectModBoxNewVisible := true;
+      SelectModBoxLoadVisible := false;
+      j := 0;
+    end;
     AreYouSureBoxVisible := false;
     HelpscreenShow := false;
     DXModRand := SoAOS_DX_LoadBMP(InterfacePath + 'ModSelect.bmp', cInvisColor,
       width1, height1);
     DXModSelect := SoAOS_DX_LoadBMP(InterfacePath + 'ModBox.bmp', cInvisColor,
       width2, height2);
-    nRect := Captions[1].Rect;
+    DXModDim := SoAOS_DX_LoadBMP(InterfacePath + 'Chablack.bmp', cInvisColor,
+      width3, height3);
+    //First need to dim Modbox(=DXModselect) if a mod isn't installed
+    for i := 0 to 6 do
+    begin
+    if (i = 0) and not (fileexists(AppPath + 'kingdoms.ini')) then
+    Drawalpha(DXModSelect, rect(11, 26 + 19*i, 11 + width1, 26 + 19*i + height1), Rect(0, 0, width3, height3), DXModDim, true, 192);
+    if (i = 1) and not (fileexists(AppPath + 'siege.ini')) then
+    Drawalpha(DXModSelect, rect(11, 26 + 19*i, 11 + width1, 26 + 19*i + height1), Rect(0, 0, width3, height3), DXModDim, true, 192);
+    if (i = 2) and not (fileexists(AppPath + 'days.ini')) then
+    Drawalpha(DXModSelect, rect(11, 26 + 19*i, 11 + width1, 26 + 19*i + height1), Rect(0, 0, width3, height3), DXModDim, true, 192);
+    if (i = 3) and not (fileexists(AppPath + 'pillars.ini')) then
+    Drawalpha(DXModSelect, rect(11, 26 + 19*i, 11 + width1, 26 + 19*i + height1), Rect(0, 0, width3, height3), DXModDim, true, 192);
+    if (i = 4) and not (fileexists(AppPath + 'ashes.ini')) then
+    Drawalpha(DXModSelect, rect(11, 26 + 19*i, 11 + width1, 26 + 19*i + height1), Rect(0, 0, width3, height3), DXModDim, true, 192);
+    if (i = 5) and not (fileexists(AppPath + 'caves.ini')) then
+    Drawalpha(DXModSelect, rect(11, 26 + 19*i, 11 + width1, 26 + 19*i + height1), Rect(0, 0, width3, height3), DXModDim, true, 192);
+    if (i = 6) and not (fileexists(AppPath + 'rise.ini')) then
+    Drawalpha(DXModSelect, rect(11, 26 + 19*i, 11 + width1, 26 + 19*i + height1), Rect(0, 0, width3, height3), DXModDim, true, 192);
+    end;
     pr1 := Rect(0, 0, DlgWidth, DlgHeight);
     lpDDSBack.BltFast(Offset.X, Offset.Y, DXBack, @pr1, DDBLTFAST_WAIT);
     pr2 := Rect(0, 0, width2, height2);
-    lpDDSBack.BltFast(400 - 61 + Offset.X, 81 + Offset.Y, DXModSelect, @pr2,
+    lpDDSBack.BltFast(400 - 61 + Offset.X, 81 + j + Offset.Y, DXModSelect, @pr2,
       DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
     pr3 := Rect(0, 0, width1, height1);
     if modselection = TModSelection.TSK then
-      lpDDSBack.BltFast(350 + Offset.X, 107 + Offset.Y, DXModRand, @pr3,
+      lpDDSBack.BltFast(350 + Offset.X, 107 + j + Offset.Y, DXModRand, @pr3,
         DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT)
     else if (modselection > TModSelection.TSK) or (modselection < TModSelection.SoA) then
-      lpDDSBack.BltFast(350 + Offset.X, 107 + 19 + Offset.Y, DXModRand, @pr3,
+      lpDDSBack.BltFast(350 + Offset.X, 107 + j + 19 + Offset.Y, DXModRand, @pr3,
         DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT)
     else
-      lpDDSBack.BltFast(350 + Offset.X, 107 + 19 * (ord(modselection)+1) + Offset.Y,
+      lpDDSBack.BltFast(350 + Offset.X, 107 + j + 19 * (ord(modselection)+1) + Offset.Y,
         DXModRand, @pr3, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
     // + 19 because SoA on the second place of the selectionscreen
-    SelectModBoxNewVisible := true;
-    SoAOS_DX_BltFront;
-  except
-    on E: Exception do
-      Log.Log(FailName, E.Message, []);
-  end;
-end;
-
-procedure TIntro.SelectModLoad; // Mod selection Loadgame
-var
-  width1, height1: integer;
-  width2, height2: integer;
-  nRect: TRect;
-  pr1, pr2, pr3: TRect;
-const
-  FailName: string = 'TIntro.LoadMod ';
-begin
-  Log.DebugLog(FailName);
-  try
-    SelectModBoxNewVisible := false;
-    AreYouSureBoxVisible := false;
-    HelpscreenShow := false;
-    DXModRand := SoAOS_DX_LoadBMP(InterfacePath + 'ModSelect.bmp', cInvisColor,
-      width1, height1);
-    DXModSelect := SoAOS_DX_LoadBMP(InterfacePath + 'ModBox.bmp', cInvisColor,
-      width2, height2);
-    nRect := Captions[1].Rect;
-    pr1 := Rect(0, 0, DlgWidth, DlgHeight);
-    lpDDSBack.BltFast(Offset.X, Offset.Y, DXBack, @pr1, DDBLTFAST_WAIT);
-    pr2 := Rect(0, 0, 123, 220);
-    lpDDSBack.BltFast(400 - 61 + Offset.X, 81 + 56 + Offset.Y, DXModSelect,
-      @pr2, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
-    pr3 := Rect(0, 0, 100, 17);
-    if modselection = TModSelection.TSK then
-      lpDDSBack.BltFast(350 + Offset.X, 107 + 56 + Offset.Y, DXModRand, @pr3,
-        DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT)
-    else if (modselection > TModSelection.TSK) or (modselection < TModSelection.SoA) then
-      lpDDSBack.BltFast(350 + Offset.X, 107 + 56 + 19 + Offset.Y, DXModRand,
-        @pr3, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT)
-    else
-      lpDDSBack.BltFast(350 + Offset.X, 107 + 56 + 19 * (ord(modselection)+1) + Offset.Y,
-        DXModRand, @pr3, DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
-    // + 19 because SoA on the second place of the selectionscreen
-    SelectModBoxLoadVisible := true;
     SoAOS_DX_BltFront;
   except
     on E: Exception do
