@@ -239,7 +239,7 @@ begin
     pTAIcon.dx := StartPos + i * 35;
     pTAIcon.dy := 172;
     pTAIcon.sr := rect( 36, i * 36, 36 + 35, i * 36 + 35 );
-    PTAIcon.text := 'Set target to: ' + TCharacter( NPCList.items[ i ] ).name;
+    PTAIcon.text := 'Set target to: ' + NPCList[ i ].name;
     pTAIcon.Target := TTFriend;
     pTAIcon.AiParameter := paSpecificPartyMember;
     TargList.add( pTAIcon );

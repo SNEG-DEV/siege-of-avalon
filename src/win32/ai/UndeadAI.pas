@@ -555,7 +555,7 @@ begin
     CenterX := Character.X;
     CenterY := Character.Y;
 
-    S := Character.Properties[ 'LeashLength' ];
+    S := Character.Property_[ 'LeashLength' ];
     Leash := StrToIntDef( S, 200 );
 
     case Random( 8 ) of
@@ -570,7 +570,7 @@ begin
     end;
 
 
-    S := LowerCase( Character.Properties[ 'Combative' ] );
+    S := LowerCase( Character.Property_[ 'Combative' ] );
     try
       bCombative := true;
       if S = 'false' then
@@ -597,7 +597,7 @@ begin
     if lowerCase( character.name ) = 'body' then
       Character.doAction( 'death' );
 
-    S := LowerCase( Character.Properties[ 'Transparent' ] );
+    S := LowerCase( Character.Property_[ 'Transparent' ] );
     try
       if S <> '100' then
       begin
@@ -608,7 +608,7 @@ begin
     end;
 
   //Actual UndeadType Setting
-{  S:=Character.Properties['UndeadType'];
+{  S:=Character.Property_['UndeadType'];
   try
     if S='' then
        FUndeadType:=utSkeleton
@@ -921,7 +921,7 @@ begin
     Delay := random( 40 );
     CollideCount := 0;
 
-    S := LowerCase( Character.Properties[ 'TakeOrders' ] );
+    S := LowerCase( Character.Property_[ 'TakeOrders' ] );
     try
       bTakeOrders := true;
       if S = 'false' then
@@ -931,7 +931,7 @@ begin
       bTakeOrders := true;
     end;
 
-    S := LowerCase( Character.Properties[ 'BalanceWithPlayer' ] );
+    S := LowerCase( Character.Property_[ 'BalanceWithPlayer' ] );
     try
       if ( S <> '' ) and ( s <> '0' ) then
       begin
@@ -1038,7 +1038,7 @@ begin
       FUndeadType := utGhost;
 
  //actual undeadType settings
-{  S:=Character.Properties['UndeadType'];
+{  S:=Character.Property_['UndeadType'];
   try
     if S='' then
        FUndeadType:=utSkeleton
@@ -1384,9 +1384,9 @@ begin
     ShotCounter := 0;
     MaxShots := Random( 3 ) + 1;
 
-    bTakeOrders := StrToBoolDef( Character.Properties[ 'TakeOrders' ], True );
+    bTakeOrders := StrToBoolDef( Character.Property_[ 'TakeOrders' ], True );
 
-    S := LowerCase( Character.Properties[ 'BalanceWithPlayer' ] );
+    S := LowerCase( Character.Property_[ 'BalanceWithPlayer' ] );
     try
       if ( S <> '' ) and ( s <> '0' ) then
       begin
@@ -1431,8 +1431,8 @@ begin
     except
     end;
 
-    bMove := StrToBoolDef( Character.Properties[ 'Moveable' ], True );
-    iDistance := StrToIntDef( Character.Properties[ 'Distance' ], 175 );
+    bMove := StrToBoolDef( Character.Property_[ 'Moveable' ], True );
+    iDistance := StrToIntDef( Character.Property_[ 'Distance' ], 175 );
 
     PartyTotal := 1;
     if character.GroupName <> '' then
@@ -1907,9 +1907,9 @@ begin
     character.AddTitle( 'Heal' );
     character.AddTitle( 'Charge' );
 
-    bMove := StrToBoolDef( Character.Properties[ 'Moveable' ], True );
+    bMove := StrToBoolDef( Character.Property_[ 'Moveable' ], True );
 
-    S := LowerCase( Character.Properties[ 'BalanceWithPlayer' ] );
+    S := LowerCase( Character.Property_[ 'BalanceWithPlayer' ] );
     try
       if ( S <> '' ) and ( s <> '0' ) then
       begin
@@ -1954,10 +1954,10 @@ begin
     except
     end;
 
-    bHealFirst := StrToBoolDef( Character.Properties[ 'HealFirst' ], True );
-    bTakeOrders := StrToBoolDef( Character.Properties[ 'TakeOrders' ], True );
+    bHealFirst := StrToBoolDef( Character.Property_[ 'HealFirst' ], True );
+    bTakeOrders := StrToBoolDef( Character.Property_[ 'TakeOrders' ], True );
 
-    iDistance := StrToIntDef( Character.Properties[ 'Distance' ], 175 );
+    iDistance := StrToIntDef( Character.Property_[ 'Distance' ], 175 );
 
     if character.GroupName <> '' then
       FriendsList := GetGroup( Character, Character.GroupName );
@@ -2488,10 +2488,10 @@ begin
     NukeCounter := 0;
     CastTimes := Random( 3 ) + 1;
 
-    bMove := StrToBoolDef( Character.Properties[ 'Moveable' ], True );
-    bHealFirst := StrToBoolDef( Character.Properties[ 'HealFirst' ], True );
+    bMove := StrToBoolDef( Character.Property_[ 'Moveable' ], True );
+    bHealFirst := StrToBoolDef( Character.Property_[ 'HealFirst' ], True );
 
-    S := LowerCase( Character.Properties[ 'BalanceWithPlayer' ] );
+    S := LowerCase( Character.Property_[ 'BalanceWithPlayer' ] );
     try
       if ( S <> '' ) and ( s <> '0' ) then
       begin
@@ -2536,9 +2536,9 @@ begin
     except
     end;
 
-    bTakeOrders := StrToBoolDef( Character.Properties[ 'TakeOrders' ], True );
+    bTakeOrders := StrToBoolDef( Character.Property_[ 'TakeOrders' ], True );
 
-    S := LowerCase( Character.Properties[ 'MainStat' ] );
+    S := LowerCase( Character.Property_[ 'MainStat' ] );
     try
       if S = '' then
         MainStat := msCombat
@@ -2558,7 +2558,7 @@ begin
       MainStat := msCombat
     end;
 
-    iDistance := StrToIntDef( Character.Properties[ 'Distance' ], 175 );
+    iDistance := StrToIntDef( Character.Property_[ 'Distance' ], 175 );
     
     if character.GroupName <> '' then
       FriendsList := GetGroup( Character, Character.GroupName );

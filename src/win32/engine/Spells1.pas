@@ -546,8 +546,8 @@ begin
       NewCharacter.addtitle( 'aura of steel' );
 
       NewCharacter.onDie := 'Doeffect(fadeaway)';
-      NewCharacter.Properties[ 'BalanceWithPlayer' ] := '1';
-      NewCharacter.Properties[ 'equipmentlocked' ] := 'true';
+      NewCharacter.Property_[ 'BalanceWithPlayer' ] := '1';
+      NewCharacter.Property_[ 'equipmentlocked' ] := 'true';
 
       NewCharacter.Highlightable := true;
       NewCharacter.GroupName := 'pmirror';
@@ -716,7 +716,7 @@ begin
   try
     for iLoop := 0 to NPCList.Count - 1 do
     begin
-      NewTarget := TCharacter( NPCList[ iLoop ] );
+      NewTarget := NPCList[ iLoop ];
       result := False;
       result := inherited Cast( Source, NewTarget );
       if not result then

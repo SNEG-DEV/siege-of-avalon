@@ -60,7 +60,13 @@ const
   cGroundListWidth : integer = 75;
   cGroundListHeight : integer = 29;
 
+  EOBMarker = $4242;
+
 type
+  TSavBlocks = ( sbMap, sbMapKnown, sbCharacter, sbItem, sbTravel, sbJournal, scAbstract, scSoundPlayer, scPathCorner, scTrigger, scSpriteObject,
+    scItem, scWeapon, scQuiver, scBow, scContainer, scDoor, scCharacter, sbStartJournalIndex, sbQuest, siItem, sbAdventure,
+    sbDeathScreen, sbStartQuestIndex, sbStartAdventureIndex, scEventTimer, sbIndex, sbMaxPartyMembers );
+
 //  class function AppPath: string; static;
 
 /// <summary> Screen resolution to improve readbility, names might change when I get a clue what is needed</summary>

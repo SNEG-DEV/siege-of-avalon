@@ -45,6 +45,7 @@ uses
   System.SysUtils,
   System.Types,
   System.Classes,
+  System.Generics.Collections,
   SoAOS.Types,
   Vcl.Controls,
 //  Winapi.DirectDraw,
@@ -76,7 +77,7 @@ type
   public
     Map : TAniMap;
     Character : TCharacter;
-    CharacterList : TList;
+    CharacterList : TList<TCharacter>;
     MapName : string;
     procedure Init; override;
     procedure UpdateLiveMap;

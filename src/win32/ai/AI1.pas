@@ -178,25 +178,25 @@ begin
   Log.DebugLog(FailName);
   try
 
-    S := Character.Properties[ 'CenterX' ];
+    S := Character.Property_[ 'CenterX' ];
     if S = '' then
     begin
       CenterX := Character.X;
-      Character.Properties[ 'CenterX' ] := IntToStr( CenterX );
+      Character.Property_[ 'CenterX' ] := IntToStr( CenterX );
     end
     else
       CenterX := StrToIntDef( S, Character.X );
 
-    S := Character.Properties[ 'CenterY' ];
+    S := Character.Property_[ 'CenterY' ];
     if S = '' then
     begin
       CenterY := Character.Y;
-      Character.Properties[ 'CenterY' ] := IntToStr( CenterY );
+      Character.Property_[ 'CenterY' ] := IntToStr( CenterY );
     end
     else
       CenterY := StrToIntDef( S, Character.Y );
 
-    Leash := StrToIntDef( Character.Properties[ 'LeashLength' ], 50 );
+    Leash := StrToIntDef( Character.Property_[ 'LeashLength' ], 50 );
   except
     on E : Exception do
       Log.log( FailName, E.Message, [ ] );
@@ -613,7 +613,7 @@ begin
   Log.DebugLog(FailName);
   try
 
-    S := Character.Properties[ 'PathCorner' ];
+    S := Character.Property_[ 'PathCorner' ];
     CurrentPath := GetGUID( S );
     if not ( CurrentPath is TPathCorner ) then
       CurrentPath := nil;

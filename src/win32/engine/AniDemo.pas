@@ -322,6 +322,7 @@ type
     procedure BeginRoster(Character: TCharacter);
     procedure BeginTransit(const NewFile, SceneName, StartingPoint, Transition,
       TargetList: string);
+    //TODO: Add/Remove party only works on TCharacter - change param or put on TList<>
     procedure AddToParty(Figure: TAniFigure);
     procedure RemoveFromParty(Figure: TAniFigure);
     procedure ChangeFocus(Figure: TAniFigure);
@@ -756,7 +757,7 @@ begin
             Pants[i].Free;
         end;
       end;
-      Player.Properties['HeadLayer'] :=
+      Player.Property_['HeadLayer'] :=
         TCharacterResource(Player.Resource).HeadName;
 
       if hardmode then
@@ -1969,22 +1970,20 @@ begin
     begin
       for i := 1 to NPCList.Count - 1 do
       begin
-        HpDistance := TCharacter(NPCList[i]).HitPoints -
-          TCharacter(NPCList[i]).Wounds;
-        if HpDistance > TCharacter(NPCList[i]).HitPoints then
-          HpDistance := TCharacter(NPCList[i]).HitPoints
+        HpDistance := NPCList[i].HitPoints - NPCList[i].Wounds;
+        if HpDistance > NPCList[i].HitPoints then
+          HpDistance := NPCList[i].HitPoints
         else if HpDistance < 0 then
           HpDistance := 0;
 
-        ManaDistance := TCharacter(NPCList[i]).Mana -
-          TCharacter(NPCList[i]).Drain;
-        if ManaDistance > TCharacter(NPCList[i]).Mana then
-          ManaDistance := TCharacter(NPCList[i]).Mana
+        ManaDistance := NPCList[i].Mana - NPCList[i].Drain;
+        if ManaDistance > NPCList[i].Mana then
+          ManaDistance := NPCList[i].Mana
         else if ManaDistance < 0 then
           ManaDistance := 0;
 
-        HpDistance := HpDistance * (66 / TCharacter(NPCList[i]).HitPoints);
-        ManaDistance := ManaDistance * (66 / TCharacter(NPCList[i]).Mana);
+        HpDistance := HpDistance * (66 / NPCList[i].HitPoints);
+        ManaDistance := ManaDistance * (66 / NPCList[i].Mana);
 
         pr := Rect(NPCBarXCoord[i], ScreenMetrics.NPCBarY - Round(HpDistance),
           NPCBarXCoord[i] + 5, ScreenMetrics.NPCBarY);
@@ -2477,8 +2476,7 @@ begin
 
       DlgLoot.Character := Character;
       DlgLoot.OtherOb := OtherObj;
-      DlgLoot.Locked := LowerCase(OtherObj.Properties['EquipmentLocked']
-        ) = 'true';
+      DlgLoot.Locked := LowerCase(OtherObj.Property_['EquipmentLocked']) = 'true';
       DlgLoot.GroundList.Clear;
 
       List := Game.FindInRadius(Character.X, Character.Y, 64);
@@ -2852,7 +2850,7 @@ begin
           begin
             if Button = mbLeft then
             begin
-              if NPCList.Items[i] = Current then
+              if NPCList[i] = Current then
               begin
                 if DlgStatistics.Loaded then
                   CloseAllDialogs(DlgStatistics)
@@ -2869,7 +2867,7 @@ begin
                 begin
                   DoNotRestartTimer := True;
                   CloseAllDialogs(DlgStatistics);
-                  ChangeFocus(NPCList.Items[i]);
+                  ChangeFocus(NPCList[i]);
                   pr := Rect(16, 0, 117, 120); // 699 and 1819
                   lpDDSFront_BltFast(ScreenMetrics.StatsX, 0, OverlayR, @pr,
                     DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
@@ -2879,20 +2877,20 @@ begin
                 begin
                   DoNotRestartTimer := True;
                   CloseAllDialogs(DlgStatistics);
-                  ChangeFocus(NPCList.Items[i]);
+                  ChangeFocus(NPCList[i]);
                   pr := Rect(16, 0, 117, 120);
                   lpDDSFront_BltFast(ScreenMetrics.StatsX, 0, OverlayR, @pr,
                     DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
                   BeginInventory(Current);
                 end
                 else if Active then
-                  ChangeFocus(NPCList.Items[i]);
+                  ChangeFocus(NPCList[i]);
               end;
               { TODO : Might enable in future - when party priotiry works }
               // end
               // else if Button = mbRight then
               // begin
-              // BeginNPC( NPCList.Items[ i ] );
+              // BeginNPC( NPCList[ i ] );
             end;
           end;
           Exit;
@@ -2913,7 +2911,7 @@ begin
 
           { if i=0 then begin
             if Button=mbLeft then begin
-            if NPCList.items[i]=Current then begin
+            if NPCList[i]=Current then begin
             if DlgStatistics.Loaded then
             CloseAllDialogs(DlgStatistics)
             else begin
@@ -2930,7 +2928,7 @@ begin
             begin
               if Button = mbLeft then
               begin
-                if NPCList.Items[i] = Current then
+                if NPCList[i] = Current then
                 begin
                   if DlgStatistics.Loaded then
                     CloseAllDialogs(DlgStatistics)
@@ -2947,7 +2945,7 @@ begin
                   begin
                     DoNotRestartTimer := True;
                     CloseAllDialogs(DlgStatistics);
-                    ChangeFocus(NPCList.Items[i]);
+                    ChangeFocus(NPCList[i]);
                     pr := Rect(0, 12, 326, 114);
                     lpDDSFront_BltFast(0, ScreenMetrics.StatsY, OverlayB, @pr,
                       DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
@@ -2960,7 +2958,7 @@ begin
                   begin
                     DoNotRestartTimer := True;
                     CloseAllDialogs(DlgStatistics);
-                    ChangeFocus(NPCList.Items[i]);
+                    ChangeFocus(NPCList[i]);
                     pr := Rect(0, 12, 326, 114);
                     lpDDSFront_BltFast(0, ScreenMetrics.StatsY, OverlayB, @pr,
                       DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
@@ -2970,13 +2968,13 @@ begin
                     BeginInventory(Current);
                   end
                   else if Active then
-                    ChangeFocus(NPCList.Items[i]);
+                    ChangeFocus(NPCList[i]);
                 end;
                 { TODO : Might enable in future - when party priotiry works }
                 // end
                 // else if Button = mbRight then
                 // begin
-                // BeginNPC( NPCList.Items[ i ] );
+                // BeginNPC( NPCList[ i ] );
               end;
             end;
             Exit;
@@ -3186,10 +3184,10 @@ begin
     Log.Log('Change focus to ' + Current.Name);
     AssignMarch;
     if i >= 0 then
-      PaintCharacterOnBorder(TSpriteObject(NPCList.Items[i]), i);
+      PaintCharacterOnBorder(TSpriteObject(NPCList[i]), i);
     i := NPCList.IndexOf(Current);
     if i >= 0 then
-      PaintCharacterOnBorder(TSpriteObject(NPCList.Items[i]), i);
+      PaintCharacterOnBorder(TSpriteObject(NPCList[i]), i);
     DrawCurrentSpell;
 
     Game.KeyFigure := Current;
@@ -3217,7 +3215,7 @@ begin
 
     if not(Figure is TCharacter) then
       Exit;
-    i := NPCList.IndexOf(Figure);
+    i := NPCList.IndexOf(TCharacter(Figure));
     if i >= 0 then
       Exit;
 
@@ -3261,7 +3259,7 @@ begin
   Log.DebugLog(FailName);
   try
 
-    i := NPCList.IndexOf(Figure);
+    i := NPCList.IndexOf(TCharacter(Figure));
     if i < 0 then
       Exit;
 
@@ -3275,7 +3273,7 @@ begin
     PaintCharacterOnBorder(TCharacter(Figure), i);
 
     for j := i to NPCList.Count - 1 do
-      PaintCharacterOnBorder(TSpriteObject(NPCList.Items[j]), j);
+      PaintCharacterOnBorder(TSpriteObject(NPCList[j]), j);
 
     PaintCharacterOnBorder(nil, NPCList.Count);
 
@@ -3845,14 +3843,15 @@ begin
           (PartManager.GetOnDemandResource
           ('SpriteObject\Character\Monsters\Golem\Rockgolem'));
 
-        for i := 0 to NPCList.Count - 1 do
-        begin
-          TCharacter(NPCList.Items[i]).Enabled := True;
-          // TCharacter(NPCList.items[i]).UseDefaultEquipment:=New;
-          // TCharacter(NPCList.items[i]).AIMode:=aiParty;
-          // TCharacter(NPCList.items[i]).Init;
-          // TCharacter(NPCList.items[i]).UseDefaultEquipment:=False;
-        end;
+        NPCList.Enable;
+//        for i := 0 to NPCList.Count - 1 do
+//        begin
+//          NPCList[i].Enabled := True;
+//          // NPCList[i].UseDefaultEquipment:=New;
+//          // NPCList[i].AIMode:=aiParty;
+//          // NPCList[i].Init;
+//          // NPCList[i].UseDefaultEquipment:=False;
+//        end;
 
         for i := 0 to FigureInstances.Count - 1 do
         begin
@@ -3915,10 +3914,8 @@ begin
         Current.AutoTransparent := XRayOn;
         Log.Log('KeyFigure=' + Current.GUID);
 
-        for i := 0 to NPCList.Count - 1 do
-        begin
-          PaintCharacterOnBorder(TSpriteObject(NPCList.Items[i]), i);
-        end;
+        NPCList.PaintCharacterOnBorder;
+
         DrawCurrentSpell;
         Current.AutoFight := False;
 
@@ -4063,68 +4060,7 @@ var
   EOB: Word;
   Level: AnsiString;
 
-  function GetPlayerData: TMemoryStream;
-  var
-    i, j: Integer;
-    Block: TSavBlocks;
-    List: TStringList;
-    L: Longint;
-    S: AnsiString;
-    k: TSlot;
-  begin
-    Result := TMemoryStream.Create;
-    List := TStringList.Create;
-    try
-      for i := 0 to NPCList.Count - 1 do
-      begin
-        Block := sbCharacter;
-        Result.Write(Block, SizeOf(Block));
-        List.Clear;
-        TCharacter(NPCList.Items[i]).SaveProperties(List);
-        S := AnsiString(List.Text);
-        L := Length(S);
-        Result.Write(L, SizeOf(L));
-        Result.Write(S[1], L);
-        Result.Write(EOB, SizeOf(EOB));
-
-        for k := slLeg1 to SlMisc3 do
-        begin
-          if Assigned(TCharacter(NPCList.Items[i]).Equipment[k]) then
-          begin
-            // Log.Log('Saving equipment item '+TCharacter(NPCList.items[i]).Equipment[k].ItemName);
-            Block := sbItem;
-            Result.Write(Block, SizeOf(Block));
-            List.Clear;
-            TCharacter(NPCList.Items[i]).Equipment[k].SaveProperties(List);
-            S := AnsiString(List.Text);
-            L := Length(S);
-            Result.Write(L, SizeOf(L));
-            Result.Write(S[1], L);
-            Result.Write(EOB, SizeOf(EOB));
-          end;
-        end;
-
-        for j := 0 to TCharacter(NPCList.Items[i]).Inventory.Count - 1 do
-        begin
-          // Log.Log('Saving inventory item '+TItem(TCharacter(NPCList.items[i]).Inventory.items[j]).ItemName);
-          Block := sbItem;
-          Result.Write(Block, SizeOf(Block));
-          List.Clear;
-          TItem(TCharacter(NPCList.Items[i]).Inventory.Items[j])
-            .SaveProperties(List);
-          S := AnsiString(List.Text);
-          L := Length(S);
-          Result.Write(L, SizeOf(L));
-          Result.Write(S[1], L);
-          Result.Write(EOB, SizeOf(EOB));
-        end;
-      end;
-    finally
-      List.Free;
-    end;
-  end;
-
-  function GetMpaKnownData: TMemoryStream;
+  function GetMapKnownData: TMemoryStream;
   begin
     Result := TMemoryStream.Create;
     GameMap.SaveMapKnownInfo(Result);
@@ -4200,8 +4136,7 @@ var
                 Block := siItem;
                 Result.Write(Block, SizeOf(Block));
                 List.Clear;
-                TItem(TContainer(FigureInstances.Objects[i]).Inventory.Items[j])
-                  .SaveProperties(List);
+                TContainer(FigureInstances.Objects[i]).Inventory[j].SaveProperties(List);
                 S := AnsiString(List.Text);
                 L := Length(S);
                 Result.Write(L, SizeOf(L));
@@ -4263,8 +4198,8 @@ begin
       SavFile.AdventureIndex := DlgAdvLog.PageNumber;
       SavFile.DeathScreen := DeathScreen;
       SavFile.MaxPartyMembers := MaxPartyMembers;
-      SavFile.PartyMembers := GetPlayerData;
-      SavFile.MapKnown := GetMpaKnownData;
+      SavFile.PartyMembers := NPCList.GetPlayerData;
+      SavFile.MapKnown := GetMapKnownData;
       SavFile.Properties := GetProperties;
       SavFile.SaveAs(FileName);
       SavFile.PartyMembers.Free;
@@ -4541,10 +4476,10 @@ var
                   if i < NewCharacter.Inventory.Count then
                   begin
                     LoadingFromSaveFile := False;
-                    TItem(NewCharacter.Inventory.Items[i]).LoadProperties(List);
+                    NewCharacter.Inventory[i].LoadProperties(List);
                     LoadingFromSaveFile := True;
-                    TItem(NewCharacter.Inventory.Items[i]).GUID := '';
-                    TItem(NewCharacter.Inventory.Items[i]).Enabled := False;
+                    NewCharacter.Inventory[i].GUID := '';
+                    NewCharacter.Inventory[i].Enabled := False;
                   end;
                 end
                 else
@@ -4628,13 +4563,10 @@ var
                 then
                 begin
                   LoadingFromSaveFile := False;
-                  TItem(LastContainer.Inventory.Items
-                    [LastContainerInventoryCount]).LoadProperties(List);
+                  LastContainer.Inventory[LastContainerInventoryCount].LoadProperties(List);
                   LoadingFromSaveFile := True;
-                  TItem(LastContainer.Inventory.Items
-                    [LastContainerInventoryCount]).GUID := '';
-                  TItem(LastContainer.Inventory.Items
-                    [LastContainerInventoryCount]).Enabled := False;
+                  LastContainer.Inventory[LastContainerInventoryCount].GUID := '';
+                  LastContainer.Inventory[LastContainerInventoryCount].Enabled := False;
                 end;
               end;
               Inc(LastContainerInventoryCount);
@@ -4874,7 +4806,7 @@ begin
     end;
 
     if NPCList.Count > 0 then
-      Player := NPCList.Items[0]
+      Player := NPCList[0]
     else
       Player := nil;
     Result := True;
@@ -5020,8 +4952,7 @@ begin
               break;
             if List.Objects[i] is TPathCorner then
             begin
-              TCharacter(NPCList.Items[j])
-                .SetPos(TPathCorner(List.Objects[i]).X,
+              NPCList[j].SetPos(TPathCorner(List.Objects[i]).X,
                 TPathCorner(List.Objects[i]).Y, TPathCorner(List.Objects[i]).Z);
               Inc(j)
             end;
@@ -6083,18 +6014,20 @@ var
   i: Integer;
   HpDistance, ManaDistance: Double;
   pr, pr0: TRect;
+  lCharacter: TCharacter;
 const
   FailName: string = 'Main.InventoryDraw';
 begin
   Log.DebugLog(FailName);
   try
-
     if not(Sender is TCharacter) then
       Exit;
-    i := NPCList.IndexOf(Sender);
+
+    lCharacter := TCharacter(Sender);
+    i := NPCList.IndexOf(lCharacter);
     if i = 0 then
     begin
-      PaintCharacterOnBorder(TSpriteObject(Sender), i);
+      PaintCharacterOnBorder(lCharacter, i);
       pr := Rect(0, 0, 117, 133);
       lpDDSBack.BltFast(ScreenMetrics.SpellBarX, 0, OverlayR, @pr,
         DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
@@ -6111,22 +6044,21 @@ begin
 
       for i := 1 to NPCList.Count - 1 do
       begin
-        HpDistance := TCharacter(NPCList[i]).HitPoints -
-          TCharacter(NPCList[i]).Wounds;
-        if HpDistance > TCharacter(NPCList[i]).HitPoints then
-          HpDistance := TCharacter(NPCList[i]).HitPoints
+        lCharacter := NPCList[i];
+        HpDistance := lCharacter.HitPoints - lCharacter.Wounds;
+        if HpDistance > lCharacter.HitPoints then
+          HpDistance := lCharacter.HitPoints
         else if HpDistance < 0 then
           HpDistance := 0;
 
-        ManaDistance := TCharacter(NPCList[i]).Mana -
-          TCharacter(NPCList[i]).Drain;
-        if ManaDistance > TCharacter(NPCList[i]).Mana then
-          ManaDistance := TCharacter(NPCList[i]).Mana
+        ManaDistance := lCharacter.Mana - lCharacter.Drain;
+        if ManaDistance > lCharacter.Mana then
+          ManaDistance := lCharacter.Mana
         else if ManaDistance < 0 then
           ManaDistance := 0;
 
-        HpDistance := HpDistance * (66 / TCharacter(NPCList[i]).HitPoints);
-        ManaDistance := ManaDistance * (66 / TCharacter(NPCList[i]).Mana);
+        HpDistance := HpDistance * (66 / lCharacter.HitPoints);
+        ManaDistance := ManaDistance * (66 / lCharacter.Mana);
 
         pr := Rect(NPCBarXCoord[i], ScreenMetrics.NPCBarY - Round(HpDistance),
           NPCBarXCoord[i] + 5, ScreenMetrics.NPCBarY);
@@ -6507,7 +6439,7 @@ begin
   begin
     if DlgRoster.CheckBox[i] then
     begin
-      if NPCList.Items[i] = Current then
+      if NPCList[i] = Current then
       begin
         Current.Highlightable := True;
         Current := Player;
@@ -6521,11 +6453,10 @@ begin
         Current.AIMode := aiNone;
         Current.Visible := True;
       end;
-      TCharacter(NPCList.Items[i]).Alliance := Current.PrevAlliance;
-      TCharacter(NPCList.Items[i]).AIMode := TCharacter(NPCList.Items[i])
-        .PrevAIMode;
-      TCharacter(NPCList.Items[i]).UseAllegianceOf := nil;
-      TCharacter(NPCList.Items[i]).PartyMember := False;
+      NPCList[i].Alliance := Current.PrevAlliance;
+      NPCList[i].AIMode := NPCList[i].PrevAIMode;
+      NPCList[i].UseAllegianceOf := nil;
+      NPCList[i].PartyMember := False;
       NPCList.Delete(i);
     end;
   end;
@@ -6542,8 +6473,7 @@ begin
   end;
   AssignMarch;
 
-  for i := 0 to NPCList.Count - 1 do
-    PaintCharacterOnBorder(TSpriteObject(NPCList.Items[i]), i);
+  NPCList.PaintCharacterOnBorder;
   for i := NPCList.Count to OldCount do
     PaintCharacterOnBorder(nil, i);
 
@@ -6615,12 +6545,12 @@ begin
   begin
     for i := 1 to NPCList.Count - 1 do
     begin
-      TCharacter(NPCList.Items[i]).PartyMember := True;
-      if TCharacter(NPCList.Items[i]).AI is TPartyAI then
+      NPCList[i].PartyMember := True;
+      if NPCList[i].AI is TPartyAI then
       begin
-        TPartyAI(TCharacter(NPCList.Items[i]).AI).Leader := Prev;
-        TPartyAI(TCharacter(NPCList.Items[i]).AI).Index := i;
-        Prev := NPCList.Items[i];
+        TPartyAI(NPCList[i].AI).Leader := Prev;
+        TPartyAI(NPCList[i].AI).Index := i;
+        Prev := NPCList[i];
       end;
     end;
   end
@@ -6628,13 +6558,13 @@ begin
   begin
     for i := 1 to NPCList.Count - 1 do
     begin
-      TCharacter(NPCList.Items[i]).PartyMember := True;
-      if NPCList.Items[i] <> Current then
+      NPCList[i].PartyMember := True;
+      if NPCList[i] <> Current then
       begin
-        if TCharacter(NPCList.Items[i]).AI is TPartyAI then
+        if NPCList[i].AI is TPartyAI then
         begin
-          TPartyAI(TCharacter(NPCList.Items[i]).AI).Leader := Prev;
-          TPartyAI(TCharacter(NPCList.Items[i]).AI).Index := i;
+          TPartyAI(NPCList[i].AI).Leader := Prev;
+          TPartyAI(NPCList[i].AI).Index := i;
         end;
       end;
     end;
@@ -6887,8 +6817,6 @@ end;
 
 procedure TfrmMain.BeginTransit(const NewFile, SceneName, StartingPoint,
   Transition, TargetList: string);
-var
-  i: Integer;
 begin
   DisableConsole := True;
   trNewFile := NewFile;
@@ -6896,15 +6824,7 @@ begin
   trStartingPoint := StartingPoint;
   trTransition := Transition;
   trTargetList := TargetList;
-  for i := 0 to NPCList.Count - 1 do
-  begin
-    with TCharacter(NPCList.Items[i]) do
-    begin
-      TransitX := PrevX;
-      TransitY := PrevY;
-      TransitZ := PrevZ;
-    end;
-  end;
+  NPCList.BeginTransit;
   PostMessage(Handle, WM_StartTransit, 0, 0);
 end;
 
@@ -6917,14 +6837,7 @@ var
 begin
   if DlgTransit.Cancelled then
   begin
-    for i := 0 to NPCList.Count - 1 do
-    begin
-      with TCharacter(NPCList.Items[i]) do
-      begin
-        SetPos(TransitX, TransitY, TransitZ);
-        Stand;
-      end;
-    end;
+    NPCList.CancelTransit;
     CloseAllDialogs(DlgTransit);
   end
   else

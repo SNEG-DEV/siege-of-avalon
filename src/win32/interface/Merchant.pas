@@ -313,9 +313,9 @@ begin
     for i := 0 to Character.Inventory.Count - 1 do
     begin
       New( pInventoryItem );
-      pInventoryItem.PItem := Character.Inventory.Items[ i ];
-      pInventoryItem.InvX := TItem( Character.Inventory.Items[ i ] ).InvX * 18 + 27;
-      pInventoryItem.InvY := TItem( Character.Inventory.Items[ i ] ).InvY * 26 + 42;
+      pInventoryItem.PItem := Character.Inventory[ i ];
+      pInventoryItem.InvX := Character.Inventory[ i ].InvX * 18 + 27;
+      pInventoryItem.InvY := Character.Inventory[ i ].InvY * 26 + 42;
       pInventoryItem.WhoHasThis := 1; //the character on the left; the instigating char
       pInventoryItem.BodySlot := -1; //not equipped
       ItemList.Add( pInventoryItem );
@@ -338,9 +338,9 @@ begin
     for i := 0 to Merchant.Inventory.Count - 1 do
     begin
       New( pInventoryItem );
-      pInventoryItem.PItem := Merchant.Inventory.Items[ i ];
-    //pInventoryItem.InvX := TItem(Merchant.Inventory.Items[i]).InvX*18+418;
-    //pInventoryItem.InvY := TItem(Merchant.Inventory.Items[i]).InvY*26+42;
+      pInventoryItem.PItem := Merchant.Inventory[ i ];
+    //pInventoryItem.InvX := Merchant.Inventory[i].InvX*18+418;
+    //pInventoryItem.InvY := Merchant.Inventory[i].InvY*26+42;
       pInventoryItem.WhoHasThis := 2; //the merchant on the right;
       pInventoryItem.BodySlot := -1; //not equipped
       ItemList.Add( pInventoryItem );
@@ -349,7 +349,7 @@ begin
     for i := 0 to GroundList.Count - 1 do
     begin
       New( pInventoryItem );
-      pInventoryItem.PItem := GroundList.Items[ i ];
+      pInventoryItem.PItem := GroundList[ i ];
       if i = 0 then
       begin
         pInventoryItem.InvX := 288; //Only the first ground item is visible

@@ -271,9 +271,9 @@ begin
     for i := 0 to Character.Inventory.Count - 1 do
     begin
       New( pInventoryItem );
-      pInventoryItem.PItem := Character.Inventory.Items[ i ];
-      pInventoryItem.InvX := TItem( Character.Inventory.Items[ i ] ).InvX * 18 + 27;
-      pInventoryItem.InvY := TItem( Character.Inventory.Items[ i ] ).InvY * 26 + 42;
+      pInventoryItem.PItem := Character.Inventory[ i ];
+      pInventoryItem.InvX := Character.Inventory[ i ].InvX * 18 + 27;
+      pInventoryItem.InvY := Character.Inventory[ i ].InvY * 26 + 42;
       pInventoryItem.WhoHasThis := 1; //the character on the left; the instigating char
       pInventoryItem.CharacterHadThisOnHim := true;
       ItemList.Add( pInventoryItem );
@@ -284,9 +284,9 @@ begin
       for i := 0 to TCharacter( OtherOb ).Inventory.Count - 1 do
       begin
         New( pInventoryItem );
-        pInventoryItem.PItem := TCharacter( OtherOb ).Inventory.Items[ i ];
-        pInventoryItem.InvX := -1000; //TItem(TCharacter(OtherOb).Inventory.Items[i]).InvX*18+418;
-        pInventoryItem.InvY := -1000; //TItem(TCharacter(OtherOb).Inventory.Items[i]).InvY*26+42;
+        pInventoryItem.PItem := TCharacter( OtherOb ).Inventory[ i ];
+        pInventoryItem.InvX := -1000; //TCharacter(OtherOb).Inventory[i].InvX*18+418;
+        pInventoryItem.InvY := -1000; //TCharacter(OtherOb).Inventory[i].InvY*26+42;
         pInventoryItem.WhoHasThis := 2; //the corpse on right
         pInventoryItem.Page := 0;
         pInventoryItem.BodySlot := -1; //not on body
@@ -313,9 +313,9 @@ begin
       for i := 0 to TContainer( OtherOb ).Inventory.Count - 1 do
       begin
         New( pInventoryItem );
-        pInventoryItem.PItem := TContainer( OtherOb ).Inventory.Items[ i ];
-        pInventoryItem.InvX := TItem( TContainer( OtherOb ).Inventory.Items[ i ] ).InvX * 18 + GridRightMinX;
-        pInventoryItem.InvY := TItem( TContainer( OtherOb ).Inventory.Items[ i ] ).InvY * 26 + GridRightMinY;
+        pInventoryItem.PItem := TContainer( OtherOb ).Inventory[ i ];
+        pInventoryItem.InvX := TContainer( OtherOb ).Inventory[ i ].InvX * 18 + GridRightMinX;
+        pInventoryItem.InvY := TContainer( OtherOb ).Inventory[ i ].InvY * 26 + GridRightMinY;
         pInventoryItem.WhoHasThis := 2; //the container on the right;
         ItemList.Add( pInventoryItem );
       end;

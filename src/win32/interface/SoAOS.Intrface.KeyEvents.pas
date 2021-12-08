@@ -212,7 +212,7 @@ end;
 //  player.hitpoints := -1;
 //
 //  for i := 0 to  Npclist.Count -1 do
-//    TCharacter(npclist.Items[i]).hitpoints := -1;
+//    NPCList[i].hitpoints := -1;
 //
 //  Player.AddTitle('Firefly');
 //  Player.Frozen:=false;
@@ -388,16 +388,9 @@ if Assigned( Current.HotKey[ key - 113 + 10 ] ) then
 end;
 
 class procedure TKeyEvent.ToggleCombat;
-var
-  i: Integer;
-  j : integer;
-(*begin
+begin
   Current.CombatMode := not Current.CombatMode;
-  for i := 0 to NPCList.Count - 1 do
-  begin
-    TCharacter(NPCList.Items[i]).CombatMode := Current.CombatMode;
-    frmMain.PaintCharacterOnBorder(TSpriteObject(NPCList.Items[i]), i);
-  end;
+  NPCList.SetCombatMode(Current.CombatMode);
   if Current.CombatMode then
   begin
     if Assigned(frmMain.HLFigure) then
@@ -406,70 +399,6 @@ var
       frmMain.HLFigure := nil;
     end;
   end;
-end;*)
-//Sheath und Unsheathaktion
-begin
-  Current.CombatMode := not Current.CombatMode;
-  for i := 0 to NPCList.Count - 1 do
-  begin
-    TCharacter( NPCList.Items[ i ] ).CombatMode := Current.CombatMode;
-    frmMain.PaintCharacterOnBorder( TSpriteObject( NPCList.Items[ i ] ), i );
-  end;
-    for j := 0 to NPCList.Count - 1 do
-    begin
-      if TCharacter( NPCList.Items[ j ] ).CombatMode then
-      begin
-        //Weapon in right hand, but not a Bow
-        if Assigned( TCharacter( NPCList.Items[ j ] ).Equipment[ slWeapon ] ) and not ( TCharacter( NPCList.Items[ j ] ).Equipment[ slWeapon ] is TBow )
-        //or at least Weapon on left hand
-        or Assigned( TCharacter( NPCList.Items[ j ] ).Equipment[ slshield ] ) and ( TCharacter( NPCList.Items[ j ] ).Equipment[ slshield ] is TWeapon ) then
-        begin
-          if TCharacter( NPCList.Items[ j ] ).Ready then
-          if TCharacter( NPCList.Items[ j ] ).doaction('sheath') then
-          begin
-            TCharacter( NPCList.Items[ j ] ).Stop;
-            TCharacter( NPCList.Items[ j ] ).SetNotReady;
-          end;
-        end
-        //With a Bow
-        else if Assigned( TCharacter( NPCList.Items[ j ] ).Equipment[ slWeapon ] ) and ( TCharacter( NPCList.Items[ j ] ).Equipment[ slWeapon ] is TBow ) then
-        begin
-          if TCharacter( NPCList.Items[ j ] ).Ready then
-          if TCharacter( NPCList.Items[ j ] ).doaction('bowequip') then
-          begin
-            TCharacter( NPCList.Items[ j ] ).stop;
-            TCharacter( NPCList.Items[ j ] ).SetNotReady;
-            end;
-        end;
-        if Assigned( frmMain.HLFigure ) then
-        begin
-          frmMain.HLFigure.Highlighted := False;
-          frmMain.HLFigure := nil;
-        end;
-      end
-      else  //if not TCharacter( NPCList.Items[ j ] ).CombatMode then
-      begin
-        if Assigned( TCharacter( NPCList.Items[ j ] ).Equipment[ slWeapon ] ) and not ( TCharacter( NPCList.Items[ j ] ).Equipment[ slWeapon ] is TBow )
-        or Assigned( TCharacter( NPCList.Items[ j ] ).Equipment[ slshield ] ) and ( TCharacter( NPCList.Items[ j ] ).Equipment[ slshield ] is TWeapon ) then
-        begin
-          if TCharacter( NPCList.Items[ j ] ).Ready then
-          if TCharacter( NPCList.Items[ j ] ).doaction('unsheath') then
-          begin
-            TCharacter( NPCList.Items[ j ] ).Stop;
-            TCharacter( NPCList.Items[ j ] ).SetNotReady;
-          end;
-        end
-        else if Assigned( TCharacter( NPCList.Items[ j ] ).Equipment[ slWeapon ] ) and ( TCharacter( NPCList.Items[ j ] ).Equipment[ slWeapon ] is TBow ) then
-        begin
-          if TCharacter( NPCList.Items[ j ] ).Ready then
-          if TCharacter( NPCList.Items[ j ] ).doaction('bowunequip')then
-          begin
-            TCharacter( NPCList.Items[ j ] ).Stop;
-            TCharacter( NPCList.Items[ j ] ).SetNotReady;
-          end;
-        end;
-      end;
-    end; //For-Schleife, j
 end;
 
 class procedure TKeyEvent.TogglePause;
@@ -516,22 +445,21 @@ begin
 
       for i := 1 to NPCList.Count - 1 do
       begin
-        HpDistance := TCharacter(NPCList[i]).HitPoints -
-          TCharacter(NPCList[i]).Wounds;
-        if HpDistance > TCharacter(NPCList[i]).HitPoints then
-          HpDistance := TCharacter(NPCList[i]).HitPoints
+        HpDistance := NPCList[i].HitPoints - NPCList[i].Wounds;
+        if HpDistance > NPCList[i].HitPoints then
+          HpDistance := NPCList[i].HitPoints
         else if HpDistance < 0 then
           HpDistance := 0;
 
-        ManaDistance := TCharacter(NPCList[i]).Mana -
-          TCharacter(NPCList[i]).Drain;
-        if ManaDistance > TCharacter(NPCList[i]).Mana then
-          ManaDistance := TCharacter(NPCList[i]).Mana
+        ManaDistance := NPCList[i].Mana -
+          NPCList[i].Drain;
+        if ManaDistance > NPCList[i].Mana then
+          ManaDistance := NPCList[i].Mana
         else if ManaDistance < 0 then
           ManaDistance := 0;
 
-        HpDistance := HpDistance * (66 / TCharacter(NPCList[i]).HitPoints);
-        ManaDistance := ManaDistance * (66 / TCharacter(NPCList[i]).Mana);
+        HpDistance := HpDistance * (66 / NPCList[i].HitPoints);
+        ManaDistance := ManaDistance * (66 / NPCList[i].Mana);
         pr := Rect(frmMain.NPCBarXCoord[i], ScreenMetrics.NPCBarY -
           Round(HpDistance), frmMain.NPCBarXCoord[i] + 5,
           ScreenMetrics.NPCBarY);
@@ -674,54 +602,16 @@ end;
 
 class procedure TKeyEvent.HealPotion;
 begin
-  if (Modselection=TModSelection.AoA) and current.Ready then //Not when e.g. Holdspell casted
-  begin
-    if not DlgInventory.Loaded then
-    begin
-      if current.wounds >0 then
-      begin
-        if not (current.Equipment [ slhealthpois ] = nil) then
-          if current.doaction( 'Trink' ) then
-          begin
-             current.stop;
-             if current.titleexists ('Lifesmall') then
-             current.wounds := current.wounds - 15
-             else if current.titleexists ('Lifemedium') then
-             current.wounds := current.wounds - 25
-             else
-             current.wounds := current.wounds - 40;
-             current.Equipment [ slhealthpois ] := nil;
-             current.SetNotReady;
-          end;
-      end;
-    end;
-  end;
+  if (Modselection=TModSelection.AoA) and Current.Ready then  //Not when e.g. Holdspell casted
+    if (not DlgInventory.Loaded) then
+      Current.UseHealPotion;
 end;
 
 class procedure TKeyEvent.ManaPotion;
 begin
-  if (Modselection=TModSelection.AoA) and current.Ready then //Not when e.g. Holdspell casted
-  begin
-    if not DlgInventory.Loaded then
-    begin
-      if current.drain > 0 then
-      begin
-        if not (current.Equipment [ slmanapois ] = nil) then
-          if current.doaction( 'Trink' ) then
-          begin
-            current.stop;
-            if current.titleexists ('Manasmall') then
-              current.drain := current.drain - 15
-            else if current.titleexists ('Manamedium') then
-              current.drain := current.drain - 25
-            else
-              current.drain := current.drain - 40;
-            current.Equipment [ slmanapois ] := nil;
-            current.SetNotReady;
-          end;
-      end;
-    end;
-  end;
+  if (Modselection=TModSelection.AoA) and Current.Ready then //Not when e.g. Holdspell casted
+    if (not DlgInventory.Loaded) then
+      Current.UseManaPotion;
 end;
 
 end.

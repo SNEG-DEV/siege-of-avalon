@@ -423,7 +423,7 @@ type
     function GetName: string; override;
     procedure DoFrame; override;
   public
-    Inventory: TList;
+    Inventory: TList<TItem>;
     KeyRequired: boolean;
     KeyName: string;
     OnOpen: string;
@@ -530,7 +530,7 @@ type
     WasPartyMember: boolean;
     Dieing: boolean;
     FDeadCount: LongWord;
-    FInventory: TList; // Find correct type
+    FInventory: TList<TItem>; // Find correct type
     FRange: Integer;
     Shifted: boolean;
     InitStand: boolean;
@@ -702,8 +702,7 @@ type
     // this was moved to public to give the AI access to it
     AntiPathEnabled: boolean; // Other wise I cant shut it off in the AI
     // unless the character is reloaded... ie when the map is loaded
-    constructor Create(X, Y, Z: longint; Frame: Word;
-      Enabled: boolean); override;
+    constructor Create(X, Y, Z: longint; Frame: Word; Enabled: boolean); override;
     destructor Destroy; override;
     procedure CalcStats; virtual;
     procedure Stand; virtual;
@@ -751,7 +750,14 @@ type
     procedure ClearEquipment;
     function ValidateSpells: boolean;
     procedure SetVision(v: Integer);
-    procedure SetNotReady;
+    
+    procedure SheathWeapon;
+    procedure UnsheathWeapon;
+
+    // AoA only
+    procedure UseManaPotion;
+    procedure UseHealPotion;
+
     // Primary Stats
     property Strength: Integer read FStrength write SetStrength;
     property Coordination: Integer read FCoordination write SetCoordination;
@@ -778,7 +784,7 @@ type
     property Drain: Double read FDrain write FDrain;
     property Ready: boolean read FReady;
     property Equipment[Slot: TSlot]: TItem read GetEquipment write SetEquipment;
-    property Inventory: TList read FInventory;
+    property Inventory: TList<TItem> read FInventory;
     property AI : TAI read FAI write SetAI;
     property Dead: boolean read FDead write SetDead;
     property Range: Integer read FRange;
@@ -813,6 +819,24 @@ type
     // Sensory - values are in horizontal pixels
   end;
 
+  TCharacterList = class(TList<TCharacter>)
+  private
+  public
+    procedure Enable;
+    procedure Freeze;
+    procedure UnFreeze;
+    procedure PaintCharacterOnBorder;
+    procedure TakeDamage(damage: TDamageProfile);
+    procedure MakeNeutral(alliance: string);
+    procedure SetCombatMode(combatMode: boolean);
+    procedure BeginTransit;
+    procedure CancelTransit;
+    function RandomMember: TCharacter;
+    function GetPlayerData: TMemoryStream;
+    function Heal(healer: TCharacter): Boolean;
+    function HasGUID(guid: string): Boolean;
+  end;
+
   TCompanionCharacter = class(TCharacter)
   private
     Fade: Integer;
@@ -832,7 +856,7 @@ type
   TSpriteManager = class(TObject)
   private
     FCurrentIndex: Word;
-    List: TList;
+    List: TList<TSpriteObject>;
     SpriteCount: Integer;
   public
     constructor Create(Count: Integer);
@@ -872,7 +896,7 @@ const
 var
   Sprites: TSpriteManager;
   Player, Current: TCharacter;
-  NPCList: TList;
+  NPCList: TCharacterList;
 
 implementation
 
@@ -2288,7 +2312,7 @@ begin
     OnNoPath := NoPath;
     OnTrigger := Trigger;
     OnFilter := Filter;
-    FInventory := TList.Create;
+    FInventory := TList<TItem>.Create;
     Titles := TStringList.Create;
     FFriends := TStringList.Create;
     FFriends.Sorted := true;
@@ -2484,7 +2508,7 @@ begin
     event := 'OnDie[' + IntToStr(DieCount) + ']';
     if PropertyExists(event) then
     begin
-      RunScript(Self, Properties[event]);
+      RunScript(Self, Property_[event]);
     end
     else
     begin
@@ -2806,14 +2830,14 @@ begin
             end
             else
             begin
-              i := NPCList.IndexOf(FTarget);
+              i := NPCList.IndexOf(TCharacter(FTarget));
               if i >= 0 then
               begin
-                if assigned(TCharacter(NPCList.items[i]).FAI) and
-                  (TCharacter(NPCList.items[i]).FAI is TPartyAI) and
+                if assigned(NPCList[i].FAI) and
+                  (NPCList[i].FAI is TPartyAI) and
                   not CombatMode and not InterfaceLocked then
                 begin
-                  frmMain.BeginObjInventory(Current, NPCList.items[i]);
+                  frmMain.BeginObjInventory(Current, NPCList[i]);
                 end;
                 FTarget := nil;
               end
@@ -2833,7 +2857,7 @@ begin
             if FindFreeInventoryXY(TItem(FTarget)) then
             begin
               TItem(FTarget).PickUp;
-              Inventory.add(FTarget);
+              Inventory.add(TItem(FTarget));
               TItem(FTarget).Enabled := false;
               TItem(FTarget).LayeredImage :=
                 PartManager.GetImageFile(TItem(FTarget).PartName,
@@ -2861,7 +2885,7 @@ begin
                   event := 'OnOpenAttempt[' +
                     IntToStr(TContainer(FTarget).OpenAttemptCount) + ']';
                   if TContainer(FTarget).PropertyExists(event) then
-                    RunScript(FTarget, TContainer(FTarget).Properties[event])
+                    RunScript(FTarget, TContainer(FTarget).Property_[event])
                   else
                     RunScript(FTarget, TContainer(FTarget).OnOpenAttempt);
                 end;
@@ -2899,7 +2923,7 @@ begin
                   event := 'OnOpenAttempt[' +
                     IntToStr(TDoor(FTarget).OpenAttemptCount) + ']';
                   if TDoor(FTarget).PropertyExists(event) then
-                    RunScript(FTarget, TDoor(FTarget).Properties[event])
+                    RunScript(FTarget, TDoor(FTarget).Property_[event])
                   else
                     RunScript(FTarget, TDoor(FTarget).OnOpenAttempt);
                 end;
@@ -3191,7 +3215,7 @@ begin
       Inc(DieCount);
       event := 'OnDie[' + IntToStr(DieCount) + ']';
       if PropertyExists(event) then
-        RunScript(Self, Properties[event])
+        RunScript(Self, Property_[event])
       else
         RunScript(Self, OnDie);
     end
@@ -3691,11 +3715,10 @@ begin
 
     if TSpriteObject(Target).OnCollide <> '' then
     begin
-      Inc(TSpriteObject(Target).CollideCount);
-      event := 'OnCollide[' + IntToStr(TSpriteObject(Target)
-        .CollideCount) + ']';
+      TSpriteObject(Target).CollideCount := TSpriteObject(Target).CollideCount + 1;
+      event := 'OnCollide[' + IntToStr(TSpriteObject(Target).CollideCount) + ']';
       if TSpriteObject(Target).PropertyExists(event) then
-        RunScript(Self, TSpriteObject(Target).Properties[event])
+        RunScript(Self, TSpriteObject(Target).Property_[event])
       else
         RunScript(Self, TSpriteObject(Target).OnCollide);
     end;
@@ -3909,6 +3932,68 @@ begin
   end;
 end;
 
+procedure TCharacter.UnsheathWeapon;
+begin
+  if FReady then
+  begin
+    if (Assigned( Equipment[ slWeapon ] ) and not ( Equipment[ slWeapon ] is TBow )) or
+      (Assigned( Equipment[ slShield ] ) and ( Equipment[ slShield ] is TWeapon )) then
+    begin
+      if DoAction('unsheath') then
+      begin
+        inherited Stop;
+        FReady := False;
+      end;
+    end
+    else if Assigned( Equipment[ slWeapon ] ) and ( Equipment[ slWeapon ] is TBow ) then
+    begin
+      if DoAction('bowunequip')then
+      begin
+        inherited Stop;
+        FReady := False;
+      end;
+    end;
+  end;
+end;
+
+procedure TCharacter.UseHealPotion;
+begin
+  if Wounds > 0 then
+  begin
+    if Assigned(Equipment[ slhealthpois ]) and DoAction( 'Trink' ) then
+    begin
+       inherited Stop;
+       if TitleExists('Lifesmall') then
+         Wounds := Wounds - 15
+       else if TitleExists('Lifemedium') then
+         Wounds := Wounds - 25
+       else
+         Wounds := Wounds - 40;
+       Equipment[ slhealthpois ] := nil;
+       FReady := False;
+    end;
+  end;
+end;
+
+procedure TCharacter.UseManaPotion;
+begin
+  if Drain > 0 then
+  begin
+    if Assigned(Equipment[ slmanapois ]) and DoAction( 'Trink' ) then
+    begin
+      inherited Stop;
+      if TitleExists('Manasmall') then
+        Drain := Drain - 15
+      else if TitleExists('Manamedium') then
+        Drain := Drain - 25
+      else
+        Drain := Drain - 40;
+      Equipment[ slmanapois ] := nil;
+      FReady := False;
+    end;
+  end;
+end;
+
 procedure TCharacter.Filter(Source: TAniFigure; ID, PrevID: SmallInt);
 const
   FailName: string = 'TCharacter.Filter';
@@ -4004,6 +4089,33 @@ begin
   except
     on E: Exception do
       log.log(FailName, E.Message, []);
+  end;
+end;
+
+procedure TCharacter.SheathWeapon;
+begin
+  if FReady then
+  begin
+    //Weapon in right hand, but not a Bow
+    if (Assigned( Equipment[ slWeapon ] ) and not ( Equipment[ slWeapon ] is TBow )) or
+    //or at least a Weapon in left hand
+      (Assigned( Equipment[ slShield ] ) and ( Equipment[ slShield ] is TWeapon )) then
+    begin
+      if DoAction('sheath') then
+      begin
+        inherited Stop;
+        FReady := False;
+      end;
+    end
+    //With a Bow
+    else if Assigned( Equipment[ slWeapon ] ) and ( Equipment[ slWeapon ] is TBow ) then
+    begin
+      if DoAction('bowequip')then
+      begin
+        inherited Stop;
+        FReady := False;
+      end;
+    end;
   end;
 end;
 
@@ -5455,11 +5567,6 @@ begin
   end;
 end;
 
-procedure TCharacter.SetNotReady;
-begin
-  FReady := False;
-end;
-
 procedure TCharacter.SetPerception(const Value: Integer);
 begin
   if Value <> BasePerception then
@@ -6734,8 +6841,8 @@ begin
   TCharacter(NewObject).BuyingDiscount := BuyingDiscount;
   TCharacter(NewObject).SellingMarkup := SellingMarkup;
   TCharacter(NewObject).Alliance := Alliance;
-  TCharacter(NewObject).FProperties.text := FProperties.text;
-  TCharacter(NewObject).Titles.text := Titles.text;
+  TCharacter(NewObject).Properties.Text := Properties.Text;
+  TCharacter(NewObject).Titles.Text := Titles.Text;
   for i := 0 to Titles.Count - 1 do
   begin
     if assigned(Titles.objects[i]) then
@@ -7267,7 +7374,7 @@ begin
   try
 
     inherited;
-    Inventory := TList.Create;
+    Inventory := TList<TItem>.Create;
     OnScriptEnd := ScriptEnd;
     FClosed := true;
 
@@ -7321,7 +7428,7 @@ begin
     Inc(CloseCount);
     event := 'OnClose[' + IntToStr(CloseCount) + ']';
     if PropertyExists(event) then
-      RunScript(Self, Properties[event])
+      RunScript(Self, Property_[event])
     else
       RunScript(Self, OnClose);
 
@@ -7362,7 +7469,7 @@ begin
       event := 'OnOpen[' + IntToStr(OpenCount) + ']';
       if PropertyExists(event) then
       begin
-        S := Properties[event];
+        S := Property_[event];
         if S = '' then
           ShowObjectInventory := true
         else
@@ -7403,7 +7510,7 @@ begin
       event := 'OnOpen[' + IntToStr(OpenCount) + ']';
       if PropertyExists(event) then
       begin
-        S := Properties[event];
+        S := Property_[event];
         if S = '' then
           ShowObjectInventory := true
         else
@@ -8090,7 +8197,7 @@ begin
     Inc(CloseCount);
     event := 'OnClose[' + IntToStr(CloseCount) + ']';
     if PropertyExists(event) then
-      RunScript(Self, Properties[event])
+      RunScript(Self, Property_[event])
     else
       RunScript(Self, OnClose);
 
@@ -8347,7 +8454,7 @@ begin
       Inc(OpenCount);
       event := 'OnOpen[' + IntToStr(OpenCount) + ']';
       if PropertyExists(event) then
-        RunScript(Self, Properties[event])
+        RunScript(Self, Property_[event])
       else
         RunScript(Self, OnOpen);
     end;
@@ -8696,7 +8803,7 @@ begin
     Inc(DropCount);
     event := 'OnDrop[' + IntToStr(DropCount) + ']';
     if PropertyExists(event) then
-      RunScript(Self, Properties[event])
+      RunScript(Self, Property_[event])
     else
       RunScript(Self, OnDrop);
 
@@ -9161,7 +9268,7 @@ begin
     Inc(PickUpCount);
     event := 'OnPickUp[' + IntToStr(PickUpCount) + ']';
     if PropertyExists(event) then
-      RunScript(Self, Properties[event])
+      RunScript(Self, Property_[event])
     else
       RunScript(Self, OnPickUp);
 
@@ -9691,7 +9798,7 @@ end;
 //        S := List.strings[i];
 //        j := Pos('=', S);
 //        if (j > 0) { and (j<length(S)) } then
-//        begin // This caused blank properties not to overwrite defaults
+//        begin // This caused blank Property_ not to overwrite defaults
 //          if (j < length(S)) and (S[j + 1] = '#') then
 //          begin
 //            if not assigned(INI) then
@@ -9851,7 +9958,7 @@ end;
 //    Inc(LoadCount);
 //    event := 'OnLoad[' + IntToStr(LoadCount) + ']';
 //    if PropertyExists(event) then
-//      RunScript(Self, Properties[event])
+//      RunScript(Self, Property_[event])
 //    else
 //      RunScript(Self, OnLoad);
 //
@@ -9875,7 +9982,7 @@ end;
 //    Inc(ActivateCount);
 //    event := 'OnActivate[' + IntToStr(ActivateCount) + ']';
 //    if PropertyExists(event) then
-//      RunScript(Self, Properties[event])
+//      RunScript(Self, Property_[event])
 //    else
 //      RunScript(Self, OnActivate);
 //
@@ -10800,7 +10907,7 @@ begin
       Inc(TriggerCount);
       event := 'OnTrigger[' + IntToStr(TriggerCount) + ']';
       if PropertyExists(event) then
-        RunScript(Activator, Properties[event])
+        RunScript(Activator, Property_[event])
       else
         RunScript(Activator, OnTrigger);
     end;
@@ -10941,7 +11048,7 @@ begin
       Inc(TriggerCount);
       event := 'OnTrigger[' + IntToStr(TriggerCount) + ']';
       if PropertyExists(event) then
-        RunScript(Character, Properties[event])
+        RunScript(Character, Property_[event])
       else
         RunScript(Character, OnTrigger);
     end
@@ -11545,7 +11652,7 @@ end;
 function TransferItem(Source, Dest: TGameObject; ItemName: string;
   DropIfNoRoom: boolean): boolean;
 var
-  Inventory: TList;
+  Inventory: TList<TItem>;
   S: string;
   Item: TItem;
   i, j: Integer;
@@ -12080,7 +12187,7 @@ begin
   try
 
     SpriteCount := Count;
-    List := TList.Create;
+    List := TList<TSpriteObject>.Create;
     List.capacity := SpriteCount;
     for i := 1 to SpriteCount do
     begin
@@ -12101,10 +12208,8 @@ const
 begin
   log.DebugLog(FailName);
   try
-
     List.free;
     inherited;
-
   except
     on E: Exception do
       log.log(FailName, E.Message, []);
@@ -12125,7 +12230,7 @@ begin
   try
 
     StartIndex := FCurrentIndex;
-    while TAniFigure(List.items[FCurrentIndex]).Enabled do
+    while List[FCurrentIndex].Enabled do
     begin
       Inc(FCurrentIndex);
       if (FCurrentIndex >= SpriteCount) then
@@ -12135,9 +12240,9 @@ begin
     end;
     // We're going to rely on the assumption that the indexes in Game.FigureList
     // match the indexes in List.
-    if (TAniFigure(List.items[FCurrentIndex]) is TProjectile) then
+    if (TAniFigure(List[FCurrentIndex]) is TProjectile) then
     begin
-      Tail1 := TProjectile(List.items[FCurrentIndex]).TrailedBy;
+      Tail1 := TProjectile(List[FCurrentIndex]).TrailedBy;
       while assigned(Tail1) do
       begin
         if Tail1.Enabled then
@@ -12154,7 +12259,7 @@ begin
     result := ClassType.Create(X, Y, Z, Frame, true);
     result.Resource := Resource;
     Game.ReplaceFigure(FCurrentIndex, result);
-    List.items[FCurrentIndex] := result;
+    List[FCurrentIndex] := result;
 
     Inc(FCurrentIndex);
     if (FCurrentIndex >= SpriteCount) then
@@ -12515,7 +12620,7 @@ begin
       event := 'OnTimer[' + IntToStr(TimerCount) + ']';
       if PropertyExists(event) then
       begin
-        RunScript(Self, Properties[event]);
+        RunScript(Self, Property_[event]);
       end
       else
       begin
@@ -12770,6 +12875,179 @@ begin
     on E: Exception do
       log.log(FailName, E.Message, []);
   end;
+end;
+
+{ TCharacterList }
+
+procedure TCharacterList.BeginTransit;
+begin
+  for var i := 0 to Count - 1 do
+  begin
+    Self[ i ].TransitX := Self[ i ].PrevX;
+    Self[ i ].TransitY := Self[ i ].PrevY;
+    Self[ i ].TransitZ := Self[ i ].PrevZ;
+  end;
+end;
+
+procedure TCharacterList.CancelTransit;
+begin
+  for var i := 0 to Count - 1 do
+  begin
+    with Self[ i ] do
+      SetPos(TransitX, TransitY, TransitZ);
+    Self[ i ].Stand;
+  end;
+end;
+
+procedure TCharacterList.Enable;
+begin
+  for var i: Integer := 0 to Count-1 do
+    Self[i].Enabled := True;
+end;
+
+procedure TCharacterList.Freeze;
+begin
+  if Count > 1 then
+  begin
+    frmMain.ChangeFocus( player );
+    for var i: Integer := 0 to Count - 1 do
+      if Self[ i ] <> player then
+      begin
+        Self[ i ].Frozen := True;
+      end;
+  end
+end;
+
+function TCharacterList.GetPlayerData: TMemoryStream;
+var
+  Block: TSavBlocks;
+  List: TStringList;
+  L: Longint;
+  S: AnsiString;
+  k: TSlot;
+  EOB: Word;
+begin
+  EOB := EOBMarker;
+  Result := TMemoryStream.Create;
+  List := TStringList.Create;
+  try
+    for var i := 0 to Count - 1 do
+    begin
+      Block := sbCharacter;
+      Result.Write(Block, SizeOf(Block));
+      List.Clear;
+      Self[i].SaveProperties(List);
+      S := AnsiString(List.Text);
+      L := Length(S);
+      Result.Write(L, SizeOf(L));
+      Result.Write(S[1], L);
+      Result.Write(EOB, SizeOf(EOB));
+
+      for k := slLeg1 to SlMisc3 do
+      begin
+        if Assigned(Self[i].Equipment[k]) then
+        begin
+          // Log.Log('Saving equipment item '+NPCList[i].Equipment[k].ItemName);
+          Block := sbItem;
+          Result.Write(Block, SizeOf(Block));
+          List.Clear;
+          Self[i].Equipment[k].SaveProperties(List);
+          S := AnsiString(List.Text);
+          L := Length(S);
+          Result.Write(L, SizeOf(L));
+          Result.Write(S[1], L);
+          Result.Write(EOB, SizeOf(EOB));
+        end;
+      end;
+
+      for var j := 0 to Self[i].Inventory.Count - 1 do
+      begin
+        // Log.Log('Saving inventory item '+NPCList[i].Inventory[j].ItemName);
+        Block := sbItem;
+        Result.Write(Block, SizeOf(Block));
+        List.Clear;
+        Self[i].Inventory[j].SaveProperties(List);
+        S := AnsiString(List.Text);
+        L := Length(S);
+        Result.Write(L, SizeOf(L));
+        Result.Write(S[1], L);
+        Result.Write(EOB, SizeOf(EOB));
+      end;
+    end;
+  finally
+    List.Free;
+  end;
+end;
+
+function TCharacterList.HasGUID(guid: string): Boolean;
+begin
+  Result := False;
+  for var i := 0 to Count - 1 do
+  begin
+    if Self[ i ].Guid = guid then
+      Exit(True);
+  end;
+end;
+
+function TCharacterList.Heal(healer: TCharacter): Boolean;
+begin
+  Result := False;
+  for var i := 0 to Count - 1 do
+  begin
+    if Self[ i ].wounds > ( Self[ i ].HitPoints * 0.50 ) then
+    begin
+      healer.Cast( Self[ i ] );
+      Result := True;
+      break;
+    end;
+  end;
+end;
+
+procedure TCharacterList.MakeNeutral(alliance: string);
+begin
+  for var i := 0 to Count - 1 do
+    Self[ i ].MakeNeutral( alliance );
+end;
+
+procedure TCharacterList.PaintCharacterOnBorder;
+begin
+  for var i := 0 to Count-1 do
+    frmMain.PaintCharacterOnBorder( TSpriteObject( Self[ i ] ), i );
+end;
+
+function TCharacterList.RandomMember: TCharacter;
+begin
+  Result := Self[ Random( Self.count ) ];
+end;
+
+procedure TCharacterList.TakeDamage(damage: TDamageProfile);
+begin
+  for var i := 0 to Count - 1 do
+  begin
+    var Total: Single := CalcTotalDamage( damage, Self[ i ].Resistance, 1, false );
+    Self[ i ].TakeDamage( Self[ i ], Total, 0, false );
+  end;
+end;
+
+procedure TCharacterList.SetCombatMode(combatMode: boolean);
+begin
+  for var i := 0 to Count - 1 do
+  begin
+    Self[ i ].CombatMode := combatMode;
+    frmMain.PaintCharacterOnBorder( TSpriteObject( Self[ i ] ), i );
+
+    if combatMode then
+      Self[ i ].SheathWeapon
+    else
+      Self[ i ].UnsheathWeapon;
+  end;
+end;
+
+procedure TCharacterList.UnFreeze;
+begin
+  for var i := 0 to Count - 1 do
+    if Self[ i ] <> player then
+      Self[ i ].Frozen := false;
 end;
 
 end.

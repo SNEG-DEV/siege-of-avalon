@@ -473,9 +473,9 @@ begin
       begin // Mod selected, -> OK
         SetMod;
         if SelectModBoxNewVisible then
-        MenuChoice := 1
+          MenuChoice := 1
         else
-        MenuChoice := 2;
+          MenuChoice := 2;
         DXModSelect := nil;
         Close;
       end
@@ -748,6 +748,7 @@ begin
       Log.Log(FailName, E.Message, []);
   end;
 end;
+
 procedure TIntro.ShowHelp;
 var
   pr: TRect;

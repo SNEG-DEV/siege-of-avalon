@@ -124,6 +124,7 @@ var
 implementation
 
 uses
+  System.Generics.Collections,
   SoAOS.Types,
   SoAOS.AI,
   SoAOS.AI.Helper,
@@ -160,7 +161,7 @@ begin
     PartManager := TPartManager.Create( ItemDB, XRefDB );
     TitlesManager := TTitlesDB.create;
     TitlesManager.LoadFromFile( TitlesDB );
-    NPCList := TList.create;
+    NPCList := TCharacterList.Create;
     NPCList.capacity := 5;
     Themes := TStringList.create;
     Themes.Sorted := true;
@@ -467,7 +468,7 @@ begin
               if ObjectRef is TSpriteObject then
               begin
                 if TSpriteObject( ObjectRef ).PropertyExists( Event ) then
-                  RunScript( ObjectRef, TSpriteObject( ObjectRef ).Properties[ Event ] );
+                  RunScript( ObjectRef, TSpriteObject( ObjectRef ).Property_[ Event ] );
               end;
             end;
           end
@@ -478,7 +479,7 @@ begin
               if ObjectRef is TSpriteObject then
               begin
                 if TSpriteObject( ObjectRef ).PropertyExists( Event ) then
-                  RunScript( ObjectRef, TSpriteObject( ObjectRef ).Properties[ Event ] );
+                  RunScript( ObjectRef, TSpriteObject( ObjectRef ).Property_[ Event ] );
               end;
             end;
           end;
@@ -501,19 +502,19 @@ begin
                 else
                 begin
                   S2 := Parse( Parms, 0, '<' );
-                  IfFailed := StrToFloat( ObjectRef.Properties[ S2 ] ) >= StrToFloat( S1 );
+                  IfFailed := StrToFloat( ObjectRef.Property_[ S2 ] ) >= StrToFloat( S1 );
                 end;
               end
               else
               begin
                 S2 := Parse( Parms, 0, '>' );
-                IfFailed := StrToFloat( ObjectRef.Properties[ S2 ] ) <= StrToFloat( S1 );
+                IfFailed := StrToFloat( ObjectRef.Property_[ S2 ] ) <= StrToFloat( S1 );
               end;
             end
             else
             begin
               S2 := Parse( Parms, 0, '=' );
-              IfFailed := lowercase( ObjectRef.Properties[ S2 ] ) <> lowercase( S1 );
+              IfFailed := lowercase( ObjectRef.Property_[ S2 ] ) <> lowercase( S1 );
             end;
           end;
           if not IfFailed then
@@ -537,19 +538,19 @@ begin
                 else
                 begin
                   S2 := Parse( Parms, 0, '<' );
-                  IfFailed := StrToFloat( ObjectRef.Properties[ S2 ] ) < StrToFloat( S1 );
+                  IfFailed := StrToFloat( ObjectRef.Property_[ S2 ] ) < StrToFloat( S1 );
                 end;
               end
               else
               begin
                 S2 := Parse( Parms, 0, '>' );
-                IfFailed := StrToFloat( ObjectRef.Properties[ S2 ] ) > StrToFloat( S1 );
+                IfFailed := StrToFloat( ObjectRef.Property_[ S2 ] ) > StrToFloat( S1 );
               end;
             end
             else
             begin
               S2 := Parse( Parms, 0, '=' );
-              IfFailed := lowercase( ObjectRef.Properties[ S2 ] ) = lowercase( S1 );
+              IfFailed := lowercase( ObjectRef.Property_[ S2 ] ) = lowercase( S1 );
             end;
           end;
           if not IfFailed then
@@ -663,13 +664,13 @@ begin
         end
         else if Token = 'ifinparty' then
         begin
-          IfFailed := not ( NPCList.IndexOf( ObjectRef ) > 0 );
+          IfFailed := not ( NPCList.IndexOf( TCharacter(ObjectRef) ) > 0 );
           if not IfFailed then
             inc( IfLevel );
         end
         else if Token = 'ifnotinparty' then
         begin
-          IfFailed := ( NPCList.IndexOf( ObjectRef ) > 0 );
+          IfFailed := ( NPCList.IndexOf( TCharacter(ObjectRef) ) > 0 );
           if not IfFailed then
             inc( IfLevel );
         end
@@ -749,32 +750,20 @@ begin
           begin
             frmMain.ChangeFocus( player );
             while NPCList.Count > 1 do
-              if NPCList.Items[ 1 ] <> player then
+              if NPCList[ 1 ] <> player then
               begin
-                TCharacter( NPCList.Items[ 1 ] ).Alliance := '';
-                frmMain.RemoveFromParty( NPCList.Items[ 1 ] );
+                NPCList[ 1 ].Alliance := '';
+                frmMain.RemoveFromParty( NPCList[ 1 ] );
               end;
           end;
         end
         else if Token = 'freezeparty' then
         begin
-          if NPCList.Count > 1 then
-          begin
-            frmMain.ChangeFocus( player );
-            for iLoop := 0 to NPCList.Count - 1 do
-              if NPCList.Items[ iLoop ] <> player then
-              begin
-                TCharacter( NPCList.Items[ iLoop ] ).Frozen := true;
-              end;
-          end
+          NPCList.Freeze;
         end
         else if Token = 'unfreezeparty' then
         begin
-          for iLoop := 0 to NPCList.Count - 1 do
-            if NPCList.Items[ iLoop ] <> player then
-            begin
-              TCharacter( NPCList.Items[ iLoop ] ).Frozen := false;
-            end;
+          NPCList.UnFreeze;
         end
         else if Token = 'savegame' then
         begin
@@ -786,7 +775,7 @@ begin
           begin
             S0 := Parse( Parms, 0, '=' );
             S1 := Parse( Parms, 1, '=' );
-            ObjectRef.Properties[ S0 ] := S1;
+            ObjectRef.Property_[ S0 ] := S1;
           end;
         end
         else if ( Token = 'meander' ) then
@@ -849,7 +838,7 @@ begin
           if assigned( List ) then
           begin
             for k := 0 to List.count - 1 do
-              TGameObject( List.objects[ k ] ).Properties[ S0 ] := S1;
+              TGameObject( List.objects[ k ] ).Property_[ S0 ] := S1;
           end;
         end
         else if Token = 'say' then
@@ -1247,8 +1236,8 @@ begin
                   break;
                 if List.objects[ k ] is TPathCorner then
                 begin
-                  TCharacter( NPCList.items[ j ] ).SetPos( TPathCorner( List.objects[ k ] ).X, TPathCorner( List.objects[ k ] ).Y, TPathCorner( List.objects[ k ] ).Z );
-                  TCharacter( NPCList.items[ j ] ).Stand;
+                  NPCList[ j ].SetPos( TPathCorner( List.objects[ k ] ).X, TPathCorner( List.objects[ k ] ).Y, TPathCorner( List.objects[ k ] ).Z );
+                  NPCList[ j ].Stand;
                   inc( j );
                 end;
               end;
@@ -1270,10 +1259,10 @@ begin
                   break;
                 if List.objects[ k ] is TPathCorner then
                 begin
-                  if TCharacter( NPCList.items[ j ] ) <> player then
+                  if NPCList[ j ] <> player then
                   begin
-                    TCharacter( NPCList.items[ j ] ).SetPos( TPathCorner( List.objects[ k ] ).X, TPathCorner( List.objects[ k ] ).Y, TPathCorner( List.objects[ k ] ).Z );
-                    TCharacter( NPCList.items[ j ] ).Stand;
+                    NPCList[ j ].SetPos( TPathCorner( List.objects[ k ] ).X, TPathCorner( List.objects[ k ] ).Y, TPathCorner( List.objects[ k ] ).Z );
+                    NPCList[ j ].Stand;
                   end;
                   inc( j );
                 end;
