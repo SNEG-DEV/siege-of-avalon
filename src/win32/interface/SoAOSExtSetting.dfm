@@ -114,9 +114,9 @@ object frmLaunchSetting: TfrmLaunchSetting
   object VersionLabel: TLabel
     Left = 24
     Top = 24
-    Width = 37
+    Width = 28
     Height = 23
-    Caption = '1.03.1'
+    Caption = '1.04'
     Color = clFuchsia
     Font.Charset = DEFAULT_CHARSET
     Font.Color = 1398879

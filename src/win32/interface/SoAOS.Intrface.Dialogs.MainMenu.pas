@@ -473,9 +473,9 @@ begin
       begin // Mod selected, -> OK
         SetMod;
         if SelectModBoxNewVisible then
-          MenuChoice := 1
+        MenuChoice := 1
         else
-          MenuChoice := 2;
+        MenuChoice := 2;
         DXModSelect := nil;
         Close;
       end
@@ -622,7 +622,7 @@ begin
     HelpscreenShow := false;
     DXModRand := SoAOS_DX_LoadBMP(InterfacePath + 'ModSelect.bmp', cInvisColor,
       width1, height1);
-    DXModSelect := SoAOS_DX_LoadBMP(InterfacePath + 'ModBox.bmp', cInvisColor,
+    DXModSelect := SoAOS_DX_LoadBMP(InterfaceLanguagePath + 'ModBox.bmp', cInvisColor,
       width2, height2);
     DXModDim := SoAOS_DX_LoadBMP(InterfacePath + 'Chablack.bmp', cInvisColor,
       width3, height3);
@@ -748,7 +748,6 @@ begin
       Log.Log(FailName, E.Message, []);
   end;
 end;
-
 procedure TIntro.ShowHelp;
 var
   pr: TRect;

@@ -178,8 +178,9 @@ begin
       82: if ToggleShow(DlgRoster) then frmMain.BeginRoster(nil); // R
       83: ToggleSpell; // S
       84: TravelFast; // T
-      87: TwoWeapons; //W, only AoA
+//      87: WeaponSwitch; ; // W - Reserved for short/long distance weapons?
       88: ToggleXRay; // X
+      90: TwoWeapons; //Z, only AoA
       //  90: HDZoom; // Z - Reserved for future? HD Zoom function
       114..124: SpellhotkeyPlus(key); //F3-F12,
       VK_F1: if ToggleShow(DlgShow) then frmMain.BeginHelp; // F1
@@ -348,10 +349,12 @@ begin
     begin
       if frmMain.Paused then
         TogglePause;
+
       if player.titleexists('HardMode') then
         Hardmode:= true
       else
         Hardmode := false;
+
       frmMain.Active := False;
       frmMain.SaveGameScreenShot;
       PostMessage(frmMain.Handle, WM_StartMainMenu, 0, 0); // Restart the intro
@@ -520,9 +523,10 @@ begin
   begin
     if modselection = TModSelection.SoA then  //SoA
     begin
-    //after speaking to Holden in forest 5, Transit available
+//after speaking to Holden (forest 5), because now we know where the outpost is located
     if player.titleexists('03knowholden') and not player.titleexists('04Chapter4') then
       RunScript(player, 'Loadmap(forest05,default,f05b02,ForestChpt3|#FastTransit.Default#)');
+      // Better spot when having party members
 //    if player.titleexists('02Chapter2') then
 //      RunScript(player, 'Loadmap(southgate1b,default,Levelpoint4,VillagetoSouthGate|#FastTransit.Default#)')
 //    else
@@ -552,7 +556,7 @@ begin
           else if not player.titleexists('chapter02') then
           runscript(player,'Loadmap(southgate1b,default,Levelpoint4|#Schnellreise.Fall1#)');
         end;
-      end;//end Ready
+      end;//end FReady
     end;//end modselection -AoA
   end;
 end;
@@ -591,6 +595,8 @@ begin
           WeaponEquip := StringReplace(ShieldEquip, 'shield', '', [rfIgnoreCase]);
           RunScript(current,'current.additem(' + WeaponEquip + ')');
           current.equipmentlocked[ slshield ] := false;
+          //log.log(ShieldEquip);
+          //log.log(WeaponEquip);
           frmMain.DoNotRestartTimer := True;       //->Inventory
           frmMain.CloseAllDialogs( DlgInventory ); //re-
           frmMain.BeginInventory( Current );       //load

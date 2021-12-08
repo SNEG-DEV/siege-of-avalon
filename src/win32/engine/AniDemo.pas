@@ -6096,7 +6096,7 @@ begin
     DlgShow.pText := DlgText;
     DlgShow.OnClose := CloseShow;
     DlgShow.frmMain := Self;
-    if Modselection = TModSelection.SoA then
+    if (Modselection = TModSelection.SoA) or (Modselection = TModSelection.Nothing) then
     begin
       DlgShow.BMPFileName := 'CreditsScreen_001.bmp';
       DlgShow.BMPFileName := 'CreditsScreen_002.bmp';

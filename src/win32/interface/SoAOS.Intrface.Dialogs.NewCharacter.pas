@@ -67,6 +67,7 @@ type
   strict private // actions
     procedure selectCharLeft;
     procedure selectCharRight;
+    procedure Gendernote; //SoA is not intended to be played as a woman
     procedure selectShirt(const val: Integer);
     procedure selectPants(const val: Integer);
     procedure selectHairColor(const val: Integer);
@@ -96,6 +97,8 @@ type
     DXContinue: IDirectDrawSurface;
     DXCancel: IDirectDrawSurface;
     DXHardmode: IDirectDrawSurface;
+    DXGenderNote: IDirectDrawSurface;
+    Genderboxopen: boolean;
     InfoRect: array [0 .. 19] of TInformationRect;
     // was 35  //collision rects for information
     ArrowRect: array [0 .. 15] of TInformationRect;
@@ -120,8 +123,9 @@ type
     BoxOpen: TBoxEnum;
     LoopCounter, Spinner: Integer;
     DoAStart: boolean; // Days of Ahoul, Check if Race and Training is OK
-    txtMessage: array [0 .. 105] of string;
+    txtMessage: array [0 .. 109] of string; //was 105
     rLeftArrow, rRightArrow: TRect;
+    rGenderNote: TRect;
 
     Players: TStringList; // TArray<string>;
     PlayerResourceIdx: Integer;
@@ -237,7 +241,7 @@ begin
     FOnDraw := CharCreationDraw;
 
     ExText.Open('CharCreation');
-    for i := 0 to 105 do
+    for i := 0 to 109 do //was 105
       txtMessage[i] := ExText.GetText('Message' + inttostr(i));
 
     ChosenTraining := -1; // initialize training to nothing
@@ -308,11 +312,13 @@ begin
     begin
       rLeftArrow := Rect(100, 140, 115, 170);
       rRightArrow := Rect(260, 140, 275, 170);
+      rGendernote := Rect(566, 400, 611, 428);
     end
     else
     begin
       rLeftArrow := Rect(-100, 140, -115, 170);
       rRightArrow := Rect(-260, 140, -275, 170);
+      rGendernote := Rect(-165, 188, -210, 216);
     end;
     // Load the Background Bitmap and plot it
     DXHardmode := SoAOS_DX_LoadBMP(InterfacePath + 'opyellow.bmp', cInvisColor);
@@ -347,6 +353,7 @@ begin
 
       rLeftArrow.Offset(Offset);
       rRightArrow.Offset(Offset);
+      rGenderNote.Offset(Offset);
     end;
 
     pr := Rect(0, 0, DlgWidth, DlgHeight);
@@ -394,6 +401,7 @@ begin
     DXCircle := nil;
     DXLeftArrow := nil;
     DXRightArrow := nil;
+    DXGenderNote := nil;
     CaratTimer.enabled := false;
     CaratTimer.free;
     CaratTimer := nil;
@@ -413,10 +421,20 @@ begin
   ixSelectedBeard := val - 16;
   DrawAlpha(DXBack, Rect(113, 406, 261, 434), Rect(0, 0, 25, 25), DXBlack,
     false, 255);
+  if not female then
+  begin
   if val = 16 then
     pText.PlotTextCentered2(DXBack, txtMessage[3], 113, 261, 409, 250)
   else
     pText.PlotTextCentered2(DXBack, txtMessage[4], 113, 261, 409, 250);
+  end
+  else
+  begin
+  if val = 16 then
+    pText.PlotTextCentered2(DXBack, txtMessage[107], 113, 261, 409, 250)
+  else
+    pText.PlotTextCentered2(DXBack, txtMessage[108], 113, 261, 409, 250);
+  end;
 end;
 
 procedure TCreation.selectCharLeft;
@@ -429,6 +447,9 @@ begin
     '.gif'));
   Player.LoadEquipment(True);
   updateClothing;
+  if female then
+  Gendernote;
+  CreateCollisionRects;//reinit for beard or braided/normal hairstyle, but after updateclothing
 end;
 
 procedure TCreation.selectCharRight;
@@ -441,6 +462,33 @@ begin
     '.gif'));
   Player.LoadEquipment(True);
   updateClothing;
+  if female then
+  Gendernote;
+  CreateCollisionRects;//reinit for beard or braided/normal hairstyle, but after updateclothing
+end;
+
+procedure TCreation.Gendernote;
+var
+  pr: TRect;
+  width1, height1: integer;
+const
+  FailName: string = 'TCreation.Gendernote ';
+begin
+  Log.DebugLog(FailName);
+  try
+    Genderboxopen := true;
+    DXGenderNote := SoAOS_DX_LoadBMP(InterfacePath + 'Genderbox.bmp',
+      cInvisColor, width1, height1);
+    pr := Rect(0, 0, width1, height1);
+    lpDDSBack.BltFast(528 + Offset.X, 255 + Offset.Y, DXGenderNote, @pr,
+    DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
+    ptext.PlotTextBlock(txtMessage[109], 528 + Offset.X + 12, 528 + Offset.X + 110,
+    255 + Offset.Y + 13, 250);
+    SoAOS_DX_BltFront;
+  except
+    on E: Exception do
+      Log.Log(FailName, E.Message, []);
+  end;
 end;
 
 procedure TCreation.selectHairColor(const val: Integer);
@@ -460,8 +508,15 @@ begin
   if val < 14 then
     pText.PlotTextCentered2(DXBack, SelectRect[val].Text + txtMessage[2], 113,
       261, 366, 250)
+  else if val = 14 then
+  pText.PlotTextCentered2(DXBack, SelectRect[val].Text, 113, 261, 366, 250)
   else
-    pText.PlotTextCentered2(DXBack, SelectRect[val].Text, 113, 261, 366, 250);
+  begin
+  if not female then
+    pText.PlotTextCentered2(DXBack, SelectRect[val].Text, 113, 261, 366, 250)
+  else //Medium hair
+    pText.PlotTextCentered2(DXBack, txtMessage[106] + txtMessage[2], 113, 261, 366, 250);
+  end;
 end;
 
 procedure TCreation.selectPants(const val: Integer);
@@ -482,15 +537,22 @@ begin
     261, 239, 250)
 end;
 
-procedure TCreation.selectBase(const val: Integer); // Doa, =selected shirt
+procedure TCreation.selectBase(const val: Integer); // Doa
 begin
-  ixSelectedBase := val; // AhoulRace but 1-3 and not 0-2
+  if val = 1 then
+  Player.Resource := LoadArtResource(ChangeFileExt('players\playerahoul.pox', '.gif'))
+  else
+  Player.Resource := LoadArtResource(ChangeFileExt('players\player.pox', '.gif'));
+  ixSelectedBase := val;
+  AhoulRace := val + 1; // AhoulRace but 1-3 and not 0-2
+  DoAStart := false; // New Training to choose
   if ixselectedDoAHair = 0 then // Safety, clear Box
   begin
+    ixselectedDoAHair := 3; // Safety reason
     DrawAlpha(DXBack, Rect(113, 363, 261, 391), Rect(0, 0, 25, 25), DXBlack,
       false, 255);
     pText.PlotTextCentered2(DXBack, SelectRect[15].Text, 113, 261, 366, 250);
-    // no [ val ], instead calue for Bald = 15, SelectRect... matches luckily
+    // no [ val ], instead value for Bald = 15, SelectRect... matches luckily
   end;
   // Clear selected Training
   DrawAlpha(DXBack, Rect(300, 132, 448, 160), Rect(0, 0, 25, 25), DXBlack,
@@ -498,10 +560,6 @@ begin
   DrawAlpha(DXBack, Rect(113, 236, 261, 264), Rect(0, 0, 25, 25), DXBlack,
     false, 255);
   pText.PlotTextCentered2(DXBack, txtMessage[val + 16], 113, 261, 239, 250);
-  // pText.PlotTextCentered2( DXBack, SelectRect[ val ].Text, 113, 261, 239, 250 );
-  // log.log( 'Val=' + inttostr(val));
-  // pText.PlotTextCentered2( DXBack, txtMessage[ val + 16 ], 113, 261, 239, 250 );
-  // txtmessage 16, 17, 18
 end;
 
 procedure TCreation.selectTattoo(const val: Integer);
@@ -564,7 +622,17 @@ const
 begin
   Log.DebugLog(FailName);
   try
-
+  if GenderBoxopen then
+  begin
+  if rGenderNote.Contains(point(X, Y)) then
+    begin
+      //redraw the screen
+      paint;
+      GenderBoxopen := false;
+    end;
+  end
+  else
+  begin
     BoxClosed := false;
     // Hardmode
     prHarti := Rect(0, 0, 12, 12);
@@ -620,39 +688,11 @@ begin
             begin
               selectShirt(i);
             end
-            else // DoA - Rasse
+            else // DoA - Race/Base
             begin
-              if i = 0 then
+              if i < 3 then //no 3, because only 3 races
               begin
-                Player.Resource :=
-                  LoadArtResource(ChangeFileExt('players\player.pox', '.gif'));
                 selectBase(i);
-                AhoulRace := 1;
-                DoAStart := false; // New Training to choose
-                if ixselectedDoAHair = 0 then // Safety reason
-                  ixselectedDoAHair := 3;
-              end
-              else if i = 1 then
-              begin
-                Player.Resource :=
-                  LoadArtResource(ChangeFileExt('players\playerahoul.pox',
-                  '.gif'));
-                selectBase(i);
-                AhoulRace := 2;
-                DoAStart := false; // New Training to choose
-                if ixselectedDoAHair = 0 then
-                // Safety reason -Orkhead or Shamanlonghair only for each Race
-                  ixselectedDoAHair := 3;
-              end
-              else if i = 2 then
-              begin
-                Player.Resource :=
-                  LoadArtResource(ChangeFileExt('players\player.pox', '.gif'));
-                selectBase(i);
-                AhoulRace := 3;
-                DoAStart := false; // New Training to choose
-                if ixselectedDoAHair = 0 then // Safety reason
-                  ixselectedDoAHair := 3;
               end;
             end
           else if i < 8 then
@@ -662,10 +702,8 @@ begin
             end
             else // DoA - only 2 pants
             begin
-              if i = 4 then
-                selectPants(4);
-              if i = 5 then
-                selectPants(5);
+              if i < 6 then
+                selectPants(i);
             end
           else if i < 12 then
             if modselection <> TModSelection.DoA then
@@ -674,19 +712,8 @@ begin
             end
             else // DoA - Tattoo
             begin
-              if i = 8 then
-              begin
+              if i < 11 then // no 11, or rather no fourth tattoo
                 selectTattoo(i);
-                // ixSelectedTattoo := 8;
-              end
-              else if i = 9 then
-              begin
-                selectTattoo(i);
-              end
-              else if i = 10 then
-              begin
-                selectTattoo(i);
-              end;
             end
           else if i < 16 then
             if modselection <> TModSelection.DoA then
@@ -938,6 +965,7 @@ begin
         close;
       end;
     end;
+  end; //end not GenderBoxopen
 
   except
     on E: Exception do
@@ -957,6 +985,8 @@ const
 begin
   Log.DebugLog(FailName);
   try
+  if not Genderboxopen then
+  begin
     // Clean up continue and cancel
     pr := DlgRect.dlgNewContinueRect;
     lpDDSBack.BltFast(ContinueRect.Left, ContinueRect.Top, DXBack, @pr,
@@ -1102,6 +1132,7 @@ begin
 
     end;
     MouseCursor.PlotDirty := false;
+  end;//End not Genderboxopen
   except
     on E: Exception do
       Log.Log(FailName + E.Message);
@@ -1328,8 +1359,11 @@ begin
     // hair color
     InfoRect[15] := InformationRect(113, 363, 281, 391, txtMessage[46]);
     // hair style
-    InfoRect[16] := InformationRect(113, 406, 281, 434, txtMessage[47]);
+    if not female then
+    InfoRect[16] := InformationRect(113, 406, 281, 434, txtMessage[47])
     // beard
+    else //braided or normal
+    InfoRect[16] := InformationRect(113, 406, 281, 434, txtMessage[46]);
 
     InfoRect[17] := InformationRect(300, 132, 468, 160, txtMessage[48]);
     // Fighting training places an emphasis on your '+
@@ -1387,12 +1421,30 @@ begin
       txtMessage[76]);
     // Hair style
     for i := 0 to 3 do
+    begin
+    if not female then
+      SelectRect[12 + i] := SelectionRect(279, 399 + 24 * i, 402, 423 + 24 * i,
+        txtMessage[61 + i], txtMessage[77 + i])
+    else
+      begin
+      if i = 3 then
+      SelectRect[12 + i] := SelectionRect(279, 399 + 24 * i, 402, 423 + 24 * i,
+        txtMessage[62], txtMessage[106])
+      else
       SelectRect[12 + i] := SelectionRect(279, 399 + 24 * i, 402, 423 + 24 * i,
         txtMessage[61 + i], txtMessage[77 + i]);
+      end;
+    end;
     // Beard
     for i := 0 to 1 do
+    begin
+    if not female then
       SelectRect[16 + i] := SelectionRect(279, 465 + 24 * i, 402, 489 + 24 * i,
-        txtMessage[65 + i], txtMessage[81 + i]);
+        txtMessage[65 + i], txtMessage[81 + i])
+    else
+      SelectRect[16 + i] := SelectionRect(279, 465 + 24 * i, 402, 489 + 24 * i,
+        txtMessage[107 + i], txtMessage[107 + i]);
+    end;
     // Training
     for i := 0 to 2 do
       SelectRect[18 + i] := SelectionRect(465, 69 + 38 + 24 * i, 465 + 123,
@@ -1599,158 +1651,8 @@ begin
   end
   else
   begin
-    LayeredImage := PartManager.GetImageFile('prt_ShortHairBeardLight',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'ShortHairBeardLight';
-    hair[1, 1, 1] := PartManager.GetLayerResource(LayeredImage);
-    LayeredImage := PartManager.GetImageFile('prt_LongHairBeardLight',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'LongHairBeardLight';
-    hair[1, 2, 1] := PartManager.GetLayerResource(LayeredImage);
-    LayeredImage := PartManager.GetImageFile('prt_PonytailBeardLight',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'PonyBeardLight';
-    hair[1, 3, 1] := PartManager.GetLayerResource(LayeredImage);
-    LayeredImage := PartManager.GetImageFile('prt_BeardLight',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'BeardLight';
-    hair[1, 4, 1] := PartManager.GetLayerResource(LayeredImage);
-
-    LayeredImage := PartManager.GetImageFile('prt_ShortHairBeardDark',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'ShortHairBeardDark';
-    hair[2, 1, 1] := PartManager.GetLayerResource(LayeredImage);
-    LayeredImage := PartManager.GetImageFile('prt_LongHairBeardDark',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'LongHairBeardDark';
-    hair[2, 2, 1] := PartManager.GetLayerResource(LayeredImage);
-    LayeredImage := PartManager.GetImageFile('prt_PonytailBeardDark',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'PonyBeardDark';
-    hair[2, 3, 1] := PartManager.GetLayerResource(LayeredImage);
-    LayeredImage := PartManager.GetImageFile('prt_BeardDark',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'BeardDark';
-    hair[2, 4, 1] := PartManager.GetLayerResource(LayeredImage);
-
-    LayeredImage := PartManager.GetImageFile('prt_ShortHairBeardRed',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'ShortHairBeardRed';
-    hair[3, 1, 1] := PartManager.GetLayerResource(LayeredImage);
-    LayeredImage := PartManager.GetImageFile('prt_LongHairBeardRed',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'LongHairBeardRed';
-    hair[3, 2, 1] := PartManager.GetLayerResource(LayeredImage);
-    LayeredImage := PartManager.GetImageFile('prt_PonytailBeardRed',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'PonyBeardRed';
-    hair[3, 3, 1] := PartManager.GetLayerResource(LayeredImage);
-    LayeredImage := PartManager.GetImageFile('prt_BeardRed',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'BeardRed';
-    hair[3, 4, 1] := PartManager.GetLayerResource(LayeredImage);
-
-    LayeredImage := PartManager.GetImageFile('prt_ShortHairBeardGrey',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'ShortHairBeardGrey';
-    hair[4, 1, 1] := PartManager.GetLayerResource(LayeredImage);
-    LayeredImage := PartManager.GetImageFile('prt_LongHairBeardGrey',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'LongHairBeardGrey';
-    hair[4, 2, 1] := PartManager.GetLayerResource(LayeredImage);
-    LayeredImage := PartManager.GetImageFile('prt_PonytailBeardGrey',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'PonyBeardGrey';
-    hair[4, 3, 1] := PartManager.GetLayerResource(LayeredImage);
-    LayeredImage := PartManager.GetImageFile('prt_BeardGrey',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'BeardGrey';
-    hair[4, 4, 1] := PartManager.GetLayerResource(LayeredImage);
-
-    LayeredImage := PartManager.GetImageFile('prt_ShortHairLight',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'ShortHairLight';
-    hair[1, 1, 2] := PartManager.GetLayerResource(LayeredImage);
-    LayeredImage := PartManager.GetImageFile('prt_LongHairLight',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'LongHairLight';
-    hair[1, 2, 2] := PartManager.GetLayerResource(LayeredImage);
-    LayeredImage := PartManager.GetImageFile('prt_PonytailLight',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'PonytailLight';
-    hair[1, 3, 2] := PartManager.GetLayerResource(LayeredImage);
-    hair[1, 4, 2] := nil;
-
-    LayeredImage := PartManager.GetImageFile('prt_ShortHairDark',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'ShortHairDark';
-    hair[2, 1, 2] := PartManager.GetLayerResource(LayeredImage);
-    LayeredImage := PartManager.GetImageFile('prt_LongHairDark',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'LongHairDark';
-    hair[2, 2, 2] := PartManager.GetLayerResource(LayeredImage);
-    LayeredImage := PartManager.GetImageFile('prt_PonytailDark',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'PonytailDark';
-    hair[2, 3, 2] := PartManager.GetLayerResource(LayeredImage);
-    hair[2, 4, 2] := nil;
-
-    LayeredImage := PartManager.GetImageFile('prt_ShortHairRed',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'ShortHairRed';
-    hair[3, 1, 2] := PartManager.GetLayerResource(LayeredImage);
-    LayeredImage := PartManager.GetImageFile('prt_LongHairRed',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'LongHairRed';
-    hair[3, 2, 2] := PartManager.GetLayerResource(LayeredImage);
-    LayeredImage := PartManager.GetImageFile('prt_PonytailRed',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'PonytailRed';
-    hair[3, 3, 2] := PartManager.GetLayerResource(LayeredImage);
-    hair[3, 4, 2] := nil;
-
-    LayeredImage := PartManager.GetImageFile('prt_ShortHairGrey',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'ShortHairGrey';
-    hair[4, 1, 2] := PartManager.GetLayerResource(LayeredImage);
-    LayeredImage := PartManager.GetImageFile('prt_LongHairGrey',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'LongHairGrey';
-    hair[4, 2, 2] := PartManager.GetLayerResource(LayeredImage);
-    LayeredImage := PartManager.GetImageFile('prt_PonytailGrey',
-      TCharacterResource(Player.Resource).NakedName);
-    if PartManager.NotFound then
-      LayeredImage := S + 'PonytailGrey';
-    hair[4, 3, 2] := PartManager.GetLayerResource(LayeredImage);
-    hair[4, 4, 2] := nil;
-    // TODO: Why the above ?
+    if not female then  //decombine for a better overview
+    begin
     hair[1, 1, 1] := PartManager.GetLayerResource(S + 'ShortHairBeardLight');
     hair[1, 2, 1] := PartManager.GetLayerResource(S + 'LongHairBeardLight');
     hair[1, 3, 1] := PartManager.GetLayerResource(S + 'PonyBeardLight');
@@ -1774,48 +1676,66 @@ begin
     hair[1, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairLight');
     hair[1, 2, 2] := PartManager.GetLayerResource(S + 'LongHairLight');
     hair[1, 3, 2] := PartManager.GetLayerResource(S + 'PonyTailLight');
-
-    hair[2, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairDark');
-    hair[2, 2, 2] := PartManager.GetLayerResource(S + 'LongHairDark');
-    hair[2, 3, 2] := PartManager.GetLayerResource(S + 'PonyTailDark');
-
-    hair[3, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairRed');
-    hair[3, 2, 2] := PartManager.GetLayerResource(S + 'LongHairRed');
-    hair[3, 3, 2] := PartManager.GetLayerResource(S + 'PonyTailRed');
-
-    hair[4, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairGrey');
-    hair[4, 2, 2] := PartManager.GetLayerResource(S + 'LongHairGrey');
-    hair[4, 3, 2] := PartManager.GetLayerResource(S + 'PonyTailGrey');
-
-    if Female then
-      hair[1, 3, 2] := PartManager.GetLayerResource(S + 'FemHiPonytailLight')
-    else
-      hair[1, 3, 2] := PartManager.GetLayerResource(S + 'PonytailLight');
     hair[1, 4, 2] := nil;
 
     hair[2, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairDark');
     hair[2, 2, 2] := PartManager.GetLayerResource(S + 'LongHairDark');
-    if Female then
-      hair[2, 3, 2] := PartManager.GetLayerResource(S + 'FemHiPonytailDark')
-    else
-      hair[2, 3, 2] := PartManager.GetLayerResource(S + 'PonytailDark');
+    hair[2, 3, 2] := PartManager.GetLayerResource(S + 'PonyTailDark');
     hair[2, 4, 2] := nil;
 
     hair[3, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairRed');
     hair[3, 2, 2] := PartManager.GetLayerResource(S + 'LongHairRed');
-    if Female then
-      hair[3, 3, 2] := PartManager.GetLayerResource(S + 'FemHiPonytailRed')
-    else
-      hair[3, 3, 2] := PartManager.GetLayerResource(S + 'PonytailRed');
+    hair[3, 3, 2] := PartManager.GetLayerResource(S + 'PonyTailRed');
     hair[3, 4, 2] := nil;
 
     hair[4, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairGrey');
     hair[4, 2, 2] := PartManager.GetLayerResource(S + 'LongHairGrey');
-    if Female then
-      hair[4, 3, 2] := PartManager.GetLayerResource(S + 'FemHiPonytailGrey')
-    else
-      hair[4, 3, 2] := PartManager.GetLayerResource(S + 'PonytailGrey');
+    hair[4, 3, 2] := PartManager.GetLayerResource(S + 'PonyTailGrey');
     hair[4, 4, 2] := nil;
+    end
+    else   //female
+    begin
+    hair[1, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairLight');
+    hair[1, 2, 2] := PartManager.GetLayerResource(S + 'LongHairLight');
+    hair[1, 3, 2] := PartManager.GetLayerResource(S + 'FemHiPonytailLight');
+    hair[1, 4, 2] := PartManager.GetLayerResource(S + 'MediumHairLight');
+
+    hair[2, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairDark');
+    hair[2, 2, 2] := PartManager.GetLayerResource(S + 'LongHairDark');
+    hair[2, 3, 2] := PartManager.GetLayerResource(S + 'FemHiPonytailDark');
+    hair[2, 4, 2] := PartManager.GetLayerResource(S + 'MediumHairDark');
+
+    hair[3, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairRed');
+    hair[3, 2, 2] := PartManager.GetLayerResource(S + 'LongHairRed');
+    hair[3, 3, 2] := PartManager.GetLayerResource(S + 'FemHiPonytailRed');
+    hair[3, 4, 2] := PartManager.GetLayerResource(S + 'MediumHairRed');
+
+    hair[4, 1, 2] := PartManager.GetLayerResource(S + 'ShortHairGrey');
+    hair[4, 2, 2] := PartManager.GetLayerResource(S + 'LongHairGrey');
+    hair[4, 3, 2] := PartManager.GetLayerResource(S + 'FemHiPonytailGrey');
+    hair[4, 4, 2] := PartManager.GetLayerResource(S + 'MediumHairGrey');
+    //Long hair but a bun (braided)
+    hair[1, 2, 1] := PartManager.GetLayerResource(S + 'BunHairLight');
+    hair[2, 2, 1] := PartManager.GetLayerResource(S + 'BunHairDark');
+    hair[3, 2, 1] := PartManager.GetLayerResource(S + 'BunHairRed');
+    hair[4, 2, 1] := PartManager.GetLayerResource(S + 'BunHairGrey');
+
+    //Ponytail but braided
+    hair[1, 3, 1] := PartManager.GetLayerResource(S + 'BraidedHairLight');
+    hair[2, 3, 1] := PartManager.GetLayerResource(S + 'BraidedHairDark');
+    hair[3, 3, 1] := PartManager.GetLayerResource(S + 'BraidedHairRed');
+    hair[4, 3, 1] := PartManager.GetLayerResource(S + 'BraidedHairGrey');
+    //No hair style left, but defined to bun (braided), because a female isn't bald
+    hair[1, 1, 1] := PartManager.GetLayerResource(S + 'BunHairLight');
+    hair[2, 1, 1] := PartManager.GetLayerResource(S + 'BunHairDark');
+    hair[3, 1, 1] := PartManager.GetLayerResource(S + 'BunHairRed');
+    hair[4, 1, 1] := PartManager.GetLayerResource(S + 'BunHairGrey');
+
+    hair[1, 4, 1] := PartManager.GetLayerResource(S + 'BunHairLight');
+    hair[2, 4, 1] := PartManager.GetLayerResource(S + 'BunHairDark');
+    hair[3, 4, 1] := PartManager.GetLayerResource(S + 'BunHairRed');
+    hair[4, 4, 1] := PartManager.GetLayerResource(S + 'BunHairGrey');
+    end;
   end; // Ende nicht DoA
 end;
 // TCreation.ShowStats
@@ -2355,7 +2275,11 @@ begin
             239 + (ord(box) - 12) * 42 + 58, 240);
           PlotTextCentered(nil, txtMessage[22], 279, 279 + 123,
             239 + (ord(box) - 12) * 42 + 82, 240);
+          if not female then
           PlotTextCentered(nil, txtMessage[23], 279, 279 + 123,
+            239 + (ord(box) - 12) * 42 + 106, 240)
+          else //Medium hair
+          PlotTextCentered(nil, txtMessage[106], 279, 279 + 123,
             239 + (ord(box) - 12) * 42 + 106, 240);
           for i := 0 to 3 do
             SelectRect[(ord(box) - 12) * 4 + i].enabled := True;
@@ -2368,10 +2292,20 @@ begin
           lpDDSBack.BltFast(279 + 13 + Offset.X, 239 + (ord(box) - 12) * 42 + 34
             + 24 * (ixSelectedBeard) + 24 + Offset.Y, DXCircle, @pr,
             DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
+          if not female then
+          begin
           PlotTextCentered(nil, txtMessage[24], 279, 279 + 123,
-            239 + (ord(box) - 12) * 42 + 58, 240);
+            239 + (ord(box) - 12) * 42 + 58, 240); //Beard
           PlotTextCentered(nil, txtMessage[25], 279, 279 + 123,
-            239 + (ord(box) - 12) * 42 + 82, 240);
+            239 + (ord(box) - 12) * 42 + 82, 240); //No beard
+          end
+          else
+          begin
+          PlotTextCentered(nil, txtMessage[107], 279, 279 + 123,
+            239 + (ord(box) - 12) * 42 + 58, 240); //Braided
+          PlotTextCentered(nil, txtMessage[108], 279, 279 + 123,
+            239 + (ord(box) - 12) * 42 + 82, 240); //Normal
+          end;
           for i := 0 to 1 do
             SelectRect[(ord(box) - 12) * 4 + i].enabled := True;
         end;
