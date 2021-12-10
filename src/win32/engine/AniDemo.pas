@@ -2868,7 +2868,7 @@ begin
                   DoNotRestartTimer := True;
                   CloseAllDialogs(DlgStatistics);
                   ChangeFocus(NPCList[i]);
-                  pr := Rect(16, 0, 117, 120); // 699 and 1819
+                  pr := Rect(16, 0, 117, 120); // 699, 1179 and 1819
                   lpDDSFront_BltFast(ScreenMetrics.StatsX, 0, OverlayR, @pr,
                     DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
                   BeginStatistics(Current);
@@ -2946,10 +2946,10 @@ begin
                     DoNotRestartTimer := True;
                     CloseAllDialogs(DlgStatistics);
                     ChangeFocus(NPCList[i]);
-                    pr := Rect(0, 12, 326, 114);
+                    pr := Rect(0, ScreenMetrics.NPCY, 326, 114); //16, 0 and 0
                     lpDDSFront_BltFast(0, ScreenMetrics.StatsY, OverlayB, @pr,
                       DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
-                    pr := Rect(16, 0, 117, 120);
+                    pr := Rect(ScreenMetrics.NPCX, 0, 117, 120); //12, 0 and 0
                     lpDDSFront_BltFast(ScreenMetrics.StatsX, 0, OverlayR, @pr,
                       DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
                     BeginStatistics(Current);
@@ -2959,10 +2959,10 @@ begin
                     DoNotRestartTimer := True;
                     CloseAllDialogs(DlgStatistics);
                     ChangeFocus(NPCList[i]);
-                    pr := Rect(0, 12, 326, 114);
+                    pr := Rect(0, ScreenMetrics.NPCY, 326, 114);
                     lpDDSFront_BltFast(0, ScreenMetrics.StatsY, OverlayB, @pr,
                       DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
-                    pr := Rect(16, 0, 117, 120);
+                    pr := Rect(ScreenMetrics.NPCX, 0, 117, 120);
                     lpDDSFront_BltFast(ScreenMetrics.StatsX, 0, OverlayR, @pr,
                       DDBLTFAST_SRCCOLORKEY or DDBLTFAST_WAIT);
                     BeginInventory(Current);

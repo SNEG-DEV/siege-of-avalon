@@ -89,6 +89,8 @@ type
    	SpellBarY : integer;
 	  StatsX : integer;  // and inventorydlg?
    	StatsY : integer;
+    NPCX : integer;
+    NPCY : integer;
   	HelpBoxY : integer;
   	MouseMsgX : integer;
     PauseX: integer;
@@ -154,6 +156,8 @@ const
 	   SpellBarY : 486;
 	   StatsX : 699;
 	   StatsY : 498;
+     NPCX : 16;
+     NPCY : 12;
 	   HelpBoxY : 455;
 	   MouseMsgX : 394;
      PauseX : 456;
@@ -203,8 +207,10 @@ const
      SpellX : 508;
   	 SpellBarX : 1163;  // ??
 	   SpellBarY : 606;
-	   StatsX : 1803;
-	   StatsY : 966;
+	   StatsX : 1179;
+	   StatsY : 606;
+     NPCX : 0;
+     NPCY : 0;
 	   HelpBoxY : 575;
 	   MouseMsgX : 566;
      PauseX : 628;
@@ -254,8 +260,10 @@ const
      SpellX : 508;
   	 SpellBarX : 1803;
 	   SpellBarY : 966;
-	   StatsX : 1803;
+	   StatsX : 1819;
 	   StatsY : 966;
+     NPCX : 0;
+     NPCY : 0;
 	   HelpBoxY : 935;
 	   MouseMsgX : 566;
      PauseX : 628;
