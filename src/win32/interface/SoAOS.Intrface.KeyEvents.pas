@@ -62,7 +62,7 @@ type
     class procedure SpellHotKey(key: Word);
     class procedure SpellHotKeyPlus(key: Word);
     class procedure TravelFast;  //SoA and AoA
-//    class procedure DemoOrDeath; // Testcode needs to go
+    class procedure DemoOrDeath; // Testcode needs to go
   public
     class procedure TogglePause;
     class procedure FormKeyDown(Sender: TObject; var Key: Word;
@@ -114,10 +114,10 @@ begin
   end;
 end;
 
-//class procedure TKeyEvent.DemoOrDeath;
+class procedure TKeyEvent.DemoOrDeath;
 ////var
 ////  i, n: Integer;
-//begin
+begin
 ////  n := 0;
 ////  for i:=0 to FigureInstances.count-1 do
 ////  begin
@@ -131,20 +131,20 @@ end;
 ////    end;
 ////  end;
 //
-////  player.hitpoints := -1;
-////  player.trainingpoints := 10000;
-////  player.money := 10000;
-////  player.mana := 100;
+  player.hitpoints := -1;
+  player.trainingpoints := 10000;
+  player.money := 10000;
+  player.mana := 100;
 ////
 ////  Adventures.Add('ch4-531');
-////  RunScript(Player, 'player.additem(MagicalMask)');
-////  RunScript(Player, 'addtitle(04maskgiven)');
+  RunScript(Player, 'player.additem(MagicalMask)');
+  RunScript(Player, 'addtitle(04maskgiven)');
 //                                                                    ;
 ////     AddAdventure('a');
 ////     AddQuest('a');
 ////     AddLogEntry('a');
 ////     end
-//end;
+end;
 
 class procedure TKeyEvent.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
@@ -164,7 +164,6 @@ begin
       65: if ToggleShow(DlgTitles) then frmMain.BeginTitles(Current); // A
       66: Current.DoBattleCry; // B
       67: if ToggleShow(DlgStatistics) then frmMain.BeginStatistics(Current); // C
-//      68: DemoOrDeath; //D test code
       68: ManaPotion; //D, only AoA
       69: HealPotion; //E, only AoA
       71: ScreenShot; // G
@@ -180,6 +179,7 @@ begin
       84: TravelFast; // T
 //      87: WeaponSwitch; ; // W - Reserved for short/long distance weapons?
       88: ToggleXRay; // X
+      89: DemoOrDeath; //Y test code
       90: TwoWeapons; //Z, only AoA
       //  90: HDZoom; // Z - Reserved for future? HD Zoom function
       114..124: SpellhotkeyPlus(key); //F3-F12,
