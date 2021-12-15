@@ -2761,7 +2761,7 @@ begin
     if Source.TitleExists('Forked lightning') then
     begin
       result.X := 24 * 32;
-      result.Y := 32;
+      result.Y := 0;
     end
     else if Source.TitleExists('lightning') then
     begin
