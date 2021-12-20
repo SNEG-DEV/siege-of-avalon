@@ -321,7 +321,7 @@ begin
       INI := TMemINIFile.create( MapPath + 'symbols.'+Language+'.ini', TEncoding.ANSI );
     S1 := Parse( S, 0, '.' );
     S2 := Parse( S, 1, '.' );
-    if S1='Say' then // Say section should be read with correct encoding - due to DrawText
+    if AnsiSameText(S1, 'Say') then // Say section should be read with correct encoding - due to DrawText
     begin
       if not assigned( SayINI ) then
         SayINI := TMemINIFile.create( MapPath + 'symbols.'+Language+'.ini', TEncoding.GetEncoding(INICodePage) );
