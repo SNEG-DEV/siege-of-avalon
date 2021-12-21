@@ -62,7 +62,7 @@ type
     class procedure SpellHotKey(key: Word);
     class procedure SpellHotKeyPlus(key: Word);
     class procedure TravelFast;  //SoA and AoA
-    class procedure DemoOrDeath; // Testcode needs to go
+//    class procedure DemoOrDeath; // Testcode needs to go
   public
     class procedure TogglePause;
     class procedure FormKeyDown(Sender: TObject; var Key: Word;
@@ -114,37 +114,15 @@ begin
   end;
 end;
 
-class procedure TKeyEvent.DemoOrDeath;
-////var
-////  i, n: Integer;
-begin
-////  n := 0;
-////  for i:=0 to FigureInstances.count-1 do
-////  begin
-////    if (FigureInstances.Objects[i] is TCharacter) and (FigureInstances.Objects[i]<>Player) and
-////      Player.isAlly( TCharacter( FigureInstances.Objects[i] ) ) and not TCharacter( FigureInstances.Objects[i] ).Dead then
-////    begin
-////      frmMain.AddToParty(TAniFigure(FigureInstances.Objects[i]));
-////      inc(n);
-////      if n >= MaxPartyMembers then
-////        break;
-////    end;
-////  end;
-//
-  player.hitpoints := -1;
-  player.trainingpoints := 10000;
-  player.money := 10000;
-  player.mana := 100;
-////
-////  Adventures.Add('ch4-531');
-  RunScript(Player, 'player.additem(MagicalMask)');
-  RunScript(Player, 'addtitle(04maskgiven)');
-//                                                                    ;
-////     AddAdventure('a');
-////     AddQuest('a');
-////     AddLogEntry('a');
-////     end
-end;
+//class procedure TKeyEvent.DemoOrDeath;
+//begin
+//  player.hitpoints := -1;
+//  player.trainingpoints := 10000;
+//  player.money := 10000;
+//  player.mana := 100;
+//  RunScript(Player, 'player.additem(MagicalMask)');
+//  RunScript(Player, 'addtitle(04maskgiven)');
+//end;
 
 class procedure TKeyEvent.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
@@ -179,7 +157,7 @@ begin
       84: TravelFast; // T
 //      87: WeaponSwitch; ; // W - Reserved for short/long distance weapons?
       88: ToggleXRay; // X
-      89: DemoOrDeath; //Y test code
+//      89: DemoOrDeath; //Y test code
       90: TwoWeapons; //Z, only AoA
       //  90: HDZoom; // Z - Reserved for future? HD Zoom function
       114..124: SpellhotkeyPlus(key); //F3-F12,
