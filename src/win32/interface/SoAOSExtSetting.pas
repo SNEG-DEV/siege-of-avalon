@@ -333,8 +333,11 @@ begin
     (TPath.GetFullPath(lInterfacePath));
   for dir in TDirectory.GetDirectories(FInterfacePath) do
   begin
-    langStr := AnsiLowerCase(Copy(dir, dir.LastIndexOf(PathDelim) + 2));
-    FLanguages.Add(AnsiUpperCase(langStr[1]) + Copy(langStr, 2));
+    if FileExists(dir + '\Text.ini') then
+    begin
+      langStr := AnsiLowerCase(Copy(dir, dir.LastIndexOf(PathDelim) + 2));
+      FLanguages.Add(AnsiUpperCase(langStr[1]) + Copy(langStr, 2));
+    end;
   end;
   if FLanguages.Count = 0 then // no languages - other than english
     FLanguages.Add(cNoLanguage);
